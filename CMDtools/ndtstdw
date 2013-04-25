@@ -141,17 +141,17 @@ def main():
             +" [<arg1> [<arg2>  ...]] \n"\
             +" e.g.: %prog openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5 \n\n"\
             + "Commands: \n"\
-            + "   openfile -s <config_server>  <file_name> \n"\
+            + "   openfile -s <nexus_server>  <file_name> \n"\
             + "          open new H5 file\n"\
-            + "   setdata -s <config_server> <json_data_string>  \n"\
+            + "   setdata -s <nexus_server> <json_data_string>  \n"\
             + "          assign global JSON data\n"\
-            + "   openentry -s <config_server> <xml_config>  \n"\
+            + "   openentry -s <nexus_server> <xml_config>  \n"\
             + "          create new entry\n"\
-            + "   record -s <config_server>  <json_data_string>  \n"\
+            + "   record -s <nexus_server>  <json_data_string>  \n"\
             + "          record one step with step JSON data \n"\
-            + "   closeentry -s <config_server>   \n"\
+            + "   closeentry -s <nexus_server>   \n"\
             + "          close the current entry \n"\
-            + "   closefile -s <config_server>  \n"\
+            + "   closefile -s <nexus_server>  \n"\
             + "          close the current file \n"\
             + " "
 
