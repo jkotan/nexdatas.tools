@@ -70,13 +70,15 @@ class ConfigServer(object):
             sys.exit(255)
 
             
-        if self.cnfServer.state() != PyTango.DevState.OPEN:
+#        if self.cnfServer.state() != PyTango.DevState.OPEN:
 #            self.cnfServer.Init()
-            self.cnfServer.Open()
+        self.cnfServer.Open()
+
 
     ## lists the DB item names
     # \param ds flag set True for datasources
     # \param mandatory flag set True for mandatory components        
+    # \returns list op item names        
     def listCmd(self, ds, mandatory=False):
         if ds:
             if not mandatory:
@@ -89,10 +91,23 @@ class ConfigServer(object):
         return []    
 
 
+    ## lists datasources of the component
+    # \param component given component
+    # \returns list of datasource names        
+    def sourcesCmd(self, component):
+        cmps = self.cnfServer.AvailableComponents()
+        if component not in cmps:
+            sys.stderr.write("Error: Component %s not stored in configuration server\n"% component)
+            sys.stderr.flush()
+            return []
+        return self.cnfServer.ComponentDataSources(component)
+
+
     ## shows the DB items
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param mandatory flag set True for mandatory components        
+    # \returns list of XML items         
     def showCmd(self, ds, args, mandatory=False):
         if ds:
             dsrc = self.cnfServer.AvailableDataSources()
@@ -121,6 +136,7 @@ class ConfigServer(object):
     ## Provides final configuration
     # \param ds flag set True for datasources
     # \param args list of item names
+    # \returns XML configuration string
     def getCmd(self, ds, args):
         if ds:
             return ""
@@ -142,6 +158,7 @@ class ConfigServer(object):
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param mandatory flag set True for mandatory components        
+    # \returns resulting string
     def performCommand(self, command, ds, args, mandatory=False):
         if command == 'list':
             return  self.__char.join(self.listCmd(ds, mandatory)) 
@@ -149,6 +166,8 @@ class ConfigServer(object):
             return  self.__char.join(self.showCmd(ds, args, mandatory)) 
         if command == 'get':
             return  self.getCmd(ds, args) 
+        if command == 'sources':
+            return  self.__char.join(self.sourcesCmd(args[0]))
             
 ## the main function
 def main():
@@ -160,23 +179,25 @@ def main():
         ## system pipe 
         pipe = sys.stdin.readlines()
 
-    commands = ['list','show','get']
+    commands = ['list','show','get', 'sources']
     ## run options
     options = None
     ## usage example
     usage = "usage: %prog <command> -s <config_server> "\
-            +" [-d] [-m] [name1] [name2] [name3] ... \n"\
+            +" [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n"\
             +" e.g.: %prog list -s p02/xmlconfigserver/exp.01 -d\n\n"\
             + "Commands: \n"\
             + "   list -s <config_server>   \n"\
             + "          list names of available components\n"\
             + "   list -s <config_server> -d  \n"\
             + "          list names of available datasources\n"\
-            + "   show -s <config_server>  name1 name2 ...  \n"\
+            + "   show -s <config_server>  component_name1 component_name2 ...  \n"\
             + "          show components with given names \n"\
-            + "   show -s <config_server> -d name1 name2 ...  \n"\
+            + "   show -s <config_server> -d dsource_name1 dsource_name2 ...  \n"\
             + "          show datasources with given names \n"\
-            + "   get -s <config_server>  name1 name2 ...  \n"\
+            + "   get -s <config_server>  component_name1 component_name2 ...  \n"\
+            + "          get merged configuration of components \n"\
+            + "   sources -s <config_server>  component_name1  \n"\
             + "          get merged configuration of components \n"\
             + " "
 
@@ -192,7 +213,7 @@ def main():
                       help="make use mandatory components as well")
     parser.add_option("-n","--no-newlines",  action="store_true",
                       default=False, dest="nonewlines", 
-                      help="split result with spaces")
+                      help="split result with space characters")
 
     (options, args) = parser.parse_args()
 
@@ -208,8 +229,7 @@ def main():
     ## command-line and pipe arguments
     parg = args[1:]
     if pipe:
-        parg.extend([p.strip() for p in pipe ])
-
+        parg.extend([p.strip() for p in pipe])
 
 
     ## result to print
