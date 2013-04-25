@@ -220,6 +220,8 @@ def main():
             + "          get merged configuration of components \n"\
             + "   sources [-s <config_server>]  component_name1  \n"\
             + "          get merged configuration of components \n"\
+            + "   servers   \n"\
+            + "          get lists of configuration servers from the current tango host\n"\
             + " "
 # db=PyTango.Database()
 # db.get_device_exported_for_class("XMLConfigServer").value_string
@@ -240,6 +242,10 @@ def main():
 
     (options, args) = parser.parse_args()
 
+    if args and args[0] == 'servers':
+        print "\n".join(getServers())
+        return
+
     if not options.server:
         options.server = checkServer()
 
@@ -249,14 +255,15 @@ def main():
         sys.exit(255)
 
         
-
-    ## configuration server     
-    cnfserver = ConfigServer(options.server, options.nonewlines)
-    
     ## command-line and pipe arguments
     parg = args[1:]
     if pipe:
         parg.extend([p.strip() for p in pipe])
+
+
+    ## configuration server     
+    cnfserver = ConfigServer(options.server, options.nonewlines)
+    
 
 
     ## result to print
