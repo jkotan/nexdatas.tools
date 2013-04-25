@@ -169,22 +169,26 @@ class ConfigServer(object):
         if command == 'sources':
             return  self.__char.join(self.sourcesCmd(args[0]))
            
+## provides XMLConfigServer device names
+# \returns list of the XMLConfigServer device names
 def getServers():
     db=PyTango.Database()
     servers = db.get_device_exported_for_class("XMLConfigServer").value_string
     return servers
 
+## provides XMLConfigServer device name if only one or error in the other case
+# \returns XMLConfigServer device name or empty string if error appears
 def checkServer():
     servers = getServers()
     if not servers:
         sys.stderr.write(
-            "Error: No XMLConfigSever on current host running. \n\n"
+            "Error: No XMLConfigServer on current host running. \n\n"
             +"    Please specify the server from the other host. \n\n")
         sys.stderr.flush()
         return ""
     if len(servers) > 1:
         sys.stderr.write(
-            "Error: More than on XMLConfigSever on current host running. \n\n"
+            "Error: More than on XMLConfigServer on current host running. \n\n"
             +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
         sys.stderr.flush()
         return ""
@@ -220,7 +224,7 @@ def main():
             + "          get merged configuration of components \n"\
             + "   sources [-s <config_server>]  component_name1  \n"\
             + "          get merged configuration of components \n"\
-            + "   servers   \n"\
+            + "   servers [-s <config_server/host>] \n"\
             + "          get lists of configuration servers from the current tango host\n"\
             + " "
 # db=PyTango.Database()
@@ -243,7 +247,20 @@ def main():
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':
+        server = None
+        if options.server and options.server.strip():
+            server  = options.server.split("/")[0]
+        if server: 
+            server = server.strip()
+        if server: 
+            if not ":" in server:
+                server = server +":10000"
+            localtango = os.environ['TANGO_HOST']
+            os.environ['TANGO_HOST'] = server
+            
         print "\n".join(getServers())
+        if server:
+            os.environ['TANGO_HOST'] = localtango 
         return
 
     if not options.server:
