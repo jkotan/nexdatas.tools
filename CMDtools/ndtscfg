@@ -168,7 +168,28 @@ class ConfigServer(object):
             return  self.getCmd(ds, args) 
         if command == 'sources':
             return  self.__char.join(self.sourcesCmd(args[0]))
-            
+           
+def getServers():
+    db=PyTango.Database()
+    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
+    return servers
+
+def checkServer():
+    servers = getServers()
+    if not servers:
+        sys.stderr.write(
+            "Error: No XMLConfigSever on current host running. \n\n"
+            +"    Please specify the server from the other host. \n\n")
+        sys.stderr.flush()
+        return ""
+    if len(servers) > 1:
+        sys.stderr.write(
+            "Error: More than on XMLConfigSever on current host running. \n\n"
+            +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
+        sys.stderr.flush()
+        return ""
+    return servers[0]
+
 ## the main function
 def main():
     
@@ -183,23 +204,25 @@ def main():
     ## run options
     options = None
     ## usage example
-    usage = "usage: %prog <command> -s <config_server> "\
+    usage = "usage: %prog <command> [-s <config_server>] "\
             +" [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n"\
             +" e.g.: %prog list -s p02/xmlconfigserver/exp.01 -d\n\n"\
             + "Commands: \n"\
-            + "   list -s <config_server>   \n"\
+            + "   list [-s <config_server>]   \n"\
             + "          list names of available components\n"\
-            + "   list -s <config_server> -d  \n"\
+            + "   list [-s <config_server>] -d  \n"\
             + "          list names of available datasources\n"\
-            + "   show -s <config_server>  component_name1 component_name2 ...  \n"\
+            + "   show [-s <config_server>]  component_name1 component_name2 ...  \n"\
             + "          show components with given names \n"\
-            + "   show -s <config_server> -d dsource_name1 dsource_name2 ...  \n"\
+            + "   show [-s <config_server>] -d dsource_name1 dsource_name2 ...  \n"\
             + "          show datasources with given names \n"\
-            + "   get -s <config_server>  component_name1 component_name2 ...  \n"\
+            + "   get [-s <config_server>]  component_name1 component_name2 ...  \n"\
             + "          get merged configuration of components \n"\
-            + "   sources -s <config_server>  component_name1  \n"\
+            + "   sources [-s <config_server>]  component_name1  \n"\
             + "          get merged configuration of components \n"\
             + " "
+# db=PyTango.Database()
+# db.get_device_exported_for_class("XMLConfigServer").value_string
 
     ## option parser
     parser = OptionParser(usage=usage)
@@ -217,11 +240,15 @@ def main():
 
     (options, args) = parser.parse_args()
 
+    if not options.server:
+        options.server = checkServer()
+
     if not args or args[0] not in commands or not options.server :
         parser.print_help()
         print ""
         sys.exit(255)
 
+        
 
     ## configuration server     
     cnfserver = ConfigServer(options.server, options.nonewlines)
