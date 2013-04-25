@@ -252,7 +252,7 @@ def main():
             server  = options.server.split("/")[0]
         if server: 
             server = server.strip()
-        if server: 
+        if server:
             if not ":" in server:
                 server = server +":10000"
             localtango = os.environ['TANGO_HOST']
