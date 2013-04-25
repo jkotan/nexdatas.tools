@@ -126,7 +126,13 @@ class NexusServer(object):
 ## provides TangoDataServer device names
 # \returns list of the TangoDataServer device names
 def getServers():
-    db=PyTango.Database()
+    try:
+        db=PyTango.Database()
+    except:
+        sys.stderr.write(
+            "Error: Cannot connect into the tango database on host: \n    %s \n "% os.environ['TANGO_HOST'])
+        sys.stderr.flush()
+        return ""
     servers = db.get_device_exported_for_class("TangoDataServer").value_string
     return servers
 
