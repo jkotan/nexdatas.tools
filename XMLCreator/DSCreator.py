@@ -23,6 +23,12 @@ from simpleXML import *
 
 from optparse import OptionParser
 from xml.dom.minidom import parse, parseString
+try:
+    import PyTango
+except:
+    sys.stderr.write("Warning: No PyTango installed")
+    sys.stderr.flush()
+    
 
 
 ## provides xml content of the node
@@ -39,6 +45,24 @@ def getText(node):
     return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<").replace("&amp;","&")
 
 
+## \provides DataBase instance
+# \param server database host name
+def getDB(server=None):
+    if server:
+        if not ":" in server:
+            server = server +":10000"
+        localtango = os.environ['TANGO_HOST']
+        os.environ['TANGO_HOST'] = server
+
+    ## tango DataBase
+    db = PyTango.Database()
+            
+    if server and localtango:
+        os.environ['TANGO_HOST'] = localtango 
+        
+    return db    
+
+
 ## the main function
 def main():
     ## usage example
@@ -48,6 +72,8 @@ def main():
     parser.add_option("-d", "--directory", type="string",
                       help="output directory where datasources will be stored",
                       dest="dir", default=".")
+    parser.add_option("-s","--server", dest="server", 
+                      help="Server host name with the TANGO database")
 
     (options, args) = parser.parse_args()
     if not len(args):
@@ -57,6 +83,12 @@ def main():
     print "OUTPUT DIR:", options.dir
 
 
+    server = None
+    if options.server and options.server.strip():
+        server = options.server.strip()
+    db = getDB(server)
+    
+    
     indom = parse(args[0])
     hw= indom.getElementsByTagName("hw")
     device = hw[0].firstChild
@@ -87,7 +119,6 @@ def main():
             port = hostname.split(":")[1] if len(hostname.split(":")) >1 else None
                 
 
-            print name, dtype,module, tdevice, host, port,pool,controller,channel,rootdevicename
 
             encoding = None
             if tdevice.find("eurotherm") != -1:
@@ -101,7 +132,7 @@ def main():
             else:
                 record = None
 
-
+            sdevice = None    
             if pool and record:
                 if record:    
                     df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
@@ -111,18 +142,28 @@ def main():
             elif pool:        
                 df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
                 sr = NDSource(df)
-                sr.initClient(name, tdevice)
-                df.dump()
+                #
+                # use the sardana names 
+                #
+                try:
+                    sdevice = db.get_device_alias( str(name))
+                    sr.initClient(name, sdevice)
+                    df.dump()
+                except:
+                    sys.stderr.write("Error: Cannot read %s from the Tango database\n"% name)
+                    sys.stderr.flush()
             elif record:    
                 df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
                 sr = NDSource(df)
-                sr.initTango(name, tdevice, "attribute", record,host, port, encoding)
+                sr.initTango(name, tdevice, "attribute", record, host, port, encoding)
                 df.dump()
             else:                
-                print "WARNING: No record source for ", name ,tdevice 
+                sys.stderr.write("Error: No record source for %s %s\n" %  ( name ,tdevice) )
+                sys.stderr.flush()
             if comment:
                 print "##", [device.data.strip() for c in comment]
                 
+            print name, dtype,module, tdevice, host, port,pool,controller,channel,rootdevicename,sdevice
             df.dump()
         elif device.nodeName =='#comment':
             print "COMMENT:",  "'%s'" % device.data.strip()
@@ -130,7 +171,6 @@ def main():
 #            print "TEXT:", device.nodeName, "'", device.data.strip(),"'"
             pass
         device = device.nextSibling
-        
         
 
 
