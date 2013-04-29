@@ -26,7 +26,22 @@ import os
 import time
 
 from optparse import OptionParser
+from xml.dom.minidom import parse, parseString
 import PyTango
+
+
+## provides xml content of the node
+# \param node DOM node
+# \returns xml content string
+def getText(node):
+    if not node:
+        return 
+    xml = node.toxml() 
+    start = xml.find('>')
+    end = xml.rfind('<')
+    if start == -1 or end < start:
+        return ""
+    return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<").replace("&amp;","&")
 
 
 ## configuration server adapter
@@ -103,6 +118,94 @@ class ConfigServer(object):
         return self.cnfServer.ComponentDataSources(component)
 
 
+    def getRecord(self, node):
+        withRec = ["CLIENT", "TANGO"] 
+        withQuery = ["DB"] 
+        if node.nodeName == 'datasource':
+            dsource = node
+        else:
+#            print "XML", node.toxml(),len(node.getElementsByTagName("datasource"))
+            dsource= node.getElementsByTagName("datasource")[0] \
+                if len(node.getElementsByTagName("datasource")) else None 
+#            print dsource
+        dstype = dsource.attributes["type"] if dsource and dsource.hasAttribute("type") else None
+        if dstype.value in withRec:
+            rec = dsource.getElementsByTagName("record")[0] \
+                if dsource and len(dsource.getElementsByTagName("record")) else None
+            rc = rec.attributes["name"] if rec.hasAttribute("name") else  None
+            if rc:
+                return rc.value
+            elif dstype in withQuery:    
+                query = getText(dsource.getElementsByTagName("query")[0]) \
+                    if len(dsource.getElementsByTagName("name")) else None
+                if query.strip():
+                    return query.strip()
+
+
+    
+    ## lists datasources of the component
+    # \param ds flag set True for datasources
+    # \param name given component or datasource
+    # \returns list of datasource names        
+    def recordCmd(self, ds, name):
+        records = []
+        names = []
+        interNames = []
+        if not ds:
+            cmps = self.cnfServer.AvailableComponents()
+            if name not in cmps:
+                sys.stderr.write("Error: Component %s not stored in configuration server\n"% name)
+                sys.stderr.flush()
+                return []
+            xmlcp = self.cnfServer.Components([name])
+            for xmlc in xmlcp:
+                indom = parseString(xmlc)
+                dsources = indom.getElementsByTagName("datasource")
+                for dsrc in dsources:
+                    dsname = dsrc.attributes["name"] if dsrc and dsrc.hasAttribute("name") else None
+                    if dsname and dsname.value:
+                        interNames.append(dsname.value)
+                        rec = self.getRecord(dsrc)
+                        if rec:
+                            records.append(rec)
+                    
+                allNames = self.cnfServer.ComponentDataSources(name)
+                for nm in allNames:
+                    if nm not in interNames:
+                        names.append(nm)
+#            print "ALL", allNames
+#            print "IN", interNames
+#            print "N", names
+        else:
+            names.append(name)    
+
+        dsrcs = self.cnfServer.AvailableDataSources()
+        for nm in names:
+            if nm not in dsrcs:
+                sys.stderr.write("Error: Datasource %s not stored in configuration server\n"% nm)
+                sys.stderr.flush()
+                return []
+
+        xmls = self.cnfServer.DataSources(names)
+#        print xmls
+        for xml in xmls:
+            if xml:
+                try:
+                    indom = parseString(xml)
+                    rec = self.getRecord(indom)
+                    if rec:
+                        records.append(rec)
+                    
+                except Exception,e:
+                    sys.stderr.write("Error: Datasource %s cannot be parsed\n"% nm)
+                    sys.stderr.write(str(e)+ '\n')
+                    sys.stderr.flush()
+                    return []
+                
+
+        return records
+
+
     ## shows the DB items
     # \param ds flag set True for datasources
     # \param args list of item names
@@ -168,6 +271,8 @@ class ConfigServer(object):
             return  self.getCmd(ds, args) 
         if command == 'sources':
             return  self.__char.join(self.sourcesCmd(args[0]))
+        if command == 'record':
+            return  self.__char.join(self.recordCmd(ds, args[0]))
            
 ## provides XMLConfigServer device names
 # \returns list of the XMLConfigServer device names
@@ -211,7 +316,7 @@ def main():
         ## system pipe 
         pipe = sys.stdin.readlines()
 
-    commands = ['list','show','get', 'sources']
+    commands = ['list','show','get', 'sources', 'record']
     ## run options
     options = None
     ## usage example
@@ -230,7 +335,11 @@ def main():
             + "   get [-s <config_server>]  component_name1 component_name2 ...  \n"\
             + "          get merged configuration of components \n"\
             + "   sources [-s <config_server>]  component_name1  \n"\
-            + "          get merged configuration of components \n"\
+            + "          get a list of component datasources \n"\
+            + "   record [-s <config_server>]  component_name1  \n"\
+            + "          get a list of datasource record names from component  \n"\
+            + "   record [-s <config_server>]  -d  datasource_name1  \n"\
+            + "          get a list of datasource record names   \n"\
             + "   servers [-s <config_server/host>] \n"\
             + "          get lists of configuration servers from the current tango host\n"\
             + " "
