@@ -124,10 +124,8 @@ class ConfigServer(object):
         if node.nodeName == 'datasource':
             dsource = node
         else:
-#            print "XML", node.toxml(),len(node.getElementsByTagName("datasource"))
             dsource= node.getElementsByTagName("datasource")[0] \
                 if len(node.getElementsByTagName("datasource")) else None 
-#            print dsource
         dstype = dsource.attributes["type"] if dsource and dsource.hasAttribute("type") else None
         if dstype.value in withRec:
             rec = dsource.getElementsByTagName("record")[0] \
@@ -135,13 +133,11 @@ class ConfigServer(object):
             rc = rec.attributes["name"] if rec.hasAttribute("name") else  None
             if rc:
                 return rc.value
-            elif dstype in withQuery:    
-                query = getText(dsource.getElementsByTagName("query")[0]) \
-                    if len(dsource.getElementsByTagName("name")) else None
-                if query.strip():
-                    return query.strip()
-
-
+        elif dstype.value in withQuery:    
+            query = getText(dsource.getElementsByTagName("query")[0]) \
+                if len(dsource.getElementsByTagName("query")) else None
+            if query and query.strip():
+                return query.strip()
     
     ## lists datasources of the component
     # \param ds flag set True for datasources
