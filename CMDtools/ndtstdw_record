@@ -1,3 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env python
+import subprocess
+import sys 
 
-ndtstdw record $*
+subprocess.check_call("ndtstdw record %s" % " ".join(sys.argv), shell=True)
+

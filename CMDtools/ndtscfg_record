@@ -1,3 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env python
+import subprocess
+import sys 
 
-ndtscfg record $*
+subprocess.check_call("ndtscfg record %s" % " ".join(sys.argv), shell=True)
+

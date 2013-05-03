@@ -1,3 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env python
+import subprocess
+import sys 
 
-ndtstdw closeentry $*
+subprocess.check_call("ndtstdw closeentry %s" % " ".join(sys.argv), shell=True)
+

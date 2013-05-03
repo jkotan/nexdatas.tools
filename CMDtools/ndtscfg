@@ -65,7 +65,7 @@ class ConfigServer(object):
         if found:
             sys.stderr.write("Error: Cannot connect into configuration server: %s\n"% device)
             sys.stderr.flush()
-            sys.exit(255)
+            sys.exit(0)
 
         while not found and cnt < 1000:
             if cnt > 1:
@@ -82,7 +82,7 @@ class ConfigServer(object):
         if not found:
             sys.stderr.write("Error: Setting up %s takes to long\n"% device)
             sys.stderr.flush()
-            sys.exit(255)
+            sys.exit(0)
 
             
 #        if self.cnfServer.state() != PyTango.DevState.OPEN:
@@ -381,7 +381,7 @@ def main():
     if not args or args[0] not in commands or not options.server :
         parser.print_help()
         print ""
-        sys.exit(255)
+        sys.exit(0)
 
         
     ## command-line and pipe arguments
