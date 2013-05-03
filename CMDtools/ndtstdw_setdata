@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-import subprocess
-import sys 
+import ndtstdw
 
-subprocess.check_call("ndtstdw setdata %s" % " ".join(sys.argv), shell=True)
-
+import sys
+sys.argv.insert(1,'setdata')
+ndtstdw.main()

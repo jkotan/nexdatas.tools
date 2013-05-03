@@ -54,6 +54,7 @@ SETUPDATA=dict(
         'CMDtools/ndtscfg_servers',
         'CMDtools/ndtscfg_record',
         'CMDtools/ndtscfg',
+        'CMDtools/ndtscfg.py',
         'CMDtools/ndtstdw_servers',
         'CMDtools/ndtstdw_openfile',
         'CMDtools/ndtstdw_setdata',
@@ -61,7 +62,9 @@ SETUPDATA=dict(
         'CMDtools/ndtstdw_record',
         'CMDtools/ndtstdw_closeentry',
         'CMDtools/ndtstdw_closefile',
-        'CMDtools/ndtstdw'],
+        'CMDtools/ndtstdw',
+        'CMDtools/ndtstdw.py'
+        ],
 #    package_data={'ndts': ['TDS']},
 #    long_description= read('README'),
 )

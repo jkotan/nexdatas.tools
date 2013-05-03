@@ -1,6 +1,7 @@
-#!/usr/bin/env python
-import subprocess
-import sys 
+#!/usr/bin/env pythoni
+import ndtscfg
 
-subprocess.check_call("ndtscfg show %s" % " ".join(sys.argv), shell=True)
+import sys
+sys.argv.insert(1,'show')
+ndtscfg.main()
 
