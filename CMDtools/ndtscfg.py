@@ -118,6 +118,9 @@ class ConfigServer(object):
         return self.cnfServer.ComponentDataSources(component)
 
 
+    ## fetches record name or query from datasource node
+    # \param node datasource node
+    # \returns record name or query
     def getRecord(self, node):
         withRec = ["CLIENT", "TANGO"] 
         withQuery = ["DB"] 
@@ -313,7 +316,7 @@ def main():
         pipe = sys.stdin.readlines()
 
     #    commands = ['list','show','get', 'sources', 'record']
-    commands = {'list':0,'show':1,'get':1, 'sources':1, 'record':1}
+    commands = {'list':0,'show':0,'get':0, 'sources':1, 'record':1}
     ## run options
     options = None
     ## usage example
