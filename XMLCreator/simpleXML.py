@@ -547,8 +547,9 @@ class XMLFile(object):
     ## prints pretty XML making use of minidom
     # \param etNode node 
     # \returns pretty XML string     
-    def prettyPrint(self, etNode):
-        return etNode.toprettyxml(indent="  ")
+    def prettyPrint(self, etNode=None):
+        node = etNode if etNode else self.root
+        return node.toprettyxml(indent="  ")
 
 
     ## dumps XML structure into the XML file
@@ -558,7 +559,9 @@ class XMLFile(object):
         myfile.write(self.prettyPrint(self.root))
         myfile.close()
 
-    
+
+
+
  
         
 
