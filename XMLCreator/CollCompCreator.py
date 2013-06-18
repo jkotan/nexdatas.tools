@@ -46,18 +46,22 @@ def generateDeviceNames(prefix, first, last):
 # \param nexusType nexus Type of the field 
 # \param units field units
 def createComponent(name, directory, fileprefix, collection,
-                    strategy, nexusType, units):
+                    strategy, nexusType, units, links):
     df = XMLFile("%s/%s%s.xml" %(directory, fileprefix ,name))  
     en = NGroup(df, "entry", "NXentry")
     ins = NGroup(en, "instrument", "NXinstrument")
     col = NGroup(ins, collection, "NXcollection")
     f = NField(col, name, nexusType)
+    f.setStrategy(strategy)
 
     if units.strip():
         f.setUnits(units.strip())
-    sr = NDSource(f)
-    sr.initClient(name, name)
-    f.setStrategy(strategy)
+
+    if links:    
+        f.setText("$datasources.%s" % name)
+    else:
+        sr = NDSource(f)
+        sr.initClient(name, name)
     df.dump()
 
 
@@ -102,6 +106,11 @@ def main():
                       dest="units", default="")
 
 
+    parser.add_option("-k","--links",  action="store_true",
+                      default=False, dest="links", 
+                      help="create datasource links")
+
+
     (options, args) = parser.parse_args()
     print "OUTPUT DIR:", options.directory
 
@@ -140,7 +149,8 @@ def main():
                         options.collection, 
                         options.strategy,
                         options.type,
-                        options.units)
+                        options.units,
+                        options.links)
     
         
 
