@@ -22,7 +22,14 @@
 from simpleXML import *
 
 from optparse import OptionParser
-from xml.dom.minidom import parse, parseString
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
 
 ## generates device names
 # \param prefix device name prefix
@@ -37,15 +44,74 @@ def generateDeviceNames(prefix, first, last):
                             + str(i))
     return names
 
+## opens connection to the configuration server
+# \param configuration server device
+# \returns configuration server proxy
+def openServer(device):
+    found = False
+    cnt = 0
+    ## spliting character
+    try:
+        ## configuration server proxy
+        cnfServer = PyTango.DeviceProxy(device)
+    except Exception, e:
+        found = True
+            
+    if found:
+        sys.stderr.write("Error: Cannot connect into configuration server: %s\n"% device)
+        sys.stderr.flush()
+        sys.exit(0)
+
+    while not found and cnt < 1000:
+        if cnt > 1:
+            time.sleep(0.01)
+        try:
+            if cnfServer.state() != PyTango.DevState.RUNNING:
+                found = True
+        except Exception,e:
+            time.sleep(0.01)
+            found = False
+        cnt +=1
+        
+    if not found:
+        sys.stderr.write("Error: Setting up %s takes to long\n"% device)
+        sys.stderr.flush()
+        sys.exit(0)
+
+            
+    cnfServer.Open()
+    return cnfServer    
+
+
+
+## stores datasources
+# \param name datasource name
+# \param xml datasource xml string
+# \param server configuration server
+def storeDataSource(name, xml, server):
+    proxy = openServer(server)
+    proxy.XMLString = str(xml)
+    proxy.StoreDataSource(str(name))
+    
+
+
 ## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix):
+def createDataSource(name, directory, fileprefix,server):
     df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix ,name))  
     sr = NDSource(df)
     sr.initClient(name, name)
-    df.dump()
+
+
+    if server:
+        xml = df.prettyPrint()
+        storeDataSource(name, xml, server)
+    else: 
+        df.dump()
+           
+
 
 
 
@@ -67,7 +133,7 @@ def main():
                       dest="last", default=None)
 
     parser.add_option("-d", "--directory", type="string",
-                      help="output component directory",
+                      help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
@@ -75,8 +141,37 @@ def main():
 
 
 
+
+    parser.add_option("-b","--database",  action="store_true",
+                      default=False, dest="database", 
+                      help="store components in Configuration Server database")
+
+    parser.add_option("-r","--server", dest="server", 
+                      help="configuration server device name")
+
     (options, args) = parser.parse_args()
-    print "OUTPUT DIR:", options.directory
+
+
+
+
+    if options.database and not options.server:
+        if not PYTANGO:
+            print  >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+            
+        options.server = checkServer()
+        if not options.server:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+    if options.database:    
+        print "CONFIG SERVER:", options.server
+    else: 
+        print "OUTPUT DIRECTORY:", options.directory
+            
+
 
 
 
@@ -108,8 +203,12 @@ def main():
         sys.exit(255)
 
     for name in args:
-        print "CREATING: %s%s.ds.xml" % (options.file, name)
-        createDataSource(name, options.directory, options.file)
+        if not options.database:
+            print "CREATING: %s%s.ds.xml" % (options.file, name)
+        else:
+            print "STORING: %s" % (name)
+        createDataSource(name, options.directory, options.file, 
+                         options.server if options.database else None)
     
         
 

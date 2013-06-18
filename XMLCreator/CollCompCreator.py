@@ -22,7 +22,13 @@
 from simpleXML import *
 
 from optparse import OptionParser
-from xml.dom.minidom import parse, parseString
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
 
 ## generates device names
 # \param prefix device name prefix
@@ -37,6 +43,54 @@ def generateDeviceNames(prefix, first, last):
                             + str(i))
     return names
 
+## opens connection to the configuration server
+# \param configuration server device
+# \returns configuration server proxy
+def openServer(device):
+    found = False
+    cnt = 0
+    ## spliting character
+    try:
+        ## configuration server proxy
+        cnfServer = PyTango.DeviceProxy(device)
+    except Exception, e:
+        found = True
+            
+    if found:
+        sys.stderr.write("Error: Cannot connect into configuration server: %s\n"% device)
+        sys.stderr.flush()
+        sys.exit(0)
+
+    while not found and cnt < 1000:
+        if cnt > 1:
+            time.sleep(0.01)
+        try:
+            if cnfServer.state() != PyTango.DevState.RUNNING:
+                found = True
+        except Exception,e:
+            time.sleep(0.01)
+            found = False
+        cnt +=1
+        
+    if not found:
+        sys.stderr.write("Error: Setting up %s takes to long\n"% device)
+        sys.stderr.flush()
+        sys.exit(0)
+
+            
+    cnfServer.Open()
+    return cnfServer    
+
+## stores components
+# \param name component name
+# \param xml component xml string
+# \param server configuration server
+def storeComponent(name, xml, server):
+    proxy = openServer(server)
+    proxy.XMLString = str(xml)
+    proxy.StoreComponent(str(name))
+    
+
 ## creates component file
 # \param name device name
 # \param directory output file directory
@@ -45,8 +99,9 @@ def generateDeviceNames(prefix, first, last):
 # \param strategy field strategy
 # \param nexusType nexus Type of the field 
 # \param units field units
+# \param server configuration server
 def createComponent(name, directory, fileprefix, collection,
-                    strategy, nexusType, units, links):
+                    strategy, nexusType, units, links, server):
     df = XMLFile("%s/%s%s.xml" %(directory, fileprefix ,name))  
     en = NGroup(df, "entry", "NXentry")
     ins = NGroup(en, "instrument", "NXinstrument")
@@ -62,9 +117,46 @@ def createComponent(name, directory, fileprefix, collection,
     else:
         sr = NDSource(f)
         sr.initClient(name, name)
-    df.dump()
 
+    if server:
+        xml = df.prettyPrint()
+        storeComponent(name, xml, server)
+    else: 
+        df.dump()
+           
 
+           
+## provides XMLConfigServer device names
+# \returns list of the XMLConfigServer device names
+def getServers():
+    try:
+        db=PyTango.Database()
+    except:
+        sys.stderr.write(
+            "Error: Cannot connect into the tango database on host: \n    %s \n "% os.environ['TANGO_HOST'])
+        sys.stderr.flush()
+        return ""
+        
+    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
+    return servers
+
+## provides XMLConfigServer device name if only one or error in the other case
+# \returns XMLConfigServer device name or empty string if error appears
+def checkServer():
+    servers = getServers()
+    if not servers:
+        sys.stderr.write(
+            "Error: No XMLConfigServer on current host running. \n\n"
+            +"    Please specify the server from the other host. \n\n")
+        sys.stderr.flush()
+        return ""
+    if len(servers) > 1:
+        sys.stderr.write(
+            "Error: More than on XMLConfigServer on current host running. \n\n"
+            +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
+        sys.stderr.flush()
+        return ""
+    return servers[0]
 
 ## the main function
 def main():
@@ -111,9 +203,35 @@ def main():
                       help="create datasource links")
 
 
-    (options, args) = parser.parse_args()
-    print "OUTPUT DIR:", options.directory
+    parser.add_option("-b","--database",  action="store_true",
+                      default=False, dest="database", 
+                      help="store components in Coinfiguration Server database")
 
+    parser.add_option("-r","--server", dest="server", 
+                      help="configuration server device name")
+
+
+
+    (options, args) = parser.parse_args()
+
+
+    if options.database and not options.server:
+        if not PYTANGO:
+            print  >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+            
+        options.server = checkServer()
+        if not options.server:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+    if options.database:    
+        print "CONFIG SERVER:", options.server
+    else: 
+        print "OUTPUT DIRECTORY:", options.directory
+            
 
 
     aargs = []
@@ -144,13 +262,17 @@ def main():
         sys.exit(255)
 
     for name in args:
-        print "CREATING: %s%s.xml" % (options.file, name)
+        if not options.database:
+            print "CREATING: %s%s.xml" % (options.file, name)
+        else:
+            print "STORING: %s" % (name)
         createComponent(name, options.directory, options.file,
                         options.collection, 
                         options.strategy,
                         options.type,
                         options.units,
-                        options.links)
+                        options.links,
+                        options.server if options.database else None)
     
         
 
