@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package ndtstools tools for ndts
-## \file CollCompCreator.py
+## \file ClientDSCreator.py
 # datasource creator
 
 from simpleXML import *
@@ -37,31 +37,14 @@ def generateDeviceNames(prefix, first, last):
                             + str(i))
     return names
 
-## creates component file
+## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-# \param collection collection group name
-# \param strategy field strategy
-# \param nexusType nexus Type of the field 
-# \param units field units
-def createComponent(name, directory, fileprefix, collection,
-                    strategy, nexusType, units, links):
-    df = XMLFile("%s/%s%s.xml" %(directory, fileprefix ,name))  
-    en = NGroup(df, "entry", "NXentry")
-    ins = NGroup(en, "instrument", "NXinstrument")
-    col = NGroup(ins, collection, "NXcollection")
-    f = NField(col, name, nexusType)
-    f.setStrategy(strategy)
-
-    if units.strip():
-        f.setUnits(units.strip())
-
-    if links:    
-        f.setText("$datasources.%s" % name)
-    else:
-        sr = NDSource(f)
-        sr.initClient(name, name)
+def createDataSource(name, directory, fileprefix):
+    df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix ,name))  
+    sr = NDSource(df)
+    sr.initClient(name, name)
     df.dump()
 
 
@@ -90,25 +73,6 @@ def main():
                       help="file prefix, i.e. counter",
                       dest="file", default="")
 
-    parser.add_option("-c", "--collection", type="string",
-                      help="collection name",
-                      dest="collection", default="collection")
-
-
-    parser.add_option("-s", "--strategy", type="string",
-                      help="writing strategy, i.e. STEP, INIT, FINAL, POSTRUN",
-                      dest="strategy", default="STEP")
-    parser.add_option("-t", "--type", type="string",
-                      help="nexus type of the field",
-                      dest="type", default="NX_FLOAT")
-    parser.add_option("-u", "--units", type="string",
-                      help="nexus units of the field",
-                      dest="units", default="")
-
-
-    parser.add_option("-k","--links",  action="store_true",
-                      default=False, dest="links", 
-                      help="create datasource links")
 
 
     (options, args) = parser.parse_args()
@@ -121,7 +85,7 @@ def main():
         try:    
             first = int(options.first)
         except:
-            print  >> sys.stderr, "CollCompCreator Invalid --first parameter\n"
+            print  >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
             parser.print_help()
             sys.exit(255)
 
@@ -129,7 +93,7 @@ def main():
         try:    
             last = int(options.last)
         except:
-            print  >> sys.stderr, "CollCompCreator Invalid --last parameter\n"
+            print  >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
             parser.print_help()
             sys.exit(255)
 
@@ -144,13 +108,8 @@ def main():
         sys.exit(255)
 
     for name in args:
-        print "CREATING: %s%s.xml" % (options.file, name)
-        createComponent(name, options.directory, options.file,
-                        options.collection, 
-                        options.strategy,
-                        options.type,
-                        options.units,
-                        options.links)
+        print "CREATING: %s%s.ds.xml" % (options.file, name)
+        createDataSource(name, options.directory, options.file)
     
         
 
