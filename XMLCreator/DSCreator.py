@@ -16,8 +16,8 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package ndtstools tools for ndts
-## \file simpleXMLScan.py
-# test of XML file creator
+## \file DSCreator.py
+# datasource creator
 
 from simpleXML import *
 
@@ -74,6 +74,9 @@ def main():
                       dest="dir", default=".")
     parser.add_option("-s","--server", dest="server", 
                       help="Server host name with the TANGO database")
+    parser.add_option("-c","--comments",  action="store_true",
+                      default=False, dest="comments", 
+                      help="print xml comments")
 
     (options, args) = parser.parse_args()
     if not len(args):
@@ -132,6 +135,7 @@ def main():
             else:
                 record = None
 
+            df = None    
             sdevice = None    
             if pool and record:
                 if record:    
@@ -164,9 +168,11 @@ def main():
                 print "##", [device.data.strip() for c in comment]
                 
             print name, dtype,module, tdevice, host, port,pool,controller,channel,rootdevicename,sdevice
-            df.dump()
+            if df:
+                df.dump()
         elif device.nodeName =='#comment':
-            print "COMMENT:",  "'%s'" % device.data.strip()
+            if options.comments:
+                print "COMMENT:",  "'%s'" % device.data.strip()
         else:
 #            print "TEXT:", device.nodeName, "'", device.data.strip(),"'"
             pass

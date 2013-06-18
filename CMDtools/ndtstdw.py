@@ -62,7 +62,7 @@ class NexusServer(object):
             cnt +=1
 
         if not found:
-            sys.stderr.write("Error: Setting up %s takes to long\n"% device)
+            sys.stderr.write("Error: Setting up %s takes too long\n"% device)
             sys.stderr.flush()
             sys.exit(0)
 
