@@ -111,6 +111,38 @@ def createDataSource(name, directory, fileprefix,server):
     else: 
         df.dump()
            
+## provides XMLConfigServer device names
+# \returns list of the XMLConfigServer device names
+def getServers():
+    try:
+        db=PyTango.Database()
+    except:
+        sys.stderr.write(
+            "Error: Cannot connect into the tango database on host: \n    %s \n "% os.environ['TANGO_HOST'])
+        sys.stderr.flush()
+        return ""
+        
+    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
+    return servers
+
+## provides XMLConfigServer device name if only one or error in the other case
+# \returns XMLConfigServer device name or empty string if error appears
+def checkServer():
+    servers = getServers()
+    if not servers:
+        sys.stderr.write(
+            "Error: No XMLConfigServer on current host running. \n\n"
+            +"    Please specify the server from the other host. \n\n")
+        sys.stderr.flush()
+        return ""
+    if len(servers) > 1:
+        sys.stderr.write(
+            "Error: More than on XMLConfigServer on current host running. \n\n"
+            +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
+        sys.stderr.flush()
+        return ""
+    return servers[0]
+
 
 
 
