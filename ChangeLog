@@ -1,3 +1,7 @@
+2013-XX-XX Jan Kotanski <jankotan@gmail.com>
+	* fixes for getText method in ndtscfg.py
+	* tagged as v1.0.1
+
 2013-05-15 Jan Kotanski <jankotan@gmail.com>
 	* making server parameter optional
 	* the first tag with nexdatas.tools
