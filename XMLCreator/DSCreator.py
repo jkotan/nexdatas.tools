@@ -42,7 +42,7 @@ def getText(node):
     end = xml.rfind('<')
     if start == -1 or end < start:
         return ""
-    return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<").replace("&amp;","&")
+    return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<").replace("&quot;","\"").replace("&amp;","&")
 
 
 ## \provides DataBase instance
