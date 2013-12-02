@@ -109,13 +109,21 @@ class ConfigServer(object):
     ## lists datasources of the component
     # \param component given component
     # \returns list of datasource names        
-    def sourcesCmd(self, component):
+    def sourcesCmd(self, components, mandatory = False):
         cmps = self.cnfServer.AvailableComponents()
-        if component not in cmps:
-            sys.stderr.write("Error: Component %s not stored in configuration server\n"% component)
-            sys.stderr.flush()
-            return []
-        return self.cnfServer.ComponentDataSources(component)
+        result = []
+        for component in components:
+            if component not in cmps:
+                sys.stderr.write("Error: Component %s not stored in configuration server\n"% component)
+                sys.stderr.flush()
+                return []
+        if not mandatory:
+            for component in components:
+                result.extend(self.cnfServer.ComponentDataSources(component))
+        else:
+            result = self.cnfServer.ComponentsDataSources(components)
+            
+        return result    
 
 
     ## fetches record name or query from datasource node
@@ -269,9 +277,10 @@ class ConfigServer(object):
         if command == 'get':
             return  self.getCmd(ds, args) 
         if command == 'sources':
-            return  self.__char.join(self.sourcesCmd(args[0]))
+            return  self.__char.join(self.sourcesCmd(args, mandatory))
         if command == 'record':
             return  self.__char.join(self.recordCmd(ds, args[0]))
+
            
 ## provides XMLConfigServer device names
 # \returns list of the XMLConfigServer device names
@@ -286,6 +295,7 @@ def getServers():
         
     servers = db.get_device_exported_for_class("XMLConfigServer").value_string
     return servers
+
 
 ## provides XMLConfigServer device name if only one or error in the other case
 # \returns XMLConfigServer device name or empty string if error appears
@@ -304,6 +314,7 @@ def checkServer():
         sys.stderr.flush()
         return ""
     return servers[0]
+
 
 ## the main function
 def main():
@@ -324,21 +335,21 @@ def main():
             +" [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n"\
             +" e.g.: ndtscfg list -s p02/xmlconfigserver/exp.01 -d\n\n"\
             + "Commands: \n"\
-            + "   list [-s <config_server>]   \n"\
+            + "   list [-s <config_server>] [-m]  \n"\
             + "          list names of available components\n"\
             + "   list [-s <config_server>] -d  \n"\
             + "          list names of available datasources\n"\
-            + "   show [-s <config_server>]  component_name1 component_name2 ...  \n"\
+            + "   show [-s <config_server>] [-m] component_name1 component_name2 ...  \n"\
             + "          show components with given names \n"\
             + "   show [-s <config_server>] -d dsource_name1 dsource_name2 ...  \n"\
             + "          show datasources with given names \n"\
-            + "   get [-s <config_server>]  component_name1 component_name2 ...  \n"\
+            + "   get [-s <config_server>]  [-m] component_name1 component_name2 ...  \n"\
             + "          get merged configuration of components \n"\
-            + "   sources [-s <config_server>]  component_name1  \n"\
+            + "   sources [-s <config_server>] [-m] component_name1 component_name2 ... \n"\
             + "          get a list of component datasources \n"\
             + "   record [-s <config_server>]  component_name1  \n"\
             + "          get a list of datasource record names from component  \n"\
-            + "   record [-s <config_server>]  -d  datasource_name1  \n"\
+            + "   record [-s <config_server>] -d  datasource_name1  \n"\
             + "          get a list of datasource record names   \n"\
             + "   servers [-s <config_server/host>] \n"\
             + "          get lists of configuration servers from the current tango host\n"\
