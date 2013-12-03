@@ -16,7 +16,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package tools nexdatas.configserver
-## \file ndtstdw.py
+## \file nxsdata.py
 # Command-line tool for ascess to configuration server
 #
 

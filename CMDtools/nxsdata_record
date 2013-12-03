@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import ndtscfg
+import nxsdata
 
 import sys
 sys.argv.insert(1,'record')
-ndtscfg.main()
+nxsdata.main()
+

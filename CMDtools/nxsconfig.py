@@ -15,8 +15,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package tools nexdatas.configserver
-## \file ndtscfg.py
+## \package tools nexdatas.tools
+## \file nxsconfig.py
 # Command-line tool for ascess to configuration server
 #
 
@@ -395,9 +395,9 @@ def main():
     ## run options
     options = None
     ## usage example
-    usage = "usage: ndtscfg <command> [-s <config_server>] "\
+    usage = "usage: nxsconfig <command> [-s <config_server>] "\
             +" [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n"\
-            +" e.g.: ndtscfg list -s p02/xmlconfigserver/exp.01 -d\n\n"\
+            +" e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n\n"\
             + "Commands: \n"\
             + "   list [-s <config_server>] [-m]  \n"\
             + "          list names of available components\n"\

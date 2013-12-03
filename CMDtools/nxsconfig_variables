@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+import nxsconfig
+
+import sys
+sys.argv.insert(1,'variables')
+nxsconfig.main()
+

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import ndtstdw
+import nxsdata
 
 import sys
 sys.argv.insert(1,'closeentry')
-ndtstdw.main()
+nxsdata.main()
 
 

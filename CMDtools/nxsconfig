@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import ndtstdw
+import nxsconfig
 
 import sys
-ndtstdw.main()
-
+nxsconfig.main()
