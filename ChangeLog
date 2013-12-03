@@ -1,5 +1,7 @@
 2013-XX-XX Jan Kotanski <jankotan@gmail.com>
 	* adding many components into ndtscfg sources
+	* adding variables and merge commands
+	* adding components commands for dependent components
 	* fixes for getText method in ndtscfg.py
 	* tagged as v1.0.1
 

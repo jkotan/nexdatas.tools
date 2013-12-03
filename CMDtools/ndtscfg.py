@@ -106,9 +106,9 @@ class ConfigServer(object):
         return []    
 
 
-    ## lists datasources of the component
-    # \param component given component
-    # \returns list of datasource names        
+    ## lists datasources of the components
+    # \param components given components
+    # \returns list of datasource names       
     def sourcesCmd(self, components, mandatory = False):
         cmps = self.cnfServer.AvailableComponents()
         result = []
@@ -122,6 +122,45 @@ class ConfigServer(object):
                 result.extend(self.cnfServer.ComponentDataSources(component))
         else:
             result = self.cnfServer.ComponentsDataSources(components)
+            
+        return result    
+
+
+    ## lists components of the components
+    # \param components given components
+    # \returns list of component names        
+    def componentsCmd(self, components):
+        cmps = self.cnfServer.AvailableComponents()
+        result = []
+        for component in components:
+            if component not in cmps:
+                sys.stderr.write("Error: Component %s not stored in configuration server\n"% component)
+                sys.stderr.flush()
+                return []
+        result = self.cnfServer.DependentComponents(components)
+            
+        return result    
+
+
+
+
+
+    ## lists variable of the components
+    # \param components given components
+    # \returns list of datasource names        
+    def variablesCmd(self, components, mandatory = False):
+        cmps = self.cnfServer.AvailableComponents()
+        result = []
+        for component in components:
+            if component not in cmps:
+                sys.stderr.write("Error: Component %s not stored in configuration server\n"% component)
+                sys.stderr.flush()
+                return []
+        if not mandatory:
+            for component in components:
+                result.extend(self.cnfServer.ComponentVariables(component))
+        else:
+            result = self.cnfServer.ComponentsVariables(components)
             
         return result    
 
@@ -263,6 +302,25 @@ class ConfigServer(object):
         return ""    
 
 
+    ## Provides merged components
+    # \param ds flag set True for datasources
+    # \param args list of item names
+    # \returns XML configuration string with merged components
+    def mergeCmd(self, ds, args):
+        if ds:
+            return ""
+        else:
+            cmps = self.cnfServer.AvailableComponents()
+            for ar in args:
+                if ar not in cmps:
+                    sys.stderr.write(
+                        "Error: Component %s not stored in configuration server\n"% ar)
+                    sys.stderr.flush()
+                    return ""
+            return self.cnfServer.Merge(args)
+        return ""    
+
+
     ## perform requested command
     # \param command called command
     # \param ds flag set True for datasources
@@ -276,8 +334,14 @@ class ConfigServer(object):
             return  self.__char.join(self.showCmd(ds, args, mandatory)) 
         if command == 'get':
             return  self.getCmd(ds, args) 
+        if command == 'merge':
+            return  self.mergeCmd(ds, args) 
         if command == 'sources':
             return  self.__char.join(self.sourcesCmd(args, mandatory))
+        if command == 'components':
+            return  self.__char.join(self.componentsCmd(args))
+        if command == 'variables':
+            return  self.__char.join(self.variablesCmd(args, mandatory))
         if command == 'record':
             return  self.__char.join(self.recordCmd(ds, args[0]))
 
@@ -327,7 +391,7 @@ def main():
         pipe = sys.stdin.readlines()
 
     #    commands = ['list','show','get', 'sources', 'record']
-    commands = {'list':0,'show':0,'get':0, 'sources':1, 'record':1}
+    commands = {'list':0,'show':0,'get':0, 'variables':0, 'sources':0, 'record':1, 'merge':0, 'components':0}
     ## run options
     options = None
     ## usage example
@@ -337,19 +401,23 @@ def main():
             + "Commands: \n"\
             + "   list [-s <config_server>] [-m]  \n"\
             + "          list names of available components\n"\
-            + "   list [-s <config_server>] -d  \n"\
+            + "   list -d [-s <config_server>] \n"\
             + "          list names of available datasources\n"\
             + "   show [-s <config_server>] [-m] component_name1 component_name2 ...  \n"\
             + "          show components with given names \n"\
-            + "   show [-s <config_server>] -d dsource_name1 dsource_name2 ...  \n"\
+            + "   show -d [-s <config_server>] dsource_name1 dsource_name2 ...  \n"\
             + "          show datasources with given names \n"\
             + "   get [-s <config_server>]  [-m] component_name1 component_name2 ...  \n"\
             + "          get merged configuration of components \n"\
             + "   sources [-s <config_server>] [-m] component_name1 component_name2 ... \n"\
             + "          get a list of component datasources \n"\
+            + "   variables [-s <config_server>] [-m] component_name1 component_name2 ... \n"\
+            + "          get a list of component variables \n"\
+            + "   components [-s <config_server>] component_name1 component_name2 ... \n"\
+            + "          get a list of dependent components \n"\
             + "   record [-s <config_server>]  component_name1  \n"\
             + "          get a list of datasource record names from component  \n"\
-            + "   record [-s <config_server>] -d  datasource_name1  \n"\
+            + "   record -d [-s <config_server>] datasource_name1  \n"\
             + "          get a list of datasource record names   \n"\
             + "   servers [-s <config_server/host>] \n"\
             + "          get lists of configuration servers from the current tango host\n"\
