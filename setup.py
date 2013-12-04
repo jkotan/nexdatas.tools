@@ -19,10 +19,10 @@
 ## \file setup.py
 # GUI to create the XML components 
 
-import os, shutil, sys
+""" setup.py for command-line tools """
+
+import os
 from distutils.core import setup
-from distutils.command.build import build
-from distutils.command.clean import clean
 
 
 ## reading a file
@@ -32,13 +32,15 @@ def read(fname):
 
 
 ## metadata for distutils
-SETUPDATA=dict(
+SETUPDATA = dict(
     name = "nexdatas.tools",
     version = "1.1.0",
     author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
-    author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, halil.pasic@gmail.com",
+    author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
+        + "halil.pasic@gmail.com",
     maintainer = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
-    maintainer_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, halil.pasic@gmail.com",
+    maintainer_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
+        + "halil.pasic@gmail.com",
     description = ("Configuration tool  for creating components"),
     license = "GNU GENERAL PUBLIC LICENSE, version 3",
     keywords = "configuration writer Tango component nexus data",
@@ -68,8 +70,6 @@ SETUPDATA=dict(
         'CMDtools/nxsdata',
         'CMDtools/nxsdata.py'
         ],
-#    package_data={'ndts': ['TDS']},
-#    long_description= read('README'),
 )
 
 ## the main function
