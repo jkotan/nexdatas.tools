@@ -15,11 +15,11 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package tools nexdatas.configserver
+## \package nexdatas nexdatas.tools
 ## \file nxsdata.py
-# Command-line tool for ascess to configuration server
+# Command-line tool to ascess to  Tango Data Server
 #
-
+""" Command-line tool to ascess to Tango Data Server"""
 
 import sys
 import os
@@ -40,12 +40,12 @@ class NexusServer(object):
         try:
             ## configuration server proxy
             self.tdwServer = PyTango.DeviceProxy(device)
-        except Exception, e:
-#            sys.stderr.write(str(e))
+        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
             found = True
             
         if found:
-            sys.stderr.write("Error: Cannot connect into configuration server: %s\n"% device)
+            sys.stderr.write("Error: Cannot connect into the data server: " \
+                                 "%s\n"% device)
             sys.stderr.flush()
             sys.exit(0)
 
@@ -55,11 +55,10 @@ class NexusServer(object):
             try:
                 if self.tdwServer.state() != PyTango.DevState.RUNNING:
                     found = True
-            except Exception,e:
-#                sys.stderr.write(str(e))
+            except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
                 time.sleep(0.01)
                 found = False
-            cnt +=1
+            cnt += 1
 
         if not found:
             sys.stderr.write("Error: Setting up %s takes too long\n"% device)
@@ -107,18 +106,17 @@ class NexusServer(object):
     # \param command called command
     # \param args list of item names
     def performCommand(self, command, args):
-#    commands = ['openfile','openentry','setdata','record','closeentry','closefile'] 
-       if command == 'openfile':
+        if command == 'openfile':
             return self.openFile(args[0]) 
-       if command == 'setdata':
+        if command == 'setdata':
             return self.setData(args[0].strip()) 
-       if command == 'openentry':
+        if command == 'openentry':
             return self.openEntry(args[0].strip()) 
-       if command == 'record':
+        if command == 'record':
             return self.record(args[0].strip()) 
-       if command == 'closefile':
+        if command == 'closefile':
             return self.closeFile() 
-       if command == 'closeentry':
+        if command == 'closeentry':
             return self.closeEntry() 
 
 
@@ -127,10 +125,11 @@ class NexusServer(object):
 # \returns list of the TangoDataServer device names
 def getServers():
     try:
-        db=PyTango.Database()
+        db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into the tango database on host: \n    %s \n "% os.environ['TANGO_HOST'])
+            "Error: Cannot connect into the tango database on host: " \
+                "\n    %s \n " % os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
     servers = db.get_device_exported_for_class("TangoDataServer").value_string
@@ -149,7 +148,8 @@ def checkServer():
     if len(servers) > 1:
         sys.stderr.write(
             "Error: More than on TangoDataServer on current host running. \n\n"
-            +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
+            +"    Please specify the server:\n        %s\n" \
+                "\n"% "\n        ".join(servers))
         sys.stderr.flush()
         return ""
     return servers[0]
@@ -168,35 +168,37 @@ def main():
         pipe = "".join(pp)
         
 
-    commands = {'openfile':1,'openentry':0,'setdata':1,'record':1,'closeentry':0,'closefile':0}
-#    commands = ['openfile','openentry','setdata','record','closeentry','closefile']
+    commands = {'openfile':1, 'openentry':0, 'setdata':1, 'record':1,
+                'closeentry':0, 'closefile':0}
     ## run options
     options = None
     ## usage example
-    usage = "usage: %prog <command> [-s <nexus_server>] "\
-            +" [<arg1> [<arg2>  ...]] \n"\
-            +" e.g.: %prog openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5 \n\n"\
-            + "Commands: \n"\
-            + "   openfile [-s <nexus_server>]  <file_name> \n"\
-            + "          open new H5 file\n"\
-            + "   setdata [-s <nexus_server>] <json_data_string>  \n"\
-            + "          assign global JSON data\n"\
-            + "   openentry [-s <nexus_server>] <xml_config>  \n"\
+    usage = "usage: %prog <command> [-s <nexus_server>] " \
+            +" [<arg1> [<arg2>  ...]] \n" \
+            +" e.g.: %prog openfile -s p02/tangodataserver/exp.01  " \
+            +                       "$HOME/myfile.h5 \n\n" \
+            + "Commands: \n" \
+            + "   openfile [-s <nexus_server>]  <file_name> \n" \
+            + "          open new H5 file\n" \
+            + "   setdata [-s <nexus_server>] <json_data_string>  \n" \
+            + "          assign global JSON data\n" \
+            + "   openentry [-s <nexus_server>] <xml_config>  \n" \
             + "          create new entry\n"\
-            + "   record [-s <nexus_server>]  <json_data_string>  \n"\
-            + "          record one step with step JSON data \n"\
-            + "   closeentry [-s <nexus_server>]   \n"\
-            + "          close the current entry \n"\
-            + "   closefile [-s <nexus_server>]  \n"\
-            + "          close the current file \n"\
-            + "   servers [-s <nexus_server/host>] \n"\
-            + "          get lists of tango data servers from the current tango host\n"\
+            + "   record [-s <nexus_server>]  <json_data_string>  \n" \
+            + "          record one step with step JSON data \n" \
+            + "   closeentry [-s <nexus_server>]   \n" \
+            + "          close the current entry \n" \
+            + "   closefile [-s <nexus_server>]  \n" \
+            + "          close the current file \n" \
+            + "   servers [-s <nexus_server/host>] \n" \
+            + "          get lists of tango data servers from " \
+            +                   "the current tango host\n" \
             + " "
 
     ## option parser
     parser = OptionParser(usage=usage)
-    parser.add_option("-s","--server", dest="server", 
-                      help="configuration server device name")
+    parser.add_option("-s", "--server", dest="server", 
+                      help="tango data server device name")
 
     (options, args) = parser.parse_args()
 
