@@ -16,10 +16,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package ndtstools tools for ndts
-## \file ClientDSCreator.py
+## \file TangoDSCreator.py
 # datasource creator
 
-from simpleXML import *
+from nxsxml import *
 
 from optparse import OptionParser
 
@@ -99,10 +99,10 @@ def storeDataSource(name, xml, server):
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix,server):
+def createDataSource(name, directory, fileprefix, server, device, attribute, host, port = "10000"):
     df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix ,name))  
     sr = NDSource(df)
-    sr.initClient(name, name)
+    sr.initTango(name, device, "attribute", attribute, host, port)
 
 
     if server:
@@ -150,7 +150,7 @@ def checkServer():
 ## the main function
 def main():
     ## usage example
-    usage = "usage: %prog [options] [name1] [name2]"
+    usage = "usage: %prog [options]"
     ## option parser
     parser = OptionParser(usage=usage)
 
@@ -164,12 +164,27 @@ def main():
                       help="last index",
                       dest="last", default=None)
 
+    parser.add_option("-a", "--attribute", type="string",
+                      help="tango attribute name",
+                      dest="attribute", default="Position")
+
+    parser.add_option("-o", "--datasource-prefix", type="string",
+                      help="datasource-prefix",
+                      dest="datasource", default="TG_")
+
+
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
+    parser.add_option("-s", "--host", type="string",
+                      help="tango host name",
+                      dest="host", default="localhost")
+    parser.add_option("-t", "--port", type="string",
+                      help="tango host port",
+                      dest="port", default="10000")
 
 
 
@@ -207,7 +222,8 @@ def main():
 
 
 
-    aargs = []
+    dvargs = []
+    dsargs = []
     if options.device.strip():
         try:    
             first = int(options.first)
@@ -227,20 +243,24 @@ def main():
 
 
 
-        aargs = generateDeviceNames(options.device, first, last)
+        dvargs = generateDeviceNames(options.device, first, last)
+        dsargs = generateDeviceNames(options.datasource, first, last)
         
-    args += aargs
-    if not len(args):
+    if not dvargs or not len(dvargs):
         parser.print_help()
         sys.exit(255)
 
-    for name in args:
+    for i in range(len(dvargs)):
         if not options.database:
-            print "CREATING: %s%s.ds.xml" % (options.file, name)
+            print "CREATING %s: %s%s.ds.xml" % (dvargs[i], options.file, dsargs[i])
         else:
-            print "STORING: %s" % (name)
-        createDataSource(name, options.directory, options.file, 
-                         options.server if options.database else None)
+            print "STORING %s: %s" % (dvargs[i], dsargs[i])
+        createDataSource(dsargs[i], options.directory, options.file, 
+                         options.server if options.database else None, 
+                         dvargs[i],
+                         options.attribute, 
+                         options.host, 
+                         options.port)
     
         
 

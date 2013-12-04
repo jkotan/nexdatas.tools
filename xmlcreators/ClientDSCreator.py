@@ -16,10 +16,10 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package ndtstools tools for ndts
-## \file CollCompCreator.py
+## \file ClientDSCreator.py
 # datasource creator
 
-from simpleXML import *
+from nxsxml import *
 
 from optparse import OptionParser
 
@@ -29,6 +29,7 @@ try:
     PYTANGO = True
 except:
     pass
+
 
 ## generates device names
 # \param prefix device name prefix
@@ -81,50 +82,34 @@ def openServer(device):
     cnfServer.Open()
     return cnfServer    
 
-## stores components
-# \param name component name
-# \param xml component xml string
+
+
+## stores datasources
+# \param name datasource name
+# \param xml datasource xml string
 # \param server configuration server
-def storeComponent(name, xml, server):
+def storeDataSource(name, xml, server):
     proxy = openServer(server)
     proxy.XMLString = str(xml)
-    proxy.StoreComponent(str(name))
+    proxy.StoreDataSource(str(name))
     
 
-## creates component file
+
+## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-# \param collection collection group name
-# \param strategy field strategy
-# \param nexusType nexus Type of the field 
-# \param units field units
-# \param server configuration server
-def createComponent(name, directory, fileprefix, collection,
-                    strategy, nexusType, units, links, server):
-    df = XMLFile("%s/%s%s.xml" %(directory, fileprefix ,name))  
-    en = NGroup(df, "entry", "NXentry")
-    ins = NGroup(en, "instrument", "NXinstrument")
-    col = NGroup(ins, collection, "NXcollection")
-    f = NField(col, name, nexusType)
-    f.setStrategy(strategy)
+def createDataSource(name, directory, fileprefix,server):
+    df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix ,name))  
+    sr = NDSource(df)
+    sr.initClient(name, name)
 
-    if units.strip():
-        f.setUnits(units.strip())
-
-    if links:    
-        f.setText("$datasources.%s" % name)
-    else:
-        sr = NDSource(f)
-        sr.initClient(name, name)
 
     if server:
         xml = df.prettyPrint()
-        storeComponent(name, xml, server)
+        storeDataSource(name, xml, server)
     else: 
         df.dump()
-           
-
            
 ## provides XMLConfigServer device names
 # \returns list of the XMLConfigServer device names
@@ -158,6 +143,10 @@ def checkServer():
         return ""
     return servers[0]
 
+
+
+
+
 ## the main function
 def main():
     ## usage example
@@ -176,43 +165,25 @@ def main():
                       dest="last", default=None)
 
     parser.add_option("-d", "--directory", type="string",
-                      help="output component directory",
+                      help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
 
-    parser.add_option("-c", "--collection", type="string",
-                      help="collection name",
-                      dest="collection", default="collection")
 
-
-    parser.add_option("-s", "--strategy", type="string",
-                      help="writing strategy, i.e. STEP, INIT, FINAL, POSTRUN",
-                      dest="strategy", default="STEP")
-    parser.add_option("-t", "--type", type="string",
-                      help="nexus type of the field",
-                      dest="type", default="NX_FLOAT")
-    parser.add_option("-u", "--units", type="string",
-                      help="nexus units of the field",
-                      dest="units", default="")
-
-
-    parser.add_option("-k","--links",  action="store_true",
-                      default=False, dest="links", 
-                      help="create datasource links")
 
 
     parser.add_option("-b","--database",  action="store_true",
                       default=False, dest="database", 
-                      help="store components in Coinfiguration Server database")
+                      help="store components in Configuration Server database")
 
     parser.add_option("-r","--server", dest="server", 
                       help="configuration server device name")
 
-
-
     (options, args) = parser.parse_args()
+
+
 
 
     if options.database and not options.server:
@@ -234,12 +205,14 @@ def main():
             
 
 
+
+
     aargs = []
     if options.device.strip():
         try:    
             first = int(options.first)
         except:
-            print  >> sys.stderr, "CollCompCreator Invalid --first parameter\n"
+            print  >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
             parser.print_help()
             sys.exit(255)
 
@@ -247,7 +220,7 @@ def main():
         try:    
             last = int(options.last)
         except:
-            print  >> sys.stderr, "CollCompCreator Invalid --last parameter\n"
+            print  >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
             parser.print_help()
             sys.exit(255)
 
@@ -263,16 +236,11 @@ def main():
 
     for name in args:
         if not options.database:
-            print "CREATING: %s%s.xml" % (options.file, name)
+            print "CREATING: %s%s.ds.xml" % (options.file, name)
         else:
             print "STORING: %s" % (name)
-        createComponent(name, options.directory, options.file,
-                        options.collection, 
-                        options.strategy,
-                        options.type,
-                        options.units,
-                        options.links,
-                        options.server if options.database else None)
+        createDataSource(name, options.directory, options.file, 
+                         options.server if options.database else None)
     
         
 

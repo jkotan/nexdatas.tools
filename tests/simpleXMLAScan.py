@@ -19,11 +19,11 @@
 ## \file simpleXMLScan.py
 # test of XML file creator
 
-from simpleXML import *
+from nxsxml import *
 
 ## the main function
 def main():
-    df = XMLFile("scan.xml")
+    df = XMLFile("ascan.xml")
     
     en = NGroup(df, "entry1", "NXentry")
 
@@ -39,6 +39,10 @@ def main():
 
     sr.initClient("exp_c01","exp_c01");
 
+    a = f.addAttr("short_name", "NX_CHAR", "")
+    a.setStrategy("INIT")
+    sr = NDSource(a)
+    sr.initClient("short_name", "short_name");
 
     f = NField(dt, "counter2", "NX_FLOAT")
     f.setUnits("s")
@@ -53,6 +57,14 @@ def main():
     d = NDimensions(f, "1")
     d.dim("1", "2048")
     f.setStrategy("STEP")
+    sr = NDSource(f)
+    sr.initTango("p09/mca/exp.02","p09/mca/exp.02", "attribute", "Data")
+
+    f = NField(dt, "mca_bis", "NX_FLOAT")
+    f.setUnits("")
+    d = NDimensions(f, "1")
+    d.dim("1", "2048")
+    f.setStrategy("STEP", grows = "2")
     sr = NDSource(f)
     sr.initTango("p09/mca/exp.02","p09/mca/exp.02", "attribute", "Data")
 #    sr.initClient("p09/mca/exp.02","p09/mca/exp.02")

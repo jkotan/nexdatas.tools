@@ -19,7 +19,7 @@
 ## \file DSCreator.py
 # datasource creator
 
-from simpleXML import *
+from nxsxml import *
 
 from optparse import OptionParser
 from xml.dom.minidom import parse, parseString

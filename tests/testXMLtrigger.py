@@ -19,7 +19,7 @@
 ## \file testXMLtrigger.py
 # test of XML trigger
 
-from simpleXML import *
+from nxsxml import *
 
 
 ## the main function
