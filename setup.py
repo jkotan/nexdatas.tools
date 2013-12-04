@@ -34,7 +34,7 @@ def read(fname):
 ## metadata for distutils
 SETUPDATA = dict(
     name = "nexdatas.tools",
-    version = "1.1.0",
+    version = "1.2.0",
     author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
     author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
         + "halil.pasic@gmail.com",
