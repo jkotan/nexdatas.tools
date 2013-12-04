@@ -213,11 +213,11 @@ def main():
         if server: 
             if not ":" in server:
                 server = server +":10000"
-            localtango = os.environ['TANGO_HOST']
+            localtango = os.environ.get('TANGO_HOST')
             os.environ['TANGO_HOST'] = server
             
         print "\n".join(getServers())
-        if server:
+        if server and localtango is not None:
             os.environ['TANGO_HOST'] = localtango 
         return
 
