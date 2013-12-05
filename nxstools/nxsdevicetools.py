@@ -25,9 +25,6 @@ import sys
 import os
 import time
 
-from nxstools.nxsxml import XMLFile, NDSource
-
-from optparse import OptionParser
 
 PYTANGO = False
 try:
