@@ -29,7 +29,7 @@ from distutils.core import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-
+pkdir = "nxstools"
 
 ## metadata for distutils
 SETUPDATA = dict(
@@ -46,33 +46,33 @@ SETUPDATA = dict(
     keywords = "configuration writer Tango component nexus data",
     url = "http://code.google.com/p/nexdatas/",
     platforms = ("Linux"),
-    package_dir = {"":"nxstools"},
-    py_modules = ["nxsxml","nxsconfig", "nxsdata"],
+    package_dir = {"":pkdir},
+    py_modules = ["nxsxml", "nxsconfig", "nxsdata"],
     # packages = [ ],
     #    data_files = datas,
     scripts = [
-        'nxstools/nxscreate_tango_ds',
-        'nxstools/nxscreate_client_ds',
-        'nxstools/nxscreate_ds_online',
-        'nxstools/nxscreate_comp',
-        'nxstools/nxsconfig_get',
-        'nxstools/nxsconfig_list',
-        'nxstools/nxsconfig_show',
-        'nxstools/nxsconfig_sources',
-        'nxstools/nxsconfig_variables',
-        'nxstools/nxsconfig_components',
-        'nxstools/nxsconfig_merge',
-        'nxstools/nxsconfig_servers',
-        'nxstools/nxsconfig_record',
-        'nxstools/nxsconfig',
-        'nxstools/nxsdata_servers',
-        'nxstools/nxsdata_openfile',
-        'nxstools/nxsdata_setdata',
-        'nxstools/nxsdata_openentry',
-        'nxstools/nxsdata_record',
-        'nxstools/nxsdata_closeentry',
-        'nxstools/nxsdata_closefile',
-        'nxstools/nxsdata',
+        os.path.join(pkdir, 'nxscreate_tango_ds'),
+        os.path.join(pkdir, 'nxscreate_client_ds'),
+        os.path.join(pkdir, 'nxscreate_ds_online'),
+        os.path.join(pkdir, 'nxscreate_comp'),
+        os.path.join(pkdir, 'nxsconfig_get'),
+        os.path.join(pkdir, 'nxsconfig_list'),
+        os.path.join(pkdir, 'nxsconfig_show'),
+        os.path.join(pkdir, 'nxsconfig_sources'),
+        os.path.join(pkdir, 'nxsconfig_variables'),
+        os.path.join(pkdir, 'nxsconfig_components'),
+        os.path.join(pkdir, 'nxsconfig_merge'),
+        os.path.join(pkdir, 'nxsconfig_servers'),
+        os.path.join(pkdir, 'nxsconfig_record'),
+        os.path.join(pkdir, 'nxsconfig'),
+        os.path.join(pkdir, 'nxsdata_servers'),
+        os.path.join(pkdir, 'nxsdata_openfile'),
+        os.path.join(pkdir, 'nxsdata_setdata'),
+        os.path.join(pkdir, 'nxsdata_openentry'),
+        os.path.join(pkdir, 'nxsdata_record'),
+        os.path.join(pkdir, 'nxsdata_closeentry'),
+        os.path.join(pkdir, 'nxsdata_closefile'),
+        os.path.join(pkdir, 'nxsdata'),
         ],
 )
 
