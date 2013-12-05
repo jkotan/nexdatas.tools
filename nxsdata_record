@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import nxsdata
+from nxstools import nxsdata
 
 import sys
 sys.argv.insert(1,'record')

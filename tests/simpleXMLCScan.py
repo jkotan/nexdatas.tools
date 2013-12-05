@@ -19,7 +19,7 @@
 ## \file simpleXMLScan.py
 # test of XML file creator
 
-from nxsxml import *
+from nxstools.nxsxml import *
 
 ## the main function
 def main():

@@ -19,7 +19,7 @@
 ## \file nxscreate_ds_online
 # datasource creator
 
-from nxsxml import *
+from nxstools.nxsxml import *
 
 from optparse import OptionParser
 from xml.dom.minidom import parse, parseString
