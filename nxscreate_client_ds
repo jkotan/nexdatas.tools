@@ -19,7 +19,14 @@
 ## \file nxscreate_client_ds
 # datasource creator
 
-from nxstools.nxsxml import *
+""" CLIENT datasource creator """
+
+import sys
+import time
+import os
+
+from nxstools.nxsxml import XMLFile, NDSource
+
 
 from optparse import OptionParser
 
@@ -54,11 +61,13 @@ def openServer(device):
     try:
         ## configuration server proxy
         cnfServer = PyTango.DeviceProxy(device)
-    except Exception, e:
+    except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
         found = True
             
     if found:
-        sys.stderr.write("Error: Cannot connect into configuration server: %s\n"% device)
+        sys.stderr.write(
+            "Error: Cannot connect into " \
+                +"the configuration server: %s\n"% device)
         sys.stderr.flush()
         sys.exit(0)
 
@@ -68,10 +77,10 @@ def openServer(device):
         try:
             if cnfServer.state() != PyTango.DevState.RUNNING:
                 found = True
-        except Exception,e:
+        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
             time.sleep(0.01)
             found = False
-        cnt +=1
+        cnt += 1
         
     if not found:
         sys.stderr.write("Error: Setting up %s takes to long\n"% device)
@@ -99,8 +108,8 @@ def storeDataSource(name, xml, server):
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix,server):
-    df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix ,name))  
+def createDataSource(name, directory, fileprefix, server):
+    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))  
     sr = NDSource(df)
     sr.initClient(name, name)
 
@@ -115,10 +124,11 @@ def createDataSource(name, directory, fileprefix,server):
 # \returns list of the XMLConfigServer device names
 def getServers():
     try:
-        db=PyTango.Database()
+        db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into the tango database on host: \n    %s \n "% os.environ['TANGO_HOST'])
+            "Error: Cannot connect into the tango database on host: " \
+                + "\n    %s \n "% os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
         
@@ -131,14 +141,15 @@ def checkServer():
     servers = getServers()
     if not servers:
         sys.stderr.write(
-            "Error: No XMLConfigServer on current host running. \n\n"
+            "Error: No XMLConfigServer on current host running. \n\n" \
             +"    Please specify the server from the other host. \n\n")
         sys.stderr.flush()
         return ""
     if len(servers) > 1:
         sys.stderr.write(
-            "Error: More than on XMLConfigServer on current host running. \n\n"
-            +"    Please specify the server:\n        %s\n\n"% "\n        ".join(servers))
+            "Error: More than on XMLConfigServer on current host running.\n\n" \
+                + "    Please specify the server:" \
+                + "\n        %s\n\n"% "\n        ".join(servers))
         sys.stderr.flush()
         return ""
     return servers[0]
@@ -174,11 +185,11 @@ def main():
 
 
 
-    parser.add_option("-b","--database",  action="store_true",
+    parser.add_option("-b", "--database",  action="store_true",
                       default=False, dest="database", 
                       help="store components in Configuration Server database")
 
-    parser.add_option("-r","--server", dest="server", 
+    parser.add_option("-r", "--server", dest="server", 
                       help="configuration server device name")
 
     (options, args) = parser.parse_args()

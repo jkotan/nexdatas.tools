@@ -19,8 +19,10 @@
 ## \file nxsxml.py
 # creator of XML files
 
+"""  Creator of XML configuration files """
+
+
 import PyTango 
-import sys, os, time
 
 from xml.dom.minidom import Document
 
@@ -85,7 +87,7 @@ class NAttr(NTag):
             strategy.addTagAttr("mode", mode)
         if trigger:
             strategy.addTagAttr("trigger", trigger)    
-	if value :
+        if value :
             strategy.setText(value)
 
 
@@ -193,7 +195,9 @@ class NField(NTag):
     # \param compression flag if compression shuold be applied
     # \param rate compression rate
     # \param shuffle flag if compression shuffle
-    def setStrategy(self,  mode = "STEP", trigger = None, value = None, grows = None, compression = False, rate = None , shuffle = None ):
+    def setStrategy(self,  mode = "STEP", trigger = None, value = None, 
+                    grows = None, compression = False, rate = None , 
+                    shuffle = None ):
         ## strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
         if strategy:
@@ -202,14 +206,16 @@ class NField(NTag):
             strategy.addTagAttr("grows", grows)    
         if trigger:
             strategy.addTagAttr("trigger", trigger)    
-	if value :
+        if value :
             strategy.setText(value)
         if compression:
             strategy.addTagAttr("compression", "true")    
             if rate is not None:
                 strategy.addTagAttr("rate", str(rate))    
             if shuffle is not None:
-                strategy.addTagAttr("shuffle", "true" if shuffle  else "false")    
+                strategy.addTagAttr(
+                    "shuffle", 
+                    "true" if shuffle  else "false")    
 
 
     ## sets the field unit
@@ -229,7 +235,7 @@ class NField(NTag):
     # \param attrValue content of the attribute tag
     def addAttr(self, attrName, attrType, attrValue=""):
         self._attr[attrName] = NAttr(self, attrName, attrType)
-	if attrValue != '':
+        if attrValue != '':
             self._attr[attrName].setText(attrValue)
         return self._attr[attrName]
             
@@ -250,7 +256,7 @@ class NDSource(NTag):
     # \param dbname name of used DataBase
     # \param query database query
     # \param dbtype type of the database, i.e. MYSQL, PGSQL, ORACLE
-    # \param format format of the query output, i.e. SCALAR, SPECTRUM, IMAGE
+    # \param rank rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
     # \param mycnf MYSQL config file
     # \param user database user name
     # \param passwd database user password
@@ -258,8 +264,9 @@ class NDSource(NTag):
     # \param mode mode for ORACLE databases, i.e. SYSDBA or SYSOPER        
     # \param host name of the host
     # \param port port number
-    def initDBase(self, name, dbtype, query, dbname=None,  format=None,  mycnf=None,  user=None,  
-              passwd=None,  dsn=None,  mode=None, host=None, port=None):
+    def initDBase(self, name, dbtype, query, dbname=None,  rank=None,
+                  mycnf=None,  user=None,  
+                  passwd=None,  dsn=None,  mode=None, host=None, port=None):
         self.addTagAttr("type", "DB")
         self.addTagAttr("name", name)
         da = NTag(self, "database")
@@ -285,19 +292,21 @@ class NDSource(NTag):
         
 
         da = NTag(self, "query")
-        if format:
-            da.addTagAttr("format", format)
+        if rank:
+            da.addTagAttr("format", rank)
         da.addText(query)
 
     ## sets paramters for Tango device
     # \param name name of datasource
     # \param device device name
-    # \param memberType type of the data object, i.e. attribute,  property, command    
+    # \param memberType type of the data object, i.e. attribute,  
+    #      property, command    
     # \param recordName name of the data object
     # \param host host name
     # \param port port
     # \param encoding encoding of DevEncoded data    
-    def initTango(self, name, device, memberType, recordName, host=None, port=None, encoding = None):
+    def initTango(self, name, device, memberType, recordName, host=None, 
+                  port=None, encoding = None):
         self.addTagAttr("type", "TANGO")
         self.addTagAttr("name", name)
         dv = NTag(self, "device")
@@ -345,11 +354,11 @@ class NDSource(NTag):
 
 
 
-        ## adds doc tag content
+    ## adds doc tag content
     # \param doc doc tag content
-        def addDoc(self, doc):
-            self._doc.append(NTag(self, "doc"))
-            self._doc[-1].addText(doc)
+    def addDoc(self, doc):
+        self._doc.append(NTag(self, "doc"))
+        self._doc[-1].addText(doc)
 
 
 
@@ -358,65 +367,65 @@ class NDeviceGroup(NGroup):
     
         ## Tango types
     tTypes = ["DevVoid",
-	      "DevBoolean",
-	      "DevShort",
-	      "DevLong",
-	      "DevFloat",
-	      "DevDouble",
-	      "DevUShort",
-	      "DevULong",
-	      "DevString",
-	      "DevVarCharArray",
-	      "DevVarShortArray",
-	      "DevVarLongArray",
-	      "DevVarFloatArray",
-	      "DevVarDoubleArray",
-	      "DevVarUShortArray",
-	      "DevVarULongArray",
-	      "DevVarStringArray",
-	      "DevVarLongStringArray",
-	      "DevVarDoubleStringArray",
-	      "DevState",
-	      "ConstDevString",
-	      "DevVarBooleanArray",
-	      "DevUChar",
-	      "DevLong64",
-	      "DevULong64",
-	      "DevVarLong64Array",
-	      "DevVarULong64Array",
-	      "DevInt",
-	      "DevEncoded"]
+              "DevBoolean",
+              "DevShort",
+              "DevLong",
+              "DevFloat",
+              "DevDouble",
+              "DevUShort",
+              "DevULong",
+              "DevString",
+              "DevVarCharArray",
+              "DevVarShortArray",
+              "DevVarLongArray",
+              "DevVarFloatArray",
+              "DevVarDoubleArray",
+              "DevVarUShortArray",
+              "DevVarULongArray",
+              "DevVarStringArray",
+              "DevVarLongStringArray",
+              "DevVarDoubleStringArray",
+              "DevState",
+              "ConstDevString",
+              "DevVarBooleanArray",
+              "DevUChar",
+              "DevLong64",
+              "DevULong64",
+              "DevVarLong64Array",
+              "DevVarULong64Array",
+              "DevInt",
+              "DevEncoded"]
     
         ## NeXuS types corresponding to the Tango types
     nTypes = ["NX_CHAR",
-	      "NX_BOOLEAN",
-	      "NX_INT32",
-	      "NX_INT32",
-	      "NX_FLOAT32",
-	      "NX_FLOAT64",
-	      "NX_UINT32",
-	      "NX_UINT32",
-	      "NX_CHAR",
-	      "NX_CHAR",
-	      "NX_INT32",
-	      "NX_INT32",
-	      "NX_FLOAT32",
-	      "NX_FLOAT64",
-	      "NX_UINT32",
-	      "NX_UINT32",
-	      "NX_CHAR",
-	      "NX_CHAR",
-	      "NX_CHAR",
-	      "NX_CHAR",
-	      "NX_CHAR",
-	      "NX_BOOLEAN",
-	      "NX_CHAR",
-	      "NX_INT64",
-	      "NX_UINT64",
-	      "NX_INT64",
-	      "NX_UINT64",
-	      "NX_INT32",
-	      "NX_CHAR"]
+              "NX_BOOLEAN",
+              "NX_INT32",
+              "NX_INT32",
+              "NX_FLOAT32",
+              "NX_FLOAT64",
+              "NX_UINT32",
+              "NX_UINT32",
+              "NX_CHAR",
+              "NX_CHAR",
+              "NX_INT32",
+              "NX_INT32",
+              "NX_FLOAT32",
+              "NX_FLOAT64",
+              "NX_UINT32",
+              "NX_UINT32",
+              "NX_CHAR",
+              "NX_CHAR",
+              "NX_CHAR",
+              "NX_CHAR",
+              "NX_CHAR",
+              "NX_BOOLEAN",
+              "NX_CHAR",
+              "NX_INT64",
+              "NX_UINT64",
+              "NX_INT64",
+              "NX_UINT64",
+              "NX_INT32",
+              "NX_CHAR"]
     
     ## constructor
     # \param parent parent tag element
@@ -425,14 +434,15 @@ class NDeviceGroup(NGroup):
     # \param typeAttr type attribute
     # \param commands if we call the commands
     # \param blackAttrs list of excluded attributes
-    def __init__(self, parent, deviceName, nameAttr, typeAttr="", commands=True, blackAttrs=[]):
+    def __init__(self, parent, deviceName, nameAttr, typeAttr="", 
+                 commands=True, blackAttrs=None):
         NGroup.__init__(self, parent, nameAttr, typeAttr)
         ## device proxy
         self._proxy = PyTango.DeviceProxy(deviceName)
         ## fields of the device
         self._fields = {}
         ## blacklist for Attributes
-        self._blackAttrs = blackAttrs
+        self._blackAttrs = blackAttrs if blackAttrs else []
         ## the device name
         self._deviceName = deviceName
 
@@ -448,12 +458,16 @@ class NDeviceGroup(NGroup):
         prop = self._proxy.get_property_list('*')
         print "PROP", prop
         for pr in prop:
-            self.addAttr(pr, "NX_CHAR", str(self._proxy.get_property(pr)[pr][0]))
+            self.addAttr(pr, "NX_CHAR", 
+                         str(self._proxy.get_property(pr)[pr][0]))
             if pr not in self._fields:
                 self._fields[pr] = NField(self, pr, "NX_CHAR")
                 self._fields[pr].setStrategy("STEP")
                 sr = NDSource(self._fields[pr])
-                sr.initTango(self._deviceName, self._deviceName, "property", pr, host="haso228k.desy.de", port="10000")
+                sr.initTango(
+                    self._deviceName, self._deviceName, "property", 
+                    pr, host="haso228k.desy.de", port="10000")
+
 
     ## fetches Attributes
     # \brief collects the device attributes
@@ -504,7 +518,9 @@ class NDeviceGroup(NGroup):
 
                 self._fields[at].setStrategy("STEP")
                 sr = NDSource(self._fields[at])
-                sr.initTango(self._deviceName,self._deviceName, "attribute", at, host="haso228k.desy.de", port="10000", encoding = encoding)
+                sr.initTango(self._deviceName, self._deviceName, "attribute", 
+                             at, host="haso228k.desy.de", port="10000", 
+                             encoding = encoding)
 
 #        print self._proxy.attribute_list_query()
 
@@ -520,11 +536,13 @@ class NDeviceGroup(NGroup):
                     and str(cd.out_type).split(".")[-1] in self.tTypes \
                     and cd.cmd_name not in self._fields:
                 self._fields[cd.cmd_name] = \
-                    NField(self, cd.cmd_name, \
-                           self.nTypes[self.tTypes.index(str(cd.out_type).split(".")[-1])])
+                    NField(self, cd.cmd_name, 
+                           self.nTypes[self.tTypes.index(
+                                str(cd.out_type).split(".")[-1])])
                 self._fields[cd.cmd_name].setStrategy("STEP")
                 sr = NDSource(self._fields[cd.cmd_name])
-                sr.initTango(self._deviceName, self._deviceName, "command", cd.cmd_name,\
+                sr.initTango(self._deviceName, self._deviceName, 
+                             "command", cd.cmd_name,
                              host="haso228k.desy.de", port="10000")
                 
                         
@@ -579,160 +597,6 @@ def main():
     f = NField(src, "distance", "NX_FLOAT")
     f.setUnits("m")
     f.setText("100.")
-
-
-    f = NField(src, "single_mysql_record_string", "NX_CHAR")
-    ## dimensions
-    d = NDimensions(f, "1")
-    d.dim("1", "1")
-    ## source
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initDBase("single_mysql_record_string","MYSQL", "SELECT pid FROM device limit 1", "tango", "SPECTRUM", host="haso228k.desy.de")
-
-    f = NField(src, "single_mysql_record_int", "NX_INT")
-    ## dimensions
-    d = NDimensions(f, "1")
-    d.dim("1", "1")
-    ## source
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initDBase( "single_mysql_record_int", "MYSQL", "SELECT pid FROM device limit 1", "tango", "SPECTRUM", host="haso228k.desy.de")
-
-
-    f = NField(src, "mysql_record", "NX_CHAR")
-    ## dimensions
-    d = NDimensions(f, "2")
-    d.dim("1", "151")
-    d.dim("2", "2")
-    ## source
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initDBase("mysql_record", "MYSQL", "SELECT name, pid FROM device limit 151", "tango", "IMAGE", host="haso228k.desy.de")
-
-
-    f = NField(src, "pgsql_record", "NX_CHAR")
-    ## dimensions
-    d = NDimensions(f, "2")
-    d.dim("1", "3")
-    d.dim("2", "5")
-    ## source
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initDBase("pgsql_record", "PGSQL", "SELECT * FROM weather limit 3", "mydb", "IMAGE")
-
- 
-    f = NField(src, "oracle_record", "NX_CHAR")
-    ## dimensions
-    d = NDimensions(f, "1")
-    d.dim("1", "19")
-    ## source
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initDBase("oracle_record", "ORACLE", "select * from (select * from telefonbuch) where ROWNUM <= 19", user='read', passwd='****', format="SPECTRUM", dsn='(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=dbsrv01.desy.de)(PORT=1521))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=desy_db.desy.de)(FAILOVER_MODE=(TYPE=NONE)(METHOD=BASIC)(RETRIES=180)(DELAY=5))))', host="haso228k.desy.de")
-    f = NField(src, "type", "NX_CHAR")
-    f.setText("Synchrotron X-ray Source")
-    f = NField(src, "name", "NX_CHAR")
-    f.setText("PETRA-III")
-    a = f.addAttr("short_name", "NX_CHAR", "P3")
-#    sr = NDSource(a)
-#    sr.initClient("emittance_x", "emittance_x");
-    f = NField(src, "probe", "NX_CHAR")
-    f.setText("x-ray")
-    f = NField(src, "power", "NX_FLOAT")
-    f.setUnits("W")
-    f.setText("1")
-    f.setStrategy("INIT")
-    sr = NDSource(f)
-    sr.initTango("p09/motor/exp.01","p09/motor/exp.01", "attribute", "Position", host="haso228k.desy.de", port="10000")
-    f = NField(src, "emittance_x", "NX_FLOAT")
-    f.setUnits("nm rad")
-    f.setText("0.2")
-    f.setStrategy("STEP")
-    sr = NDSource(f)
-    sr.initClient("emittance_x", "emittance_x");
-    f = NField(src, "emittance_y", "NX_FLOAT")
-    f.setUnits("nm rad")
-    f.setText("0.2")
-#    sr = NDSource(f, "STEP")
-#    sr.initSardana("door1", "emittance_y", host="haso228k.desy.de", port="10000");
-    f = NField(src, "sigma_x", "NX_FLOAT")
-    f.setUnits("nm")
-    f.setText("0.1")
-    f = NField(src, "sigma_y", "NX_FLOAT")
-    f.setUnits("nm")
-    f.setText("0.1")
-    f = NField(src, "flux", "NX_FLOAT")
-    f.setUnits("s-1 cm-2")
-    f.setText("0.1")
-    f = NField(src, "energy", "NX_FLOAT")
-    f.setUnits("GeV")
-    f.setText("0.1")
-    f = NField(src, "current", "NX_FLOAT")
-    f.setUnits("A")
-    f.setText("10")
-    f = NField(src, "voltage", "NX_FLOAT")
-    f.setUnits("V")
-    f.setText("10")
-    f = NField(src, "period", "NX_FLOAT")
-    f.setUnits("microseconds")
-    f.setText("1")
-    f = NField(src, "target_material", "NX_CHAR")
-    f.setText("C")
-
-    ##       NXcrystal    
-    cr = NGroup(ins, "crystal", "NXcrystal")
-    f = NField(cr, "distance", "NX_FLOAT")
-    f.setUnits("A")
-    f.addDoc("Optimum diffracted wavelength")
-    d = NDimensions(f, "1")
-    d.dim("1", "10")
-    f.setText("1 2 3 4 5 6 7 8 10 12")
-        ##       NXdetector    
-    de = NGroup(ins, "detector", "NXdetector")
-    f = NField(de, "azimuthal_angle", "NX_FLOAT")
-    f.setText("0.1")
-    f = NField(de, "beam_center_x", "NX_FLOAT")
-    f.setText("0.0001")
-    f = NField(de, "beam_center_y", "NX_FLOAT")
-    f.setText("-0.00012")
-#    f = NField(de, "data", "NX_FLOAT")
-    f = NField(de, "data", "NX_UINT32")
-    d = NDimensions(f, "2")
-#    d.dim("1", "100")
-#    d.dim("2", "100")
-    d.dim("1", "2")
-    d.dim("2", "2")
-    f.setStrategy("FINAL")
-    sr = NDSource(f)
-    sr.initTango("p09/tst/exp.01","p09/tst/exp.01", "attribute", "MyImageAttribute", host="haso228k.desy.de", port="10000")
-    f = NField(de, "distance", "NX_FLOAT")
-    f.setText("10.00012")
-    f = NField(de, "polar_angle", "NX_FLOAT")
-    f.addDoc(""" Optional rotation angle for the case when the powder diagram has been obtained
-      through an omega-2theta scan like from a traditional single detector powder
-      diffractometer""")
-    d = NDimensions(f, "1")
-    d.dim("1", "100")
-    f.setText(" ".join([str(l) for l in range(100)]))
-    f = NField(de, "rotation_angle", "NX_FLOAT")
-    f.setText("0.0")
-    f = NField(de, "x_pixel_size", "NX_FLOAT")
-    f.setText("0.01")
-    f = NField(de, "y_pixel_size", "NX_FLOAT")
-    f.setText("0.01")
-    f.setStrategy("FINAL")
-    sr = NDSource(f)
-    sr.initTango("p09/motor/exp.01","p09/motor/exp.01", "attribute", "Position", host="haso228k.desy.de", port="10000")
-
-
-        ##    NXdata
-    da = NGroup(en, "data", "NXdata")
-    ## link
-    l = NLink(da, "polar_angle", "/NXentry/NXinstrument/NXdetector/polar_angle")
-    l.addDoc("Link to polar angle in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/data")
-    l.addDoc("Link to data in /NXentry/NXinstrument/NXdetector")
 
     df.dump()
 

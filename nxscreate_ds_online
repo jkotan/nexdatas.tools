@@ -19,10 +19,16 @@
 ## \file nxscreate_ds_online
 # datasource creator
 
-from nxstools.nxsxml import *
+""" datasource creator from online files """
+
+import sys
+import os
+
+from nxstools.nxsxml import XMLFile, NDSource
+
 
 from optparse import OptionParser
-from xml.dom.minidom import parse, parseString
+from xml.dom.minidom import parse
 try:
     import PyTango
 except:
@@ -42,7 +48,8 @@ def getText(node):
     end = xml.rfind('<')
     if start == -1 or end < start:
         return ""
-    return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<").replace("&quot;","\"").replace("&amp;","&")
+    return xml[start + 1:end].replace("&lt;","<").replace("&gt;","<"). \
+        replace("&quot;","\"").replace("&amp;","&")
 
 
 ## \provides DataBase instance
@@ -72,9 +79,9 @@ def main():
     parser.add_option("-d", "--directory", type="string",
                       help="output directory where datasources will be stored",
                       dest="dir", default=".")
-    parser.add_option("-s","--server", dest="server", 
+    parser.add_option("-s", "--server", dest="server", 
                       help="Server host name with the TANGO database")
-    parser.add_option("-c","--comments",  action="store_true",
+    parser.add_option("-c", "--comments",  action="store_true",
                       default=False, dest="comments", 
                       help="print xml comments")
 
@@ -93,11 +100,11 @@ def main():
     
     
     indom = parse(args[0])
-    hw= indom.getElementsByTagName("hw")
+    hw = indom.getElementsByTagName("hw")
     device = hw[0].firstChild
 
     while device:
-        if device.nodeName =='device':
+        if device.nodeName == 'device':
             name = getText(device.getElementsByTagName("name")[0]) \
                 if len(device.getElementsByTagName("name")) else None
             dtype = getText(device.getElementsByTagName("type")[0]) \
@@ -114,12 +121,14 @@ def main():
                 if len(device.getElementsByTagName("controller")) else None
             channel = getText(device.getElementsByTagName("channel")[0]) \
                 if len(device.getElementsByTagName("channel")) else None
-            rootdevicename = getText(device.getElementsByTagName("rootdevicename")[0]) \
+            rootdevicename = getText(
+                device.getElementsByTagName("rootdevicename")[0]) \
                 if len(device.getElementsByTagName("rootdevicename")) else None
             comment = device.getElementsByTagName("#comment")
 
             host = hostname.split(":")[0]
-            port = hostname.split(":")[1] if len(hostname.split(":")) >1 else None
+            port = hostname.split(":")[1] if len(hostname.split(":")) >1 \
+                else None
                 
 
 
@@ -141,7 +150,8 @@ def main():
                 if record:    
                     df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
                     sr = NDSource(df)
-                    sr.initTango(name, tdevice, "attribute", record,host, port, encoding)
+                    sr.initTango(name, tdevice, "attribute", 
+                                 record, host, port, encoding)
                     df.dump()
             elif pool:        
                 df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
@@ -154,23 +164,27 @@ def main():
                     sr.initClient(name, sdevice)
                     df.dump()
                 except:
-                    sys.stderr.write("Error: Cannot read %s from the Tango database\n"% name)
+                    sys.stderr.write(
+                        "Error: Cannot read %s from the Tango database\n"% name)
                     sys.stderr.flush()
             elif record:    
                 df = XMLFile("%s/%s.ds.xml" %(options.dir, name))
                 sr = NDSource(df)
-                sr.initTango(name, tdevice, "attribute", record, host, port, encoding)
+                sr.initTango(name, tdevice, "attribute", record, host, 
+                             port, encoding)
                 df.dump()
             else:                
-                sys.stderr.write("Error: No record source for %s %s\n" %  ( name ,tdevice) )
+                sys.stderr.write(
+                    "Error: No record source for %s %s\n" %  ( name ,tdevice) )
                 sys.stderr.flush()
             if comment:
-                print "##", [device.data.strip() for c in comment]
+                print "##", [device.data.strip()]*len(comment)
                 
-            print name, dtype,module, tdevice, host, port,pool,controller,channel,rootdevicename,sdevice
+            print name, dtype, module, tdevice, host, port, pool, \
+                controller, channel, rootdevicename, sdevice
             if df:
                 df.dump()
-        elif device.nodeName =='#comment':
+        elif device.nodeName == '#comment':
             if options.comments:
                 print "COMMENT:",  "'%s'" % device.data.strip()
         else:
