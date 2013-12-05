@@ -22,13 +22,14 @@
 """ CLIENT datasource creator """
 
 import sys
-import time
-import os
-
-from nxstools.nxsxml import XMLFile, NDSource
 
 
 from optparse import OptionParser
+
+
+from nxstools.nxsxml import (XMLFile, NDSource)
+from nxstools.nxsdevicetools import (
+    storeDataSource, checkServer, generateDeviceNames)
 
 PYTANGO = False
 try:
@@ -37,71 +38,6 @@ try:
 except:
     pass
 
-
-## generates device names
-# \param prefix device name prefix
-# \param first first device index
-# \param last last device index
-# \returns device names
-def generateDeviceNames(prefix, first, last):
-    names = []
-    if prefix.strip():
-        for i in range (first, last+1):
-            names.append(prefix + ("0" if len(str(i)) == 1 else "" ) 
-                            + str(i))
-    return names
-
-## opens connection to the configuration server
-# \param configuration server device
-# \returns configuration server proxy
-def openServer(device):
-    found = False
-    cnt = 0
-    ## spliting character
-    try:
-        ## configuration server proxy
-        cnfServer = PyTango.DeviceProxy(device)
-    except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-        found = True
-            
-    if found:
-        sys.stderr.write(
-            "Error: Cannot connect into " \
-                +"the configuration server: %s\n"% device)
-        sys.stderr.flush()
-        sys.exit(0)
-
-    while not found and cnt < 1000:
-        if cnt > 1:
-            time.sleep(0.01)
-        try:
-            if cnfServer.state() != PyTango.DevState.RUNNING:
-                found = True
-        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-            time.sleep(0.01)
-            found = False
-        cnt += 1
-        
-    if not found:
-        sys.stderr.write("Error: Setting up %s takes to long\n"% device)
-        sys.stderr.flush()
-        sys.exit(0)
-
-            
-    cnfServer.Open()
-    return cnfServer    
-
-
-
-## stores datasources
-# \param name datasource name
-# \param xml datasource xml string
-# \param server configuration server
-def storeDataSource(name, xml, server):
-    proxy = openServer(server)
-    proxy.XMLString = str(xml)
-    proxy.StoreDataSource(str(name))
-    
 
 
 ## creates CLIENT datasource file
@@ -120,46 +56,9 @@ def createDataSource(name, directory, fileprefix, server):
     else: 
         df.dump()
            
-## provides XMLConfigServer device names
-# \returns list of the XMLConfigServer device names
-def getServers():
-    try:
-        db = PyTango.Database()
-    except:
-        sys.stderr.write(
-            "Error: Cannot connect into the tango database on host: " \
-                + "\n    %s \n "% os.environ['TANGO_HOST'])
-        sys.stderr.flush()
-        return ""
-        
-    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
-    return servers
-
-## provides XMLConfigServer device name if only one or error in the other case
-# \returns XMLConfigServer device name or empty string if error appears
-def checkServer():
-    servers = getServers()
-    if not servers:
-        sys.stderr.write(
-            "Error: No XMLConfigServer on current host running. \n\n" \
-            +"    Please specify the server from the other host. \n\n")
-        sys.stderr.flush()
-        return ""
-    if len(servers) > 1:
-        sys.stderr.write(
-            "Error: More than on XMLConfigServer on current host running.\n\n" \
-                + "    Please specify the server:" \
-                + "\n        %s\n\n"% "\n        ".join(servers))
-        sys.stderr.flush()
-        return ""
-    return servers[0]
 
 
-
-
-
-## the main function
-def main():
+def createParser():
     ## usage example
     usage = "usage: %prog [options] [name1] [name2]"
     ## option parser
@@ -182,9 +81,6 @@ def main():
                       help="file prefix, i.e. counter",
                       dest="file", default="")
 
-
-
-
     parser.add_option("-b", "--database",  action="store_true",
                       default=False, dest="database", 
                       help="store components in Configuration Server database")
@@ -192,10 +88,14 @@ def main():
     parser.add_option("-r", "--server", dest="server", 
                       help="configuration server device name")
 
+    return parser
+
+
+## the main function
+def main():
+
+    parser = createParser()
     (options, args) = parser.parse_args()
-
-
-
 
     if options.database and not options.server:
         if not PYTANGO:
@@ -215,9 +115,6 @@ def main():
         print "OUTPUT DIRECTORY:", options.directory
             
 
-
-
-
     aargs = []
     if options.device.strip():
         try:    
@@ -234,9 +131,6 @@ def main():
             print  >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
             parser.print_help()
             sys.exit(255)
-
-
-
 
         aargs = generateDeviceNames(options.device, first, last)
         

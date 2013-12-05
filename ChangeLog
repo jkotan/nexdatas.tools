@@ -1,3 +1,7 @@
+2013-12-XX Jan Kotanski <jankotan@gmail.com>
+	* change creating one nxstools package
+	* tagged as v1.2.0
+
 2013-12-03 Jan Kotanski <jankotan@gmail.com>
 	* change ndtscfg -> nxsconfig and ndtstdw -> nxsdata
 	* adding many components into ndtscfg sources

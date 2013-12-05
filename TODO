@@ -1,4 +1,0 @@
-1.) create installable module for simpleXML.py (several examples depend on this
-module)
-2.) remove .py extension from CLI programs
-3.) need a good intallation strategy
