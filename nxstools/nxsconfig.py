@@ -261,10 +261,11 @@ class ConfigServer(object):
                     if rec:
                         records.append(rec)
                     
-                except Exception as e:
+                except:
                     sys.stderr.write(
                         "Error: Datasource %s cannot be parsed\n"% xml)
-                    sys.stderr.write(str(e)+ '\n')
+                    sys.stderr.write(str(sys.exc_info()[0]) + ": " \
+                                         + str(sys.exc_info()[1])+ '\n')
                     sys.stderr.flush()
                     return []
         return records
