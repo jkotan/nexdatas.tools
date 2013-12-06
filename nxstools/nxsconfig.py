@@ -23,15 +23,12 @@
 """ Command-line tool for ascess to the nexdatas configuration server """
 
 import sys
-import os
-import time
 
 from optparse import OptionParser
 from xml.dom.minidom import parseString
-import PyTango
 
 
-
+from .nxsdevicetools import (checkServer, listServers, openServer)
 
 ## configuration server adapter
 class ConfigServer(object):
@@ -39,42 +36,9 @@ class ConfigServer(object):
     # \param device device name of configuration server
     # \param nonewline no newline flag
     def __init__(self, device, nonewline=False):
-        found = False
-        cnt = 0
         ## spliting character
         self.__char = " " if nonewline else "\n"
-        
-        try:
-            ## configuration server proxy
-            self.cnfServer = PyTango.DeviceProxy(device)
-        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-            found = True
-            
-        if found:
-            sys.stderr.write("Error: Cannot connect into " \
-                                 "the configuration server: %s\n"% device)
-            sys.stderr.flush()
-            sys.exit(0)
-
-        while not found and cnt < 1000:
-            if cnt > 1:
-                time.sleep(0.01)
-            try:
-                if self.cnfServer.state() != PyTango.DevState.RUNNING:
-                    found = True
-            except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-                time.sleep(0.01)
-                found = False
-            cnt += 1
-
-        if not found:
-            sys.stderr.write("Error: Setting up %s takes to long\n"% device)
-            sys.stderr.flush()
-            sys.exit(0)
-
-            
-#        if self.cnfServer.state() != PyTango.DevState.OPEN:
-#            self.cnfServer.Init()
+        self.cnfServer = openServer(device)     
         self.cnfServer.Open()
 
 
@@ -370,41 +334,6 @@ class ConfigServer(object):
             string = self.__char.join(self.recordCmd(ds, args[0]))
         return string
            
-## provides XMLConfigServer device names
-# \returns list of the XMLConfigServer device names
-def getServers():
-    try:
-        db = PyTango.Database()
-    except:
-        sys.stderr.write(
-            "Error: Cannot connect into the tango database on host: " \
-                + "\n    %s \n "% os.environ['TANGO_HOST'])
-        sys.stderr.flush()
-        return ""
-        
-    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
-    return servers
-
-
-## provides XMLConfigServer device name if only one or error in the other case
-# \returns XMLConfigServer device name or empty string if error appears
-def checkServer():
-    servers = getServers()
-    if not servers:
-        sys.stderr.write(
-            "Error: No XMLConfigServer on current host running. \n\n"
-            +"    Please specify the server from the other host. \n\n")
-        sys.stderr.flush()
-        return ""
-    if len(servers) > 1:
-        sys.stderr.write(
-            "Error: More than on XMLConfigServer on current host running. \n\n"
-            +"    Please specify the server:\n        %s\n\n"% "\n        ". \
-                join(servers))
-        sys.stderr.flush()
-        return ""
-    return servers[0]
-
 
 ## the main function
 def main():
@@ -477,20 +406,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':
-        server = None
-        if options.server and options.server.strip():
-            server  = options.server.split("/")[0]
-        if server: 
-            server = server.strip()
-        if server:
-            if not ":" in server:
-                server = server +":10000"
-            localtango = os.environ.get('TANGO_HOST')
-            os.environ['TANGO_HOST'] = server
-            
-        print "\n".join(getServers())
-        if server and localtango is not None:
-            os.environ['TANGO_HOST'] = localtango 
+        print "\n".join(listServers(options.server, 'XMLConfigServer'))
         return
 
     if not options.server:

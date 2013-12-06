@@ -22,48 +22,17 @@
 """ Command-line tool to ascess to Tango Data Server"""
 
 import sys
-import os
-import time
 
 from optparse import OptionParser
-import PyTango
 
+from .nxsdevicetools import (checkServer, listServers, openServer)
 
 ## configuration server adapter
 class NexusServer(object):
     ## constructor
     # \param device device name of configuration server
     def __init__(self, device):
-        found = False
-        cnt = 0
-
-        try:
-            ## configuration server proxy
-            self.tdwServer = PyTango.DeviceProxy(device)
-        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-            found = True
-            
-        if found:
-            sys.stderr.write("Error: Cannot connect into the data server: " \
-                                 "%s\n"% device)
-            sys.stderr.flush()
-            sys.exit(0)
-
-        while not found and cnt < 1000:
-            if cnt > 1:
-                time.sleep(0.01)
-            try:
-                if self.tdwServer.state() != PyTango.DevState.RUNNING:
-                    found = True
-            except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
-                time.sleep(0.01)
-                found = False
-            cnt += 1
-
-        if not found:
-            sys.stderr.write("Error: Setting up %s takes too long\n"% device)
-            sys.stderr.flush()
-            sys.exit(0)
+        self.tdwServer = openServer(device)    
 
             
     ## opens the h5 file
@@ -120,40 +89,6 @@ class NexusServer(object):
             return self.closeEntry() 
 
 
-           
-## provides TangoDataServer device names
-# \returns list of the TangoDataServer device names
-def getServers():
-    try:
-        db = PyTango.Database()
-    except:
-        sys.stderr.write(
-            "Error: Cannot connect into the tango database on host: " \
-                "\n    %s \n " % os.environ['TANGO_HOST'])
-        sys.stderr.flush()
-        return ""
-    servers = db.get_device_exported_for_class("TangoDataServer").value_string
-    return servers
-
-## provides TangoDataServer device name if only one or error in the other case
-# \returns TangoDataServer device name or empty string if error appears
-def checkServer():
-    servers = getServers()
-    if not servers:
-        sys.stderr.write(
-            "Error: No TangoDataServer on current host running. \n\n"
-            +"    Please specify the server from the other host. \n\n")
-        sys.stderr.flush()
-        return ""
-    if len(servers) > 1:
-        sys.stderr.write(
-            "Error: More than on TangoDataServer on current host running. \n\n"
-            +"    Please specify the server:\n        %s\n" \
-                "\n"% "\n        ".join(servers))
-        sys.stderr.flush()
-        return ""
-    return servers[0]
-
 
             
 ## the main function
@@ -205,24 +140,11 @@ def main():
 #    print "ARGs", args
 
     if args and args[0] == 'servers':
-        server = None
-        if options.server and options.server.strip():
-            server  = options.server.split("/")[0]
-        if server: 
-            server = server.strip()
-        if server: 
-            if not ":" in server:
-                server = server +":10000"
-            localtango = os.environ.get('TANGO_HOST')
-            os.environ['TANGO_HOST'] = server
-            
-        print "\n".join(getServers())
-        if server and localtango is not None:
-            os.environ['TANGO_HOST'] = localtango 
+        print "\n".join(listServers(options.server, 'TangoDataServer'))
         return
 
     if not options.server:
-        options.server = checkServer()
+        options.server = checkServer('TangoDataServer')
 
     if not args or args[0] not in commands or not options.server :
         parser.print_help()

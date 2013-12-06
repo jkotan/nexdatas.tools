@@ -63,7 +63,7 @@ def openServer(device):
             
     if found:
         sys.stderr.write(
-            "Error: Cannot connect into the configuration server: %s\n"% device)
+            "Error: Cannot connect into the server: %s\n"% device)
         sys.stderr.flush()
         sys.exit(0)
 
@@ -84,7 +84,6 @@ def openServer(device):
         sys.exit(0)
 
             
-    cnfServer.Open()
     return cnfServer    
 
 
@@ -95,6 +94,7 @@ def openServer(device):
 # \param server configuration server
 def storeDataSource(name, xml, server):
     proxy = openServer(server)
+    proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreDataSource(str(name))
     
@@ -105,30 +105,54 @@ def storeDataSource(name, xml, server):
 # \param server configuration server
 def storeComponent(name, xml, server):
     proxy = openServer(server)
+    proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreComponent(str(name))
 
            
 ## provides XMLConfigServer device names
+# \param name server instance name
 # \returns list of the XMLConfigServer device names
-def getServers():
+def getServers(name = 'XMLConfigServer'):
     try:
         db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into the tango database " \
+            "Error: Cannot connect into %s" % name \
                 + "on host: \n    %s \n "% os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
         
-    servers = db.get_device_exported_for_class("XMLConfigServer").value_string
+    servers = db.get_device_exported_for_class(name).value_string
     return servers
+
+
+## prints server names
+
+# \param name server instance name
+def listServers(server, name = 'XMLConfigServer'):
+    lserver = None
+    if server and server.strip():
+        lserver  = server.split("/")[0]
+    if lserver: 
+        lserver = lserver.strip()
+    if lserver: 
+        if not ":" in lserver:
+            lserver = lserver +":10000"
+        localtango = os.environ.get('TANGO_HOST')
+        os.environ['TANGO_HOST'] = lserver
+            
+    lst = getServers(name)
+    if lserver and localtango is not None:
+        os.environ['TANGO_HOST'] = localtango 
+    return lst    
+
 
 
 ## provides XMLConfigServer device name if only one or error in the other case
 # \returns XMLConfigServer device name or empty string if error appears
-def checkServer():
-    servers = getServers()
+def checkServer(name = 'XMLConfigServer'):
+    servers = getServers(name)
     if not servers:
         sys.stderr.write(
             "Error: No XMLConfigServer on current host running. \n\n"
@@ -137,7 +161,7 @@ def checkServer():
         return ""
     if len(servers) > 1:
         sys.stderr.write(
-            "Error: More than on XMLConfigServer " \
+            "Error: More than on %s " % name \
                 + "on the current host running. \n\n" \
                 + "    Please specify the server:" \
                 + "\n        %s\n\n"% "\n        ".join(servers))
