@@ -88,25 +88,8 @@ class NexusServer(object):
         if command == 'closeentry':
             return self.closeEntry() 
 
-
-
-            
-## the main function
-def main():
-    
-    
-    ## pipe arguments
-    pipe = ""
-    if not sys.stdin.isatty():
-        pp = sys.stdin.readlines()
-        ## system pipe 
-        pipe = "".join(pp)
-        
-
-    commands = {'openfile':1, 'openentry':0, 'setdata':1, 'record':1,
-                'closeentry':0, 'closefile':0}
-    ## run options
-    options = None
+## creates command-line parameters parser
+def createParser():
     ## usage example
     usage = "usage: %prog <command> [-s <nexus_server>] " \
             +" [<arg1> [<arg2>  ...]] \n" \
@@ -135,6 +118,26 @@ def main():
     parser.add_option("-s", "--server", dest="server", 
                       help="tango data server device name")
 
+    return parser
+
+            
+## the main function
+def main():
+    
+    
+    ## pipe arguments
+    pipe = ""
+    if not sys.stdin.isatty():
+        pp = sys.stdin.readlines()
+        ## system pipe 
+        pipe = "".join(pp)
+        
+
+    commands = {'openfile':1, 'openentry':0, 'setdata':1, 'record':1,
+                'closeentry':0, 'closefile':0}
+    ## run options
+    options = None
+    parser = createParser()
     (options, args) = parser.parse_args()
 
 #    print "ARGs", args

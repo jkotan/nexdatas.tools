@@ -345,22 +345,8 @@ class ConfigServer(object):
             string = self.__char.join(self.recordCmd(ds, args[0]))
         return string
            
-
-## the main function
-def main():
-    
-    
-    ## pipe arguments
-    pipe = []
-    if not sys.stdin.isatty():
-        ## system pipe 
-        pipe = sys.stdin.readlines()
-
-    #    commands = ['list','show','get', 'sources', 'record']
-    commands = {'list':0, 'show':0, 'get':0, 'variables':0, 'sources':0, 
-                'record':1, 'merge':0, 'components':0, 'data':0}
-    ## run options
-    options = None
+## creates command-line parameters parser
+def createParser():
     ## usage example
     usage = "usage: nxsconfig <command> [-s <config_server>] " \
             +" [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
@@ -415,7 +401,23 @@ def main():
     parser.add_option("-n", "--no-newlines",  action="store_true",
                       default=False, dest="nonewlines", 
                       help="split result with space characters")
+    
+    return parser
 
+## the main function
+def main():
+    ## pipe arguments
+    pipe = []
+    ## run options
+    options = None
+    if not sys.stdin.isatty():
+        ## system pipe 
+        pipe = sys.stdin.readlines()
+
+    commands = {'list':0, 'show':0, 'get':0, 'variables':0, 'sources':0, 
+                'record':1, 'merge':0, 'components':0, 'data':0}
+
+    parser = createParser()
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':
