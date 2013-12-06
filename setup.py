@@ -29,12 +29,13 @@ from distutils.core import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-pkdir = "nxstools"
+PKG = "nxstools"
+IPKG = __import__(PKG)
 
 ## metadata for distutils
 SETUPDATA = dict(
     name = "nexdatas.tools",
-    version = "1.2.0",
+    version =  IPKG.__version__,
     author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
     author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
         + "halil.pasic@gmail.com",
