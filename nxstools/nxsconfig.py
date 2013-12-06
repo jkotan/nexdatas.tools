@@ -288,6 +288,15 @@ class ConfigServer(object):
         return ""    
 
 
+    ## Provides varaible values
+    # \param args list of item names
+    # \returns JSON with variables
+    def dataCmd(self, args):
+        if len(args) > 0:
+            self.cnfServer.Variables = args[0]
+        return [str(self.cnfServer.Variables)]
+
+
     ## Provides merged components
     # \param ds flag set True for datasources
     # \param args list of item names
@@ -330,6 +339,8 @@ class ConfigServer(object):
             string = self.__char.join(self.componentsCmd(args))
         elif command == 'variables':
             string = self.__char.join(self.variablesCmd(args, mandatory))
+        elif command == 'data':
+            string = self.__char.join(self.dataCmd(args))
         elif command == 'record':
             string = self.__char.join(self.recordCmd(ds, args[0]))
         return string
@@ -347,7 +358,7 @@ def main():
 
     #    commands = ['list','show','get', 'sources', 'record']
     commands = {'list':0, 'show':0, 'get':0, 'variables':0, 'sources':0, 
-                'record':1, 'merge':0, 'components':0}
+                'record':1, 'merge':0, 'components':0, 'data':0}
     ## run options
     options = None
     ## usage example
@@ -371,12 +382,14 @@ def main():
             + "   sources [-s <config_server>] [-m] component_name1 " \
             +                             "component_name2 ... \n" \
             + "          get a list of component datasources \n" \
-            + "   variables [-s <config_server>] [-m] component_name1 " \
-            +                             "component_name2 ... \n" \
-            + "          get a list of component variables \n" \
             + "   components [-s <config_server>] component_name1 " \
             +                             "component_name2 ... \n" \
             + "          get a list of dependent components \n" \
+            + "   variables [-s <config_server>] [-m] component_name1 " \
+            +                             "component_name2 ... \n" \
+            + "          get a list of component variables \n" \
+            + "   data [-s <config_server>] json_data \n" \
+            + "          set values of component variables \n" \
             + "   record [-s <config_server>]  component_name1  \n" \
             + "          get a list of datasource record names " \
             +                             "from component\n" \
