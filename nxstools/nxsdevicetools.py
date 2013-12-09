@@ -110,10 +110,10 @@ def storeComponent(name, xml, server):
     proxy.StoreComponent(str(name))
 
            
-## provides XMLConfigServer device names
+## provides server device names
 # \param name server instance name
-# \returns list of the XMLConfigServer device names
-def getServers(name = 'XMLConfigServer'):
+# \returns list of the server device names
+def getServers(name = 'NXSConfigServer'):
     try:
         db = PyTango.Database()
     except:
@@ -130,7 +130,7 @@ def getServers(name = 'XMLConfigServer'):
 ## prints server names
 
 # \param name server instance name
-def listServers(server, name = 'XMLConfigServer'):
+def listServers(server, name = 'NXSConfigServer'):
     lserver = None
     if server and server.strip():
         lserver  = server.split("/")[0]
@@ -149,13 +149,13 @@ def listServers(server, name = 'XMLConfigServer'):
 
 
 
-## provides XMLConfigServer device name if only one or error in the other case
-# \returns XMLConfigServer device name or empty string if error appears
-def checkServer(name = 'XMLConfigServer'):
+## provides server device name if only one or error in the other case
+# \returns server device name or empty string if error appears
+def checkServer(name = 'NXSConfigServer'):
     servers = getServers(name)
     if not servers:
         sys.stderr.write(
-            "Error: No XMLConfigServer on current host running. \n\n"
+            "Error: No required server on current host running. \n\n"
             +"    Please specify the server from the other host. \n\n")
         sys.stderr.flush()
         return ""

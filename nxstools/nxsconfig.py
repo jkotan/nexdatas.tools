@@ -386,7 +386,7 @@ def createParser():
             +                     "the current tango host\n"\
             + " "
 # db = PyTango.Database()
-# db.get_device_exported_for_class("XMLConfigServer").value_string
+# db.get_device_exported_for_class("NXSConfigServer").value_string
 
     ## option parser
     parser = OptionParser(usage=usage)
@@ -421,7 +421,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':
-        print "\n".join(listServers(options.server, 'XMLConfigServer'))
+        print "\n".join(listServers(options.server, 'NXSConfigServer'))
         return
 
     if not options.server:

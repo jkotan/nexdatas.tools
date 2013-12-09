@@ -143,11 +143,11 @@ def main():
 #    print "ARGs", args
 
     if args and args[0] == 'servers':
-        print "\n".join(listServers(options.server, 'TangoDataServer'))
+        print "\n".join(listServers(options.server, 'NXSDataWriter'))
         return
 
     if not options.server:
-        options.server = checkServer('TangoDataServer')
+        options.server = checkServer('NXSDataWriter')
 
     if not args or args[0] not in commands or not options.server :
         parser.print_help()
