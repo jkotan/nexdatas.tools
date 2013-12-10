@@ -46,12 +46,12 @@ class NexusServer(object):
     ## sets the global JSON data
     # \param jsondata global JSON data
     def setData(self, jsondata):
-        self.tdwServer.TheJSONRecord = str(jsondata)
+        self.tdwServer.JSONRecord = str(jsondata)
 
     ## opens an entry
     # \param xmlconfig xml configuration string
     def openEntry(self, xmlconfig):
-        self.tdwServer.TheXMLSettings = str(xmlconfig)
+        self.tdwServer.XMLSettings = str(xmlconfig)
         self.tdwServer.OpenEntry()
 
     ## records one step
