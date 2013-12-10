@@ -1,4 +1,5 @@
-2013-12-09 Jan Kotanski <jankotan@gmail.com>
+2013-12-10 Jan Kotanski <jankotan@gmail.com>
+	* changing NXSDataWriter attribute names
 	* changing XMLConfigServer into NXSConfigServer
 	* changing TangoDataServer into NXSDataWriter
 	* creating one nxstools package
