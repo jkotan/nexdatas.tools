@@ -50,10 +50,6 @@ SETUPDATA = dict(
     packages = [ "nxstools"],
     #    data_files = datas,
     scripts = [
-        'nxscreate_tango_ds',
-        'nxscreate_client_ds',
-        'nxscreate_ds_online',
-        'nxscreate_comp',
         'nxsconfig_get',
         'nxsconfig_list',
         'nxsconfig_show',
@@ -72,7 +68,13 @@ SETUPDATA = dict(
         'nxsdata_closeentry',
         'nxsdata_closefile',
         'nxsdata',
+        'nxscreate_clientds',
+        'nxscreate_tangods',
+        'nxscreate_dsonline',
+        'nxscreate_comp',
+        'nxscreate',
         ],
+    long_description= read('README')
 )
 
 

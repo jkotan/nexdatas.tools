@@ -1,0 +1,3 @@
+include COPYRIGHT
+include man/nxsdata.1
+include man/nxsconfig.1
