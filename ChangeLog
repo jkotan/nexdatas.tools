@@ -1,3 +1,7 @@
+2013-12-XX Jan Kotanski <jankotan@gmail.com>
+	* changing package name
+	* tagged as v1.2.1
+
 2013-12-10 Jan Kotanski <jankotan@gmail.com>
 	* changing NXSDataWriter attribute names
 	* changing XMLConfigServer into NXSConfigServer
