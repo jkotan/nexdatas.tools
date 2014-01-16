@@ -34,7 +34,7 @@ IPKG = __import__(PKG)
 
 ## metadata for distutils
 SETUPDATA = dict(
-    name = "nxstools",
+    name = "nexdatas.tools",
     version =  IPKG.__version__,
     author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
     author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \

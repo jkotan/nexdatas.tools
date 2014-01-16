@@ -1,3 +1,7 @@
+2014-01-16 Jan Kotanski <jankotan@gmail.com>
+	* changing back the package name to nexdatas.tools
+	* tagged as v1.2.2
+
 2014-01-13 Jan Kotanski <jankotan@gmail.com>
 	* adding README and man pages
 	* changing the package name to nxstools
