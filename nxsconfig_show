@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+import ndtscfg
+
+import sys
+sys.argv.insert(1,'show')
+ndtscfg.main()
+

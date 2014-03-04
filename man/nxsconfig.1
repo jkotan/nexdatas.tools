@@ -1,0 +1,52 @@
+.TH nxsconfig 1 "2014-01-13" nxsconfig
+.SH NAME
+.B nxsconfig
+\- command-line configuration reader for NXS Configuration Server
+
+.SH SYNOPSIS
+.B  nxsconfig.
+.I <command>
+[-s <nexus_server>] [-d] [-m]  
+[<arg1> [<arg2>  ...]] 
+
+I <instance_name>
+[-v[trace level]] [-file=<file_name> | -nodb [-dlist <device name list>] ]
+] 
+
+
+.SH DESCRIPTION
+.B nxsconfig
+is a command-line interface to NXS Configuration Tango Server.
+It allows one to read XML configuration datasources 
+and components. It also gives possibility to 
+perform the process of component merging.
+
+
+.SH OPTIONS
+.\".IP "--version"
+.\"show program's version number and exit
+.IP "-s SERVER, --server=SERVER"
+configuration server device name
+.IP "-h, --help"
+show a help message and exit
+.IP "-d, --datasources"
+perform operation on datasources
+.IP "-m, --mandatory"
+make use mandatory components as well
+.IP "-n, --no-newlines"
+split result with space characters
+
+
+.SH SEE ALSO
+https://code.google.com/p/nexdatas/
+
+.SH COPYRIGHT
+Copyrights (c) 2012-1014, GNU GPL v2, DESY, Jan Kotanski
+
+.SH BUGS
+Please report bugs on the project's mailing list:
+mailto://jankotan@gmail.com
+
+.SH AUTHOR
+Jan Kotanski <jankotan@gmail.com>
+

@@ -1,0 +1,73 @@
+.TH nxsdata 1 "2014-01-13" nxsdata
+.SH NAME
+.B nxsdata
+\- command-line data writer for NeXuS files
+
+.SH SYNOPSIS
+.B  nxsdata
+.I <command>
+[-s <nexus_server>]  [<arg1> [<arg2>  ...]] 
+
+
+.SH DESCRIPTION
+.B nxsdata
+is a command-line interface to Nexus Data Tango Server.
+Program allows one to store NeXuS Data in H5 files.
+The writer provides storing data from other Tango devices, various databases 
+as well as passed by a user client via JSON strings.
+
+
+.SH OPTIONS
+.\".IP "--version"
+.\"show program's version number and exit
+.IP "-s SERVER, --server=SERVER"
+tango dataserver device name
+.IP "-h, --help"
+show a help message and exit
+
+.SH COMMANDS
+.B openfile 
+[-s <nexus_server>]  
+.I <file_name> 
+          open new H5 file
+
+.B setdata 
+[-s <nexus_server>] 
+.I <json_data_string>  
+          assign global JSON data
+
+.B openentry 
+[-s <nexus_server>] 
+.I <xml_config>  
+          create new entry
+
+.B record 
+[-s <nexus_server>] 
+.I <json_data_string>  
+          record one step with step JSON data 
+
+.B closeentry 
+[-s <nexus_server>]   
+          close the current entry 
+
+.B closefile 
+[-s <nexus_server>]  
+          close the current file 
+
+.B servers 
+[-s <nexus_server/host>] 
+          get lists of tango data servers from the current tango host
+
+.SH SEE ALSO
+https://code.google.com/p/nexdatas/
+
+.SH COPYRIGHT
+Copyrights (c) 2012-1014, GNU GPL v2, DESY, Jan Kotanski
+
+.SH BUGS
+Please report bugs on the project's mailing list:
+mailto://jankotan@gmail.com
+
+.SH AUTHOR
+Jan Kotanski <jankotan@gmail.com>
+

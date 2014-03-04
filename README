@@ -1,0 +1,212 @@
+----------
+NXS TOOLS
+----------
+
+Authors: Jan Kotanski, Eugen Wintersberger, Halil Pasic
+Introduction
+
+
+---------------------------
+Installation from sources
+---------------------------
+
+Install the dependencies:
+
+    PyTango
+
+Download the latest NXS Tools version from
+
+    http://code.google.com/p/nexdatas.tools/
+
+Extract sources and run
+
+$ python setup.py install
+
+
+------------------
+nxsdata
+------------------
+
+The nxsdata program is a command-line interface to Nexus Data Tango Server.
+Program allows one to store NeXuS Data in H5 files.
+The writer provides storing data from other Tango devices, various databases 
+as well as passed by a user client via JSON strings.
+
+
+Usage: nxsdata <command> [-s <nexus_server>]  [<arg1> [<arg2>  ...]] 
+ e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5 
+
+Commands: 
+   openfile [-s <nexus_server>]  <file_name> 
+          open new H5 file
+   setdata [-s <nexus_server>] <json_data_string>  
+          assign global JSON data
+   openentry [-s <nexus_server>] <xml_config>  
+          create new entry
+   record [-s <nexus_server>]  <json_data_string>  
+          record one step with step JSON data 
+   closeentry [-s <nexus_server>]   
+          close the current entry 
+   closefile [-s <nexus_server>]  
+          close the current file 
+   servers [-s <nexus_server/host>] 
+          get lists of tango data servers from the current tango host
+ 
+
+Options:
+  -h, --help            show this help message and exit
+  -s SERVER, --server=SERVER
+                        tango data server device name
+
+
+------------------
+nxsconfig
+------------------
+
+The nxsconfig program 
+is a command-line interface to NXS Configuration Tango Server.
+It allows one to read XML configuration datasources 
+and components. It also gives possibility to 
+perform the process of component merging.
+
+
+Usage: nxsconfig <command> [-s <config_server>]  [-d] [-m] [-n] [<name1>] [<name2>] [<name3>] ... 
+ e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d
+
+Commands: 
+   list [-s <config_server>] [-m]  
+          list names of available components
+   list -d [-s <config_server>] 
+          list names of available datasources
+   show [-s <config_server>] [-m] component_name1 component_name2 ...  
+          show components with given names 
+   show -d [-s <config_server>] dsource_name1 dsource_name2 ...  
+          show datasources with given names 
+   get [-s <config_server>]  [-m] component_name1 component_name2 ...  
+          get merged configuration of components 
+   sources [-s <config_server>] [-m] component_name1 component_name2 ... 
+          get a list of component datasources 
+   components [-s <config_server>] component_name1 component_name2 ... 
+          get a list of dependent components 
+   variables [-s <config_server>] [-m] component_name1 component_name2 ... 
+          get a list of component variables 
+   data [-s <config_server>] json_data 
+          set values of component variables 
+   record [-s <config_server>]  component_name1  
+          get a list of datasource record names from component
+   record -d [-s <config_server>] datasource_name1  
+          get a list of datasource record names   
+   servers [-s <config_server/host>] 
+          get lists of configuration servers from the current tango host
+ 
+
+Options:
+  -h, --help            show this help message and exit
+  -s SERVER, --server=SERVER
+                        configuration server device name
+  -d, --datasources     perform operation on datasources
+  -m, --mandatory       make use mandatory components as well
+  -n, --no-newlines     split result with space characters
+
+------------------
+nxscreate
+------------------
+
+The nxscreate program allows one to create simple datasources and components.
+
+Usage: nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]] 
+
+
+The following commands are available: 
+
+
+nxscreate clientds [options] [name1] [name2]
+--------------------------------------------
+
+It creates a set of client datasources.
+
+Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -d DIRECTORY, --directory=DIRECTORY
+                        output datasource directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+                        configuration server device name
+
+
+nxscreate tangods [options]
+--------------------------
+
+It creates a set of TANGO datasources.
+
+Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -a ATTRIBUTE, --attribute=ATTRIBUTE
+                        tango attribute name
+  -o DATASOURCE, --datasource-prefix=DATASOURCE
+                        datasource-prefix
+  -d DIRECTORY, --directory=DIRECTORY
+                        output datasource directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -s HOST, --host=HOST  tango host name
+  -t PORT, --port=PORT  tango host port
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+
+
+
+nxscreate_dsonline [options] inputFile
+--------------------------------------
+
+It creates a set of datasources from an online xml file.
+
+Options:
+  -h, --help            show this help message and exit
+  -d DIR, --directory=DIR
+                        output directory where datasources will be stored
+  -s SERVER, --server=SERVER
+                        Server host name with the TANGO database
+  -c, --comments        print xml comments
+
+
+
+nxscreate comp [options] [name1] [name2]
+----------------------------------------
+
+It creates a set of simple components.
+
+Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -d DIRECTORY, --directory=DIRECTORY
+                        output component directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -c COLLECTION, --collection=COLLECTION
+                        collection name
+  -s STRATEGY, --strategy=STRATEGY
+                        writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
+  -t TYPE, --type=TYPE  nexus type of the field
+  -u UNITS, --units=UNITS
+                        nexus units of the field
+  -k, --links           create datasource links
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+                        configuration server device name

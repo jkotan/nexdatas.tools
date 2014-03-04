@@ -1,0 +1,126 @@
+.TH nxscreate 1 "2014-01-13" nxscreate
+.SH NAME
+.B nxscreate
+\- command-line configuration reader for NXS Configuration Server
+
+.SH SYNOPSIS
+.B nxscreate
+.I <command>
+[<options>] [<arg1> [<arg2>  ...]] 
+
+
+.SH DESCRIPTION
+.B nxscreate
+allows one to create simple datasources and components.
+The following commands are available:
+
+
+
+.B nxscreate clientds 
+[options] [name1] [name2]
+
+It creates a set of client datasources.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -d DIRECTORY, --directory=DIRECTORY
+                        output datasource directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+                        configuration server device name
+
+
+.B nxscreate tangods 
+[options]
+
+It creates a set of TANGO datasources.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -a ATTRIBUTE, --attribute=ATTRIBUTE
+                        tango attribute name
+  -o DATASOURCE, --datasource-prefix=DATASOURCE
+                        datasource-prefix
+  -d DIRECTORY, --directory=DIRECTORY
+                        output datasource directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -s HOST, --host=HOST  tango host name
+  -t PORT, --port=PORT  tango host port
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+
+
+
+.B nxscreate_dsonline 
+[options] inputFile
+
+It creates a set of datasources from an online xml file.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -d DIR, --directory=DIR
+                        output directory where datasources will be stored
+  -s SERVER, --server=SERVER
+                        Server host name with the TANGO database
+  -c, --comments        print xml comments
+
+
+
+.B nxscreate comp 
+[options] [name1] [name2]
+
+It creates a set of simple components.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -p DEVICE, --device-prefix=DEVICE
+                        device prefix, i.e. exp_c
+  -f FIRST, --first=FIRST
+                        first index
+  -l LAST, --last=LAST  last index
+  -d DIRECTORY, --directory=DIRECTORY
+                        output component directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -c COLLECTION, --collection=COLLECTION
+                        collection name
+  -s STRATEGY, --strategy=STRATEGY
+                        writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
+  -t TYPE, --type=TYPE  nexus type of the field
+  -u UNITS, --units=UNITS
+                        nexus units of the field
+  -k, --links           create datasource links
+  -b, --database        store components in Configuration Server database
+  -r SERVER, --server=SERVER
+                        configuration server device name
+
+
+
+
+
+.SH SEE ALSO
+https://code.google.com/p/nexdatas/
+
+.SH COPYRIGHT
+Copyrights (c) 2012-1014, GNU GPL v2, DESY, Jan Kotanski
+
+.SH BUGS
+Please report bugs on the project's mailing list:
+mailto://jankotan@gmail.com
+
+.SH AUTHOR
+Jan Kotanski <jankotan@gmail.com>, 
+
