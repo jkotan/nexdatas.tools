@@ -39,12 +39,15 @@ except:
 # \param first first device index
 # \param last last device index
 # \returns device names
-def generateDeviceNames(prefix, first, last):
+def generateDeviceNames(prefix, first, last, minimal=False):
     names = []
     if prefix.strip():
         for i in range (first, last+1):
-            names.append(prefix + ("0" if len(str(i)) == 1 else "" ) 
-                            + str(i))
+            if not minimal:
+                names.append(prefix + ("0" if len(str(i)) == 1 else "" ) 
+                             + str(i))
+            else:
+                names.append(prefix + str(i))
     return names
 
 
