@@ -1,4 +1,5 @@
-2014-XX-XX Jan Kotanski <jankotan@gmail.com>
+2014-04-23 Jan Kotanski <jankotan@gmail.com>
+	* adding datasource prefix parameter nxscreate_dsclient
 	* changing back the package name to nexdatas.tools
 	* tagged as v1.2.3
 
