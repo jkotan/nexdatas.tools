@@ -141,11 +141,11 @@ def main():
 
         aargs = generateDeviceNames(options.device, first, last, options.minimal)
         
-        dsargs = None
-        if options.dsource: 
-            dsaargs = generateDeviceNames(
-                options.dsource, first, last)
-            dsargs = list(args) + dsaargs    
+    dsargs = None
+    if options.dsource: 
+        dsaargs = generateDeviceNames(
+            options.dsource, first, last)
+        dsargs = list(args) + dsaargs    
 
             
     args += aargs
