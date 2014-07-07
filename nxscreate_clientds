@@ -52,7 +52,7 @@ def createDataSource(name, directory, fileprefix, server, dsname=None):
     sr.initClient(dname, name)
     if server:
         xml = df.prettyPrint()
-        storeDataSource(name, xml, server)
+        storeDataSource(dname, xml, server)
     else: 
         df.dump()
            
@@ -122,6 +122,7 @@ def main():
         print "OUTPUT DIRECTORY:", options.directory
             
 
+    dsargs = None
     aargs = []
     if options.device.strip():
         try:    
@@ -141,11 +142,10 @@ def main():
 
         aargs = generateDeviceNames(options.device, first, last, options.minimal)
         
-    dsargs = None
-    if options.dsource: 
-        dsaargs = generateDeviceNames(
-            options.dsource, first, last)
-        dsargs = list(args) + dsaargs    
+        if options.dsource: 
+            dsaargs = generateDeviceNames(
+                options.dsource, first, last)
+            dsargs = list(args) + dsaargs    
 
             
     args += aargs
