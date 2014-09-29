@@ -2,6 +2,5 @@
 import ndtscfg
 
 import sys
-sys.argv.insert(1,'show')
+sys.argv.insert(1, 'show')
 ndtscfg.main()
-

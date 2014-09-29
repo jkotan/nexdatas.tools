@@ -2,7 +2,5 @@
 from nxstools import nxsdata
 
 import sys
-sys.argv.insert(1,'closeentry')
+sys.argv.insert(1, 'closeentry')
 nxsdata.main()
-
-

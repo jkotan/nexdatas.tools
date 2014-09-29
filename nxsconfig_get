@@ -2,7 +2,5 @@
 from nxstools import nxsconfig
 
 import sys
-sys.argv.insert(1,'get')
+sys.argv.insert(1, 'get')
 nxsconfig.main()
-
-

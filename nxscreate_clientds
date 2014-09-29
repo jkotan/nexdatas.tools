@@ -23,9 +23,7 @@
 
 import sys
 
-
 from optparse import OptionParser
-
 
 from nxstools.nxsxml import (XMLFile, NDSource)
 from nxstools.nxsdevicetools import (
@@ -39,23 +37,21 @@ except:
     pass
 
 
-
 ## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
 def createDataSource(name, directory, fileprefix, server, dsname=None):
-    dname  = name if not dsname else dsname
-    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, dname))  
+    dname = name if not dsname else dsname
+    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, dname))
     print "%s/%s%s.ds.xml" % (directory, fileprefix, dname)
     sr = NDSource(df)
     sr.initClient(dname, name)
     if server:
         xml = df.prettyPrint()
         storeDataSource(dname, xml, server)
-    else: 
+    else:
         df.dump()
-           
 
 
 def createParser():
@@ -86,13 +82,13 @@ def createParser():
                       dest="dsource", default="")
 
     parser.add_option("-b", "--database",  action="store_true",
-                      default=False, dest="database", 
+                      default=False, dest="database",
                       help="store components in Configuration Server database")
     parser.add_option("-m", "--minimal_device",  action="store_true",
-                      default=False, dest="minimal", 
+                      default=False, dest="minimal",
                       help="device name without first '0'")
 
-    parser.add_option("-r", "--server", dest="server", 
+    parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
 
     return parser
@@ -106,48 +102,46 @@ def main():
 
     if options.database and not options.server:
         if not PYTANGO:
-            print  >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
             parser.print_help()
             sys.exit(255)
-            
+
         options.server = checkServer()
         if not options.server:
             parser.print_help()
             print ""
             sys.exit(0)
 
-    if options.database:    
+    if options.database:
         print "CONFIG SERVER:", options.server
-    else: 
+    else:
         print "OUTPUT DIRECTORY:", options.directory
-            
 
     dsargs = None
     aargs = []
     if options.device.strip():
-        try:    
+        try:
             first = int(options.first)
         except:
-            print  >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
+            print >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
             parser.print_help()
             sys.exit(255)
 
-
-        try:    
+        try:
             last = int(options.last)
         except:
-            print  >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
+            print >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
             parser.print_help()
             sys.exit(255)
 
-        aargs = generateDeviceNames(options.device, first, last, options.minimal)
-        
-        if options.dsource: 
+        aargs = generateDeviceNames(options.device, first, last,
+                                    options.minimal)
+
+        if options.dsource:
             dsaargs = generateDeviceNames(
                 options.dsource, first, last)
-            dsargs = list(args) + dsaargs    
+            dsargs = list(args) + dsaargs
 
-            
     args += aargs
     if not dsargs:
         dsargs = args
@@ -161,11 +155,9 @@ def main():
         else:
             print "STORING: %s" % (dsargs[i])
         createDataSource(
-            args[i], options.directory, options.file, 
+            args[i], options.directory, options.file,
             options.server if options.database else None,
             dsargs[i])
-    
-        
 
 
 if __name__ == "__main__":

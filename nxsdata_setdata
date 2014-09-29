@@ -2,5 +2,5 @@
 from nxstools import nxsdata
 
 import sys
-sys.argv.insert(1,'setdata')
+sys.argv.insert(1, 'setdata')
 nxsdata.main()

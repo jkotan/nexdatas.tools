@@ -2,13 +2,14 @@
 import os
 import sys
 
-commands = ["dsonline", 
-            "clientds", 
-            "tangods", 
+commands = ["dsonline",
+            "clientds",
+            "tangods",
             "comp"]
 
-if len(sys.argv)<2 or sys.argv[1] not in commands:
-    message = "Usage: nxscreate <command> [options] [<arg1> [<arg2> ... ] ] \n\n" \
+if len(sys.argv) < 2 or sys.argv[1] not in commands:
+    message = "Usage: nxscreate <command> [options]" \
+        + " [<arg1> [<arg2> ... ] ] \n\n" \
         + "Commands:\n\n" \
         + "    clientds \n" \
         + "         create client datasources \n\n" \
@@ -17,21 +18,13 @@ if len(sys.argv)<2 or sys.argv[1] not in commands:
         + "    dsonline \n" \
         + "         create datasources from online file \n\n" \
         + "    comp \n" \
-        + "         create simple components \n\n" \
- 
+        + "         create simple components \n\n"
+
     print message
 else:
-    cmd = sys.argv[1] 
+    cmd = sys.argv[1]
     os.system("%s/nxscreate_%s %s" % (
             os.path.dirname(os.path.realpath(__file__)),
-            cmd, 
-            ' '.join("'%s'" % arg.replace("'", "\\'") for arg in sys.argv[2:])) )
-#sys.argv.insert(1,'get')
-#nxsconfig.main()
-
-
-##!/usr/bin/env python
-#from nxstools import nxsdata
-
-#nxsdata.main()
-
+            cmd,
+            ' '.join("'%s'" % arg.replace("'", "\\'")
+                     for arg in sys.argv[2:])))

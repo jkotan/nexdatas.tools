@@ -27,21 +27,20 @@ from optparse import OptionParser
 
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
+
 ## configuration server adapter
 class NexusServer(object):
     ## constructor
     # \param device device name of configuration server
     def __init__(self, device):
-        self.tdwServer = openServer(device)    
+        self.tdwServer = openServer(device)
 
-            
     ## opens the h5 file
-    # \param filename h5 file name        
+    # \param filename h5 file name
     def openFile(self, filename):
         self.tdwServer.Init()
         self.tdwServer.FileName = str(filename)
         self.tdwServer.OpenFile()
-
 
     ## sets the global JSON data
     # \param jsondata global JSON data
@@ -59,7 +58,6 @@ class NexusServer(object):
     def record(self, jsondata):
         self.tdwServer.Record(jsondata)
 
-
     ## closes the entry
     def closeEntry(self):
         self.tdwServer.CloseEntry()
@@ -67,34 +65,32 @@ class NexusServer(object):
     ## closes the file
     def closeFile(self):
         self.tdwServer.CloseFile()
-        
-
-
 
     ## perform requested command
     # \param command called command
     # \param args list of item names
     def performCommand(self, command, args):
         if command == 'openfile':
-            return self.openFile(args[0]) 
+            return self.openFile(args[0])
         if command == 'setdata':
-            return self.setData(args[0].strip()) 
+            return self.setData(args[0].strip())
         if command == 'openentry':
-            return self.openEntry(args[0].strip()) 
+            return self.openEntry(args[0].strip())
         if command == 'record':
-            return self.record(args[0].strip()) 
+            return self.record(args[0].strip())
         if command == 'closefile':
-            return self.closeFile() 
+            return self.closeFile()
         if command == 'closeentry':
-            return self.closeEntry() 
+            return self.closeEntry()
+
 
 ## creates command-line parameters parser
 def createParser():
     ## usage example
     usage = "usage: %prog <command> [-s <nexus_server>] " \
-            +" [<arg1> [<arg2>  ...]] \n" \
-            +" e.g.: %prog openfile -s p02/tangodataserver/exp.01  " \
-            +                       "$HOME/myfile.h5 \n\n" \
+            + " [<arg1> [<arg2>  ...]] \n" \
+            + " e.g.: %prog openfile -s p02/tangodataserver/exp.01  " \
+            + "$HOME/myfile.h5 \n\n" \
             + "Commands: \n" \
             + "   openfile [-s <nexus_server>]  <file_name> \n" \
             + "          open new H5 file\n" \
@@ -110,31 +106,29 @@ def createParser():
             + "          close the current file \n" \
             + "   servers [-s <nexus_server/host>] \n" \
             + "          get lists of tango data servers from " \
-            +                   "the current tango host\n" \
+            + "the current tango host\n" \
             + " "
 
     ## option parser
     parser = OptionParser(usage=usage)
-    parser.add_option("-s", "--server", dest="server", 
+    parser.add_option("-s", "--server", dest="server",
                       help="tango data server device name")
 
     return parser
 
-            
+
 ## the main function
 def main():
-    
-    
+
     ## pipe arguments
     pipe = ""
     if not sys.stdin.isatty():
         pp = sys.stdin.readlines()
-        ## system pipe 
+        ## system pipe
         pipe = "".join(pp)
-        
 
-    commands = {'openfile':1, 'openentry':0, 'setdata':1, 'record':1,
-                'closeentry':0, 'closefile':0}
+    commands = {'openfile': 1, 'openentry': 0, 'setdata': 1, 'record': 1,
+                'closeentry': 0, 'closefile': 0}
     ## run options
     options = None
     parser = createParser()
@@ -149,22 +143,21 @@ def main():
     if not options.server:
         options.server = checkServer('NXSDataWriter')
 
-    if not args or args[0] not in commands or not options.server :
+    if not args or args[0] not in commands or not options.server:
         parser.print_help()
         print ""
         sys.exit(0)
 
-
-    ## configuration server     
+    ## configuration server
     tdwserver = NexusServer(options.server)
-    
+
     ## command-line and pipe arguments
     parg = args[1:]
     if pipe:
         parg.append(pipe)
 
-#    for r in parg:     
-#        print "##" , r    
+#    for r in parg:
+#        print "##" , r
     if len(parg) < commands[args[0]]:
         print "CMD", args[0], len(parg)
         parser.print_help()
@@ -175,7 +168,6 @@ def main():
     result = tdwserver.performCommand(args[0], parg)
     if result and str(result).strip():
         print result
-
 
 
 if __name__ == "__main__":

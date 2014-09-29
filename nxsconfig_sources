@@ -2,6 +2,5 @@
 from nxstools import nxsconfig
 
 import sys
-sys.argv.insert(1,'sources')
+sys.argv.insert(1, 'sources')
 nxsconfig.main()
-
