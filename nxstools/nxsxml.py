@@ -15,7 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package ndtstools tools for nxs
+## \package nxstools tools for nxswriter
 ## \file nxsxml.py
 # creator of XML files
 
