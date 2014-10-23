@@ -72,7 +72,8 @@ def getDB(server=None):
 ## the main function
 def main():
     ## usage example
-    usage = "usage: %prog [options] inputFile"
+    usage = "usage: %prog [options] inputFile\n" \
+        + "       nxscreate dsonline [options] inputFile"
     ## option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-d", "--directory", type="string",

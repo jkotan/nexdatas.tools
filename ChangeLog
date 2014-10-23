@@ -1,3 +1,7 @@
+2014-10-23 Jan Kotanski <jankotan@gmail.com>
+	* changing commandline program names
+	* tagged as v1.3.0
+
 2014-10-15 Jan Kotanski <jankotan@gmail.com>
 	* fixes for nxsconfig_show
 	* tagged as v1.2.7

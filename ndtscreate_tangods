@@ -57,7 +57,8 @@ def createDataSource(name, directory, fileprefix, server, device, attribute,
 ## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options]"
+    usage = "usage: %prog [options]\n" \
+        + "       nxscreate tangods [options]"
     ## option parser
     parser = OptionParser(usage=usage)
 
