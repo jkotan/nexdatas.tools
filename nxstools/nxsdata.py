@@ -87,9 +87,9 @@ class NexusServer(object):
 ## creates command-line parameters parser
 def createParser():
     ## usage example
-    usage = "usage: %prog <command> [-s <nexus_server>] " \
+    usage = "usage: nxsdata <command> [-s <nexus_server>] " \
             + " [<arg1> [<arg2>  ...]] \n" \
-            + " e.g.: %prog openfile -s p02/tangodataserver/exp.01  " \
+            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
             + "$HOME/myfile.h5 \n\n" \
             + "Commands: \n" \
             + "   openfile [-s <nexus_server>]  <file_name> \n" \
