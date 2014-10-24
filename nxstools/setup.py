@@ -202,10 +202,10 @@ class SetUp(object):
         server = class_name
         server_name = server + '/' + masterHost
         full_class_name = 'NXSRecSelector/' + masterHost
+        device_name = "%s/nxsrecselector/%s" % (beamline, masterHost)
         if not server_name in self.db.get_server_list(server_name):
             print "createSelector: creating " + server_name
 
-            device_name = "%s/nxsrecselector/%s" % (beamline, masterHost)
             if server_name in self.db.get_server_list(server_name):
                 print "createSelector: DB contains already " + server_name
                 return 0
