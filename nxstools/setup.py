@@ -1,9 +1,32 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+#   This file is part of nexdatas - Tango Server for NeXus data writer
+#
+#    Copyright (C) 2012-2013 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#
+#    nexdatas is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    nexdatas is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+## \package nexdatas nexdatas.tools
+## \file nxsdata.py
+# Command-line tool to ascess to  Tango Data Server
+#
+""" Set Up NeXus Tango Servers"""
+
 import socket
 import PyTango
 import os
 import sys
-
+import subprocess
+import time
 
 class SetUp(object):
 
@@ -21,17 +44,17 @@ class SetUp(object):
         elif os.path.isfile('/usr/local/sbin/server_ctrl.py'):
             self.server_ctrl_name = '/usr/local/sbin/server_ctrl.py'
         else:
-            print "startup: failed to find server_ctrl.py" 
+            print "startup: failed to find server_ctrl.py"
         self.writer_name = None
         self.cserver_name = None
-    
+        self._psub = None
 
     def startupServer(self, klass, instance, device):
         self._psub = subprocess.call(
-            "%s %s &" % (klass, instance), 
+            "%s %s &" % (klass, instance),
             stdout=None, stderr=None, shell=True)
         print "waiting for server",
-        
+
         found = False
         cnt = 0
         while not found and cnt < 1000:
@@ -41,9 +64,9 @@ class SetUp(object):
                 time.sleep(0.01)
                 if dp.state() == PyTango.DevState.ON:
                     found = True
-            except:    
+            except:
                 found = False
-            cnt +=1
+            cnt += 1
         print ""
 
     def createDataWriter(self, beamline, masterHost):
@@ -71,9 +94,10 @@ class SetUp(object):
             di.name = self.writer_name
             di._class = class_name
             di.server = server_name
-            
+
             self.db.add_device(di)
-            self.db.put_device_property(self.writer_name, {'NumberOfThreads': 100}) 
+            self.db.put_device_property(self.writer_name,
+                                        {'NumberOfThreads': 100})
 
         hostname = socket.gethostname()
 
@@ -96,8 +120,8 @@ class SetUp(object):
             self.startupServer(class_name, hostname, self.writer_name)
         return 1
 
-
-    def createConfigServer(self, beamline, masterHost, user, jsonsettings=None):
+    def createConfigServer(self, beamline, masterHost, user,
+                           jsonsettings=None):
         """Create DataWriter """
         if not beamline:
             print "createConfigServer: no beamline given "
@@ -121,14 +145,13 @@ class SetUp(object):
             di.name = self.cserver_name
             di._class = class_name
             di.server = server_name
-            
+
             self.db.add_device(di)
             self.db.put_device_property(
                 self.cserver_name, {'VersionLabel': '%s@%s' % (
                         beamline.upper(), masterHost.upper())})
 
         hostname = self.db.get_db_host().split(".")[0]
-        
 
         if self.server_ctrl_name:
             com = self.server_ctrl_name + " -n " + server_name + \
@@ -148,7 +171,6 @@ class SetUp(object):
         else:
             self.startupServer(class_name, hostname, self.cserver_name)
 
-
         dp = PyTango.DeviceProxy(self.cserver_name)
         if dp.state() != PyTango.DevState.ON:
             dp.Close()
@@ -157,9 +179,9 @@ class SetUp(object):
         elif self.server_ctrl_name:
             dp.JSONSettings = '{"host":"localhost","db":"nxsconfig",' \
                 + ' "read_default_file":"/home/%s/.my.cnf",' % user \
-                + ' "use_unicode":true}' 
-        dp.Open()    
-                
+                + ' "use_unicode":true}'
+        dp.Open()
+
         return 1
 
     def createSelector(self, beamline, masterHost, writer=None, cserver=None):
@@ -174,7 +196,7 @@ class SetUp(object):
             self.writer_name = writer
         if cserver:
             self.cserver_name = cserver
-        
+
         class_name = 'NXSRecSelector'
         server = class_name
         server_name = server + '/' + masterHost
@@ -192,7 +214,7 @@ class SetUp(object):
             di._class = class_name
             di.server = server_name
             self.db.add_device(di)
-            
+
         hostname = socket.gethostname()
 
         if self.server_ctrl_name:
@@ -213,7 +235,7 @@ class SetUp(object):
         else:
             self.startupServer(class_name, hostname, device_name)
 
-        if self.writer_name or self.cserver_name:    
+        if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
             if self.writer_name:
                 dp.writerDevice = self.writer_name
