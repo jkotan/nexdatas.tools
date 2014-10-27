@@ -1,4 +1,4 @@
-2014-10-23 Jan Kotanski <jankotan@gmail.com>
+2014-10-27 Jan Kotanski <jankotan@gmail.com>
 	* changing nxs_setup into nxsetup
 	* stopping use of server_ctrl.py
 	* tagged as v1.3.3
