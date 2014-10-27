@@ -39,21 +39,30 @@ class SetUp(object):
                 os.getenv('TANGO_HOST')
             sys.exit(255)
 
-        self.server_ctrl_name = None
-        if os.path.isfile('/usr/lib/tango/fsectools/server_ctrl.py'):
-            self.server_ctrl_name = '/usr/lib/tango/fsectools/server_ctrl.py'
-        elif os.path.isfile('/usr/local/sbin/server_ctrl.py'):
-            self.server_ctrl_name = '/usr/local/sbin/server_ctrl.py'
-        else:
-            print "startup: failed to find server_ctrl.py"
         self.writer_name = None
         self.cserver_name = None
         self._psub = None
 
-    def startupServer(self, klass, instance, device):
-        self._psub = subprocess.call(
-            "%s %s &" % (klass, instance),
-            stdout=None, stderr=None, shell=True)
+    def startupServer(self, new, level, host, ctrl, device):
+        server = self.db.get_server_class_list(new)
+	if len(server) == 0:
+            sys.stderr.write('Server ' + new.split('/')[0] 
+                             + ' not defined in database\n')
+            return False
+
+        starterdev = PyTango.DeviceProxy('tango/admin/' + host)
+        path = starterdev.get_property("startDsPath")
+        sinfo = self.db.get_server_info(new)
+        sinfo.name = new
+        sinfo.host = host
+        sinfo.mode = ctrl
+        sinfo.level = level
+        self.db.put_server_info(sinfo)
+        running = starterdev.DevGetRunningServers(True)
+        if new not in running:
+            starterdev.DevStart(new)
+	starterdev.UpdateServersInfo()
+        
         print "waiting for server",
 
         found = False
@@ -63,12 +72,13 @@ class SetUp(object):
                 print "\b.",
                 dp = PyTango.DeviceProxy(device)
                 time.sleep(0.01)
-                if dp.state() == PyTango.DevState.ON:
-                    found = True
-            except:
+                dp.ping()
+                found = True
+                print device, "is working"
+            except :
                 found = False
             cnt += 1
-        print ""
+        return found
 
     def createDataWriter(self, beamline, masterHost):
         """Create DataWriter """
@@ -102,23 +112,8 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        if self.server_ctrl_name:
-            com = self.server_ctrl_name + " -n " + full_class_name + \
-                " --mach=" + hostname + " --add -l 1"
-            print "createDataWriter: ", com
-            if os.system(com):
-                print "createDataWriter failed to add the NXSDataWriter" \
-                    " to the starter"
-                sys.exit(255)
+        self.startupServer(full_class_name, 1, hostname, 1, self.writer_name)
 
-            com = self.server_ctrl_name + " -n " + full_class_name + " -s" \
-                + " -t " + hostname
-            print "createDataWriter: ", com
-            if os.system(com):
-                print "createDataWriter failed to start the NXSDataWriter"
-                sys.exit(255)
-        else:
-            self.startupServer(class_name, hostname, self.writer_name)
         return 1
 
     def createConfigServer(self, beamline, masterHost, user,
@@ -154,33 +149,14 @@ class SetUp(object):
 
         hostname = self.db.get_db_host().split(".")[0]
 
-        if self.server_ctrl_name:
-            com = self.server_ctrl_name + " -n " + server_name + \
-                " --mach=" + hostname + " --add -l 1"
-            print "createConfigServer: ", com
-            if os.system(com):
-                print "createConfigServer failed to add the NXSConfigServer" \
-                    " to the starter"
-                sys.exit(255)
-
-            com = self.server_ctrl_name + " -n " + server_name + " -s" \
-                + " -t " + hostname
-            print "createConfigServer: ", com
-            if os.system(com):
-                print "createConfigServer failed to start the NXSConfigServer"
-                sys.exit(255)
-        else:
-            self.startupServer(class_name, hostname, self.cserver_name)
+        self.startupServer(server_name, 1, hostname, 1, self.cserver_name)
 
         dp = PyTango.DeviceProxy(self.cserver_name)
         if dp.state() != PyTango.DevState.ON:
             dp.Close()
         if jsonsettings:
             dp = PyTango.DeviceProxy(self.cserver_name)
-        elif self.server_ctrl_name:
-            dp.JSONSettings = '{"host":"localhost","db":"nxsconfig",' \
-                + ' "read_default_file":"/home/%s/.my.cnf",' % user \
-                + ' "use_unicode":true}'
+            dp.JSONSettings = jsonsettings
         dp.Open()
 
         return 1
@@ -218,23 +194,7 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        if self.server_ctrl_name:
-            com = self.server_ctrl_name + " -n " + full_class_name + \
-                " --mach=" + hostname + " --add -l 1"
-            print "createSelector: ", com
-            if os.system(com):
-                print "createSelector failed to add the NXSRecSelector" \
-                    " to the starter"
-                sys.exit(255)
-
-            com = self.server_ctrl_name + " -n " + full_class_name + " -s" \
-                + " -t " + hostname
-            print "createSelector: ", com
-            if os.system(com):
-                print "createSelector failed to start the NXSRecSelector"
-                sys.exit(255)
-        else:
-            self.startupServer(class_name, hostname, device_name)
+        self.startupServer(full_class_name, 1, hostname, 1, device_name)
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
