@@ -77,7 +77,7 @@ def createParser(user):
             )
     else:
         usage = "\n\n %prog -b <beamline> -m <masterHost> " \
-            "-u <local_user> [-j jsonsettings]"
+            "-u <local_user> -d <dbname> [-j jsonsettings]"
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
