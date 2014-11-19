@@ -17,7 +17,7 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package nexdatas.tools nexdatas
 ## \file setup.py
-# GUI to create the XML components 
+# GUI to create the XML components
 
 """ setup.py for command-line tools """
 
@@ -34,56 +34,55 @@ IPKG = __import__(PKG)
 
 ## metadata for distutils
 SETUPDATA = dict(
-    name = "nexdatas.tools",
-    version =  IPKG.__version__,
-    author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
-    author_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
-        + "halil.pasic@gmail.com",
-    maintainer = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
-    maintainer_email = "jankotan@gmail.com, eugen.wintersberger@gmail.com, " \
-        + "halil.pasic@gmail.com",
-    description = ("Configuration tool  for creating components"),
-    license = "GNU GENERAL PUBLIC LICENSE, version 3",
-    keywords = "configuration writer Tango component nexus data",
-    url = "http://code.google.com/p/nexdatas/",
-    platforms = ("Linux"),
-    packages = [ "nxstools"],
+    name="nexdatas.tools",
+    version=IPKG.__version__,
+    author="Jan Kotanski, Eugen Wintersberger , Halil Pasic",
+    author_email="jankotan@gmail.com, eugen.wintersberger@gmail.com, "
+    + "halil.pasic@gmail.com",
+    maintainer="Jan Kotanski, Eugen Wintersberger , Halil Pasic",
+    maintainer_email="jankotan@gmail.com, eugen.wintersberger@gmail.com, "
+    + "halil.pasic@gmail.com",
+    description=("Configuration tool  for creating components"),
+    license="GNU GENERAL PUBLIC LICENSE, version 3",
+    keywords="configuration writer Tango component nexus data",
+    url="http://code.google.com/p/nexdatas/",
+    platforms=("Linux"),
+    packages=["nxstools"],
     #    data_files = datas,
-    scripts = [
-        'nxsconfig_get',
-        'nxsconfig_list',
-        'nxsconfig_show',
-        'nxsconfig_sources',
-        'nxsconfig_variables',
-        'nxsconfig_components',
-        'nxsconfig_merge',
-        'nxsconfig_servers',
-        'nxsconfig_record',
+    scripts=[
+        'ndtsconfig_get',
+        'ndtsconfig_list',
+        'ndtsconfig_show',
+        'ndtsconfig_sources',
+        'ndtsconfig_variables',
+        'ndtsconfig_components',
+        'ndtsconfig_merge',
+        'ndtsconfig_servers',
+        'ndtsconfig_record',
         'nxsconfig',
-        'nxsdata_servers',
-        'nxsdata_openfile',
-        'nxsdata_setdata',
-        'nxsdata_openentry',
-        'nxsdata_record',
-        'nxsdata_closeentry',
-        'nxsdata_closefile',
+        'ndtsdata_servers',
+        'ndtsdata_openfile',
+        'ndtsdata_setdata',
+        'ndtsdata_openentry',
+        'ndtsdata_record',
+        'ndtsdata_closeentry',
+        'ndtsdata_closefile',
         'nxsdata',
-        'nxscreate_clientds',
-        'nxscreate_tangods',
-        'nxscreate_dsonline',
-        'nxscreate_comp',
+        'ndtscreate_clientds',
+        'ndtscreate_tangods',
+        'ndtscreate_dsonline',
+        'ndtscreate_comp',
         'nxscreate',
+        'nxsetup',
         ],
-    long_description= read('README')
+    long_description=read('README')
 )
-
-
-
 
 
 ## the main function
 def main():
     setup(**SETUPDATA)
-        
+
+
 if __name__ == '__main__':
     main()

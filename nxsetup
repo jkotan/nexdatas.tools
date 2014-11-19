@@ -1,0 +1,171 @@
+#!/usr/bin/python
+import os
+import sys
+import socket
+from nxstools import nxssetup
+from optparse import OptionParser
+
+
+hostname = socket.gethostname()
+
+#
+# all SardanaHosts and DataBaseHosts should be known
+#
+knownHosts = {
+    'haso111tb': {'beamline': 'p09', 'masterHost': 'haso111tb',
+                  'user': 'tnunez', 'dbname': 'nxsconfig'},
+    'haso113b': {'beamline': 'p09', 'masterHost': 'haso113b',
+                 'user': 'blume', 'dbname': 'nxsconfig'},
+    'haso113u': {'beamline': 'p09', 'masterHost': 'haso113u',
+                 'user': 'blume', 'dbname': 'nxsconfig'},
+    'hastodt': {'beamline': 'p09', 'masterHost': 'hastodt',
+                'user': 'kracht', 'dbname': 'nxsconfig'},
+    'haso228k': {'beamline': 'p09', 'masterHost': 'haso228k',
+                 'user': 'jkotan', 'dbname': 'nxsconfig'},
+    'has6117b': {'beamline': 'p02', 'masterHost': 'has6117b',
+                 'user': 'p02user', 'dbname': 'nxsconfig'},
+    'hasnp64': {'beamline': 'p64', 'masterHost': 'hasnp64',
+                'user': 'p64user', 'dbname': 'nxsconfig'},
+    'haspp01eh1': {'beamline': 'p01', 'masterHost': 'haspp01eh1',
+                   'user': 'p01user', 'dbname': 'nxsconfig'},
+    'haspp01eh2': {'beamline': 'p01', 'masterHost': 'haspp01eh2',
+                   'user': 'p01user', 'dbname': 'nxsconfig'},
+    'haspp01eh3': {'beamline': 'p01', 'masterHost': 'haspp01eh3',
+                   'user': 'p01user', 'dbname': 'nxsconfig'},
+    'haspp02ch1a': {'beamline': 'p02', 'masterHost': 'haspp02ch1a',
+                    'user': 'p02user', 'dbname': 'nxsconfig'},
+    'haspp02ch2': {'beamline': 'p02', 'masterHost': 'haspp02ch2',
+                   'user': 'p02user', 'dbname': 'nxsconfig2'},
+    'haspp03': {'beamline': 'p03', 'masterHost': 'haspp03',
+                 'user': 'p03user', 'dbname': 'nxsconfig'},
+    'haspp03nano': {'beamline': 'p03nano', 'masterHost': 'haspp03nano',
+                    'user': 'p03user', 'dbname': 'nxsconfig'},
+    'haspp06ctrl': {'beamline': 'p06', 'masterHost': 'haspp06ctrl',
+                    'user': 'p06user', 'dbname': 'nxsconfig'},
+    'hasgksspp07eh2a': {'beamline': 'p07', 'masterHost': 'hasgksspp07eh2a',
+                         'user': 'p07user', 'dbname': 'nxsconfig'},
+    'haspp08': {'beamline': 'p08', 'masterHost': 'haspp08',
+                'user': 'p08user', 'dbname': 'nxsconfig'},
+    'haspp09': {'beamline': 'p09', 'masterHost': 'haspp09',
+                'user': 'p09user', 'dbname': 'nxsconfig'},
+    'haspp10e1': {'beamline': 'p10', 'masterHost': 'haspp10e1',
+                  'user': 'p10user', 'dbname': 'nxsconfig'},
+    'haspp10e2': {'beamline': 'p10', 'masterHost': 'haspp10e2',
+                  'user': 'p10user', 'dbname': 'nxsconfig'},
+    'haspp11user02': {'beamline': 'p11', 'masterHost': 'haspp11user02',
+                      'user': 'p11user', 'dbname': 'nxsconfig'},
+    'haspp21lab': {'beamline': 'p21', 'masterHost': 'haspp21lab',
+                   'user': 'p21user', 'dbname': 'nxsconfig'},
+    'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
+                   'user': 'kracht', 'dbname': 'nxsconfig'},
+    'hascmexp': {'beamline': 'cmexp', 'masterHost': 'hascmexp',
+                 'user': 'cmexp', 'dbname': 'nxsconfig'},
+    }
+
+
+## creates parser
+def createParser(user):
+    if hostname in knownHosts.keys():
+        usage = "\n\n %prog -x [-j <jsonsettings>]" + \
+            "\n\n  (%s is known, -b: %s, -m: %s -u %s ) \n" % (
+            hostname,
+            knownHosts[hostname]['beamline'],
+            knownHosts[hostname]['masterHost'],
+            user,
+            )
+    else:
+        usage = "\n\n %prog -b <beamline> -m <masterHost> " \
+            "-u <local_user> [-j jsonsettings]"
+    parser = OptionParser(usage=usage)
+    parser.add_option("-b", "--beamline", action="store", type="string",
+                      dest="beamline", help="name of the beamline")
+    parser.add_option("-m", "--masterHost", action="store", type="string",
+                      dest="masterHost", help="the host that stores the Mg")
+    parser.add_option("-u", "--user", action="store", type="string",
+                      dest="user", help="the local user")
+    parser.add_option("-d", "--database", action="store", type="string",
+                      dest="dbname", help="the local user")
+    parser.add_option("-j", "--csjson", action="store", type="string",
+                      dest="csjson",
+                      help="JSONSettings for the configuration server")
+    parser.add_option("-x", "--execute", action="store_true",
+                      default=False, dest="execute",
+                      help="setup servers action")
+    return parser
+
+
+## the main function
+def main():
+    if os.path.isfile('/home/etc/local_user'):
+        local_user = open('/home/etc/local_user').readline()
+    elif hostname in knownHosts.keys():
+        local_user = knownHosts["user"]
+
+    parser = createParser(local_user)
+    (options, args) = parser.parse_args()
+
+    if not options.execute:
+        parser.print_help()
+        print "\n"
+        sys.exit(255)
+
+    if options.beamline is None:
+        if hostname in knownHosts.keys():
+            options.beamline = knownHosts[hostname]['beamline']
+        else:
+            parser.print_help()
+            print "\n"
+            sys.exit(255)
+    if options.masterHost is None:
+        if hostname in knownHosts.keys():
+            options.masterHost = knownHosts[hostname]['masterHost']
+        else:
+            parser.print_help()
+            sys.exit(255)
+
+    if options.user is None:
+        if hostname in knownHosts.keys():
+            options.user = local_user
+        else:
+            parser.print_help()
+            sys.exit(255)
+
+    if options.dbname is None:
+        if hostname in knownHosts.keys():
+            options.dbname = knownHosts[hostname]['dbname']
+        else:
+            parser.print_help()
+            sys.exit(255)
+
+    setUp = nxssetup.SetUp()
+
+    if not setUp.createDataWriter(
+        beamline=options.beamline,
+        masterHost=options.masterHost):
+        print "startup failed to create the nexus data writer"
+        sys.exit(255)
+
+    if options.csjson:
+        jsonsettings = options.csjson  
+    else:
+        jsonsettings =  '{"host":"localhost","db":"%s",'  % options.dbname \
+            + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
+            + ' "use_unicode":true}'
+
+    if not setUp.createConfigServer(
+        beamline=options.beamline,
+        masterHost=options.masterHost,
+        user=options.user,
+        jsonsettings=jsonsettings):
+        print "startup failed to create the nexus config server"
+        sys.exit(255)
+
+    if not setUp.createSelector(
+        beamline=options.beamline,
+        masterHost=options.masterHost):
+        print "startup failed to create the nexus selector server"
+        sys.exit(255)
+
+
+if __name__ == "__main__":
+    main()

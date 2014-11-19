@@ -15,7 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package ndtstools tools for ndts
+## \package nxstools tools for nxswriter
 ## \file nxscreate_tango_ds
 # datasource creator
 
@@ -37,29 +37,28 @@ except:
     pass
 
 
-
 ## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
 # \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix, server, device, attribute, 
-                     host, port = "10000"):
-    df = XMLFile("%s/%s%s.ds.xml" %(directory, fileprefix, name))  
+def createDataSource(name, directory, fileprefix, server, device, attribute,
+                     host, port="10000"):
+    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
     sr = NDSource(df)
     sr.initTango(name, device, "attribute", attribute, host, port)
-
 
     if server:
         xml = df.prettyPrint()
         storeDataSource(name, xml, server)
-    else: 
+    else:
         df.dump()
-           
 
-## creates parser           
+
+## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options]"
+    usage = "usage: %prog [options]\n" \
+        + "       nxscreate tangods [options]"
     ## option parser
     parser = OptionParser(usage=usage)
 
@@ -81,7 +80,6 @@ def createParser():
                       help="datasource-prefix",
                       dest="datasource", default="TG_")
 
-
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
                       dest="directory", default=".")
@@ -95,14 +93,11 @@ def createParser():
                       help="tango host port",
                       dest="port", default="10000")
 
-
-
-
-    parser.add_option("-b", "--database",  action="store_true",
-                      default=False, dest="database", 
+    parser.add_option("-b", "--database", action="store_true",
+                      default=False, dest="database",
                       help="store components in Configuration Server database")
 
-    parser.add_option("-r", "--server", dest="server", 
+    parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
     return parser
 
@@ -115,43 +110,41 @@ def main():
 
     if options.database and not options.server:
         if not PYTANGO:
-            print  >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
             parser.print_help()
             sys.exit(255)
-            
+
         options.server = checkServer()
         if not options.server:
             parser.print_help()
             print ""
             sys.exit(0)
 
-    if options.database:    
+    if options.database:
         print "CONFIG SERVER:", options.server
-    else: 
+    else:
         print "OUTPUT DIRECTORY:", options.directory
-            
 
     dvargs = []
     dsargs = []
     if options.device.strip():
-        try:    
+        try:
             first = int(options.first)
         except:
-            print  >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
+            print >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
             parser.print_help()
             sys.exit(255)
 
-
-        try:    
+        try:
             last = int(options.last)
         except:
-            print  >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
+            print >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
             parser.print_help()
             sys.exit(255)
 
         dvargs = generateDeviceNames(options.device, first, last)
         dsargs = generateDeviceNames(options.datasource, first, last)
-        
+
     if not dvargs or not len(dvargs):
         parser.print_help()
         sys.exit(255)
@@ -162,14 +155,12 @@ def main():
                 dvargs[i], options.file, dsargs[i])
         else:
             print "STORING %s: %s" % (dvargs[i], dsargs[i])
-        createDataSource(dsargs[i], options.directory, options.file, 
-                         options.server if options.database else None, 
+        createDataSource(dsargs[i], options.directory, options.file,
+                         options.server if options.database else None,
                          dvargs[i],
-                         options.attribute, 
-                         options.host, 
+                         options.attribute,
+                         options.host,
                          options.port)
-    
-        
 
 
 if __name__ == "__main__":

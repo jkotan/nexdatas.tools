@@ -2,6 +2,5 @@
 from nxstools import nxsdata
 
 import sys
-sys.argv.insert(1,'openfile')
+sys.argv.insert(1, 'openentry')
 nxsdata.main()
-

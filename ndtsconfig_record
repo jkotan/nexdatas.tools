@@ -2,6 +2,5 @@
 from nxstools import nxsconfig
 
 import sys
-sys.argv.insert(1,'variables')
+sys.argv.insert(1, 'record')
 nxsconfig.main()
-

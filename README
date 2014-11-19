@@ -140,6 +140,8 @@ Options:
   -r SERVER, --server=SERVER
                         configuration server device name
 
+e.g.:
+	nxscreate_clientds -f 1 -l2 -p haso.desy.de:10000/expchan/sis3820_exp/ -s exp_c -m -b -r test/nxsconfigserver/01	
 
 nxscreate tangods [options]
 --------------------------
