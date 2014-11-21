@@ -69,6 +69,7 @@ knownHosts = {
 def createParser(user):
     if hostname in knownHosts.keys():
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
+            " [<server_class1> <server_class2> ... ] " + \
             "\n\n  (%s is known, -b: %s, -m: %s -u %s ) \n" % (
             hostname,
             knownHosts[hostname]['beamline'],
@@ -77,7 +78,8 @@ def createParser(user):
             )
     else:
         usage = "\n\n %prog -b <beamline> -m <masterHost> " \
-            "-u <local_user> -d <dbname> [-j jsonsettings]"
+            "-u <local_user> -d <dbname> [-j jsonsettings] " \
+            " [<server_class1> <server_class2> ... ] " 
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
@@ -93,6 +95,9 @@ def createParser(user):
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")
+    parser.add_option("-r", "--restart", action="store_true",
+                      default=False, dest="restart",
+                      help="restart server(s)")
     return parser
 
 
@@ -106,67 +111,78 @@ def main():
     parser = createParser(local_user)
     (options, args) = parser.parse_args()
 
-    if not options.execute:
+    if not options.execute and not options.restart:
         parser.print_help()
         print "\n"
         sys.exit(255)
 
-    if options.beamline is None:
-        if hostname in knownHosts.keys():
-            options.beamline = knownHosts[hostname]['beamline']
+    if options.execute:
+        if options.beamline is None:
+            if hostname in knownHosts.keys():
+                options.beamline = knownHosts[hostname]['beamline']
+            else:
+                parser.print_help()
+                print "\n"
+                sys.exit(255)
+        if options.masterHost is None:
+            if hostname in knownHosts.keys():
+                options.masterHost = knownHosts[hostname]['masterHost']
+            else:
+                parser.print_help()
+                sys.exit(255)
+
+        if options.user is None:
+            if hostname in knownHosts.keys():
+                options.user = local_user
+            else:
+                parser.print_help()
+                sys.exit(255)
+
+        if options.dbname is None:
+            if hostname in knownHosts.keys():
+                options.dbname = knownHosts[hostname]['dbname']
+            else:
+                parser.print_help()
+                sys.exit(255)
+
+        setUp = nxssetup.SetUp()
+
+        if not args or "NXSDataWriter" in args:
+            if not setUp.createDataWriter(
+                beamline=options.beamline,
+                masterHost=options.masterHost):
+                print "startup failed to create the nexus data writer"
+                sys.exit(255)
+
+        if options.csjson:
+            jsonsettings = options.csjson  
         else:
-            parser.print_help()
-            print "\n"
-            sys.exit(255)
-    if options.masterHost is None:
-        if hostname in knownHosts.keys():
-            options.masterHost = knownHosts[hostname]['masterHost']
-        else:
-            parser.print_help()
-            sys.exit(255)
+            jsonsettings =  '{"host":"localhost","db":"%s",'  % options.dbname \
+                + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
+                + ' "use_unicode":true}'
 
-    if options.user is None:
-        if hostname in knownHosts.keys():
-            options.user = local_user
-        else:
-            parser.print_help()
-            sys.exit(255)
+        if not args or "NXSConfigServer" in args:
+            if not setUp.createConfigServer(
+                beamline=options.beamline,
+                masterHost=options.masterHost,
+                user=options.user,
+                jsonsettings=jsonsettings):
+                print "startup failed to create the nexus config server"
+                sys.exit(255)
 
-    if options.dbname is None:
-        if hostname in knownHosts.keys():
-            options.dbname = knownHosts[hostname]['dbname']
-        else:
-            parser.print_help()
-            sys.exit(255)
+        if not args or "NXSCRecSelector" in args:
+            if not setUp.createSelector(
+                beamline=options.beamline,
+                masterHost=options.masterHost):
+                print "startup failed to create the nexus selector server"
+                sys.exit(255)
 
-    setUp = nxssetup.SetUp()
-
-    if not setUp.createDataWriter(
-        beamline=options.beamline,
-        masterHost=options.masterHost):
-        print "startup failed to create the nexus data writer"
-        sys.exit(255)
-
-    if options.csjson:
-        jsonsettings = options.csjson  
-    else:
-        jsonsettings =  '{"host":"localhost","db":"%s",'  % options.dbname \
-            + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
-            + ' "use_unicode":true}'
-
-    if not setUp.createConfigServer(
-        beamline=options.beamline,
-        masterHost=options.masterHost,
-        user=options.user,
-        jsonsettings=jsonsettings):
-        print "startup failed to create the nexus config server"
-        sys.exit(255)
-
-    if not setUp.createSelector(
-        beamline=options.beamline,
-        masterHost=options.masterHost):
-        print "startup failed to create the nexus selector server"
-        sys.exit(255)
+    if options.restart:
+        setUp = nxssetup.SetUp()
+        servers = args if args else [
+            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
+        for server in servers:
+            setUp.restartServer(server)
 
 
 if __name__ == "__main__":
