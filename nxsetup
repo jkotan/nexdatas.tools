@@ -165,7 +165,6 @@ def main():
             if not setUp.createConfigServer(
                 beamline=options.beamline,
                 masterHost=options.masterHost,
-                user=options.user,
                 jsonsettings=jsonsettings):
                 print "startup failed to create the nexus config server"
                 sys.exit(255)

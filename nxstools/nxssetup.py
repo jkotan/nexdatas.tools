@@ -25,7 +25,6 @@ import socket
 import PyTango
 import os
 import sys
-import subprocess
 import time
 
 
@@ -43,16 +42,18 @@ class SetUp(object):
         self.cserver_name = None
         self._psub = None
 
-    def restartServer(self, name, host=None):    
+    def restartServer(self, name, host=None):
         if name:
             if not host:
                 host = socket.gethostname()
-            admin = self.db.get_device_exported('tango/admin/' + host).value_string
+            admin = self.db.get_device_exported(
+                'tango/admin/' + host).value_string
             if admin:
                 adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
                 adminproxy = PyTango.DeviceProxy(admin[0])
                 servers = adminproxy.read_attribute('Servers')
-                started = adminproxy.command_inout("DevGetRunningServers", True)
+                started = adminproxy.command_inout(
+                    "DevGetRunningServers", True)
                 for vl in servers.value:
                     svl = vl.split('\t')[0]
                     if svl in started:
@@ -70,19 +71,18 @@ class SetUp(object):
                                 except:
                                     counter += 1
                                     time.sleep(0.1)
-                            print " "        
+                            print " "
                             if problems:
                                 print svl, "was not restarted"
 
     def startupServer(self, new, level, host, ctrl, device):
         server = self.db.get_server_class_list(new)
-	if len(server) == 0:
-            sys.stderr.write('Server ' + new.split('/')[0] 
+        if len(server) == 0:
+            sys.stderr.write('Server ' + new.split('/')[0]
                              + ' not defined in database\n')
             return False
 
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
-        path = adminproxy.get_property("startDsPath")
         sinfo = self.db.get_server_info(new)
         sinfo.name = new
         sinfo.host = host
@@ -92,8 +92,8 @@ class SetUp(object):
         running = adminproxy.DevGetRunningServers(True)
         if new not in running:
             adminproxy.DevStart(new)
-	adminproxy.UpdateServersInfo()
-        
+        adminproxy.UpdateServersInfo()
+
         print "waiting for server",
 
         found = False
@@ -106,7 +106,7 @@ class SetUp(object):
                 dp.ping()
                 found = True
                 print device, "is working"
-            except :
+            except:
                 found = False
             cnt += 1
         return found
@@ -147,8 +147,7 @@ class SetUp(object):
 
         return 1
 
-    def createConfigServer(self, beamline, masterHost, user,
-                           jsonsettings=None):
+    def createConfigServer(self, beamline, masterHost, jsonsettings=None):
         """Create DataWriter """
         if not beamline:
             print "createConfigServer: no beamline given "
