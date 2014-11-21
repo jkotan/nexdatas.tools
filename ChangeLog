@@ -1,3 +1,8 @@
+2014-11-21 Jan Kotanski <jankotan@gmail.com>
+	* adding restart option
+	* changing nxsconfig2 to nxsconfg_2 for p02.2
+	* tagged as v1.4.0
+
 2014-10-27 Jan Kotanski <jankotan@gmail.com>
 	* changing nxs_setup into nxsetup
 	* stopping use of server_ctrl.py
