@@ -49,10 +49,15 @@ class SetUp(object):
             admin = self.db.get_device_exported(
                 'tango/admin/' + host).value_string
             if admin:
-                adminproxy = PyTango.DeviceProxy(admin[0])
-                servers = adminproxy.read_attribute('Servers')
-                started = adminproxy.command_inout(
-                    "DevGetRunningServers", True)
+                servers = None
+                started = None
+                try:
+                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    servers = adminproxy.read_attribute('Servers')
+                    started = adminproxy.command_inout(
+                        "DevGetRunningServers", True)
+                except:
+                    pass
                 if servers and hasattr(servers, "value") \
                         and servers.value:
                     for vl in servers.value:
