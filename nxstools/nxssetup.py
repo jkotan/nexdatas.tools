@@ -63,7 +63,10 @@ class SetUp(object):
                     for vl in servers.value:
                         svl = vl.split('\t')[0]
                         if started and svl in started:
-                            cname = svl.split('/')[0]
+                            if '/' in name:
+                                cname = svl
+                            else:
+                                cname = svl.split('/')[0]
                             if cname == name:
                                 adminproxy.DevStop(svl)
                                 problems = True
