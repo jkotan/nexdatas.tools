@@ -1,4 +1,5 @@
 2014-12-01 Jan Kotanski <jankotan@gmail.com>
+	* adding reset for separate servers
 	* fix for restart servers with not-running admin
 	* tagged as v1.4.2
 
