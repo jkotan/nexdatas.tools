@@ -70,16 +70,17 @@ class SetUp(object):
                             if cname == name:
                                 adminproxy.DevStop(svl)
                                 problems = True
-                                print "Restarting:", svl,
+                                print "Restarting:", svl, "",
                                 counter = 0
                                 while problems and counter < 1000:
                                     try:
                                         print '.',
+                                        sys.stdout.flush()
                                         adminproxy.DevStart(svl)
                                         problems = False
                                     except:
                                         counter += 1
-                                        time.sleep(0.1)
+                                        time.sleep(0.2)
                                 print " "
                                 if problems:
                                     print svl, "was not restarted"
