@@ -1,3 +1,12 @@
+2014-12-01 Jan Kotanski <jankotan@gmail.com>
+	* adding reset for separate servers
+	* fix for restart servers with not-running admin
+	* tagged as v1.4.2
+
+2014-11-28 Jan Kotanski <jankotan@gmail.com>
+	* fix for restart servers without admin
+	* tagged as v1.4.1
+
 2014-11-21 Jan Kotanski <jankotan@gmail.com>
 	* adding restart option
 	* changing nxsconfig2 to nxsconfg_2 for p02.2

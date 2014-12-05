@@ -49,31 +49,41 @@ class SetUp(object):
             admin = self.db.get_device_exported(
                 'tango/admin/' + host).value_string
             if admin:
-                adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
-                adminproxy = PyTango.DeviceProxy(admin[0])
-                servers = adminproxy.read_attribute('Servers')
-                started = adminproxy.command_inout(
-                    "DevGetRunningServers", True)
-                for vl in servers.value:
-                    svl = vl.split('\t')[0]
-                    if svl in started:
-                        cname = svl.split('/')[0]
-                        if cname == name:
-                            adminproxy.DevStop(svl)
-                            problems = True
-                            print "Restarting:", svl,
-                            counter = 0
-                            while problems and counter < 1000:
-                                try:
-                                    print '.',
-                                    adminproxy.DevStart(svl)
-                                    problems = False
-                                except:
-                                    counter += 1
-                                    time.sleep(0.1)
-                            print " "
-                            if problems:
-                                print svl, "was not restarted"
+                servers = None
+                started = None
+                try:
+                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    servers = adminproxy.read_attribute('Servers')
+                    started = adminproxy.command_inout(
+                        "DevGetRunningServers", True)
+                except:
+                    pass
+                if servers and hasattr(servers, "value") \
+                        and servers.value:
+                    for vl in servers.value:
+                        svl = vl.split('\t')[0]
+                        if started and svl in started:
+                            if '/' in name:
+                                cname = svl
+                            else:
+                                cname = svl.split('/')[0]
+                            if cname == name:
+                                adminproxy.DevStop(svl)
+                                problems = True
+                                print "Restarting:", svl, "",
+                                counter = 0
+                                while problems and counter < 1000:
+                                    try:
+                                        print '.',
+                                        sys.stdout.flush()
+                                        adminproxy.DevStart(svl)
+                                        problems = False
+                                    except:
+                                        counter += 1
+                                        time.sleep(0.2)
+                                print " "
+                                if problems:
+                                    print svl, "was not restarted"
 
     def startupServer(self, new, level, host, ctrl, device):
         server = self.db.get_server_class_list(new)
