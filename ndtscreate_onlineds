@@ -89,6 +89,9 @@ def main():
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
+    parser.add_option("-n", "--nolower", action="store_false",
+                      default=True, dest="lower",
+                      help="donot change aliases into lower case")
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
@@ -161,7 +164,9 @@ def main():
                 
 
             if attribute:    
-
+                if options.lower:
+                    name = name.lower()
+                    
                 if not options.database:
                     print "CREATING %s: %s%s.ds.xml" % (
                         tdevice, options.file, name)

@@ -26,6 +26,8 @@ knownHosts = {
                  'user': 'p02user', 'dbname': 'nxsconfig'},
     'hasnp64': {'beamline': 'p64', 'masterHost': 'hasnp64',
                 'user': 'p64user', 'dbname': 'nxsconfig'},
+    'hasnp65': {'beamline': 'p65', 'masterHost': 'hasnp65',
+                'user': 'p65user', 'dbname': 'nxsconfig'},
     'haspp01eh1': {'beamline': 'p01', 'masterHost': 'haspp01eh1',
                    'user': 'p01user', 'dbname': 'nxsconfig'},
     'haspp01eh2': {'beamline': 'p01', 'masterHost': 'haspp01eh2',
