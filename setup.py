@@ -71,6 +71,7 @@ SETUPDATA = dict(
         'ndtscreate_clientds',
         'ndtscreate_tangods',
         'ndtscreate_dsonline',
+        'ndtscreate_onlineds',
         'ndtscreate_comp',
         'nxscreate',
         'nxsetup',

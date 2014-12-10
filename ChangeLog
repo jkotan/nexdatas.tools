@@ -1,3 +1,7 @@
+2014-12-10 Jan Kotanski <jankotan@gmail.com>
+	* adding nxscreate onlineds
+	* tagged as v1.5.0
+
 2014-12-01 Jan Kotanski <jankotan@gmail.com>
 	* adding reset for separate servers
 	* fix for restart servers with not-running admin
