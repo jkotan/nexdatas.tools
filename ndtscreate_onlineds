@@ -136,6 +136,9 @@ def main():
                 if len(device.getElementsByTagName("device")) else None
             hostname = getText(device.getElementsByTagName("hostname")[0]) \
                 if len(device.getElementsByTagName("hostname")) else None
+            sardananame = getText(
+                device.getElementsByTagName("sardananame")[0]) \
+                if len(device.getElementsByTagName("sardananame")) else None
 #            pool = getText(device.getElementsByTagName("pool")[0]) \
 #                if len(device.getElementsByTagName("pool")) else None
 #            controller = getText(
@@ -164,6 +167,8 @@ def main():
                 
 
             if attribute:    
+                if sardananame:
+                    name = sardananame
                 if options.lower:
                     name = name.lower()
                     

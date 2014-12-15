@@ -1,4 +1,9 @@
 2014-12-10 Jan Kotanski <jankotan@gmail.com>
+	* uses sardananame as name if exits for nxscrreate onlineds
+	* descreasing no counts for restarting servers
+	* tagged as v1.5.2
+
+2014-12-10 Jan Kotanski <jankotan@gmail.com>
 	* make lower case aliases by default
 	* adding p65
 	* tagged as v1.5.1

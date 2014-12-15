@@ -72,7 +72,7 @@ class SetUp(object):
                                 problems = True
                                 print "Restarting:", svl, "",
                                 counter = 0
-                                while problems and counter < 1000:
+                                while problems and counter < 100:
                                     try:
                                         print '.',
                                         sys.stdout.flush()
