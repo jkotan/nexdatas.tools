@@ -62,6 +62,8 @@ knownHosts = {
                    'user': 'p21user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
+    'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
+                   'user': 'kracht', 'dbname': 'nxsconfig'},
     'hascmexp': {'beamline': 'cmexp', 'masterHost': 'hascmexp',
                  'user': 'cmexp', 'dbname': 'nxsconfig'},
     }
@@ -72,6 +74,7 @@ def createParser(user):
     if hostname in knownHosts.keys():
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
             " [<server_class1> <server_class2> ... ] " + \
+            "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
             "\n\n  (%s is known, -b: %s, -m: %s -u %s ) \n" % (
             hostname,
             knownHosts[hostname]['beamline'],
@@ -79,9 +82,10 @@ def createParser(user):
             user,
             )
     else:
-        usage = "\n\n %prog -b <beamline> -m <masterHost> " \
-            "-u <local_user> -d <dbname> [-j jsonsettings] " \
-            " [<server_class1> <server_class2> ... ] " 
+        usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
+            "-u <local_user> -d <dbname> [-j jsonsettings] " + \
+            " [<server_class1> <server_class2> ... ] " + \
+            "\n\n %prog -r [<server_class1> <server_class2> ... ] " 
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
@@ -90,7 +94,7 @@ def createParser(user):
     parser.add_option("-u", "--user", action="store", type="string",
                       dest="user", help="the local user")
     parser.add_option("-d", "--database", action="store", type="string",
-                      dest="dbname", help="the local user")
+                      dest="dbname", help="the database name")
     parser.add_option("-j", "--csjson", action="store", type="string",
                       dest="csjson",
                       help="JSONSettings for the configuration server")
@@ -99,7 +103,7 @@ def createParser(user):
                       help="setup servers action")
     parser.add_option("-r", "--restart", action="store_true",
                       default=False, dest="restart",
-                      help="restart server(s)")
+                      help="restart server(s) action")
     return parser
 
 

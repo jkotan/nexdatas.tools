@@ -1,3 +1,8 @@
+2014-12-16 Jan Kotanski <jankotan@gmail.com>
+	* adding haso107d1 hostname
+	* changing dbname parameter description
+	* tagged as v1.5.3
+
 2014-12-10 Jan Kotanski <jankotan@gmail.com>
 	* uses sardananame as name if exits for nxscrreate onlineds
 	* descreasing no counts for restarting servers
