@@ -75,11 +75,12 @@ def createParser(user):
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
             " [<server_class1> <server_class2> ... ] " + \
             "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
-            "\n\n  (%s is known, -b: %s, -m: %s -u %s ) \n" % (
+            "\n\n  (%s is known, -b %s, -m %s -u %s -d %s ) \n" % (
             hostname,
             knownHosts[hostname]['beamline'],
             knownHosts[hostname]['masterHost'],
             user,
+            knownHosts[hostname]['dbname'],
             )
     else:
         usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
