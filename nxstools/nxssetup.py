@@ -197,7 +197,15 @@ class SetUp(object):
         if jsonsettings:
             dp = PyTango.DeviceProxy(self.cserver_name)
             dp.JSONSettings = jsonsettings
-        dp.Open()
+        try:    
+            dp.Open()
+        except:
+            print "createConfigServer: " \
+                + "%s cannot connect the database with JSONSettings: \n%s " % (
+                self.cserver_name, jsonsettings)
+            print "try to change the settings"
+            return 0
+            
 
         return 1
 

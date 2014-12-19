@@ -1,4 +1,9 @@
 2014-12-18 Jan Kotanski <jankotan@gmail.com>
+	* adding haspp10lcx
+	* adding error message on DB connection error
+	* tagged as v1.5.5
+
+2014-12-18 Jan Kotanski <jankotan@gmail.com>
 	* adding haspp09haxps, haspp09mag
 	* changing haspp02ch2 database name
 	* tagged as v1.5.4
