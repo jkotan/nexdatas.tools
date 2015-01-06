@@ -1,3 +1,7 @@
+2014-12-XX Jan Kotanski <jankotan@gmail.com>
+	* changing beamline name from p03 to p03nano
+	* tagged as v1.5.6
+
 2014-12-18 Jan Kotanski <jankotan@gmail.com>
 	* adding haspp10lcx
 	* adding error message on DB connection error
