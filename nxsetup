@@ -116,6 +116,7 @@ def createParser(user):
 
 ## the main function
 def main():
+    local_user = None
     if os.path.isfile('/home/etc/local_user'):
         local_user = open('/home/etc/local_user').readline()
     elif hostname in knownHosts.keys():
