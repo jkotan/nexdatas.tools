@@ -1,3 +1,7 @@
+2015-01-XX Jan Kotanski <jankotan@gmail.com>
+	* adding warning message
+	* tagged as v1.5.7
+
 2015-01-12 Jan Kotanski <jankotan@gmail.com>
 	* fix  for missing local_user
 	* changing beamline name from p03 to p03nano
