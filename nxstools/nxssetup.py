@@ -84,6 +84,7 @@ class SetUp(object):
                                 print " "
                                 if problems:
                                     print svl, "was not restarted"
+                                    print "Warning: Process with the server instance could be suspended"
 
     def startupServer(self, new, level, host, ctrl, device):
         server = self.db.get_server_class_list(new)
