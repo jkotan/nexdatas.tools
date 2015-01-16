@@ -1,0 +1,152 @@
+#!/usr/bin/env python
+#   This file is part of nexdatas - Tango Server for NeXus data writer
+#
+#    Copyright (C) 2012-2013 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#
+#    nexdatas is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    nexdatas is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+## \package nxstools tools for nxswriter
+## \file nxscreate_tango_ds
+# datasource creator
+
+""" TANGO datasource creator """
+
+import sys
+
+from optparse import OptionParser
+
+from nxstools.nxsxml import (XMLFile, NDSource)
+from nxstools.nxsdevicetools import (
+    storeDataSource, checkServer, generateDeviceNames, getAttributes)
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
+
+## creates CLIENT datasource file
+# \param name device name
+# \param directory output file directory
+# \param fileprefix file name prefix
+def createDataSource(name, directory, fileprefix, server, device, attribute,
+                     host, port="10000", group=None):
+    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
+    sr = NDSource(df)
+    sr.initTango(name, device, "attribute", attribute, host, port, group=group)
+
+    if server:
+        xml = df.prettyPrint()
+        storeDataSource(name, xml, server)
+    else:
+        df.dump()
+
+
+## creates parser
+def createParser():
+    ## usage example
+    usage = "usage: %prog [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] \n" \
+        + "       nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] "
+    ## option parser
+    parser = OptionParser(usage=usage)
+
+    parser.add_option("-v", "--device", type="string",
+                      help="device, i.e. p09/pilatus300k/01",
+                      dest="device", default="")
+
+    parser.add_option("-o", "--datasource-prefix", type="string",
+                      help="datasource-prefix",
+                      dest="datasource", default="")
+
+    parser.add_option("-d", "--directory", type="string",
+                      help="output datasource directory",
+                      dest="directory", default=".")
+    parser.add_option("-x", "--file-prefix", type="string",
+                      help="file prefix, i.e. counter",
+                      dest="file", default="")
+    parser.add_option("-s", "--host", type="string",
+                      help="tango host name",
+                      dest="host", default="localhost")
+    parser.add_option("-t", "--port", type="string",
+                      help="tango host port",
+                      dest="port", default="10000")
+
+    parser.add_option("-b", "--database", action="store_true",
+                      default=False, dest="database",
+                      help="store components in Configuration Server database")
+
+    parser.add_option("-n", "--no-group", action="store_true",
+                      default=False, dest="nogroup",
+                      help="creates common group with a name of datasource prefix")
+
+    parser.add_option("-r", "--server", dest="server",
+                      help="configuration server device name")
+    return parser
+
+
+## the main function
+def main():
+
+    parser = createParser()
+    (options, args) = parser.parse_args()
+
+    if options.database and not options.server:
+        if not PYTANGO:
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+
+        options.server = checkServer()
+        if not options.server:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+    if options.database:
+        print "CONFIG SERVER:", options.server
+    else:
+        print "OUTPUT DIRECTORY:", options.directory
+
+    if not options.device.strip():
+        parser.print_help()
+        sys.exit(255)
+
+    if args:        
+        aargs = list(args)        
+    else:
+        if not PYTANGO:
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+        aargs = getAttributes(options.device, options.host, options.port)
+
+    for at in aargs:
+        dsname = "%s%s" % (options.datasource, at)
+        if not options.database:
+            print "CREATING %s/%s: %s%s.ds.xml" % (
+                options.device, at, options.file, dsname)
+        else:
+            print "STORING %s/%s: %s" % (options.device, at, dsname)
+        createDataSource(dsname, options.directory, options.file,
+                         options.server if options.database else None,
+                         options.device,
+                         at,
+                         options.host,
+                         options.port, 
+                         options.datasource if not options.nogroup else None)
+
+
+if __name__ == "__main__":
+    main()

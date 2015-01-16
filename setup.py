@@ -70,6 +70,7 @@ SETUPDATA = dict(
         'nxsdata',
         'ndtscreate_clientds',
         'ndtscreate_tangods',
+        'ndtscreate_deviceds',
         'ndtscreate_dsonline',
         'ndtscreate_onlineds',
         'ndtscreate_comp',

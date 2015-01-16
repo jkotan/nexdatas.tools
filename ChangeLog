@@ -1,6 +1,7 @@
-2015-01-XX Jan Kotanski <jankotan@gmail.com>
+2015-01-16 Jan Kotanski <jankotan@gmail.com>
+	* adding nxscreate deviceds
 	* adding warning message
-	* tagged as v1.5.7
+	* tagged as v1.6.0
 
 2015-01-12 Jan Kotanski <jankotan@gmail.com>
 	* fix  for missing local_user

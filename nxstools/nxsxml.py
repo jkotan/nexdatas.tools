@@ -306,7 +306,7 @@ class NDSource(NTag):
     # \param port port
     # \param encoding encoding of DevEncoded data
     def initTango(self, name, device, memberType, recordName, host=None,
-                  port=None, encoding=None):
+                  port=None, encoding=None, group=None):
         self.addTagAttr("type", "TANGO")
         self.addTagAttr("name", name)
         dv = NTag(self, "device")
@@ -320,6 +320,8 @@ class NDSource(NTag):
             dv.addTagAttr("port", port)
         if encoding:
             dv.addTagAttr("encoding", encoding)
+        if group:    
+            dv.addTagAttr("group", group)
 
         da = NTag(self, "record")
         da.addTagAttr("name", recordName)

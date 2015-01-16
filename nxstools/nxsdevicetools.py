@@ -51,6 +51,19 @@ def generateDeviceNames(prefix, first, last, minimal=False):
     return names
 
 
+## provides a list of device attributes
+# \param device tango device name
+# \param host device host
+# \param port device port
+# \returns list of device attributes
+def getAttributes(device, host=None, port=10000):
+    if host:
+        dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
+    else:
+        dp = PyTango.DeviceProxy(device)
+    attr = dp.attribute_list_query()   
+    return [at.name for at in attr if at.name not in ['State', 'Status']]
+
 ## opens connection to the configuration server
 # \param configuration server device
 # \returns configuration server proxy
