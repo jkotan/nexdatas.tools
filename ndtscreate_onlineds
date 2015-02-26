@@ -161,7 +161,7 @@ def main():
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
             else:
-                print "WARNING %s: module %s of %s type not defined" \
+                print "WARNING %s:    module %s of %s type not defined" \
                     % (name, module, dtype)
 
                 
@@ -176,7 +176,7 @@ def main():
                     print "CREATING %s: %s%s.ds.xml" % (
                         tdevice, options.file, name)
                 else:
-                    print "STORING %s/%s: %s" % (hostname, tdevice, name)
+                    print "STORING %s:    s/%s" % (name, hostname, tdevice)
                 createDataSource(name, options.directory, options.file,
                                  options.server if options.database else None,
                                  tdevice,
