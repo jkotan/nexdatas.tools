@@ -176,7 +176,7 @@ def main():
                     print "CREATING %s: %s%s.ds.xml" % (
                         tdevice, options.file, name)
                 else:
-                    print "STORING %s: %s" % (tdevice, name)
+                    print "STORING %s/%s: %s" % (hostname, tdevice, name)
                 createDataSource(name, options.directory, options.file,
                                  options.server if options.database else None,
                                  tdevice,
