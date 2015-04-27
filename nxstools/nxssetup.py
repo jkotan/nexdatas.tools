@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2013 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2015 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ class SetUp(object):
                                 problems = True
                                 print "Restarting:", svl, "",
                                 counter = 0
-                                while problems and counter < 1000:
+                                while problems and counter < 100:
                                     try:
                                         print '.',
                                         sys.stdout.flush()
@@ -84,6 +84,7 @@ class SetUp(object):
                                 print " "
                                 if problems:
                                     print svl, "was not restarted"
+                                    print "Warning: Process with the server instance could be suspended"
 
     def startupServer(self, new, level, host, ctrl, device):
         server = self.db.get_server_class_list(new)
@@ -197,7 +198,15 @@ class SetUp(object):
         if jsonsettings:
             dp = PyTango.DeviceProxy(self.cserver_name)
             dp.JSONSettings = jsonsettings
-        dp.Open()
+        try:    
+            dp.Open()
+        except:
+            print "createConfigServer: " \
+                + "%s cannot connect the database with JSONSettings: \n%s " % (
+                self.cserver_name, jsonsettings)
+            print "try to change the settings"
+            return 0
+            
 
         return 1
 

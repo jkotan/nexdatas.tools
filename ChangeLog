@@ -1,3 +1,47 @@
+2015-02-26 Jan Kotanski <jankotan@gmail.com>
+	* adding hostname to printout
+	* adding p06 boxes
+	* tagged as v1.6.1
+
+2015-01-16 Jan Kotanski <jankotan@gmail.com>
+	* adding nxscreate deviceds
+	* adding warning message
+	* tagged as v1.6.0
+
+2015-01-12 Jan Kotanski <jankotan@gmail.com>
+	* fix  for missing local_user
+	* changing beamline name from p03 to p03nano
+	* tagged as v1.5.6
+
+2014-12-18 Jan Kotanski <jankotan@gmail.com>
+	* adding haspp10lcx
+	* adding error message on DB connection error
+	* tagged as v1.5.5
+
+2014-12-18 Jan Kotanski <jankotan@gmail.com>
+	* adding haspp09haxps, haspp09mag
+	* changing haspp02ch2 database name
+	* tagged as v1.5.4
+
+2014-12-16 Jan Kotanski <jankotan@gmail.com>
+	* adding haso107d1 hostname
+	* changing dbname parameter description
+	* tagged as v1.5.3
+
+2014-12-10 Jan Kotanski <jankotan@gmail.com>
+	* uses sardananame as name if exits for nxscrreate onlineds
+	* descreasing no counts for restarting servers
+	* tagged as v1.5.2
+
+2014-12-10 Jan Kotanski <jankotan@gmail.com>
+	* make lower case aliases by default
+	* adding p65
+	* tagged as v1.5.1
+
+2014-12-10 Jan Kotanski <jankotan@gmail.com>
+	* adding nxscreate onlineds
+	* tagged as v1.5.0
+
 2014-12-01 Jan Kotanski <jankotan@gmail.com>
 	* adding reset for separate servers
 	* fix for restart servers with not-running admin

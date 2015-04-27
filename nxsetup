@@ -24,8 +24,6 @@ knownHosts = {
                  'user': 'jkotan', 'dbname': 'nxsconfig'},
     'has6117b': {'beamline': 'p02', 'masterHost': 'has6117b',
                  'user': 'p02user', 'dbname': 'nxsconfig'},
-    'hasnp64': {'beamline': 'p64', 'masterHost': 'hasnp64',
-                'user': 'p64user', 'dbname': 'nxsconfig'},
     'haspp01eh1': {'beamline': 'p01', 'masterHost': 'haspp01eh1',
                    'user': 'p01user', 'dbname': 'nxsconfig'},
     'haspp01eh2': {'beamline': 'p01', 'masterHost': 'haspp01eh2',
@@ -34,31 +32,55 @@ knownHosts = {
                    'user': 'p01user', 'dbname': 'nxsconfig'},
     'haspp02ch1a': {'beamline': 'p02', 'masterHost': 'haspp02ch1a',
                     'user': 'p02user', 'dbname': 'nxsconfig'},
+    'haspp02ch1': {'beamline': 'p02', 'masterHost': 'haspp02ch1',
+                    'user': 'p02user', 'dbname': 'nxsconfig'},
     'haspp02ch2': {'beamline': 'p02', 'masterHost': 'haspp02ch2',
-                   'user': 'p02user', 'dbname': 'nxsconfig_2'},
+                   'user': 'p02user', 'dbname': 'nxsconfig'},
     'haspp03': {'beamline': 'p03', 'masterHost': 'haspp03',
                  'user': 'p03user', 'dbname': 'nxsconfig'},
     'haspp03nano': {'beamline': 'p03nano', 'masterHost': 'haspp03nano',
-                    'user': 'p03user', 'dbname': 'nxsconfig'},
+                    'user': 'p03nano', 'dbname': 'nxsconfig'},
     'haspp04exp1': {'beamline': 'p04', 'masterHost': 'haspp04exp1',
+                 'user': 'p04user', 'dbname': 'nxsconfig'},
+    'haspp04exp2': {'beamline': 'p04', 'masterHost': 'haspp04exp2',
                  'user': 'p04user', 'dbname': 'nxsconfig'},
     'haspp06ctrl': {'beamline': 'p06', 'masterHost': 'haspp06ctrl',
                     'user': 'p06user', 'dbname': 'nxsconfig'},
+    'haspp06nc1': {'beamline': 'p06', 'masterHost': 'haspp06nc1',
+                    'user': 'p06user', 'dbname': 'nxsconfig'},
+    'haspp06mc01': {'beamline': 'p06', 'masterHost': 'haspp06mc01',
+                    'user': 'p06user', 'dbname': 'nxsconfig'},
+    'hasp029rack': {'beamline': 'p06', 'masterHost': 'hasp029rack',
+                    'user': 'p06user', 'dbname': 'nxsconfig'},
     'hasgksspp07eh2a': {'beamline': 'p07', 'masterHost': 'hasgksspp07eh2a',
                          'user': 'p07user', 'dbname': 'nxsconfig'},
+    'haspp07eh2': {'beamline': 'p07', 'masterHost': 'haspp07eh2',
+                   'user': 'p07user', 'dbname': 'nxsconfig'},
     'haspp08': {'beamline': 'p08', 'masterHost': 'haspp08',
                 'user': 'p08user', 'dbname': 'nxsconfig'},
     'haspp09': {'beamline': 'p09', 'masterHost': 'haspp09',
                 'user': 'p09user', 'dbname': 'nxsconfig'},
+    'haspp09mag': {'beamline': 'p09', 'masterHost': 'haspp09',
+                'user': 'p09user', 'dbname': 'nxsconfig'},
+    'haspp09haxps': {'beamline': 'p09', 'masterHost': 'haspp09',
+                'user': 'p09haxps', 'dbname': 'nxsconfig'},
     'haspp10e1': {'beamline': 'p10', 'masterHost': 'haspp10e1',
                   'user': 'p10user', 'dbname': 'nxsconfig'},
     'haspp10e2': {'beamline': 'p10', 'masterHost': 'haspp10e2',
+                  'user': 'p10user', 'dbname': 'nxsconfig'},
+    'haspp10lcx': {'beamline': 'p10', 'masterHost': 'haspp10lcx',
                   'user': 'p10user', 'dbname': 'nxsconfig'},
     'haspp11user02': {'beamline': 'p11', 'masterHost': 'haspp11user02',
                       'user': 'p11user', 'dbname': 'nxsconfig'},
     'haspp21lab': {'beamline': 'p21', 'masterHost': 'haspp21lab',
                    'user': 'p21user', 'dbname': 'nxsconfig'},
+    'hasnp64': {'beamline': 'p64', 'masterHost': 'hasnp64',
+                'user': 'p64user', 'dbname': 'nxsconfig'},
+    'hasnp65': {'beamline': 'p65', 'masterHost': 'hasnp65',
+                'user': 'p65user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
+                   'user': 'kracht', 'dbname': 'nxsconfig'},
+    'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
     'hascmexp': {'beamline': 'cmexp', 'masterHost': 'hascmexp',
                  'user': 'cmexp', 'dbname': 'nxsconfig'},
@@ -70,16 +92,19 @@ def createParser(user):
     if hostname in knownHosts.keys():
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
             " [<server_class1> <server_class2> ... ] " + \
-            "\n\n  (%s is known, -b: %s, -m: %s -u %s ) \n" % (
+            "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
+            "\n\n  (%s is known, -b %s, -m %s -u %s -d %s ) \n" % (
             hostname,
             knownHosts[hostname]['beamline'],
             knownHosts[hostname]['masterHost'],
             user,
+            knownHosts[hostname]['dbname'],
             )
     else:
-        usage = "\n\n %prog -b <beamline> -m <masterHost> " \
-            "-u <local_user> -d <dbname> [-j jsonsettings] " \
-            " [<server_class1> <server_class2> ... ] " 
+        usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
+            "-u <local_user> -d <dbname> [-j jsonsettings] " + \
+            " [<server_class1> <server_class2> ... ] " + \
+            "\n\n %prog -r [<server_class1> <server_class2> ... ] " 
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
@@ -88,7 +113,7 @@ def createParser(user):
     parser.add_option("-u", "--user", action="store", type="string",
                       dest="user", help="the local user")
     parser.add_option("-d", "--database", action="store", type="string",
-                      dest="dbname", help="the local user")
+                      dest="dbname", help="the database name")
     parser.add_option("-j", "--csjson", action="store", type="string",
                       dest="csjson",
                       help="JSONSettings for the configuration server")
@@ -97,12 +122,13 @@ def createParser(user):
                       help="setup servers action")
     parser.add_option("-r", "--restart", action="store_true",
                       default=False, dest="restart",
-                      help="restart server(s)")
+                      help="restart server(s) action")
     return parser
 
 
 ## the main function
 def main():
+    local_user = None
     if os.path.isfile('/home/etc/local_user'):
         local_user = open('/home/etc/local_user').readline()
     elif hostname in knownHosts.keys():

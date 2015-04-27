@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2013 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2015 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -306,7 +306,7 @@ class NDSource(NTag):
     # \param port port
     # \param encoding encoding of DevEncoded data
     def initTango(self, name, device, memberType, recordName, host=None,
-                  port=None, encoding=None):
+                  port=None, encoding=None, group=None):
         self.addTagAttr("type", "TANGO")
         self.addTagAttr("name", name)
         dv = NTag(self, "device")
@@ -320,6 +320,8 @@ class NDSource(NTag):
             dv.addTagAttr("port", port)
         if encoding:
             dv.addTagAttr("encoding", encoding)
+        if group:    
+            dv.addTagAttr("group", group)
 
         da = NTag(self, "record")
         da.addTagAttr("name", recordName)

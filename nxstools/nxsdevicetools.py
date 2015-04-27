@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2013 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2015 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -50,6 +50,19 @@ def generateDeviceNames(prefix, first, last, minimal=False):
                 names.append(prefix + str(i))
     return names
 
+
+## provides a list of device attributes
+# \param device tango device name
+# \param host device host
+# \param port device port
+# \returns list of device attributes
+def getAttributes(device, host=None, port=10000):
+    if host:
+        dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
+    else:
+        dp = PyTango.DeviceProxy(device)
+    attr = dp.attribute_list_query()   
+    return [at.name for at in attr if at.name not in ['State', 'Status']]
 
 ## opens connection to the configuration server
 # \param configuration server device

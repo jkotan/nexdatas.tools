@@ -64,6 +64,30 @@ It creates a set of TANGO datasources.
 
 
 
+.B nxscreate deviceods 
+[options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] 
+
+It creates a set of TANGO datasources for all device attributes.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -v DEVICE, --device=DEVICE
+                        device, i.e. p09/pilatus300k/01
+  -o DATASOURCE, --datasource-prefix=DATASOURCE
+                        datasource-prefix
+  -d DIRECTORY, --directory=DIRECTORY
+                        output datasource directory
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -s HOST, --host=HOST  tango host name
+  -t PORT, --port=PORT  tango host port
+  -b, --database        store components in Configuration Server database
+  -n, --no-group        creates common group with a name of datasource prefix
+  -r SERVER, --server=SERVER
+                        configuration server device name
+
+
+
 .B nxscreate dsonline 
 [options] inputFile
 
@@ -76,6 +100,25 @@ It creates a set of datasources from an online xml file.
   -s SERVER, --server=SERVER
                         Server host name with the TANGO database
   -c, --comments        print xml comments
+
+
+
+.B nxscreate onlineds 
+[options] inputFile
+
+It creates a set of motor datasources from an online xml file.
+
+.I Options:
+  -h, --help            show this help message and exit
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be stored
+  -c, --comments        print xml comments
+  -b, --database        store components in Configuration Server database
+  -n, --nolower         donot change aliases into lower case
+  -r SERVER, --server=SERVER
+                        configuration server device name
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
 
 
 
@@ -115,7 +158,7 @@ It creates a set of simple components.
 https://code.google.com/p/nexdatas/
 
 .SH COPYRIGHT
-Copyrights (c) 2012-1014, GNU GPL v2, DESY, Jan Kotanski
+Copyrights (c) 2012-2015n, GNU GPL v2, DESY, Jan Kotanski
 
 .SH BUGS
 Please report bugs on the project's mailing list:

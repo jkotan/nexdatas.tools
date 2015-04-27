@@ -27,7 +27,7 @@ from optparse import OptionParser
 
 from nxstools.nxsxml import (XMLFile, NDSource)
 from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, generateDeviceNames)
+    storeDataSource, checkServer, generateDeviceNames, getAttributes)
 
 PYTANGO = False
 try:
@@ -42,10 +42,10 @@ except:
 # \param directory output file directory
 # \param fileprefix file name prefix
 def createDataSource(name, directory, fileprefix, server, device, attribute,
-                     host, port="10000"):
+                     host, port="10000", group=None):
     df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
     sr = NDSource(df)
-    sr.initTango(name, device, "attribute", attribute, host, port)
+    sr.initTango(name, device, "attribute", attribute, host, port, group=group)
 
     if server:
         xml = df.prettyPrint()
@@ -57,28 +57,18 @@ def createDataSource(name, directory, fileprefix, server, device, attribute,
 ## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options]\n" \
-        + "       nxscreate tangods [options]"
+    usage = "usage: %prog [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] \n" \
+        + "       nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] "
     ## option parser
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-p", "--device-prefix", type="string",
-                      help="device prefix, i.e. exp_c",
+    parser.add_option("-v", "--device", type="string",
+                      help="device, i.e. p09/pilatus300k/01",
                       dest="device", default="")
-    parser.add_option("-f", "--first",
-                      help="first index",
-                      dest="first", default="1")
-    parser.add_option("-l", "--last",
-                      help="last index",
-                      dest="last", default=None)
-
-    parser.add_option("-a", "--attribute", type="string",
-                      help="tango attribute name",
-                      dest="attribute", default="Position")
 
     parser.add_option("-o", "--datasource-prefix", type="string",
                       help="datasource-prefix",
-                      dest="datasource", default="TG_")
+                      dest="datasource", default="")
 
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
@@ -97,6 +87,10 @@ def createParser():
                       default=False, dest="database",
                       help="store components in Configuration Server database")
 
+    parser.add_option("-n", "--no-group", action="store_true",
+                      default=False, dest="nogroup",
+                      help="creates common group with a name of datasource prefix")
+
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
     return parser
@@ -106,7 +100,7 @@ def createParser():
 def main():
 
     parser = createParser()
-    (options, _) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
     if options.database and not options.server:
         if not PYTANGO:
@@ -125,42 +119,33 @@ def main():
     else:
         print "OUTPUT DIRECTORY:", options.directory
 
-    dvargs = []
-    dsargs = []
-    if options.device.strip():
-        try:
-            first = int(options.first)
-        except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
-            parser.print_help()
-            sys.exit(255)
-
-        try:
-            last = int(options.last)
-        except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
-            parser.print_help()
-            sys.exit(255)
-
-        dvargs = generateDeviceNames(options.device, first, last)
-        dsargs = generateDeviceNames(options.datasource, first, last)
-
-    if not dvargs or not len(dvargs):
+    if not options.device.strip():
         parser.print_help()
         sys.exit(255)
 
-    for i in range(len(dvargs)):
+    if args:        
+        aargs = list(args)        
+    else:
+        if not PYTANGO:
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+        aargs = getAttributes(options.device, options.host, options.port)
+
+    for at in aargs:
+        dsname = "%s%s" % (options.datasource, at)
         if not options.database:
-            print "CREATING %s: %s%s.ds.xml" % (
-                dvargs[i], options.file, dsargs[i])
+            print "CREATING %s/%s: %s%s.ds.xml" % (
+                options.device, at, options.file, dsname)
         else:
-            print "STORING %s: %s" % (dvargs[i], dsargs[i])
-        createDataSource(dsargs[i], options.directory, options.file,
+            print "STORING %s/%s: %s" % (options.device, at, dsname)
+        createDataSource(dsname, options.directory, options.file,
                          options.server if options.database else None,
-                         dvargs[i],
-                         options.attribute,
+                         options.device,
+                         at,
                          options.host,
-                         options.port)
+                         options.port, 
+                         options.datasource if not options.nogroup else None)
 
 
 if __name__ == "__main__":

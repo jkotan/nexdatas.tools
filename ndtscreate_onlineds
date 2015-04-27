@@ -1,0 +1,199 @@
+#!/usr/bin/env python
+#   This file is part of nexdatas - Tango Server for NeXus data writer
+#
+#    Copyright (C) 2012-2015 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#
+#    nexdatas is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    nexdatas is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+## \package nxstools tools for nxswriter
+## \file nxscreate_ds_online
+# datasource creator
+
+""" datasource creator from online files """
+
+import sys
+
+from nxstools.nxsxml import XMLFile, NDSource
+from nxstools.nxsdevicetools import (
+    storeDataSource, checkServer)
+
+
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
+from optparse import OptionParser
+from xml.dom.minidom import parse
+
+## creates CLIENT datasource file
+# \param name device name
+# \param directory output file directory
+# \param fileprefix file name prefix
+def createDataSource(name, directory, fileprefix, server, device, attribute,
+                     host, port="10000"):
+    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
+    sr = NDSource(df)
+    sr.initTango(name, device, "attribute", attribute, host, port)
+
+    if server:
+        xml = df.prettyPrint()
+        storeDataSource(name, xml, server)
+    else:
+        df.dump()
+
+
+## provides xml content of the node
+# \param node DOM node
+# \returns xml content string
+def getText(node):
+    if not node:
+        return
+    xml = node.toxml()
+    start = xml.find('>')
+    end = xml.rfind('<')
+    if start == -1 or end < start:
+        return ""
+    return xml[start + 1:end].replace("&lt;", "<").replace("&gt;", "<"). \
+        replace("&quot;", "\"").replace("&amp;", "&")
+
+
+
+
+## the main function
+def main():
+    ## usage example
+    usage = "usage: %prog [options] inputFile\n" \
+        + "       nxscreate dsonline [options] inputFile"
+    ## option parser
+    parser = OptionParser(usage=usage)
+    parser.add_option("-d", "--directory", type="string",
+                      help="output directory where datasources will be stored",
+                      dest="directory", default=".")
+    parser.add_option("-c", "--comments",  action="store_true",
+                      default=False, dest="comments",
+                      help="print xml comments")
+    parser.add_option("-b", "--database", action="store_true",
+                      default=False, dest="database",
+                      help="store components in Configuration Server database")
+    parser.add_option("-n", "--nolower", action="store_false",
+                      default=True, dest="lower",
+                      help="donot change aliases into lower case")
+
+    parser.add_option("-r", "--server", dest="server",
+                      help="configuration server device name")
+    parser.add_option("-x", "--file-prefix", type="string",
+                      help="file prefix, i.e. counter",
+                      dest="file", default="")
+
+    (options, args) = parser.parse_args()
+    if not len(args):
+        parser.print_help()
+        sys.exit(255)
+    print "INPUT:", args
+    print "OUTPUT DIR:", options.directory
+
+
+    if options.database and not options.server:
+        if not PYTANGO:
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+
+        options.server = checkServer()
+        if not options.server:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+
+    indom = parse(args[0])
+    hw = indom.getElementsByTagName("hw")
+    device = hw[0].firstChild
+
+    while device:
+        if device.nodeName == 'device':
+            name = getText(device.getElementsByTagName("name")[0]) \
+                if len(device.getElementsByTagName("name")) else None
+            dtype = getText(device.getElementsByTagName("type")[0]) \
+                if len(device.getElementsByTagName("type")) else None
+            module = getText(device.getElementsByTagName("module")[0]) \
+                if len(device.getElementsByTagName("module")) else None
+            tdevice = getText(device.getElementsByTagName("device")[0]) \
+                if len(device.getElementsByTagName("device")) else None
+            hostname = getText(device.getElementsByTagName("hostname")[0]) \
+                if len(device.getElementsByTagName("hostname")) else None
+            sardananame = getText(
+                device.getElementsByTagName("sardananame")[0]) \
+                if len(device.getElementsByTagName("sardananame")) else None
+#            pool = getText(device.getElementsByTagName("pool")[0]) \
+#                if len(device.getElementsByTagName("pool")) else None
+#            controller = getText(
+#                device.getElementsByTagName("controller")[0]) \
+#                if len(device.getElementsByTagName("controller")) else None
+#            channel = getText(device.getElementsByTagName("channel")[0]) \
+#                if len(device.getElementsByTagName("channel")) else None
+#            rootdevicename = getText(
+#                device.getElementsByTagName("rootdevicename")[0]) \
+#                if len(device.getElementsByTagName("rootdevicename")) else None
+            comment = device.getElementsByTagName("#comment")
+
+            host = hostname.split(":")[0]
+            port = hostname.split(":")[1] \
+                if len(hostname.split(":")) > 1 else None
+
+            attribute = None
+            if module == 'motor_tango' and dtype == 'type_tango':
+                attribute = 'Position'
+            elif dtype == 'stepping_motor':
+                attribute = 'Position'
+            else:
+                print "WARNING %s:    module %s of %s type not defined" \
+                    % (name, module, dtype)
+
+                
+
+            if attribute:    
+                if sardananame:
+                    name = sardananame
+                if options.lower:
+                    name = name.lower()
+                    
+                if not options.database:
+                    print "CREATING %s: %s%s.ds.xml" % (
+                        tdevice, options.file, name)
+                else:
+                    print "STORING %s:    %s/%s" % (name, hostname, tdevice)
+                createDataSource(name, options.directory, options.file,
+                                 options.server if options.database else None,
+                                 tdevice,
+                                 attribute,
+                                 host,
+                                 port)
+
+            
+            
+        elif device.nodeName == '#comment':
+            if options.comments:
+                print "COMMENT:",  "'%s' %s" % (device.data.strip(), comment)
+        else:
+#            print "TEXT:", device.nodeName, "'", device.data.strip(),"'"
+            pass
+        device = device.nextSibling
+
+
+if __name__ == "__main__":
+    main()
