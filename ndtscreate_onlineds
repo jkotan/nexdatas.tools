@@ -151,9 +151,14 @@ def main():
 #                if len(device.getElementsByTagName("rootdevicename")) else None
             comment = device.getElementsByTagName("#comment")
 
-            host = hostname.split(":")[0]
-            port = hostname.split(":")[1] \
-                if len(hostname.split(":")) > 1 else None
+            if hostname:
+                host = hostname.split(":")[0]
+                port = hostname.split(":")[1] \
+                    if len(hostname.split(":")) > 1 else None
+            else:
+                host = None
+                print "ERROR %s: host for module %s of %s type not defined" \
+                    % (name, module, dtype)
 
             attribute = None
             if module == 'motor_tango' and dtype == 'type_tango':
@@ -166,7 +171,7 @@ def main():
 
                 
 
-            if attribute:    
+            if attribute and host:    
                 if sardananame:
                     name = sardananame
                 if options.lower:

@@ -1,3 +1,7 @@
+2015-04-28 Jan Kotanski <jankotan@gmail.com>
+	* adding error message on missing hostname
+	* tagged as v1.6.2
+
 2015-02-26 Jan Kotanski <jankotan@gmail.com>
 	* adding hostname to printout
 	* adding p06 boxes
