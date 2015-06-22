@@ -61,8 +61,9 @@ def getAttributes(device, host=None, port=10000):
         dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
     else:
         dp = PyTango.DeviceProxy(device)
-    attr = dp.attribute_list_query()   
+    attr = dp.attribute_list_query()
     return [at.name for at in attr if at.name not in ['State', 'Status']]
+
 
 ## opens connection to the configuration server
 # \param configuration server device

@@ -62,6 +62,12 @@ class SetUp(object):
                         and servers.value:
                     for vl in servers.value:
                         svl = vl.split('\t')[0]
+                        if name.startswith("NXSRecSelector") \
+                                and svl.startswith("NXSRecSelector"):
+                            if '/' in name:
+                                self.changeLevel(name, 4)
+                            else:
+                                self.changeLevel(svl, 4)
                         if started and svl in started:
                             if '/' in name:
                                 cname = svl
@@ -84,7 +90,18 @@ class SetUp(object):
                                 print " "
                                 if problems:
                                     print svl, "was not restarted"
-                                    print "Warning: Process with the server instance could be suspended"
+                                    print(
+                                        "Warning: Process with the server"
+                                        + "instance could be suspended")
+
+    def changeLevel(self, new, level):
+        host = socket.gethostname()
+        adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
+        sinfo = self.db.get_server_info(new)
+        if level != sinfo.level:
+            sinfo.level = level
+        self.db.put_server_info(sinfo)
+        return True
 
     def startupServer(self, new, level, host, ctrl, device):
         server = self.db.get_server_class_list(new)
@@ -198,7 +215,7 @@ class SetUp(object):
         if jsonsettings:
             dp = PyTango.DeviceProxy(self.cserver_name)
             dp.JSONSettings = jsonsettings
-        try:    
+        try:
             dp.Open()
         except:
             print "createConfigServer: " \
@@ -206,7 +223,6 @@ class SetUp(object):
                 self.cserver_name, jsonsettings)
             print "try to change the settings"
             return 0
-            
 
         return 1
 
@@ -243,7 +259,7 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        self.startupServer(full_class_name, 1, hostname, 1, device_name)
+        self.startupServer(full_class_name, 4, hostname, 1, device_name)
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)

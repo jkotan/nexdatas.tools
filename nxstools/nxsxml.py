@@ -320,7 +320,7 @@ class NDSource(NTag):
             dv.addTagAttr("port", port)
         if encoding:
             dv.addTagAttr("encoding", encoding)
-        if group:    
+        if group:
             dv.addTagAttr("group", group)
 
         da = NTag(self, "record")

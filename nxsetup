@@ -104,7 +104,7 @@ def createParser(user):
         usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
             "-u <local_user> -d <dbname> [-j jsonsettings] " + \
             " [<server_class1> <server_class2> ... ] " + \
-            "\n\n %prog -r [<server_class1> <server_class2> ... ] " 
+            "\n\n %prog -r [<server_class1> <server_class2> ... ] "
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
@@ -181,9 +181,9 @@ def main():
                 sys.exit(255)
 
         if options.csjson:
-            jsonsettings = options.csjson  
+            jsonsettings = options.csjson
         else:
-            jsonsettings =  '{"host":"localhost","db":"%s",'  % options.dbname \
+            jsonsettings = '{"host":"localhost","db":"%s",' % options.dbname \
                 + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
                 + ' "use_unicode":true}'
 
