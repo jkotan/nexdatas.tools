@@ -195,7 +195,7 @@ def main():
                 print "startup failed to create the nexus config server"
                 sys.exit(255)
 
-        if not args or "NXSCRecSelector" in args:
+        if not args or "NXSRecSelector" in args:
             if not setUp.createSelector(
                 beamline=options.beamline,
                 masterHost=options.masterHost):

@@ -1,4 +1,8 @@
 2015-06-24 Jan Kotanski <jankotan@gmail.com>
+	* fix for misprint in NXSRecSelector name
+	* tagged as v1.6.5
+
+2015-06-24 Jan Kotanski <jankotan@gmail.com>
 	* changing NXSRecSelector startup level to 4 or higher
 	* tagged as v1.6.4
 
