@@ -98,7 +98,7 @@ class SetUp(object):
         host = socket.gethostname()
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
         sinfo = self.db.get_server_info(new)
-        if level != sinfo.level:
+        if level > sinfo.level:
             sinfo.level = level
         self.db.put_server_info(sinfo)
         return True
