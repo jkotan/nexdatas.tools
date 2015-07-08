@@ -165,10 +165,10 @@ def main():
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
-            elif module == 'tangoattributectctrl' and dtype='counter':
+            elif module == 'tangoattributectctrl' and dtype == 'counter':
                 attribute = 'Value'
                 group = '__CLIENT__'
-            elif module == 'counter_tango' and dtype='type_tango':
+            elif module == 'counter_tango' and dtype == 'type_tango':
                 attribute = 'Value'
                 group = '__CLIENT__'
             else:
