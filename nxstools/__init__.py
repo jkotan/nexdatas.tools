@@ -22,4 +22,4 @@
 """  NXS tools """
 
 ## package version
-__version__ = "1.6.7"
+__version__ = "1.6.8"

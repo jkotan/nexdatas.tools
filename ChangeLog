@@ -1,4 +1,8 @@
 2015-07-08 Jan Kotanski <jankotan@gmail.com>
+	* fix for counter_tango
+	* tagged as v1.6.8
+
+2015-07-08 Jan Kotanski <jankotan@gmail.com>
 	* adding tangoattributectctrl and counter_tango
 	* tagged as v1.6.7
 
