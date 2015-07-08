@@ -44,7 +44,7 @@ from xml.dom.minidom import parse
 # \param directory output file directory
 # \param fileprefix file name prefix
 def createDataSource(name, directory, fileprefix, server, device, attribute,
-                     host, port="10000"):
+                     host, port="10000", group=None):
     df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
     sr = NDSource(df)
     sr.initTango(name, device, "attribute", attribute, host, port)
@@ -150,7 +150,7 @@ def main():
 #                device.getElementsByTagName("rootdevicename")[0]) \
 #                if len(device.getElementsByTagName("rootdevicename")) else None
             comment = device.getElementsByTagName("#comment")
-
+            group = None
             if hostname:
                 host = hostname.split(":")[0]
                 port = hostname.split(":")[1] \
@@ -165,6 +165,12 @@ def main():
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
+            elif module == 'tangoattributectctrl' and dtype='counter':
+                attribute = 'Value'
+                group = '__CLIENT__'
+            elif module == 'counter_tango' and dtype='type_tango':
+                attribute = 'Value'
+                group = '__CLIENT__'
             else:
                 print "WARNING %s:    module %s of %s type not defined" \
                     % (name, module, dtype)
@@ -187,7 +193,8 @@ def main():
                                  tdevice,
                                  attribute,
                                  host,
-                                 port)
+                                 port,
+                                 group)
 
             
             
