@@ -28,7 +28,6 @@ from nxstools.nxsdevicetools import (
     storeDataSource, checkServer)
 
 
-
 PYTANGO = False
 try:
     import PyTango
@@ -39,6 +38,7 @@ except:
 from optparse import OptionParser
 from xml.dom.minidom import parse
 
+
 ## creates CLIENT datasource file
 # \param name device name
 # \param directory output file directory
@@ -47,7 +47,7 @@ def createDataSource(name, directory, fileprefix, server, device, attribute,
                      host, port="10000", group=None):
     df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
     sr = NDSource(df)
-    sr.initTango(name, device, "attribute", attribute, host, port)
+    sr.initTango(name, device, "attribute", attribute, host, port, group=group)
 
     if server:
         xml = df.prettyPrint()
@@ -69,8 +69,6 @@ def getText(node):
         return ""
     return xml[start + 1:end].replace("&lt;", "<").replace("&gt;", "<"). \
         replace("&quot;", "\"").replace("&amp;", "&")
-
-
 
 
 ## the main function
@@ -106,7 +104,6 @@ def main():
     print "INPUT:", args
     print "OUTPUT DIR:", options.directory
 
-
     if options.database and not options.server:
         if not PYTANGO:
             print >> sys.stderr, "CollCompCreator No PyTango installed\n"
@@ -118,7 +115,6 @@ def main():
             parser.print_help()
             print ""
             sys.exit(0)
-
 
     indom = parse(args[0])
     hw = indom.getElementsByTagName("hw")
@@ -139,6 +135,10 @@ def main():
             sardananame = getText(
                 device.getElementsByTagName("sardananame")[0]) \
                 if len(device.getElementsByTagName("sardananame")) else None
+            sardanahostname = getText(
+                device.getElementsByTagName("sardanahostname")[0]) \
+                if len(device.getElementsByTagName("sardanahostname")) \
+                else None
 #            pool = getText(device.getElementsByTagName("pool")[0]) \
 #                if len(device.getElementsByTagName("pool")) else None
 #            controller = getText(
@@ -148,9 +148,11 @@ def main():
 #                if len(device.getElementsByTagName("channel")) else None
 #            rootdevicename = getText(
 #                device.getElementsByTagName("rootdevicename")[0]) \
-#                if len(device.getElementsByTagName("rootdevicename")) else None
+#                if len(device.getElementsByTagName("rootdevicename")) \
+#                else None
             comment = device.getElementsByTagName("#comment")
             group = None
+
             if hostname:
                 host = hostname.split(":")[0]
                 port = hostname.split(":")[1] \
@@ -165,9 +167,21 @@ def main():
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
-            elif module == 'tangoattributectctrl' and dtype == 'counter':
-                attribute = 'Value'
-                group = '__CLIENT__'
+            elif PYTANGO and module == 'tangoattributectctrl' \
+                    and dtype == 'counter':
+                if sardanahostname:
+                    mhost = sardanahostname
+                else:
+                    mhost = hostname
+                try:
+                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, name)))
+                    tdevice = str(dp.name())
+                    attribute = 'Value'
+                    group = '__CLIENT__'
+                except Exception as e:
+                                    print "ERROR %s/%s with %s/%s: %s " \
+                    % (host, tdevice, mhost, name, str(e))
+
             elif module == 'counter_tango' and dtype == 'type_tango':
                 attribute = 'Value'
                 group = '__CLIENT__'
@@ -175,14 +189,12 @@ def main():
                 print "WARNING %s:    module %s of %s type not defined" \
                     % (name, module, dtype)
 
-                
-
-            if attribute and host:    
+            if attribute and host:
                 if sardananame:
                     name = sardananame
                 if options.lower:
                     name = name.lower()
-                    
+
                 if not options.database:
                     print "CREATING %s: %s%s.ds.xml" % (
                         tdevice, options.file, name)
@@ -196,8 +208,6 @@ def main():
                                  port,
                                  group)
 
-            
-            
         elif device.nodeName == '#comment':
             if options.comments:
                 print "COMMENT:",  "'%s' %s" % (device.data.strip(), comment)
