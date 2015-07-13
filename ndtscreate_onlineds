@@ -167,24 +167,28 @@ def main():
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
-            elif PYTANGO and module == 'tangoattributectctrl' \
-                    and dtype == 'counter':
+            elif PYTANGO and \
+                    (module == 'tangoattributectctrl' and dtype == 'counter') \
+                    or (module == 'counter_tango' and dtype == 'type_tango'):
                 if sardanahostname:
                     mhost = sardanahostname
                 else:
                     mhost = hostname
                 try:
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, name)))
-                    tdevice = str(dp.name())
+                    mdevice = str(dp.name())
+                    
+                    if not hasattr(dp, "Value"):
+                        raise Exception("Missing attribute: Value")
+                    tdevice = mdevice
                     attribute = 'Value'
                     group = '__CLIENT__'
                 except Exception as e:
-                                    print "ERROR %s/%s with %s/%s: %s " \
-                    % (host, tdevice, mhost, name, str(e))
+                    attribute = 'Counts'
+                    group = '__CLIENT__'
+#                    print "ERROR %s/%s with %s/%s: %s " \
+#                        % (host, tdevice, mhost, name, str(e))
 
-            elif module == 'counter_tango' and dtype == 'type_tango':
-                attribute = 'Counts'
-                group = '__CLIENT__'
             else:
                 print "WARNING %s:    module %s of %s type not defined" \
                     % (name, module, dtype)

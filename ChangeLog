@@ -1,3 +1,7 @@
+2015-07-13 Jan Kotanski <jankotan@gmail.com>
+	* switching counter_tango to pool ones
+	* tagged as v1.6.9
+
 2015-07-08 Jan Kotanski <jankotan@gmail.com>
 	* fix for counter_tango
 	* tagged as v1.6.8
