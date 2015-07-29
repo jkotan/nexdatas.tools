@@ -80,6 +80,8 @@ knownHosts = {
                 'user': 'p64user', 'dbname': 'nxsconfig'},
     'hasnp65': {'beamline': 'p65', 'masterHost': 'hasnp65',
                 'user': 'p65user', 'dbname': 'nxsconfig'},
+    'hasnp66': {'beamline': 'p66', 'masterHost': 'hasnp66',
+                'user': 'p66user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
     'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
@@ -125,6 +127,9 @@ def createParser(user):
     parser.add_option("-r", "--restart", action="store_true",
                       default=False, dest="restart",
                       help="restart server(s) action")
+    parser.add_option("-a", "--add-recorder-path", action="store", type="string",
+                      dest="recpath",
+                      help="add recorder path")
     return parser
 
 
@@ -139,7 +144,7 @@ def main():
     parser = createParser(local_user)
     (options, args) = parser.parse_args()
 
-    if not options.execute and not options.restart:
+    if not options.execute and not options.restart and not options.recpath:
         parser.print_help()
         print "\n"
         sys.exit(255)
@@ -210,6 +215,11 @@ def main():
             "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
         for server in servers:
             setUp.restartServer(server)
+
+    if options.recpath:
+        setUp = nxssetup.SetUp()
+        if setUp.changeRecorderPath(options.recpath):
+            setUp.restartServer("MacroServer")
 
 
 if __name__ == "__main__":

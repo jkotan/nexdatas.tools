@@ -42,6 +42,35 @@ class SetUp(object):
         self.cserver_name = None
         self._psub = None
 
+    def changeRecorderPath(self, path):
+        res = False
+        if not os.path.isdir(path):
+            return res
+        mss = self.db.get_server_list("MacroServer/*").value_string
+        for ms in mss:
+            devserv = self.db.get_device_class_list(
+                "MacroServer/haso228k").value_string
+            dev = devserv[0::2]
+            serv = devserv[1::2]
+            for idx, ser in enumerate(serv):
+                if ser == 'MacroServer':
+                    if dev[idx]:
+                        recorderpaths = self.db.get_device_property(
+                            dev[idx], "ScanRecorderPath")["ScanRecorderPath"]
+                        if recorderpaths:
+                            recorderpaths = [p for p in recorderpaths if p] 
+                        else:    
+                            recorderpaths = [] 
+                        if path not in recorderpaths:
+                            recorderpaths.append(path)
+                            self.db.put_device_property(
+                                dev[idx], 
+                                {"ScanRecorderPath": recorderpaths})
+                            res = True
+        time.sleep(0.2)
+        return res              
+        
+
     def restartServer(self, name, host=None):
         if name:
             if not host:
@@ -111,6 +140,18 @@ class SetUp(object):
             return False
 
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
+        startdspaths = self.db.get_device_property('tango/admin/' + host,
+                                                  "StartDsPath")["StartDsPath"]
+        if '/usr/bin' not in stardspaths:
+            if startdspaths:
+                startdspaths = [p for p in startdspaths if p] 
+            else:    
+                startdspaths = [] 
+            startdspaths.append('/usr/bin')
+            self.db.put_device_property(
+                'tango/admin/' + host, {"StartDsPath": startdspaths})
+            adminproxy.Init()
+            
         sinfo = self.db.get_server_info(new)
         sinfo.name = new
         sinfo.host = host

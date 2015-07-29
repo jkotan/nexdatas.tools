@@ -1,3 +1,8 @@
+2015-07-29 Jan Kotanski <jankotan@gmail.com>
+	* adding scan recorder paths
+	* adding hasnp66 to nxsetup
+	* tagged as v1.7.0
+
 2015-07-13 Jan Kotanski <jankotan@gmail.com>
 	* switching counter_tango to pool ones
 	* tagged as v1.6.9
