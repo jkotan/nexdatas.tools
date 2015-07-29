@@ -142,7 +142,7 @@ class SetUp(object):
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
         startdspaths = self.db.get_device_property('tango/admin/' + host,
                                                   "StartDsPath")["StartDsPath"]
-        if '/usr/bin' not in stardspaths:
+        if '/usr/bin' not in startdspaths:
             if startdspaths:
                 startdspaths = [p for p in startdspaths if p] 
             else:    
