@@ -58,18 +58,17 @@ class SetUp(object):
                         recorderpaths = self.db.get_device_property(
                             dev[idx], "ScanRecorderPath")["ScanRecorderPath"]
                         if recorderpaths:
-                            recorderpaths = [p for p in recorderpaths if p] 
-                        else:    
-                            recorderpaths = [] 
+                            recorderpaths = [p for p in recorderpaths if p]
+                        else:
+                            recorderpaths = []
                         if path not in recorderpaths:
                             recorderpaths.append(path)
                             self.db.put_device_property(
-                                dev[idx], 
+                                dev[idx],
                                 {"ScanRecorderPath": recorderpaths})
                             res = True
         time.sleep(0.2)
-        return res              
-        
+        return res
 
     def restartServer(self, name, host=None):
         if name:
@@ -144,14 +143,14 @@ class SetUp(object):
                                                   "StartDsPath")["StartDsPath"]
         if '/usr/bin' not in startdspaths:
             if startdspaths:
-                startdspaths = [p for p in startdspaths if p] 
-            else:    
-                startdspaths = [] 
+                startdspaths = [p for p in startdspaths if p]
+            else:
+                startdspaths = []
             startdspaths.append('/usr/bin')
             self.db.put_device_property(
                 'tango/admin/' + host, {"StartDsPath": startdspaths})
             adminproxy.Init()
-            
+
         sinfo = self.db.get_server_info(new)
         sinfo.name = new
         sinfo.host = host
