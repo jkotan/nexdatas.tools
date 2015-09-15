@@ -56,7 +56,7 @@ class SetUp(object):
                 if ser == 'MacroServer':
                     if dev[idx]:
                         recorderpaths = self.db.get_device_property(
-                            dev[idx], "ScanRecorderPath")["ScanRecorderPath"]
+                            dev[idx], "RecorderPath")["RecorderPath"]
                         if recorderpaths:
                             recorderpaths = [p for p in recorderpaths if p]
                         else:
@@ -65,7 +65,7 @@ class SetUp(object):
                             recorderpaths.append(path)
                             self.db.put_device_property(
                                 dev[idx],
-                                {"ScanRecorderPath": recorderpaths})
+                                {"RecorderPath": recorderpaths})
                             res = True
         time.sleep(0.2)
         return res
