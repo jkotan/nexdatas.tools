@@ -48,8 +48,7 @@ class SetUp(object):
             return res
         mss = self.db.get_server_list("MacroServer/*").value_string
         for ms in mss:
-            devserv = self.db.get_device_class_list(
-                "MacroServer/haso228k").value_string
+            devserv = self.db.get_device_class_list(ms).value_string
             dev = devserv[0::2]
             serv = devserv[1::2]
             for idx, ser in enumerate(serv):
