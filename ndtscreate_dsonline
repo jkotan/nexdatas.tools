@@ -55,7 +55,7 @@ def getText(node):
 # \param server database host name
 def getDB(server=None):
     if server:
-        if not ":" in server:
+        if ":" not in server:
             server = server + ":10000"
         localtango = os.environ['TANGO_HOST']
         os.environ['TANGO_HOST'] = server
@@ -81,7 +81,7 @@ def main():
                       dest="dir", default=".")
     parser.add_option("-s", "--server", dest="server",
                       help="Server host name with the TANGO database")
-    parser.add_option("-c", "--comments",  action="store_true",
+    parser.add_option("-c", "--comments", action="store_true",
                       default=False, dest="comments",
                       help="print xml comments")
 
@@ -89,8 +89,8 @@ def main():
     if not len(args):
         parser.print_help()
         sys.exit(255)
-    print "INPUT:", args
-    print "OUTPUT DIR:", options.dir
+    print("INPUT: %s" % args)
+    print("OUTPUT DIR: %s" % options.dir)
 
     server = None
     if options.server and options.server.strip():
@@ -176,7 +176,7 @@ def main():
                     "Error: No record source for %s %s\n" % (name, tdevice))
                 sys.stderr.flush()
             if comment:
-                print "##", [device.data.strip()] * len(comment)
+                print("## %s" % [device.data.strip()] * len(comment))
 
             print name, dtype, module, tdevice, host, port, pool, \
                 controller, channel, rootdevicename, sdevice
@@ -184,9 +184,8 @@ def main():
                 df.dump()
         elif device.nodeName == '#comment':
             if options.comments:
-                print "COMMENT:",  "'%s'" % device.data.strip()
+                print("COMMENT:  '%s'" % device.data.strip())
         else:
-#            print "TEXT:", device.nodeName, "'", device.data.strip(),"'"
             pass
         device = device.nextSibling
 

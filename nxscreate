@@ -26,11 +26,11 @@ if len(sys.argv) < 2 or sys.argv[1] not in commands:
         + "    comp \n" \
         + "         create simple components \n\n"
 
-    print message
+    print(message)
 else:
     cmd = sys.argv[1]
     os.system("%s/ndtscreate_%s %s" % (
-            os.path.dirname(os.path.realpath(__file__)),
-            cmd,
-            ' '.join("'%s'" % arg.replace("'", "\\'")
-                     for arg in sys.argv[2:])))
+        os.path.dirname(os.path.realpath(__file__)),
+        cmd,
+        ' '.join("'%s'" % arg.replace("'", "\\'")
+                 for arg in sys.argv[2:])))

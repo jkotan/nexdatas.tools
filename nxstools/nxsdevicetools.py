@@ -75,7 +75,7 @@ def openServer(device):
     try:
         ## configuration server proxy
         cnfServer = PyTango.DeviceProxy(device)
-    except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
+    except (PyTango.DevFailed, PyTango.Except, PyTango.DevError):
         found = True
 
     if found:
@@ -90,7 +90,7 @@ def openServer(device):
         try:
             if cnfServer.state() != PyTango.DevState.RUNNING:
                 found = True
-        except (PyTango.DevFailed, PyTango.Except,  PyTango.DevError):
+        except (PyTango.DevFailed, PyTango.Except, PyTango.DevError):
             time.sleep(0.01)
             found = False
         cnt += 1
@@ -151,7 +151,7 @@ def listServers(server, name='NXSConfigServer'):
     if lserver:
         lserver = lserver.strip()
     if lserver:
-        if not ":" in lserver:
+        if ":" not in lserver:
             lserver = lserver + ":10000"
         localtango = os.environ.get('TANGO_HOST')
         os.environ['TANGO_HOST'] = lserver

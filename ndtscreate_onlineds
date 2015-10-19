@@ -81,7 +81,7 @@ def main():
     parser.add_option("-d", "--directory", type="string",
                       help="output directory where datasources will be stored",
                       dest="directory", default=".")
-    parser.add_option("-c", "--comments",  action="store_true",
+    parser.add_option("-c", "--comments", action="store_true",
                       default=False, dest="comments",
                       help="print xml comments")
     parser.add_option("-b", "--database", action="store_true",
@@ -101,19 +101,19 @@ def main():
     if not len(args):
         parser.print_help()
         sys.exit(255)
-    print "INPUT:", args
-    print "OUTPUT DIR:", options.directory
+    print("INPUT: %s" % args)
+    print("OUTPUT DIR: %s" % options.directory)
 
     if options.database and not options.server:
         if not PYTANGO:
-            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            sys.stderr.write("CollCompCreator No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
         options.server = checkServer()
         if not options.server:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
     indom = parse(args[0])
@@ -159,8 +159,8 @@ def main():
                     if len(hostname.split(":")) > 1 else None
             else:
                 host = None
-                print "ERROR %s: host for module %s of %s type not defined" \
-                    % (name, module, dtype)
+                print("ERROR %s: host for module %s of %s type not defined"
+                      % (name, module, dtype))
 
             attribute = None
             if module == 'motor_tango' and dtype == 'type_tango':
@@ -177,7 +177,7 @@ def main():
                 try:
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, name)))
                     mdevice = str(dp.name())
-                    
+
                     if not hasattr(dp, "Value"):
                         raise Exception("Missing attribute: Value")
                     tdevice = mdevice
@@ -186,12 +186,10 @@ def main():
                 except Exception as e:
                     attribute = 'Counts'
                     group = '__CLIENT__'
-#                    print "ERROR %s/%s with %s/%s: %s " \
-#                        % (host, tdevice, mhost, name, str(e))
 
             else:
-                print "WARNING %s:    module %s of %s type not defined" \
-                    % (name, module, dtype)
+                print("WARNING %s:    module %s of %s type not defined"
+                      % (name, module, dtype))
 
             if attribute and host:
                 if sardananame:
@@ -200,10 +198,10 @@ def main():
                     name = name.lower()
 
                 if not options.database:
-                    print "CREATING %s: %s%s.ds.xml" % (
-                        tdevice, options.file, name)
+                    print("CREATING %s: %s%s.ds.xml" % (
+                        tdevice, options.file, name))
                 else:
-                    print "STORING %s:    %s/%s" % (name, hostname, tdevice)
+                    print("STORING %s:    %s/%s" % (name, hostname, tdevice))
                 createDataSource(name, options.directory, options.file,
                                  options.server if options.database else None,
                                  tdevice,
@@ -214,9 +212,8 @@ def main():
 
         elif device.nodeName == '#comment':
             if options.comments:
-                print "COMMENT:",  "'%s' %s" % (device.data.strip(), comment)
+                print("COMMENT:   '%s' %s" % (device.data.strip(), comment))
         else:
-#            print "TEXT:", device.nodeName, "'", device.data.strip(),"'"
             pass
         device = device.nextSibling
 

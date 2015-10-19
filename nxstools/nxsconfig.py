@@ -374,13 +374,13 @@ def createParser():
     parser = OptionParser(usage=usage)
     parser.add_option("-s", "--server", dest="server",
                       help="configuration server device name")
-    parser.add_option("-d", "--datasources",  action="store_true",
+    parser.add_option("-d", "--datasources", action="store_true",
                       default=False, dest="datasources",
                       help="perform operation on datasources")
-    parser.add_option("-m", "--mandatory",  action="store_true",
+    parser.add_option("-m", "--mandatory", action="store_true",
                       default=False, dest="mandatory",
                       help="make use mandatory components as well")
-    parser.add_option("-n", "--no-newlines",  action="store_true",
+    parser.add_option("-n", "--no-newlines", action="store_true",
                       default=False, dest="nonewlines",
                       help="split result with space characters")
 
@@ -404,7 +404,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':
-        print "\n".join(listServers(options.server, 'NXSConfigServer'))
+        print("\n".join(listServers(options.server, 'NXSConfigServer')))
         return
 
     if not options.server:
@@ -412,7 +412,7 @@ def main():
 
     if not args or args[0] not in commands or not options.server:
         parser.print_help()
-        print ""
+        print("")
         sys.exit(0)
 
     ## command-line and pipe arguments
@@ -431,7 +431,7 @@ def main():
     result = cnfserver.performCommand(args[0], options.datasources,
                                       parg, options.mandatory)
     if result.strip():
-        print result
+        print(result)
 
 
 if __name__ == "__main__":

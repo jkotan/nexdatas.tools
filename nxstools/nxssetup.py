@@ -34,8 +34,8 @@ class SetUp(object):
         try:
             self.db = PyTango.Database()
         except:
-            print "Can't connect to tango database on", \
-                os.getenv('TANGO_HOST')
+            print("Can't connect to tango database on %s" %
+                  os.getenv('TANGO_HOST'))
             sys.exit(255)
 
         self.writer_name = None
@@ -103,27 +103,24 @@ class SetUp(object):
                             if cname == name:
                                 adminproxy.DevStop(svl)
                                 problems = True
-                                print "Restarting:", svl, "",
+                                sys.stdout.write("Restarting: %s" % svl)
                                 counter = 0
                                 while problems and counter < 100:
                                     try:
-                                        print '.',
+                                        sys.stdout.write('.')
                                         sys.stdout.flush()
                                         adminproxy.DevStart(svl)
                                         problems = False
                                     except:
                                         counter += 1
                                         time.sleep(0.2)
-                                print " "
+                                print(" ")
                                 if problems:
-                                    print svl, "was not restarted"
-                                    print(
-                                        "Warning: Process with the server"
-                                        + "instance could be suspended")
+                                    print("%s was not restarted" % svl)
+                                    print("Warning: Process with the server"
+                                          "instance could be suspended")
 
     def changeLevel(self, new, level):
-        host = socket.gethostname()
-        adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
         sinfo = self.db.get_server_info(new)
         if level > sinfo.level:
             sinfo.level = level
@@ -138,8 +135,9 @@ class SetUp(object):
             return False
 
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
-        startdspaths = self.db.get_device_property('tango/admin/' + host,
-                                                  "StartDsPath")["StartDsPath"]
+        startdspaths = self.db.get_device_property(
+            'tango/admin/' + host,
+            "StartDsPath")["StartDsPath"]
         if '/usr/bin' not in startdspaths:
             if startdspaths:
                 startdspaths = [p for p in startdspaths if p]
@@ -161,18 +159,18 @@ class SetUp(object):
             adminproxy.DevStart(new)
         adminproxy.UpdateServersInfo()
 
-        print "waiting for server",
+        sys.stdout.write("waiting for server")
 
         found = False
         cnt = 0
         while not found and cnt < 1000:
             try:
-                print "\b.",
+                sys.stdout.write(".")
                 dp = PyTango.DeviceProxy(device)
                 time.sleep(0.01)
                 dp.ping()
                 found = True
-                print device, "is working"
+                print("%s is working" % device)
             except:
                 found = False
             cnt += 1
@@ -181,10 +179,10 @@ class SetUp(object):
     def createDataWriter(self, beamline, masterHost):
         """Create DataWriter """
         if not beamline:
-            print "createDataWriter: no beamline given "
+            print("createDataWriter: no beamline given ")
             return 0
         if not masterHost:
-            print "createDataWriter: no masterHost given "
+            print("createDataWriter: no masterHost given ")
             return 0
 
         class_name = 'NXSDataWriter'
@@ -192,11 +190,11 @@ class SetUp(object):
         server_name = server + '/' + masterHost
         full_class_name = 'NXSDataWriter/' + masterHost
         self.writer_name = "%s/nxsdatawriter/%s" % (beamline, masterHost)
-        if not server_name in self.db.get_server_list(server_name):
-            print "createDataWriter: creating " + server_name
+        if server_name not in self.db.get_server_list(server_name):
+            print("createDataWriter: creating %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
-                print "createDataWriter: DB contains already " + server_name
+                print("createDataWriter: DB contains already %s" % server_name)
                 return 0
 
             di = PyTango.DbDevInfo()
@@ -217,21 +215,22 @@ class SetUp(object):
     def createConfigServer(self, beamline, masterHost, jsonsettings=None):
         """Create DataWriter """
         if not beamline:
-            print "createConfigServer: no beamline given "
+            print("createConfigServer: no beamline given ")
             return 0
         if not masterHost:
-            print "createConfigServer: no masterHost given "
+            print("createConfigServer: no masterHost given ")
             return 0
 
         class_name = 'NXSConfigServer'
         server = class_name
         server_name = server + '/' + masterHost
         self.cserver_name = "%s/nxsconfigserver/%s" % (beamline, masterHost)
-        if not server_name in self.db.get_server_list(server_name):
-            print "createConfigServer: creating " + server_name
+        if server_name not in self.db.get_server_list(server_name):
+            print("createConfigServer: creating %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
-                print "createConfigServer: DB contains already " + server_name
+                print("createConfigServer: DB contains already %s"
+                      % server_name)
                 return 0
 
             di = PyTango.DbDevInfo()
@@ -242,7 +241,7 @@ class SetUp(object):
             self.db.add_device(di)
             self.db.put_device_property(
                 self.cserver_name, {'VersionLabel': '%s@%s' % (
-                        beamline.upper(), masterHost.upper())})
+                    beamline.upper(), masterHost.upper())})
 
         hostname = self.db.get_db_host().split(".")[0]
 
@@ -257,10 +256,11 @@ class SetUp(object):
         try:
             dp.Open()
         except:
-            print "createConfigServer: " \
-                + "%s cannot connect the database with JSONSettings: \n%s " % (
-                self.cserver_name, jsonsettings)
-            print "try to change the settings"
+            print("createConfigServer: "
+                  "%s cannot connect the"
+                  " database with JSONSettings: \n%s " % (
+                      self.cserver_name, jsonsettings))
+            print("try to change the settings")
             return 0
 
         return 1
@@ -268,10 +268,10 @@ class SetUp(object):
     def createSelector(self, beamline, masterHost, writer=None, cserver=None):
         """Create Selector Server """
         if not beamline:
-            print "createSelector: no beamline given "
+            print("createSelector: no beamline given ")
             return 0
         if not masterHost:
-            print "createSelector: no masterHost given "
+            print("createSelector: no masterHost given ")
             return 0
         if writer:
             self.writer_name = writer
@@ -283,11 +283,11 @@ class SetUp(object):
         server_name = server + '/' + masterHost
         full_class_name = 'NXSRecSelector/' + masterHost
         device_name = "%s/nxsrecselector/%s" % (beamline, masterHost)
-        if not server_name in self.db.get_server_list(server_name):
-            print "createSelector: creating " + server_name
+        if server_name not in self.db.get_server_list(server_name):
+            print("createSelector: creating %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
-                print "createSelector: DB contains already " + server_name
+                print("createSelector: DB contains already %s" % server_name)
                 return 0
 
             di = PyTango.DbDevInfo()

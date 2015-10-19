@@ -76,7 +76,7 @@ SETUPDATA = dict(
         'ndtscreate_comp',
         'nxscreate',
         'nxsetup',
-        ],
+    ],
     long_description=read('README')
 )
 

@@ -82,10 +82,10 @@ def createParser():
                       help="datasource prefix, i.e. counter",
                       dest="dsource", default="")
 
-    parser.add_option("-b", "--database",  action="store_true",
+    parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
-    parser.add_option("-m", "--minimal_device",  action="store_true",
+    parser.add_option("-m", "--minimal_device", action="store_true",
                       default=False, dest="minimal",
                       help="device name without first '0'")
 
@@ -103,20 +103,20 @@ def main():
 
     if options.database and not options.server:
         if not PYTANGO:
-            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            sys.stderr.write("CollCompCreator No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
         options.server = checkServer()
         if not options.server:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
     if options.database:
-        print "CONFIG SERVER:", options.server
+        print("CONFIG SERVER: %s" % options.server)
     else:
-        print "OUTPUT DIRECTORY:", options.directory
+        print("OUTPUT DIRECTORY: %s" % options.directory)
 
     dsargs = None
     aargs = []
@@ -124,14 +124,14 @@ def main():
         try:
             first = int(options.first)
         except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
+            sys.stderr.write("ClientDSCreator: Invalid --first parameter\n")
             parser.print_help()
             sys.exit(255)
 
         try:
             last = int(options.last)
         except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
+            sys.stderr.write("ClientDSCreator: Invalid --last parameter\n")
             parser.print_help()
             sys.exit(255)
 
@@ -152,9 +152,9 @@ def main():
 
     for i in range(len(args)):
         if not options.database:
-            print "CREATING: %s%s.ds.xml" % (options.file, dsargs[i])
+            print("CREATING: %s%s.ds.xml" % (options.file, dsargs[i]))
         else:
-            print "STORING: %s" % (dsargs[i])
+            print("STORING: %s" % (dsargs[i]))
         createDataSource(
             args[i], options.directory, options.file,
             options.server if options.database else None,

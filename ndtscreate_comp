@@ -113,11 +113,11 @@ def createParser():
                       help="nexus units of the field",
                       dest="units", default="")
 
-    parser.add_option("-k", "--links",  action="store_true",
+    parser.add_option("-k", "--links", action="store_true",
                       default=False, dest="links",
                       help="create datasource links")
 
-    parser.add_option("-b", "--database",  action="store_true",
+    parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
 
@@ -134,34 +134,34 @@ def main():
 
     if options.database and not options.server:
         if not PYTANGO:
-            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            sys.stderr.write("CollCompCreator No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
         options.server = checkServer()
         if not options.server:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
     if options.database:
-        print "CONFIG SERVER:", options.server
+        print("CONFIG SERVER: %s" % options.server)
     else:
-        print "OUTPUT DIRECTORY:", options.directory
+        print("OUTPUT DIRECTORY: %s" % options.directory)
 
     aargs = []
     if options.device.strip():
         try:
             first = int(options.first)
         except:
-            print >> sys.stderr, "CollCompCreator Invalid --first parameter\n"
+            sys.stderr.write("CollCompCreator Invalid --first parameter\n")
             parser.print_help()
             sys.exit(255)
 
         try:
             last = int(options.last)
         except:
-            print >> sys.stderr, "CollCompCreator Invalid --last parameter\n"
+            sys.stderr.write("CollCompCreator Invalid --last parameter\n")
             parser.print_help()
             sys.exit(255)
 
@@ -174,9 +174,9 @@ def main():
 
     for name in args:
         if not options.database:
-            print "CREATING: %s%s.xml" % (options.file, name)
+            print("CREATING: %s%s.xml" % (options.file, name))
         else:
-            print "STORING: %s" % (name)
+            print("STORING: %s" % (name))
         createComponent(name, options.directory, options.file,
                         options.collection,
                         options.strategy,

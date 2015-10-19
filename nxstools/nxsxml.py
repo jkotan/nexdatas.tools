@@ -199,7 +199,7 @@ class NField(NTag):
     # \param compression flag if compression shuold be applied
     # \param rate compression rate
     # \param shuffle flag if compression shuffle
-    def setStrategy(self,  mode="STEP", trigger=None, value=None,
+    def setStrategy(self, mode="STEP", trigger=None, value=None,
                     grows=None, compression=False, rate=None,
                     shuffle=None):
         ## strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
@@ -266,9 +266,9 @@ class NDSource(NTag):
     # \param mode mode for ORACLE databases, i.e. SYSDBA or SYSOPER
     # \param host name of the host
     # \param port port number
-    def initDBase(self, name, dbtype, query, dbname=None,  rank=None,
-                  mycnf=None,  user=None,
-                  passwd=None,  dsn=None,  mode=None, host=None, port=None):
+    def initDBase(self, name, dbtype, query, dbname=None, rank=None,
+                  mycnf=None, user=None,
+                  passwd=None, dsn=None, mode=None, host=None, port=None):
         self.addTagAttr("type", "DB")
         self.addTagAttr("name", name)
         da = NTag(self, "database")
@@ -394,7 +394,7 @@ class NDeviceGroup(NGroup):
               "DevInt",
               "DevEncoded"]
 
-        ## NeXuS types corresponding to the Tango types
+    ## NeXuS types corresponding to the Tango types
     nTypes = ["NX_CHAR",
               "NX_BOOLEAN",
               "NX_INT32",
@@ -453,7 +453,7 @@ class NDeviceGroup(NGroup):
     # \brief It collects the device properties
     def _fetchProperties(self):
         prop = self._proxy.get_property_list('*')
-        print "PROP", prop
+        print("PROPERIES %s" % prop)
         for pr in prop:
             self.addAttr(pr, "NX_CHAR",
                          str(self._proxy.get_property(pr)[pr][0]))
@@ -473,18 +473,18 @@ class NDeviceGroup(NGroup):
         attr = self._proxy.get_attribute_list()
         for at in attr:
 
-            print at
+            print(at)
             cf = self._proxy.attribute_query(at)
             print "QUERY"
-            print cf
-            print cf.name
-            print cf.data_format
-            print cf.standard_unit
-            print cf.display_unit
-            print cf.unit
-            print self.tTypes[cf.data_type]
-            print self.nTypes[cf.data_type]
-            print cf.data_type
+            print(cf)
+            print(cf.name)
+            print(cf.data_format)
+            print(cf.standard_unit)
+            print(cf.display_unit)
+            print(cf.unit)
+            print(self.tTypes[cf.data_type])
+            print(self.nTypes[cf.data_type])
+            print(cf.data_type)
 
             if at not in self._fields and at not in self._blackAttrs:
                 self._fields[at] = NField(self, at, self.nTypes[cf.data_type])
@@ -524,16 +524,17 @@ class NDeviceGroup(NGroup):
     def _fetchCommands(self):
                 ## list of the device commands
         cmd = self._proxy.command_list_query()
-        print "COMMANDS", cmd
+        print("COMMANDS %s" % cmd)
         for cd in cmd:
             if str(cd.in_type).split(".")[-1] == "DevVoid" \
                     and str(cd.out_type).split(".")[-1] != "DevVoid" \
                     and str(cd.out_type).split(".")[-1] in self.tTypes \
                     and cd.cmd_name not in self._fields:
                 self._fields[cd.cmd_name] = \
-                    NField(self, cd.cmd_name,
-                           self.nTypes[self.tTypes.index(
-                                str(cd.out_type).split(".")[-1])])
+                    NField(
+                        self, cd.cmd_name,
+                        self.nTypes[self.tTypes.index(
+                            str(cd.out_type).split(".")[-1])])
                 self._fields[cd.cmd_name].setStrategy("STEP")
                 sr = NDSource(self._fields[cd.cmd_name])
                 sr.initTango(self._deviceName, self._deviceName,
