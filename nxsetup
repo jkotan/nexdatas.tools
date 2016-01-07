@@ -97,6 +97,8 @@ def createParser(user):
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
                 " [<server_class1> <server_class2> ... ] " + \
                 "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
+                "\n\n %prog -p -n newname -o oldname " + \
+                "[<server_class1> <server_class2> ... ] " + \
                 "\n\n  (%s is known, -b %s, -m %s -u %s -d %s ) \n" % (
                     hostname,
                     knownHosts[hostname]['beamline'],
@@ -124,12 +126,19 @@ def createParser(user):
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")
+    parser.add_option("-o", "--oldname", action="store", type="string",
+                      dest="oldname", help="old property name")
+    parser.add_option("-n", "--newname", action="store", type="string",
+                      dest="newname", help="new property name")
     parser.add_option("-r", "--restart", action="store_true",
                       default=False, dest="restart",
                       help="restart server(s) action")
     parser.add_option("-a", "--add-recorder-path", action="store",
                       type="string", dest="recpath",
                       help="add recorder path")
+    parser.add_option("-p", "--move-prop", action="store_true",
+                      default=False, dest="moveprop",
+                      help="change property name")
     return parser
 
 
@@ -144,7 +153,8 @@ def main():
     parser = createParser(local_user)
     (options, args) = parser.parse_args()
 
-    if not options.execute and not options.restart and not options.recpath:
+    if not options.execute and not options.restart and not options.recpath \
+       and not options.moveprop:
         parser.print_help()
         print("\n")
         sys.exit(255)
@@ -220,6 +230,17 @@ def main():
         setUp = nxssetup.SetUp()
         if setUp.changeRecorderPath(options.recpath):
             setUp.restartServer("MacroServer")
+
+    if options.moveprop:
+        if not options.newname or not options.oldname or not args:
+            parser.print_help()
+            sys.exit(255)
+        servers = args or []
+        setUp = nxssetup.SetUp()
+        for server in servers:
+            if setUp.changePropertyName(
+                    server, options.oldname, options.newname):
+                setUp.restartServer(server)
 
 
 if __name__ == "__main__":

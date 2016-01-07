@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2015 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -66,6 +66,32 @@ class SetUp(object):
                                 dev[idx],
                                 {"RecorderPath": recorderpaths})
                             res = True
+        time.sleep(0.2)
+        return res
+
+    def changePropertyName(self, server, oldname, newname, sclass=None):
+        sclass = sclass or server
+        res = False
+        mss = self.db.get_server_list("%s/*" % server).value_string
+        for ms in mss:
+            devserv = self.db.get_device_class_list(ms).value_string
+            dev = devserv[0::2]
+            serv = devserv[1::2]
+            for idx, ser in enumerate(serv):
+                if ser == sclass:
+                    if dev[idx]:
+                        if not self.db.get_device_property(
+                                dev[idx], newname)[newname]:
+                            oldprop = self.db.get_device_property(
+                                dev[idx], oldname)[oldname]
+                            if oldprop:
+                                oldprop = [p for p in oldprop if p]
+                                self.db.put_device_property(
+                                    dev[idx],
+                                    {newname: oldprop})
+                                self.db.delete_device_property(
+                                    dev[idx], oldname)
+                                res = True
         time.sleep(0.2)
         return res
 
