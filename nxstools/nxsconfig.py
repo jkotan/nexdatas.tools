@@ -23,9 +23,10 @@
 """ Command-line tool for ascess to the nexdatas configuration server """
 
 import sys
+import json
 
 from optparse import OptionParser
-from xml.dom.minidom import parseString
+from .nxsparser import ParserTools, TableTools
 
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
@@ -40,21 +41,6 @@ class ConfigServer(object):
         self.__char = " " if nonewline else "\n"
         self.cnfServer = openServer(device)
         self.cnfServer.Open()
-
-    ## provides  xml content of the node
-    # \param node DOM node
-    # \returns xml content string
-    @classmethod
-    def getText(cls, node):
-        if not node:
-            return
-        xml = node.toxml()
-        start = xml.find('>')
-        end = xml.rfind('<')
-        if start == -1 or end < start:
-            return ""
-        return xml[start + 1:end].replace("&lt;", "<").replace("&gt;", ">"). \
-            replace("&quot;", "\"").replace("&amp;", "&")
 
     ## lists the DB item names
     # \param ds flag set True for datasources
@@ -127,33 +113,6 @@ class ConfigServer(object):
 
         return result
 
-    ## fetches record name or query from datasource node
-    # \param node datasource node
-    # \returns record name or query
-    @classmethod
-    def getRecord(cls, node):
-        withRec = ["CLIENT", "TANGO"]
-        withQuery = ["DB"]
-        if node.nodeName == 'datasource':
-            dsource = node
-        else:
-            dsource = node.getElementsByTagName("datasource")[0] \
-                if len(node.getElementsByTagName("datasource")) else None
-        dstype = dsource.attributes["type"] \
-            if dsource and dsource.hasAttribute("type") else None
-        if dstype.value in withRec:
-            rec = dsource.getElementsByTagName("record")[0] \
-                if dsource and len(dsource.getElementsByTagName("record")) \
-                else None
-            rc = rec.attributes["name"] if rec.hasAttribute("name") else None
-            if rc:
-                return rc.value
-        elif dstype.value in withQuery:
-            query = cls.getText(dsource.getElementsByTagName("query")[0]) \
-                if len(dsource.getElementsByTagName("query")) else None
-            if query and query.strip():
-                return query.strip()
-
     ## provides datasources and its records for a given component
     # \param name given component or datasource
     # \returns tuple with names and records
@@ -163,22 +122,19 @@ class ConfigServer(object):
         interNames = []
         xmlcp = self.cnfServer.Components([name])
         for xmlc in xmlcp:
-            indom = parseString(xmlc)
-            dsources = indom.getElementsByTagName("datasource")
-            for dsrc in dsources:
-                dsname = dsrc.attributes["name"] \
-                    if dsrc and dsrc.hasAttribute("name") else None
-                if dsname and dsname.value:
-                    interNames.append(dsname.value)
-                    rec = self.getRecord(dsrc)
-                    if rec:
-                        records.append(rec)
+            dslist = ParserTools.parseDataSources(xmlc)
+            for ds in dslist:
+                if ds["ds_name"]:
+                    interNames.append(ds["ds_name"])
+                if ds["source"]:
+                    records.append(ds["source"])
 
             allNames = self.cnfServer.ComponentDataSources(name)
             for nm in allNames:
                 if nm not in interNames:
                     names.append(nm)
         return (names, records)
+
 
     ## lists datasources of the component
     # \param ds flag set True for datasources
@@ -208,11 +164,9 @@ class ConfigServer(object):
         for xml in xmls:
             if xml:
                 try:
-                    indom = parseString(xml)
-                    rec = self.getRecord(indom)
+                    rec = ParserTools.parseRecord(xml)
                     if rec:
                         records.append(rec)
-
                 except:
                     sys.stderr.write(
                         "Error: Datasource %s cannot be parsed\n" % xml)
@@ -273,6 +227,57 @@ class ConfigServer(object):
             return self.cnfServer.XMLString
         return ""
 
+    ## Provides description of  final configuration
+    # \param ds flag set True for datasources
+    # \param args list of item names
+    # \returns string with description table
+    def describeCmd(self, ds, args, md):
+        xmls = ""
+        description = []
+        if ds:
+            dss = self.cnfServer.AvailableDataSources()
+            for ar in args:
+                if ar not in dss:
+                    sys.stderr.write(
+                        "Error: DataSource %s not stored in "
+                        "the configuration server\n" % ar)
+                    sys.stderr.flush()
+                    return ""
+            if args:
+                dss = self.cnfServer.DataSources(args)
+                xmls = ParserTools.addDefinitions(dss).strip()
+                description.extend(ParserTools.parseDataSources(xmls))
+
+        else:
+            cmps = self.cnfServer.AvailableComponents()
+            for ar in args:
+                if ar not in cmps:
+                    sys.stderr.write(
+                        "Error: Component %s not stored in "
+                        "the configuration server\n" % ar)
+                    sys.stderr.flush()
+                    return ""
+
+            if md:    
+                self.cnfServer.CreateConfiguration(args)
+                xmls = str(self.cnfServer.XMLString).strip()
+            else:
+                xmlc = self.cnfServer.instantiatedComponents(args)
+                if xmlc:
+                    xmls = ParserTools.addDefinitions(xmlc).strip()
+                
+            if xmls:        
+                description.extend(ParserTools.parseFields(xmls))
+        if not description:
+            sys.stderr.write(
+                "\nHint: add components as command arguments "
+                "or -m for mandatory components \n\n")
+            sys.stderr.flush()
+            return ""
+        ttools = TableTools(description)
+        
+        return ttools.generateList()
+
     ## Provides varaible values
     # \param args list of item names
     # \returns JSON with variables
@@ -326,6 +331,8 @@ class ConfigServer(object):
             string = self.__char.join(self.dataCmd(args))
         elif command == 'record':
             string = self.__char.join(self.recordCmd(ds, args[0]))
+        elif command == 'describe':
+            string = self.__char.join(self.describeCmd(ds, args, mandatory))
         return string
 
 
@@ -398,7 +405,8 @@ def main():
         pipe = sys.stdin.readlines()
 
     commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
-                'record': 1, 'merge': 0, 'components': 0, 'data': 0}
+                'record': 1, 'merge': 0, 'components': 0, 'data': 0,
+                'describe':0}
 
     parser = createParser()
     (options, args) = parser.parse_args()

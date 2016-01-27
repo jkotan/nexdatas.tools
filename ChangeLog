@@ -1,3 +1,7 @@
+2016-01-XX Jan Kotanski <jankotan@gmail.com>
+	* add describe command
+	* tagged as v1.10.0
+
 2016-01-07 Jan Kotanski <jankotan@gmail.com>
 	* add change property name command
 	* tagged as v1.9.0
