@@ -65,7 +65,7 @@ class ConfigServer(object):
         result = []
         for component in components:
             if component not in cmps:
-                sys.stderr.write("Error: Component %s not stored in "
+                sys.stderr.write("Error: Component '%s' not stored in "
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
@@ -85,7 +85,7 @@ class ConfigServer(object):
         result = []
         for component in components:
             if component not in cmps:
-                sys.stderr.write("Error: Component %s not stored in "
+                sys.stderr.write("Error: Component '%s' not stored in "
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
@@ -101,7 +101,7 @@ class ConfigServer(object):
         result = []
         for component in components:
             if component not in cmps:
-                sys.stderr.write("Error: Component %s not stored in "
+                sys.stderr.write("Error: Component '%s' not stored in "
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
@@ -124,8 +124,8 @@ class ConfigServer(object):
         for xmlc in xmlcp:
             dslist = ParserTools.parseDataSources(xmlc)
             for ds in dslist:
-                if ds["ds_name"]:
-                    interNames.append(ds["ds_name"])
+                if ds["source_name"]:
+                    interNames.append(ds["source_name"])
                 if ds["source"]:
                     records.append(ds["source"])
 
@@ -135,7 +135,6 @@ class ConfigServer(object):
                     names.append(nm)
         return (names, records)
 
-
     ## lists datasources of the component
     # \param ds flag set True for datasources
     # \param name given component or datasource
@@ -144,7 +143,7 @@ class ConfigServer(object):
         if not ds:
             cmps = self.cnfServer.AvailableComponents()
             if name not in cmps:
-                sys.stderr.write("Error: Component %s not stored in "
+                sys.stderr.write("Error: Component '%s' not stored in "
                                  "the configuration server\n" % name)
                 sys.stderr.flush()
                 return []
@@ -155,7 +154,7 @@ class ConfigServer(object):
         dsrcs = self.cnfServer.AvailableDataSources()
         for nm in names:
             if nm not in dsrcs:
-                sys.stderr.write("Error: Datasource %s not stored in "
+                sys.stderr.write("Error: Datasource '%s' not stored in "
                                  "the configuration server\n" % nm)
                 sys.stderr.flush()
                 return []
@@ -169,7 +168,7 @@ class ConfigServer(object):
                         records.append(rec)
                 except:
                     sys.stderr.write(
-                        "Error: Datasource %s cannot be parsed\n" % xml)
+                        "Error: Datasource '%s' cannot be parsed\n" % xml)
                     sys.stderr.write(str(sys.exc_info()[0]) + ": "
                                      + str(sys.exc_info()[1]) + '\n')
                     sys.stderr.flush()
@@ -186,7 +185,7 @@ class ConfigServer(object):
             dsrc = self.cnfServer.AvailableDataSources()
             for ar in args:
                 if ar not in dsrc:
-                    sys.stderr.write("Error: DataSource %s not stored in "
+                    sys.stderr.write("Error: DataSource '%s' not stored in "
                                      "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return []
@@ -195,7 +194,7 @@ class ConfigServer(object):
             cmps = self.cnfServer.AvailableComponents()
             for ar in args:
                 if ar not in cmps:
-                    sys.stderr.write("Error: Component %s not stored in "
+                    sys.stderr.write("Error: Component '%s' not stored in "
                                      "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return []
@@ -219,7 +218,7 @@ class ConfigServer(object):
             for ar in args:
                 if ar not in cmps:
                     sys.stderr.write(
-                        "Error: Component %s not stored in "
+                        "Error: Component '%s' not stored in "
                         "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return ""
@@ -227,56 +226,186 @@ class ConfigServer(object):
             return self.cnfServer.XMLString
         return ""
 
-    ## Provides description of  final configuration
-    # \param ds flag set True for datasources
+    ## Provides description of datasources
     # \param args list of item names
-    # \returns string with description table
-    def describeCmd(self, ds, args, md):
+    # \param headers list of output parameters
+    # \returns list with description
+    def __describeDataSources(self, args, headers=None):
+        xmls = ""
+        parameters = []
+        description = []
+        dss = self.cnfServer.AvailableDataSources()
+        for ar in args:
+            if ar not in dss:
+                sys.stderr.write(
+                    "Error: DataSource '%s' not stored in "
+                    "the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
+        headers = headers or ["source_type", "source"]
+        if args:
+            dsxmls = self.cnfServer.DataSources(args)
+            for i, xmls in enumerate(dsxmls):
+                parameters = ParserTools.parseDataSources(xmls)
+                ttools = TableTools(parameters)
+                ttools.title = "    DataSource: '%s'" % args[i]
+                ttools.headers = headers
+                description.extend(ttools.generateList())
+        else:
+            dsxmls = self.cnfServer.DataSources(dss)
+            xmls = ParserTools.addDefinitions(dsxmls).strip()
+            parameters.extend(ParserTools.parseDataSources(xmls))
+            ttools = TableTools(parameters)
+            headers = ["source_name"].extend(headers)
+            if headers:
+                ttools.headers = headers
+            description.extend(ttools.generateList())
+
+        if not description:
+            sys.stderr.write(
+                "\nHint: add datasource names as command arguments "
+                "or -m for mandatory components \n\n")
+            sys.stderr.flush()
+            return ""
+        return description
+
+    ## Provides description of components
+    # \param args list of item names
+    # \param headers list of output parameters
+    # \param nonone list of parameters which have to exist to be shown
+    # \returns list with description
+    def __describeComponents(self, args, headers=None, nonone=None):
+        xmls = ""
+        parameters = []
+        description = []
+        cmps = self.cnfServer.AvailableComponents()
+        for ar in args:
+            if ar not in cmps:
+                sys.stderr.write(
+                    "Error: Component '%s' not stored in "
+                    "the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
+        args = args or cmps
+        if args:
+            try:
+                cpxmls = self.cnfServer.instantiatedComponents(args)
+            except:
+                cpxmls = []
+                for ar in args:
+                    try:
+                        cpxmls.extend(
+                            self.cnfServer.instantiatedComponents([ar]))
+                    except:
+                        cpxmls.extend(self.cnfServer.Components([ar]))
+                        sys.stderr.write(
+                            "Error: Component '%s' cannot be instantiated\n"
+                            % ar)
+                        sys.stderr.flush()
+
+            for i, xmls in enumerate(cpxmls):
+                parameters = ParserTools.parseFields(xmls)
+                ttools = TableTools(parameters, nonone)
+                ttools.title = "    Component: '%s'" % args[i]
+                if headers:
+                    ttools.headers = headers
+                description.extend(ttools.generateList())
+
+        if not description:
+            sys.stderr.write(
+                "\nHint: add component names as command arguments "
+                "or -m for mandatory components \n\n")
+            sys.stderr.flush()
+            return ""
+        return description
+
+    ## Provides description of final configuration
+    # \param args list of item names
+    # \param headers list of output parameters
+    # \param nonone list of parameters which have to exist to be shown
+    # \returns list with description
+    def __describeConfiguration(self, args, headers=None, nonone=None):
         xmls = ""
         description = []
-        if ds:
-            dss = self.cnfServer.AvailableDataSources()
-            for ar in args:
-                if ar not in dss:
-                    sys.stderr.write(
-                        "Error: DataSource %s not stored in "
-                        "the configuration server\n" % ar)
-                    sys.stderr.flush()
-                    return ""
-            if args:
-                dss = self.cnfServer.DataSources(args)
-                xmls = ParserTools.addDefinitions(dss).strip()
-                description.extend(ParserTools.parseDataSources(xmls))
+        cmps = self.cnfServer.AvailableComponents()
+        for ar in args:
+            if ar not in cmps:
+                sys.stderr.write(
+                    "Error: Component '%s' not stored in "
+                    "the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
 
-        else:
-            cmps = self.cnfServer.AvailableComponents()
-            for ar in args:
-                if ar not in cmps:
-                    sys.stderr.write(
-                        "Error: Component %s not stored in "
-                        "the configuration server\n" % ar)
-                    sys.stderr.flush()
-                    return ""
-
-            if md:    
-                self.cnfServer.CreateConfiguration(args)
-                xmls = str(self.cnfServer.XMLString).strip()
-            else:
-                xmlc = self.cnfServer.instantiatedComponents(args)
-                if xmlc:
-                    xmls = ParserTools.addDefinitions(xmlc).strip()
-                
-            if xmls:        
-                description.extend(ParserTools.parseFields(xmls))
+        self.cnfServer.CreateConfiguration(args)
+        xmls = str(self.cnfServer.XMLString).strip()
+        if xmls:
+            description.extend(ParserTools.parseFields(xmls))
         if not description:
             sys.stderr.write(
                 "\nHint: add components as command arguments "
                 "or -m for mandatory components \n\n")
             sys.stderr.flush()
             return ""
-        ttools = TableTools(description)
-        
+        ttools = TableTools(description, nonone)
+        if headers:
+            ttools.headers = headers
         return ttools.generateList()
+
+    ## Provides description of configuration elements
+    # \param ds flag set True for datasources
+    # \param args list of item names
+    # \param md flag set True for mandatory components
+    # \returns list with description
+    def describeCmd(self, ds, args, md):
+        if ds:
+            return self.__describeDataSources(args)
+        elif not md:
+            return self.__describeComponents(args)
+        else:
+            return self.__describeConfiguration(args)
+
+    ## Provides info for given elements
+    # \param ds flag set True for datasources
+    # \param args list of item names
+    # \param md flag set True for mandatory components
+    # \returns list with description
+    def infoCmd(self, ds, args, md):
+        cpheaders = [
+            "source_name",
+            "source_type",
+            "nexus_type",
+            "shape",
+            "strategy",
+            "units",
+            "source",
+        ]
+        nonone = ["source_name"]
+        if ds:
+            return self.__describeDataSources(args)
+        elif not md:
+            return self.__describeComponents(args, cpheaders, nonone)
+        else:
+            return self.__describeConfiguration(args, cpheaders, nonone)
+
+    ## Provides geometry info for given elements
+    # \param ds flag set True for datasources
+    # \param args list of item names
+    # \param md flag set True for mandatory components
+    # \returns list with description
+    def geometryCmd(self, ds, args, md):
+        cpheaders = [
+            "nexus_path",
+            "depends_on",
+            "trans_type",
+            "trans_vector",
+            "source_name",
+        ]
+        if ds:
+            return []
+        elif not md:
+            return self.__describeComponents(args, cpheaders)
+        else:
+            return self.__describeConfiguration(args, cpheaders)
 
     ## Provides varaible values
     # \param args list of item names
@@ -298,7 +427,7 @@ class ConfigServer(object):
             for ar in args:
                 if ar not in cmps:
                     sys.stderr.write(
-                        "Error: Component %s not stored "
+                        "Error: Component '%s' not stored "
                         "in the configuration server\n" % ar)
                     sys.stderr.flush()
                     return ""
@@ -333,6 +462,10 @@ class ConfigServer(object):
             string = self.__char.join(self.recordCmd(ds, args[0]))
         elif command == 'describe':
             string = self.__char.join(self.describeCmd(ds, args, mandatory))
+        elif command == 'info':
+            string = self.__char.join(self.infoCmd(ds, args, mandatory))
+        elif command == 'geometry':
+            string = self.__char.join(self.geometryCmd(ds, args, mandatory))
         return string
 
 
@@ -375,6 +508,18 @@ def createParser():
             + "   servers [-s <config_server/host>] \n" \
             + "          get lists of configuration servers from " \
             + "the current tango host\n"\
+            + "   describe [-s <config_server>] [-m] component_name1 " \
+            + "component_name2 ...  \n" \
+            + "          show all parameters of given components \n" \
+            + "   describe|info -d [-s <config_server>] dsource_name1 "  \
+            + "dsource_name2 ...  \n" \
+            + "          show all parameters of given datasources \n" \
+            + "   info [-s <config_server>] [-m] component_name1 " \
+            + "component_name2 ...  \n" \
+            + "          show source parameters of given components \n" \
+            + "   geometry [-s <config_server>] [-m] component_name1 " \
+            + "component_name2 ...  \n" \
+            + "          show transformation parameters of given components \n" \
             + " "
 
     ## option parser
@@ -406,7 +551,7 @@ def main():
 
     commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
                 'record': 1, 'merge': 0, 'components': 0, 'data': 0,
-                'describe':0}
+                'describe': 0, 'info': 0, 'geometry': 0}
 
     parser = createParser()
     (options, args) = parser.parse_args()

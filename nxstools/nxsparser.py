@@ -100,7 +100,7 @@ class ParserTools(object):
                             res = '%s/%s' % (dname, rname)
                     else:
                         res = rname
-            return res            
+            return res
         elif dstype and dstype.value in withQuery:
             query = cls.getText(dsource.getElementsByTagName("query")[0]) \
                 if len(dsource.getElementsByTagName("query")) else None
@@ -118,7 +118,7 @@ class ParserTools(object):
             for xmlc in xmls[1:]:
                 indom2 = parseString(xmlc)
                 definisions = indom2.getElementsByTagName("definition")
-                for defin in  definisions:
+                for defin in definisions:
                     for tag in defin.childNodes:
                         imp = indom1.importNode(tag, True)
                         indom1.childNodes[0].appendChild(imp)
@@ -155,10 +155,9 @@ class ParserTools(object):
                     dsname = None
                 record = cls.getRecord(ds)
                 dslist.append({
-                    "ds_type": dstype,
-                    "ds_name":dsname,
+                    "source_type": dstype,
+                    "source_name": dsname,
                     "source": record,
-                    #                "tag": "datasource"
                 })
 
         return dslist
@@ -180,8 +179,8 @@ class ParserTools(object):
                     if len(gname) > 2:
                         gname = gname[2:]
                 name = gname + "/" + name
-        return name    
-    
+        return name
+
     ## provides value of attirbute
     # \param node minidom node
     # \returns attribute value
@@ -244,13 +243,12 @@ class ParserTools(object):
     def __getChildrenByTagName(cls, parent, name):
         children = []
         for child in parent.childNodes:
-#            for child in node.childNodes:
-                if child.nodeType == xml.dom.Node.ELEMENT_NODE:
-                    if child.tagName == name:
-                        children.append(child)
-    
+            if child.nodeType == xml.dom.Node.ELEMENT_NODE:
+                if child.tagName == name:
+                    children.append(child)
+
         return children
-    
+
     ## provides datasources and its records from xml string
     # \param xmlc xml string
     # \returns list of datasource descriptions
@@ -276,31 +274,28 @@ class ParserTools(object):
                 shape = cls.__getShape(dnodes[0]) if dnodes else None
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
                 strategy = cls.__getAttr(stnodes[0], "mode") \
-                           if stnodes else None
-                
+                    if stnodes else None
+
                 fdinfo = {"nexus_type": nxtype,
-                # "field_name":fdname,
                           "source": record,
                           "units": units,
-                #          "tag": tagname,
                           "shape": shape,
                           "strategy": strategy,
                           "trans_type": trtype,
                           "trans_vector": trvector,
                           "depends_on": trdependson,
                           "nexus_path": nxpath,
-                          "value":value}
+                          "value": value}
                 dss = cls.__getDataSources(nd, direct=True)
                 if dss:
                     for ds in dss:
-                       ds.update(fdinfo)
-                       taglist.append(ds)
+                        ds.update(fdinfo)
+                        taglist.append(ds)
                 else:
                     taglist.append(fdinfo)
 
         return taglist
 
-    
     ## provides source record from xml string
     # \param xmlc xml string
     # \returns source record
@@ -309,26 +304,15 @@ class ParserTools(object):
         indom = parseString(xmlc)
         return cls.getRecord(indom)
 
-    
+
 ## configuration server adapter
 class TableTools(object):
 
-    def __init__(self, description):
-        self.__desciption = description
+    def __init__(self, description, nonone=None):
+        self.__nonone = nonone or []
+        self.__description = []
         self.__hdsizes = {}
-        for desc in description:
-            for hd, vl in desc.items():
-                if hd not in self.__hdsizes.keys():
-                    self.__hdsizes[hd] = max(len(hd) + 1, 5)
-                if isinstance(vl, (list, tuple)):
-                    vl = self.__toString(vl)
-                if not isinstance(vl, str):
-                    vl = str(vl)
-                if self.__hdsizes[hd] <= len(vl):
-                    self.__hdsizes[hd] = len(vl) + 1
-        print self.__hdsizes.keys()
-
-        self.hdorder = [
+        self.headers = [
             'nexus_path',
             'nexus_type',
             'strategy',
@@ -337,46 +321,78 @@ class TableTools(object):
             'depends_on',
             'trans_type',
             'trans_vector',
-            'ds_name',
-            'ds_type',
+            'source_name',
+            'source_type',
             'source',
             'value',
         ]
+        self.title = None
+        self.__prepareDescription(description)
+
+    def __prepareDescription(self, description):
+        for desc in description:
+            skip = False
+            field = desc.get("nexus_path", "").split('/')[-1]
+            value = desc.get("value", "")
+            if field == 'depends_on' and value:
+                desc["depends_on"] = "[%s]" % value
+            for hd in self.__nonone:
+                vl = desc.get(hd, "")
+                if isinstance(vl, (list, tuple)):
+                    vl = self.__toString(vl)
+                if not vl:
+                    skip = True
+                    break
+            if not skip:
+                self.__description.append(desc)
+
+        for desc in self.__description:
+            for hd, vl in desc.items():
+                if hd not in self.__nonone or vl:
+                    if hd not in self.__hdsizes.keys():
+                        self.__hdsizes[hd] = max(len(hd) + 1, 5)
+                    if isinstance(vl, (list, tuple)):
+                        vl = self.__toString(vl)
+                    if not isinstance(vl, str):
+                        vl = str(vl)
+                    if self.__hdsizes[hd] <= len(vl):
+                        self.__hdsizes[hd] = len(vl) + 1
 
     @classmethod
     def __toString(cls, lst):
         res = []
         for it in lst:
             res.append(it or "*")
-        return(str(res))                
-    
-    def generateList(self, headers=None):
-        if not headers:
-            headers = self.__hdsizes.keys()
-        mheaders = [hd for hd in self.hdorder if hd in headers]
-        mheaders.extend(set(headers) - set(self.hdorder))
-        line = ""
-        for hd in mheaders:
-            line += hd + " " * (self.__hdsizes[hd] - len(hd))
-        lst = [line] 
-        line = ""
-        for hd in mheaders:
-            line += "-" * (self.__hdsizes[hd]-1) + " "
-        lst.append(line)
-        for desc in self.__desciption:
-            line = ""
-            for hd in mheaders:
+        return(str(res))
 
-                vl  = desc[hd] if hd in desc else None
+    def generateList(self):
+        lst = [""]
+        if self.title is not None:
+            lst.append(self.title)
+            lst.append("")
+        line = ""
+        headers = [hd for hd in self.headers if hd in self.__hdsizes.keys()]
+        for hd in headers:
+            line += hd + " " * (self.__hdsizes[hd] - len(hd))
+        lst.append(line)
+        line = ""
+        for hd in headers:
+            line += "-" * (self.__hdsizes[hd] - 1) + " "
+        lst.append(line)
+        for desc in self.__description:
+            line = ""
+            value = None
+            field = None
+            for hd in headers:
+                vl = desc[hd] if hd in desc else None
                 if isinstance(vl, (list, tuple)):
                     vl = self.__toString(vl)
-                elif vl is None:            
-                    vl = "None"
+                elif vl is None:
+                    vl = ""
                 elif not isinstance(vl, str):
                     vl = str(vl)
-                            
                 line += vl + " " * (self.__hdsizes[hd] - len(vl))
+
             lst.append(line)
-        return lst    
-            
-            
+        lst.append("")
+        return lst

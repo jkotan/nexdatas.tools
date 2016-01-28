@@ -1,5 +1,5 @@
-2016-01-XX Jan Kotanski <jankotan@gmail.com>
-	* add describe command
+2016-01-28 Jan Kotanski <jankotan@gmail.com>
+	* add describe, info and geometry commands
 	* tagged as v1.10.0
 
 2016-01-07 Jan Kotanski <jankotan@gmail.com>
