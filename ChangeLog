@@ -1,3 +1,7 @@
+2016-02-01 Jan Kotanski <jankotan@gmail.com>
+	* change order of displayed info and geometry in nxsconfig
+	* tagged as v1.10.1
+
 2016-01-28 Jan Kotanski <jankotan@gmail.com>
 	* add describe, info and geometry commands
 	* tagged as v1.10.0

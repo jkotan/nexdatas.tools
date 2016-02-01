@@ -268,6 +268,7 @@ class ParserTools(object):
                 value = cls.getPureText(nd) or None
                 trtype = cls.__getAttr(nd, "transformation_type", True)
                 trvector = cls.__getAttr(nd, "vector", True)
+                troffset = cls.__getAttr(nd, "offset", True)
                 trdependson = cls.__getAttr(nd, "depends_on", True)
                 nxpath = cls.__getPath(nd)
                 dnodes = cls.__getChildrenByTagName(nd, "dimensions")
@@ -283,6 +284,7 @@ class ParserTools(object):
                           "strategy": strategy,
                           "trans_type": trtype,
                           "trans_vector": trvector,
+                          "trans_offset": troffset,
                           "depends_on": trdependson,
                           "nexus_path": nxpath,
                           "value": value}
@@ -321,6 +323,7 @@ class TableTools(object):
             'depends_on',
             'trans_type',
             'trans_vector',
+            'trans_offset',
             'source_name',
             'source_type',
             'source',

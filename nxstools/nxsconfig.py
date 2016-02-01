@@ -376,7 +376,6 @@ class ConfigServer(object):
             "nexus_type",
             "shape",
             "strategy",
-            "units",
             "source",
         ]
         nonone = ["source_name"]
@@ -395,10 +394,12 @@ class ConfigServer(object):
     def geometryCmd(self, ds, args, md):
         cpheaders = [
             "nexus_path",
-            "depends_on",
+            "source_name",
+            "units",
             "trans_type",
             "trans_vector",
-            "source_name",
+            "trans_offset",
+            "depends_on",
         ]
         if ds:
             return []
