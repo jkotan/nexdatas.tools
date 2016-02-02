@@ -1,3 +1,7 @@
+2016-02-02 Jan Kotanski <jankotan@gmail.com>
+	* add datasources of datasources
+	* tagged as v1.10.2
+
 2016-02-01 Jan Kotanski <jankotan@gmail.com>
 	* change order of displayed info and geometry in nxsconfig
 	* tagged as v1.10.1

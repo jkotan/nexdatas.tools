@@ -278,7 +278,6 @@ class ParserTools(object):
                     if stnodes else None
 
                 fdinfo = {"nexus_type": nxtype,
-                          "source": record,
                           "units": units,
                           "shape": shape,
                           "strategy": strategy,
@@ -293,6 +292,15 @@ class ParserTools(object):
                     for ds in dss:
                         ds.update(fdinfo)
                         taglist.append(ds)
+                        nddss = cls.__getChildrenByTagName(nd, "datasource")
+                        for ndds in nddss:
+                            sdss = cls.__getDataSources(ndds, direct=True)
+                            if sdss:
+                                for sds in sdss:
+                                    sds.update(fdinfo)
+                                    sds["source_name"] \
+                                        = "\\" + sds["source_name"]
+                                    taglist.append(sds)
                 else:
                     taglist.append(fdinfo)
 
