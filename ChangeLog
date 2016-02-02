@@ -1,4 +1,8 @@
 2016-02-02 Jan Kotanski <jankotan@gmail.com>
+	* remove parent parameter for datasources of datasource
+	* tagged as v1.10.3
+
+2016-02-02 Jan Kotanski <jankotan@gmail.com>
 	* add datasources of datasources
 	* tagged as v1.10.2
 

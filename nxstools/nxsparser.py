@@ -277,16 +277,21 @@ class ParserTools(object):
                 strategy = cls.__getAttr(stnodes[0], "mode") \
                     if stnodes else None
 
-                fdinfo = {"nexus_type": nxtype,
-                          "units": units,
-                          "shape": shape,
-                          "strategy": strategy,
-                          "trans_type": trtype,
-                          "trans_vector": trvector,
-                          "trans_offset": troffset,
-                          "depends_on": trdependson,
-                          "nexus_path": nxpath,
-                          "value": value}
+                sfdinfo = {
+                    "strategy": strategy,
+                    "nexus_path": nxpath,
+                }
+                fdinfo = {
+                    "nexus_type": nxtype,
+                    "units": units,
+                    "shape": shape,
+                    "trans_type": trtype,
+                    "trans_vector": trvector,
+                    "trans_offset": troffset,
+                    "depends_on": trdependson,
+                    "value": value
+                }
+                fdinfo.update(sfdinfo)
                 dss = cls.__getDataSources(nd, direct=True)
                 if dss:
                     for ds in dss:
@@ -297,7 +302,7 @@ class ParserTools(object):
                             sdss = cls.__getDataSources(ndds, direct=True)
                             if sdss:
                                 for sds in sdss:
-                                    sds.update(fdinfo)
+                                    sds.update(sfdinfo)
                                     sds["source_name"] \
                                         = "\\" + sds["source_name"]
                                     taglist.append(sds)
