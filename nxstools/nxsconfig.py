@@ -45,16 +45,21 @@ class ConfigServer(object):
     ## lists the DB item names
     # \param ds flag set True for datasources
     # \param mandatory flag set True for mandatory components
+    # \param private flag set True for components starting with '__'
     # \returns list op item names
-    def listCmd(self, ds, mandatory=False):
+    def listCmd(self, ds, mandatory=False, private=False):
         if ds:
             if not mandatory:
                 return self.cnfServer.AvailableDataSources()
         else:
             if mandatory:
                 return self.cnfServer.MandatoryComponents()
+            elif private:
+                return [cp for cp in self.cnfServer.AvailableComponents()
+                        if cp.startswith("__")]
             else:
-                return self.cnfServer.AvailableComponents()
+                return [cp for cp in self.cnfServer.AvailableComponents()
+                        if not cp.startswith("__")]
         return []
 
     ## lists datasources of the components
@@ -273,8 +278,10 @@ class ConfigServer(object):
     # \param args list of item names
     # \param headers list of output parameters
     # \param nonone list of parameters which have to exist to be shown
+    # \param private flag set True for components starting with '__'
     # \returns list with description
-    def __describeComponents(self, args, headers=None, nonone=None):
+    def __describeComponents(self, args, headers=None, nonone=None,
+                             private=False):
         xmls = ""
         parameters = []
         description = []
@@ -286,6 +293,11 @@ class ConfigServer(object):
                     "the configuration server\n" % ar)
                 sys.stderr.flush()
                 return ""
+        if not args:
+            if private:
+                args = [cp for cp in cmps if cp.startswith("__")]
+            else:
+                args = [cp for cp in cmps if not cp.startswith("__")]
         args = args or cmps
         if args:
             try:
@@ -355,12 +367,13 @@ class ConfigServer(object):
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param md flag set True for mandatory components
+    # \param pr flag set True for private components
     # \returns list with description
-    def describeCmd(self, ds, args, md):
+    def describeCmd(self, ds, args, md, pr):
         if ds:
             return self.__describeDataSources(args)
         elif not md:
-            return self.__describeComponents(args)
+            return self.__describeComponents(args, private=pr)
         else:
             return self.__describeConfiguration(args)
 
@@ -368,8 +381,9 @@ class ConfigServer(object):
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param md flag set True for mandatory components
+    # \param pr flag set True for private components
     # \returns list with description
-    def infoCmd(self, ds, args, md):
+    def infoCmd(self, ds, args, md, pr):
         cpheaders = [
             "source_name",
             "source_type",
@@ -382,7 +396,7 @@ class ConfigServer(object):
         if ds:
             return self.__describeDataSources(args)
         elif not md:
-            return self.__describeComponents(args, cpheaders, nonone)
+            return self.__describeComponents(args, cpheaders, nonone, pr)
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
@@ -390,8 +404,9 @@ class ConfigServer(object):
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param md flag set True for mandatory components
+    # \param pr flag set True for private components
     # \returns list with description
-    def geometryCmd(self, ds, args, md):
+    def geometryCmd(self, ds, args, md, pr):
         cpheaders = [
             "nexus_path",
             "source_name",
@@ -404,7 +419,7 @@ class ConfigServer(object):
         if ds:
             return []
         elif not md:
-            return self.__describeComponents(args, cpheaders)
+            return self.__describeComponents(args, cpheaders, private=pr)
         else:
             return self.__describeConfiguration(args, cpheaders)
 
@@ -440,11 +455,13 @@ class ConfigServer(object):
     # \param ds flag set True for datasources
     # \param args list of item names
     # \param mandatory flag set True for mandatory components
+    # \param private flag set True for components starting with '__'
     # \returns resulting string
-    def performCommand(self, command, ds, args, mandatory=False):
+    def performCommand(self, command, ds, args, mandatory=False,
+                       private=False):
         string = ""
         if command == 'list':
-            string = self.__char.join(self.listCmd(ds, mandatory))
+            string = self.__char.join(self.listCmd(ds, mandatory, private))
         elif command == 'show':
             string = self.__char.join(self.showCmd(ds, args, mandatory))
         elif command == 'get':
@@ -462,11 +479,14 @@ class ConfigServer(object):
         elif command == 'record':
             string = self.__char.join(self.recordCmd(ds, args[0]))
         elif command == 'describe':
-            string = self.__char.join(self.describeCmd(ds, args, mandatory))
+            string = self.__char.join(self.describeCmd(
+                ds, args, mandatory, private))
         elif command == 'info':
-            string = self.__char.join(self.infoCmd(ds, args, mandatory))
+            string = self.__char.join(self.infoCmd(
+                ds, args, mandatory, private))
         elif command == 'geometry':
-            string = self.__char.join(self.geometryCmd(ds, args, mandatory))
+            string = self.__char.join(self.geometryCmd(
+                ds, args, mandatory, private))
         return string
 
 
@@ -532,7 +552,11 @@ def createParser():
                       help="perform operation on datasources")
     parser.add_option("-m", "--mandatory", action="store_true",
                       default=False, dest="mandatory",
-                      help="make use mandatory components as well")
+                      help="make use mandatory components")
+    parser.add_option("-p", "--private", action="store_true",
+                      default=False, dest="private",
+                      help="make use private componentsm,"
+                      " i.e. starting with '__'")
     parser.add_option("-n", "--no-newlines", action="store_true",
                       default=False, dest="nonewlines",
                       help="split result with space characters")
@@ -582,8 +606,9 @@ def main():
     cnfserver = ConfigServer(options.server, options.nonewlines)
 
     ## result to print
-    result = cnfserver.performCommand(args[0], options.datasources,
-                                      parg, options.mandatory)
+    result = cnfserver.performCommand(
+        args[0], options.datasources, parg,
+        options.mandatory, options.private)
     if result.strip():
         print(result)
 

@@ -1,3 +1,8 @@
+2016-02-04 Jan Kotanski <jankotan@gmail.com>
+	* add private component parameter (-p)
+	* print component name on creating datasources forn online file
+	* tagged as v1.11.0
+
 2016-02-02 Jan Kotanski <jankotan@gmail.com>
 	* remove parent parameter for datasources of datasource
 	* tagged as v1.10.3

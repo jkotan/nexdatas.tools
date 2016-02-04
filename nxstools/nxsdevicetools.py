@@ -114,6 +114,29 @@ def storeDataSource(name, xml, server):
     proxy.StoreDataSource(str(name))
 
 
+## gets datasource components
+# \param server configuration server
+# \returns dictionary with datasource components
+def getDataSourceComponents(server):
+    dscps = {}
+    proxy = openServer(server)
+    proxy.Open()
+    acps = proxy.availableComponents()
+    for cp in acps:
+        try:
+            dss = proxy.componentDataSources(cp)
+            for ds in dss:
+                if ds not in dscps:
+                    dscps[ds] = []
+                dscps[ds].append(cp)
+        except Exception as e:
+            sys.stderr.write(str(e))
+            sys.stderr.write(
+                "Error: Internal error of the %s component\n" % cp)
+            sys.stderr.flush()
+    return dscps
+
+
 ## stores components
 # \param name component name
 # \param xml component xml string

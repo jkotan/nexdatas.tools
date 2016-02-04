@@ -25,7 +25,7 @@ import sys
 
 from nxstools.nxsxml import XMLFile, NDSource
 from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer)
+    storeDataSource, checkServer, getDataSourceComponents)
 
 
 PYTANGO = False
@@ -120,6 +120,12 @@ def main():
     hw = indom.getElementsByTagName("hw")
     device = hw[0].firstChild
 
+    try:
+        dscps = getDataSourceComponents(options.server)
+    except Exception as e:
+        print(str(e))
+        dscps = {}
+
     while device:
         if device.nodeName == 'device':
             name = getText(device.getElementsByTagName("name")[0]) \
@@ -201,7 +207,12 @@ def main():
                     print("CREATING %s: %s%s.ds.xml" % (
                         tdevice, options.file, name))
                 else:
-                    print("STORING %s:    %s/%s" % (name, hostname, tdevice))
+                    print("STORING %s %s/%s %s" % (
+                        name + ":" + " " * (25 - len(name)),
+                        hostname + " " * (20 - len(hostname)),
+                        tdevice + " " * (37 - len(tdevice)),
+                        ",".join(dscps[name])
+                        if (name in dscps and dscps[name]) else ""))
                 createDataSource(name, options.directory, options.file,
                                  options.server if options.database else None,
                                  tdevice,
