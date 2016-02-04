@@ -497,7 +497,7 @@ def createParser():
             + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
             + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n\n" \
             + "Commands: \n" \
-            + "   list [-s <config_server>] [-m]  \n" \
+            + "   list [-s <config_server>] [-m | -p] \n" \
             + "          list names of available components\n" \
             + "   list -d [-s <config_server>] \n" \
             + "          list names of available datasources\n" \
@@ -529,16 +529,16 @@ def createParser():
             + "   servers [-s <config_server/host>] \n" \
             + "          get lists of configuration servers from " \
             + "the current tango host\n"\
-            + "   describe [-s <config_server>] [-m] component_name1 " \
+            + "   describe [-s <config_server>] [-m | -p] component_name1 " \
             + "component_name2 ...  \n" \
             + "          show all parameters of given components \n" \
             + "   describe|info -d [-s <config_server>] dsource_name1 "  \
             + "dsource_name2 ...  \n" \
             + "          show all parameters of given datasources \n" \
-            + "   info [-s <config_server>] [-m] component_name1 " \
+            + "   info [-s <config_server>] [-m | -p] component_name1 " \
             + "component_name2 ...  \n" \
             + "          show source parameters of given components \n" \
-            + "   geometry [-s <config_server>] [-m] component_name1 " \
+            + "   geometry [-s <config_server>] [-m | -p] component_name1 " \
             + "component_name2 ...  \n" \
             + "          show transformation parameters of given components \n" \
             + " "
