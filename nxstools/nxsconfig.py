@@ -23,7 +23,6 @@
 """ Command-line tool for ascess to the nexdatas configuration server """
 
 import sys
-import json
 
 from optparse import OptionParser
 from .nxsparser import ParserTools, TableTools

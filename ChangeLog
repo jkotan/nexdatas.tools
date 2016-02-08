@@ -1,3 +1,8 @@
+2016-02-08 Jan Kotanski <jankotan@gmail.com>
+	* add moduleAttributes dictionary to nxsdevicetools
+	* improve creating datasources from online.xml
+	* tagged as v1.12.0
+
 2016-02-04 Jan Kotanski <jankotan@gmail.com>
 	* add help for private component parameter (-p)
 	* tagged as v1.11.1

@@ -22,10 +22,7 @@
 
 """ Command-line tool for ascess to the nexdatas configuration server """
 
-import sys
-
 import xml
-from xml.dom import minidom, getDOMImplementation
 from xml.dom.minidom import parseString
 
 
@@ -262,9 +259,7 @@ class ParserTools(object):
             if nd.nodeName == tagname:
 
                 nxtype = cls.__getAttr(nd, "type")
-                fdname = cls.__getAttr(nd, "name")
                 units = cls.__getAttr(nd, "units")
-                record = cls.getRecord(nd)
                 value = cls.getPureText(nd) or None
                 trtype = cls.__getAttr(nd, "transformation_type", True)
                 trvector = cls.__getAttr(nd, "vector", True)
@@ -379,7 +374,7 @@ class TableTools(object):
         res = []
         for it in lst:
             res.append(it or "*")
-        return(str(res))
+        return str(res)
 
     def generateList(self):
         lst = [""]
@@ -397,8 +392,6 @@ class TableTools(object):
         lst.append(line)
         for desc in self.__description:
             line = ""
-            value = None
-            field = None
             for hd in headers:
                 vl = desc[hd] if hd in desc else None
                 if isinstance(vl, (list, tuple)):

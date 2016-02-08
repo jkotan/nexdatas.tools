@@ -33,6 +33,22 @@ try:
 except:
     pass
 
+## attributes of device modules to acquire with elements:
+#  'module': [<sardana_pool_attr>, <original_tango_attr>]
+moduleAttributes = {
+    'motor_tango': ['Position', 'Position'],
+    'oms58': ['Position', 'Position'],
+    'counter_tango': ['Value', 'Counts'],
+    'tangoattributectctrl': ['Value', 'Counts'],
+    'sis3302': ['Value', 'Data'],
+    'vfcadc': ['Value', 'Counts'],
+    'tip830': ['Value', 'Counts'],
+    'tip551': ['Value', 'Voltage'],
+    'dgg2': ['Value', 'SampleTime'],
+    'mca_8701': ['Value', 'Data'],
+    'sis3820': ['Value', 'Counts'],
+}
+
 
 ## generates device names
 # \param prefix device name prefix

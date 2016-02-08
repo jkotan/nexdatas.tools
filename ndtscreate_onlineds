@@ -25,7 +25,7 @@ import sys
 
 from nxstools.nxsxml import XMLFile, NDSource
 from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, getDataSourceComponents)
+    storeDataSource, checkServer, getDataSourceComponents, moduleAttributes)
 
 
 PYTANGO = False
@@ -89,8 +89,7 @@ def main():
                       help="store components in Configuration Server database")
     parser.add_option("-n", "--nolower", action="store_false",
                       default=True, dest="lower",
-                      help="donot change aliases into lower case")
-
+                      help="do not change aliases into lower case")
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
     parser.add_option("-x", "--file-prefix", type="string",
@@ -173,9 +172,7 @@ def main():
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
-            elif PYTANGO and \
-                    (module == 'tangoattributectctrl' and dtype == 'counter') \
-                    or (module == 'counter_tango' and dtype == 'type_tango'):
+            elif PYTANGO and module in moduleAttributes:
                 if sardanahostname:
                     mhost = sardanahostname
                 else:
@@ -184,17 +181,18 @@ def main():
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, name)))
                     mdevice = str(dp.name())
 
-                    if not hasattr(dp, "Value"):
+                    sarattr = moduleAttributes[module][0]
+                    if not sarattr or not hasattr(dp, sarattr):
                         raise Exception("Missing attribute: Value")
                     tdevice = mdevice
-                    attribute = 'Value'
+                    attribute = sarattr
                     group = '__CLIENT__'
                 except Exception as e:
-                    attribute = 'Counts'
+                    attribute = moduleAttributes[module][1]
                     group = '__CLIENT__'
 
             else:
-                print("WARNING %s:    module %s of %s type not defined"
+                print("SKIPPING %s:    module %s of %s type not defined"
                       % (name, module, dtype))
 
             if attribute and host:
@@ -209,8 +207,8 @@ def main():
                 else:
                     print("STORING %s %s/%s %s" % (
                         name + ":" + " " * (25 - len(name)),
-                        hostname + " " * (20 - len(hostname)),
-                        tdevice + " " * (37 - len(tdevice)),
+                        hostname,
+                        tdevice + " " * (47 - len(tdevice) - len(hostname)),
                         ",".join(dscps[name])
                         if (name in dscps and dscps[name]) else ""))
                 createDataSource(name, options.directory, options.file,
