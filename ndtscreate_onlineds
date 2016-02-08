@@ -188,10 +188,11 @@ def main():
                     attribute = sarattr
                     group = '__CLIENT__'
                 except Exception as e:
-                    attribute = moduleAttributes[module][1]
-                    group = '__CLIENT__'
+                    if moduleAttributes[module][1]:
+                        attribute = moduleAttributes[module][1]
+                        group = '__CLIENT__'
 
-            else:
+            if not attribute:
                 print("SKIPPING %s:    module %s of %s type not defined"
                       % (name, module, dtype))
 

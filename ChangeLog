@@ -1,3 +1,8 @@
+2016-02-XX Jan Kotanski <jankotan@gmail.com>
+	* add absbox, spk, sis3610, xmcd and sis3302roi
+	  into moduleAttributes dictionary
+	* tagged as v1.12.1
+
 2016-02-08 Jan Kotanski <jankotan@gmail.com>
 	* add moduleAttributes dictionary to nxsdevicetools
 	* improve creating datasources from online.xml

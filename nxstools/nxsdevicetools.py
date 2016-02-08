@@ -36,8 +36,10 @@ except:
 ## attributes of device modules to acquire with elements:
 #  'module': [<sardana_pool_attr>, <original_tango_attr>]
 moduleAttributes = {
-    'motor_tango': ['Position', 'Position'],
+    'absbox': ['Position', 'Position'],
     'oms58': ['Position', 'Position'],
+    'spk': ['Position', 'Position'],
+    'motor_tango': ['Position', 'Position'],
     'counter_tango': ['Value', 'Counts'],
     'tangoattributectctrl': ['Value', 'Counts'],
     'sis3302': ['Value', 'Data'],
@@ -47,6 +49,9 @@ moduleAttributes = {
     'dgg2': ['Value', 'SampleTime'],
     'mca_8701': ['Value', 'Data'],
     'sis3820': ['Value', 'Counts'],
+    'sis3610': ['Value', 'Value'],
+    'sis3302roi': ['Value', None],
+    'xmcd': ['Value', None],
 }
 
 
