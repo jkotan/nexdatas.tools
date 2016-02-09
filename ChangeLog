@@ -1,4 +1,8 @@
 2016-02-09 Jan Kotanski <jankotan@gmail.com>
+	* fix for list of modules
+	* tagged as v1.13.1
+
+2016-02-09 Jan Kotanski <jankotan@gmail.com>
 	* add modules into moduleAttributes dictionary
 	* tagged as v1.13.0
 
