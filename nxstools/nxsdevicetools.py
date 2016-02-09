@@ -36,27 +36,58 @@ except:
 ## attributes of device modules to acquire with elements:
 #  'module': [<sardana_pool_attr>, <original_tango_attr>]
 moduleAttributes = {
-    'absbox': ['Position', 'Position'],
-    'oms58': ['Position', 'Position'],
-    'spk': ['Position', 'Position'],
-    'motor_tango': ['Position', 'Position'],
     'counter_tango': ['Value', 'Counts'],
-    'tangoattributectctrl': ['Value', 'Counts'],
-    'sis3302': ['Value', 'Data'],
-    'vfcadc': ['Value', 'Counts'],
-    'tip830': ['Value', 'Counts'],
-    'tip551': ['Value', 'Voltage'],
     'dgg2': ['Value', 'SampleTime'],
     'mca_8701': ['Value', 'Data'],
-    'sis3820': ['Value', 'Counts'],
-    'sis3610': ['Value', 'Value'],
+    'mca_sis3302new': ['Value', 'Data'],
+    'mca_sis3302': ['Value', 'Data'],
+    'mythenroi': ['Value', None],
+    'sis3302': ['Value', 'Data'],
     'sis3302roi': ['Value', None],
+    'sis3610': ['Value', 'Value'],
+    'sis3820': ['Value', 'Counts'],
+    'tangoattributectctrl': ['Value', 'Counts'],
+    'tip551': ['Value', 'Voltage'],
+    'tip830': ['Value', 'Counts'],
+    'vfcadc': ['Value', 'Counts'],
     'xmcd': ['Value', None],
 }
 
+motorModules = [
+    'absbox', 'analyzerep01', 'tth', 'atto300', 'oms58', 'phaseretarder',
+    'hexa', 'e6c', 'motor_tango'
+    'lom', 'tm', 'cube', 'pie710', 'pie712', 'piezonv40', 'smaractmcs',
+    'slt', 'bscryotempcontrolp01', 'omsvme58', 'am', 'vm', 'spk',
+    'dcm_energy', 'elom', 'diffracmu', 'kohzu', 'tcpipmotor',
+    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
+    'smarpod', 'smchydra', 'mult', 'tip551', 'dcm_motor'
+]
+
+CTModules = [
+    'random', 'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
+    'xmcd', 'vc', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'petra', 'dgg2',
+    'tangoattributectctrl'
+]
+
+ZeroDModules = ['tip830']
+
+OneDModules = ['xia', 'sis3302', 'mca8701']
+
+TwoDModules = ['lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
+               'eigerdectris', 'perkinelmer', 'pilatus', 'lambda']
+
+IORegModules = ['sis3610in', 'sis3610out']
+
+for mn in motorModules:
+    moduleAttributes[mn] = ['Position', 'Position']
+
+for nm in CTModules + ZeroDModules + OneDModules:
+    if nm not in moduleAttributes:
+        moduleAttributes[nm] = ['Value', None]
+
 
 ## generates device names
-# \param prefix device name prefix
+# \param prefix device name prefix5
 # \param first first device index
 # \param last last device index
 # \returns device names

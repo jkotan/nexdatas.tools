@@ -25,7 +25,8 @@ import sys
 
 from nxstools.nxsxml import XMLFile, NDSource
 from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, getDataSourceComponents, moduleAttributes)
+    storeDataSource, checkServer, getDataSourceComponents,
+    moduleAttributes, motorModules)
 
 
 PYTANGO = False
@@ -144,18 +145,6 @@ def main():
                 device.getElementsByTagName("sardanahostname")[0]) \
                 if len(device.getElementsByTagName("sardanahostname")) \
                 else None
-#            pool = getText(device.getElementsByTagName("pool")[0]) \
-#                if len(device.getElementsByTagName("pool")) else None
-#            controller = getText(
-#                device.getElementsByTagName("controller")[0]) \
-#                if len(device.getElementsByTagName("controller")) else None
-#            channel = getText(device.getElementsByTagName("channel")[0]) \
-#                if len(device.getElementsByTagName("channel")) else None
-#            rootdevicename = getText(
-#                device.getElementsByTagName("rootdevicename")[0]) \
-#                if len(device.getElementsByTagName("rootdevicename")) \
-#                else None
-            comment = device.getElementsByTagName("#comment")
             group = None
 
             if hostname:
@@ -168,7 +157,7 @@ def main():
                       % (name, module, dtype))
 
             attribute = None
-            if module == 'motor_tango' and dtype == 'type_tango':
+            if module in motorModules:
                 attribute = 'Position'
             elif dtype == 'stepping_motor':
                 attribute = 'Position'
