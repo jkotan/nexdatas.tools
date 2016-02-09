@@ -42,7 +42,7 @@ moduleAttributes = {
     'mca_sis3302new': ['Value', 'Data'],
     'mca_sis3302': ['Value', 'Data'],
     'mythenroi': ['Value', None],
-    'sis3302': ['Value', 'Data'],
+    'mca8715roi': ['Value', None],
     'sis3302roi': ['Value', None],
     'sis3610': ['Value', 'Value'],
     'sis3820': ['Value', 'Counts'],
@@ -54,29 +54,43 @@ moduleAttributes = {
 }
 
 motorModules = [
-    'absbox', 'analyzerep01', 'tth', 'atto300', 'oms58', 'phaseretarder',
-    'hexa', 'e6c', 'motor_tango'
-    'lom', 'tm', 'cube', 'pie710', 'pie712', 'piezonv40', 'smaractmcs',
-    'slt', 'bscryotempcontrolp01', 'omsvme58', 'am', 'vm', 'spk',
-    'dcm_energy', 'elom', 'diffracmu', 'kohzu', 'tcpipmotor',
-    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
-    'smarpod', 'smchydra', 'mult', 'tip551', 'dcm_motor'
+    'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
+    'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
+#
+#    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
+#    'hexa',
+#    'tm', 'cube', , 'piezonv40', 'smaractmcs',
+#    'slt', 'bscryotempcontrolp01',
+#    'dcm_energy', 'elom', 'diffracmu',  'tcpipmotor',
+#    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
+#    'smarpod', 'mult',
+#
+#    'oxfcryo700',
 ]
 
 CTModules = [
-    'random', 'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
-    'xmcd', 'vc', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'petra', 'dgg2',
+    'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
+    'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
     'tangoattributectctrl'
 ]
 
 ZeroDModules = ['tip830']
 
-OneDModules = ['xia', 'sis3302', 'mca8701']
+OneDModules = ['mca_xia']
 
-TwoDModules = ['lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
-               'eigerdectris', 'perkinelmer', 'pilatus', 'lambda']
+TwoDModules = [
+    'pilatus100k', 'pilatus300k', 'pilatus1m',
+    'pilatus2m', 'pilatus6m', 'pco4000','perkinelmerdetector',
+    'lambda',
+#
+    'lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
+    'eigerdectris', 'perkinelmer', 'lambda',
 
-IORegModules = ['sis3610in', 'sis3610out']
+]
+
+IORegModules = ['sis3610']
+
+
 
 for mn in motorModules:
     moduleAttributes[mn] = ['Position', 'Position']
