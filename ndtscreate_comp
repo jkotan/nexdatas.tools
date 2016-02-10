@@ -22,14 +22,10 @@
 """ component creator """
 
 import sys
-import time
-import os
 
 from optparse import OptionParser
-
-from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField)
-from nxstools.nxsdevicetools import (
-    storeComponent, checkServer, generateDeviceNames)
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import (ComponentCreator, WrongParameterError)
 
 
 PYTANGO = False
@@ -38,40 +34,6 @@ try:
     PYTANGO = True
 except:
     pass
-
-
-## creates component file
-# \param name device name
-# \param directory output file directory
-# \param fileprefix file name prefix
-# \param collection collection group name
-# \param strategy field strategy
-# \param nexusType nexus Type of the field
-# \param units field units
-# \param server configuration server
-def createComponent(name, directory, fileprefix, collection,
-                    strategy, nexusType, units, links, server):
-    df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
-    en = NGroup(df, "entry", "NXentry")
-    ins = NGroup(en, "instrument", "NXinstrument")
-    col = NGroup(ins, collection, "NXcollection")
-    f = NField(col, name, nexusType)
-    f.setStrategy(strategy)
-
-    if units.strip():
-        f.setUnits(units.strip())
-
-    if links:
-        f.setText("$datasources.%s" % name)
-    else:
-        sr = NDSource(f)
-        sr.initClient(name, name)
-
-    if server:
-        xml = df.prettyPrint()
-        storeComponent(name, xml, server)
-    else:
-        df.dump()
 
 
 ## creates parser
@@ -149,42 +111,13 @@ def main():
     else:
         print("OUTPUT DIRECTORY: %s" % options.directory)
 
-    aargs = []
-    if options.device.strip():
-        try:
-            first = int(options.first)
-        except:
-            sys.stderr.write("CollCompCreator Invalid --first parameter\n")
-            parser.print_help()
-            sys.exit(255)
-
-        try:
-            last = int(options.last)
-        except:
-            sys.stderr.write("CollCompCreator Invalid --last parameter\n")
-            parser.print_help()
-            sys.exit(255)
-
-        aargs = generateDeviceNames(options.device, first, last)
-
-    args += aargs
-    if not len(args):
+    creator = ComponentCreator(options, args)
+    try:
+        creator.create()
+    except WrongParameterError as e:
+        sys.stderr.write(str(e))
         parser.print_help()
         sys.exit(255)
-
-    for name in args:
-        if not options.database:
-            print("CREATING: %s%s.xml" % (options.file, name))
-        else:
-            print("STORING: %s" % (name))
-        createComponent(name, options.directory, options.file,
-                        options.collection,
-                        options.strategy,
-                        options.type,
-                        options.units,
-                        options.links,
-                        options.server if options.database else None)
-
 
 if __name__ == "__main__":
     main()

@@ -2,8 +2,7 @@
 import os
 import sys
 
-commands = ["dsonline",
-            "onlineds",
+commands = ["onlineds",
             "clientds",
             "tangods",
             "deviceds",
@@ -19,10 +18,8 @@ if len(sys.argv) < 2 or sys.argv[1] not in commands:
         + "         create tango datasources \n\n" \
         + "    deviceds \n" \
         + "         create datasources for all device attributes \n\n" \
-        + "    dsonline \n" \
-        + "         create datasources from online file \n\n" \
         + "    onlineds \n" \
-        + "         create motor tango datasources from online file \n\n" \
+        + "         create datasources from online file \n\n" \
         + "    comp \n" \
         + "         create simple components \n\n"
 

@@ -539,8 +539,8 @@ def createParser():
             + "          show source parameters of given components \n" \
             + "   geometry [-s <config_server>] [-m | -p] component_name1 " \
             + "component_name2 ...  \n" \
-            + "          show transformation parameters of given components \n" \
-            + " "
+            + "          show transformation parameters " \
+            + "of given components \n"
 
     ## option parser
     parser = OptionParser(usage=usage)

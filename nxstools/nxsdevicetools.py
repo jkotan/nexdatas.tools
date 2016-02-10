@@ -53,19 +53,78 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
+moduleMultiAttributes = {
+    'pilatus100k': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+    'pilatus300k': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+    'pilatus1M': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+    'pilatus2M': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+    'pilatus6M': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+    'perkinelmerdetector': [
+        'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
+        'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
+        'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
+        'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
+        'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
+        'SaveSubtracted', 'PerformDarkSubtraction'
+    ],
+    'mythen': [
+        'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
+        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
+    ],
+    'lambda': [
+        'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
+        'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
+        'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
+        'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode',
+        'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
+        'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
+        'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
+        'LiveLastImageData'
+    ],
+    'pedetector': [
+        'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
+        'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
+        'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
+        'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
+        'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
+        'SaveSubtracted', 'PerformDarkSubtraction'
+    ],
+    'pilatus': [
+        'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
+        'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
+        'NbExposures', 'NbFrames'],
+}
+
 motorModules = [
     'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
     'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
-#
-#    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
-#    'hexa',
-#    'tm', 'cube', , 'piezonv40', 'smaractmcs',
-#    'slt', 'bscryotempcontrolp01',
-#    'dcm_energy', 'elom', 'diffracmu',  'tcpipmotor',
-#    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
-#    'smarpod', 'mult',
-#
-#    'oxfcryo700',
+    #
+    #    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
+    #    'hexa',
+    #    'tm', 'cube', , 'piezonv40', 'smaractmcs',
+    #    'slt', 'bscryotempcontrolp01',
+    #    'dcm_energy', 'elom', 'diffracmu',  'tcpipmotor',
+    #    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
+    #    'smarpod', 'mult',
+    #
+    #    'oxfcryo700',
 ]
 
 CTModules = [
@@ -80,16 +139,15 @@ OneDModules = ['mca_xia']
 
 TwoDModules = [
     'pilatus100k', 'pilatus300k', 'pilatus1m',
-    'pilatus2m', 'pilatus6m', 'pco4000','perkinelmerdetector',
+    'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
     'lambda',
-#
+    #
     'lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
     'eigerdectris', 'perkinelmer', 'lambda',
 
 ]
 
 IORegModules = ['sis3610']
-
 
 
 for mn in motorModules:

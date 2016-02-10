@@ -25,9 +25,8 @@ import sys
 
 from optparse import OptionParser
 
-from nxstools.nxsxml import (XMLFile, NDSource)
-from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, generateDeviceNames)
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import (TangoDSCreator, WrongParameterError)
 
 PYTANGO = False
 try:
@@ -35,23 +34,6 @@ try:
     PYTANGO = True
 except:
     pass
-
-
-## creates CLIENT datasource file
-# \param name device name
-# \param directory output file directory
-# \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix, server, device, attribute,
-                     host, port="10000"):
-    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
-    sr = NDSource(df)
-    sr.initTango(name, device, "attribute", attribute, host, port)
-
-    if server:
-        xml = df.prettyPrint()
-        storeDataSource(name, xml, server)
-    else:
-        df.dump()
 
 
 ## creates parser
@@ -106,7 +88,7 @@ def createParser():
 def main():
 
     parser = createParser()
-    (options, _) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
     if options.database and not options.server:
         if not PYTANGO:
@@ -125,42 +107,13 @@ def main():
     else:
         print "OUTPUT DIRECTORY:", options.directory
 
-    dvargs = []
-    dsargs = []
-    if options.device.strip():
-        try:
-            first = int(options.first)
-        except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --first parameter\n"
-            parser.print_help()
-            sys.exit(255)
-
-        try:
-            last = int(options.last)
-        except:
-            print >> sys.stderr, "ClientDSCreator: Invalid --last parameter\n"
-            parser.print_help()
-            sys.exit(255)
-
-        dvargs = generateDeviceNames(options.device, first, last)
-        dsargs = generateDeviceNames(options.datasource, first, last)
-
-    if not dvargs or not len(dvargs):
+    creator = TangoDSCreator(options, args)
+    try:
+        creator.create()
+    except WrongParameterError as e:
+        sys.stderr.write(str(e))
         parser.print_help()
         sys.exit(255)
-
-    for i in range(len(dvargs)):
-        if not options.database:
-            print "CREATING %s: %s%s.ds.xml" % (
-                dvargs[i], options.file, dsargs[i])
-        else:
-            print "STORING %s: %s" % (dvargs[i], dsargs[i])
-        createDataSource(dsargs[i], options.directory, options.file,
-                         options.server if options.database else None,
-                         dvargs[i],
-                         options.attribute,
-                         options.host,
-                         options.port)
 
 
 if __name__ == "__main__":

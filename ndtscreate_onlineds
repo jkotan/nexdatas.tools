@@ -23,11 +23,8 @@
 
 import sys
 
-from nxstools.nxsxml import XMLFile, NDSource
-from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, getDataSourceComponents,
-    moduleAttributes, motorModules)
-
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import OnlineDSCreator
 
 PYTANGO = False
 try:
@@ -37,39 +34,6 @@ except:
     pass
 
 from optparse import OptionParser
-from xml.dom.minidom import parse
-
-
-## creates CLIENT datasource file
-# \param name device name
-# \param directory output file directory
-# \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix, server, device, attribute,
-                     host, port="10000", group=None):
-    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
-    sr = NDSource(df)
-    sr.initTango(name, device, "attribute", attribute, host, port, group=group)
-
-    if server:
-        xml = df.prettyPrint()
-        storeDataSource(name, xml, server)
-    else:
-        df.dump()
-
-
-## provides xml content of the node
-# \param node DOM node
-# \returns xml content string
-def getText(node):
-    if not node:
-        return
-    xml = node.toxml()
-    start = xml.find('>')
-    end = xml.rfind('<')
-    if start == -1 or end < start:
-        return ""
-    return xml[start + 1:end].replace("&lt;", "<").replace("&gt;", "<"). \
-        replace("&quot;", "\"").replace("&amp;", "&")
 
 
 ## the main function
@@ -101,12 +65,10 @@ def main():
     if not len(args):
         parser.print_help()
         sys.exit(255)
-    print("INPUT: %s" % args)
-    print("OUTPUT DIR: %s" % options.directory)
 
     if options.database and not options.server:
         if not PYTANGO:
-            sys.stderr.write("CollCompCreator No PyTango installed\n")
+            sys.stderr.write("nxscreate: No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
@@ -116,105 +78,11 @@ def main():
             print("")
             sys.exit(0)
 
-    indom = parse(args[0])
-    hw = indom.getElementsByTagName("hw")
-    device = hw[0].firstChild
+    print("INPUT: %s" % args)
+    print("OUTPUT DIR: %s" % options.directory)
 
-    try:
-        dscps = getDataSourceComponents(options.server)
-    except Exception as e:
-        print(str(e))
-        dscps = {}
-
-    while device:
-        if device.nodeName == 'device':
-            name = getText(device.getElementsByTagName("name")[0]) \
-                if len(device.getElementsByTagName("name")) else None
-            dtype = getText(device.getElementsByTagName("type")[0]) \
-                if len(device.getElementsByTagName("type")) else None
-            module = getText(device.getElementsByTagName("module")[0]) \
-                if len(device.getElementsByTagName("module")) else None
-            tdevice = getText(device.getElementsByTagName("device")[0]) \
-                if len(device.getElementsByTagName("device")) else None
-            hostname = getText(device.getElementsByTagName("hostname")[0]) \
-                if len(device.getElementsByTagName("hostname")) else None
-            sardananame = getText(
-                device.getElementsByTagName("sardananame")[0]) \
-                if len(device.getElementsByTagName("sardananame")) else None
-            sardanahostname = getText(
-                device.getElementsByTagName("sardanahostname")[0]) \
-                if len(device.getElementsByTagName("sardanahostname")) \
-                else None
-            group = None
-
-            if hostname:
-                host = hostname.split(":")[0]
-                port = hostname.split(":")[1] \
-                    if len(hostname.split(":")) > 1 else None
-            else:
-                host = None
-                print("ERROR %s: host for module %s of %s type not defined"
-                      % (name, module, dtype))
-
-            attribute = None
-            if module in motorModules:
-                attribute = 'Position'
-            elif dtype == 'stepping_motor':
-                attribute = 'Position'
-            elif PYTANGO and module in moduleAttributes:
-                if sardanahostname:
-                    mhost = sardanahostname
-                else:
-                    mhost = hostname
-                try:
-                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, name)))
-                    mdevice = str(dp.name())
-
-                    sarattr = moduleAttributes[module][0]
-                    if not sarattr or not hasattr(dp, sarattr):
-                        raise Exception("Missing attribute: Value")
-                    tdevice = mdevice
-                    attribute = sarattr
-                    group = '__CLIENT__'
-                except Exception as e:
-                    if moduleAttributes[module][1]:
-                        attribute = moduleAttributes[module][1]
-                        group = '__CLIENT__'
-
-            if not attribute:
-                print("SKIPPING %s:    module %s of %s type not defined"
-                      % (name, module, dtype))
-
-            if attribute and host:
-                if sardananame:
-                    name = sardananame
-                if options.lower:
-                    name = name.lower()
-
-                if not options.database:
-                    print("CREATING %s: %s%s.ds.xml" % (
-                        tdevice, options.file, name))
-                else:
-                    print("STORING %s %s/%s %s" % (
-                        name + ":" + " " * (25 - len(name)),
-                        hostname,
-                        tdevice + " " * (47 - len(tdevice) - len(hostname)),
-                        ",".join(dscps[name])
-                        if (name in dscps and dscps[name]) else ""))
-                createDataSource(name, options.directory, options.file,
-                                 options.server if options.database else None,
-                                 tdevice,
-                                 attribute,
-                                 host,
-                                 port,
-                                 group)
-
-        elif device.nodeName == '#comment':
-            if options.comments:
-                print("COMMENT:   '%s' %s" % (device.data.strip(), comment))
-        else:
-            pass
-        device = device.nextSibling
+    creator = OnlineDSCreator(options, args)
+    creator.create()
 
 
 if __name__ == "__main__":

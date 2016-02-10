@@ -1,3 +1,10 @@
+2016-02-10 Jan Kotanski <jankotan@gmail.com>
+	* support multiattribute device in  onlineds
+	* remove dsonline
+	* move ndtscreate_* implementation into nxscreate
+	* make lower_case datasource names in deviceds
+	* tagged as v1.14.0
+
 2016-02-09 Jan Kotanski <jankotan@gmail.com>
 	* fix for list of modules
 	* tagged as v1.13.1

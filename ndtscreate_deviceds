@@ -25,9 +25,8 @@ import sys
 
 from optparse import OptionParser
 
-from nxstools.nxsxml import (XMLFile, NDSource)
-from nxstools.nxsdevicetools import (
-    storeDataSource, checkServer, generateDeviceNames, getAttributes)
+from nxstools.nxsdevicetools import (checkServer, getAttributes)
+from nxstools.nxscreator import DeviceDSCreator
 
 PYTANGO = False
 try:
@@ -35,24 +34,6 @@ try:
     PYTANGO = True
 except:
     pass
-
-
-## creates CLIENT datasource file
-# \param name device name
-# \param directory output file directory
-# \param fileprefix file name prefix
-def createDataSource(name, directory, fileprefix, server, device, attribute,
-                     host, port="10000", group=None):
-    df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
-    sr = NDSource(df)
-    sr.initTango(name, device, "attribute", attribute, host, port, group=group)
-
-    if server:
-        xml = df.prettyPrint()
-        storeDataSource(name, xml, server)
-    else:
-        df.dump()
-
 
 ## creates parser
 def createParser():
@@ -134,20 +115,8 @@ def main():
             sys.exit(255)
         aargs = getAttributes(options.device, options.host, options.port)
 
-    for at in aargs:
-        dsname = "%s%s" % (options.datasource, at)
-        if not options.database:
-            print("CREATING %s/%s: %s%s.ds.xml" % (
-                options.device, at, options.file, dsname))
-        else:
-            print("STORING %s/%s: %s" % (options.device, at, dsname))
-        createDataSource(dsname, options.directory, options.file,
-                         options.server if options.database else None,
-                         options.device,
-                         at,
-                         options.host,
-                         options.port,
-                         options.datasource if not options.nogroup else None)
+    creator = DeviceDSCreator(options, aargs)
+    creator.create()
 
 
 if __name__ == "__main__":
