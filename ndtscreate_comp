@@ -61,12 +61,13 @@ def createParser():
                       help="file prefix, i.e. counter",
                       dest="file", default="")
 
-    parser.add_option("-c", "--collection", type="string",
-                      help="collection name",
-                      dest="collection", default="collection")
+    parser.add_option("-n", "--nexuspath", type="string",
+                      help="nexus path with field name",
+                      dest="nexuspath", default="")
 
     parser.add_option("-s", "--strategy", type="string",
-                      help="writing strategy, i.e. STEP, INIT, FINAL, POSTRUN",
+                      help="writing strategy, i.e. "
+                      "STEP, INIT, FINAL, POSTRUN",
                       dest="strategy", default="STEP")
     parser.add_option("-t", "--type", type="string",
                       help="nexus type of the field",
@@ -85,6 +86,14 @@ def createParser():
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
+
+    parser.add_option("-c", "--chunk", dest="chunk",
+                      default="SCALAR", help="chunk format, "
+                      "i.e. SCALAR, SPECTRUM, IMAGE")
+
+    parser.add_option("-m", "--minimal_device", action="store_true",
+                      default=False, dest="minimal",
+                      help="device name without first '0'")
 
     return parser
 

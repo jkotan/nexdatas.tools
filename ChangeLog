@@ -1,3 +1,7 @@
+2016-02-XX Jan Kotanski <jankotan@gmail.com>
+	* add options to nxscreate comp, e.g. nexus_path
+	* tagged as v1.15.0
+
 2016-02-10 Jan Kotanski <jankotan@gmail.com>
 	* support multiattribute device in  onlineds
 	* remove dsonline

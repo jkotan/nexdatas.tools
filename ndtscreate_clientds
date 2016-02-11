@@ -36,7 +36,6 @@ except:
     pass
 
 
-
 def createParser():
     ## usage example
     usage = "usage: %prog [options] [name1] [name2]\n" \

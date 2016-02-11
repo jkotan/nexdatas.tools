@@ -29,7 +29,8 @@ from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, moduleMultiAttributes, motorModules,
     generateDeviceNames)
-from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField)
+from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
+                             NDimensions)
 
 PYTANGO = False
 try:
@@ -146,34 +147,76 @@ class Creator(object):
         else:
             df.dump()
 
+    @classmethod
+    def __patheval(cls, nexuspath):
+        pathlist = []
+        spath = nexuspath.split("/")
+        if spath:
+            for sp in spath[:-1]:
+                nlist = sp.split(":")
+                if len(nlist) == 2:
+                    if len(nlist[0]) == 0 and \
+                       len(nlist[1]) > 2 and nlist[1].startswith("NX"):
+                        pathlist.append((nlist[1][2:], nlist[1]))
+                    else:
+                        pathlist.append((nlist[0], nlist[1]))
+                elif len(nlist) == 1 and nlist[0]:
+                    if len(nlist[0]) > 2 and nlist[0].startswith("NX"):
+                        pathlist.append((nlist[0][2:], nlist[0]))
+                    else:
+                        pathlist.append((nlist[0], "NX" + nlist[0]))
+
+            pathlist.append((spath[-1], None))
+        return pathlist
+
+    @classmethod
+    def __createTree(cls, df, nexuspath, name, nexusType,
+                     strategy, units, link, chunk):
+
+        pathlist = cls.__patheval(nexuspath)
+        entry = None
+        parent = df
+        for path in pathlist[:-1]:
+            child = NGroup(parent, path[0], path[1])
+            if parent == df:
+                entry = child
+            parent = child
+        if pathlist:
+            fname = pathlist[-1][0] or name
+            field = NField(parent, fname, nexusType)
+            field.setStrategy(strategy)
+            if units.strip():
+                field.setUnits(units.strip())
+            field.setText("$datasources.%s" % name)
+            if chunk != 'SCALAR':
+                if chunk == 'SPECTRUM':
+                    dm = NDimensions(field, "1")
+                elif chunk == 'IMAGE':
+                    dm = NDimensions(field, "2")
+            if link and entry:
+                npath = (nexuspath + name) \
+                    if nexuspath[-1] == '/' else nexuspath
+                data = NGroup(entry, "data", "NXdata")
+                NLink(data, fname, npath)
+
     ## creates component file
-    # \param name device name
+    # \param name datasource name
     # \param directory output file directory
     # \param fileprefix file name prefix
-    # \param collection collection group name
+    # \param nexuspath nexus path
     # \param strategy field strategy
     # \param nexusType nexus Type of the field
     # \param units field units
+    # \param link nxdata link
     # \param server configuration server
     @classmethod
-    def createComponent(
-            cls, name, directory, fileprefix, collection,
-            strategy, nexusType, units, links, server):
+    def createComponent(cls, name, directory, fileprefix, nexuspath,
+                        strategy, nexusType, units, links, server, chunk):
+        defpath = '/entry$var.serialno:NXentry/instrument' \
+                  + '/collection/%s' % (name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
-        en = NGroup(df, "entry", "NXentry")
-        ins = NGroup(en, "instrument", "NXinstrument")
-        col = NGroup(ins, collection, "NXcollection")
-        f = NField(col, name, nexusType)
-        f.setStrategy(strategy)
-
-        if units.strip():
-            f.setUnits(units.strip())
-
-        if links:
-            f.setText("$datasources.%s" % name)
-        else:
-            sr = NDSource(f)
-            sr.initClient(name, name)
+        cls.__createTree(df, nexuspath or defpath, name, nexusType,
+                         strategy, units, links, chunk)
 
         if server:
             xml = df.prettyPrint()
@@ -223,7 +266,8 @@ class ComponentCreator(Creator):
             except:
                 raise WrongParameterError(
                     "CollCompCreator Invalid --last parameter\n")
-            aargs = generateDeviceNames(self.options.device, first, last)
+            aargs = generateDeviceNames(self.options.device, first, last,
+                                        self.options.minimal)
 
         self.args += aargs
         if not len(self.args):
@@ -239,12 +283,13 @@ class ComponentCreator(Creator):
             self.createComponent(
                 name, self.options.directory,
                 self.options.file,
-                self.options.collection,
+                self.options.nexuspath,
                 self.options.strategy,
                 self.options.type,
                 self.options.units,
                 self.options.links,
-                self.options.server if self.options.database else None)
+                self.options.server if self.options.database else None,
+                self.options.chunk)
 
 
 class TangoDSCreator(Creator):
