@@ -1,5 +1,6 @@
-2016-02-XX Jan Kotanski <jankotan@gmail.com>
+2016-02-12 Jan Kotanski <jankotan@gmail.com>
 	* add options to nxscreate comp, e.g. nexus_path
+	* fix for fetching sardana host
 	* tagged as v1.15.0
 
 2016-02-10 Jan Kotanski <jankotan@gmail.com>

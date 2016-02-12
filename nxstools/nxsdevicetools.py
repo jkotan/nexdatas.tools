@@ -101,10 +101,11 @@ moduleMultiAttributes = {
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
         'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
         'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
-        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1',
         'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
         'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
-        'SaveSubtracted', 'PerformDarkSubtraction'
+        'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'
+
     ],
     'pilatus': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
@@ -236,6 +237,19 @@ def storeDataSource(name, xml, server):
     proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreDataSource(str(name))
+
+
+## fetches the server tango host
+# \param server tango server
+#\ returns tango host
+def getServerTangoHost(server):
+    proxy = openServer(server)
+    host = proxy.get_db_host()
+    port = proxy.get_db_port()
+    shost = str(host).split(".")
+    if len(shost) > 0:
+        host = shost[0]
+    return "%s:%s" % (host, port)
 
 
 ## gets datasource components

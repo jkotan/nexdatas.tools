@@ -28,7 +28,7 @@ from xml.dom.minidom import parse
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, moduleMultiAttributes, motorModules,
-    generateDeviceNames)
+    generateDeviceNames, getServerTangoHost)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
@@ -68,8 +68,8 @@ class Device(object):
             self.port = None
             raise Exception("hostname not defined")
 
-    def findAttribute(self):
-        mhost = self.sardanahostname or self.hostname
+    def findAttribute(self, localhost):
+        mhost = self.sardanahostname or localhost
         self.group = None
         self.attribute = None
         # if module.lower() in motorModules:
@@ -86,6 +86,11 @@ class Device(object):
                 if not sarattr or \
                    sarattr not in dp.get_attribute_list():
                     raise Exception("Missing attribute: Value")
+                self.hostname = mhost
+                self.host = mhost.split(":")[0]
+                if len(mhost.split(":")) > 1:
+                    self.port = mhost.split(":")[1]
+
                 self.tdevice = mdevice
                 self.attribute = sarattr
                 self.group = '__CLIENT__'
@@ -190,9 +195,9 @@ class Creator(object):
             field.setText("$datasources.%s" % name)
             if chunk != 'SCALAR':
                 if chunk == 'SPECTRUM':
-                    dm = NDimensions(field, "1")
+                    NDimensions(field, "1")
                 elif chunk == 'IMAGE':
-                    dm = NDimensions(field, "2")
+                    NDimensions(field, "2")
             if link and entry:
                 npath = (nexuspath + name) \
                     if nexuspath[-1] == '/' else nexuspath
@@ -409,6 +414,7 @@ class OnlineDSCreator(Creator):
                     else ""))
 
     def create(self):
+        localhost = getServerTangoHost(self.options.server)
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
@@ -438,7 +444,7 @@ class OnlineDSCreator(Creator):
                               % (dv.name, dv.module, dv.dtype))
                     device = device.nextSibling
                     continue
-                dv.findAttribute()
+                dv.findAttribute(localhost)
                 if dv.attribute:
                     dv.setSardanaName(self.options.lower)
                     self.printAction(dv, dscps)
