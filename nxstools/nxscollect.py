@@ -80,28 +80,40 @@ class Collector(object):
                 return [filestr]
             return files
 
-    def absolutefilename(self, filename):
+    def absolutefilename(self, filename, masterfile):
         if not os.path.isabs(filename):
             nexusfilepath = os.path.join('/', *os.path.abspath(
-                self.__nexusfilename).split('/')[:-1])
+                masterfile).split('/')[:-1])
             filename = os.path.abspath(os.path.join(nexusfilepath, filename))
         return filename
 
-    def loadimage(self, filename, nname=None):
-        filename = self.absolutefilename(filename)
-        if not os.path.exists(filename):
-            if nname is not None and '.nxs' == self.__fullfilename[-4:]:
-                newfilename = '%s/%s/%s' % (
-                    self.__fullfilename[:-4], nname, filename.split("/")[-1])
-                if os.path.exists(newfilename):
-                    filename = newfilename
+    def findfile(self, filename, nname=None):
+        tmpfname = self.absolutefilename(filename, self.__nexusfilename)
+        if os.path.exists(tmpfname):
+            # print "F1"
+            return tmpfname
+        tmpfname = self.absolutefilename(filename, self.__fullfilename)
+        if os.path.exists(tmpfname):
+            # print "F2"
+            return tmpfname
+        if nname is not None and '.nxs' == self.__fullfilename[-4:]:
+            tmpfname = '%s/%s/%s' % (
+                self.__fullfilename[:-4], nname,
+                filename.split("/")[-1])
+            if os.path.exists(tmpfname):
+                 # print "F3"
+                return tmpfname
+        # print "F4"
+        return filename
+    
+    def loadimage(self, filename):
         try:
-            return fabio.open(filename), filename
+            return fabio.open(filename)
         except Exception:
             print("Cannot open a file %s" % filename)
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
-            return None, filename
+            return None
 
     def getfield(self, node, fieldname, dtype, shape):
         if fieldname in node.names():
@@ -129,7 +141,8 @@ class Collector(object):
             for fname in inputfiles():
                 if self.__break:
                     break
-                image, fname = self.loadimage(fname, node.name)
+                fname = self.findfile(fname, node.name)
+                image = self.loadimage(fname)
                 if image:
                     if field is None:
                         field = self.getfield(
@@ -176,6 +189,7 @@ class Collector(object):
             root = self.__nxsfile.root()
             try:
                 self.__fullfilename = root.attributes['file_name'][...]
+                # print self.__fullfilename
             except:
                 pass
             self.inspect(root)

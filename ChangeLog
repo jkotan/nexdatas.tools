@@ -1,3 +1,7 @@
+2016-03-02 Jan Kotanski <jankotan@gmail.com>
+	* add nxscollect for merging (issue #1)
+	* tagged as v1.16.0
+
 2016-02-12 Jan Kotanski <jankotan@gmail.com>
 	* add options to nxscreate comp, e.g. nexus_path
 	* fix for fetching sardana host
