@@ -554,7 +554,7 @@ def createParser():
                       help="make use mandatory components")
     parser.add_option("-p", "--private", action="store_true",
                       default=False, dest="private",
-                      help="make use private componentsm,"
+                      help="make use private components,"
                       " i.e. starting with '__'")
     parser.add_option("-n", "--no-newlines", action="store_true",
                       default=False, dest="nonewlines",
