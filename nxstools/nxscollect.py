@@ -46,6 +46,7 @@ class Collector(object):
         self.__filepattern = re.compile("[^:]+:\\d+:\\d+")
         self.__nxsfile = None
         self.__break = False
+        self.__fullfilename = None
 
         self.__siginfo = dict(
             (signal.__dict__[sname], sname)
@@ -79,14 +80,28 @@ class Collector(object):
                 return [filestr]
             return files
 
-    def loadimage(self, filename):
+    def absolutefilename(self, filename):
+        if not os.path.isabs(filename):
+            nexusfilepath = os.path.join('/', *os.path.abspath(
+                self.__nexusfilename).split('/')[:-1])
+            filename = os.path.abspath(os.path.join(nexusfilepath, filename))
+        return filename
+
+    def loadimage(self, filename, nname=None):
+        filename = self.absolutefilename(filename)
+        if not os.path.exists(filename):
+            if nname is not None and '.nxs' == self.__fullfilename[-4:]:
+                newfilename = '%s/%s/%s' % (
+                    self.__fullfilename[:-4], nname, filename.split("/")[-1])
+                if os.path.exists(newfilename):
+                    filename = newfilename
         try:
-            return fabio.open(filename)
-        except IOError:
+            return fabio.open(filename), filename
+        except Exception:
             print("Cannot open a file %s" % filename)
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
-            return None
+            return None, filename
 
     def getfield(self, node, fieldname, dtype, shape):
         if fieldname in node.names():
@@ -114,7 +129,7 @@ class Collector(object):
             for fname in inputfiles():
                 if self.__break:
                     break
-                image = self.loadimage(fname)
+                image, fname = self.loadimage(fname, node.name)
                 if image:
                     if field is None:
                         field = self.getfield(
@@ -123,7 +138,7 @@ class Collector(object):
                             image.data.shape)
                     if ind == field.shape[0]:
                         field.grow(0, 1)
-                        print "+ append %s " % (fname)
+                        print " * append %s " % (fname)
                         field[-1, ...] = image.data[...]
                     ind += 1
                     self.__nxsfile.flush()
@@ -159,6 +174,10 @@ class Collector(object):
         try:
             self.__nxsfile = open_file(self.__tempfilename, readonly=False)
             root = self.__nxsfile.root()
+            try:
+                self.__fullfilename = root.attributes['file_name'][...]
+            except:
+                pass
             self.inspect(root)
             self.__nxsfile.close()
             if self.__storeold:
