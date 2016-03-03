@@ -101,11 +101,12 @@ class Collector(object):
                 self.__fullfilename[:-4], nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
-                 # print "F3"
+                # print "F3"
                 return tmpfname
         # print "F4"
+
         return filename
-    
+
     def loadimage(self, filename):
         try:
             return fabio.open(filename)
@@ -115,7 +116,14 @@ class Collector(object):
                 raise Exception("Cannot open a file %s" % filename)
             return None
 
-    def getfield(self, node, fieldname, dtype, shape):
+    def addattr(self, node, attrs):
+        attrs = attrs or {}
+        for name, (value, dtype, shape) in attrs.items():
+            node.attributes.create(
+                name, dtype, shape, overwrite=True)[...] = value
+            print " + add attribute", name
+
+    def getfield(self, node, fieldname, dtype, shape, fieldattrs):
         if fieldname in node.names():
             return node[fieldname]
         else:
@@ -123,14 +131,16 @@ class Collector(object):
             if self.__compression:
                 cfilter = deflate_filter()
                 cfilter.rate = self.__compression
-            return node.create_field(
+            field = node.create_field(
                 fieldname,
                 dtype,
                 shape=[0, shape[0], shape[1]],
                 chunk=[1, shape[0], shape[1]],
                 filter=cfilter)
+            self.addattr(field, fieldattrs)
+            return field
 
-    def collect(self, files, node, fieldname=None):
+    def collect(self, files, node, fieldname=None, fieldattrs=None):
         fieldname = fieldname or "data"
         field = None
         ind = 0
@@ -148,11 +158,12 @@ class Collector(object):
                         field = self.getfield(
                             node, fieldname,
                             image.data.dtype.__str__(),
-                            image.data.shape)
+                            image.data.shape,
+                            fieldattrs)
                     if ind == field.shape[0]:
                         field.grow(0, 1)
-                        print " * append %s " % (fname)
                         field[-1, ...] = image.data[...]
+                        print " * append %s " % (fname)
                     ind += 1
                     self.__nxsfile.flush()
 
@@ -165,9 +176,20 @@ class Collector(object):
                     if isinstance(files, (str, unicode)):
                         files = [files]
                     fieldname = "data"
-                    print "COLLECT: %s/%s for %s" % (
+                    fieldattrs = {}
+                    for at in inputfiles.attributes:
+                        if at.name == "fieldname":
+                            fieldname = at[...]
+                        elif at.name.startswith("fieldattr_"):
+                            atname = at.name[10:]
+                            if atname:
+                                fieldattrs[atname] = (
+                                    at[...], at.dtype, at.shape
+                                )
+
+                    print "populate: %s/%s with %s" % (
                         parent.parent.path, fieldname, files)
-                    self.collect(files, parent.parent, fieldname)
+                    self.collect(files, parent.parent, fieldname, fieldattrs)
             try:
                 names = parent.names()
             except Exception:
