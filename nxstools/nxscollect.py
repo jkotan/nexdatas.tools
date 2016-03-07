@@ -243,28 +243,30 @@ class Collector(object):
 ## creates command-line parameters parser
 def createParser():
     ## usage example
-    usage = "usage: nxscollect -x <command> <main_nexus_file> \n" \
-            + " e.g.: nxscollect -x /tmp/gpfs/raw/scan_234.nxs \n\n" \
+    usage = "usage: \n" \
+            + " nxscollect [-x|-t] [<options>] <command> <main_nexus_file> \n" \
+            + " e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
             + " "
 
     ## option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
-                      help="setup servers action")
+                      help="execute the collecting process")
     parser.add_option("-t", "--test", action="store_true",
                       default=False, dest="test",
-                      help="setup servers action")
+                      help="exceute the process in test mode "
+                      + "without changing any files")
     parser.add_option("-c", "--compression", dest="compression",
                       action="store", type=int, default=2,
-                      help="deflate compression ratio")
+                      help="deflate compression ratio from 0 to 9")
     parser.add_option("-s", "--skip_missing", action="store_true",
                       default=False, dest="skipmissing",
                       help="skip missing files")
     parser.add_option("-r", "--replace_nexus_file", action="store_true",
                       default=False, dest="replaceold",
-                      help="if not the old file is save with "
-                      ".__nxscollect__old__* extension")
+                      help="if it is set the old file is not copied into "
+                      "a file with .__nxscollect__old__* extension")
 
     return parser
 
