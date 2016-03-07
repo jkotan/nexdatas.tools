@@ -37,10 +37,12 @@ class Collector(object):
     ## constructor
     def __init__(self, nexusfilename, compression=2,
                  skipmissing=False,
-                 storeold=False):
+                 storeold=False,
+                 testmode=False):
         self.__nexusfilename = nexusfilename
         self.__compression = compression
         self.__skipmissing = skipmissing
+        self.__testmode = testmode
         self.__storeold = storeold
         self.__tempfilename = None
         self.__filepattern = re.compile("[^:]+:\\d+:\\d+")
@@ -119,28 +121,33 @@ class Collector(object):
     def addattr(self, node, attrs):
         attrs = attrs or {}
         for name, (value, dtype, shape) in attrs.items():
-            node.attributes.create(
-                name, dtype, shape, overwrite=True)[...] = value
-            print " + add attribute", name
+            if not self.__testmode:
+                node.attributes.create(
+                    name, dtype, shape, overwrite=True)[...] = value
+            print " + add attribute: %s = %s" % (name, value)
 
-    def getfield(self, node, fieldname, dtype, shape, fieldattrs):
+    def getfield(self, node, fieldname, dtype, shape, fieldattrs,
+                 fieldcompression):
+        field = None
         if fieldname in node.names():
             return node[fieldname]
         else:
-            cfilter = None
-            if self.__compression:
-                cfilter = deflate_filter()
-                cfilter.rate = self.__compression
-            field = node.create_field(
-                fieldname,
-                dtype,
-                shape=[0, shape[0], shape[1]],
-                chunk=[1, shape[0], shape[1]],
-                filter=cfilter)
+            if not self.__testmode:
+                cfilter = None
+                if fieldcompression:
+                    cfilter = deflate_filter()
+                    cfilter.rate = fieldcompression
+                    field = node.create_field(
+                        fieldname,
+                        dtype,
+                        shape=[0, shape[0], shape[1]],
+                        chunk=[1, shape[0], shape[1]],
+                        filter=cfilter)
             self.addattr(field, fieldattrs)
             return field
 
-    def collect(self, files, node, fieldname=None, fieldattrs=None):
+    def collect(self, files, node, fieldname=None, fieldattrs=None,
+                fieldcompression=None):
         fieldname = fieldname or "data"
         field = None
         ind = 0
@@ -159,13 +166,15 @@ class Collector(object):
                             node, fieldname,
                             image.data.dtype.__str__(),
                             image.data.shape,
-                            fieldattrs)
-                    if ind == field.shape[0]:
-                        field.grow(0, 1)
-                        field[-1, ...] = image.data[...]
+                            fieldattrs, fieldcompression)
+                    if self.__testmode or ind == field.shape[0]:
+                        if not self.__testmode:
+                            field.grow(0, 1)
+                            field[-1, ...] = image.data[...]
                         print " * append %s " % (fname)
                     ind += 1
-                    self.__nxsfile.flush()
+                    if not self.__testmode:
+                        self.__nxsfile.flush()
 
     def inspect(self, parent, collection=False):
         if hasattr(parent, "names"):
@@ -177,9 +186,12 @@ class Collector(object):
                         files = [files]
                     fieldname = "data"
                     fieldattrs = {}
+                    fieldcompression = None
                     for at in inputfiles.attributes:
                         if at.name == "fieldname":
                             fieldname = at[...]
+                        elif at.name == "fieldcompression":
+                            fieldcompression = int(at[...])
                         elif at.name.startswith("fieldattr_"):
                             atname = at.name[10:]
                             if atname:
@@ -189,7 +201,10 @@ class Collector(object):
 
                     print "populate: %s/%s with %s" % (
                         parent.parent.path, fieldname, files)
-                    self.collect(files, parent.parent, fieldname, fieldattrs)
+                    if fieldcompression is None:
+                        fieldcompression = self.__compression
+                    self.collect(files, parent.parent, fieldname, fieldattrs,
+                                 fieldcompression)
             try:
                 names = parent.names()
             except Exception:
@@ -207,7 +222,8 @@ class Collector(object):
     def merge(self):
         self.createtmpfile()
         try:
-            self.__nxsfile = open_file(self.__tempfilename, readonly=False)
+            self.__nxsfile = open_file(
+                self.__tempfilename, readonly=self.__testmode)
             root = self.__nxsfile.root()
             try:
                 self.__fullfilename = root.attributes['file_name'][...]
@@ -227,12 +243,18 @@ class Collector(object):
 ## creates command-line parameters parser
 def createParser():
     ## usage example
-    usage = "usage: nxscollect <command> <main_nexus_file> \n" \
-            + " e.g.: nxscollect /tmp/gpfs/raw/scan_234.nxs \n\n" \
+    usage = "usage: nxscollect -x <command> <main_nexus_file> \n" \
+            + " e.g.: nxscollect -x /tmp/gpfs/raw/scan_234.nxs \n\n" \
             + " "
 
     ## option parser
     parser = OptionParser(usage=usage)
+    parser.add_option("-x", "--execute", action="store_true",
+                      default=False, dest="execute",
+                      help="setup servers action")
+    parser.add_option("-t", "--test", action="store_true",
+                      default=False, dest="test",
+                      help="setup servers action")
     parser.add_option("-c", "--compression", dest="compression",
                       action="store", type=int, default=2,
                       help="deflate compression ratio")
@@ -260,12 +282,18 @@ def main():
         print ""
         sys.exit(0)
 
+    if not options.execute and not options.test:
+        parser.print_help()
+        print ""
+        sys.exit(0)
+
     ## configuration server
     for nxsfile in nexusfiles:
         collector = Collector(nxsfile,
                               options.compression,
                               options.skipmissing,
-                              not options.replaceold)
+                              not options.replaceold,
+                              options.test)
         collector.merge()
 
 if __name__ == "__main__":

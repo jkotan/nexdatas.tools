@@ -1,5 +1,6 @@
-2016-03-XX Jan Kotanski <jankotan@gmail.com>
+2016-03-07 Jan Kotanski <jankotan@gmail.com>
 	* nxscollect: add setting postrun field name and filed attributes
+	* add test mode
 	* tagged as v1.17.0
 
 2016-03-02 Jan Kotanski <jankotan@gmail.com>
