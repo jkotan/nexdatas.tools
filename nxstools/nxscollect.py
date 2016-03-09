@@ -90,18 +90,24 @@ class Collector(object):
         return filename
 
     def findfile(self, filename, nname=None):
-        tmpfname = self.absolutefilename(filename, self.__nexusfilename)
-        if os.path.exists(tmpfname):
-            return tmpfname
-        tmpfname = self.absolutefilename(filename, self.__fullfilename)
-        if os.path.exists(tmpfname):
-            return tmpfname
+        if nname is not None and '.nxs' == self.__nexusfilename[-4:]:
+            tmpfname = '%s/%s/%s' % (
+                self.__nexusfilename[:-4], nname,
+                filename.split("/")[-1])
+            if os.path.exists(tmpfname):
+                return tmpfname
         if nname is not None and '.nxs' == self.__fullfilename[-4:]:
             tmpfname = '%s/%s/%s' % (
                 self.__fullfilename[:-4], nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
                 return tmpfname
+        tmpfname = self.absolutefilename(filename, self.__nexusfilename)
+        if os.path.exists(tmpfname):
+            return tmpfname
+        tmpfname = self.absolutefilename(filename, self.__fullfilename)
+        if os.path.exists(tmpfname):
+            return tmpfname
         return filename
 
     def loadimage(self, filename):
