@@ -1,4 +1,8 @@
 2016-03-09 Jan Kotanski <jankotan@gmail.com>
+	* nxscreate: add onlinecp command
+	* tagged as v1.18.0
+
+2016-03-09 Jan Kotanski <jankotan@gmail.com>
 	* nxscollect: improve file finding
 	* tagged as v1.17.2
 
