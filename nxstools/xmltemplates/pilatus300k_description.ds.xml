@@ -1,0 +1,9 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_description">
+    <result name="result">
+if "$(name)_filestartnum" in commonblock:
+    commonblock.pop("$(name)_filestartnum")
+ds.result = "Pilatus 300k"</result>
+  </datasource>
+</definition>

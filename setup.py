@@ -48,7 +48,7 @@ SETUPDATA = dict(
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
     packages=["nxstools"],
-    #    data_files = datas,
+    package_data={'nxstools': ['xmltemplates/*.xml']},
     scripts=[
         'ndtsconfig_get',
         'ndtsconfig_list',
@@ -74,6 +74,7 @@ SETUPDATA = dict(
         'ndtscreate_clientds',
         'ndtscreate_tangods',
         'ndtscreate_deviceds',
+        'ndtscreate_onlinecp',
         'ndtscreate_onlineds',
         'ndtscreate_comp',
         'nxscreate',

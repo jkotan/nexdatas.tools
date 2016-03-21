@@ -53,6 +53,33 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
+moduleTemplateFiles = {
+    'pilatus100k': ['pilatus.xml',
+                    'pilatus_postrun.ds.xml',
+                    'pilatus100k_description.ds.xml',
+                    'pilatus_filestartnum_cb.ds.xml'],
+    'pilatus300k': ['pilatus.xml',
+                    'pilatus_postrun.ds.xml',
+                    'pilatus300k_description.ds.xml',
+                    'pilatus_filestartnum_cb.ds.xml'],
+    'pilatus1M': ['pilatus.xml',
+                  'pilatus_postrun.ds.xml',
+                  'pilatus1m_description.ds.xml',
+                  'pilatus_filestartnum_cb.ds.xml'],
+    'pilatus2M': ['pilatus.xml',
+                  'pilatus_postrun.ds.xml',
+                  'pilatus2m_description.ds.xml',
+                  'pilatus_filestartnum_cb.ds.xml'],
+    'pilatus6M': ['pilatus.xml',
+                  'pilatus_postrun.ds.xml',
+                  'pilatus6m_description.ds.xml',
+                  'pilatus_filestartnum_cb.ds.xml'],
+    'pilatus': ['pilatus.xml',
+                'pilatus_postrun.ds.xml',
+                'pilatus_description.ds.xml',
+                'pilatus_filestartnum_cb.ds.xml']
+}
+
 moduleMultiAttributes = {
     'pilatus100k': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
@@ -286,6 +313,21 @@ def storeComponent(name, xml, server):
     proxy.StoreComponent(str(name))
 
 
+## provides device class name
+# \param devicename device name
+# \returns class name
+def getClassName(devicename='NXSConfigServer'):
+    try:
+        db = PyTango.Database()
+    except:
+        sys.stderr.write(
+            "Error: Cannot connect into %s" % name
+            + "on host: \n    %s \n " % os.environ['TANGO_HOST'])
+        sys.stderr.flush()
+        return ""
+
+    return db.get_class_for_device(devicename)
+
 ## provides server device names
 # \param name server instance name
 # \returns list of the server device names
@@ -302,10 +344,8 @@ def getServers(name='NXSConfigServer'):
     servers = db.get_device_exported_for_class(name).value_string
     return servers
 
-
-## prints server names
 # \param name server instance name
-def listServers(server, name='NXSConfigServer'):
+def remoteCall(server, func, *args, **kwargs):
     lserver = None
     if server and server.strip():
         lserver = server.split("/")[0]
@@ -317,10 +357,21 @@ def listServers(server, name='NXSConfigServer'):
         localtango = os.environ.get('TANGO_HOST')
         os.environ['TANGO_HOST'] = lserver
 
-    lst = getServers(name)
+    res = func(*args, **kwargs)
     if lserver and localtango is not None:
         os.environ['TANGO_HOST'] = localtango
-    return lst
+    return res
+
+
+## prints server names
+# \param name server instance name
+def listServers(server, name='NXSConfigServer'):
+    return remoteCall(server, getServers, name)
+
+## prints server names
+# \param name device name
+def findClassName(server, name):
+    return remoteCall(server, getClassName, name)
 
 
 ## provides server device name if only one or error in the other case

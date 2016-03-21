@@ -1,0 +1,89 @@
+#!/usr/bin/env python
+#   This file is part of nexdatas - Tango Server for NeXus data writer
+#
+#    Copyright (C) 2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#
+#    nexdatas is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    nexdatas is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+## \package nxstools tools for nxswriter
+## \file nxscreate_ds_online
+# datasource creator
+
+""" component creator from online files """
+
+import sys
+
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import OnlineCPCreator
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
+from optparse import OptionParser
+
+
+## the main function
+def main():
+    ## usage example
+    usage = "usage: %prog [options] inputFile\n" \
+        + "       nxscreate onlinecp [options] inputFile"
+    ## option parser
+    parser = OptionParser(usage=usage)
+    parser.add_option("-d", "--directory", type="string",
+                      help="output directory where datasources will be stored",
+                      dest="directory", default=".")
+    parser.add_option("-c", "--component", type="string",
+                      help="component name",
+                      dest="component", default="")
+    parser.add_option("-b", "--database", action="store_true",
+                      default=False, dest="database",
+                      help="store components in Configuration Server database")
+    parser.add_option("-n", "--nolower", action="store_false",
+                      default=True, dest="lower",
+                      help="do not change aliases into lower case")
+    parser.add_option("-r", "--server", dest="server",
+                      help="configuration server device name")
+    parser.add_option("-x", "--file-prefix", type="string",
+                      help="file prefix, i.e. counter",
+                      dest="file", default="")
+
+    (options, args) = parser.parse_args()
+    if not len(args):
+        parser.print_help()
+        sys.exit(255)
+
+    if options.database and not options.server:
+        if not PYTANGO:
+            sys.stderr.write("nxscreate: No PyTango installed\n")
+            parser.print_help()
+            sys.exit(255)
+
+        options.server = checkServer()
+        if not options.server:
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
+    print("INPUT: %s" % args)
+    print("OUTPUT DIR: %s" % options.directory)
+
+    creator = OnlineCPCreator(options, args)
+    creator.create()
+
+
+if __name__ == "__main__":
+    main()

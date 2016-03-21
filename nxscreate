@@ -2,11 +2,14 @@
 import os
 import sys
 
-commands = ["onlineds",
-            "clientds",
-            "tangods",
-            "deviceds",
-            "comp"]
+commands = [
+    "onlineds",
+    "onlinecp",
+    "clientds",
+    "tangods",
+    "deviceds",
+    "comp"
+]
 
 if len(sys.argv) < 2 or sys.argv[1] not in commands:
     message = "Usage: nxscreate <command> [options]" \
@@ -20,6 +23,8 @@ if len(sys.argv) < 2 or sys.argv[1] not in commands:
         + "         create datasources for all device attributes \n\n" \
         + "    onlineds \n" \
         + "         create datasources from online file \n\n" \
+        + "    onlinep \n" \
+        + "         create component from online file \n\n" \
         + "    comp \n" \
         + "         create simple components \n\n"
 
