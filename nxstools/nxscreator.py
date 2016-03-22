@@ -35,12 +35,16 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
-NXSTOOLS_PATH= os.path.dirname(nxsdevicetools.__file__)
+NXSTOOLS_PATH = os.path.dirname(nxsdevicetools.__file__)
 PYTANGO = False
 try:
     import PyTango
     PYTANGO = True
 except:
+    pass
+
+
+class CPExistsException(Exception):
     pass
 
 
@@ -136,7 +140,6 @@ class Creator(object):
             storeDataSource(name, xml, server)
         else:
             df.dump()
-
 
     ## creates CLIENT datasource file
     # \param name device name
@@ -400,13 +403,12 @@ class DeviceDSCreator(Creator):
                 self.options.datasource if not self.options.nogroup else None)
 
 
-
-
 class OnlineDSCreator(Creator):
 
     def printAction(self, dv, dscps=None):
         if self.printouts:
-            if not self.options.database:
+            if hasattr(self.options, "database") and \
+               not self.options.database:
                 print("CREATING %s: %s%s.ds.xml" % (
                     dv.tdevice, self.options.file, dv.name))
             else:
@@ -493,42 +495,67 @@ class OnlineDSCreator(Creator):
                 pass
             device = device.nextSibling
 
+
 class OnlineCPCreator(Creator):
 
     def printAction(self, dv, dscps=None):
         if self.printouts:
-            if not self.options.database:
-                print("CREATING %s: %s%s.ds.xml" % (
-                    dv.tdevice, self.options.file, dv.name))
-            else:
-                print("STORING %s %s/%s %s" % (
-                    dv.name + ":" + " " * (34 - len(dv.name)),
-                    dv.hostname,
-                    dv.tdevice + " " * (
-                        60 - len(dv.tdevice) - len(dv.hostname)),
-                    ",".join(dscps[dv.name])
-                    if (dscps and dv.name in dscps and dscps[dv.name])
-                    else ""))
+            print("STORING %s %s/%s %s" % (
+                dv.name + ":" + " " * (34 - len(dv.name)),
+                dv.hostname,
+                dv.tdevice + " " * (
+                    60 - len(dv.tdevice) - len(dv.hostname)),
+                ",".join(dscps[dv.name])
+                if (dscps and dv.name in dscps and dscps[dv.name])
+                else ""))
 
-    def getModuleName(self, device):
+    @classmethod
+    def getModuleName(cls, device):
         if device.module in moduleMultiAttributes.keys():
             return device.module
         elif len(device.tdevice.split('/')) == 3:
             classname = findClassName(device.hostname, device.tdevice)
             if classname.lower() in moduleMultiAttributes.keys():
                 return classname.lower()
-            if dv.module == 'module_tango' \
-               and len(dv.tdevice.split('/')) == 3 \
-               and dv.tdevice.split('/')[1] in moduleMultiAttributes.keys():
-                return  dv.tdevice.split('/')[1]
-        
+            if device.module == 'module_tango' \
+               and len(device.tdevice.split('/')) == 3 \
+               and device.tdevice.split('/')[1] \
+               in moduleMultiAttributes.keys():
+                return device.tdevice.split('/')[1]
+
+    def listcomponents(self):
+        indom = parse(self.args[0])
+        hw = indom.getElementsByTagName("hw")
+        device = hw[0].firstChild
+        cpnames = set()
+
+        while device:
+            if device.nodeName == 'device':
+                name = self.getChildText(device, "name")
+                dv = Device()
+                dv.name = name
+                dv.dtype = self.getChildText(device, "type")
+                dv.module = self.getChildText(device, "module")
+                dv.tdevice = self.getChildText(device, "device")
+                dv.hostname = self.getChildText(device, "hostname")
+                dv.sardananame = self.getChildText(device, "sardananame")
+                dv.sardanahostname = self.getChildText(
+                    device, "sardanahostname")
+
+                module = self.getModuleName(dv)
+                if module:
+                    if module in moduleTemplateFiles:
+                        cpnames.add(dv.name)
+            device = device.nextSibling
+        return cpnames
+
     def create(self):
         localhost = getServerTangoHost(self.options.server)
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
-        cpname =  self.options.component
-        server  = self.options.server if self.options.database else None    
+        cpname = self.options.component
+        server = self.options.server
         try:
             proxy = openServer(server)
             proxy.Open()
@@ -537,7 +564,7 @@ class OnlineCPCreator(Creator):
             raise Exception("Cannot connect to %s" % server)
 
         if cpname in acps:
-            raise Exception("Component '%s' already exists." % cpname)
+            raise CPExistsException("Component '%s' already exists." % cpname)
 
         while device:
             if device.nodeName == 'device':
@@ -559,7 +586,7 @@ class OnlineCPCreator(Creator):
                         for at in multattr:
                             dsname = "%s_%s" % (dv.name.lower(), at.lower())
                             self.createTangoDataSource(
-                                dsname, self.options.directory, self.options.file,
+                                dsname, None, None,
                                 server, dv.tdevice, at, dv.host, dv.port,
                                 "%s_" % (dv.name.lower()))
                             mdv = copy.copy(dv)
@@ -568,20 +595,21 @@ class OnlineCPCreator(Creator):
                         if module in moduleTemplateFiles:
                             xmlfiles = moduleTemplateFiles[module]
                             for xmlfile in xmlfiles:
-                                 newname = self.replaceName(xmlfile, cpname)
-                                 with open('%s/xmltemplates/%s' % (
-                                         NXSTOOLS_PATH, xmlfile), "r") \
-                                     as content_file:
-                                     xmlcontent = content_file.read()
-                                 xml = xmlcontent.replace("$(name)", cpname)
-                                 mdv = copy.copy(dv)
-                                 mdv.name = newname
-                                 if xmlfile.endswith(".ds.xml"):
-                                     self.printAction(mdv)
-                                     storeDataSource(newname, xml, server)
-                                 else:
-                                     self.printAction(mdv)
-                                     storeComponent(newname, xml, server)
+                                newname = self.replaceName(xmlfile, cpname)
+                                with open(
+                                        '%s/xmltemplates/%s' % (
+                                            NXSTOOLS_PATH, xmlfile), "r"
+                                ) as content_file:
+                                    xmlcontent = content_file.read()
+                                xml = xmlcontent.replace("$(name)", cpname)
+                                mdv = copy.copy(dv)
+                                mdv.name = newname
+                                if xmlfile.endswith(".ds.xml"):
+                                    self.printAction(mdv)
+                                    storeDataSource(newname, xml, server)
+                                else:
+                                    self.printAction(mdv)
+                                    storeComponent(newname, xml, server)
 
             device = device.nextSibling
 

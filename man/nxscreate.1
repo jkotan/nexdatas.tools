@@ -88,21 +88,6 @@ It creates a set of TANGO datasources for all device attributes.
 
 
 
-.B nxscreate dsonline 
-[options] inputFile
-
-It creates a set of datasources from an online xml file.
-
-.I Options:
-  -h, --help            show this help message and exit
-  -d DIR, --directory=DIR
-                        output directory where datasources will be stored
-  -s SERVER, --server=SERVER
-                        Server host name with the TANGO database
-  -c, --comments        print xml comments
-
-
-
 .B nxscreate onlineds 
 [options] inputFile
 
@@ -114,11 +99,28 @@ It creates a set of motor datasources from an online xml file.
                         output directory where datasources will be stored
   -c, --comments        print xml comments
   -b, --database        store components in Configuration Server database
-  -n, --nolower         donot change aliases into lower case
+  -n, --nolower         do not change aliases into lower case
   -r SERVER, --server=SERVER
                         configuration server device name
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+
+
+.B nxscreate onlinecp 
+[options] [<inputFile>]
+
+It creates a detector component defined in 'online.xml' file:
+ - default <inputFile> is '/online_dir/online.xml' 
+ - without '-c <component>' a list of possible components is shown 
+
+.I Options:
+  -h, --help            show this help message and exit
+  -c COMPONENT, --component=COMPONENT
+                        component namerelated to the device name from
+                        <inputFile>
+  -n, --nolower         do not change aliases into lower case
+  -r SERVER, --server=SERVER
+                        configuration server device name
 
 
 

@@ -22,9 +22,9 @@ if len(sys.argv) < 2 or sys.argv[1] not in commands:
         + "    deviceds \n" \
         + "         create datasources for all device attributes \n\n" \
         + "    onlineds \n" \
-        + "         create datasources from online file \n\n" \
-        + "    onlinep \n" \
-        + "         create component from online file \n\n" \
+        + "         create datasources from online.xml file \n\n" \
+        + "    onlinecp \n" \
+        + "         create component from online.xml file \n\n" \
         + "    comp \n" \
         + "         create simple components \n\n"
 

@@ -22,9 +22,10 @@
 """ component creator from online files """
 
 import sys
+import os
 
 from nxstools.nxsdevicetools import checkServer
-from nxstools.nxscreator import OnlineCPCreator
+from nxstools.nxscreator import OnlineCPCreator, CPExistsException
 
 PYTANGO = False
 try:
@@ -39,50 +40,58 @@ from optparse import OptionParser
 ## the main function
 def main():
     ## usage example
-    usage = "usage: %prog [options] inputFile\n" \
-        + "       nxscreate onlinecp [options] inputFile"
+    usage = "usage: %prog [options] [<inputFile>]\n" \
+        + "       nxscreate onlinecp [options] [<inputFile>]\n" \
+        + " e.g.\n" \
+        + "       nxscreate onlinecp  \n" \
+        + "       nxscreate onlinecp -c pilatus \n\n" \
+        + " - default <inputFile> is '/online_dir/online.xml' \n" \
+        + " - without '-c <component>' a list of possible components is shown \n" \
+
     ## option parser
     parser = OptionParser(usage=usage)
-    parser.add_option("-d", "--directory", type="string",
-                      help="output directory where datasources will be stored",
-                      dest="directory", default=".")
     parser.add_option("-c", "--component", type="string",
-                      help="component name",
+                      help="component name" +
+                      "related to the device name from <inputFile>",
                       dest="component", default="")
-    parser.add_option("-b", "--database", action="store_true",
-                      default=False, dest="database",
-                      help="store components in Configuration Server database")
     parser.add_option("-n", "--nolower", action="store_false",
                       default=True, dest="lower",
                       help="do not change aliases into lower case")
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
-    parser.add_option("-x", "--file-prefix", type="string",
-                      help="file prefix, i.e. counter",
-                      dest="file", default="")
 
     (options, args) = parser.parse_args()
-    if not len(args):
+
+    if not PYTANGO:
+        sys.stderr.write("nxscreate: No PyTango installed\n")
         parser.print_help()
         sys.exit(255)
 
-    if options.database and not options.server:
-        if not PYTANGO:
-            sys.stderr.write("nxscreate: No PyTango installed\n")
-            parser.print_help()
-            sys.exit(255)
-
+    if not options.server:
         options.server = checkServer()
         if not options.server:
             parser.print_help()
             print("")
             sys.exit(0)
+        if not len(args) and os.path.isfile('/online_dir/online.xml'):
+            args = ['/online_dir/online.xml']
 
-    print("INPUT: %s" % args)
-    print("OUTPUT DIR: %s" % options.directory)
+    if not len(args):
+        parser.print_help()
+        sys.exit(255)
+
+    print("INPUT: %s" % args[0])
+    print("SERVER: %s" % options.server)
 
     creator = OnlineCPCreator(options, args)
-    creator.create()
+    if options.component:
+        try:
+            creator.create()
+        except CPExistsException as e:
+            print(str(e))
+    else:
+        lst = creator.listcomponents()
+        print("\nPOSSIBLE COMPONENTS: \n   %s" % " ".join(list(lst)))
 
 
 if __name__ == "__main__":

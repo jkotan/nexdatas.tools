@@ -321,12 +321,13 @@ def getClassName(devicename='NXSConfigServer'):
         db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into %s" % name
+            "Error: Cannot connect into %s" % devicename
             + "on host: \n    %s \n " % os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
 
     return db.get_class_for_device(devicename)
+
 
 ## provides server device names
 # \param name server instance name
@@ -343,6 +344,7 @@ def getServers(name='NXSConfigServer'):
 
     servers = db.get_device_exported_for_class(name).value_string
     return servers
+
 
 # \param name server instance name
 def remoteCall(server, func, *args, **kwargs):
@@ -367,6 +369,7 @@ def remoteCall(server, func, *args, **kwargs):
 # \param name server instance name
 def listServers(server, name='NXSConfigServer'):
     return remoteCall(server, getServers, name)
+
 
 ## prints server names
 # \param name device name
