@@ -1,4 +1,8 @@
 2016-03-22 Jan Kotanski <jankotan@gmail.com>
+	* nxscreate: adds createXMLs method to CP creator
+	* tagged as v1.18.3
+
+2016-03-22 Jan Kotanski <jankotan@gmail.com>
 	* nxscreate: improve support for lowercase names
 	* tagged as v1.18.2
 
