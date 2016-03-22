@@ -570,6 +570,7 @@ class OnlineCPCreator(Creator):
         server = self.options.server
         for dsname, dsxml in self.datasources.items():
             storeDataSource(dsname, dsxml, server)
+#            print dsxml
         for cpname, cpxml in self.components.items():
             storeComponent(cpname, cpxml, server)
 
@@ -602,7 +603,6 @@ class OnlineCPCreator(Creator):
                     name = name.lower()
                     cpname = cpname.lower()
                 if name == cpname:
-                    print "name", name
                     dv = Device()
                     dv.name = name
                     dv.dtype = self.getChildText(device, "type")
@@ -613,6 +613,15 @@ class OnlineCPCreator(Creator):
                     dv.sardanahostname = self.getChildText(
                         device, "sardanahostname")
 
+                    try:
+                        dv.splitHostPort()
+                    except:
+                        if self.printouts:
+                            print("ERROR %s: host for module %s of %s "
+                                  "type not defined"
+                                  % (dv.name, dv.module, dv.dtype))
+                        device = device.nextSibling
+                        continue
                     module = self.getModuleName(dv)
                     if module:
                         multattr = moduleMultiAttributes[module.lower()]
