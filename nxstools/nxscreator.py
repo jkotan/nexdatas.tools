@@ -556,15 +556,17 @@ class OnlineCPCreator(Creator):
         device = hw[0].firstChild
         cpname = self.options.component
         server = self.options.server
-        try:
-            proxy = openServer(server)
-            proxy.Open()
-            acps = proxy.availableComponents()
-        except:
-            raise Exception("Cannot connect to %s" % server)
+        if not self.options.overwrite:
+            try:
+                proxy = openServer(server)
+                proxy.Open()
+                acps = proxy.availableComponents()
+            except:
+                raise Exception("Cannot connect to %s" % server)
 
-        if cpname in acps:
-            raise CPExistsException("Component '%s' already exists." % cpname)
+            if cpname in acps:
+                raise CPExistsException(
+                    "Component '%s' already exists." % cpname)
 
         while device:
             if device.nodeName == 'device':

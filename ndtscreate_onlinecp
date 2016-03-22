@@ -54,11 +54,14 @@ def main():
                       help="component name" +
                       "related to the device name from <inputFile>",
                       dest="component", default="")
+    parser.add_option("-r", "--server", dest="server",
+                      help="configuration server device name")
     parser.add_option("-n", "--nolower", action="store_false",
                       default=True, dest="lower",
                       help="do not change aliases into lower case")
-    parser.add_option("-r", "--server", dest="server",
-                      help="configuration server device name")
+    parser.add_option("-o", "--overwrite", action="store_true",
+                      default=False, dest="overwrite",
+                      help="overwrite existing component")
 
     (options, args) = parser.parse_args()
 

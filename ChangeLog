@@ -1,4 +1,8 @@
 2016-03-22 Jan Kotanski <jankotan@gmail.com>
+	* nxscreate: add overwrite component option to onlinecp command
+	* tagged as v1.18.1
+
+2016-03-22 Jan Kotanski <jankotan@gmail.com>
 	* nxscreate: add onlinecp command
 	* nxsetup: add new servers
 	* tagged as v1.18.0
