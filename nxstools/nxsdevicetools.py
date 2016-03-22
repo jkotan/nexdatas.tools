@@ -62,15 +62,15 @@ moduleTemplateFiles = {
                     'pilatus_postrun.ds.xml',
                     'pilatus300k_description.ds.xml',
                     'pilatus_filestartnum_cb.ds.xml'],
-    'pilatus1M': ['pilatus.xml',
+    'pilatus1m': ['pilatus.xml',
                   'pilatus_postrun.ds.xml',
                   'pilatus1m_description.ds.xml',
                   'pilatus_filestartnum_cb.ds.xml'],
-    'pilatus2M': ['pilatus.xml',
+    'pilatus2m': ['pilatus.xml',
                   'pilatus_postrun.ds.xml',
                   'pilatus2m_description.ds.xml',
                   'pilatus_filestartnum_cb.ds.xml'],
-    'pilatus6M': ['pilatus.xml',
+    'pilatus6m': ['pilatus.xml',
                   'pilatus_postrun.ds.xml',
                   'pilatus6m_description.ds.xml',
                   'pilatus_filestartnum_cb.ds.xml'],
@@ -89,15 +89,15 @@ moduleMultiAttributes = {
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
-    'pilatus1M': [
+    'pilatus1m': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
-    'pilatus2M': [
+    'pilatus2m': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
-    'pilatus6M': [
+    'pilatus6m': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],

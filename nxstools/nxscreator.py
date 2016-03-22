@@ -469,7 +469,7 @@ class OnlineDSCreator(Creator):
                         module = dv.tdevice.split('/')[1]
                     else:
                         module = dv.module
-                    multattr = moduleMultiAttributes[module]
+                    multattr = moduleMultiAttributes[module.lower()]
                     for at in multattr:
                         dsname = "%s_%s" % (dv.name.lower(), at.lower())
                         self.createTangoDataSource(
@@ -511,17 +511,17 @@ class OnlineCPCreator(Creator):
 
     @classmethod
     def getModuleName(cls, device):
-        if device.module in moduleMultiAttributes.keys():
-            return device.module
+        if device.module.lower() in moduleMultiAttributes.keys():
+            return device.module.lower()
         elif len(device.tdevice.split('/')) == 3:
             classname = findClassName(device.hostname, device.tdevice)
             if classname.lower() in moduleMultiAttributes.keys():
                 return classname.lower()
-            if device.module == 'module_tango' \
+            if device.module.lower() == 'module_tango' \
                and len(device.tdevice.split('/')) == 3 \
                and device.tdevice.split('/')[1] \
                in moduleMultiAttributes.keys():
-                return device.tdevice.split('/')[1]
+                return device.tdevice.split('/')[1].lower()
 
     def listcomponents(self):
         indom = parse(self.args[0])
@@ -532,6 +532,9 @@ class OnlineCPCreator(Creator):
         while device:
             if device.nodeName == 'device':
                 name = self.getChildText(device, "name")
+                if self.options.lower:
+                    name = name.lower()
+                    cpname = name.lower()
                 dv = Device()
                 dv.name = name
                 dv.dtype = self.getChildText(device, "type")
@@ -544,7 +547,7 @@ class OnlineCPCreator(Creator):
 
                 module = self.getModuleName(dv)
                 if module:
-                    if module in moduleTemplateFiles:
+                    if module.lower() in moduleTemplateFiles:
                         cpnames.add(dv.name)
             device = device.nextSibling
         return cpnames
@@ -571,7 +574,11 @@ class OnlineCPCreator(Creator):
         while device:
             if device.nodeName == 'device':
                 name = self.getChildText(device, "name")
+                if self.options.lower:
+                    name = name.lower()
+                    cpname = cpname.lower()
                 if name == cpname:
+                    print "name", name
                     dv = Device()
                     dv.name = name
                     dv.dtype = self.getChildText(device, "type")
@@ -584,7 +591,7 @@ class OnlineCPCreator(Creator):
 
                     module = self.getModuleName(dv)
                     if module:
-                        multattr = moduleMultiAttributes[module]
+                        multattr = moduleMultiAttributes[module.lower()]
                         for at in multattr:
                             dsname = "%s_%s" % (dv.name.lower(), at.lower())
                             self.createTangoDataSource(
@@ -594,8 +601,8 @@ class OnlineCPCreator(Creator):
                             mdv = copy.copy(dv)
                             mdv.name = dsname
                             self.printAction(mdv)
-                        if module in moduleTemplateFiles:
-                            xmlfiles = moduleTemplateFiles[module]
+                        if module.lower() in moduleTemplateFiles:
+                            xmlfiles = moduleTemplateFiles[module.lower()]
                             for xmlfile in xmlfiles:
                                 newname = self.replaceName(xmlfile, cpname)
                                 with open(
