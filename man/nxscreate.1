@@ -33,6 +33,7 @@ It creates a set of client datasources.
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
   -b, --database        store components in Configuration Server database
+  -m, --minimal_device  device name without first '0'
   -r SERVER, --server=SERVER
                         configuration server device name
 
@@ -64,7 +65,7 @@ It creates a set of TANGO datasources.
 
 
 
-.B nxscreate deviceods 
+.B nxscreate deviceds 
 [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] 
 
 It creates a set of TANGO datasources for all device attributes.
@@ -92,13 +93,22 @@ It creates a set of TANGO datasources for all device attributes.
 [options] inputFile
 
 It creates a set of motor datasources from an online xml file.
+Usage: ndtscreate_onlineds [options] inputFile
+       nxscreate onlineds [options] inputFile
+ e.g.
+       nxscreate onlineds -b
+       nxscreate onlinecp -d /home/user/xmldir
+
+ - with -b datasources are created in Configuration Server database
+ - with -d <directory> datasources are created on filesystem
+ - default <inputFile> is '/online_dir/online.xml'
+
 
 .I Options:
   -h, --help            show this help message and exit
-  -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be stored
-  -c, --comments        print xml comments
   -b, --database        store components in Configuration Server database
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be saved
   -n, --nolower         do not change aliases into lower case
   -r SERVER, --server=SERVER
                         configuration server device name
@@ -108,10 +118,17 @@ It creates a set of motor datasources from an online xml file.
 
 .B nxscreate onlinecp 
 [options] [<inputFile>]
+Usage: ndtscreate_onlinecp [options] [<inputFile>]
+       nxscreate onlinecp [options] [<inputFile>]
+ e.g.
+       nxscreate onlinecp
+       nxscreate onlinecp -c pilatus
 
-It creates a detector component defined in 'online.xml' file:
- - default <inputFile> is '/online_dir/online.xml' 
- - without '-c <component>' a list of possible components is shown 
+ - without '-c <component>' a list of possible components is shown
+ - without '-d <dircetory>  datasources are created in Configuration Server database
+ - with -d <directory> datasources are created on filesystem
+ - default <inputFile> is '/online_dir/online.xml'
+
 
 .I Options:
   -h, --help            show this help message and exit
@@ -122,6 +139,12 @@ It creates a detector component defined in 'online.xml' file:
                         configuration server device name
   -n, --nolower         do not change aliases into lower case
   -o, --overwrite       overwrite existing component
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be stored.
+			If it is not set components are stored in Configuration
+                        Server database
 
 
 .B nxscreate comp 
@@ -140,8 +163,8 @@ It creates a set of simple components.
                         output component directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
-  -c COLLECTION, --collection=COLLECTION
-                        collection name
+ -n NEXUSPATH, --nexuspath=NEXUSPATH
+                        nexus path with field name
   -s STRATEGY, --strategy=STRATEGY
                         writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
   -t TYPE, --type=TYPE  nexus type of the field
@@ -151,6 +174,9 @@ It creates a set of simple components.
   -b, --database        store components in Configuration Server database
   -r SERVER, --server=SERVER
                         configuration server device name
+  -c CHUNK, --chunk=CHUNK
+                        chunk format, i.e. SCALAR, SPECTRUM, IMAGE
+  -m, --minimal_device  device name without first '0'
 
 
 

@@ -76,8 +76,8 @@ class Device(object):
             self.port = None
             raise Exception("hostname not defined")
 
-    def findAttribute(self, localhost):
-        mhost = self.sardanahostname or localhost
+    def findAttribute(self, tangohost):
+        mhost = self.sardanahostname or tangohost
         self.group = None
         self.attribute = None
         # if module.lower() in motorModules:
@@ -410,14 +410,22 @@ class DeviceDSCreator(Creator):
 
 class OnlineDSCreator(Creator):
 
+    ## constructor
+    # \param options  command options
+    # \param args command arguments
+    def __init__(self, options, args, printouts=True):
+        Creator.__init__(self, options, args, printouts)
+        self.datasources = {}
+
     def printAction(self, dv, dscps=None):
         if self.printouts:
-            if hasattr(self.options, "database") and \
-               not self.options.database:
-                print("CREATING %s: %s%s.ds.xml" % (
-                    dv.tdevice, self.options.file, dv.name))
+            if hasattr(self.options, "directory") and \
+               self.options.directory:
+                print("CREATING %s: %s/%s%s.ds.xml" % (
+                    dv.tdevice, self.options.directory, self.options.file,
+                    dv.name))
             else:
-                print("STORING %s %s/%s %s" % (
+                print("CREATING %s %s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
                     dv.hostname,
                     dv.tdevice + " " * (
@@ -427,14 +435,33 @@ class OnlineDSCreator(Creator):
                     else ""))
 
     def create(self):
-        localhost = getServerTangoHost(self.options.server)
+        self.createXMLs()
+        server = self.options.server
+        if not hasattr(self.options, "directory") or \
+           not self.options.directory:
+            for dsname, dsxml in self.datasources.items():
+                storeDataSource(dsname, dsxml, server)
+        else:
+            for dsname, dsxml in self.datasources.items():
+                myfile = open("%s/%s%s.ds.xml" % (
+                    self.options.directory,
+                    self.options.file, dsname), "w")
+                myfile.write(dsxml)
+                myfile.close()
+
+    def createXMLs(self):
+        self.datasources = {}
+        tangohost = getServerTangoHost(self.options.server)
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
-        try:
-            dscps = getDataSourceComponents(self.options.server)
-        except Exception:
-            dscps = {}
+        dscps = {}
+        if self.printouts and not hasattr(self.options, "directory") or \
+           not self.options.directory:
+            try:
+                dscps = getDataSourceComponents(self.options.server)
+            except Exception:
+                dscps = {}
 
         while device:
             if device.nodeName == 'device':
@@ -447,7 +474,6 @@ class OnlineDSCreator(Creator):
                 dv.sardananame = self.getChildText(device, "sardananame")
                 dv.sardanahostname = self.getChildText(
                     device, "sardanahostname")
-
                 try:
                     dv.splitHostPort()
                 except:
@@ -457,14 +483,14 @@ class OnlineDSCreator(Creator):
                               % (dv.name, dv.module, dv.dtype))
                     device = device.nextSibling
                     continue
-                dv.findAttribute(localhost)
+                dv.findAttribute(tangohost)
                 if dv.attribute:
                     dv.setSardanaName(self.options.lower)
                     self.printAction(dv, dscps)
-                    self.createTangoDataSource(
-                        dv.name, self.options.directory, self.options.file,
-                        self.options.server if self.options.database else None,
+                    xml = self.createTangoDataSource(
+                        dv.name, None, None, None,
                         dv.tdevice, dv.attribute, dv.host, dv.port, dv.group)
+                    self.datasources[dv.name] = xml
                 if (dv.module in moduleMultiAttributes.keys()) or (
                         dv.module == 'module_tango'
                         and len(dv.tdevice.split('/')) == 3
@@ -477,12 +503,11 @@ class OnlineDSCreator(Creator):
                     multattr = moduleMultiAttributes[module.lower()]
                     for at in multattr:
                         dsname = "%s_%s" % (dv.name.lower(), at.lower())
-                        self.createTangoDataSource(
-                            dsname, self.options.directory, self.options.file,
-                            self.options.server if self.options.database
-                            else None,
+                        xml = self.createTangoDataSource(
+                            dsname, None, None, None,
                             dv.tdevice, at, dv.host, dv.port,
                             "%s_" % (dv.name.lower()))
+                        self.datasources[dsname] = xml
                         mdv = copy.copy(dv)
                         mdv.name = dsname
                         self.printAction(mdv, dscps)
@@ -491,13 +516,6 @@ class OnlineDSCreator(Creator):
                         print(
                             "SKIPPING %s:    module %s of %s type not defined"
                             % (dv.name, dv.module, dv.dtype))
-
-            elif device.nodeName == '#comment':
-                if self.options.comments:
-                    if self.printouts:
-                        print("COMMENT:   '%s'" % (device.data.strip()))
-            else:
-                pass
             device = device.nextSibling
 
 
@@ -513,14 +531,20 @@ class OnlineCPCreator(Creator):
 
     def printAction(self, dv, dscps=None):
         if self.printouts:
-            print("CREATING %s %s/%s %s" % (
-                dv.name + ":" + " " * (34 - len(dv.name)),
-                dv.hostname,
-                dv.tdevice + " " * (
-                    60 - len(dv.tdevice) - len(dv.hostname)),
-                ",".join(dscps[dv.name])
-                if (dscps and dv.name in dscps and dscps[dv.name])
-                else ""))
+            if hasattr(self.options, "directory") and \
+               self.options.directory:
+                print("CREATING %s: %s/%s%s.ds.xml" % (
+                    dv.tdevice, self.options.directory, self.options.file,
+                    dv.name))
+            else:
+                print("CREATING %s %s/%s %s" % (
+                    dv.name + ":" + " " * (34 - len(dv.name)),
+                    dv.hostname,
+                    dv.tdevice + " " * (
+                        60 - len(dv.tdevice) - len(dv.hostname)),
+                    ",".join(dscps[dv.name])
+                    if (dscps and dv.name in dscps and dscps[dv.name])
+                    else ""))
 
     @classmethod
     def getModuleName(cls, device):
@@ -566,35 +590,52 @@ class OnlineCPCreator(Creator):
         return cpnames
 
     def create(self):
+        cpname = self.options.component
+        if not hasattr(self.options, "directory") or \
+           not self.options.directory:
+            server = self.options.server
+            if not self.options.overwrite:
+                try:
+                    proxy = openServer(server)
+                    proxy.Open()
+                    acps = proxy.availableComponents()
+                except:
+                    raise Exception("Cannot connect to %s" % server)
+
+                if cpname in acps or (
+                        self.options.lower and cpname.lower() in acps):
+                    raise CPExistsException(
+                        "Component '%s' already exists." % cpname)
+
         self.createXMLs()
         server = self.options.server
-        for dsname, dsxml in self.datasources.items():
-            storeDataSource(dsname, dsxml, server)
-#            print dsxml
-        for cpname, cpxml in self.components.items():
-            storeComponent(cpname, cpxml, server)
+        if not hasattr(self.options, "directory") or \
+           not self.options.directory:
+            for dsname, dsxml in self.datasources.items():
+                storeDataSource(dsname, dsxml, server)
+            for cpname, cpxml in self.components.items():
+                storeComponent(cpname, cpxml, server)
+        else:
+            for dsname, dsxml in self.datasources.items():
+                myfile = open("%s/%s%s.ds.xml" % (
+                    self.options.directory,
+                    self.options.file, dsname), "w")
+                myfile.write(dsxml)
+                myfile.close()
+            for cpname, cpxml in self.components.items():
+                myfile = open("%s/%s%s.xml" % (
+                    self.options.directory,
+                    self.options.file, cpname), "w")
+                myfile.write(cpxml)
+                myfile.close()
 
     def createXMLs(self):
         self.datasources = {}
         self.components = {}
-        localhost = getServerTangoHost(self.options.server)
-        server = self.options.server
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         cpname = self.options.component
-        if not self.options.overwrite:
-            try:
-                proxy = openServer(server)
-                proxy.Open()
-                acps = proxy.availableComponents()
-            except:
-                raise Exception("Cannot connect to %s" % server)
-
-            if cpname in acps or (
-                    self.options.lower and cpname.lower() in acps):
-                raise CPExistsException(
-                    "Component '%s' already exists." % cpname)
 
         while device:
             if device.nodeName == 'device':
@@ -628,8 +669,8 @@ class OnlineCPCreator(Creator):
                         for at in multattr:
                             dsname = "%s_%s" % (dv.name.lower(), at.lower())
                             xml = self.createTangoDataSource(
-                                dsname, None, None,
-                                None, dv.tdevice, at, dv.host, dv.port,
+                                dsname, None, None, None,
+                                dv.tdevice, at, dv.host, dv.port,
                                 "%s_" % (dv.name.lower()))
                             self.datasources[dsname] = xml
                             mdv = copy.copy(dv)
@@ -647,11 +688,10 @@ class OnlineCPCreator(Creator):
                                 xml = xmlcontent.replace("$(name)", cpname)
                                 mdv = copy.copy(dv)
                                 mdv.name = newname
+                                self.printAction(mdv)
                                 if xmlfile.endswith(".ds.xml"):
-                                    self.printAction(mdv)
                                     self.datasources[newname] = xml
                                 else:
-                                    self.printAction(mdv)
                                     self.components[newname] = xml
 
             device = device.nextSibling

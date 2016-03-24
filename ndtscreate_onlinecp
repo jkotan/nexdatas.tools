@@ -45,8 +45,11 @@ def main():
         + " e.g.\n" \
         + "       nxscreate onlinecp  \n" \
         + "       nxscreate onlinecp -c pilatus \n\n" \
-        + " - default <inputFile> is '/online_dir/online.xml' \n" \
         + " - without '-c <component>' a list of possible components is shown \n" \
+        + " - without '-d <dircetory>  components are created in " \
+        + "Configuration Server database\n" \
+        + " - with -d <directory> components are created on the local filesystem\n" \
+        + " - default <inputFile> is '/online_dir/online.xml' \n" \
 
     ## option parser
     parser = OptionParser(usage=usage)
@@ -62,6 +65,14 @@ def main():
     parser.add_option("-o", "--overwrite", action="store_true",
                       default=False, dest="overwrite",
                       help="overwrite existing component")
+    parser.add_option("-d", "--directory", type="string",
+                      help="output directory where datasources will be stored. "
+                      "If it is not set components are stored in "
+                      "Configuration Server database",
+                      dest="directory", default="")
+    parser.add_option("-x", "--file-prefix", type="string",
+                      help="file prefix, i.e. counter",
+                      dest="file", default="")
 
     (options, args) = parser.parse_args()
 
@@ -84,7 +95,10 @@ def main():
         sys.exit(255)
 
     print("INPUT: %s" % args[0])
-    print("SERVER: %s" % options.server)
+    if options.directory:
+        print("OUTPUT DIR: %s" % options.directory)
+    else:
+        print("SERVER: %s" % options.server)
 
     creator = OnlineCPCreator(options, args)
     if options.component:

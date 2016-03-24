@@ -39,19 +39,22 @@ from optparse import OptionParser
 ## the main function
 def main():
     ## usage example
-    usage = "usage: %prog [options] inputFile\n" \
-        + "       nxscreate dsonline [options] inputFile"
+    usage = "usage: %prog [options] [<inputFile>]\n" \
+        + "       nxscreate onlineds [options] [<inputFile>]\n" \
+        + " e.g.\n" \
+        + "       nxscreate onlineds -b  \n" \
+        + "       nxscreate onlinecp -d /home/user/xmldir \n\n" \
+        + " - with -b datasources are created in Configuration Server database\n" \
+        + " - with -d <directory> datasources are created on the local filesystem\n" \
+        + " - default <inputFile> is '/online_dir/online.xml' \n" \
     ## option parser
     parser = OptionParser(usage=usage)
-    parser.add_option("-d", "--directory", type="string",
-                      help="output directory where datasources will be stored",
-                      dest="directory", default=".")
-    parser.add_option("-c", "--comments", action="store_true",
-                      default=False, dest="comments",
-                      help="print xml comments")
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
+    parser.add_option("-d", "--directory", type="string",
+                      help="output directory where datasources will be saved",
+                      dest="directory", default="")
     parser.add_option("-n", "--nolower", action="store_false",
                       default=True, dest="lower",
                       help="do not change aliases into lower case")
@@ -62,25 +65,32 @@ def main():
                       dest="file", default="")
 
     (options, args) = parser.parse_args()
-    if not len(args):
+
+    if not PYTANGO:
+        sys.stderr.write("nxscreate: No PyTango installed\n")
         parser.print_help()
         sys.exit(255)
 
-    if options.database and not options.server:
-        if not PYTANGO:
-            sys.stderr.write("nxscreate: No PyTango installed\n")
-            parser.print_help()
-            sys.exit(255)
-
+    if not options.server:
         options.server = checkServer()
         if not options.server:
             parser.print_help()
             print("")
             sys.exit(0)
+        if not len(args) and os.path.isfile('/online_dir/online.xml'):
+            args = ['/online_dir/online.xml']
+
+    if not len(args):
+        parser.print_help()
+        sys.exit(255)
 
     print("INPUT: %s" % args)
-    print("OUTPUT DIR: %s" % options.directory)
+    if options.directory:
+        print("OUTPUT DIR: %s" % options.directory)
+    elif options.database:
+        print("SERVER: %s" % options.server)
 
+        
     creator = OnlineDSCreator(options, args)
     creator.create()
 

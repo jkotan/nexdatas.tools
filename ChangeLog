@@ -1,3 +1,7 @@
+2016-03-24 Jan Kotanski <jankotan@gmail.com>
+	* nxscreate: add createXMLs method to DS creator
+	* tagged as v1.19.0
+
 2016-03-22 Jan Kotanski <jankotan@gmail.com>
 	* nxscreate: fix for adding hostname in datasources
 	* tagged as v1.18.4
