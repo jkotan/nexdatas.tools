@@ -1,4 +1,8 @@
 2016-04-07 Jan Kotanski <jankotan@gmail.com>
+	* skip not-working devices in findModules
+	* tagged as v1.19.2
+
+2016-04-07 Jan Kotanski <jankotan@gmail.com>
 	* fix for moduleAttribute of tangoattributectctrl
 	* tagged as v1.19.1
 

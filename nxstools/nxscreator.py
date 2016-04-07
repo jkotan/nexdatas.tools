@@ -551,14 +551,17 @@ class OnlineCPCreator(Creator):
         if device.module.lower() in moduleMultiAttributes.keys():
             return device.module.lower()
         elif len(device.tdevice.split('/')) == 3:
-            classname = findClassName(device.hostname, device.tdevice)
-            if classname.lower() in moduleMultiAttributes.keys():
-                return classname.lower()
-            if device.module.lower() == 'module_tango' \
-               and len(device.tdevice.split('/')) == 3 \
-               and device.tdevice.split('/')[1] \
-               in moduleMultiAttributes.keys():
-                return device.tdevice.split('/')[1].lower()
+            try:
+                classname = findClassName(device.hostname, device.tdevice)
+                if classname.lower() in moduleMultiAttributes.keys():
+                    return classname.lower()
+                if device.module.lower() == 'module_tango' \
+                   and len(device.tdevice.split('/')) == 3 \
+                   and device.tdevice.split('/')[1] \
+                   in moduleMultiAttributes.keys():
+                    return device.tdevice.split('/')[1].lower()
+            except:
+                return
 
     def listcomponents(self):
         indom = parse(self.args[0])
