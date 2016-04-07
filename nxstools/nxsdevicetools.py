@@ -46,7 +46,7 @@ moduleAttributes = {
     'sis3302roi': ['Value', None],
     'sis3610': ['Value', 'Value'],
     'sis3820': ['Value', 'Counts'],
-    'tangoattributectctrl': ['Value', 'Counts'],
+    'tangoattributectctrl': ['Value', None],
     'tip551': ['Value', 'Voltage'],
     'tip830': ['Value', 'Counts'],
     'vfcadc': ['Value', 'Counts'],
