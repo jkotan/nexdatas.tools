@@ -459,6 +459,6 @@ class TableTools(object):
                     vl = str(vl)
                 line += vl + " " * (self.__hdsizes[hd] - len(vl))
 
-            lst.append(line)
+            lst.append(line.rstrip())
         lst.append("")
         return lst
