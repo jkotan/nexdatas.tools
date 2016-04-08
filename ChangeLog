@@ -1,6 +1,7 @@
 2016-04-08 Jan Kotanski <jankotan@gmail.com>
 	* add lambda detector to xml templates
 	* add sourcelink option to nxscreate comp
+	* add add link geometry information into nxsconfig geometry
 	* tagged as v1.20.0
 
 2016-04-07 Jan Kotanski <jankotan@gmail.com>

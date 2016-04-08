@@ -306,6 +306,63 @@ class ParserTools(object):
 
         return taglist
 
+    ## provides datasources and its records from xml string
+    # \param xmlc xml string
+    # \returns list of datasource descriptions
+    @classmethod
+    def parseLinks(cls, xmlc):
+        tagname = "link"
+        indom = parseString(xmlc)
+        nodes = indom.getElementsByTagName(tagname)
+        taglist = []
+        for nd in nodes:
+            if nd.nodeName == tagname:
+
+                target = cls.__getAttr(nd, "target")
+                value = cls.getPureText(nd) or None
+                nxpath = cls.__getPath(nd)
+                stnodes = cls.__getChildrenByTagName(nd, "strategy")
+                strategy = cls.__getAttr(stnodes[0], "mode") \
+                    if stnodes else None
+
+                sfdinfo = {
+                    "strategy": strategy,
+                    "nexus_path": "[%s]" % nxpath,
+                }
+                fdinfo = {
+#                    "nexus_type": nxtype,
+#                    "units": units,
+#                    "shape": shape,
+#                    "trans_type": trtype,
+#                    "trans_vector": trvector,
+#                    "trans_offset": troffset,
+#                    "depends_on": trdependson,
+                    "value": value
+                }
+                fdinfo.update(sfdinfo)
+                dss = cls.__getDataSources(nd, direct=True)
+                if dss:
+                    for ds in dss:
+                        ds.update(fdinfo)
+                        taglist.append(ds)
+                        nddss = cls.__getChildrenByTagName(nd, "datasource")
+                        for ndds in nddss:
+                            sdss = cls.__getDataSources(ndds, direct=True)
+                            if sdss:
+                                for sds in sdss:
+                                    sds.update(sfdinfo)
+                                    sds["source_name"] \
+                                        = "\\" + sds["source_name"]
+                                    taglist.append(sds)
+                else:
+                    taglist.append(fdinfo)
+                    if target.strip():
+                        fdinfo2 = dict(fdinfo)
+                        fdinfo2["nexus_path"] = "\-> %s" % target
+                        taglist.append(fdinfo2)
+
+        return taglist
+
     ## provides source record from xml string
     # \param xmlc xml string
     # \returns source record

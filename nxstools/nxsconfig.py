@@ -316,6 +316,7 @@ class ConfigServer(object):
 
             for i, xmls in enumerate(cpxmls):
                 parameters = ParserTools.parseFields(xmls)
+                parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
                 ttools.title = "    Component: '%s'" % args[i]
                 if headers:
@@ -351,6 +352,7 @@ class ConfigServer(object):
         xmls = str(self.cnfServer.XMLString).strip()
         if xmls:
             description.extend(ParserTools.parseFields(xmls))
+            description.extend(ParserTools.parseLinks(xmls))
         if not description:
             sys.stderr.write(
                 "\nHint: add components as command arguments "

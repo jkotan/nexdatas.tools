@@ -2,8 +2,8 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_external_data">
     <result name="result">
-ds.result = str(ds.$(name)_SaveFilePath) + "/" +str(ds.$(name)_SaveFileName) + "." + str(ds.$(name)_FilePostfix) + ":///entry/instrument/detector/data"</result>
- $datasources.$(name)_SaveFilePath
- $datasources.$(name)_SaveFileName
- $datasources.$(name)_FilePostfix</datasource>
+ds.result = str(ds.$(name)_savefilepath) + "/" +str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + ":///entry/instrument/detector/$(name)"</result>
+ $datasources.$(name)_savefilepath
+ $datasources.$(name)_savefilename
+ $datasources.$(name)_filepostfix</datasource>
 </definition>
