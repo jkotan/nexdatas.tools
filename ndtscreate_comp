@@ -77,8 +77,12 @@ def createParser():
                       dest="units", default="")
 
     parser.add_option("-k", "--links", action="store_true",
-                      default=False, dest="links",
-                      help="create datasource links")
+                      default=False, dest="fieldlinks",
+                      help="create links with field name")
+
+    parser.add_option("-i", "--source-links", action="store_true",
+                      default=False, dest="sourcelinks",
+                      help="create links with datasource name")
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",

@@ -1,3 +1,8 @@
+2016-04-08 Jan Kotanski <jankotan@gmail.com>
+	* add lambda detector to xml templates
+	* add sourcelink option to nxscreate comp
+	* tagged as v1.20.0
+
 2016-04-07 Jan Kotanski <jankotan@gmail.com>
 	* skip not-working devices in findModules
 	* tagged as v1.19.2

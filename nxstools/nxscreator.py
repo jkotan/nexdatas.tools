@@ -213,7 +213,10 @@ class Creator(object):
                 npath = (nexuspath + name) \
                     if nexuspath[-1] == '/' else nexuspath
                 data = NGroup(entry, "data", "NXdata")
-                NLink(data, fname, npath)
+                if link > 1:
+                    NLink(data, name, npath)
+                else:
+                    NLink(data, fname, npath)
 
     ## creates component file
     # \param name datasource name
@@ -304,7 +307,8 @@ class ComponentCreator(Creator):
                 self.options.strategy,
                 self.options.type,
                 self.options.units,
-                self.options.links,
+                int(self.options.fieldlinks) + 2 * int(
+                    self.options.sourcelinks),
                 self.options.server if self.options.database else None,
                 self.options.chunk)
 

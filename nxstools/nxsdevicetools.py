@@ -77,7 +77,9 @@ moduleTemplateFiles = {
     'pilatus': ['pilatus.xml',
                 'pilatus_postrun.ds.xml',
                 'pilatus_description.ds.xml',
-                'pilatus_filestartnum_cb.ds.xml']
+                'pilatus_filestartnum_cb.ds.xml'],
+    'lambda': ['lambda.xml',
+                'lambda_external_data.ds.xml'],
 }
 
 moduleMultiAttributes = {
