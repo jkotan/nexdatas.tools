@@ -1,0 +1,9 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_m1_external_data">
+    <result name="result">
+ds.result = "$var.filename/" if "$var.filename" else ""
+ds.result += "$(name)/" +str(ds.$(name)_SaveFileName) + "_m1." + str(ds.$(name)_FilePostfix) + ":///entry/instrument/detector"</result>
+ $datasources.$(name)_SaveFileName
+ $datasources.$(name)_FilePostfix</datasource>
+</definition>

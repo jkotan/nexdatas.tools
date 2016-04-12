@@ -1,3 +1,8 @@
+2016-04-12 Jan Kotanski <jankotan@gmail.com>
+	* add lambda2m detector to xml templates
+	* update lambda detector xml templates
+	* tagged as v1.21.0
+
 2016-04-08 Jan Kotanski <jankotan@gmail.com>
 	* add lambda detector to xml templates
 	* add sourcelink option to nxscreate comp

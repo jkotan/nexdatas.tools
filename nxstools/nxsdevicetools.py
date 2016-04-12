@@ -80,6 +80,10 @@ moduleTemplateFiles = {
                 'pilatus_filestartnum_cb.ds.xml'],
     'lambda': ['lambda.xml',
                 'lambda_external_data.ds.xml'],
+    'lambda2m': ['lambda2m.xml',
+                 'lambda2m_m1_external_data.ds.xml',
+                 'lambda2m_m2_external_data.ds.xml',
+                 'lambda2m_m3_external_data.ds.xml'],
 }
 
 moduleMultiAttributes = {
@@ -117,6 +121,16 @@ moduleMultiAttributes = {
         'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
     ],
     'lambda': [
+        'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
+        'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
+        'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
+        'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode',
+        'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
+        'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
+        'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
+        'LiveLastImageData'
+    ],
+    'lambda2m': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
         'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
         'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
