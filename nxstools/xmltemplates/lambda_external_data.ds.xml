@@ -6,7 +6,7 @@ if "$var.filename":
     ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
 else:
     ds.result = ""
-ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + ":///entry/instrument/detector"</result>
+ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
  $datasources.$(name)_savefilename
  $datasources.$(name)_filepostfix</datasource>
 </definition>
