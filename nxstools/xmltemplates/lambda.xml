@@ -66,12 +66,12 @@
           <field units="ms" type="NX_FLOAT64" name="shutter_time_min">
             <strategy mode="FINAL"/>$datasources.$(name)_shuttertimemin</field>
         </group>
-        <link name="data">$datasources.$(name)_external_data<strategy mode="FINAL"/>
-        </link>
       </group>
+      <link name="$(name)_m1">$datasources.$(name)_external_data<strategy mode="FINAL"/>
+      </link>
     </group>
     <group type="NXdata" name="data">
-      <link target="entry$var.serialno:NXentry/NXinstrument/$(name):NXdetector/data" name="$(name)"/>
+      <link target="entry$var.serialno:NXentry/NXinstrument/$(name)_m1:NXdetector/data" name="$(name)"/>
     </group>
   </group>
 </definition>
