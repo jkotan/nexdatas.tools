@@ -213,12 +213,13 @@ class Collector(object):
             for name in names:
                 coll = False
                 child = parent.open(name)
-                for at in child.attributes:
-                    if at.name == "NX_class":
-                        gtype = at[...]
-                        if gtype == 'NXcollection':
-                            coll = True
-                self.inspect(child, coll)
+                if hasattr(child, "attributes"):
+                    for at in child.attributes:
+                        if at.name == "NX_class":
+                            gtype = at[...]
+                            if gtype == 'NXcollection':
+                                coll = True
+                    self.inspect(child, coll)
 
     def merge(self):
         self.createtmpfile()
