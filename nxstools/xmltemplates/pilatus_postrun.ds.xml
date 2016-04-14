@@ -11,7 +11,7 @@ filestartnum = str(commonblock["$(name)_filestartnum"]-1)
 result = "" + unixdir + "/" + ds.$(name)_fileprefix + "%05d"
 result += ds.$(name)_filepostfix + ":"
 result += filestartnum + ":" +  str(ds.$(name)_filestartnum-1)
-ds.result =  result
+ds.result = result
 </result>
  $datasources.$(name)_filestartnum
  $datasources.$(name)_filedir

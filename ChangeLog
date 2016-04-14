@@ -1,3 +1,7 @@
+2016-04-XX Jan Kotanski <jankotan@gmail.com>
+	* add perkinelemerdetector into nxscreate
+	* tagged as v1.22.0
+
 2016-04-13 Jan Kotanski <jankotan@gmail.com>
 	* change ':///' into '://' in external links
 	* tagged as v1.21.2

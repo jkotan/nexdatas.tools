@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_postrun">
+    <result name="result">
+unixdir  = str(ds.$(name)_outputdirectory).replace("\\","/")
+startfileindex = str(commonblock["$(name)_fileindex"] - 1)
+if len(unixdir)> 1 and unixdir[1] == ":":
+    unixdir = "/data" + unixdir[2:]
+if unixdir and unixdir[-1] == "/":
+    unixdir = unixdir[:-1]
+ds.result = "" + unixdir + "/" + ds.$(name)_filepattern + "-%05d."
+ds.result +=  str(ds.$(name)_filename.split(".")[-1])
+ds.result += ":" + startfileindex + ":" +  str(ds.$(name)_fileindex - 1)
+</result>
+ $datasources.$(name)_outputdirectory
+ $datasources.$(name)_filepattern
+ $datasources.$(name)_filename
+ $datasources.$(name)_fileindex</datasource>
+</definition>

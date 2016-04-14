@@ -84,6 +84,24 @@ moduleTemplateFiles = {
                  'lambda2m_m1_external_data.ds.xml',
                  'lambda2m_m2_external_data.ds.xml',
                  'lambda2m_m3_external_data.ds.xml'],
+    'perkinelmerdetector': [
+        'perkinelmerdetector.xml',
+        'perkinelmerdetector_postrun.ds.xml',
+        'perkinelmerdetector_description.ds.xml',
+        'perkinelmerdetector_fileindex_cb.ds.xml'
+    ],
+    'perkinelmer': [
+        'perkinelmerdetector.xml',
+        'perkinelmerdetector_postrun.ds.xml',
+        'perkinelmerdetector_description.ds.xml',
+        'perkinelmerdetector_fileindex_cb.ds.xml'
+    ],
+    'pedetector': [
+        'perkinelmerdetector.xml',
+        'perkinelmerdetector_postrun.ds.xml',
+        'perkinelmerdetector_description.ds.xml',
+        'perkinelmerdetector_fileindex_cb.ds.xml'
+    ],
 }
 
 moduleMultiAttributes = {
@@ -107,7 +125,25 @@ moduleMultiAttributes = {
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
+    'pedetector': [
+        'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
+        'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
+        'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
+        'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
+        'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
+        'SaveSubtracted', 'PerformDarkSubtraction'
+    ],
     'perkinelmerdetector': [
+        'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
+        'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
+        'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
+        'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
+        'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
+        'SaveSubtracted', 'PerformDarkSubtraction'
+    ],
+    'perkinelmer': [
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
         'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
         'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
