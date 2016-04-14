@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_postrun">
+    <result name="result">
+unixdir = str(ds.$(name)_savingdirectory).replace("\\","/")
+if len(unixdir)> 1 and unixdir[1] == ":":
+    unixdir = "/data" + unixdir[2:]
+if unixdir and unixdir[-1] == "/":
+ unixdir = unixdir[:-1]
+ds.result = "" + unixdir + "/" + str(ds.$(name)_savingprefix) + "." + str(ds.$(name)_savingpostfix) </result>
+ $datasources.$(name)_savingdirectory
+ $datasources.$(name)_savingpostfix
+ $datasources.$(name)_savingprefix</datasource>
+</definition>

@@ -102,6 +102,8 @@ moduleTemplateFiles = {
         'perkinelmerdetector_description.ds.xml',
         'perkinelmerdetector_fileindex_cb.ds.xml'
     ],
+    'marccd': ['marccd.xml',
+               'marccd_postrun.ds.xml'],
 }
 
 moduleMultiAttributes = {
@@ -190,6 +192,8 @@ moduleMultiAttributes = {
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
+    'marccd': [
+        'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
 }
 
 motorModules = [
