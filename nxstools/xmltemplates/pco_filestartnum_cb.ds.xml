@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_filestartnum_cb">
+    <result name="result">
+if "$(name)_filestartnum" not in commonblock:
+    commonblock["$(name)_filestartnum"] = ds.$(name)_filestartnum - ds.$(name)_nbframes + 1
+ds.result = ds.$(name)_filestartnum - ds.$(name)_nbframes</result>
+ $datasources.$(name)_filestartnum
+ $datasources.$(name)_nbframes</datasource>
+</definition>

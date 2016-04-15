@@ -1,5 +1,6 @@
-2016-04-XX Jan Kotanski <jankotan@gmail.com>
+2016-04-15 Jan Kotanski <jankotan@gmail.com>
 	* add marccd xml templates
+	* add file loader for <filename>.h5://data
 	* tagged as v1.23.0
 
 2016-04-14 Jan Kotanski <jankotan@gmail.com>

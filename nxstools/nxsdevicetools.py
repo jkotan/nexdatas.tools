@@ -78,6 +78,14 @@ moduleTemplateFiles = {
                 'pilatus_postrun.ds.xml',
                 'pilatus_description.ds.xml',
                 'pilatus_filestartnum_cb.ds.xml'],
+    'pco': ['pco.xml',
+            'pco_postrun.ds.xml',
+            'pco_description.ds.xml',
+            'pco_filestartnum_cb.ds.xml'],
+    'pco4000': ['pco.xml',
+            'pco_postrun.ds.xml',
+            'pco_description.ds.xml',
+            'pco_filestartnum_cb.ds.xml'],
     'lambda': ['lambda.xml',
                 'lambda_external_data.ds.xml'],
     'lambda2m': ['lambda2m.xml',
@@ -107,6 +115,17 @@ moduleTemplateFiles = {
 }
 
 moduleMultiAttributes = {
+    'pco': [
+        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
+        'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
+        'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
+        'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp',
+        'RecorderMode',
+    ],
+    'pco4000': [
+        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum'],
     'pilatus100k': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
@@ -224,7 +243,7 @@ OneDModules = ['mca_xia']
 TwoDModules = [
     'pilatus100k', 'pilatus300k', 'pilatus1m',
     'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
-    'lambda',
+    'lambda', 'pedetector', 'perkinelmer',
     #
     'lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
     'eigerdectris', 'perkinelmer', 'lambda',

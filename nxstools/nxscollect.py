@@ -90,34 +90,84 @@ class Collector(object):
         return filename
 
     def findfile(self, filename, nname=None):
+        inpath = None
+        filelist = []
         if nname is not None and '.nxs' == self.__nexusfilename[-4:]:
             tmpfname = '%s/%s/%s' % (
                 self.__nexusfilename[:-4], nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
                 return tmpfname
+            else:
+                filelist.append(tmpfname)
         if nname is not None and '.nxs' == self.__fullfilename[-4:]:
             tmpfname = '%s/%s/%s' % (
                 self.__fullfilename[:-4], nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
                 return tmpfname
+            else:
+                filelist.append(tmpfname)
         tmpfname = self.absolutefilename(filename, self.__nexusfilename)
         if os.path.exists(tmpfname):
             return tmpfname
+        else:
+            filelist.append(tmpfname)
         tmpfname = self.absolutefilename(filename, self.__fullfilename)
         if os.path.exists(tmpfname):
             return tmpfname
-        return filename
+        else:
+            filelist.append(tmpfname)
+        if os.path.exists(filename):
+            return filename
+        else:
+            filelist.append(filename)
+        if not self.__skipmissing:
+            raise Exception("Cannot open and of %s files" % sorted(set(filelist)))
+        else:
+            print("Cannot open and of %s files" % sorted(set(filelist)))
+        return None
 
     def loadimage(self, filename):
         try:
-            return fabio.open(filename)
-        except Exception:
-            print("Cannot open a file %s" % filename)
+            dtype = None
+            shape = None
+            idata = None
+            image = fabio.open(filename)
+            if image:
+                idata = image.data[...]
+                dtype = image.data.dtype.__str__(),
+                shape = image.data.shape,
+                return idata, dtype, shape
+        except Exception :
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
-            return None
+            else:
+                print("Cannot open a file %s" % filename)
+
+            return None, None, None
+
+    def loadh5data(self, filename):
+        try:
+            dtype = None
+            shape = None
+            nxsfile = open_file(filename, readonly=True)
+            root = nxsfile.root()
+            image = root.open("data")
+            idata = image.read()
+            nxsfile.close()
+            if image:
+                idata = image[...]
+                dtype = image.dtype
+                shape = image.shape
+            nxsfile.close()    
+            return idata, dtype, shape
+        except Exception:
+            if not self.__skipmissing:
+                raise Exception("Cannot open a file %s" % filename)
+            else:
+                print("Cannot open a file %s" % filename)
+            return None, None, None
 
     def addattr(self, node, attrs):
         attrs = attrs or {}
@@ -160,23 +210,27 @@ class Collector(object):
                 if self.__break:
                     break
                 fname = self.findfile(fname, node.name)
-                image = self.loadimage(fname)
-                if image:
+                if not fname:
+                    continue
+                if not fname.endswith(".h5"):
+                    data, dtype, shape= self.loadimage(fname)
+                else:
+                    data, dtype, shape= self.loadh5data(fname)
+                if data is not None:
                     if field is None:
                         field = self.getfield(
-                            node, fieldname,
-                            image.data.dtype.__str__(),
-                            image.data.shape,
+                            node, fieldname, dtype, shape,
                             fieldattrs, fieldcompression)
                     if self.__testmode or ind == field.shape[0]:
                         if not self.__testmode:
                             field.grow(0, 1)
-                            field[-1, ...] = image.data[...]
+                            field[-1, ...] = data
                         print " * append %s " % (fname)
                     ind += 1
                     if not self.__testmode:
                         self.__nxsfile.flush()
-
+                    
+                            
     def inspect(self, parent, collection=False):
         if hasattr(parent, "names"):
             if collection:
