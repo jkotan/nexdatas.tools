@@ -136,8 +136,8 @@ class Collector(object):
             image = fabio.open(filename)
             if image:
                 idata = image.data[...]
-                dtype = image.data.dtype.__str__(),
-                shape = image.data.shape,
+                dtype = image.data.dtype.__str__()
+                shape = image.data.shape
                 return idata, dtype, shape
         except Exception :
             if not self.__skipmissing:
