@@ -15,10 +15,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxscollect.py
-# Command-line tool to merging NeXus files with other file-format images
 #
+
 """ Command-line tool to merging NeXus files with other file-format images"""
 
 import sys
@@ -160,7 +158,7 @@ class Collector(object):
                 idata = image[...]
                 dtype = image.dtype
                 shape = image.shape
-            nxsfile.close()    
+            nxsfile.close()
             return idata, dtype, shape
         except Exception:
             if not self.__skipmissing:
@@ -229,8 +227,8 @@ class Collector(object):
                     ind += 1
                     if not self.__testmode:
                         self.__nxsfile.flush()
-                    
-                            
+
+
     def inspect(self, parent, collection=False):
         if hasattr(parent, "names"):
             if collection:

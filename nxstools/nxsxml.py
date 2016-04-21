@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxsxml.py
-# creator of XML files
+#
 
 """  Creator of XML configuration files """
 
@@ -27,18 +25,23 @@ import PyTango
 from xml.dom.minidom import Document
 
 
-## tag wrapper
 class NTag(object):
+    """ tag wrapper
+    """
 
-    ## constructor
-    # \param tagName tag name
-    # \param parent parent tag element
-    # \param nameAttr value of name attribute
-    # \param typeAttr value of type attribute
+    ##
     def __init__(self, parent, tagName, nameAttr="", typeAttr=""):
-        ## XML minidom root
+        """ constructor
+
+        :param tagName: tag name
+        :param parent: parent tag element
+        :param nameAttr: value of name attribute
+        :param typeAttr: value of type attribute
+        """
+
+        #: XML minidom root
         self.root = parent.root
-        ## tag element from minidom
+        #: tag element from minidom
         self.elem = self.root.createElement(tagName)
         parent.elem.appendChild(self.elem)
 
@@ -47,41 +50,53 @@ class NTag(object):
         if typeAttr != "":
             self.elem.setAttribute("type", typeAttr)
 
-    ## adds tag attribute
-    # \param name attribute name
-    # \param value attribute value
     def addTagAttr(self, name, value):
+        """ adds tag attribute
+
+        :param name: attribute name
+        :param value: attribute value
+        """
         self.elem.setAttribute(name, value)
 
-    ## sets tag content
-    # \param text tag content
     def setText(self, text):
+        """ sets tag content
+
+        :param text: tag content
+        """
         ptext = self.root.createTextNode(text)
         self.elem.appendChild(ptext)
 
-    ## adds tag content
-    # \param text tag content
     def addText(self, text):
+        """ adds tag content
+
+        :param text: tag content
+        """
         ptext = self.root.createTextNode(text)
         self.elem.appendChild(ptext)
 
 
-## Attribute tag wrapper
 class NAttr(NTag):
+    """ Attribute tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param nameAttr name attribute
-    # \param typeAttr type attribute
     def __init__(self, parent, nameAttr, typeAttr=""):
+        """ constructor
+
+        :param parent: parent tag element
+        :param nameAttr: name attribute
+        :param typeAttr: type attribute
+        """
         NTag.__init__(self, parent, "attribute", nameAttr, typeAttr)
 
-    ## sets the attribute strategy
-    # \param mode mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
-    # \param trigger for asynchronous writting, e.g. with different subentries
-    # \param value label for postrun mode
     def setStrategy(self, mode="STEP", trigger=None, value=None):
-        ## strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        """ sets the attribute strategy
+
+        :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        :param trigger: for asynchronous writting,
+                        e.g. with different subentries
+        :param value: label for postrun mode
+        """
+        #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
         if strategy:
             strategy.addTagAttr("mode", mode)
@@ -91,31 +106,38 @@ class NAttr(NTag):
             strategy.setText(value)
 
 
-## Group tag wrapper
 class NGroup(NTag):
+    """ Group tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param nameAttr name attribute
-    # \param typeAttr type attribute
     def __init__(self, parent, nameAttr, typeAttr=""):
+        """ constructor
+
+        :param parent: parent tag element
+        :param nameAttr: name attribute
+        :param typeAttr: type attribute
+        """
         NTag.__init__(self, parent, "group", nameAttr, typeAttr)
-        ## list of doc tag contents
+        #: list of doc tag contents
         self._doc = []
-        ## container with attribute tag wrappers
+        #: container with attribute tag wrappers
         self._gAttr = {}
 
-    ## adds doc tag content
-    # \param doc doc tag content
     def addDoc(self, doc):
+        """ adds doc tag content
+
+        :param doc: doc tag content
+        """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
 
-    ## adds attribute tag
-    # \param attrName name attribute
-    # \param attrType type attribute
-    # \param attrValue content of the attribute tag
     def addAttr(self, attrName, attrType, attrValue=""):
+        """adds attribute: tag
+
+        :param attrName: name attribute
+        :param attrType: type attribute
+        :param attrValue: content of the attribute tag
+        """
         print attrName, attrType, attrValue
         at = NAttr(self, attrName, attrType)
         self._gAttr[attrName] = at
@@ -124,85 +146,104 @@ class NGroup(NTag):
         return self._gAttr[attrName]
 
 
-## Link tag wrapper
 class NLink(NTag):
+    """ Link tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param nameAttr name attribute
-    # \param gTarget target attribute
     def __init__(self, parent, nameAttr, gTarget):
+        """ constructor
+
+        :param parent: parent tag element
+        :param nameAttr: name attribute
+        :param gTarget: target attribute
+        """
         NTag.__init__(self, parent, "link", nameAttr)
         self.addTagAttr("target", gTarget)
-        ## list of doc tag contents
+        #: list of doc tag contents
         self._doc = []
 
-    ## adds doc tag content
-    # \param doc doc tag content
     def addDoc(self, doc):
+        """ adds doc tag content
+
+        :param doc: doc tag content
+        """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
 
 
-## Dimensions tag wrapper
 class NDimensions(NTag):
+    """ Dimensions tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param rankAttr  rank attribute
     def __init__(self, parent, rankAttr):
+        """ constructor
+
+        :param parent: parent tag element
+        :param rankAttr: rank attribute
+        """
         NTag.__init__(self, parent, "dimensions")
         self.addTagAttr("rank", rankAttr)
-        ## container with dim tag wrapper
+        #: container with dim tag wrapper
         self.dims = {}
 
-    ## adds dim tag
-    # \param indexAttr index attribute
-    # \param valueAttr value attribute
     def dim(self, indexAttr, valueAttr):
+        """ adds dim tag
+
+        :param indexAttr: index attribute
+        :param valueAttr: value attribute
+        """
         self.dims[indexAttr] = NDim(self, indexAttr, valueAttr)
 
 
-## Dim tag wrapper
 class NDim(NTag):
+    """ Dim tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param indexAttr index attribute
-    # \param valueAttr value attribute
     def __init__(self, parent, indexAttr, valueAttr):
+        """ constructor
+
+        :param parent: parent tag element
+        :param indexAttr: index attribute
+        :param valueAttr: value attribute
+        """
         NTag.__init__(self, parent, "dim")
         self.addTagAttr("index", indexAttr)
         self.addTagAttr("value", valueAttr)
 
 
-## Field tag wrapper
 class NField(NTag):
+    """ Field tag wrapper
+    """
 
-    ## constructor
-    # \param parent parent tag element
-    # \param nameAttr name attribute
-    # \param typeAttr type attribute
     def __init__(self, parent, nameAttr, typeAttr=""):
+        """constructor
+
+        :param parent: parent tag element
+        :param nameAttr: name attribute
+        :param typeAttr: type attribute
+        """
         NTag.__init__(self, parent, "field", nameAttr, typeAttr)
 
-        ## list of doc tag contents
+        #: list of doc tag contents
         self._doc = []
-        ## container with attribute tag wrappers
+        #: container with attribute tag wrappers
         self._attr = {}
 
-    ## sets the field strategu
-    # \param mode mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
-    # \param trigger for asynchronous writting, e.g. with different subentries
-    # \param value label for postrun mode
-    # \param grows growing dimension
-    # \param compression flag if compression shuold be applied
-    # \param rate compression rate
-    # \param shuffle flag if compression shuffle
     def setStrategy(self, mode="STEP", trigger=None, value=None,
                     grows=None, compression=False, rate=None,
                     shuffle=None):
-        ## strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        """ sets the field strategy
+
+        :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        :param trigger: for asynchronous writting,
+                        e.g. with different subentries
+        :param value: label for postrun mode
+        :param grows: growing dimension
+        :param compression: flag if compression shuold be applied
+        :param rate: compression rate
+        :param shuffle: flag if compression shuffle
+        """
+        #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
         if strategy:
             strategy.addTagAttr("mode", mode)
@@ -221,54 +262,66 @@ class NField(NTag):
                     "shuffle",
                     "true" if shuffle else "false")
 
-    ## sets the field unit
-    # \param unitsAttr the field unit
     def setUnits(self, unitsAttr):
+        """ sets the field unit
+
+        :param unitsAttr: the field unit
+        """
         self.addTagAttr("units", unitsAttr)
 
-    ## adds doc tag content
-    # \param doc doc tag content
     def addDoc(self, doc):
+        """ adds doc tag content
+
+        :param doc: doc tag content
+        """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
 
-    ## adds attribute tag
-    # \param attrName name attribute
-    # \param attrType type attribute
-    # \param attrValue content of the attribute tag
     def addAttr(self, attrName, attrType, attrValue=""):
+        """ adds attribute tag
+
+        :param attrName: name attribute
+        :param attrType: type attribute
+        :param attrValue: content of the attribute tag
+        """
         self._attr[attrName] = NAttr(self, attrName, attrType)
         if attrValue != '':
             self._attr[attrName].setText(attrValue)
         return self._attr[attrName]
 
 
-## Source tag wrapper
 class NDSource(NTag):
-    ## constructor
-    # \param parent parent tag element
+    """ Source tag wrapper
+    """
+
     def __init__(self, parent):
+        """ constructor
+
+        :param parent: parent tag element
+        """
         NTag.__init__(self, parent, "datasource")
 
-        ## list of doc tag contents
+        #: list of doc tag contents
         self._doc = []
 
-    ## sets parameters of DataBase
-    # \param name name of datasource
-    # \param dbname name of used DataBase
-    # \param query database query
-    # \param dbtype type of the database, i.e. MYSQL, PGSQL, ORACLE
-    # \param rank rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
-    # \param mycnf MYSQL config file
-    # \param user database user name
-    # \param passwd database user password
-    # \param dsn DSN string to initialize ORACLE and PGSQL databases
-    # \param mode mode for ORACLE databases, i.e. SYSDBA or SYSOPER
-    # \param host name of the host
-    # \param port port number
     def initDBase(self, name, dbtype, query, dbname=None, rank=None,
                   mycnf=None, user=None,
                   passwd=None, dsn=None, mode=None, host=None, port=None):
+        """ sets parameters of DataBase
+
+        :param name: name of datasource
+        :param dbname: name of used DataBase
+        :param query: database query
+        :param dbtype: type of the database, i.e. MYSQL, PGSQL, ORACLE
+        :param rank: rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
+        :param mycnf: MYSQL config file
+        :param user: database user name
+        :param passwd: database user password
+        :param dsn: DSN string to initialize ORACLE and PGSQL databases
+        :param mode: mode for ORACLE databases, i.e. SYSDBA or SYSOPER
+        :param host: name of the host
+        :param port: port number
+        """
         self.addTagAttr("type", "DB")
         self.addTagAttr("name", name)
         da = NTag(self, "database")
@@ -296,17 +349,19 @@ class NDSource(NTag):
             da.addTagAttr("format", rank)
         da.addText(query)
 
-    ## sets paramters for Tango device
-    # \param name name of datasource
-    # \param device device name
-    # \param memberType type of the data object, i.e. attribute,
-    #      property, command
-    # \param recordName name of the data object
-    # \param host host name
-    # \param port port
-    # \param encoding encoding of DevEncoded data
     def initTango(self, name, device, memberType, recordName, host=None,
                   port=None, encoding=None, group=None):
+        """ sets paramters for Tango device
+
+        :param name: name of datasource
+        :param device: device name
+        :param memberType: type of the data object, i.e. attribute,
+                           property, command
+        :param recordName: name of the data object
+        :param host: host name
+        :param port: port
+        :param encoding: encoding of DevEncoded data
+        """
         self.addTagAttr("type", "TANGO")
         self.addTagAttr("name", name)
         dv = NTag(self, "device")
@@ -326,44 +381,31 @@ class NDSource(NTag):
         da = NTag(self, "record")
         da.addTagAttr("name", recordName)
 
-    ## sets paramters for Client data
-    # \param name name of datasource
-    # \param recordName name of the data object
     def initClient(self, name, recordName):
+        """ sets paramters for Client data
+
+        :param name: name of datasource
+        :param recordName: name of the data object
+        """
         self.addTagAttr("type", "CLIENT")
         self.addTagAttr("name", name)
         da = NTag(self, "record")
         da.addTagAttr("name", recordName)
 
-    ## sets paramters for Sardana data
-    # \param name name of datasource
-    # \param door sardana door
-    # \param recordName name of the data object
-    # \param host host name
-    # \param port port
-    def initSardana(self, name, door, recordName, host=None, port=None):
-        self.addTagAttr("type", "SARDANA")
-        self.addTagAttr("name", name)
-        do = NTag(self, "door")
-        do.addTagAttr("name", door)
-        if host:
-            do.addTagAttr("hostname", host)
-        if port:
-            do.addTagAttr("port", port)
-        da = NTag(self, "record")
-        da.addTagAttr("name", recordName)
-
-    ## adds doc tag content
-    # \param doc doc tag content
     def addDoc(self, doc):
+        """ adds doc tag content
+
+        :param doc: doc tag content
+        """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
 
 
-## Tango device tag creator
 class NDeviceGroup(NGroup):
+    """ Tango device tag creator
+    """
 
-        ## Tango types
+    #: Tango types
     tTypes = ["DevVoid",
               "DevBoolean",
               "DevShort",
@@ -394,7 +436,7 @@ class NDeviceGroup(NGroup):
               "DevInt",
               "DevEncoded"]
 
-    ## NeXuS types corresponding to the Tango types
+    #: NeXuS types corresponding to the Tango types
     nTypes = ["NX_CHAR",
               "NX_BOOLEAN",
               "NX_INT32",
@@ -425,23 +467,25 @@ class NDeviceGroup(NGroup):
               "NX_INT32",
               "NX_CHAR"]
 
-    ## constructor
-    # \param parent parent tag element
-    # \param deviceName tango device name
-    # \param nameAttr name attribute
-    # \param typeAttr type attribute
-    # \param commands if we call the commands
-    # \param blackAttrs list of excluded attributes
     def __init__(self, parent, deviceName, nameAttr, typeAttr="",
                  commands=True, blackAttrs=None):
+        """ constructor
+
+        :param parent: parent tag element
+        :param deviceName: tango device name
+        :param nameAttr: name attribute
+        :param typeAttr: type attribute
+        :param commands: if we call the commands
+        :param blackAttrs: list of excluded attributes
+        """
         NGroup.__init__(self, parent, nameAttr, typeAttr)
-        ## device proxy
+        #: device proxy
         self._proxy = PyTango.DeviceProxy(deviceName)
-        ## fields of the device
+        #: fields of the device
         self._fields = {}
-        ## blacklist for Attributes
+        #: blacklist for Attributes
         self._blackAttrs = blackAttrs if blackAttrs else []
-        ## the device name
+        #: the device name
         self._deviceName = deviceName
 
         self._fetchProperties()
@@ -449,9 +493,11 @@ class NDeviceGroup(NGroup):
         if commands:
             self._fetchCommands()
 
-    ## fetches properties
-    # \brief It collects the device properties
     def _fetchProperties(self):
+        """ fetches properties
+
+        :brief: It collects the device properties
+        """
         prop = self._proxy.get_property_list('*')
         print("PROPERIES %s" % prop)
         for pr in prop:
@@ -465,11 +511,13 @@ class NDeviceGroup(NGroup):
                     self._deviceName, self._deviceName, "property",
                     pr, host="haso228k.desy.de", port="10000")
 
-    ## fetches Attributes
-    # \brief collects the device attributes
     def _fetchAttributes(self):
+        """ fetches Attributes
 
-                ## device attirbutes
+        :brief: collects the device attributes
+        """
+
+        #: device attirbutes
         attr = self._proxy.get_attribute_list()
         for at in attr:
 
@@ -517,12 +565,12 @@ class NDeviceGroup(NGroup):
                              at, host="haso228k.desy.de", port="10000",
                              encoding=encoding)
 
-#        print self._proxy.attribute_list_query()
-
-    ## fetches commands
-    # \brief It collects results of the device commands
     def _fetchCommands(self):
-                ## list of the device commands
+        """ fetches commands
+
+        :brief: It collects results of the device commands
+        """
+        #: list of the device commands
         cmd = self._proxy.command_list_query()
         print("COMMANDS %s" % cmd)
         for cd in cmd:
@@ -542,46 +590,54 @@ class NDeviceGroup(NGroup):
                              host="haso228k.desy.de", port="10000")
 
 
-## XML file object
 class XMLFile(object):
+    """ XML file object
+    """
 
-    ## constructor
-    # \param fname XML file name
     def __init__(self, fname):
-        ## XML file name
+        """ constructor
+
+        :param fname: XML file name
+        """
+        #: XML file name
         self.fname = fname
-        ## XML root instance
+        #: XML root instance
         self.root = Document()
-        ## XML definition element
+        #: XML definition element
         self.elem = self.root.createElement("definition")
         self.root.appendChild(self.elem)
 
-    ## prints pretty XML making use of minidom
-    # \param etNode node
-    # \returns pretty XML string
     def prettyPrint(self, etNode=None):
+        """prints pretty XML making use of minidom
+
+        :param etNode: node
+        :returns: pretty XML string
+        """
         node = etNode if etNode else self.root
         return node.toprettyxml(indent="  ")
 
-    ## dumps XML structure into the XML file
-    # \brief It opens XML file, calls prettyPrint and closes the XML file
     def dump(self):
+        """ dumps XML structure into the XML file
+
+        :brief: It opens XML file, calls prettyPrint and closes the XML file
+        """
         myfile = open(self.fname, "w")
         myfile.write(self.prettyPrint(self.root))
         myfile.close()
 
 
-## the main function
 def main():
-    ## handler to XML file
+    """ the main function
+    """
+    #: handler to XML file
     df = XMLFile("test.xml")
-    ## entry
+    #: entry
     en = NGroup(df, "entry1", "NXentry")
-    ## instrument
+    #: instrument
     ins = NGroup(en, "instrument", "NXinstrument")
-    ##    NXsource
+    #:    NXsource
     src = NGroup(ins, "source", "NXsource")
-    ## field
+    #: field
     f = NField(src, "distance", "NX_FLOAT")
     f.setUnits("m")
     f.setText("100.")
@@ -591,5 +647,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#  LocalWords:  usr

@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxscreate_comp
-# datasource creator
+#
 
 """ component creator """
 
@@ -29,19 +27,20 @@ from nxstools.nxscreator import (ComponentCreator, WrongParameterError)
 
 
 PYTANGO = False
-4try:
+try:
     import PyTango
     PYTANGO = True
 except:
     pass
 
 
-## creates parser
 def createParser():
-    ## usage example
+    """ creates parser
+    """
+    #: usage example
     usage = "usage: %prog [options] [name1] [name2]\n" \
         + "       nxscreate comp [options] [name1] [name2]\n"
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
 
     parser.add_option("-p", "--device-prefix", type="string",
@@ -102,8 +101,9 @@ def createParser():
     return parser
 
 
-## the main function
 def main():
+    """ the main function
+    """
     parser = createParser()
     (options, args) = parser.parse_args()
 

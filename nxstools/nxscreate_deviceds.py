@@ -15,11 +15,9 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxscreate_tango_ds
-# datasource creator
+#
 
-""" TANGO datasource creator """
+""" TANGO datasources creator for devices """
 
 import sys
 
@@ -36,13 +34,14 @@ except:
     pass
 
 
-## creates parser
 def createParser():
-    ## usage example
+    """ creates parser
+    """
+    #: usage example
     usage = "usage: %prog [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] \n" \
         + "       nxscreate deviceds [options] [dv_attr1 " \
         + "[dv_attr2 [dv_attr3 ...]]] "
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
 
     parser.add_option("-v", "--device", type="string",
@@ -80,8 +79,9 @@ def createParser():
     return parser
 
 
-## the main function
 def main():
+    """ the main function
+    """
 
     parser = createParser()
     (options, args) = parser.parse_args()

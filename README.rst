@@ -1,14 +1,13 @@
-----------
-NXS TOOLS
-----------
+Welcome to nxstools's documentation!
+====================================
 
 Authors: Jan Kotanski, Eugen Wintersberger, Halil Pasic
 Introduction
 
 
----------------------------
+-------------------------
 Installation from sources
----------------------------
+-------------------------
 
 Install the dependencies:
 
@@ -23,9 +22,9 @@ Extract sources and run
 $ python setup.py install
 
 
-------------------
+=======
 nxsdata
-------------------
+=======
 
 The nxsdata program is a command-line interface to Nexus Data Tango Server.
 Program allows one to store NeXuS Data in H5 files.
@@ -59,9 +58,9 @@ Options:
                         tango data server device name
 
 
-------------------
+=========
 nxsconfig
-------------------
+=========
 
 The nxsconfig program
 is a command-line interface to NXS Configuration Tango Server.
@@ -116,9 +115,9 @@ Options:
   -p, --private         make use private components, i.e. starting with '__'
   -n, --no-newlines     split result with space characters
 
-------------------
+=========
 nxscreate
-------------------
+=========
 
 The nxscreate program allows one to create simple datasources and components.
 
@@ -153,7 +152,7 @@ e.g.:
 	nxscreate_clientds -f 1 -l2 -p haso.desy.de:10000/expchan/sis3820_exp/ -s exp_c -m -b -r test/nxsconfigserver/01
 
 nxscreate tangods [options]
---------------------------
+---------------------------
 
 It creates a set of TANGO datasources.
 
@@ -163,7 +162,7 @@ Options:
                         device prefix, i.e. exp_c
   -f FIRST, --first=FIRST
                         first index
-ds  -l LAST, --last=LAST  last index
+  -l LAST, --last=LAST  last index
   -a ATTRIBUTE, --attribute=ATTRIBUTE
                         tango attribute name
   -o DATASOURCE, --datasource-prefix=DATASOURCE
@@ -176,10 +175,11 @@ ds  -l LAST, --last=LAST  last index
   -t PORT, --port=PORT  tango host port
   -b, --database        store components in Configuration Server database
   -r SERVER, --server=SERVER
+                        configuration server device name
 
 
 nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
---------------------------
+-----------------------------------------------------------------
 
 It creates a set of TANGO datasources for all device attributes.
 
@@ -207,7 +207,7 @@ It creates a set of motor datasources from an online xml file.
 
 Usage: ndtscreate_onlineds [options] inputFile
        nxscreate onlineds [options] inputFile
- e.g.
+e.g.
        nxscreate onlineds -b
        nxscreate onlinecp -d /home/user/xmldir
 
@@ -232,7 +232,7 @@ nxscreate onlinecp [options] inputFile
 --------------------------------------
 Usage: ndtscreate_onlinecp [options] [<inputFile>]
        nxscreate onlinecp [options] [<inputFile>]
- e.g.
+e.g.
        nxscreate onlinecp
        nxscreate onlinecp -c pilatus
 
@@ -261,7 +261,7 @@ Options:
 
 
 nxscreate comp [options] [name1] [name2] ...
-----------------------------------------
+--------------------------------------------
 
 It creates a set of simple components.
 
@@ -276,7 +276,7 @@ Options:
                         output component directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
- -n NEXUSPATH, --nexuspath=NEXUSPATH
+  -n NEXUSPATH, --nexuspath=NEXUSPATH
                         nexus path with field name
   -s STRATEGY, --strategy=STRATEGY
                         writing strategy, i.e. STEP, INIT, FINAL, POSTRUN

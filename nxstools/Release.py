@@ -17,7 +17,7 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-"""  NXS tools """
+"""  NXS tools release version"""
 
 #: package version
-from .Release import __version__
+__version__ = "2.0.0"

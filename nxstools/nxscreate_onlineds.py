@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxscreate_ds_online
-# datasource creator
+#
 
 """ datasource creator from online files """
 
@@ -36,9 +34,11 @@ except:
 from optparse import OptionParser
 
 
-## the main function
 def main():
-    ## usage example
+    """ the main function
+    """
+
+    #: usage example
     usage = "usage: %prog [options] [<inputFile>]\n" \
         + "       nxscreate onlineds [options] [<inputFile>]\n" \
         + " e.g.\n" \
@@ -46,8 +46,8 @@ def main():
         + "       nxscreate onlinecp -d /home/user/xmldir \n\n" \
         + " - with -b datasources are created in Configuration Server database\n" \
         + " - with -d <directory> datasources are created on the local filesystem\n" \
-        + " - default <inputFile> is '/online_dir/online.xml' \n" \
-    ## option parser
+        + " - default <inputFile> is '/online_dir/online.xml' \n"
+    #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
@@ -95,7 +95,6 @@ def main():
         print("OUTPUT DIR: %s" % options.directory)
     elif options.database:
         print("SERVER: %s" % options.server)
-
 
     creator = OnlineDSCreator(options, args)
     creator.create()

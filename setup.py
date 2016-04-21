@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas.tools nexdatas
-## \file setup.py
-# GUI to create the XML components
+#
 
 """ setup.py for command-line tools """
 
@@ -25,14 +23,21 @@ import os
 from distutils.core import setup
 
 
-## reading a file
+#: reading a file
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 PKG = "nxstools"
 IPKG = __import__(PKG)
 
-## metadata for distutils
+from sphinx.setup_command import BuildDoc
+
+
+release = IPKG.__version__
+version = ".".join(release.split(".")[:2])
+name = "NXSTools"
+
+#: metadata for distutils
 SETUPDATA = dict(
     name="nexdatas.tools",
     version=IPKG.__version__,
@@ -56,12 +61,19 @@ SETUPDATA = dict(
         'nxscollect',
         'nxsetup',
     ],
-    long_description=read('README')
+    cmdclass={'build_sphinx': BuildDoc},
+    command_options={
+        'build_sphinx': {
+            'project': ('setup.py', name),
+            'version': ('setup.py', version),
+            'release': ('setup.py', release)}},
+    long_description=read('README.rst')
 )
 
 
-## the main function
 def main():
+    """ the main function
+    """
     setup(**SETUPDATA)
 
 

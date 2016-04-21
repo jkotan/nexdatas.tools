@@ -15,10 +15,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxsdata.py
-# Command-line tool to ascess to  Tango Data Server
 #
+
 """ Command-line tool to ascess to Tango Data Server"""
 
 import sys
@@ -28,48 +26,65 @@ from optparse import OptionParser
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
 
-## configuration server adapter
 class NexusServer(object):
-    ## constructor
-    # \param device device name of configuration server
+    """ configuration server adapter
+    """
+
     def __init__(self, device):
+        """ constructor
+
+        :param device: device name of configuration server
+        """
         self.tdwServer = openServer(device)
 
-    ## opens the h5 file
-    # \param filename h5 file name
     def openFile(self, filename):
+        """ opens the h5 file
+
+        :param filename: h5 file name
+        """
         self.tdwServer.Init()
         self.tdwServer.FileName = str(filename)
         self.tdwServer.OpenFile()
 
-    ## sets the global JSON data
-    # \param jsondata global JSON data
     def setData(self, jsondata):
+        """ sets the global JSON data
+
+        :param jsondata: global JSON data
+        """
         self.tdwServer.JSONRecord = str(jsondata)
 
-    ## opens an entry
-    # \param xmlconfig xml configuration string
     def openEntry(self, xmlconfig):
+        """ opens an entry
+
+        :param xmlconfig: xml configuration string
+        """
         self.tdwServer.XMLSettings = str(xmlconfig)
         self.tdwServer.OpenEntry()
 
-    ## records one step
-    # \param jsondata step JSON data
     def record(self, jsondata):
+        """ records one step
+
+        :param jsondata: step JSON data
+        """
         self.tdwServer.Record(jsondata)
 
-    ## closes the entry
     def closeEntry(self):
+        """ closes the entry
+        """
         self.tdwServer.CloseEntry()
 
-    ## closes the file
     def closeFile(self):
+        """ closes the file
+
+        """
         self.tdwServer.CloseFile()
 
-    ## perform requested command
-    # \param command called command
-    # \param args list of item names
     def performCommand(self, command, args):
+        """ perform requested command
+
+        :param command: called command
+        :param args: list of item names
+        """
         if command == 'openfile':
             return self.openFile(args[0])
         if command == 'setdata':
@@ -84,9 +99,10 @@ class NexusServer(object):
             return self.closeEntry()
 
 
-## creates command-line parameters parser
 def createParser():
-    ## usage example
+    """ creates command-line parameters parser
+    """
+    #: usage example
     usage = "usage: nxsdata <command> [-s <nexus_server>] " \
             + " [<arg1> [<arg2>  ...]] \n" \
             + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
@@ -109,7 +125,7 @@ def createParser():
             + "the current tango host\n" \
             + " "
 
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-s", "--server", dest="server",
                       help="tango data server device name")
@@ -117,24 +133,23 @@ def createParser():
     return parser
 
 
-## the main function
 def main():
+    """ the main function
+    """
 
-    ## pipe arguments
+    #: pipe arguments
     pipe = ""
     if not sys.stdin.isatty():
         pp = sys.stdin.readlines()
-        ## system pipe
+        #: system pipe
         pipe = "".join(pp)
 
     commands = {'openfile': 1, 'openentry': 0, 'setdata': 1, 'record': 1,
                 'closeentry': 0, 'closefile': 0}
-    ## run options
+    #: run options
     options = None
     parser = createParser()
     (options, args) = parser.parse_args()
-
-#    print "ARGs", args
 
     if args and args[0] == 'servers':
         print "\n".join(listServers(options.server, 'NXSDataWriter'))
@@ -148,23 +163,21 @@ def main():
         print ""
         sys.exit(0)
 
-    ## configuration server
+    #: configuration server
     tdwserver = NexusServer(options.server)
 
-    ## command-line and pipe arguments
+    #: command-line and pipe arguments
     parg = args[1:]
     if pipe:
         parg.append(pipe)
 
-#    for r in parg:
-#        print "##" , r
     if len(parg) < commands[args[0]]:
         print "CMD", args[0], len(parg)
         parser.print_help()
         print ""
         sys.exit(0)
 
-    ## result to print
+    #: result to print
     result = tdwserver.performCommand(args[0], parg)
     if result and str(result).strip():
         print result

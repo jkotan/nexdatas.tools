@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxsdevicetools.py
-# datasource creator
+#
 
 """ NDTS TANGO device tools """
 
@@ -33,7 +31,7 @@ try:
 except:
     pass
 
-## attributes of device modules to acquire with elements:
+#: attributes of device modules to acquire with elements:
 #  'module': [<sardana_pool_attr>, <original_tango_attr>]
 moduleAttributes = {
     'counter_tango': ['Value', 'Counts'],
@@ -53,6 +51,7 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
+#: xml template files of modules
 moduleTemplateFiles = {
     'pilatus100k': ['pilatus.xml',
                     'pilatus_postrun.ds.xml',
@@ -83,15 +82,15 @@ moduleTemplateFiles = {
             'pco_description.ds.xml',
             'pco_filestartnum_cb.ds.xml'],
     'pcoedge': ['pco.xml',
-            'pco_postrun.ds.xml',
-            'pco_description.ds.xml',
-            'pco_filestartnum_cb.ds.xml'],
+                'pco_postrun.ds.xml',
+                'pco_description.ds.xml',
+                'pco_filestartnum_cb.ds.xml'],
     'pco4000': ['pco.xml',
-            'pco_postrun.ds.xml',
-            'pco_description.ds.xml',
-            'pco_filestartnum_cb.ds.xml'],
+                'pco_postrun.ds.xml',
+                'pco_description.ds.xml',
+                'pco_filestartnum_cb.ds.xml'],
     'lambda': ['lambda.xml',
-                'lambda_external_data.ds.xml'],
+               'lambda_external_data.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_external_data.ds.xml',
                  'lambda2m_m2_external_data.ds.xml',
@@ -118,6 +117,7 @@ moduleTemplateFiles = {
                'marccd_postrun.ds.xml'],
 }
 
+#: important attributes of modules
 moduleMultiAttributes = {
     'pco': [
         'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
@@ -232,6 +232,7 @@ moduleMultiAttributes = {
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
 }
 
+#: modules of 2d detectors
 TwoDModules = [
     'pilatus100k', 'pilatus300k', 'pilatus1m',
     'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
@@ -243,6 +244,7 @@ TwoDModules = [
 ]
 
 
+#: modules of motors
 motorModules = [
     'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
     'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
@@ -258,16 +260,20 @@ motorModules = [
     #    'oxfcryo700',
 ]
 
+#: counter/timer modules
 CTModules = [
     'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
     'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
     'tangoattributectctrl'
 ]
 
+#: modules of 0D detectors
 ZeroDModules = ['tip830']
 
+#: modules of 1D detectors
 OneDModules = ['mca_xia']
 
+#: IO register modules
 IORegModules = ['sis3610']
 
 
@@ -279,12 +285,14 @@ for nm in CTModules + ZeroDModules + OneDModules:
         moduleAttributes[nm] = ['Value', None]
 
 
-## generates device names
-# \param prefix device name prefix5
-# \param first first device index
-# \param last last device index
-# \returns device names
 def generateDeviceNames(prefix, first, last, minimal=False):
+    """ generates device names
+
+    :param prefix: device name prefix5
+    :param first: first device index
+    :param last: last device index
+    :returns: device names
+    """
     names = []
     if prefix.strip():
         for i in range(first, last + 1):
@@ -296,12 +304,15 @@ def generateDeviceNames(prefix, first, last, minimal=False):
     return names
 
 
-## provides a list of device attributes
-# \param device tango device name
-# \param host device host
-# \param port device port
-# \returns list of device attributes
 def getAttributes(device, host=None, port=10000):
+    """ provides a list of device attributes
+
+    :param device: tango device name
+    :param host: device host
+    :param port: device port
+    :returns: list of device attributes
+
+    """
     if host:
         dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
     else:
@@ -310,15 +321,17 @@ def getAttributes(device, host=None, port=10000):
     return [at.name for at in attr if at.name not in ['State', 'Status']]
 
 
-## opens connection to the configuration server
-# \param configuration server device
-# \returns configuration server proxy
 def openServer(device):
+    """ opens connection to the configuration server
+
+    :param configuration: server device
+    :returns: configuration server proxy
+    """
     found = False
     cnt = 0
-    ## spliting character
+    # spliting character
     try:
-        ## configuration server proxy
+        #: configuration server proxy
         cnfServer = PyTango.DeviceProxy(device)
     except (PyTango.DevFailed, PyTango.Except, PyTango.DevError):
         found = True
@@ -348,21 +361,25 @@ def openServer(device):
     return cnfServer
 
 
-## stores datasources
-# \param name datasource name
-# \param xml datasource xml string
-# \param server configuration server
 def storeDataSource(name, xml, server):
+    """ stores datasources
+
+    :param name: datasource name
+    :param xml: datasource xml string
+    :param server: configuration server
+    """
     proxy = openServer(server)
     proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreDataSource(str(name))
 
 
-## fetches the server tango host
-# \param server tango server
-#\ returns tango host
 def getServerTangoHost(server):
+    """ fetches the server tango host
+
+    :param server: tango server
+    :returns: tango host
+    """
     proxy = openServer(server)
     host = proxy.get_db_host()
     port = proxy.get_db_port()
@@ -372,10 +389,12 @@ def getServerTangoHost(server):
     return "%s:%s" % (host, port)
 
 
-## gets datasource components
-# \param server configuration server
-# \returns dictionary with datasource components
 def getDataSourceComponents(server):
+    """ gets datasource components
+
+    :param server: configuration server
+    :returns: dictionary with datasource components
+    """
     dscps = {}
     proxy = openServer(server)
     proxy.Open()
@@ -395,21 +414,25 @@ def getDataSourceComponents(server):
     return dscps
 
 
-## stores components
-# \param name component name
-# \param xml component xml string
-# \param server configuration server
 def storeComponent(name, xml, server):
+    """ stores components
+
+    :param name: component name
+    :param xml: component xml string
+    :param server: configuration server
+    """
     proxy = openServer(server)
     proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreComponent(str(name))
 
 
-## provides device class name
-# \param devicename device name
-# \returns class name
 def getClassName(devicename='NXSConfigServer'):
+    """ provides device class name
+
+    :param devicename: device name
+    :returns: class name
+    """
     try:
         db = PyTango.Database()
     except:
@@ -422,10 +445,13 @@ def getClassName(devicename='NXSConfigServer'):
     return db.get_class_for_device(devicename)
 
 
-## provides server device names
-# \param name server instance name
-# \returns list of the server device names
 def getServers(name='NXSConfigServer'):
+    """ provides server device names
+
+    :param name: server instance name
+    :returns: list of the server device names
+
+    """
     try:
         db = PyTango.Database()
     except:
@@ -439,8 +465,15 @@ def getServers(name='NXSConfigServer'):
     return servers
 
 
-# \param name server instance name
 def remoteCall(server, func, *args, **kwargs):
+    """ executes function on remove tango host db setup
+
+    :param server: remove tango server device name
+    :param func: executed function
+    :param args: function list arguments
+    :param kwargs: function dict arguments
+    :returns: function result
+    """
     lserver = None
     if server and server.strip():
         lserver = server.split("/")[0]
@@ -458,21 +491,30 @@ def remoteCall(server, func, *args, **kwargs):
     return res
 
 
-## prints server names
-# \param name server instance name
 def listServers(server, name='NXSConfigServer'):
+    """ finds server names
+
+    :param name: server instance name
+    :returns: server list
+    """
     return remoteCall(server, getServers, name)
 
 
-## prints server names
-# \param name device name
 def findClassName(server, name):
+    """ finds class name
+
+    :param name: device name
+    :returns: class name
+    """
     return remoteCall(server, getClassName, name)
 
 
-## provides server device name if only one or error in the other case
-# \returns server device name or empty string if error appears
 def checkServer(name='NXSConfigServer'):
+    """ provides server device name if only one or error in the other case
+
+    :param name: server name
+    :returns: server device name or empty string if error appears
+    """
     servers = getServers(name)
     if not servers:
         sys.stderr.write(

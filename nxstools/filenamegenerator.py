@@ -15,10 +15,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxscollect.py
-# Command-line tool to merging NeXus files with other file-format images
 #
+
 """ Filename generator """
 
 

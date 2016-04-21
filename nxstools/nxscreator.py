@@ -15,9 +15,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxscreator.py
-# Command-line tool for creating to the nexdatas configuration server
 #
 
 """ Command-line tool for creating to the nexdatas configuration server """
@@ -45,28 +42,45 @@ except:
 
 
 class CPExistsException(Exception):
+    """ Comonent already exists exception
+    """
     pass
 
 
 class Device(object):
+    """ device from online.xml
+    """
     __slots__ = [
         'name', 'dtype', 'module', 'tdevice', 'hostname', 'sardananame',
         'sardanahostname', 'host', 'port', 'group', 'attribute']
 
     def __init__(self):
+        #: device name
         self.name = None
+        #: data type
         self.dtype = None
+        #: device module
         self.module = None
+        #: device type
         self.tdevice = None
+        #: host name with port
         self.hostname = None
+        #: sardana name with port
         self.sardananame = None
+        #: sardana host name
         self.sardanahostname = None
+        #: host without port
         self.host = None
+        #: tango port
         self.port = None
+        #: datasource tango group
         self.group = None
+        #: attribute name
         self.attribute = None
 
     def splitHostPort(self):
+        """ spilts host name from port
+        """
         if self.hostname:
             self.host = self.hostname.split(":")[0]
             self.port = self.hostname.split(":")[1] \
@@ -77,6 +91,10 @@ class Device(object):
             raise Exception("hostname not defined")
 
     def findAttribute(self, tangohost):
+        """ sets attribute and datasource group of online.xml device
+
+        :param tangohost: tango host
+        """
         mhost = self.sardanahostname or tangohost
         self.group = None
         self.attribute = None
@@ -108,30 +126,50 @@ class Device(object):
                     self.group = '__CLIENT__'
 
     def setSardanaName(self, tolower):
+        """ sets sardana name
+
+        :param tolower: If True name in lowercase
+        """
         self.name = self.sardananame or self.name
         if tolower:
             self.name = self.name.lower()
 
 
-## configuration server adapter
 class Creator(object):
-    ## constructor
-    # \param options  command options
-    # \param args command arguments
+    """ configuration server adapter
+    """
+
     def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options:  command options
+        :param args: command arguments
+        :param printouts: if printout enable
+        """
+        #: creator options
         self.options = options
+        #: creator arguments
         self.args = args
+        #: if printout enable
         self.printouts = printouts
 
-    ## creates TANGO datasource file
-    # \param name device name
-    # \param directory output file directory
-    # \param fileprefix file name prefix
-    # \returns xml string
     @classmethod
     def createTangoDataSource(
             cls, name, directory, fileprefix, server, device,
             attribute, host, port="10000", group=None):
+        """ creates TANGO datasource file
+
+        :param name: device name
+        :param directory: output file directory
+        :param fileprefix: file name prefix
+        :param server: server name
+        :param device: device name
+        :param attribute: attribute name
+        :param host: tango host name
+        :param port: tango port
+        :parma group: datasource tango group
+        :returns: xml string
+        """
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
         sr = NDSource(df)
         sr.initTango(name, device, "attribute", attribute, host, port,
@@ -143,14 +181,18 @@ class Creator(object):
             df.dump()
         return xml
 
-    ## creates CLIENT datasource file
-    # \param name device name
-    # \param directory output file directory
-    # \param fileprefix file name prefix
-    # \returns xml string
     @classmethod
     def createClientDataSource(
             cls, name, directory, fileprefix, server, dsname=None):
+        """ creates CLIENT datasource file
+
+        :param name: device name
+        :param directory: output file directory
+        :param fileprefix: file name prefix
+        :param server: server name
+        :param dsname: datasource name
+        :returns: xml string
+        """
         dname = name if not dsname else dsname
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, dname))
         print "%s/%s%s.ds.xml" % (directory, fileprefix, dname)
@@ -165,6 +207,11 @@ class Creator(object):
 
     @classmethod
     def __patheval(cls, nexuspath):
+        """ splits nexus path into list
+
+        :param nexuspath: nexus path
+        :returns: nexus path in lists of (name, NXtype)
+        """
         pathlist = []
         spath = nexuspath.split("/")
         if spath:
@@ -188,6 +235,17 @@ class Creator(object):
     @classmethod
     def __createTree(cls, df, nexuspath, name, nexusType,
                      strategy, units, link, chunk):
+        """ create nexus node tree
+
+        :param df: definition parent node
+        :param nexuspath: nexus path
+        :param name: name
+        :param nexusType: nexus type
+        :param strategy: strategy mode
+        :param units: field units
+        :param links: if create link
+        :param chunk: chunk size
+        """
 
         pathlist = cls.__patheval(nexuspath)
         entry = None
@@ -218,19 +276,22 @@ class Creator(object):
                 else:
                     NLink(data, fname, npath)
 
-    ## creates component file
-    # \param name datasource name
-    # \param directory output file directory
-    # \param fileprefix file name prefix
-    # \param nexuspath nexus path
-    # \param strategy field strategy
-    # \param nexusType nexus Type of the field
-    # \param units field units
-    # \param link nxdata link
-    # \param server configuration server
     @classmethod
     def createComponent(cls, name, directory, fileprefix, nexuspath,
                         strategy, nexusType, units, links, server, chunk):
+        """ creates component file
+
+        :param name: datasource name
+        :param directory: output file directory
+        :param fileprefix: file name prefix
+        :param nexuspath: nexus path
+        :param strategy: field strategy
+        :param nexusType: nexus Type of the field
+        :param units: field units
+        :param link: nxdata link
+        :param server: configuration server
+        :returns: component xml
+        """
         defpath = '/entry$var.serialno:NXentry/instrument' \
                   + '/collection/%s' % (name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
@@ -244,11 +305,13 @@ class Creator(object):
             df.dump()
         return xml
 
-    ## provides xml content of the node
-    # \param node DOM node
-    # \returns xml content string
     @classmethod
     def getText(cls, node):
+        """ provides xml content of the node
+
+        :param node: DOM node
+        :returns: xml content string
+        """
         if not node:
             return
         xml = node.toxml()
@@ -261,18 +324,30 @@ class Creator(object):
 
     @classmethod
     def getChildText(cls, parent, childname):
+        """ provides text of child named by childname
+
+        :param parent: parent node
+        :param childname: child name
+        :returns: text string
+        """
         return cls.getText(
             parent.getElementsByTagName(childname)[0]) \
             if len(parent.getElementsByTagName(childname)) else None
 
 
 class WrongParameterError(Exception):
+    """ wrong parameter exception
+    """
     pass
 
 
 class ComponentCreator(Creator):
+    """ component creator
+    """
 
     def create(self):
+        """ creates a component xml and stores it in DB or filesytem
+        """
         aargs = []
         if self.options.device.strip():
             try:
@@ -314,8 +389,12 @@ class ComponentCreator(Creator):
 
 
 class TangoDSCreator(Creator):
+    """ tango datasource creator
+    """
 
     def create(self):
+        """ creates a tango datasource xml and stores it in DB or filesytem
+        """
         dvargs = []
         dsargs = []
         if self.options.device.strip():
@@ -352,8 +431,12 @@ class TangoDSCreator(Creator):
 
 
 class ClientDSCreator(Creator):
+    """ client datasource creator
+    """
 
     def create(self):
+        """ creates a client datasource xml and stores it in DB or filesytem
+        """
         dsargs = None
         aargs = []
         if self.options.device.strip():
@@ -393,8 +476,13 @@ class ClientDSCreator(Creator):
 
 
 class DeviceDSCreator(Creator):
+    """ device datasource creator
+    """
 
     def create(self):
+        """ creates a tango datasources xml of given device
+            and stores it in DB or filesytem
+        """
         for at in self.args:
             dsname = "%s%s" % (self.options.datasource.lower(), at.lower())
             if not self.options.database:
@@ -413,15 +501,26 @@ class DeviceDSCreator(Creator):
 
 
 class OnlineDSCreator(Creator):
+    """ datasource creator of all online.xml simple devices
+    """
 
-    ## constructor
-    # \param options  command options
-    # \param args command arguments
     def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options:  command options
+        :param args: command arguments
+        :param printouts: if printout enable
+        """
         Creator.__init__(self, options, args, printouts)
+        #: datasource xml dictionary
         self.datasources = {}
 
     def printAction(self, dv, dscps=None):
+        """ prints out information about the performed action
+
+        :param dv: online device object
+        :param dscps: datasource components
+        """
         if self.printouts:
             if hasattr(self.options, "directory") and \
                self.options.directory:
@@ -439,6 +538,8 @@ class OnlineDSCreator(Creator):
                     else ""))
 
     def create(self):
+        """ creates datasources of all online.xml simple devices
+        """
         self.createXMLs()
         server = self.options.server
         if not hasattr(self.options, "directory") or \
@@ -454,6 +555,8 @@ class OnlineDSCreator(Creator):
                 myfile.close()
 
     def createXMLs(self):
+        """ creates datasource xmls of all online.xml simple devices
+        """
         self.datasources = {}
         tangohost = getServerTangoHost(self.options.server)
         indom = parse(self.args[0])
@@ -524,16 +627,28 @@ class OnlineDSCreator(Creator):
 
 
 class OnlineCPCreator(Creator):
+    """ component creator of all online.xml complex devices
+    """
 
-    ## constructor
-    # \param options  command options
-    # \param args command arguments
     def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options: command options
+        :param args: command arguments
+        :param printouts: if printout enable
+        """
         Creator.__init__(self, options, args, printouts)
+        #: datasource xml dictionary
         self.datasources = {}
+        #: component xml dictionary
         self.components = {}
 
     def printAction(self, dv, dscps=None):
+        """ prints out information about the performed action
+
+        :param dv: online device object
+        :param dscps: datasource components
+        """
         if self.printouts:
             if hasattr(self.options, "directory") and \
                self.options.directory:
@@ -552,6 +667,11 @@ class OnlineCPCreator(Creator):
 
     @classmethod
     def getModuleName(cls, device):
+        """ provides module name
+
+        :param device: device name
+        :returns: module name
+        """
         if device.module.lower() in moduleMultiAttributes.keys():
             return device.module.lower()
         elif len(device.tdevice.split('/')) == 3:
@@ -568,6 +688,10 @@ class OnlineCPCreator(Creator):
                 return
 
     def listcomponents(self):
+        """ provides a list of components with xml templates
+
+        :returns: list of components with xml templates
+        """
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
@@ -597,6 +721,8 @@ class OnlineCPCreator(Creator):
         return cpnames
 
     def create(self):
+        """ creates components of all online.xml complex devices
+        """
         cpname = self.options.component
         if not hasattr(self.options, "directory") or \
            not self.options.directory:
@@ -637,6 +763,8 @@ class OnlineCPCreator(Creator):
                 myfile.close()
 
     def createXMLs(self):
+        """ creates component xmls of all online.xml complex devices
+        """
         self.datasources = {}
         self.components = {}
         indom = parse(self.args[0])
@@ -705,6 +833,12 @@ class OnlineCPCreator(Creator):
 
     @classmethod
     def replaceName(cls, filename, cpname):
+        """ replaces name prefix of xml templates files
+
+        :param filename: template filename
+        :param cpname: output prefix
+        :returns: output filename
+        """
         if filename.endswith(".ds.xml"):
             filename = filename[:-7]
         elif filename.endswith(".xml"):

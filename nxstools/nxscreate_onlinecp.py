@@ -15,9 +15,7 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nxstools tools for nxswriter
-## \file nxscreate_ds_online
-# datasource creator
+#
 
 """ component creator from online files """
 
@@ -37,9 +35,10 @@ except:
 from optparse import OptionParser
 
 
-## the main function
 def main():
-    ## usage example
+    """ the main function
+    """
+    #: usage example
     usage = "usage: %prog [options] [<inputFile>]\n" \
         + "       nxscreate onlinecp [options] [<inputFile>]\n" \
         + " e.g.\n" \
@@ -49,9 +48,9 @@ def main():
         + " - without '-d <dircetory>  components are created in " \
         + "Configuration Server database\n" \
         + " - with -d <directory> components are created on the local filesystem\n" \
-        + " - default <inputFile> is '/online_dir/online.xml' \n" \
+        + " - default <inputFile> is '/online_dir/online.xml' \n"
 
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-c", "--component", type="string",
                       help="component name" +
@@ -66,8 +65,8 @@ def main():
                       default=False, dest="overwrite",
                       help="overwrite existing component")
     parser.add_option("-d", "--directory", type="string",
-                      help="output directory where datasources will be stored. "
-                      "If it is not set components are stored in "
+                      help="output directory where datasources will be stored."
+                      " If it is not set components are stored in "
                       "Configuration Server database",
                       dest="directory", default="")
     parser.add_option("-x", "--file-prefix", type="string",

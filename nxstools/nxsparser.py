@@ -15,9 +15,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxsconfig.py
-# Command-line tool for ascess to the nexdatas configuration server
 #
 
 """ Command-line tool for ascess to the nexdatas configuration server """
@@ -26,25 +23,29 @@ import xml
 from xml.dom.minidom import parseString
 
 
-## configuration server adapter
 class ParserTools(object):
+    """ configuration server adapter
+    """
 
-    ## provides  xml content of the node
-    # \param node DOM node
-    # \returns xml content string
     @classmethod
     def getPureText(cls, node):
+        """ provides  xml content of the node
+        :param node: DOM node
+        :returns: xml content string
+        """
         rc = []
         for child in node.childNodes:
             if child.nodeType == node.TEXT_NODE:
                 rc.append(str(child.data).strip())
         return ''.join(rc).strip()
 
-    ## provides  xml content of the node
-    # \param node DOM node
-    # \returns xml content string
     @classmethod
     def getText(cls, node):
+        """ provides  xml content of the node
+
+        :param node: DOM node
+        :returns: xml content string
+        """
         if not node:
             return
         xmlc = node.toxml()
@@ -55,11 +56,13 @@ class ParserTools(object):
         return xmlc[start + 1:end].replace("&lt;", "<").replace("&gt;", ">"). \
             replace("&quot;", "\"").replace("&amp;", "&")
 
-    ## fetches record name or query from datasource node
-    # \param node datasource node
-    # \returns record name or query
     @classmethod
     def getRecord(cls, node):
+        """ fetches record name or query from datasource node
+
+        :param node: datasource node
+        :returns: record name or query
+        """
         withRec = ["CLIENT", "TANGO"]
         withQuery = ["DB"]
         if node.nodeName == 'datasource':
@@ -104,11 +107,13 @@ class ParserTools(object):
             if query and query.strip():
                 return query.strip() or ""
 
-    ## provides datasources and its records from xml string
-    # \param xmlc xml string
-    # \returns list of datasource descriptions
     @classmethod
     def addDefinitions(cls, xmls):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :returns: list of datasource descriptions
+        """
         rxml = ""
         if xmls:
             indom1 = parseString(xmls[0])
@@ -122,19 +127,23 @@ class ParserTools(object):
             rxml = indom1.toxml()
         return rxml
 
-    ## provides datasources and its records from xml string
-    # \param xmlc xml string
-    # \returns list of datasource descriptions
     @classmethod
     def parseDataSources(cls, xmlc):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :returns: list of datasource descriptions
+        """
         indom = parseString(xmlc)
         return cls.__getDataSources(indom)
 
-    ## provides datasources and its records from xml string
-    # \param xmlc xml string
-    # \returns list of datasource descriptions
     @classmethod
     def __getDataSources(cls, node, direct=False):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :returns: list of datasource descriptions
+        """
         if direct:
             dss = cls.__getChildrenByTagName(node, "datasource")
         else:
@@ -159,11 +168,13 @@ class ParserTools(object):
 
         return dslist
 
-    ## provides node path
-    # \param node minidom node
-    # \returns node path
     @classmethod
     def __getPath(cls, node):
+        """ provides node path
+
+        :param node: minidom node
+        :returns: node path
+        """
         name = cls.__getAttr(node, "name")
         while node.parentNode:
             node = node.parentNode
@@ -178,11 +189,13 @@ class ParserTools(object):
                 name = gname + "/" + name
         return name
 
-    ## provides value of attirbute
-    # \param node minidom node
-    # \returns attribute value
     @classmethod
     def __getAttr(cls, node, name, tag=False):
+        """ provides value of attirbute
+
+        :param node: minidom node
+        :returns: attribute value
+        """
         if node.hasAttribute(name):
             return node.attributes[name].value
         elif tag:
@@ -198,11 +211,13 @@ class ParserTools(object):
         else:
             return None
 
-    ## provides node shape
-    # \param node minidom node
-    # \returns shape list
     @classmethod
     def __getShape(cls, node):
+        """ provides node shape
+
+        :param node: minidom node
+        :returns: shape list
+        """
         rank = int(node.attributes["rank"].value)
         #        shape = ['*'] * rank
         shape = [None] * rank
@@ -238,6 +253,12 @@ class ParserTools(object):
 
     @classmethod
     def __getChildrenByTagName(cls, parent, name):
+        """ provides direct children by tag name
+
+        :param parent: parent node
+        :param name: tag name
+        :returns: list of children
+        """
         children = []
         for child in parent.childNodes:
             if child.nodeType == xml.dom.Node.ELEMENT_NODE:
@@ -246,11 +267,13 @@ class ParserTools(object):
 
         return children
 
-    ## provides datasources and its records from xml string
-    # \param xmlc xml string
-    # \returns list of datasource descriptions
     @classmethod
     def parseFields(cls, xmlc):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :returns: list of datasource descriptions
+        """
         tagname = "field"
         indom = parseString(xmlc)
         nodes = indom.getElementsByTagName(tagname)
@@ -306,11 +329,14 @@ class ParserTools(object):
 
         return taglist
 
-    ## provides datasources and its records from xml string
-    # \param xmlc xml string
-    # \returns list of datasource descriptions
     @classmethod
     def parseLinks(cls, xmlc):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :returns: list of datasource descriptions
+
+        """
         tagname = "link"
         indom = parseString(xmlc)
         nodes = indom.getElementsByTagName(tagname)
@@ -330,13 +356,6 @@ class ParserTools(object):
                     "nexus_path": "[%s]" % nxpath,
                 }
                 fdinfo = {
-#                    "nexus_type": nxtype,
-#                    "units": units,
-#                    "shape": shape,
-#                    "trans_type": trtype,
-#                    "trans_vector": trvector,
-#                    "trans_offset": troffset,
-#                    "depends_on": trdependson,
                     "value": value
                 }
                 fdinfo.update(sfdinfo)
@@ -363,22 +382,31 @@ class ParserTools(object):
 
         return taglist
 
-    ## provides source record from xml string
-    # \param xmlc xml string
-    # \returns source record
     @classmethod
     def parseRecord(cls, xmlc):
+        """ provides source record from xml string
+
+        :param xmlc: xml string
+        :returns: source record
+        """
         indom = parseString(xmlc)
         return cls.getRecord(indom)
 
 
-## configuration server adapter
 class TableTools(object):
+    """ configuration server adapter
+    """
 
     def __init__(self, description, nonone=None):
+        """ constructor
+
+        :param description:  description list
+        :param nonone: list of parameters which have to exist to be shown
+        """
         self.__nonone = nonone or []
         self.__description = []
         self.__hdsizes = {}
+        #: table headers
         self.headers = [
             'nexus_path',
             'nexus_type',
@@ -394,10 +422,15 @@ class TableTools(object):
             'source',
             'value',
         ]
+        #: table title
         self.title = None
-        self.__prepareDescription(description)
+        self.__loadDescription(description)
 
-    def __prepareDescription(self, description):
+    def __loadDescription(self, description):
+        """ loads description
+
+        :param description:  description list
+        """
         for desc in description:
             skip = False
             field = desc.get("nexus_path", "").split('/')[-1]
@@ -428,12 +461,21 @@ class TableTools(object):
 
     @classmethod
     def __toString(cls, lst):
+        """ convers list to string
+
+        :param lst: given list
+        :returns: list in string representation
+        """
         res = []
         for it in lst:
             res.append(it or "*")
         return str(res)
 
     def generateList(self):
+        """ generate row lists of table
+
+        :returns:  table rows
+        """
         lst = [""]
         if self.title is not None:
             lst.append(self.title)
