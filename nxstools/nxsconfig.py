@@ -15,9 +15,6 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package nexdatas nexdatas.tools
-## \file nxsconfig.py
-# Command-line tool for ascess to the nexdatas configuration server
 #
 
 """ Command-line tool for ascess to the nexdatas configuration server """
@@ -30,23 +27,31 @@ from .nxsparser import ParserTools, TableTools
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
 
-## configuration server adapter
+##
 class ConfigServer(object):
-    ## constructor
-    # \param device device name of configuration server
-    # \param nonewline no newline flag
+    """ configuration server adapter
+    """
     def __init__(self, device, nonewline=False):
-        ## spliting character
+        """ constructor
+
+        :param device: device name of configuration server
+        :param nonewline: no newline flag
+        """
+        #: spliting character
         self.__char = " " if nonewline else "\n"
+        #: configuration server proxy
         self.cnfServer = openServer(device)
         self.cnfServer.Open()
 
-    ## lists the DB item names
-    # \param ds flag set True for datasources
-    # \param mandatory flag set True for mandatory components
-    # \param private flag set True for components starting with '__'
-    # \returns list op item names
     def listCmd(self, ds, mandatory=False, private=False):
+        """ lists the DB item names
+
+        :param ds: flag set True for datasources
+        :param mandatory: flag set True for mandatory components
+        :param private: flag set True for components starting with '__'
+        :returns: list op item names
+
+        """
         if ds:
             if not mandatory:
                 return self.cnfServer.AvailableDataSources()
@@ -61,10 +66,12 @@ class ConfigServer(object):
                         if not cp.startswith("__")]
         return []
 
-    ## lists datasources of the components
-    # \param components given components
-    # \returns list of datasource names
     def sourcesCmd(self, components, mandatory=False):
+        """ lists datasources of the components
+
+        :param components: given components
+        :returns: list of datasource names
+        """
         cmps = self.cnfServer.AvailableComponents()
         result = []
         for component in components:
@@ -81,10 +88,12 @@ class ConfigServer(object):
 
         return result
 
-    ## lists components of the components
-    # \param components given components
-    # \returns list of component names
     def componentsCmd(self, components):
+        """ lists components of the components
+
+        :param components: given components
+        :returns: list of component names
+        """
         cmps = self.cnfServer.AvailableComponents()
         result = []
         for component in components:
@@ -97,10 +106,12 @@ class ConfigServer(object):
 
         return result
 
-    ## lists variable of the components
-    # \param components given components
-    # \returns list of datasource names
     def variablesCmd(self, components, mandatory=False):
+        """ lists variable of the components
+
+        :param components: given components
+        :returns: list of datasource names
+        """
         cmps = self.cnfServer.AvailableComponents()
         result = []
         for component in components:
@@ -117,10 +128,12 @@ class ConfigServer(object):
 
         return result
 
-    ## provides datasources and its records for a given component
-    # \param name given component or datasource
-    # \returns tuple with names and records
     def __getDataSources(self, name):
+        """ provides datasources and its records for a given component
+
+        :param name: given component or datasource
+        :returns: tuple with names and records
+        """
         records = []
         names = []
         interNames = []
@@ -139,11 +152,13 @@ class ConfigServer(object):
                     names.append(nm)
         return (names, records)
 
-    ## lists datasources of the component
-    # \param ds flag set True for datasources
-    # \param name given component or datasource
-    # \returns list of record names
     def recordCmd(self, ds, name):
+        """ lists datasources of the component
+
+        :param ds: flag set True for datasources
+        :param name: given component or datasource
+        :returns: list of record names
+        """
         if not ds:
             cmps = self.cnfServer.AvailableComponents()
             if name not in cmps:
@@ -179,12 +194,14 @@ class ConfigServer(object):
                     return []
         return records
 
-    ## shows the DB items
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \param mandatory flag set True for mandatory components
-    # \returns list of XML items
     def showCmd(self, ds, args, mandatory=False):
+        """ shows the DB items
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :param mandatory: flag set True for mandatory components
+        :returns: list of XML items
+        """
         if ds:
             dsrc = self.cnfServer.AvailableDataSources()
             for ar in args:
@@ -210,11 +227,13 @@ class ConfigServer(object):
                 return self.cnfServer.Components(args)
         return []
 
-    ## Provides final configuration
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \returns XML configuration string
     def getCmd(self, ds, args):
+        """ provides final configuration
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :returns: XML configuration string
+        """
         if ds:
             return ""
         else:
@@ -230,11 +249,13 @@ class ConfigServer(object):
             return self.cnfServer.XMLString
         return ""
 
-    ## Provides description of datasources
-    # \param args list of item names
-    # \param headers list of output parameters
-    # \returns list with description
     def __describeDataSources(self, args, headers=None):
+        """ provides description of datasources
+
+        :param args: list of item names
+        :param headers: list of output parameters
+        :returns: list with description
+        """
         xmls = ""
         parameters = []
         description = []
@@ -273,14 +294,16 @@ class ConfigServer(object):
             return ""
         return description
 
-    ## Provides description of components
-    # \param args list of item names
-    # \param headers list of output parameters
-    # \param nonone list of parameters which have to exist to be shown
-    # \param private flag set True for components starting with '__'
-    # \returns list with description
     def __describeComponents(self, args, headers=None, nonone=None,
                              private=False):
+        """ provides description of components
+
+        :param args: list of item names
+        :param headers: list of output parameters
+        :param nonone: list of parameters which have to exist to be shown
+        :param private: flag set True for components starting with '__'
+        :returns: list with description
+        """
         xmls = ""
         parameters = []
         description = []
@@ -331,12 +354,14 @@ class ConfigServer(object):
             return ""
         return description
 
-    ## Provides description of final configuration
-    # \param args list of item names
-    # \param headers list of output parameters
-    # \param nonone list of parameters which have to exist to be shown
-    # \returns list with description
     def __describeConfiguration(self, args, headers=None, nonone=None):
+        """ provides description of final configuration
+
+        :param args: list of item names
+        :param headers: list of output parameters
+        :param nonone: list of parameters which have to exist to be shown
+        :returns: list with description
+        """
         xmls = ""
         description = []
         cmps = self.cnfServer.AvailableComponents()
@@ -364,13 +389,16 @@ class ConfigServer(object):
             ttools.headers = headers
         return ttools.generateList()
 
-    ## Provides description of configuration elements
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \param md flag set True for mandatory components
-    # \param pr flag set True for private components
-    # \returns list with description
     def describeCmd(self, ds, args, md, pr):
+        """ provides description of configuration elements
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :param md: flag set True for mandatory components
+        :param pr: flag set True for private components
+        :returns: list with description
+
+        """
         if ds:
             return self.__describeDataSources(args)
         elif not md:
@@ -378,13 +406,16 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args)
 
-    ## Provides info for given elements
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \param md flag set True for mandatory components
-    # \param pr flag set True for private components
-    # \returns list with description
     def infoCmd(self, ds, args, md, pr):
+        """ Provides info for given elements
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :param md: flag set True for mandatory components
+        :param pr: flag set True for private components
+        :returns: list with description
+        """
+
         cpheaders = [
             "source_name",
             "source_type",
@@ -401,13 +432,15 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
-    ## Provides geometry info for given elements
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \param md flag set True for mandatory components
-    # \param pr flag set True for private components
-    # \returns list with description
     def geometryCmd(self, ds, args, md, pr):
+        """ provides geometry info for given elements
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :param md: flag set True for mandatory components
+        :param pr: flag set True for private components
+        :returns: list with description
+        """
         cpheaders = [
             "nexus_path",
             "source_name",
@@ -424,19 +457,23 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders)
 
-    ## Provides varaible values
-    # \param args list of item names
-    # \returns JSON with variables
     def dataCmd(self, args):
+        """ provides varaible values
+
+        :param args: list of item names
+        :returns: JSON with variables
+        """
         if len(args) > 0:
             self.cnfServer.Variables = args[0]
         return [str(self.cnfServer.Variables)]
 
-    ## Provides merged components
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \returns XML configuration string with merged components
     def mergeCmd(self, ds, args):
+        """ provides merged components
+
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :returns: XML configuration string with merged components
+        """
         if ds:
             return ""
         else:
@@ -451,15 +488,18 @@ class ConfigServer(object):
             return self.cnfServer.Merge(args)
         return ""
 
-    ## perform requested command
-    # \param command called command
-    # \param ds flag set True for datasources
-    # \param args list of item names
-    # \param mandatory flag set True for mandatory components
-    # \param private flag set True for components starting with '__'
-    # \returns resulting string
     def performCommand(self, command, ds, args, mandatory=False,
                        private=False):
+        """ performs requested command
+
+        :param command: called command
+        :param ds: flag set True for datasources
+        :param args: list of item names
+        :param mandatory: flag set True for mandatory components
+        :param private: flag set True for components starting with '__'
+        :returns: resulting string
+
+        """
         string = ""
         if command == 'list':
             string = self.__char.join(self.listCmd(ds, mandatory, private))
@@ -491,9 +531,10 @@ class ConfigServer(object):
         return string
 
 
-## creates command-line parameters parser
 def createParser():
-    ## usage example
+    """ creates command-line parameters parser
+    """
+    #: usage example
     usage = "usage: nxsconfig <command> [-s <config_server>] " \
             + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
             + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n\n" \
@@ -544,7 +585,7 @@ def createParser():
             + "          show transformation parameters " \
             + "of given components \n"
 
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-s", "--server", dest="server",
                       help="configuration server device name")
@@ -565,14 +606,15 @@ def createParser():
     return parser
 
 
-## the main function
 def main():
-    ## pipe arguments
+    """ the main function
+    """
+    #: pipe arguments
     pipe = []
-    ## run options
+    #: run options
     options = None
     if not sys.stdin.isatty():
-        ## system pipe
+        #: system pipe
         pipe = sys.stdin.readlines()
 
     commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
@@ -594,7 +636,7 @@ def main():
         print("")
         sys.exit(0)
 
-    ## command-line and pipe arguments
+    #: command-line and pipe arguments
     parg = args[1:]
     if pipe:
         parg.extend([p.strip() for p in pipe])
@@ -603,10 +645,10 @@ def main():
         parser.print_help()
         return
 
-    ## configuration server
+    #: configuration server
     cnfserver = ConfigServer(options.server, options.nonewlines)
 
-    ## result to print
+    #: result to print
     result = cnfserver.performCommand(
         args[0], options.datasources, parg,
         options.mandatory, options.private)
