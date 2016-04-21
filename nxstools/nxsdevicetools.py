@@ -82,6 +82,10 @@ moduleTemplateFiles = {
             'pco_postrun.ds.xml',
             'pco_description.ds.xml',
             'pco_filestartnum_cb.ds.xml'],
+    'pcoedge': ['pco.xml',
+            'pco_postrun.ds.xml',
+            'pco_description.ds.xml',
+            'pco_filestartnum_cb.ds.xml'],
     'pco4000': ['pco.xml',
             'pco_postrun.ds.xml',
             'pco_description.ds.xml',
@@ -123,9 +127,22 @@ moduleMultiAttributes = {
         'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp',
         'RecorderMode',
     ],
+    'pcoedge': [
+        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
+        'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
+        'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
+        'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp',
+        'RecorderMode',
+    ],
     'pco4000': [
         'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
-        'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum'],
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
+        'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
+        'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
+        'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp',
+        'RecorderMode',
+    ],
     'pilatus100k': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
@@ -215,6 +232,17 @@ moduleMultiAttributes = {
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
 }
 
+TwoDModules = [
+    'pilatus100k', 'pilatus300k', 'pilatus1m',
+    'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
+    'lambda', 'pedetector', 'perkinelmer',
+    'pco', 'pcoedge', 'marccd', 'perkinelmer',
+    #
+    'lcxcamera',  'limaccd', 'eigerpsi',
+    'eigerdectris'
+]
+
+
 motorModules = [
     'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
     'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
@@ -239,16 +267,6 @@ CTModules = [
 ZeroDModules = ['tip830']
 
 OneDModules = ['mca_xia']
-
-TwoDModules = [
-    'pilatus100k', 'pilatus300k', 'pilatus1m',
-    'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
-    'lambda', 'pedetector', 'perkinelmer',
-    #
-    'lcxcamera', 'pco', 'marccd', 'limaccd', 'eigerpsi',
-    'eigerdectris', 'perkinelmer', 'lambda',
-
-]
 
 IORegModules = ['sis3610']
 

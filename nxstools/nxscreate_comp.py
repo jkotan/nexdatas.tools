@@ -16,20 +16,20 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package nxstools tools for nxswriter
-## \file nxscreate_tango_ds
+## \file nxscreate_comp
 # datasource creator
 
-""" TANGO datasource creator """
+""" component creator """
 
 import sys
 
 from optparse import OptionParser
-
 from nxstools.nxsdevicetools import checkServer
-from nxstools.nxscreator import (TangoDSCreator, WrongParameterError)
+from nxstools.nxscreator import (ComponentCreator, WrongParameterError)
+
 
 PYTANGO = False
-try:
+4try:
     import PyTango
     PYTANGO = True
 except:
@@ -39,8 +39,8 @@ except:
 ## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options]\n" \
-        + "       nxscreate tangods [options]"
+    usage = "usage: %prog [options] [name1] [name2]\n" \
+        + "       nxscreate comp [options] [name1] [name2]\n"
     ## option parser
     parser = OptionParser(usage=usage)
 
@@ -54,26 +54,35 @@ def createParser():
                       help="last index",
                       dest="last", default=None)
 
-    parser.add_option("-a", "--attribute", type="string",
-                      help="tango attribute name",
-                      dest="attribute", default="Position")
-
-    parser.add_option("-o", "--datasource-prefix", type="string",
-                      help="datasource-prefix",
-                      dest="datasource", default="TG_")
-
     parser.add_option("-d", "--directory", type="string",
-                      help="output datasource directory",
+                      help="output component directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
-    parser.add_option("-s", "--host", type="string",
-                      help="tango host name",
-                      dest="host", default="localhost")
-    parser.add_option("-t", "--port", type="string",
-                      help="tango host port",
-                      dest="port", default="10000")
+
+    parser.add_option("-n", "--nexuspath", type="string",
+                      help="nexus path with field name",
+                      dest="nexuspath", default="")
+
+    parser.add_option("-s", "--strategy", type="string",
+                      help="writing strategy, i.e. "
+                      "STEP, INIT, FINAL, POSTRUN",
+                      dest="strategy", default="STEP")
+    parser.add_option("-t", "--type", type="string",
+                      help="nexus type of the field",
+                      dest="type", default="NX_FLOAT")
+    parser.add_option("-u", "--units", type="string",
+                      help="nexus units of the field",
+                      dest="units", default="")
+
+    parser.add_option("-k", "--links", action="store_true",
+                      default=False, dest="fieldlinks",
+                      help="create links with field name")
+
+    parser.add_option("-i", "--source-links", action="store_true",
+                      default=False, dest="sourcelinks",
+                      help="create links with datasource name")
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
@@ -81,40 +90,53 @@ def createParser():
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
+
+    parser.add_option("-c", "--chunk", dest="chunk",
+                      default="SCALAR", help="chunk format, "
+                      "i.e. SCALAR, SPECTRUM, IMAGE")
+
+    parser.add_option("-m", "--minimal_device", action="store_true",
+                      default=False, dest="minimal",
+                      help="device name without first '0'")
+
     return parser
 
 
 ## the main function
 def main():
-
     parser = createParser()
     (options, args) = parser.parse_args()
 
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(255)
+    else:
+        args = args[1:]
+
     if options.database and not options.server:
         if not PYTANGO:
-            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            sys.stderr.write("CollCompCreator No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
         options.server = checkServer()
         if not options.server:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
     if options.database:
-        print "CONFIG SERVER:", options.server
+        print("CONFIG SERVER: %s" % options.server)
     else:
-        print "OUTPUT DIRECTORY:", options.directory
+        print("OUTPUT DIRECTORY: %s" % options.directory)
 
-    creator = TangoDSCreator(options, args)
+    creator = ComponentCreator(options, args)
     try:
         creator.create()
     except WrongParameterError as e:
         sys.stderr.write(str(e))
         parser.print_help()
         sys.exit(255)
-
 
 if __name__ == "__main__":
     main()

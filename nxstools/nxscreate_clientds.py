@@ -16,17 +16,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package nxstools tools for nxswriter
-## \file nxscreate_comp
+## \file nxscreate_client_ds
 # datasource creator
 
-""" component creator """
+""" CLIENT datasource creator """
 
 import sys
 
 from optparse import OptionParser
-from nxstools.nxsdevicetools import checkServer
-from nxstools.nxscreator import (ComponentCreator, WrongParameterError)
 
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import (ClientDSCreator, WrongParameterError)
 
 PYTANGO = False
 try:
@@ -36,11 +36,10 @@ except:
     pass
 
 
-## creates parser
 def createParser():
     ## usage example
     usage = "usage: %prog [options] [name1] [name2]\n" \
-        + "       nxscreate comp [options] [name1] [name2]\n"
+        + "       nxscreate clientds [options] [name1] [name2]"
     ## option parser
     parser = OptionParser(usage=usage)
 
@@ -55,57 +54,40 @@ def createParser():
                       dest="last", default=None)
 
     parser.add_option("-d", "--directory", type="string",
-                      help="output component directory",
+                      help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
 
-    parser.add_option("-n", "--nexuspath", type="string",
-                      help="nexus path with field name",
-                      dest="nexuspath", default="")
-
-    parser.add_option("-s", "--strategy", type="string",
-                      help="writing strategy, i.e. "
-                      "STEP, INIT, FINAL, POSTRUN",
-                      dest="strategy", default="STEP")
-    parser.add_option("-t", "--type", type="string",
-                      help="nexus type of the field",
-                      dest="type", default="NX_FLOAT")
-    parser.add_option("-u", "--units", type="string",
-                      help="nexus units of the field",
-                      dest="units", default="")
-
-    parser.add_option("-k", "--links", action="store_true",
-                      default=False, dest="fieldlinks",
-                      help="create links with field name")
-
-    parser.add_option("-i", "--source-links", action="store_true",
-                      default=False, dest="sourcelinks",
-                      help="create links with datasource name")
+    parser.add_option("-s", "--datasource-prefix", type="string",
+                      help="datasource prefix, i.e. counter",
+                      dest="dsource", default="")
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
-
-    parser.add_option("-r", "--server", dest="server",
-                      help="configuration server device name")
-
-    parser.add_option("-c", "--chunk", dest="chunk",
-                      default="SCALAR", help="chunk format, "
-                      "i.e. SCALAR, SPECTRUM, IMAGE")
-
     parser.add_option("-m", "--minimal_device", action="store_true",
                       default=False, dest="minimal",
                       help="device name without first '0'")
+
+    parser.add_option("-r", "--server", dest="server",
+                      help="configuration server device name")
 
     return parser
 
 
 ## the main function
 def main():
+
     parser = createParser()
     (options, args) = parser.parse_args()
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(255)
+    else:
+        args = args[1:]
 
     if options.database and not options.server:
         if not PYTANGO:
@@ -124,13 +106,14 @@ def main():
     else:
         print("OUTPUT DIRECTORY: %s" % options.directory)
 
-    creator = ComponentCreator(options, args)
+    creator = ClientDSCreator(options, args)
     try:
         creator.create()
     except WrongParameterError as e:
         sys.stderr.write(str(e))
         parser.print_help()
         sys.exit(255)
+
 
 if __name__ == "__main__":
     main()

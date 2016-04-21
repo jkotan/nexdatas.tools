@@ -25,8 +25,8 @@ import sys
 
 from optparse import OptionParser
 
-from nxstools.nxsdevicetools import (checkServer, getAttributes)
-from nxstools.nxscreator import DeviceDSCreator
+from nxstools.nxsdevicetools import checkServer
+from nxstools.nxscreator import (TangoDSCreator, WrongParameterError)
 
 PYTANGO = False
 try:
@@ -39,19 +39,28 @@ except:
 ## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] \n" \
-        + "       nxscreate deviceds [options] [dv_attr1 " \
-        + "[dv_attr2 [dv_attr3 ...]]] "
+    usage = "usage: %prog [options]\n" \
+        + "       nxscreate tangods [options]"
     ## option parser
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-v", "--device", type="string",
-                      help="device, i.e. p09/pilatus300k/01",
+    parser.add_option("-p", "--device-prefix", type="string",
+                      help="device prefix, i.e. exp_c",
                       dest="device", default="")
+    parser.add_option("-f", "--first",
+                      help="first index",
+                      dest="first", default="1")
+    parser.add_option("-l", "--last",
+                      help="last index",
+                      dest="last", default=None)
+
+    parser.add_option("-a", "--attribute", type="string",
+                      help="tango attribute name",
+                      dest="attribute", default="Position")
 
     parser.add_option("-o", "--datasource-prefix", type="string",
                       help="datasource-prefix",
-                      dest="datasource", default="")
+                      dest="datasource", default="TG_")
 
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
@@ -70,11 +79,6 @@ def createParser():
                       default=False, dest="database",
                       help="store components in Configuration Server database")
 
-    parser.add_option("-n", "--no-group", action="store_true",
-                      default=False, dest="nogroup",
-                      help="creates common group with a name of"
-                      " datasource prefix")
-
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
     return parser
@@ -86,38 +90,37 @@ def main():
     parser = createParser()
     (options, args) = parser.parse_args()
 
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(255)
+    else:
+        args = args[1:]
+
     if options.database and not options.server:
         if not PYTANGO:
-            sys.stderr.write("CollCompCreator No PyTango installed\n")
+            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
             parser.print_help()
             sys.exit(255)
 
         options.server = checkServer()
         if not options.server:
             parser.print_help()
-            print("")
+            print ""
             sys.exit(0)
 
     if options.database:
-        print("CONFIG SERVER: %s" % options.server)
+        print "CONFIG SERVER:", options.server
     else:
-        print("OUTPUT DIRECTORY: %s" % options.directory)
+        print "OUTPUT DIRECTORY:", options.directory
 
-    if not options.device.strip():
+    creator = TangoDSCreator(options, args)
+    try:
+        creator.create()
+    except WrongParameterError as e:
+        sys.stderr.write(str(e))
         parser.print_help()
         sys.exit(255)
-
-    if args:
-        aargs = list(args)
-    else:
-        if not PYTANGO:
-            sys.stderr.write("CollCompCreator No PyTango installed\n")
-            parser.print_help()
-            sys.exit(255)
-        aargs = getAttributes(options.device, options.host, options.port)
-
-    creator = DeviceDSCreator(options, aargs)
-    creator.create()
 
 
 if __name__ == "__main__":

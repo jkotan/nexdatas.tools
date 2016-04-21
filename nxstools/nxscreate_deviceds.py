@@ -16,17 +16,17 @@
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 ## \package nxstools tools for nxswriter
-## \file nxscreate_client_ds
+## \file nxscreate_tango_ds
 # datasource creator
 
-""" CLIENT datasource creator """
+""" TANGO datasource creator """
 
 import sys
 
 from optparse import OptionParser
 
-from nxstools.nxsdevicetools import checkServer
-from nxstools.nxscreator import (ClientDSCreator, WrongParameterError)
+from nxstools.nxsdevicetools import (checkServer, getAttributes)
+from nxstools.nxscreator import DeviceDSCreator
 
 PYTANGO = False
 try:
@@ -36,22 +36,22 @@ except:
     pass
 
 
+## creates parser
 def createParser():
     ## usage example
-    usage = "usage: %prog [options] [name1] [name2]\n" \
-        + "       nxscreate clientds [options] [name1] [name2]"
+    usage = "usage: %prog [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] \n" \
+        + "       nxscreate deviceds [options] [dv_attr1 " \
+        + "[dv_attr2 [dv_attr3 ...]]] "
     ## option parser
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-p", "--device-prefix", type="string",
-                      help="device prefix, i.e. exp_c",
+    parser.add_option("-v", "--device", type="string",
+                      help="device, i.e. p09/pilatus300k/01",
                       dest="device", default="")
-    parser.add_option("-f", "--first",
-                      help="first index",
-                      dest="first", default="1")
-    parser.add_option("-l", "--last",
-                      help="last index",
-                      dest="last", default=None)
+
+    parser.add_option("-o", "--datasource-prefix", type="string",
+                      help="datasource-prefix",
+                      dest="datasource", default="")
 
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
@@ -59,21 +59,24 @@ def createParser():
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
-
-    parser.add_option("-s", "--datasource-prefix", type="string",
-                      help="datasource prefix, i.e. counter",
-                      dest="dsource", default="")
+    parser.add_option("-s", "--host", type="string",
+                      help="tango host name",
+                      dest="host", default="localhost")
+    parser.add_option("-t", "--port", type="string",
+                      help="tango host port",
+                      dest="port", default="10000")
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
                       help="store components in Configuration Server database")
-    parser.add_option("-m", "--minimal_device", action="store_true",
-                      default=False, dest="minimal",
-                      help="device name without first '0'")
+
+    parser.add_option("-n", "--no-group", action="store_true",
+                      default=False, dest="nogroup",
+                      help="creates common group with a name of"
+                      " datasource prefix")
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
-
     return parser
 
 
@@ -82,6 +85,12 @@ def main():
 
     parser = createParser()
     (options, args) = parser.parse_args()
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(255)
+    else:
+        args = args[1:]
 
     if options.database and not options.server:
         if not PYTANGO:
@@ -100,13 +109,21 @@ def main():
     else:
         print("OUTPUT DIRECTORY: %s" % options.directory)
 
-    creator = ClientDSCreator(options, args)
-    try:
-        creator.create()
-    except WrongParameterError as e:
-        sys.stderr.write(str(e))
+    if not options.device.strip():
         parser.print_help()
         sys.exit(255)
+
+    if args:
+        aargs = list(args)
+    else:
+        if not PYTANGO:
+            sys.stderr.write("CollCompCreator No PyTango installed\n")
+            parser.print_help()
+            sys.exit(255)
+        aargs = getAttributes(options.device, options.host, options.port)
+
+    creator = DeviceDSCreator(options, aargs)
+    creator.create()
 
 
 if __name__ == "__main__":
