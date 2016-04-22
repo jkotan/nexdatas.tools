@@ -388,14 +388,14 @@ def _createParser():
     parser = OptionParser(usage=usage)
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
-                      help="execute the collecting process")
+                      help="execute the collection process")
     parser.add_option("-t", "--test", action="store_true",
                       default=False, dest="test",
-                      help="exceute the process in test mode "
+                      help="execute the process in the test mode "
                       + "without changing any files")
     parser.add_option("-c", "--compression", dest="compression",
                       action="store", type=int, default=2,
-                      help="deflate compression rate from 0 to 9")
+                      help="deflate compression rate from 0 to 9 (default: 2)")
     parser.add_option("-s", "--skip_missing", action="store_true",
                       default=False, dest="skipmissing",
                       help="skip missing files")
