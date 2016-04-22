@@ -1,0 +1,50 @@
+.TH nxscollect 1 "2016-01-13" nxscollect
+.SH NAME
+.B nxscollect
+\- command-line collector of detector images into the NeXus master file
+
+.SH SYNOPSIS
+.B nxscollect
+[-x|-t] [<options>]
+.I <command>
+<main_nexus_file> 
+
+    e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs 
+
+
+
+.SH DESCRIPTION
+.B nxscollect
+is a command-line tool dedicated to collect detector images of external formats
+into the NeXus master file.
+The images to collect should be denoted by postrun fields
+inside NXcollection groups.
+
+
+.SH OPTIONS
+.IP "-h, --help"
+show a help message and exit
+.IP  "-x, --execute"
+execute the collecting process
+.IP  "-t, --test"
+exceute the process in test mode without changing any files
+.IP  "-c COMPRESSION, --compression=COMPRESSION"
+deflate compression rate from 0 to 9
+.IP  "-s, --skip_missing"
+skip missing files
+.IP  "-r, --replace_nexus_file"
+if it is set the old file is not copied into a file with .__nxscollect__old__* extension
+
+
+.SH SEE ALSO
+https://github.com/jkotan/nexdatas/
+
+.SH COPYRIGHT
+Copyrights (c) 2015-2016, GNU GPL v3, DESY, Jan Kotanski
+
+.SH BUGS
+Please report bugs on the project's mailing list:
+mailto://jankotan@gmail.com
+
+.SH AUTHOR
+Jan Kotanski <jankotan@gmail.com>

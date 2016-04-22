@@ -300,7 +300,7 @@ class Collector(object):
         bellow hdf5 parent node
 
         :param parent: hdf5 parent node
-        :collection: if parent is of NXcollection type
+        :param collection: if parent is of NXcollection type
         """
         if hasattr(parent, "names"):
             if collection:

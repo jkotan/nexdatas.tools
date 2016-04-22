@@ -1,0 +1,67 @@
+.TH nxsetup 1 "2016-01-13" nxsetup
+.SH NAME
+.B nxsetup
+\- command-line setup tool for NeXus servers
+
+.SH SYNOPSIS
+.B nxsetup
+-x [-j <jsonsettings>] [<server_class1> <server_class2> ... ] 
+
+.B nxsetup
+-r [<server_class1> <server_class2> ... ] 
+
+.B nxsetup
+-p -n newname -o oldname [<server_class1> <server_class2> ... ] 
+
+    (e.g. on haso228k: -b p09, -m haso228k -u jkotan -d nxsconfig )
+
+
+
+.SH DESCRIPTION
+.B nxsetup
+is a command-line setup tool for NeXus servers.
+It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector
+in Tango environment, restart them or change property names.
+
+
+.SH OPTIONS
+.IP "-h, --help"
+show a help message and exit
+.IP "-b BEAMLINE, --beamline=BEAMLINE"
+name of the beamline
+.IP "-m MASTERHOST, --masterHost=MASTERHOST"
+the host that stores the Mg
+.IP "-u USER, --user=USER"
+the local user
+.IP "-d DBNAME, --database=DBNAME"
+the database name
+.IP "-j CSJSON, --csjson=CSJSON"
+JSONSettings for the configuration server
+.IP "-x, --execute"
+setup servers action
+.IP "-o OLDNAME, --oldname=OLDNAME"
+old property name
+.IP "-n NEWNAME, --newname=NEWNAME"
+new property name
+.IP "-r, --restart"
+restart server(s) action
+.IP "-a RECPATH, --add-recorder-path=RECPATH"
+add recorder path
+.IP "-p, --move-prop"
+change property name
+
+  
+
+.SH SEE ALSO
+https://github.com/jkotan/nexdatas/
+
+.SH COPYRIGHT
+Copyrights (c) 2012-2016n, GNU GPL v2, DESY, Jan Kotanski
+
+.SH BUGS
+Please report bugs on the project's mailing list:
+mailto://jankotan@gmail.com
+
+.SH AUTHOR
+Jan Kotanski <jankotan@gmail.com>
+
