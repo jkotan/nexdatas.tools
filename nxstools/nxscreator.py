@@ -702,7 +702,6 @@ class OnlineCPCreator(Creator):
                 name = self.getChildText(device, "name")
                 if self.options.lower:
                     name = name.lower()
-                    cpname = name.lower()
                 dv = Device()
                 dv.name = name
                 dv.dtype = self.getChildText(device, "type")

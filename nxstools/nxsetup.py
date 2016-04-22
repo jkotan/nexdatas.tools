@@ -28,7 +28,7 @@ from optparse import OptionParser
 
 
 #: host name
-hostname = socket.gethostname()
+_hostname = socket.gethostname()
 
 
 #: all SardanaHosts and DataBaseHosts should be known
@@ -135,7 +135,7 @@ knownHosts = {
 
 
 class SetUp(object):
-    """ setup nxs servers
+    """ setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers
     """
 
     def __init__(self):
@@ -245,9 +245,9 @@ class SetUp(object):
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
                             if '/' in name:
-                                self.changeLevel(name, 4)
+                                self._changeLevel(name, 4)
                             else:
-                                self.changeLevel(svl, 4)
+                                self._changeLevel(svl, 4)
                         if started and svl in started:
                             if '/' in name:
                                 cname = svl
@@ -273,7 +273,7 @@ class SetUp(object):
                                     print("Warning: Process with the server"
                                           "instance could be suspended")
 
-    def changeLevel(self, name, level):
+    def _changeLevel(self, name, level):
         """ change startup level
 
         :param name: server name
@@ -285,7 +285,7 @@ class SetUp(object):
         self.db.put_server_info(sinfo)
         return True
 
-    def startupServer(self, new, level, host, ctrl, device):
+    def _startupServer(self, new, level, host, ctrl, device):
         """ starts the server up
 
         :param new: new server name
@@ -378,7 +378,7 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        self.startupServer(full_class_name, 1, hostname, 1, self.writer_name)
+        self._startupServer(full_class_name, 1, hostname, 1, self.writer_name)
 
         return 1
 
@@ -420,7 +420,7 @@ class SetUp(object):
 
         hostname = self.db.get_db_host().split(".")[0]
 
-        self.startupServer(server_name, 1, hostname, 1, self.cserver_name)
+        self._startupServer(server_name, 1, hostname, 1, self.cserver_name)
 
         dp = PyTango.DeviceProxy(self.cserver_name)
         if dp.state() != PyTango.DevState.ON:
@@ -479,7 +479,7 @@ class SetUp(object):
 
         hostname = socket.gethostname()
 
-        self.startupServer(full_class_name, 4, hostname, 1, device_name)
+        self._startupServer(full_class_name, 4, hostname, 1, device_name)
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
@@ -491,23 +491,23 @@ class SetUp(object):
         return 1
 
 
-def createParser(user):
+def _createParser(user):
     """ creates parser
 
     :param user: user name
     """
-    if hostname in knownHosts.keys():
+    if _hostname in knownHosts.keys():
         usage = "\n\n %prog -x [-j <jsonsettings>]" + \
                 " [<server_class1> <server_class2> ... ] " + \
                 "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
                 "\n\n %prog -p -n newname -o oldname " + \
                 "[<server_class1> <server_class2> ... ] " + \
                 "\n\n  (%s is known, -b %s, -m %s -u %s -d %s ) \n" % (
-                    hostname,
-                    knownHosts[hostname]['beamline'],
-                    knownHosts[hostname]['masterHost'],
+                    _hostname,
+                    knownHosts[_hostname]['beamline'],
+                    knownHosts[_hostname]['masterHost'],
                     user,
-                    knownHosts[hostname]['dbname'],
+                    knownHosts[_hostname]['dbname'],
                 )
     else:
         usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
@@ -546,15 +546,15 @@ def createParser(user):
 
 
 def main():
-    """ the main function
+    """ the main program function
     """
     local_user = None
     if os.path.isfile('/home/etc/local_user'):
         local_user = open('/home/etc/local_user').readline()
-    elif hostname in knownHosts.keys():
+    elif _hostname in knownHosts.keys():
         local_user = knownHosts["user"]
 
-    parser = createParser(local_user)
+    parser = _createParser(local_user)
     (options, args) = parser.parse_args()
 
     if not options.execute and not options.restart and not options.recpath \
@@ -565,29 +565,29 @@ def main():
 
     if options.execute:
         if options.beamline is None:
-            if hostname in knownHosts.keys():
-                options.beamline = knownHosts[hostname]['beamline']
+            if _hostname in knownHosts.keys():
+                options.beamline = knownHosts[_hostname]['beamline']
             else:
                 parser.print_help()
                 print("\n")
                 sys.exit(255)
         if options.masterHost is None:
-            if hostname in knownHosts.keys():
-                options.masterHost = knownHosts[hostname]['masterHost']
+            if _hostname in knownHosts.keys():
+                options.masterHost = knownHosts[_hostname]['masterHost']
             else:
                 parser.print_help()
                 sys.exit(255)
 
         if options.user is None:
-            if hostname in knownHosts.keys():
+            if _hostname in knownHosts.keys():
                 options.user = local_user
             else:
                 parser.print_help()
                 sys.exit(255)
 
         if options.dbname is None:
-            if hostname in knownHosts.keys():
-                options.dbname = knownHosts[hostname]['dbname']
+            if _hostname in knownHosts.keys():
+                options.dbname = knownHosts[_hostname]['dbname']
             else:
                 parser.print_help()
                 sys.exit(255)

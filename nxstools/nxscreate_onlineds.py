@@ -20,6 +20,7 @@
 """ datasource creator from online files """
 
 import sys
+import os
 
 from nxstools.nxsdevicetools import checkServer
 from nxstools.nxscreator import OnlineDSCreator
@@ -44,8 +45,10 @@ def main():
         + " e.g.\n" \
         + "       nxscreate onlineds -b  \n" \
         + "       nxscreate onlinecp -d /home/user/xmldir \n\n" \
-        + " - with -b datasources are created in Configuration Server database\n" \
-        + " - with -d <directory> datasources are created on the local filesystem\n" \
+        + " - with -b datasources are created" \
+        + " in Configuration Server database\n" \
+        + " - with -d <directory> datasources are created" \
+        + " on the local filesystem\n" \
         + " - default <inputFile> is '/online_dir/online.xml' \n"
     #: option parser
     parser = OptionParser(usage=usage)

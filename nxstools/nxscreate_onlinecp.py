@@ -44,10 +44,12 @@ def main():
         + " e.g.\n" \
         + "       nxscreate onlinecp  \n" \
         + "       nxscreate onlinecp -c pilatus \n\n" \
-        + " - without '-c <component>' a list of possible components is shown \n" \
+        + " - without '-c <component>' a list of possible components" \
+        + " is shown \n" \
         + " - without '-d <dircetory>  components are created in " \
         + "Configuration Server database\n" \
-        + " - with -d <directory> components are created on the local filesystem\n" \
+        + " - with -d <directory> components are created" \
+        + " on the local filesystem\n" \
         + " - default <inputFile> is '/online_dir/online.xml' \n"
 
     #: option parser

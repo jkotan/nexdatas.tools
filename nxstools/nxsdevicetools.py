@@ -120,7 +120,7 @@ moduleTemplateFiles = {
 #: important attributes of modules
 moduleMultiAttributes = {
     'pco': [
-        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',
         'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
         'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
         'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
@@ -128,7 +128,7 @@ moduleMultiAttributes = {
         'RecorderMode',
     ],
     'pcoedge': [
-        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',
         'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
         'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
         'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
@@ -136,7 +136,7 @@ moduleMultiAttributes = {
         'RecorderMode',
     ],
     'pco4000': [
-        'DelayTime',  'ExposureTime', 'NbFrames', 'TriggerMode',
+        'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',
         'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
         'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max',
         'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs',
@@ -233,13 +233,13 @@ moduleMultiAttributes = {
 }
 
 #: modules of 2d detectors
-TwoDModules = [
+twoDModules = [
     'pilatus100k', 'pilatus300k', 'pilatus1m',
     'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
     'lambda', 'pedetector', 'perkinelmer',
     'pco', 'pcoedge', 'marccd', 'perkinelmer',
     #
-    'lcxcamera',  'limaccd', 'eigerpsi',
+    'lcxcamera', 'limaccd', 'eigerpsi',
     'eigerdectris'
 ]
 
@@ -261,26 +261,26 @@ motorModules = [
 ]
 
 #: counter/timer modules
-CTModules = [
+ctModules = [
     'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
     'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
     'tangoattributectctrl'
 ]
 
 #: modules of 0D detectors
-ZeroDModules = ['tip830']
+zeroDModules = ['tip830']
 
 #: modules of 1D detectors
-OneDModules = ['mca_xia']
+oneDModules = ['mca_xia']
 
 #: IO register modules
-IORegModules = ['sis3610']
+ioRegModules = ['sis3610']
 
 
 for mn in motorModules:
     moduleAttributes[mn] = ['Position', 'Position']
 
-for nm in CTModules + ZeroDModules + OneDModules:
+for nm in ctModules + zeroDModules + oneDModules:
     if nm not in moduleAttributes:
         moduleAttributes[nm] = ['Value', None]
 
@@ -288,7 +288,7 @@ for nm in CTModules + ZeroDModules + OneDModules:
 def generateDeviceNames(prefix, first, last, minimal=False):
     """ generates device names
 
-    :param prefix: device name prefix5
+    :param prefix: device name prefix
     :param first: first device index
     :param last: last device index
     :returns: device names
@@ -362,7 +362,7 @@ def openServer(device):
 
 
 def storeDataSource(name, xml, server):
-    """ stores datasources
+    """ stores datasources in Configuration Server
 
     :param name: datasource name
     :param xml: datasource xml string
@@ -415,7 +415,7 @@ def getDataSourceComponents(server):
 
 
 def storeComponent(name, xml, server):
-    """ stores components
+    """ stores components in Configuration Server
 
     :param name: component name
     :param xml: component xml string
@@ -465,7 +465,7 @@ def getServers(name='NXSConfigServer'):
     return servers
 
 
-def remoteCall(server, func, *args, **kwargs):
+def _remoteCall(server, func, *args, **kwargs):
     """ executes function on remove tango host db setup
 
     :param server: remove tango server device name
@@ -497,7 +497,7 @@ def listServers(server, name='NXSConfigServer'):
     :param name: server instance name
     :returns: server list
     """
-    return remoteCall(server, getServers, name)
+    return _remoteCall(server, getServers, name)
 
 
 def findClassName(server, name):
@@ -506,7 +506,7 @@ def findClassName(server, name):
     :param name: device name
     :returns: class name
     """
-    return remoteCall(server, getClassName, name)
+    return _remoteCall(server, getClassName, name)
 
 
 def checkServer(name='NXSConfigServer'):

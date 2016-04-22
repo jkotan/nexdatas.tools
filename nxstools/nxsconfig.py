@@ -34,16 +34,17 @@ class ConfigServer(object):
     def __init__(self, device, nonewline=False):
         """ constructor
 
-        :param device: device name of configuration server
-        :param nonewline: no newline flag
+        :param device: device name of the configuration server
+        :param nonewline: if the output should not be separated
+                          by the new line character
         """
         #: spliting character
         self.__char = " " if nonewline else "\n"
         #: configuration server proxy
-        self.cnfServer = openServer(device)
-        self.cnfServer.Open()
+        self._cnfServer = openServer(device)
+        self._cnfServer.Open()
 
-    def listCmd(self, ds, mandatory=False, private=False):
+    def _listCmd(self, ds, mandatory=False, private=False):
         """ lists the DB item names
 
         :param ds: flag set True for datasources
@@ -54,25 +55,25 @@ class ConfigServer(object):
         """
         if ds:
             if not mandatory:
-                return self.cnfServer.AvailableDataSources()
+                return self._cnfServer.AvailableDataSources()
         else:
             if mandatory:
-                return self.cnfServer.MandatoryComponents()
+                return self._cnfServer.MandatoryComponents()
             elif private:
-                return [cp for cp in self.cnfServer.AvailableComponents()
+                return [cp for cp in self._cnfServer.AvailableComponents()
                         if cp.startswith("__")]
             else:
-                return [cp for cp in self.cnfServer.AvailableComponents()
+                return [cp for cp in self._cnfServer.AvailableComponents()
                         if not cp.startswith("__")]
         return []
 
-    def sourcesCmd(self, components, mandatory=False):
+    def _sourcesCmd(self, components, mandatory=False):
         """ lists datasources of the components
 
         :param components: given components
         :returns: list of datasource names
         """
-        cmps = self.cnfServer.AvailableComponents()
+        cmps = self._cnfServer.AvailableComponents()
         result = []
         for component in components:
             if component not in cmps:
@@ -82,19 +83,19 @@ class ConfigServer(object):
                 return []
         if not mandatory:
             for component in components:
-                result.extend(self.cnfServer.ComponentDataSources(component))
+                result.extend(self._cnfServer.ComponentDataSources(component))
         else:
-            result = self.cnfServer.ComponentsDataSources(components)
+            result = self._cnfServer.ComponentsDataSources(components)
 
         return result
 
-    def componentsCmd(self, components):
+    def _componentsCmd(self, components):
         """ lists components of the components
 
         :param components: given components
         :returns: list of component names
         """
-        cmps = self.cnfServer.AvailableComponents()
+        cmps = self._cnfServer.AvailableComponents()
         result = []
         for component in components:
             if component not in cmps:
@@ -102,17 +103,17 @@ class ConfigServer(object):
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
-        result = self.cnfServer.DependentComponents(components)
+        result = self._cnfServer.DependentComponents(components)
 
         return result
 
-    def variablesCmd(self, components, mandatory=False):
+    def _variablesCmd(self, components, mandatory=False):
         """ lists variable of the components
 
         :param components: given components
         :returns: list of datasource names
         """
-        cmps = self.cnfServer.AvailableComponents()
+        cmps = self._cnfServer.AvailableComponents()
         result = []
         for component in components:
             if component not in cmps:
@@ -122,9 +123,9 @@ class ConfigServer(object):
                 return []
         if not mandatory:
             for component in components:
-                result.extend(self.cnfServer.ComponentVariables(component))
+                result.extend(self._cnfServer.ComponentVariables(component))
         else:
-            result = self.cnfServer.ComponentsVariables(components)
+            result = self._cnfServer.ComponentsVariables(components)
 
         return result
 
@@ -137,7 +138,7 @@ class ConfigServer(object):
         records = []
         names = []
         interNames = []
-        xmlcp = self.cnfServer.Components([name])
+        xmlcp = self._cnfServer.Components([name])
         for xmlc in xmlcp:
             dslist = ParserTools.parseDataSources(xmlc)
             for ds in dslist:
@@ -146,13 +147,13 @@ class ConfigServer(object):
                 if ds["source"]:
                     records.append(ds["source"])
 
-            allNames = self.cnfServer.ComponentDataSources(name)
+            allNames = self._cnfServer.ComponentDataSources(name)
             for nm in allNames:
                 if nm not in interNames:
                     names.append(nm)
         return (names, records)
 
-    def recordCmd(self, ds, name):
+    def _recordCmd(self, ds, name):
         """ lists datasources of the component
 
         :param ds: flag set True for datasources
@@ -160,7 +161,7 @@ class ConfigServer(object):
         :returns: list of record names
         """
         if not ds:
-            cmps = self.cnfServer.AvailableComponents()
+            cmps = self._cnfServer.AvailableComponents()
             if name not in cmps:
                 sys.stderr.write("Error: Component '%s' not stored in "
                                  "the configuration server\n" % name)
@@ -170,7 +171,7 @@ class ConfigServer(object):
         else:
             names.append(name)
 
-        dsrcs = self.cnfServer.AvailableDataSources()
+        dsrcs = self._cnfServer.AvailableDataSources()
         for nm in names:
             if nm not in dsrcs:
                 sys.stderr.write("Error: Datasource '%s' not stored in "
@@ -178,7 +179,7 @@ class ConfigServer(object):
                 sys.stderr.flush()
                 return []
 
-        xmls = self.cnfServer.DataSources(names)
+        xmls = self._cnfServer.DataSources(names)
         for xml in xmls:
             if xml:
                 try:
@@ -194,7 +195,7 @@ class ConfigServer(object):
                     return []
         return records
 
-    def showCmd(self, ds, args, mandatory=False):
+    def _showCmd(self, ds, args, mandatory=False):
         """ shows the DB items
 
         :param ds: flag set True for datasources
@@ -203,16 +204,16 @@ class ConfigServer(object):
         :returns: list of XML items
         """
         if ds:
-            dsrc = self.cnfServer.AvailableDataSources()
+            dsrc = self._cnfServer.AvailableDataSources()
             for ar in args:
                 if ar not in dsrc:
                     sys.stderr.write("Error: DataSource '%s' not stored in "
                                      "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return []
-            return self.cnfServer.DataSources(args)
+            return self._cnfServer.DataSources(args)
         else:
-            cmps = self.cnfServer.AvailableComponents()
+            cmps = self._cnfServer.AvailableComponents()
             for ar in args:
                 if ar not in cmps:
                     sys.stderr.write("Error: Component '%s' not stored in "
@@ -220,14 +221,14 @@ class ConfigServer(object):
                     sys.stderr.flush()
                     return []
             if mandatory:
-                mand = list(self.cnfServer.MandatoryComponents())
+                mand = list(self._cnfServer.MandatoryComponents())
                 mand.extend(args)
-                return self.cnfServer.Components(mand)
+                return self._cnfServer.Components(mand)
             else:
-                return self.cnfServer.Components(args)
+                return self._cnfServer.Components(args)
         return []
 
-    def getCmd(self, ds, args):
+    def _getCmd(self, ds, args):
         """ provides final configuration
 
         :param ds: flag set True for datasources
@@ -237,7 +238,7 @@ class ConfigServer(object):
         if ds:
             return ""
         else:
-            cmps = self.cnfServer.AvailableComponents()
+            cmps = self._cnfServer.AvailableComponents()
             for ar in args:
                 if ar not in cmps:
                     sys.stderr.write(
@@ -245,8 +246,8 @@ class ConfigServer(object):
                         "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return ""
-            self.cnfServer.CreateConfiguration(args)
-            return self.cnfServer.XMLString
+            self._cnfServer.CreateConfiguration(args)
+            return self._cnfServer.XMLString
         return ""
 
     def __describeDataSources(self, args, headers=None):
@@ -259,7 +260,7 @@ class ConfigServer(object):
         xmls = ""
         parameters = []
         description = []
-        dss = self.cnfServer.AvailableDataSources()
+        dss = self._cnfServer.AvailableDataSources()
         for ar in args:
             if ar not in dss:
                 sys.stderr.write(
@@ -269,7 +270,7 @@ class ConfigServer(object):
                 return ""
         headers = headers or ["source_type", "source"]
         if args:
-            dsxmls = self.cnfServer.DataSources(args)
+            dsxmls = self._cnfServer.DataSources(args)
             for i, xmls in enumerate(dsxmls):
                 parameters = ParserTools.parseDataSources(xmls)
                 ttools = TableTools(parameters)
@@ -277,7 +278,7 @@ class ConfigServer(object):
                 ttools.headers = headers
                 description.extend(ttools.generateList())
         else:
-            dsxmls = self.cnfServer.DataSources(dss)
+            dsxmls = self._cnfServer.DataSources(dss)
             xmls = ParserTools.addDefinitions(dsxmls).strip()
             parameters.extend(ParserTools.parseDataSources(xmls))
             ttools = TableTools(parameters)
@@ -307,7 +308,7 @@ class ConfigServer(object):
         xmls = ""
         parameters = []
         description = []
-        cmps = self.cnfServer.AvailableComponents()
+        cmps = self._cnfServer.AvailableComponents()
         for ar in args:
             if ar not in cmps:
                 sys.stderr.write(
@@ -323,15 +324,15 @@ class ConfigServer(object):
         args = args or cmps
         if args:
             try:
-                cpxmls = self.cnfServer.instantiatedComponents(args)
+                cpxmls = self._cnfServer.instantiatedComponents(args)
             except:
                 cpxmls = []
                 for ar in args:
                     try:
                         cpxmls.extend(
-                            self.cnfServer.instantiatedComponents([ar]))
+                            self._cnfServer.instantiatedComponents([ar]))
                     except:
-                        cpxmls.extend(self.cnfServer.Components([ar]))
+                        cpxmls.extend(self._cnfServer.Components([ar]))
                         sys.stderr.write(
                             "Error: Component '%s' cannot be instantiated\n"
                             % ar)
@@ -364,7 +365,7 @@ class ConfigServer(object):
         """
         xmls = ""
         description = []
-        cmps = self.cnfServer.AvailableComponents()
+        cmps = self._cnfServer.AvailableComponents()
         for ar in args:
             if ar not in cmps:
                 sys.stderr.write(
@@ -373,8 +374,8 @@ class ConfigServer(object):
                 sys.stderr.flush()
                 return ""
 
-        self.cnfServer.CreateConfiguration(args)
-        xmls = str(self.cnfServer.XMLString).strip()
+        self._cnfServer.CreateConfiguration(args)
+        xmls = str(self._cnfServer.XMLString).strip()
         if xmls:
             description.extend(ParserTools.parseFields(xmls))
             description.extend(ParserTools.parseLinks(xmls))
@@ -389,7 +390,7 @@ class ConfigServer(object):
             ttools.headers = headers
         return ttools.generateList()
 
-    def describeCmd(self, ds, args, md, pr):
+    def _describeCmd(self, ds, args, md, pr):
         """ provides description of configuration elements
 
         :param ds: flag set True for datasources
@@ -406,7 +407,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args)
 
-    def infoCmd(self, ds, args, md, pr):
+    def _infoCmd(self, ds, args, md, pr):
         """ Provides info for given elements
 
         :param ds: flag set True for datasources
@@ -432,7 +433,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
-    def geometryCmd(self, ds, args, md, pr):
+    def _geometryCmd(self, ds, args, md, pr):
         """ provides geometry info for given elements
 
         :param ds: flag set True for datasources
@@ -457,17 +458,17 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders)
 
-    def dataCmd(self, args):
+    def _dataCmd(self, args):
         """ provides varaible values
 
         :param args: list of item names
         :returns: JSON with variables
         """
         if len(args) > 0:
-            self.cnfServer.Variables = args[0]
-        return [str(self.cnfServer.Variables)]
+            self._cnfServer.Variables = args[0]
+        return [str(self._cnfServer.Variables)]
 
-    def mergeCmd(self, ds, args):
+    def _mergeCmd(self, ds, args):
         """ provides merged components
 
         :param ds: flag set True for datasources
@@ -477,7 +478,7 @@ class ConfigServer(object):
         if ds:
             return ""
         else:
-            cmps = self.cnfServer.AvailableComponents()
+            cmps = self._cnfServer.AvailableComponents()
             for ar in args:
                 if ar not in cmps:
                     sys.stderr.write(
@@ -485,14 +486,16 @@ class ConfigServer(object):
                         "in the configuration server\n" % ar)
                     sys.stderr.flush()
                     return ""
-            return self.cnfServer.Merge(args)
+            return self._cnfServer.Merge(args)
         return ""
 
     def performCommand(self, command, ds, args, mandatory=False,
                        private=False):
         """ performs requested command
 
-        :param command: called command
+        :param command: executed command: 'list', 'show', 'get',
+                        'variables', 'sources', 'record', 'merge',
+                        'components', 'data', 'describe', 'info', 'geometry'
         :param ds: flag set True for datasources
         :param args: list of item names
         :param mandatory: flag set True for mandatory components
@@ -502,36 +505,36 @@ class ConfigServer(object):
         """
         string = ""
         if command == 'list':
-            string = self.__char.join(self.listCmd(ds, mandatory, private))
+            string = self.__char.join(self._listCmd(ds, mandatory, private))
         elif command == 'show':
-            string = self.__char.join(self.showCmd(ds, args, mandatory))
+            string = self.__char.join(self._showCmd(ds, args, mandatory))
         elif command == 'get':
-            string = self.getCmd(ds, args)
+            string = self._getCmd(ds, args)
         elif command == 'merge':
-            string = self.mergeCmd(ds, args)
+            string = self._mergeCmd(ds, args)
         elif command == 'sources':
-            string = self.__char.join(self.sourcesCmd(args, mandatory))
+            string = self.__char.join(self._sourcesCmd(args, mandatory))
         elif command == 'components':
-            string = self.__char.join(self.componentsCmd(args))
+            string = self.__char.join(self._componentsCmd(args))
         elif command == 'variables':
-            string = self.__char.join(self.variablesCmd(args, mandatory))
+            string = self.__char.join(self._variablesCmd(args, mandatory))
         elif command == 'data':
-            string = self.__char.join(self.dataCmd(args))
+            string = self.__char.join(self._dataCmd(args))
         elif command == 'record':
-            string = self.__char.join(self.recordCmd(ds, args[0]))
+            string = self.__char.join(self._recordCmd(ds, args[0]))
         elif command == 'describe':
-            string = self.__char.join(self.describeCmd(
+            string = self.__char.join(self._describeCmd(
                 ds, args, mandatory, private))
         elif command == 'info':
-            string = self.__char.join(self.infoCmd(
+            string = self.__char.join(self._infoCmd(
                 ds, args, mandatory, private))
         elif command == 'geometry':
-            string = self.__char.join(self.geometryCmd(
+            string = self.__char.join(self._geometryCmd(
                 ds, args, mandatory, private))
         return string
 
 
-def createParser():
+def _createParser():
     """ creates command-line parameters parser
     """
     #: usage example
@@ -607,7 +610,7 @@ def createParser():
 
 
 def main():
-    """ the main function
+    """ the main program function
     """
     #: pipe arguments
     pipe = []
@@ -621,7 +624,7 @@ def main():
                 'record': 1, 'merge': 0, 'components': 0, 'data': 0,
                 'describe': 0, 'info': 0, 'geometry': 0}
 
-    parser = createParser()
+    parser = _createParser()
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':

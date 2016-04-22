@@ -17,7 +17,9 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-""" Command-line tool to merging NeXus files with other file-format images"""
+""" Command-line tool to merge images of external file-formats
+into the master NeXus file
+"""
 
 import sys
 import os
@@ -31,17 +33,18 @@ from .filenamegenerator import FilenameGenerator
 
 
 class Collector(object):
-    """ collector class
+    """ Collector merge images of external file-formats
+    into the master NeXus file
     """
     def __init__(self, nexusfilename, compression=2,
                  skipmissing=False, storeold=False, testmode=False):
-        """ constructor
+        """ The constructor creates the collector object
 
-        :param nexusfilename: nexus file name
+        :param nexusfilename: the nexus file name
         :param compression: compression rate
         :param skipmissing: if skip missing images
-        :param storeold: if backup old file
-        :param testmode: if run in test mode
+        :param storeold: if backup the input file
+        :param testmode: if run in a test mode
         """
         self.__nexusfilename = nexusfilename
         self.__compression = compression
@@ -59,9 +62,9 @@ class Collector(object):
             for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
 
         for sig in self.__siginfo.keys():
-            signal.signal(sig, self.signalhandler)
+            signal.signal(sig, self._signalhandler)
 
-    def signalhandler(self, sig, _):
+    def _signalhandler(self, sig, _):
         """ signal handler
 
         :param sig: signal name
@@ -70,7 +73,7 @@ class Collector(object):
             self.__break = True
             print ("terminated by %s" % self.__siginfo[sig])
 
-    def createtmpfile(self):
+    def _createtmpfile(self):
         """ creates temporary file
         """
         self.__tempfilename = self.__nexusfilename + ".__nxscollect_temp__"
@@ -78,7 +81,7 @@ class Collector(object):
             self.__tempfilename += "_"
         shutil.copy2(self.__nexusfilename, self.__tempfilename)
 
-    def storeoldfile(self):
+    def _storeoldfile(self):
         """ makes back up of the input file
         """
         temp = self.__nexusfilename + ".__nxscollect_old__"
@@ -86,7 +89,7 @@ class Collector(object):
             temp += "_"
         shutil.move(self.__nexusfilename, temp)
 
-    def filegenerator(self, filestr):
+    def _filegenerator(self, filestr):
         """ provides file name generator from file string
 
         :params filestr: file string
@@ -95,11 +98,12 @@ class Collector(object):
         if self.__filepattern.match(filestr):
             return FilenameGenerator.from_slice(filestr)
         else:
-            def files():
+            def _files():
                 return [filestr]
-            return files
+            return _files
 
-    def absolutefilename(self, filename, masterfile):
+    @classmethod
+    def _absolutefilename(cls, filename, masterfile):
         """ provides absolute image file name
 
         :param filename: image file name
@@ -113,7 +117,7 @@ class Collector(object):
             filename = os.path.abspath(os.path.join(nexusfilepath, filename))
         return filename
 
-    def findfile(self, filename, nname=None):
+    def _findfile(self, filename, nname=None):
         """ searches for absolute image file name
 
         :param filename: image file name
@@ -121,7 +125,6 @@ class Collector(object):
 
         :returns: absolute image file name
         """
-        inpath = None
         filelist = []
         if nname is not None and '.nxs' == self.__nexusfilename[-4:]:
             tmpfname = '%s/%s/%s' % (
@@ -139,12 +142,12 @@ class Collector(object):
                 return tmpfname
             else:
                 filelist.append(tmpfname)
-        tmpfname = self.absolutefilename(filename, self.__nexusfilename)
+        tmpfname = self._absolutefilename(filename, self.__nexusfilename)
         if os.path.exists(tmpfname):
             return tmpfname
         else:
             filelist.append(tmpfname)
-        tmpfname = self.absolutefilename(filename, self.__fullfilename)
+        tmpfname = self._absolutefilename(filename, self.__fullfilename)
         if os.path.exists(tmpfname):
             return tmpfname
         else:
@@ -160,7 +163,7 @@ class Collector(object):
             print("Cannot open and of %s files" % sorted(set(filelist)))
         return None
 
-    def loadimage(self, filename):
+    def _loadimage(self, filename):
         """ loads image from file
 
         :param filename: image file name
@@ -184,7 +187,7 @@ class Collector(object):
 
             return None, None, None
 
-    def loadh5data(self, filename):
+    def _loadh5data(self, filename):
         """ loads image from hdf5 file
 
         :param filename: hdf5 image file name
@@ -211,7 +214,7 @@ class Collector(object):
                 print("Cannot open a file %s" % filename)
             return None, None, None
 
-    def addattr(self, node, attrs):
+    def _addattr(self, node, attrs):
         """ adds attributes to the parent node in nexus file
 
         :param node: parent hdf5 node
@@ -224,8 +227,8 @@ class Collector(object):
                     name, dtype, shape, overwrite=True)[...] = value
             print " + add attribute: %s = %s" % (name, value)
 
-    def getfield(self, node, fieldname, dtype, shape, fieldattrs,
-                 fieldcompression):
+    def _getfield(self, node, fieldname, dtype, shape, fieldattrs,
+                  fieldcompression):
         """ creates a field in nexus file
 
         :param node: parent hdf5 node
@@ -251,11 +254,11 @@ class Collector(object):
                         shape=[0, shape[0], shape[1]],
                         chunk=[1, shape[0], shape[1]],
                         filter=cfilter)
-            self.addattr(field, fieldattrs)
+            self._addattr(field, fieldattrs)
             return field
 
-    def collect(self, files, node, fieldname=None, fieldattrs=None,
-                fieldcompression=None):
+    def _collectimages(self, files, node, fieldname=None, fieldattrs=None,
+                       fieldcompression=None):
         """ collects images
 
         :param files: a list of file stings
@@ -270,20 +273,20 @@ class Collector(object):
         for filestr in files:
             if self.__break:
                 break
-            inputfiles = self.filegenerator(filestr)
+            inputfiles = self._filegenerator(filestr)
             for fname in inputfiles():
                 if self.__break:
                     break
-                fname = self.findfile(fname, node.name)
+                fname = self._findfile(fname, node.name)
                 if not fname:
                     continue
                 if not fname.endswith(".h5"):
-                    data, dtype, shape = self.loadimage(fname)
+                    data, dtype, shape = self._loadimage(fname)
                 else:
-                    data, dtype, shape = self.loadh5data(fname)
+                    data, dtype, shape = self._loadh5data(fname)
                 if data is not None:
                     if field is None:
-                        field = self.getfield(
+                        field = self._getfield(
                             node, fieldname, dtype, shape,
                             fieldattrs, fieldcompression)
                     if self.__testmode or ind == field.shape[0]:
@@ -295,9 +298,9 @@ class Collector(object):
                     if not self.__testmode:
                         self.__nxsfile.flush()
 
-    def inspect(self, parent, collection=False):
-        """ collects recursively the all image files defined by hdf5 postrun fields
-        bellow hdf5 parent node
+    def _inspect(self, parent, collection=False):
+        """ collects recursively the all image files defined
+        by hdf5 postrun fields bellow hdf5 parent node
 
         :param parent: hdf5 parent node
         :param collection: if parent is of NXcollection type
@@ -328,8 +331,9 @@ class Collector(object):
                         parent.parent.path, fieldname, files)
                     if fieldcompression is None:
                         fieldcompression = self.__compression
-                    self.collect(files, parent.parent, fieldname, fieldattrs,
-                                 fieldcompression)
+                    self._collectimages(
+                        files, parent.parent, fieldname, fieldattrs,
+                        fieldcompression)
             try:
                 names = parent.names()
             except Exception:
@@ -343,14 +347,15 @@ class Collector(object):
                             gtype = at[...]
                             if gtype == 'NXcollection':
                                 coll = True
-                    self.inspect(child, coll)
+                    self._inspect(child, coll)
 
-    def merge(self):
-        """ creates temporary file,
-        collects the all image files defined by hdf5 postrun fields
-        and renames temporary file to origin one if action was successful
+    def collect(self):
+        """ creates a temporary file,
+        collects the all image files defined by hdf5
+        postrun fields of NXcollection groups and renames the temporary file
+        to the origin one if the action was successful
         """
-        self.createtmpfile()
+        self._createtmpfile()
         try:
             self.__nxsfile = open_file(
                 self.__tempfilename, readonly=self.__testmode)
@@ -360,17 +365,17 @@ class Collector(object):
                 # print self.__fullfilename
             except:
                 pass
-            self.inspect(root)
+            self._inspect(root)
             self.__nxsfile.close()
             if self.__storeold:
-                self.storeoldfile()
+                self._storeoldfile()
             shutil.move(self.__tempfilename, self.__nexusfilename)
         except Exception as e:
             print str(e)
             os.remove(self.__tempfilename)
 
 
-def createParser():
+def _createParser():
     """ creates command-line parameters parser
     """
     #: usage example
@@ -403,12 +408,12 @@ def createParser():
 
 
 def main():
-    """ the main function
+    """ the main program function
     """
 
     #: run options
     options = None
-    parser = createParser()
+    parser = _createParser()
     (options, nexusfiles) = parser.parse_args()
 
     if not nexusfiles or not nexusfiles[0]:
@@ -428,7 +433,7 @@ def main():
                               options.skipmissing,
                               not options.replaceold,
                               options.test)
-        collector.merge()
+        collector.collect()
 
 if __name__ == "__main__":
     main()
