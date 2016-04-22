@@ -99,7 +99,7 @@ class NexusServer(object):
             return self.closeEntry()
 
 
-def createParser():
+def _createParser():
     """ creates command-line parameters parser
     """
     #: usage example
@@ -148,7 +148,7 @@ def main():
                 'closeentry': 0, 'closefile': 0}
     #: run options
     options = None
-    parser = createParser()
+    parser = _createParser()
     (options, args) = parser.parse_args()
 
     if args and args[0] == 'servers':

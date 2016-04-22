@@ -28,7 +28,7 @@ class ParserTools(object):
     """
 
     @classmethod
-    def getPureText(cls, node):
+    def _getPureText(cls, node):
         """ provides  xml content of the node
         :param node: DOM node
         :returns: xml content string
@@ -40,7 +40,7 @@ class ParserTools(object):
         return ''.join(rc).strip()
 
     @classmethod
-    def getText(cls, node):
+    def _getText(cls, node):
         """ provides  xml content of the node
 
         :param node: DOM node
@@ -57,7 +57,7 @@ class ParserTools(object):
             replace("&quot;", "\"").replace("&amp;", "&")
 
     @classmethod
-    def getRecord(cls, node):
+    def _getRecord(cls, node):
         """ fetches record name or query from datasource node
 
         :param node: datasource node
@@ -102,25 +102,26 @@ class ParserTools(object):
                         res = rname
             return res
         elif dstype and dstype.value in withQuery:
-            query = cls.getText(dsource.getElementsByTagName("query")[0]) \
+            query = cls._getText(dsource.getElementsByTagName("query")[0]) \
                 if len(dsource.getElementsByTagName("query")) else None
             if query and query.strip():
                 return query.strip() or ""
 
     @classmethod
-    def addDefinitions(cls, xmls):
-        """ provides datasources and its records from xml string
+    def mergeDefinitions(cls, xmls):
+        """ merges the xmls list of definitions xml strings
+            to one output xml string
 
-        :param xmlc: xml string
-        :returns: list of datasource descriptions
+        :param xmls: a list of xml string with definitions
+        :returns: one output xml string
         """
         rxml = ""
         if xmls:
             indom1 = parseString(xmls[0])
             for xmlc in xmls[1:]:
                 indom2 = parseString(xmlc)
-                definisions = indom2.getElementsByTagName("definition")
-                for defin in definisions:
+                definitions = indom2.getElementsByTagName("definition")
+                for defin in definitions:
                     for tag in defin.childNodes:
                         imp = indom1.importNode(tag, True)
                         indom1.childNodes[0].appendChild(imp)
@@ -159,7 +160,7 @@ class ParserTools(object):
                     dsname = ds.attributes["name"].value
                 else:
                     dsname = None
-                record = cls.getRecord(ds)
+                record = cls._getRecord(ds)
                 dslist.append({
                     "source_type": dstype,
                     "source_name": dsname,
@@ -203,7 +204,7 @@ class ParserTools(object):
             text = None
             for at in atnodes:
                 if cls.__getAttr(at, "name") == name:
-                    text = str(cls.getPureText(at)).strip()
+                    text = str(cls._getPureText(at)).strip()
                     if not text:
                         dss = cls.__getDataSources(at)
                         text = " ".join(["$datasources.%s" % ds for ds in dss])
@@ -283,7 +284,7 @@ class ParserTools(object):
 
                 nxtype = cls.__getAttr(nd, "type")
                 units = cls.__getAttr(nd, "units")
-                value = cls.getPureText(nd) or None
+                value = cls._getPureText(nd) or None
                 trtype = cls.__getAttr(nd, "transformation_type", True)
                 trvector = cls.__getAttr(nd, "vector", True)
                 troffset = cls.__getAttr(nd, "offset", True)
@@ -345,7 +346,7 @@ class ParserTools(object):
             if nd.nodeName == tagname:
 
                 target = cls.__getAttr(nd, "target")
-                value = cls.getPureText(nd) or None
+                value = cls._getPureText(nd) or None
                 nxpath = cls.__getPath(nd)
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
                 strategy = cls.__getAttr(stnodes[0], "mode") \
@@ -390,7 +391,7 @@ class ParserTools(object):
         :returns: source record
         """
         indom = parseString(xmlc)
-        return cls.getRecord(indom)
+        return cls._getRecord(indom)
 
 
 class TableTools(object):

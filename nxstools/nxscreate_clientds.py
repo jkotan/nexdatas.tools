@@ -34,7 +34,7 @@ except:
     pass
 
 
-def createParser():
+def _createParser():
     """ parser creator
     """
     #: usage example
@@ -78,10 +78,10 @@ def createParser():
 
 
 def main():
-    """ the main function
+    """ the main program function
     """
 
-    parser = createParser()
+    parser = _createParser()
     (options, args) = parser.parse_args()
 
     if len(args) == 0:

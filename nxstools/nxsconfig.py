@@ -279,7 +279,7 @@ class ConfigServer(object):
                 description.extend(ttools.generateList())
         else:
             dsxmls = self._cnfServer.DataSources(dss)
-            xmls = ParserTools.addDefinitions(dsxmls).strip()
+            xmls = ParserTools.mergeDefinitions(dsxmls).strip()
             parameters.extend(ParserTools.parseDataSources(xmls))
             ttools = TableTools(parameters)
             headers = ["source_name"].extend(headers)

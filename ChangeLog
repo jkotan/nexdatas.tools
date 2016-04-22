@@ -1,6 +1,7 @@
 2016-04-XX Jan Kotanski <jankotan@gmail.com>
-	* switch to swing documentation 
+	* switch to swing documentation
 	* remove ndts* scripts
+	* move internal functions into protected interface 
 	* tagged as v2.0.0
 
 2016-04-15 Jan Kotanski <jankotan@gmail.com>

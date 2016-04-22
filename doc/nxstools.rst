@@ -68,34 +68,10 @@ nxstools.nxscreate_tangods module
     :undoc-members:
     :show-inheritance:
 
-nxstools.nxscreator module
---------------------------
-
-.. automodule:: nxstools.nxscreator
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 nxstools.nxsdata module
 -----------------------
 
 .. automodule:: nxstools.nxsdata
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxsdevicetools module
-------------------------------
-
-.. automodule:: nxstools.nxsdevicetools
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxsparser module
--------------------------
-
-.. automodule:: nxstools.nxsparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -108,6 +84,22 @@ nxstools.nxsetup module
     :undoc-members:
     :show-inheritance:
 
+nxstools.nxscreator module
+--------------------------
+
+.. automodule:: nxstools.nxscreator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsparser module
+-------------------------
+
+.. automodule:: nxstools.nxsparser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nxstools.nxsxml module
 ----------------------
 
@@ -116,6 +108,14 @@ nxstools.nxsxml module
     :undoc-members:
     :show-inheritance:
 
+
+nxstools.nxsdevicetools module
+------------------------------
+
+.. automodule:: nxstools.nxsdevicetools
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 nxstools.filenamegenerator module
 ---------------------------------
