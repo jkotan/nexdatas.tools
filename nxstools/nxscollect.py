@@ -30,13 +30,19 @@ from pni.io.nx.h5 import open_file, deflate_filter
 from .filenamegenerator import FilenameGenerator
 
 
-## collector class
 class Collector(object):
-    ## constructor
+    """ collector class
+    """
     def __init__(self, nexusfilename, compression=2,
-                 skipmissing=False,
-                 storeold=False,
-                 testmode=False):
+                 skipmissing=False, storeold=False, testmode=False):
+        """ constructor
+
+        :param nexusfilename: nexus file name
+        :param compression: compression rate
+        :param skipmissing: if skip missing images
+        :param storeold: if backup old file
+        :param testmode: if run in test mode
+        """
         self.__nexusfilename = nexusfilename
         self.__compression = compression
         self.__skipmissing = skipmissing
@@ -56,23 +62,36 @@ class Collector(object):
             signal.signal(sig, self.signalhandler)
 
     def signalhandler(self, sig, _):
+        """ signal handler
+
+        :param sig: signal name
+        """
         if sig in self.__siginfo.keys():
             self.__break = True
             print ("terminated by %s" % self.__siginfo[sig])
 
     def createtmpfile(self):
+        """ creates temporary file
+        """
         self.__tempfilename = self.__nexusfilename + ".__nxscollect_temp__"
         while os.path.exists(self.__tempfilename):
             self.__tempfilename += "_"
         shutil.copy2(self.__nexusfilename, self.__tempfilename)
 
     def storeoldfile(self):
+        """ makes back up of the input file
+        """
         temp = self.__nexusfilename + ".__nxscollect_old__"
         while os.path.exists(temp):
             temp += "_"
         shutil.move(self.__nexusfilename, temp)
 
     def filegenerator(self, filestr):
+        """ provides file name generator from file string
+
+        :params filestr: file string
+        :returns: file name generator or a list of file names
+        """
         if self.__filepattern.match(filestr):
             return FilenameGenerator.from_slice(filestr)
         else:
@@ -81,6 +100,13 @@ class Collector(object):
             return files
 
     def absolutefilename(self, filename, masterfile):
+        """ provides absolute image file name
+
+        :param filename: image file name
+        :param masterfile: nexus file name
+
+        :returns: absolute image file name
+        """
         if not os.path.isabs(filename):
             nexusfilepath = os.path.join('/', *os.path.abspath(
                 masterfile).split('/')[:-1])
@@ -88,6 +114,13 @@ class Collector(object):
         return filename
 
     def findfile(self, filename, nname=None):
+        """ searches for absolute image file name
+
+        :param filename: image file name
+        :param nname: hdf5 node name
+
+        :returns: absolute image file name
+        """
         inpath = None
         filelist = []
         if nname is not None and '.nxs' == self.__nexusfilename[-4:]:
@@ -121,12 +154,18 @@ class Collector(object):
         else:
             filelist.append(filename)
         if not self.__skipmissing:
-            raise Exception("Cannot open and of %s files" % sorted(set(filelist)))
+            raise Exception(
+                "Cannot open and of %s files" % sorted(set(filelist)))
         else:
             print("Cannot open and of %s files" % sorted(set(filelist)))
         return None
 
     def loadimage(self, filename):
+        """ loads image from file
+
+        :param filename: image file name
+        :returns: (image data, image data type, image shape)
+        """
         try:
             dtype = None
             shape = None
@@ -137,7 +176,7 @@ class Collector(object):
                 dtype = image.data.dtype.__str__()
                 shape = image.data.shape
                 return idata, dtype, shape
-        except Exception :
+        except Exception:
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
             else:
@@ -146,6 +185,11 @@ class Collector(object):
             return None, None, None
 
     def loadh5data(self, filename):
+        """ loads image from hdf5 file
+
+        :param filename: hdf5 image file name
+        :returns: (image data, image data type, image shape)
+        """
         try:
             dtype = None
             shape = None
@@ -168,6 +212,11 @@ class Collector(object):
             return None, None, None
 
     def addattr(self, node, attrs):
+        """ adds attributes to the parent node in nexus file
+
+        :param node: parent hdf5 node
+        :param attrs: dictionary with attributes
+        """
         attrs = attrs or {}
         for name, (value, dtype, shape) in attrs.items():
             if not self.__testmode:
@@ -177,6 +226,16 @@ class Collector(object):
 
     def getfield(self, node, fieldname, dtype, shape, fieldattrs,
                  fieldcompression):
+        """ creates a field in nexus file
+
+        :param node: parent hdf5 node
+        :param fieldname: field name
+        :param dtype: field data type
+        :param shape: filed data shape
+        :param fieldattrs: dictionary with field attributes
+        :param fieldcompression: field compression rate
+        :returns: hdf5 field node
+        """
         field = None
         if fieldname in node.names():
             return node[fieldname]
@@ -197,6 +256,14 @@ class Collector(object):
 
     def collect(self, files, node, fieldname=None, fieldattrs=None,
                 fieldcompression=None):
+        """ collects images
+
+        :param files: a list of file stings
+        :param node: hdf5 parent node
+        :param filedname: field name
+        :param fieldattrs: dictionary with field attributes
+        :param fieldcompression: field compression rate
+        """
         fieldname = fieldname or "data"
         field = None
         ind = 0
@@ -211,9 +278,9 @@ class Collector(object):
                 if not fname:
                     continue
                 if not fname.endswith(".h5"):
-                    data, dtype, shape= self.loadimage(fname)
+                    data, dtype, shape = self.loadimage(fname)
                 else:
-                    data, dtype, shape= self.loadh5data(fname)
+                    data, dtype, shape = self.loadh5data(fname)
                 if data is not None:
                     if field is None:
                         field = self.getfield(
@@ -228,8 +295,13 @@ class Collector(object):
                     if not self.__testmode:
                         self.__nxsfile.flush()
 
-
     def inspect(self, parent, collection=False):
+        """ collects recursively the all image files defined by hdf5 postrun fields
+        bellow hdf5 parent node
+
+        :param parent: hdf5 parent node
+        :collection: if parent is of NXcollection type
+        """
         if hasattr(parent, "names"):
             if collection:
                 if "postrun" in parent.names():
@@ -274,6 +346,10 @@ class Collector(object):
                     self.inspect(child, coll)
 
     def merge(self):
+        """ creates temporary file,
+        collects the all image files defined by hdf5 postrun fields
+        and renames temporary file to origin one if action was successful
+        """
         self.createtmpfile()
         try:
             self.__nxsfile = open_file(
@@ -294,15 +370,16 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
-## creates command-line parameters parser
 def createParser():
-    ## usage example
+    """ creates command-line parameters parser
+    """
+    #: usage example
     usage = "usage: \n" \
             + " nxscollect [-x|-t] [<options>] <command> <main_nexus_file> \n" \
             + " e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
             + " "
 
-    ## option parser
+    #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
@@ -313,7 +390,7 @@ def createParser():
                       + "without changing any files")
     parser.add_option("-c", "--compression", dest="compression",
                       action="store", type=int, default=2,
-                      help="deflate compression ratio from 0 to 9")
+                      help="deflate compression rate from 0 to 9")
     parser.add_option("-s", "--skip_missing", action="store_true",
                       default=False, dest="skipmissing",
                       help="skip missing files")
@@ -325,10 +402,11 @@ def createParser():
     return parser
 
 
-## the main function
 def main():
+    """ the main function
+    """
 
-    ## run options
+    #: run options
     options = None
     parser = createParser()
     (options, nexusfiles) = parser.parse_args()
@@ -343,7 +421,7 @@ def main():
         print ""
         sys.exit(0)
 
-    ## configuration server
+    # configuration server
     for nxsfile in nexusfiles:
         collector = Collector(nxsfile,
                               options.compression,
