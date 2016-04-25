@@ -60,10 +60,8 @@ def _createParser():
         + "            <type> is NX_FLOAT\n" \
         + "            <chunk> is SCALAR\n" \
         + "            <nexuspath> is " \
-        + "'/entry$var.serialno:NXentry/instrument/collection/\n" 
-        
-        
-        
+        + "'/entry$var.serialno:NXentry/instrument/collection/\n"
+
     #: option parser
     parser = OptionParser(usage=usage)
 
