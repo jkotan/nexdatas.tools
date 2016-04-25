@@ -32,8 +32,17 @@ The writer provides storing data from other Tango devices, various databases
 as well as passed by a user client via JSON strings.
 
 
-Usage: nxsdata <command> [-s <nexus_server>]  [<arg1> [<arg2>  ...]]
- e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5
+Usage:
+
+.. code:: bash
+
+	  nxsdata <command> [-s <nexus_server>]  [<arg1> [<arg2>  ...]]
+
+e.g.:
+
+.. code:: bash
+
+	  nxsdata openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5
 
 Commands:
    openfile [-s <nexus_server>]  <file_name>
@@ -68,9 +77,17 @@ It allows one to read XML configuration datasources
 and components. It also gives possibility to
 perform the process of component merging.
 
+Usage:
 
-Usage: nxsconfig <command> [-s <config_server>]  [-d] [-m] [-n] [<name1>] [<name2>] [<name3>] ...
- e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d
+.. code:: bash
+
+	  nxsconfig <command> [-s <config_server>]  [-d] [-m] [-n] [<name1>] [<name2>] [<name3>] ...
+
+e.g.:
+
+.. code:: bash
+
+	  nxsconfig list -s p02/xmlconfigserver/exp.01 -d
 
 Commands:
    list [-s <config_server>] [-m]
@@ -115,54 +132,178 @@ Options:
   -p, --private         make use private components, i.e. starting with '__'
   -n, --no-newlines     split result with space characters
 
+=======
+nxsetup
+=======
+
+The nxsetup is is a command-line setup tool for NeXus servers.  It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector in Tango environment, restart them or change property names.
+
+
+
+Usage:
+
+.. code:: bash
+
+	  nxsetup -x [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
+
+	  nxsetup -r [<server_class1> <server_class2> ... ]
+
+	  nxsetup -p -n newname -o oldname [<server_class1> <server_class2> ... ]
+
+
+Options:
+  -h, --help            show this help message and exit
+  -b BEAMLINE, --beamline=BEAMLINE
+                        name of the beamline
+  -m MASTERHOST, --masterHost=MASTERHOST
+                        the host that stores the Mg
+  -u USER, --user=USER  the local user
+  -d DBNAME, --database=DBNAME
+                        the database name
+  -j CSJSON, --csjson=CSJSON
+                        JSONSettings for the configuration server
+  -x, --execute         setup servers action
+  -o OLDNAME, --oldname=OLDNAME
+                        old property name
+  -n NEWNAME, --newname=NEWNAME
+                        new property name
+  -r, --restart         restart server(s) action
+  -a RECPATH, --add-recorder-path=RECPATH
+                        add recorder path
+  -p, --move-prop       change property name
+
+
+=========
+nxcollect
+=========
+
+The nxsconfig is  a command-line tool dedicated to collect detector images of external formats into the NeXus master file.  The images to collect should be denoted by postrun fields inside NXcollection groups.
+
+
+Usage:
+
+.. code:: bash
+
+	   nxscollect [-x|-t] [<options>] <command> <main_nexus_file>
+
+e.g.:
+
+.. code:: bash
+
+	   nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs
+
+
+
+Options:
+  -h, --help            show this help message and exit
+  -x, --execute         execute the collecting process
+  -t, --test            exceute the process in test mode without changing any
+                        files
+  -c COMPRESSION, --compression=COMPRESSION
+                        deflate compression rate from 0 to 9
+  -s, --skip_missing    skip missing files
+  -r, --replace_nexus_file
+                        if it is set the old file is not copied into a file
+                        with .__nxscollect__old__* extension
+
+
+
 =========
 nxscreate
 =========
 
 The nxscreate program allows one to create simple datasources and components.
 
-Usage: nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
+Usage:
+
+.. code:: bash
+
+	  nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 
 
 The following commands are available:
 
 
-nxscreate clientds [options] [name1] [name2]
---------------------------------------------
+nxscreate clientds
+------------------
+
+It creates a set of CLIENT datasources.
+
+Usage:
+
+.. code:: bash
+
+	  nxscreate clientds [options] [name1] [name2]
+
+e.g.:
+
+.. code:: bash
+
+	   nxscreate clientds starttime -b
+	   nxscreate clientds title -d /home/user/xmldir
+	   nxscreate clientds -p exp_c -f1 -l4 -b
+	   nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
+
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default: <directory> is '.'
+           <server> is taken from Tango DB
+
 
 It creates a set of client datasources.
 
 Options:
   -h, --help            show this help message and exit
   -p DEVICE, --device-prefix=DEVICE
-                        device prefix, i.e. exp_c
+                        device prefix, i.e. exp_c (mandatory w/o <name1>)
   -f FIRST, --first=FIRST
-                        first index
-  -l LAST, --last=LAST  last index
+                        first index (mandatory w/o <name1>)
+  -l LAST, --last=LAST  last index (mandatory w/o <name1>)
   -d DIRECTORY, --directory=DIRECTORY
                         output datasource directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -s DSOURCE, --datasource-prefix=DSOURCE
+                        datasource prefix, i.e. counter
   -b, --database        store components in Configuration Server database
   -m, --minimal_device  device name without first '0'
   -r SERVER, --server=SERVER
                         configuration server device name
 
-e.g.:
-	nxscreate_clientds -f 1 -l2 -p haso.desy.de:10000/expchan/sis3820_exp/ -s exp_c -m -b -r test/nxsconfigserver/01
-
-nxscreate tangods [options]
----------------------------
+nxscreate tangods
+-----------------
 
 It creates a set of TANGO datasources.
+
+Usage:
+
+.. code:: bash
+
+	  nxscreate tangods [options]
+
+e.g.:
+
+.. code:: bash
+
+	   nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot
+	   nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b
+	   nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b
+	   nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s hasppXX.desy.de -b
+
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default: <directory> is '.'
+           <server> is taken from Tango DB
+           <datasource> is 'exp_mot'
+           <host>, <port> are taken from <server>
 
 Options:
   -h, --help            show this help message and exit
   -p DEVICE, --device-prefix=DEVICE
-                        device prefix, i.e. exp_c
+                        device prefix, i.e. exp_c (mandatory)
   -f FIRST, --first=FIRST
-                        first index
-  -l LAST, --last=LAST  last index
+                        first index (mandatory)
+  -l LAST, --last=LAST  last index (mandatory)
   -a ATTRIBUTE, --attribute=ATTRIBUTE
                         tango attribute name
   -o DATASOURCE, --datasource-prefix=DATASOURCE
@@ -178,15 +319,37 @@ Options:
                         configuration server device name
 
 
-nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
------------------------------------------------------------------
+nxscreate deviceds
+------------------
 
 It creates a set of TANGO datasources for all device attributes.
+
+Usage:
+
+.. code:: bash
+
+	  nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
+
+e.g.:
+
+.. code:: bash
+
+	   nxscreate deviceds  -v p09/pilatus/haso228k
+	   nxscreate deviceds  -v p09/lambda2m/haso228k  -s haslambda -b
+	   nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy ExposureTime
+
+- without <dv_attr1>: datasources for all attributes are created
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default: <directory> is '.'
+           <server> is taken from Tango DB
+           <datasource> is 'exp_mot'
+           <host>, <port> are taken from <server>
 
 Options:
   -h, --help            show this help message and exit
   -v DEVICE, --device=DEVICE
-                        device, i.e. p09/pilatus300k/01
+                        device, i.e. p09/pilatus300k/01 (mandatory)
   -o DATASOURCE, --datasource-prefix=DATASOURCE
                         datasource-prefix
   -d DIRECTORY, --directory=DIRECTORY
@@ -196,25 +359,36 @@ Options:
   -s HOST, --host=HOST  tango host name
   -t PORT, --port=PORT  tango host port
   -b, --database        store components in Configuration Server database
-  -n, --no-group        creates common group with a name of datasource prefix
+  -n, --no-group        don't create common group with a name of datasource
+                        prefix
   -r SERVER, --server=SERVER
                         configuration server device name
 
-nxscreate onlineds [options] inputFile
---------------------------------------
+
+nxscreate onlineds
+------------------
 
 It creates a set of motor datasources from an online xml file.
 
-Usage: ndtscreate_onlineds [options] inputFile
-       nxscreate onlineds [options] inputFile
-e.g.
-       nxscreate onlineds -b
-       nxscreate onlinecp -d /home/user/xmldir
+Usage:
 
- - with -b datasources are created in Configuration Server database
- - with -d <directory> datasources are created on filesystem
- - default <inputFile> is '/online_dir/online.xml'
+.. code:: bash
 
+	  nxscreate onlineds [options] inputFile
+
+e.g.:
+
+.. code:: bash
+
+	   nxscreate onlineds -b
+	   nxscreate onlineds -d /home/user/xmldir
+	   nxscreate onlineds
+
+- with -b: datasources are created in Configuration Server database
+- with -d <directory>: datasources are created on the local filesystem
+- without -b or -d <directory>: run in the test mode
+- default: <inputFile> is '/online_dir/online.xml'
+           <server> is taken from Tango DB
 
 Options:
   -h, --help            show this help message and exit
@@ -228,18 +402,31 @@ Options:
                         file prefix, i.e. counter
 
 
-nxscreate onlinecp [options] inputFile
---------------------------------------
-Usage: ndtscreate_onlinecp [options] [<inputFile>]
-       nxscreate onlinecp [options] [<inputFile>]
-e.g.
-       nxscreate onlinecp
-       nxscreate onlinecp -c pilatus
+nxscreate onlinecp
+------------------
 
- - without '-c <component>' a list of possible components is shown
- - without '-d <dircetory>  datasources are created in Configuration Server database
- - with -d <directory> datasources are created on filesystem
- - default <inputFile> is '/online_dir/online.xml'
+It creates a detector component from the online.xml file
+and its set of datasources.
+
+Usage:
+
+.. code:: bash
+
+	  nxscreate onlinecp [options] inputFile
+
+e.g.:
+
+.. code:: bash
+
+	  nxscreate onlinecp
+	  nxscreate onlinecp -c pilatus
+	  nxscreate onlinecp -c lambda -d /home/user/xmldir/
+
+- without '-c <component>': show a list of possible components
+- without '-d <dircetory>:  components are created in Configuration Server database
+- with -d <directory>: components are created on the local filesystem
+- default: <inputFile> is '/online_dir/online.xml'
+           <server> is taken from Tango DB
 
 
 Options:
@@ -251,19 +438,45 @@ Options:
                         configuration server device name
   -n, --nolower         do not change aliases into lower case
   -o, --overwrite       overwrite existing component
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be stored. If
+                        it is not set components are stored in Configuration
+                        Server database
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
-  -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be stored.
-			If it is not set components are stored in Configuration
-                        Server database
 
 
-
-nxscreate comp [options] [name1] [name2] ...
---------------------------------------------
+nxscreate comp
+--------------
 
 It creates a set of simple components.
+
+Usage:
+
+.. code:: bash
+
+	  nxscreate comp [options] [name1] [name2] ...
+
+e.g.
+
+.. code:: bash
+
+	  nxscreate comp  counter 
+	  nxscreate comp -f1 -l -p exp_c01 -b 
+	  nxscreate comp -c lambda -d /home/user/xmldir/ 
+	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m 
+	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -s STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+	    
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory> 
+- default: <directory> is '.' 
+           <server> is taken from Tango DB
+           <strategy> is step
+           <type> is NX_FLOAT
+           <chunk> is SCALAR
+           <nexuspath> is '/entry$var.serialno:NXentry/instrument/collection/
+
+
 
 Options:
   -h, --help            show this help message and exit

@@ -1,7 +1,8 @@
 2016-04-XX Jan Kotanski <jankotan@gmail.com>
-	* switch to swing documentation
+	* switch to sphinx documentation
 	* remove ndts* scripts
-	* move internal functions into protected interface 
+	* move internal functions into protected interface
+	* add more help examples
 	* tagged as v2.0.0
 
 2016-04-15 Jan Kotanski <jankotan@gmail.com>
@@ -315,4 +316,3 @@
 	* making server parameter optional
 	* the first tag with nexdatas.tools
 	* tagged as v1.0.0
-

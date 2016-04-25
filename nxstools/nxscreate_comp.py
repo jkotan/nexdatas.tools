@@ -38,8 +38,32 @@ def _createParser():
     """ creates parser
     """
     #: usage example
-    usage = "usage: %prog [options] [name1] [name2]\n" \
-        + "       nxscreate comp [options] [name1] [name2]\n"
+    usage = "usage: %prog comp [options] [name1] [name2]\n" \
+        + " e.g.\n" \
+        + "       nxscreate comp  counter \n" \
+        + "       nxscreate comp -f1 -l -p exp_c01 -b \n" \
+        + "       nxscreate comp -c lambda -d /home/user/xmldir/ \n" \
+        + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
+        + "sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4 "\
+        + " -s STEP -t NX_FLOAT64 -k -b -m \n"\
+        + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
+        + "eh1_mca01:NXdetector/data' eh1_mca01 -s STEP -t NX_FLOAT64" \
+        + " -i -b -c SPECTRUM\n" \
+        + "\n" \
+        + " - with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " - without -b: datasources are created" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " - default: <directory> is '.' \n" \
+        + "            <server> is taken from Tango DB\n" \
+        + "            <strategy> is step\n" \
+        + "            <type> is NX_FLOAT\n" \
+        + "            <chunk> is SCALAR\n" \
+        + "            <nexuspath> is " \
+        + "'/entry$var.serialno:NXentry/instrument/collection/\n" 
+        
+        
+        
     #: option parser
     parser = OptionParser(usage=usage)
 

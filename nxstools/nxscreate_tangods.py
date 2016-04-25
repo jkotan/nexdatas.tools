@@ -23,7 +23,7 @@ import sys
 
 from optparse import OptionParser
 
-from nxstools.nxsdevicetools import checkServer
+from nxstools.nxsdevicetools import checkServer, getServerTangoHost
 from nxstools.nxscreator import (TangoDSCreator, WrongParameterError)
 
 PYTANGO = False
@@ -38,19 +38,34 @@ def _createParser():
     """ creates parser
     """
     #: usage example
-    usage = "usage: %prog [options]\n" \
-        + "       nxscreate tangods [options]"
+    usage = "usage: %prog tangods [options]\n" \
+        + " e.g.\n" \
+        + "       nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot \n" \
+        + "       nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b \n" \
+        + "       nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b \n" \
+        + "       nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s" \
+        + " hasppXX.desy.de -b \n" \
+        + "\n" \
+        + " - with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " - without -b: datasources are created" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " - default: <directory> is '.' \n" \
+        + "            <server> is taken from Tango DB\n" \
+        + "            <datasource> is 'exp_mot' \n" \
+        + "            <host>, <port> are taken from <server>\n"
+
     #: option parser
     parser = OptionParser(usage=usage)
 
     parser.add_option("-p", "--device-prefix", type="string",
-                      help="device prefix, i.e. exp_c",
+                      help="device prefix, i.e. exp_c (mandatory)",
                       dest="device", default="")
     parser.add_option("-f", "--first",
-                      help="first index",
+                      help="first index (mandatory)",
                       dest="first", default="1")
     parser.add_option("-l", "--last",
-                      help="last index",
+                      help="last index (mandatory)",
                       dest="last", default=None)
 
     parser.add_option("-a", "--attribute", type="string",
@@ -59,7 +74,7 @@ def _createParser():
 
     parser.add_option("-o", "--datasource-prefix", type="string",
                       help="datasource-prefix",
-                      dest="datasource", default="TG_")
+                      dest="datasource", default="exp_mot")
 
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
@@ -69,7 +84,7 @@ def _createParser():
                       dest="file", default="")
     parser.add_option("-s", "--host", type="string",
                       help="tango host name",
-                      dest="host", default="localhost")
+                      dest="host", default="")
     parser.add_option("-t", "--port", type="string",
                       help="tango host port",
                       dest="port", default="10000")
@@ -96,9 +111,10 @@ def main():
     else:
         args = args[1:]
 
-    if options.database and not options.server:
+    if (options.database and not options.server) or \
+       (not options.host and not options.server):
         if not PYTANGO:
-            print >> sys.stderr, "CollCompCreator No PyTango installed\n"
+            print >> sys.stderr, "nxscreate: No PyTango installed\n"
             parser.print_help()
             sys.exit(255)
 
@@ -107,6 +123,15 @@ def main():
             parser.print_help()
             print ""
             sys.exit(0)
+
+    if not options.host:
+        if not PYTANGO:
+            print >> sys.stderr, \
+                "nxscreate: No Tango Host or PyTango installed\n"
+            parser.print_help()
+            sys.exit(255)
+        hostport = getServerTangoHost(options.server)
+        options.host, options.port = hostport.split(":")
 
     if options.database:
         print "CONFIG SERVER:", options.server

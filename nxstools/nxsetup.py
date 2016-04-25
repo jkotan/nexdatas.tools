@@ -525,7 +525,11 @@ def _createParser(user):
                       dest="dbname", help="the database name")
     parser.add_option("-j", "--csjson", action="store", type="string",
                       dest="csjson",
-                      help="JSONSettings for the configuration server")
+                      help="JSONSettings for the configuration server, "
+                      "(default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
+                      " \"use_unicode\": true',"
+                      " \"read_default_file\": \"/home/<USER>/.my.cnf\""
+                      "})")
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")

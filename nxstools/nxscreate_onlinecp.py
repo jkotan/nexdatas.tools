@@ -39,18 +39,18 @@ def main():
     """ the main function
     """
     #: usage example
-    usage = "usage: %prog [options] [<inputFile>]\n" \
-        + "       nxscreate onlinecp [options] [<inputFile>]\n" \
+    usage = "usage: %prog onlinecp [options] [<inputFile>]\n" \
         + " e.g.\n" \
         + "       nxscreate onlinecp  \n" \
-        + "       nxscreate onlinecp -c pilatus \n\n" \
-        + " - without '-c <component>' a list of possible components" \
-        + " is shown \n" \
-        + " - without '-d <dircetory>  components are created in " \
+        + "       nxscreate onlinecp -c pilatus \n" \
+        + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n\n" \
+        + " - without '-c <component>': show a list of possible components\n" \
+        + " - without '-d <dircetory>:  components are created in " \
         + "Configuration Server database\n" \
-        + " - with -d <directory> components are created" \
+        + " - with -d <directory>: components are created" \
         + " on the local filesystem\n" \
-        + " - default <inputFile> is '/online_dir/online.xml' \n"
+        + " - default: <inputFile> is '/online_dir/online.xml' \n" \
+        + "            <server> is taken from Tango DB\n"
 
     #: option parser
     parser = OptionParser(usage=usage)
@@ -94,8 +94,8 @@ def main():
             parser.print_help()
             print("")
             sys.exit(0)
-        if not len(args) and os.path.isfile('/online_dir/online.xml'):
-            args = ['/online_dir/online.xml']
+    if not len(args) and os.path.isfile('/online_dir/online.xml'):
+        args = ['/online_dir/online.xml']
 
     if not len(args):
         parser.print_help()

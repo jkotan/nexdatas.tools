@@ -40,16 +40,19 @@ def main():
     """
 
     #: usage example
-    usage = "usage: %prog [options] [<inputFile>]\n" \
-        + "       nxscreate onlineds [options] [<inputFile>]\n" \
+    usage = "usage: %prog onlineds [options] [<inputFile>]\n" \
         + " e.g.\n" \
         + "       nxscreate onlineds -b  \n" \
-        + "       nxscreate onlinecp -d /home/user/xmldir \n\n" \
-        + " - with -b datasources are created" \
+        + "       nxscreate onlineds -d /home/user/xmldir \n" \
+        + "       nxscreate onlineds \n\n" \
+        + " - with -b: datasources are created" \
         + " in Configuration Server database\n" \
-        + " - with -d <directory> datasources are created" \
+        + " - with -d <directory>: datasources are created" \
         + " on the local filesystem\n" \
-        + " - default <inputFile> is '/online_dir/online.xml' \n"
+        + " - without -b or -d <directory>: run in the test mode\n" \
+        + " - default: <inputFile> is '/online_dir/online.xml' \n" \
+        + "            <server> is taken from Tango DB\n"
+
     #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--database", action="store_true",
@@ -86,8 +89,8 @@ def main():
             parser.print_help()
             print("")
             sys.exit(0)
-        if not len(args) and os.path.isfile('/online_dir/online.xml'):
-            args = ['/online_dir/online.xml']
+    if not len(args) and os.path.isfile('/online_dir/online.xml'):
+        args = ['/online_dir/online.xml']
 
     if not len(args):
         parser.print_help()
@@ -98,6 +101,8 @@ def main():
         print("OUTPUT DIR: %s" % options.directory)
     elif options.database:
         print("SERVER: %s" % options.server)
+    else:
+        print("TEST MODE: %s" % options.server)
 
     creator = OnlineDSCreator(options, args)
     creator.create()

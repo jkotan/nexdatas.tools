@@ -402,12 +402,12 @@ class TangoDSCreator(Creator):
                 first = int(self._options.first)
             except:
                 raise WrongParameterError(
-                    "ClientDSCreator: Invalid --first parameter\n")
+                    "TangoDSCreator: Invalid --first parameter\n")
             try:
                 last = int(self._options.last)
             except:
                 raise WrongParameterError(
-                    "ClientDSCreator: Invalid --last parameter\n")
+                    "TangoDSCreator: Invalid --last parameter\n")
 
             dvargs = generateDeviceNames(self._options.device, first, last)
             dsargs = generateDeviceNames(self._options.datasource, first, last)

@@ -38,19 +38,30 @@ def _createParser():
     """ parser creator
     """
     #: usage example
-    usage = "usage: %prog [options] [name1] [name2]\n" \
-        + "       nxscreate clientds [options] [name1] [name2]"
+    usage = "usage: %prog clientds [options] [name1] [name2]\n" \
+        + " e.g.\n" \
+        + "       nxscreate clientds starttime -b  \n" \
+        + "       nxscreate clientds title -d /home/user/xmldir \n" \
+        + "       nxscreate clientds -p exp_c -f1 -l4 -b  \n" \
+        + "       nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/" \
+        + " -f1 -l8  -m -b -s exp_vfc\n" \
+        + "\n" \
+        + " - with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " - without -b: datasources are created" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " - default: <directory> is '.' \n" \
+        + "            <server> is taken from Tango DB\n"
     #: option parser
     parser = OptionParser(usage=usage)
-
     parser.add_option("-p", "--device-prefix", type="string",
-                      help="device prefix, i.e. exp_c",
+                      help="device prefix, i.e. exp_c (mandatory w/o <name1>)",
                       dest="device", default="")
     parser.add_option("-f", "--first",
-                      help="first index",
+                      help="first index (mandatory w/o <name1>)",
                       dest="first", default="1")
     parser.add_option("-l", "--last",
-                      help="last index",
+                      help="last index (mandatory w/o <name1>)",
                       dest="last", default=None)
 
     parser.add_option("-d", "--directory", type="string",
