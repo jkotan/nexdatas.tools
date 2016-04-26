@@ -483,10 +483,10 @@ class SetUp(object):
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
+            if self.cserver_name:
+                dp.configDevice = self.cserver_name
             if self.writer_name:
                 dp.writerDevice = self.writer_name
-            if self.writer_name:
-                dp.configDevice = self.cserver_name
 
         return 1
 
