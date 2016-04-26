@@ -4,3 +4,23 @@
    contain the root `toctree` directive.
 
 .. include:: ../README.rst
+
+Contents
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   nxscollect
+   nxsconfig
+   nxscreate
+   nxsdata
+   nxsetup
+   nxstools
+       
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

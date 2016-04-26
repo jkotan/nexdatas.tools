@@ -2,23 +2,21 @@
 nxsconfig
 =========
 
+Description
+-----------
+
 The nxsconfig program
 is a command-line interface to NXS Configuration Tango Server.
 It allows one to read XML configuration datasources
 and components. It also gives possibility to
 perform the process of component merging.
 
-Usage:
+Synopsis
+--------
 
 .. code:: bash
 
 	  nxsconfig <command> [-s <config_server>]  [-d] [-m] [-n] [<name1>] [<name2>] [<name3>] ...
-
-e.g.:
-
-.. code:: bash
-
-	  nxsconfig list -s p02/xmlconfigserver/exp.01 -d
 
 Commands:
    list [-s <config_server>] [-m]
@@ -62,4 +60,11 @@ Options:
   -m, --mandatory       make use mandatory components as well
   -p, --private         make use private components, i.e. starting with '__'
   -n, --no-newlines     split result with space characters
+
+Example
+-------
+
+.. code:: bash
+
+	  nxsconfig list -s p02/xmlconfigserver/exp.01 -d
 

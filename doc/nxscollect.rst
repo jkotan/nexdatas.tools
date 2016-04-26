@@ -2,21 +2,18 @@
 nxcollect
 =========
 
+Description
+-----------
+
 The nxsconfig is  a command-line tool dedicated to collect detector images of external formats into the NeXus master file.  The images to collect should be denoted by postrun fields inside NXcollection groups.
 
 
-Usage:
+Synopsis
+--------
 
 .. code:: bash
 
 	   nxscollect [-x|-t] [<options>] <command> <main_nexus_file>
-
-e.g.:
-
-.. code:: bash
-
-	   nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs
-
 
 
 Options:
@@ -31,5 +28,12 @@ Options:
                         if it is set the old file is not copied into a file
                         with .__nxscollect__old__* extension
 
+
+Example
+-------
+
+.. code:: bash
+
+	   nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs
 
 

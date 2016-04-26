@@ -1,0 +1,2535 @@
+.\" Man page generated from reStructuredText.
+.
+.TH "NXSTOOLS" "1" "April 26, 2016" "2.0" "NXSTools"
+.SH NAME
+nxstools \- nxstools Documentation
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+.sp
+Authors: Jan Kotanski
+.SH INTRODUCTION
+.INDENT 0.0
+.TP
+.B Configuration tools for NeXDaTaS Tango Servers consists of the following command\-line scripts:
+.INDENT 7.0
+.IP \(bu 2
+\fBnxscollect\fP uploads external images into NeXus/HDF5 file
+.IP \(bu 2
+\fBnxsconfig\fP reads NeXus Configuration Server settings
+.IP \(bu 2
+\fBnxscreate\fP creates NeXus Configuration components
+.IP \(bu 2
+\fBnxsdata\fP runs NeXus Data Writer
+.IP \(bu 2
+\fBnxsetup\fP setups NeXDaTaS Tango Server environment
+.UNINDENT
+.UNINDENT
+.sp
+as well as the \fBnxstools\fP package which allows perform these operations
+directly from a python code.
+.SH INSTALLATION
+.sp
+Install the dependencies:
+.INDENT 0.0
+.INDENT 3.5
+PyTango, sphinx
+.UNINDENT
+.UNINDENT
+.SS From sources
+.sp
+Download the latest NXS Tools version from
+.INDENT 0.0
+.INDENT 3.5
+\fI\%https://github.com/jkotan/nexdatas.tools/\fP
+.UNINDENT
+.UNINDENT
+.sp
+Extract sources and run
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ python setup.py install
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Debian packages
+.sp
+Debian Jessie (and Wheezy) packages can be found in the HDRI repository.
+.sp
+To install the debian packages, add the PGP repository key
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ sudo su
+$ wget \-q \-O \- http://repos.pni\-hdri.de/debian_repo.pub.gpg | apt\-key add \-
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+and then download the corresponding source list
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ cd /etc/apt/sources.list.d
+$ wget http://repos.pni\-hdri.de/jessie\-pni\-hdri.list
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Finally,
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ apt\-get update
+$ apt\-get install python\-nxstools
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+To instal other NexDaTaS packages
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ apt\-get install python\-nxswriter nxsconfigserver\-db python\-nxsconfigserver nxsconfigtool
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+and for Sardana related packages
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ apt\-get install python\-nxsrecselector nxselector
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+for component selector.
+.SH NXCOLLECT
+.SS Description
+.sp
+The nxsconfig is  a command\-line tool dedicated to collect detector images of external formats into the NeXus master file.  The images to collect should be denoted by postrun fields inside NXcollection groups.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscollect [\-x|\-t] [<options>] <command> <main_nexus_file>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-x\fP,\fB  \-\-execute
+execute the collecting process
+.TP
+.B \-t\fP,\fB  \-\-test
+exceute the process in test mode without changing any
+files
+.TP
+.BI \-c \ COMPRESSION\fP,\fB \ \-\-compression\fB= COMPRESSION
+deflate compression rate from 0 to 9
+.TP
+.B \-s\fP,\fB  \-\-skip_missing
+skip missing files
+.TP
+.B \-r\fP,\fB  \-\-replace_nexus_file
+if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscollect \-x \-c1 /tmp/gpfs/raw/scan_234.nxs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCONFIG
+.SS Description
+.sp
+The nxsconfig program
+is a command\-line interface to NXS Configuration Tango Server.
+It allows one to read XML configuration datasources
+and components. It also gives possibility to
+perform the process of component merging.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsconfig <command> [\-s <config_server>]  [\-d] [\-m] [\-n] [<name1>] [<name2>] [<name3>] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Commands:
+.INDENT 7.0
+.TP
+.B list [\-s <config_server>] [\-m]
+list names of available components
+.TP
+.B list \-d [\-s <config_server>]
+list names of available datasources
+.TP
+.B show [\-s <config_server>] [\-m] component_name1 component_name2 ...
+show components with given names
+.TP
+.B show \-d [\-s <config_server>] dsource_name1 dsource_name2 ...
+show datasources with given names
+.TP
+.B get [\-s <config_server>]  [\-m] component_name1 component_name2 ...
+get merged configuration of components
+.TP
+.B sources [\-s <config_server>] [\-m] component_name1 component_name2 ...
+get a list of component datasources
+.TP
+.B components [\-s <config_server>] component_name1 component_name2 ...
+get a list of dependent components
+.TP
+.B variables [\-s <config_server>] [\-m] component_name1 component_name2 ...
+get a list of component variables
+.TP
+.B data [\-s <config_server>] json_data
+set values of component variables
+.TP
+.B record [\-s <config_server>]  component_name1
+get a list of datasource record names from component
+.TP
+.B record \-d [\-s <config_server>] datasource_name1
+get a list of datasource record names
+.TP
+.B servers [\-s <config_server/host>]
+get lists of configuration servers from the current tango host
+.TP
+.B describe [\-s <config_server>] [\-m | \-p] component_name1 component_name2 ...
+show all parameters of given components
+.TP
+.B describe|info \-d [\-s <config_server>] dsource_name1 dsource_name2 ...
+show all parameters of given datasources
+.TP
+.B info [\-s <config_server>] [\-m | \-p] component_name1 component_name2 ...
+show source parameters of given components
+.TP
+.B geometry [\-s <config_server>] [\-m | \-p] component_name1 component_name2 ...
+show transformation parameters of given components
+.UNINDENT
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-s \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.B \-d\fP,\fB  \-\-datasources
+perform operation on datasources
+.TP
+.B \-m\fP,\fB  \-\-mandatory
+make use mandatory components as well
+.TP
+.B \-p\fP,\fB  \-\-private
+make use private components, i.e. starting with \(aq__\(aq
+.TP
+.B \-n\fP,\fB  \-\-no\-newlines
+split result with space characters
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsconfig list \-s p02/xmlconfigserver/exp.01 \-d
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE
+.SS Description
+.sp
+The nxscreate program allows one to create simple datasources and components.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.
+.SS nxscreate clientds
+.sp
+It creates a set of CLIENT datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate clientds [options] [name1] [name2]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c (mandatory w/o <name1>)
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index (mandatory w/o <name1>)
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index (mandatory w/o <name1>)
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ DSOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DSOURCE
+datasource prefix, i.e. counter
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-m\fP,\fB  \-\-minimal_device
+device name without first \(aq0\(aq
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate clientds starttime \-b
+nxscreate clientds title \-d /home/user/xmldir
+nxscreate clientds \-p exp_c \-f1 \-l4 \-b
+nxscreate clientds \-p hasppXX:10000/expchan/vfcadc_exp/ \-f1 \-l8  \-m \-b \-s exp_vfc
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate tangods
+.sp
+It creates a set of TANGO datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate tangods [options]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <datasource> is \(aqexp_mot\(aq
+.IP \(bu 2
+default <host>, <port> are taken from <server>
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c (mandatory)
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index (mandatory)
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index (mandatory)
+.TP
+.BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
+tango attribute name
+.TP
+.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+datasource\-prefix
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+tango host name
+.TP
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+tango host port
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate tangods \-f1 \-l2  \-p p09/motor/exp. \-o exp_mot
+nxscreate tangods \-f1 \-l32  \-p p02/motor/eh1a. \-o exp_mot \-b
+nxscreate tangods \-f1 \-l32  \-p p01/motor/oh1. \-o exp_mot \-b
+nxscreate tangods \-f1 \-l8  \-p pXX/slt/exp. \-o slt_exp_ \-s hasppXX.desy.de \-b
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate deviceds
+.sp
+It creates a set of TANGO datasources for all device attributes.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+without <dv_attr1>: datasources for all attributes are created
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <datasource> is \(aqexp_mot\(aq
+.IP \(bu 2
+default <host>, <port> are taken from <server>
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\fB= DEVICE
+device, i.e. p09/pilatus300k/01 (mandatory)
+.TP
+.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+datasource\-prefix
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+tango host name
+.TP
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+tango host port
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-n\fP,\fB  \-\-no\-group
+don\(aqt create common group with a name of datasource
+prefix
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate deviceds  \-v p09/pilatus/haso228k
+nxscreate deviceds  \-v p09/lambda2m/haso228k  \-s haslambda \-b
+nxscreate deviceds  \-v p09/pilatus300k/haso228k \-b \-o pilatus300k_ RoI Energy ExposureTime
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate onlineds
+.sp
+It creates a set of motor datasources from an online xml file.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds [options] inputFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: datasources are created on the local filesystem
+.IP \(bu 2
+without \-b or \-d <directory>: run in the test mode
+.IP \(bu 2
+default <inputFile> is \(aq/online_dir/online.xml\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be saved
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds \-b
+nxscreate onlineds \-d /home/user/xmldir
+nxscreate onlineds
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate onlinecp
+.sp
+It creates a detector component from the online.xml file
+and its set of datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlinecp [options] inputFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+without \(aq\-c <component>\(aq: show a list of possible components
+.IP \(bu 2
+without \(aq\-d <dircetory>:  components are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: components are created on the local filesystem
+.IP \(bu 2
+default <inputFile> is \(aq/online_dir/online.xml\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
+component namerelated to the device name from
+<inputFile>
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing component
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be stored. If
+it is not set components are stored in Configuration
+Server database
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlinecp
+nxscreate onlinecp \-c pilatus
+nxscreate onlinecp \-c lambda \-d /home/user/xmldir/
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate comp
+.sp
+It creates a set of simple components.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate comp [options] [name1] [name2] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <strategy> is step
+.IP \(bu 2
+default <type> is NX_FLOAT
+.IP \(bu 2
+default <chunk> is SCALAR
+.IP \(bu 2
+default <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output component directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-n \ NEXUSPATH\fP,\fB \ \-\-nexuspath\fB= NEXUSPATH
+nexus path with field name
+.TP
+.BI \-s \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
+writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
+.TP
+.BI \-t \ TYPE\fP,\fB \ \-\-type\fB= TYPE
+nexus type of the field
+.TP
+.BI \-u \ UNITS\fP,\fB \ \-\-units\fB= UNITS
+nexus units of the field
+.TP
+.B \-k\fP,\fB  \-\-links
+create datasource links
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-c \ CHUNK\fP,\fB \ \-\-chunk\fB= CHUNK
+chunk format, i.e. SCALAR, SPECTRUM, IMAGE
+.TP
+.B \-m\fP,\fB  \-\-minimal_device
+device name without first \(aq0\(aq
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate comp  counter
+nxscreate comp \-f1 \-l \-p exp_c01 \-b
+nxscreate comp \-c lambda \-d /home/user/xmldir/
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-p sis3302_1_roi \-f1 \-l4  \-s STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-s STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSDATA
+.SS Description
+.sp
+The nxsdata program is a command\-line interface to Nexus Data Tango Server.
+Program allows one to store NeXuS Data in H5 files.
+The writer provides storing data from other Tango devices, various databases
+as well as passed by a user client via JSON strings.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsdata <command> [\-s <nexus_server>]  [<arg1> [<arg2>  ...]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Commands:
+.INDENT 7.0
+.TP
+.B openfile [\-s <nexus_server>]  <file_name>
+open new H5 file
+.TP
+.B setdata [\-s <nexus_server>] <json_data_string>
+assign global JSON data
+.TP
+.B openentry [\-s <nexus_server>] <xml_config>
+create new entry
+.TP
+.B record [\-s <nexus_server>]  <json_data_string>
+record one step with step JSON data
+.TP
+.B closeentry [\-s <nexus_server>]
+close the current entry
+.TP
+.B closefile [\-s <nexus_server>]
+close the current file
+.TP
+.B servers [\-s <nexus_server/host>]
+get lists of tango data servers from the current tango host
+.UNINDENT
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-s \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+tango data server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsdata openfile \-s p02/tangodataserver/exp.01  /user/data/myfile.h5
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP
+.SS Description
+.sp
+The nxsetup is is a command\-line setup tool for NeXus servers.  It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector in Tango environment, restart them or change property names.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsetup \-x [\-j <jsonsettings>] [<server_class1> <server_class2> ... ]
+
+nxsetup \-r [<server_class1> <server_class2> ... ]
+
+nxsetup \-a [<server_class1> <server_class2> ... ]
+
+nxsetup \-p \-n newname \-o oldname [<server_class1> <server_class2> ... ]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline\fB= BEAMLINE
+name of the beamline
+.TP
+.BI \-m \ MASTERHOST\fP,\fB \ \-\-masterHost\fB= MASTERHOST
+the host that stores the Mg
+.TP
+.BI \-u \ USER\fP,\fB \ \-\-user\fB= USER
+the local user
+.TP
+.BI \-d \ DBNAME\fP,\fB \ \-\-database\fB= DBNAME
+the database name
+.TP
+.BI \-j \ CSJSON\fP,\fB \ \-\-csjson\fB= CSJSON
+JSONSettings for the configuration server, (default:
+\(aq{"host": "localhost","db": <DBNAME>, "use_unicode":
+true\(aq, "read_default_file": "/home/<USER>/.my.cnf"})
+.TP
+.B \-x\fP,\fB  \-\-execute
+setup servers action
+.TP
+.BI \-o \ OLDNAME\fP,\fB \ \-\-oldname\fB= OLDNAME
+old property name
+.TP
+.BI \-n \ NEWNAME\fP,\fB \ \-\-newname\fB= NEWNAME
+new property name
+.TP
+.B \-r\fP,\fB  \-\-restart
+restart server(s) action
+.TP
+.BI \-a \ RECPATH\fP,\fB \ \-\-add\-recorder\-path\fB= RECPATH
+add recorder path
+.TP
+.B \-p\fP,\fB  \-\-move\-prop
+change property name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsetup \-x
+
+nxsetup \-a /usr/share/pyshared/sardananxsrecorder
+
+nxsetup \-p \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+
+nxsetup \-r MacroServer/haso228k
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSTOOLS PACKAGE
+.SS Submodules
+.SS nxstools.nxscollect module
+.sp
+Command\-line tool to merge images of external file\-formats
+into the master NeXus file
+.INDENT 0.0
+.TP
+.B class nxstools.nxscollect.Collector(nexusfilename, compression=2, skipmissing=False, storeold=False, testmode=False)
+Bases: \fBobject\fP
+.sp
+Collector merge images of external file\-formats
+into the master NeXus file
+.sp
+The constructor creates the collector object
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnexusfilename\fP \-\- the nexus file name
+.IP \(bu 2
+\fBcompression\fP \-\- compression rate
+.IP \(bu 2
+\fBskipmissing\fP \-\- if skip missing images
+.IP \(bu 2
+\fBstoreold\fP \-\- if backup the input file
+.IP \(bu 2
+\fBtestmode\fP \-\- if run in a test mode
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B collect()
+creates a temporary file,
+collects the all image files defined by hdf5
+postrun fields of NXcollection groups and renames the temporary file
+to the origin one if the action was successful
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.main()
+the main program function
+.UNINDENT
+.SS nxstools.nxsconfig module
+.sp
+Command\-line tool for ascess to the nexdatas configuration server
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.ConfigServer(device, nonewline=False)
+Bases: \fBobject\fP
+.sp
+configuration server adapter
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBdevice\fP \-\- device name of the configuration server
+.IP \(bu 2
+\fBnonewline\fP \-\- if the output should not be separated
+by the new line character
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B performCommand(command, ds, args, mandatory=False, private=False)
+performs requested command
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBcommand\fP \-\- executed command: \(aqlist\(aq, \(aqshow\(aq, \(aqget\(aq,
+\(aqvariables\(aq, \(aqsources\(aq, \(aqrecord\(aq, \(aqmerge\(aq,
+\(aqcomponents\(aq, \(aqdata\(aq, \(aqdescribe\(aq, \(aqinfo\(aq, \(aqgeometry\(aq
+.IP \(bu 2
+\fBds\fP \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP \-\- list of item names
+.IP \(bu 2
+\fBmandatory\fP \-\- flag set True for mandatory components
+.IP \(bu 2
+\fBprivate\fP \-\- flag set True for components starting with \(aq__\(aq
+.UNINDENT
+.TP
+.B Returns
+resulting string
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsconfig.main()
+the main program function
+.UNINDENT
+.SS nxstools.nxscreate_clientds module
+.sp
+CLIENT datasource creator
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_clientds.main()
+the main program function
+.UNINDENT
+.SS nxstools.nxscreate_comp module
+.sp
+component creator
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_comp.main()
+the main function
+.UNINDENT
+.SS nxstools.nxscreate_deviceds module
+.sp
+TANGO datasources creator for devices
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_deviceds.main()
+the main function
+.UNINDENT
+.SS nxstools.nxscreate_onlinecp module
+.sp
+component creator from online files
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_onlinecp.main()
+the main function
+.UNINDENT
+.SS nxstools.nxscreate_onlineds module
+.sp
+datasource creator from online files
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_onlineds.main()
+the main function
+.UNINDENT
+.SS nxstools.nxscreate_tangods module
+.sp
+TANGO datasource creator
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_tangods.main()
+the main function
+.UNINDENT
+.SS nxstools.nxsdata module
+.sp
+Command\-line tool to ascess to Tango Data Server
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.NexusServer(device)
+Bases: \fBobject\fP
+.sp
+configuration server adapter
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdevice\fP \-\- device name of configuration server
+.UNINDENT
+.INDENT 7.0
+.TP
+.B closeEntry()
+closes the entry
+.UNINDENT
+.INDENT 7.0
+.TP
+.B closeFile()
+closes the file
+.UNINDENT
+.INDENT 7.0
+.TP
+.B openEntry(xmlconfig)
+opens an entry
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlconfig\fP \-\- xml configuration string
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B openFile(filename)
+opens the h5 file
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilename\fP \-\- h5 file name
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B performCommand(command, args)
+perform requested command
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBcommand\fP \-\- called command
+.IP \(bu 2
+\fBargs\fP \-\- list of item names
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B record(jsondata)
+records one step
+.INDENT 7.0
+.TP
+.B Parameters
+\fBjsondata\fP \-\- step JSON data
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setData(jsondata)
+sets the global JSON data
+.INDENT 7.0
+.TP
+.B Parameters
+\fBjsondata\fP \-\- global JSON data
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdata.main()
+the main function
+.UNINDENT
+.SS nxstools.nxsetup module
+.sp
+Set Up NeXus Tango Servers
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.SetUp
+Bases: \fBobject\fP
+.sp
+setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B changePropertyName(server, oldname, newname, sclass=None)
+changes property name
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBserver\fP \-\- server name
+.IP \(bu 2
+\fBoldname\fP \-\- old property name
+.IP \(bu 2
+\fBnewname\fP \-\- new property name
+.IP \(bu 2
+\fBscalss\fP \-\- server class name
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B changeRecorderPath(path)
+adds a new recorder path
+.INDENT 7.0
+.TP
+.B Parameters
+\fBpath\fP \-\- new recorder path
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createConfigServer(beamline, masterHost, jsonsettings=None)
+creates configuration server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBbeamline\fP \-\- beamline name
+.IP \(bu 2
+\fBmaterHost\fP \-\- master host of data writer
+.IP \(bu 2
+\fBjsonsettings\fP \-\- connection settings to DB in json
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createDataWriter(beamline, masterHost)
+creates data writer
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBbeamline\fP \-\- beamline name
+.IP \(bu 2
+\fBmaterHost\fP \-\- master host of data writer
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createSelector(beamline, masterHost, writer=None, cserver=None)
+creates selector server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBbeamline\fP \-\- beamline name
+.IP \(bu 2
+\fBmaterHost\fP \-\- master host of data writer
+.IP \(bu 2
+\fBwriter\fP \-\- writer device name
+.IP \(bu 2
+\fBcserver\fP \-\- configuration server device name
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B restartServer(name, host=None)
+restarts server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- server name
+.IP \(bu 2
+\fBhost\fP \-\- server host name
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsetup.knownHosts = {\(aqhzgpp07eh4\(aq: {\(aqmasterHost\(aq: \(aqhzgpp07eh4\(aq, \(aquser\(aq: \(aqp07user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp07\(aq}, \(aqhaspp06ctrl\(aq: {\(aqmasterHost\(aq: \(aqhaspp06ctrl\(aq, \(aquser\(aq: \(aqp06user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp06\(aq}, \(aqhaspecsicl4\(aq: {\(aqmasterHost\(aq: \(aqhaspecsicl4\(aq, \(aquser\(aq: \(aqlacluser\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp02\(aq}, \(aqhaspp02ch2\(aq: {\(aqmasterHost\(aq: \(aqhaspp02ch2\(aq, \(aquser\(aq: \(aqp02user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp02\(aq}, \(aqhaspp02ch1\(aq: {\(aqmasterHost\(aq: \(aqhaspp02ch1\(aq, \(aquser\(aq: \(aqp02user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp02\(aq}, \(aqhaso107d1\(aq: {\(aqmasterHost\(aq: \(aqhaso107d1\(aq, \(aquser\(aq: \(aqkracht\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp11oh\(aq: {\(aqmasterHost\(aq: \(aqhaspp11oh\(aq, \(aquser\(aq: \(aqp11user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp11\(aq}, \(aqhasmlqj\(aq: {\(aqmasterHost\(aq: \(aqhasmlqj\(aq, \(aquser\(aq: \(aqlqjuser\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqlqj\(aq}, \(aqhaspp06nc1\(aq: {\(aqmasterHost\(aq: \(aqhaspp06nc1\(aq, \(aquser\(aq: \(aqp06user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp06\(aq}, \(aqhaspp03nano\(aq: {\(aqmasterHost\(aq: \(aqhaspp03nano\(aq, \(aquser\(aq: \(aqp03nano\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp03nano\(aq}, \(aqhaspp04exp1\(aq: {\(aqmasterHost\(aq: \(aqhaspp04exp1\(aq, \(aquser\(aq: \(aqp04user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp04\(aq}, \(aqhaspp02ch1a\(aq: {\(aqmasterHost\(aq: \(aqhaspp02ch1a\(aq, \(aquser\(aq: \(aqp02user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp02\(aq}, \(aqhaspp10e1\(aq: {\(aqmasterHost\(aq: \(aqhaspp10e1\(aq, \(aquser\(aq: \(aqp10user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp10\(aq}, \(aqhaso113b\(aq: {\(aqmasterHost\(aq: \(aqhaso113b\(aq, \(aquser\(aq: \(aqblume\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp10e2\(aq: {\(aqmasterHost\(aq: \(aqhaspp10e2\(aq, \(aquser\(aq: \(aqp10user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp10\(aq}, \(aqhaspp09dif\(aq: {\(aqmasterHost\(aq: \(aqhaspp09dif\(aq, \(aquser\(aq: \(aqp09user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaso113u\(aq: {\(aqmasterHost\(aq: \(aqhaso113u\(aq, \(aquser\(aq: \(aqblume\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaso228k\(aq: {\(aqmasterHost\(aq: \(aqhaso228k\(aq, \(aquser\(aq: \(aqjkotan\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp03\(aq: {\(aqmasterHost\(aq: \(aqhaspp03\(aq, \(aquser\(aq: \(aqp03user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp03\(aq}, \(aqhaspp10lcx\(aq: {\(aqmasterHost\(aq: \(aqhaspp10lcx\(aq, \(aquser\(aq: \(aqp10user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp10\(aq}, \(aqhaspp11user02\(aq: {\(aqmasterHost\(aq: \(aqhaspp11user02\(aq, \(aquser\(aq: \(aqp11user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp11\(aq}, \(aqhaspp09haxps\(aq: {\(aqmasterHost\(aq: \(aqhaspp09maxps\(aq, \(aquser\(aq: \(aqp09haxps\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhascmexp\(aq: {\(aqmasterHost\(aq: \(aqhascmexp\(aq, \(aquser\(aq: \(aqcmexp\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqcmexp\(aq}, \(aqhaspp04exp2\(aq: {\(aqmasterHost\(aq: \(aqhaspp04exp2\(aq, \(aquser\(aq: \(aqp04user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp04\(aq}, \(aqhaso107klx\(aq: {\(aqmasterHost\(aq: \(aqhaso107klx\(aq, \(aquser\(aq: \(aqkracht\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhasp029rack\(aq: {\(aqmasterHost\(aq: \(aqhasp029rack\(aq, \(aquser\(aq: \(aqp06user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp06\(aq}, \(aqhasnp64oh\(aq: {\(aqmasterHost\(aq: \(aqhasnp64oh\(aq, \(aquser\(aq: \(aqp64user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp64\(aq}, \(aqhaspp09\(aq: {\(aqmasterHost\(aq: \(aqhaspp09\(aq, \(aquser\(aq: \(aqp09user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp08\(aq: {\(aqmasterHost\(aq: \(aqhaspp08\(aq, \(aquser\(aq: \(aqp08user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp08\(aq}, \(aqhaso111tb\(aq: {\(aqmasterHost\(aq: \(aqhaso111tb\(aq, \(aquser\(aq: \(aqtnunez\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp09mag\(aq: {\(aqmasterHost\(aq: \(aqhaspp09mag\(aq, \(aquser\(aq: \(aqp09user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhasnp66\(aq: {\(aqmasterHost\(aq: \(aqhasnp66\(aq, \(aquser\(aq: \(aqp66user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp66\(aq}, \(aqhasnp65\(aq: {\(aqmasterHost\(aq: \(aqhasnp65\(aq, \(aquser\(aq: \(aqp65user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp65\(aq}, \(aqhasnp64\(aq: {\(aqmasterHost\(aq: \(aqhasnp64\(aq, \(aquser\(aq: \(aqp64user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp64\(aq}, \(aqhaspp11sardana\(aq: {\(aqmasterHost\(aq: \(aqhaspp11sardana\(aq, \(aquser\(aq: \(aqp11user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp11\(aq}, \(aqhzgpp07eh1\(aq: {\(aqmasterHost\(aq: \(aqhzgpp07eh1\(aq, \(aquser\(aq: \(aqp07user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp07\(aq}, \(aqhaspp10lab\(aq: {\(aqmasterHost\(aq: \(aqhaspp10lab\(aq, \(aquser\(aq: \(aqp10user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp10\(aq}, \(aqhastodt\(aq: {\(aqmasterHost\(aq: \(aqhastodt\(aq, \(aquser\(aq: \(aqkracht\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhzgpp07eh3\(aq: {\(aqmasterHost\(aq: \(aqhzgpp07eh3\(aq, \(aquser\(aq: \(aqp07user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp07\(aq}, \(aqhaso111n\(aq: {\(aqmasterHost\(aq: \(aqhaso111n\(aq, \(aquser\(aq: \(aqtnunez\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaspp07eh2\(aq: {\(aqmasterHost\(aq: \(aqhaspp07eh2\(aq, \(aquser\(aq: \(aqp07user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp07\(aq}, \(aqhaspp21lab\(aq: {\(aqmasterHost\(aq: \(aqhaspp21lab\(aq, \(aquser\(aq: \(aqp21user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp21\(aq}, \(aqhas6117b\(aq: {\(aqmasterHost\(aq: \(aqhas6117b\(aq, \(aquser\(aq: \(aqp02user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp02\(aq}, \(aqhasmfmc\(aq: {\(aqmasterHost\(aq: \(aqhasmfmc\(aq, \(aquser\(aq: \(aqdelayusr\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqfmc\(aq}, \(aqhasdelay\(aq: {\(aqmasterHost\(aq: \(aqhasdelay\(aq, \(aquser\(aq: \(aqdelayusr\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqdelay\(aq}, \(aqhaspp06mc01\(aq: {\(aqmasterHost\(aq: \(aqhaspp06mc01\(aq, \(aquser\(aq: \(aqp06user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp06\(aq}, \(aqhaspp01eh1\(aq: {\(aqmasterHost\(aq: \(aqhaspp01eh1\(aq, \(aquser\(aq: \(aqp01user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp01\(aq}, \(aqhaspp01eh2\(aq: {\(aqmasterHost\(aq: \(aqhaspp01eh2\(aq, \(aquser\(aq: \(aqp01user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp01\(aq}, \(aqhaspp01eh3\(aq: {\(aqmasterHost\(aq: \(aqhaspp01eh3\(aq, \(aquser\(aq: \(aqp01user\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqbeamline\(aq: \(aqp01\(aq}}
+all SardanaHosts and DataBaseHosts should be known
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsetup.main()
+the main program function
+.UNINDENT
+.SS nxstools.nxscreator module
+.sp
+Command\-line tool for creating to the nexdatas configuration server
+.INDENT 0.0
+.TP
+.B exception nxstools.nxscreator.CPExistsException
+Bases: \fBexceptions.Exception\fP
+.sp
+Component already exists exception
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.ClientDSCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+client datasource creator
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates a client datasource xml and stores it in DB or filesytem
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.ComponentCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+component creator
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates a component xml and stores it in DB or filesytem
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.Creator(options, args, printouts=True)
+Bases: \fBobject\fP
+.sp
+configuration server adapter
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.Device
+Bases: \fBobject\fP
+.sp
+device from online.xml
+.INDENT 7.0
+.TP
+.B attribute
+attribute name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B dtype
+data type
+.UNINDENT
+.INDENT 7.0
+.TP
+.B findAttribute(tangohost)
+sets attribute and datasource group of online.xml device
+.INDENT 7.0
+.TP
+.B Parameters
+\fBtangohost\fP \-\- tango host
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B group
+datasource tango group
+.UNINDENT
+.INDENT 7.0
+.TP
+.B host
+host without port
+.UNINDENT
+.INDENT 7.0
+.TP
+.B hostname
+host name with port
+.UNINDENT
+.INDENT 7.0
+.TP
+.B module
+device module
+.UNINDENT
+.INDENT 7.0
+.TP
+.B name
+device name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B port
+tango port
+.UNINDENT
+.INDENT 7.0
+.TP
+.B sardanahostname
+sardana host name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B sardananame
+sardana name with port
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setSardanaName(tolower)
+sets sardana name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBtolower\fP \-\- If True name in lowercase
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B splitHostPort()
+spilts host name from port
+.UNINDENT
+.INDENT 7.0
+.TP
+.B tdevice
+device type
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.DeviceDSCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+device datasource creator
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates a tango datasources xml of given device
+and stores it in DB or filesytem
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.OnlineCPCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+component creator of all online.xml complex devices
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B components = None
+component xml dictionary
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates components of all online.xml complex devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createXMLs()
+creates component xmls of all online.xml complex devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B datasources = None
+datasource xml dictionary
+.UNINDENT
+.INDENT 7.0
+.TP
+.B listcomponents()
+provides a list of components with xml templates
+.INDENT 7.0
+.TP
+.B Returns
+list of components with xml templates
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.OnlineDSCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+datasource creator of all online.xml simple devices
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates datasources of all online.xml simple devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createXMLs()
+creates datasource xmls of all online.xml simple devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B datasources = None
+datasource xml dictionary
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.TangoDSCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+tango datasource creator
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP \-\- command options
+.IP \(bu 2
+\fBargs\fP \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates a tango datasource xml and stores it in DB or filesytem
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B exception nxstools.nxscreator.WrongParameterError
+Bases: \fBexceptions.Exception\fP
+.sp
+wrong parameter exception
+.UNINDENT
+.SS nxstools.nxsparser module
+.sp
+Command\-line tool for ascess to the nexdatas configuration server
+.INDENT 0.0
+.TP
+.B class nxstools.nxsparser.ParserTools
+Bases: \fBobject\fP
+.sp
+configuration server adapter
+.INDENT 7.0
+.TP
+.B classmethod mergeDefinitions(xmls)
+.INDENT 7.0
+.TP
+.B merges the xmls list of definitions xml strings
+to one output xml string
+.UNINDENT
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmls\fP \-\- a list of xml string with definitions
+.TP
+.B Returns
+one output xml string
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod parseDataSources(xmlc)
+provides datasources and its records from xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlc\fP \-\- xml string
+.TP
+.B Returns
+list of datasource descriptions
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod parseFields(xmlc)
+provides datasources and its records from xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlc\fP \-\- xml string
+.TP
+.B Returns
+list of datasource descriptions
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod parseLinks(xmlc)
+provides datasources and its records from xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlc\fP \-\- xml string
+.TP
+.B Returns
+list of datasource descriptions
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod parseRecord(xmlc)
+provides source record from xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlc\fP \-\- xml string
+.TP
+.B Returns
+source record
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsparser.TableTools(description, nonone=None)
+Bases: \fBobject\fP
+.sp
+configuration server adapter
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBdescription\fP \-\- description list
+.IP \(bu 2
+\fBnonone\fP \-\- list of parameters which have to exist to be shown
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B generateList()
+generate row lists of table
+.INDENT 7.0
+.TP
+.B Returns
+table rows
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B headers = None
+table headers
+.UNINDENT
+.INDENT 7.0
+.TP
+.B title = None
+table title
+.UNINDENT
+.UNINDENT
+.SS nxstools.nxsxml module
+.sp
+Creator of XML configuration files
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NAttr(parent, nameAttr, typeAttr=\(aq\(aq)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Attribute tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBnameAttr\fP \-\- name attribute
+.IP \(bu 2
+\fBtypeAttr\fP \-\- type attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None)
+sets the attribute strategy
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBmode\fP \-\- mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+.IP \(bu 2
+\fBtrigger\fP \-\- for asynchronous writting,
+e.g. with different subentries
+.IP \(bu 2
+\fBvalue\fP \-\- label for postrun mode
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NDSource(parent)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Source tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparent\fP \-\- parent tag element
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addDoc(doc)
+adds doc tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdoc\fP \-\- doc tag content
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B initClient(name, recordName)
+sets paramters for Client data
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- name of datasource
+.IP \(bu 2
+\fBrecordName\fP \-\- name of the data object
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B initDBase(name, dbtype, query, dbname=None, rank=None, mycnf=None, user=None, passwd=None, dsn=None, mode=None, host=None, port=None)
+sets parameters of DataBase
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- name of datasource
+.IP \(bu 2
+\fBdbname\fP \-\- name of used DataBase
+.IP \(bu 2
+\fBquery\fP \-\- database query
+.IP \(bu 2
+\fBdbtype\fP \-\- type of the database, i.e. MYSQL, PGSQL, ORACLE
+.IP \(bu 2
+\fBrank\fP \-\- rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
+.IP \(bu 2
+\fBmycnf\fP \-\- MYSQL config file
+.IP \(bu 2
+\fBuser\fP \-\- database user name
+.IP \(bu 2
+\fBpasswd\fP \-\- database user password
+.IP \(bu 2
+\fBdsn\fP \-\- DSN string to initialize ORACLE and PGSQL databases
+.IP \(bu 2
+\fBmode\fP \-\- mode for ORACLE databases, i.e. SYSDBA or SYSOPER
+.IP \(bu 2
+\fBhost\fP \-\- name of the host
+.IP \(bu 2
+\fBport\fP \-\- port number
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B initTango(name, device, memberType, recordName, host=None, port=None, encoding=None, group=None)
+sets paramters for Tango device
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- name of datasource
+.IP \(bu 2
+\fBdevice\fP \-\- device name
+.IP \(bu 2
+\fBmemberType\fP \-\- type of the data object, i.e. attribute,
+property, command
+.IP \(bu 2
+\fBrecordName\fP \-\- name of the data object
+.IP \(bu 2
+\fBhost\fP \-\- host name
+.IP \(bu 2
+\fBport\fP \-\- port
+.IP \(bu 2
+\fBencoding\fP \-\- encoding of DevEncoded data
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NDeviceGroup(parent, deviceName, nameAttr, typeAttr=\(aq\(aq, commands=True, blackAttrs=None)
+Bases: \fBnxstools.nxsxml.NGroup\fP
+.sp
+Tango device tag creator
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBdeviceName\fP \-\- tango device name
+.IP \(bu 2
+\fBnameAttr\fP \-\- name attribute
+.IP \(bu 2
+\fBtypeAttr\fP \-\- type attribute
+.IP \(bu 2
+\fBcommands\fP \-\- if we call the commands
+.IP \(bu 2
+\fBblackAttrs\fP \-\- list of excluded attributes
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B nTypes = [\(aqNX_CHAR\(aq, \(aqNX_BOOLEAN\(aq, \(aqNX_INT32\(aq, \(aqNX_INT32\(aq, \(aqNX_FLOAT32\(aq, \(aqNX_FLOAT64\(aq, \(aqNX_UINT32\(aq, \(aqNX_UINT32\(aq, \(aqNX_CHAR\(aq, \(aqNX_CHAR\(aq, \(aqNX_INT32\(aq, \(aqNX_INT32\(aq, \(aqNX_FLOAT32\(aq, \(aqNX_FLOAT64\(aq, \(aqNX_UINT32\(aq, \(aqNX_UINT32\(aq, \(aqNX_CHAR\(aq, \(aqNX_CHAR\(aq, \(aqNX_CHAR\(aq, \(aqNX_CHAR\(aq, \(aqNX_CHAR\(aq, \(aqNX_BOOLEAN\(aq, \(aqNX_CHAR\(aq, \(aqNX_INT64\(aq, \(aqNX_UINT64\(aq, \(aqNX_INT64\(aq, \(aqNX_UINT64\(aq, \(aqNX_INT32\(aq, \(aqNX_CHAR\(aq]
+NeXuS types corresponding to the Tango types
+.UNINDENT
+.INDENT 7.0
+.TP
+.B tTypes = [\(aqDevVoid\(aq, \(aqDevBoolean\(aq, \(aqDevShort\(aq, \(aqDevLong\(aq, \(aqDevFloat\(aq, \(aqDevDouble\(aq, \(aqDevUShort\(aq, \(aqDevULong\(aq, \(aqDevString\(aq, \(aqDevVarCharArray\(aq, \(aqDevVarShortArray\(aq, \(aqDevVarLongArray\(aq, \(aqDevVarFloatArray\(aq, \(aqDevVarDoubleArray\(aq, \(aqDevVarUShortArray\(aq, \(aqDevVarULongArray\(aq, \(aqDevVarStringArray\(aq, \(aqDevVarLongStringArray\(aq, \(aqDevVarDoubleStringArray\(aq, \(aqDevState\(aq, \(aqConstDevString\(aq, \(aqDevVarBooleanArray\(aq, \(aqDevUChar\(aq, \(aqDevLong64\(aq, \(aqDevULong64\(aq, \(aqDevVarLong64Array\(aq, \(aqDevVarULong64Array\(aq, \(aqDevInt\(aq, \(aqDevEncoded\(aq]
+Tango types
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NDim(parent, indexAttr, valueAttr)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Dim tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBindexAttr\fP \-\- index attribute
+.IP \(bu 2
+\fBvalueAttr\fP \-\- value attribute
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NDimensions(parent, rankAttr)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Dimensions tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBrankAttr\fP \-\- rank attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B dim(indexAttr, valueAttr)
+adds dim tag
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBindexAttr\fP \-\- index attribute
+.IP \(bu 2
+\fBvalueAttr\fP \-\- value attribute
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B dims = None
+container with dim tag wrapper
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NField(parent, nameAttr, typeAttr=\(aq\(aq)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Field tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBnameAttr\fP \-\- name attribute
+.IP \(bu 2
+\fBtypeAttr\fP \-\- type attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addAttr(attrName, attrType, attrValue=\(aq\(aq)
+adds attribute tag
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBattrName\fP \-\- name attribute
+.IP \(bu 2
+\fBattrType\fP \-\- type attribute
+.IP \(bu 2
+\fBattrValue\fP \-\- content of the attribute tag
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addDoc(doc)
+adds doc tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdoc\fP \-\- doc tag content
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, grows=None, compression=False, rate=None, shuffle=None)
+sets the field strategy
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBmode\fP \-\- mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+.IP \(bu 2
+\fBtrigger\fP \-\- for asynchronous writting,
+e.g. with different subentries
+.IP \(bu 2
+\fBvalue\fP \-\- label for postrun mode
+.IP \(bu 2
+\fBgrows\fP \-\- growing dimension
+.IP \(bu 2
+\fBcompression\fP \-\- flag if compression shuold be applied
+.IP \(bu 2
+\fBrate\fP \-\- compression rate
+.IP \(bu 2
+\fBshuffle\fP \-\- flag if compression shuffle
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setUnits(unitsAttr)
+sets the field unit
+.INDENT 7.0
+.TP
+.B Parameters
+\fBunitsAttr\fP \-\- the field unit
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NGroup(parent, nameAttr, typeAttr=\(aq\(aq)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Group tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBnameAttr\fP \-\- name attribute
+.IP \(bu 2
+\fBtypeAttr\fP \-\- type attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addAttr(attrName, attrType, attrValue=\(aq\(aq)
+adds attribute: tag
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBattrName\fP \-\- name attribute
+.IP \(bu 2
+\fBattrType\fP \-\- type attribute
+.IP \(bu 2
+\fBattrValue\fP \-\- content of the attribute tag
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addDoc(doc)
+adds doc tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdoc\fP \-\- doc tag content
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NLink(parent, nameAttr, gTarget)
+Bases: \fBnxstools.nxsxml.NTag\fP
+.sp
+Link tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBnameAttr\fP \-\- name attribute
+.IP \(bu 2
+\fBgTarget\fP \-\- target attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addDoc(doc)
+adds doc tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdoc\fP \-\- doc tag content
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.NTag(parent, tagName, nameAttr=\(aq\(aq, typeAttr=\(aq\(aq)
+Bases: \fBobject\fP
+.sp
+tag wrapper
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtagName\fP \-\- tag name
+.IP \(bu 2
+\fBparent\fP \-\- parent tag element
+.IP \(bu 2
+\fBnameAttr\fP \-\- value of name attribute
+.IP \(bu 2
+\fBtypeAttr\fP \-\- value of type attribute
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addTagAttr(name, value)
+adds tag attribute
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- attribute name
+.IP \(bu 2
+\fBvalue\fP \-\- attribute value
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B addText(text)
+adds tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBtext\fP \-\- tag content
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B elem = None
+tag element from minidom
+.UNINDENT
+.INDENT 7.0
+.TP
+.B root = None
+XML minidom root
+.UNINDENT
+.INDENT 7.0
+.TP
+.B setText(text)
+sets tag content
+.INDENT 7.0
+.TP
+.B Parameters
+\fBtext\fP \-\- tag content
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsxml.XMLFile(fname)
+Bases: \fBobject\fP
+.sp
+XML file object
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfname\fP \-\- XML file name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B dump()
+dumps XML structure into the XML file
+.INDENT 7.0
+.TP
+.B Brief
+It opens XML file, calls prettyPrint and closes the XML file
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B elem = None
+XML definition element
+.UNINDENT
+.INDENT 7.0
+.TP
+.B fname = None
+XML file name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B prettyPrint(etNode=None)
+prints pretty XML making use of minidom
+.INDENT 7.0
+.TP
+.B Parameters
+\fBetNode\fP \-\- node
+.TP
+.B Returns
+pretty XML string
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B root = None
+XML root instance
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsxml.main()
+the main function
+.UNINDENT
+.SS nxstools.nxsdevicetools module
+.sp
+NDTS TANGO device tools
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.checkServer(name=\(aqNXSConfigServer\(aq)
+provides server device name if only one or error in the other case
+.INDENT 7.0
+.TP
+.B Parameters
+\fBname\fP \-\- server name
+.TP
+.B Returns
+server device name or empty string if error appears
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.ctModules = [\(aqmca8715roi\(aq, \(aqonedroi\(aq, \(aqsis3820\(aq, \(aqsis3302roi\(aq, \(aqxmcd\(aq, \(aqvfcadc\(aq, \(aqmythenroi\(aq, \(aqmhzdaqp01\(aq, \(aqdgg2\(aq, \(aqtangoattributectctrl\(aq]
+counter/timer modules
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.findClassName(server, name)
+finds class name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBname\fP \-\- device name
+.TP
+.B Returns
+class name
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.generateDeviceNames(prefix, first, last, minimal=False)
+generates device names
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBprefix\fP \-\- device name prefix
+.IP \(bu 2
+\fBfirst\fP \-\- first device index
+.IP \(bu 2
+\fBlast\fP \-\- last device index
+.UNINDENT
+.TP
+.B Returns
+device names
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.getAttributes(device, host=None, port=10000)
+provides a list of device attributes
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBdevice\fP \-\- tango device name
+.IP \(bu 2
+\fBhost\fP \-\- device host
+.IP \(bu 2
+\fBport\fP \-\- device port
+.UNINDENT
+.TP
+.B Returns
+list of device attributes
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.getClassName(devicename=\(aqNXSConfigServer\(aq)
+provides device class name
+.INDENT 7.0
+.TP
+.B Parameters
+\fBdevicename\fP \-\- device name
+.TP
+.B Returns
+class name
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.getDataSourceComponents(server)
+gets datasource components
+.INDENT 7.0
+.TP
+.B Parameters
+\fBserver\fP \-\- configuration server
+.TP
+.B Returns
+dictionary with datasource components
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.getServerTangoHost(server)
+fetches the server tango host
+.INDENT 7.0
+.TP
+.B Parameters
+\fBserver\fP \-\- tango server
+.TP
+.B Returns
+tango host
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.getServers(name=\(aqNXSConfigServer\(aq)
+provides server device names
+.INDENT 7.0
+.TP
+.B Parameters
+\fBname\fP \-\- server instance name
+.TP
+.B Returns
+list of the server device names
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.ioRegModules = [\(aqsis3610\(aq]
+IO register modules
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.listServers(server, name=\(aqNXSConfigServer\(aq)
+finds server names
+.INDENT 7.0
+.TP
+.B Parameters
+\fBname\fP \-\- server instance name
+.TP
+.B Returns
+server list
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.moduleAttributes = {\(aqtip551\(aq: [\(aqValue\(aq, \(aqVoltage\(aq], \(aqe6c\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqpie710\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqvfcadc\(aq: [\(aqValue\(aq, \(aqCounts\(aq], \(aqpie712\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqsis3820\(aq: [\(aqValue\(aq, \(aqCounts\(aq], \(aqmca_sis3302new\(aq: [\(aqValue\(aq, \(aqData\(aq], \(aqsis3302roi\(aq: [\(aqValue\(aq, None], \(aqspk\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqmca_sis3302\(aq: [\(aqValue\(aq, \(aqData\(aq], \(aqabsbox\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqmca_8701\(aq: [\(aqValue\(aq, \(aqData\(aq], \(aqsmchydra\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqxmcd\(aq: [\(aqValue\(aq, None], \(aqoms58\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqonedroi\(aq: [\(aqValue\(aq, None], \(aqmca8715roi\(aq: [\(aqValue\(aq, None], \(aqmotor_tango\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqcounter_tango\(aq: [\(aqValue\(aq, \(aqCounts\(aq], \(aqdgg2\(aq: [\(aqValue\(aq, \(aqSampleTime\(aq], \(aqomsmaxv\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqtangoattributectctrl\(aq: [\(aqValue\(aq, None], \(aqe6c_p09_eh2\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqmca_xia\(aq: [\(aqValue\(aq, None], \(aqmythenroi\(aq: [\(aqValue\(aq, None], \(aqlom\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqtip830\(aq: [\(aqValue\(aq, \(aqCounts\(aq], \(aqmhzdaqp01\(aq: [\(aqValue\(aq, None], \(aqkohzu\(aq: [\(aqPosition\(aq, \(aqPosition\(aq], \(aqsis3610\(aq: [\(aqValue\(aq, \(aqValue\(aq]}
+attributes of device modules to acquire with elements:
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.moduleMultiAttributes = {\(aqperkinelmer\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpilatus2m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus1m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpco4000\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqmythen\(aq: [\(aqCounts1\(aq, \(aqCounts2\(aq, \(aqCountsMax\(aq, \(aqCountsTotal\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFileIndex\(aq, \(aqFilePrefix\(aq, \(aqLastImage\(aq, \(aqRoI1\(aq, \(aqRoI2\(aq], \(aqlambda2m\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqpilatus300k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqperkinelmerdetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpco\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus6m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqlambda\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmarccd\(aq: [\(aqFrameShift\(aq, \(aqSavingDirectory\(aq, \(aqSavingPostfix\(aq, \(aqSavingPrefix\(aq], \(aqpedetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq, \(aqCameraGain\(aq], \(aqpcoedge\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus100k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq]}
+important attributes of modules
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.moduleTemplateFiles = {\(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus2m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_external_data.ds.xml\(aq]}
+xml template files of modules
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.motorModules = [\(aqabsbox\(aq, \(aqmotor_tango\(aq, \(aqkohzu\(aq, \(aqsmchydra\(aq, \(aqlom\(aq, \(aqoms58\(aq, \(aqe6c\(aq, \(aqomsmaxv\(aq, \(aqspk\(aq, \(aqpie710\(aq, \(aqpie712\(aq, \(aqe6c_p09_eh2\(aq]
+modules of motors
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.oneDModules = [\(aqmca_xia\(aq]
+modules of 1D detectors
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.openServer(device)
+opens connection to the configuration server
+.INDENT 7.0
+.TP
+.B Parameters
+\fBconfiguration\fP \-\- server device
+.TP
+.B Returns
+configuration server proxy
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.storeComponent(name, xml, server)
+stores components in Configuration Server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- component name
+.IP \(bu 2
+\fBxml\fP \-\- component xml string
+.IP \(bu 2
+\fBserver\fP \-\- configuration server
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.storeDataSource(name, xml, server)
+stores datasources in Configuration Server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP \-\- datasource name
+.IP \(bu 2
+\fBxml\fP \-\- datasource xml string
+.IP \(bu 2
+\fBserver\fP \-\- configuration server
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.twoDModules = [\(aqpilatus100k\(aq, \(aqpilatus300k\(aq, \(aqpilatus1m\(aq, \(aqpilatus2m\(aq, \(aqpilatus6m\(aq, \(aqpco4000\(aq, \(aqperkinelmerdetector\(aq, \(aqlambda\(aq, \(aqpedetector\(aq, \(aqperkinelmer\(aq, \(aqpco\(aq, \(aqpcoedge\(aq, \(aqmarccd\(aq, \(aqperkinelmer\(aq, \(aqlcxcamera\(aq, \(aqlimaccd\(aq, \(aqeigerpsi\(aq, \(aqeigerdectris\(aq]
+modules of 2d detectors
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsdevicetools.zeroDModules = [\(aqtip830\(aq]
+modules of 0D detectors
+.UNINDENT
+.SS nxstools.filenamegenerator module
+.sp
+Filename generator
+.INDENT 0.0
+.TP
+.B class nxstools.filenamegenerator.FilenameGenerator(fname_template, start_index=0, stop_index=None)
+Bases: \fBobject\fP
+.sp
+Generate image file names
+.sp
+(c) Copyright 2015 Eugen Wintersberger <\fI\%eugen.wintersberger@gmail.com\fP>
+(c) Copyright 2015 DESY
+This file is part of nx2img.
+.sp
+nx2img is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+.sp
+nx2img is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.sp
+You should have received a copy of the GNU General Public License
+along with nx2img.  If not, see <\fI\%http://www.gnu.org/licenses/\fP>.
+.sp
+Generator class creating image file names.
+.INDENT 7.0
+.TP
+.B static from_slice(file_template)
+Static factory method to create a filename_generator instance
+from a sliced user input
+.UNINDENT
+.UNINDENT
+.SS Module contents
+.sp
+NXS tools
+.INDENT 0.0
+.IP \(bu 2
+\fIgenindex\fP
+.IP \(bu 2
+\fImodindex\fP
+.IP \(bu 2
+\fIsearch\fP
+.UNINDENT
+.SH AUTHOR
+Jan Kotanski
+.SH COPYRIGHT
+2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>
+
+GNU GENERAL PUBLIC LICENSE, version 3
+.\" Generated by docutils manpage writer.
+.

@@ -47,7 +47,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'nxstools'
-copyright = u'2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>'
+copyright = u'2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>' \
+            + u'\n\nGNU GENERAL PUBLIC LICENSE, version 3'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -231,17 +232,17 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'nxstools', u'nxstools Documentation',
+    ('index', 'nxstools', 'nxstools Documentation',
      [u'Jan Kotanski'], 1),
-    ('nxscollect', 'nxscollect', u'nxscollect Documentation',
+    ('nxscollect', 'nxscollect', 'upload external images into NeXus/HDF5 file',
      [u'Jan Kotanski'], 1),
-    ('nxsconfig', 'nxsconfig', u'nxsconfig Documentation',
+    ('nxsconfig', 'nxsconfig', 'read NeXus Configuration Server settings',
      [u'Jan Kotanski'], 1),
-    ('nxscreate', 'nxscreate', u'nxscreate Documentation',
+    ('nxscreate', 'nxscreate', 'create NeXus Configuration component',
      [u'Jan Kotanski'], 1),
-    ('nxsdata', 'nxsdata', u'nxsdata Documentation',
+    ('nxsdata', 'nxsdata', 'run NeXus Data Writer',
      [u'Jan Kotanski'], 1),
-    ('nxsetup', 'nxsetup', u'nxsetup Documentation',
+    ('nxsetup', 'nxsetup', 'set NeXDaTaS Tango Server environment up',
      [u'Jan Kotanski'], 1),
 ]
 

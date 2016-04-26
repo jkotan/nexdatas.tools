@@ -1,197 +1,525 @@
-.TH nxscreate 1 "2014-01-13" nxscreate
+.\" Man page generated from reStructuredText.
+.
+.TH "NXSCREATE" "1" "April 26, 2016" "2.0" "NXSTools"
 .SH NAME
-.B nxscreate
-\- command-line configuration reader for NXS Configuration Server
-
-.SH SYNOPSIS
-.B nxscreate
-.I <command>
-[<options>] [<arg1> [<arg2>  ...]] 
-
-
+nxscreate \- create NeXus Configuration component
+.
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
 .SH DESCRIPTION
-.B nxscreate
-allows one to create simple datasources and components.
-The following commands are available:
-
-
-
-.B nxscreate clientds 
-[options] [name1] [name2]
-
-It creates a set of client datasources.
-
-.I Options:
-  -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
-                        device prefix, i.e. exp_c
-  -f FIRST, --first=FIRST
-                        first index
-  -l LAST, --last=LAST  last index
-  -d DIRECTORY, --directory=DIRECTORY
-                        output datasource directory
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
-  -b, --database        store components in Configuration Server database
-  -m, --minimal_device  device name without first '0'
-  -r SERVER, --server=SERVER
-                        configuration server device name
-
-
-.B nxscreate tangods 
-[options]
-
+.sp
+The nxscreate program allows one to create simple datasources and components.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.
+.SH NXSCREATE CLIENTDS
+.sp
+It creates a set of CLIENT datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate clientds [options] [name1] [name2]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c (mandatory w/o <name1>)
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index (mandatory w/o <name1>)
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index (mandatory w/o <name1>)
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ DSOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DSOURCE
+datasource prefix, i.e. counter
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-m\fP,\fB  \-\-minimal_device
+device name without first \(aq0\(aq
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate clientds starttime \-b
+nxscreate clientds title \-d /home/user/xmldir
+nxscreate clientds \-p exp_c \-f1 \-l4 \-b
+nxscreate clientds \-p hasppXX:10000/expchan/vfcadc_exp/ \-f1 \-l8  \-m \-b \-s exp_vfc
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE TANGODS
+.sp
 It creates a set of TANGO datasources.
-
-.I Options:
-  -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
-                        device prefix, i.e. exp_c
-  -f FIRST, --first=FIRST
-                        first index
-  -l LAST, --last=LAST  last index
-  -a ATTRIBUTE, --attribute=ATTRIBUTE
-                        tango attribute name
-  -o DATASOURCE, --datasource-prefix=DATASOURCE
-                        datasource-prefix
-  -d DIRECTORY, --directory=DIRECTORY
-                        output datasource directory
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
-  -s HOST, --host=HOST  tango host name
-  -t PORT, --port=PORT  tango host port
-  -b, --database        store components in Configuration Server database
-  -r SERVER, --server=SERVER
-
-
-
-.B nxscreate deviceds 
-[options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]] 
-
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate tangods [options]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <datasource> is \(aqexp_mot\(aq
+.IP \(bu 2
+default <host>, <port> are taken from <server>
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c (mandatory)
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index (mandatory)
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index (mandatory)
+.TP
+.BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
+tango attribute name
+.TP
+.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+datasource\-prefix
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+tango host name
+.TP
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+tango host port
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate tangods \-f1 \-l2  \-p p09/motor/exp. \-o exp_mot
+nxscreate tangods \-f1 \-l32  \-p p02/motor/eh1a. \-o exp_mot \-b
+nxscreate tangods \-f1 \-l32  \-p p01/motor/oh1. \-o exp_mot \-b
+nxscreate tangods \-f1 \-l8  \-p pXX/slt/exp. \-o slt_exp_ \-s hasppXX.desy.de \-b
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE DEVICEDS
+.sp
 It creates a set of TANGO datasources for all device attributes.
-
-.I Options:
-  -h, --help            show this help message and exit
-  -v DEVICE, --device=DEVICE
-                        device, i.e. p09/pilatus300k/01
-  -o DATASOURCE, --datasource-prefix=DATASOURCE
-                        datasource-prefix
-  -d DIRECTORY, --directory=DIRECTORY
-                        output datasource directory
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
-  -s HOST, --host=HOST  tango host name
-  -t PORT, --port=PORT  tango host port
-  -b, --database        store components in Configuration Server database
-  -n, --no-group        creates common group with a name of datasource prefix
-  -r SERVER, --server=SERVER
-                        configuration server device name
-
-
-
-.B nxscreate onlineds 
-[options] inputFile
-
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+without <dv_attr1>: datasources for all attributes are created
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <datasource> is \(aqexp_mot\(aq
+.IP \(bu 2
+default <host>, <port> are taken from <server>
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\fB= DEVICE
+device, i.e. p09/pilatus300k/01 (mandatory)
+.TP
+.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+datasource\-prefix
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output datasource directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+tango host name
+.TP
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+tango host port
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-n\fP,\fB  \-\-no\-group
+don\(aqt create common group with a name of datasource
+prefix
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate deviceds  \-v p09/pilatus/haso228k
+nxscreate deviceds  \-v p09/lambda2m/haso228k  \-s haslambda \-b
+nxscreate deviceds  \-v p09/pilatus300k/haso228k \-b \-o pilatus300k_ RoI Energy ExposureTime
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE ONLINEDS
+.sp
 It creates a set of motor datasources from an online xml file.
-Usage: ndtscreate_onlineds [options] inputFile
-       nxscreate onlineds [options] inputFile
- e.g.
-       nxscreate onlineds -b
-       nxscreate onlinecp -d /home/user/xmldir
-
- - with -b datasources are created in Configuration Server database
- - with -d <directory> datasources are created on filesystem
- - default <inputFile> is '/online_dir/online.xml'
-
-
-.I Options:
-  -h, --help            show this help message and exit
-  -b, --database        store components in Configuration Server database
-  -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be saved
-  -n, --nolower         do not change aliases into lower case
-  -r SERVER, --server=SERVER
-                        configuration server device name
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
-
-
-.B nxscreate onlinecp 
-[options] [<inputFile>]
-Usage: ndtscreate_onlinecp [options] [<inputFile>]
-       nxscreate onlinecp [options] [<inputFile>]
- e.g.
-       nxscreate onlinecp
-       nxscreate onlinecp -c pilatus
-
- - without '-c <component>' a list of possible components is shown
- - without '-d <dircetory>  datasources are created in Configuration Server database
- - with -d <directory> datasources are created on filesystem
- - default <inputFile> is '/online_dir/online.xml'
-
-
-.I Options:
-  -h, --help            show this help message and exit
-  -c COMPONENT, --component=COMPONENT
-                        component namerelated to the device name from
-                        <inputFile>
-  -r SERVER, --server=SERVER
-                        configuration server device name
-  -n, --nolower         do not change aliases into lower case
-  -o, --overwrite       overwrite existing component
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
-  -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be stored.
-			If it is not set components are stored in Configuration
-                        Server database
-
-
-.B nxscreate comp 
-[options] [name1] [name2]
-
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds [options] inputFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: datasources are created on the local filesystem
+.IP \(bu 2
+without \-b or \-d <directory>: run in the test mode
+.IP \(bu 2
+default <inputFile> is \(aq/online_dir/online.xml\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be saved
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds \-b
+nxscreate onlineds \-d /home/user/xmldir
+nxscreate onlineds
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE ONLINECP
+.sp
+It creates a detector component from the online.xml file
+and its set of datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlinecp [options] inputFile
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+without \(aq\-c <component>\(aq: show a list of possible components
+.IP \(bu 2
+without \(aq\-d <dircetory>:  components are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: components are created on the local filesystem
+.IP \(bu 2
+default <inputFile> is \(aq/online_dir/online.xml\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
+component namerelated to the device name from
+<inputFile>
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing component
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be stored. If
+it is not set components are stored in Configuration
+Server database
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlinecp
+nxscreate onlinecp \-c pilatus
+nxscreate onlinecp \-c lambda \-d /home/user/xmldir/
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE COMP
+.sp
 It creates a set of simple components.
-
-.I Options:
-  -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
-                        device prefix, i.e. exp_c
-  -f FIRST, --first=FIRST
-                        first index
-  -l LAST, --last=LAST  last index
-  -d DIRECTORY, --directory=DIRECTORY
-                        output component directory
-  -x FILE, --file-prefix=FILE
-                        file prefix, i.e. counter
- -n NEXUSPATH, --nexuspath=NEXUSPATH
-                        nexus path with field name
-  -s STRATEGY, --strategy=STRATEGY
-                        writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
-  -t TYPE, --type=TYPE  nexus type of the field
-  -u UNITS, --units=UNITS
-                        nexus units of the field
-  -k, --links           create datasource links
-  -b, --database        store components in Configuration Server database
-  -r SERVER, --server=SERVER
-                        configuration server device name
-  -c CHUNK, --chunk=CHUNK
-                        chunk format, i.e. SCALAR, SPECTRUM, IMAGE
-  -m, --minimal_device  device name without first '0'
-
-
-
-
-
-.SH SEE ALSO
-https://github.com/jkotan/nexdatas/
-
-.SH COPYRIGHT
-Copyrights (c) 2012-2016, GNU GPL v3, DESY, Jan Kotanski
-
-.SH BUGS
-Please report bugs on the project's mailing list:
-mailto://jankotan@gmail.com
-
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate comp [options] [name1] [name2] ...
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <strategy> is step
+.IP \(bu 2
+default <type> is NX_FLOAT
+.IP \(bu 2
+default <chunk> is SCALAR
+.IP \(bu 2
+default <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+device prefix, i.e. exp_c
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+first index
+.TP
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+last index
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output component directory
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-n \ NEXUSPATH\fP,\fB \ \-\-nexuspath\fB= NEXUSPATH
+nexus path with field name
+.TP
+.BI \-s \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
+writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
+.TP
+.BI \-t \ TYPE\fP,\fB \ \-\-type\fB= TYPE
+nexus type of the field
+.TP
+.BI \-u \ UNITS\fP,\fB \ \-\-units\fB= UNITS
+nexus units of the field
+.TP
+.B \-k\fP,\fB  \-\-links
+create datasource links
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-c \ CHUNK\fP,\fB \ \-\-chunk\fB= CHUNK
+chunk format, i.e. SCALAR, SPECTRUM, IMAGE
+.TP
+.B \-m\fP,\fB  \-\-minimal_device
+device name without first \(aq0\(aq
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate comp  counter
+nxscreate comp \-f1 \-l \-p exp_c01 \-b
+nxscreate comp \-c lambda \-d /home/user/xmldir/
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-p sis3302_1_roi \-f1 \-l4  \-s STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-s STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
-Jan Kotanski <jankotan@gmail.com>, 
+Jan Kotanski
+.SH COPYRIGHT
+2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>
 
+GNU GENERAL PUBLIC LICENSE, version 3
+.\" Generated by docutils manpage writer.
+.

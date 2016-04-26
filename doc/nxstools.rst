@@ -6,7 +6,7 @@ Submodules
 
 nxstools.nxscollect module
 --------------------------
-
+       
 .. automodule:: nxstools.nxscollect
     :members:
     :undoc-members:

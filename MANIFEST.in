@@ -5,3 +5,4 @@ include man/nxsconfig.1
 include man/nxscreate.1
 include man/nxscollect.1
 include man/nxsetup.1
+include man/nxstools.1

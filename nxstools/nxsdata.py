@@ -106,7 +106,7 @@ def _createParser():
     usage = "usage: nxsdata <command> [-s <nexus_server>] " \
             + " [<arg1> [<arg2>  ...]] \n" \
             + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
-            + "$HOME/myfile.h5 \n\n" \
+            + "/user/data/myfile.h5 \n\n" \
             + "Commands: \n" \
             + "   openfile [-s <nexus_server>]  <file_name> \n" \
             + "          open new H5 file\n" \

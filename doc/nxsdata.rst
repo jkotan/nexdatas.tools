@@ -2,23 +2,21 @@
 nxsdata
 =======
 
+Description
+-----------
+
 The nxsdata program is a command-line interface to Nexus Data Tango Server.
 Program allows one to store NeXuS Data in H5 files.
 The writer provides storing data from other Tango devices, various databases
 as well as passed by a user client via JSON strings.
 
 
-Usage:
+Synopsis
+--------
 
 .. code:: bash
 
 	  nxsdata <command> [-s <nexus_server>]  [<arg1> [<arg2>  ...]]
-
-e.g.:
-
-.. code:: bash
-
-	  nxsdata openfile -s p02/tangodataserver/exp.01  $HOME/myfile.h5
 
 Commands:
    openfile [-s <nexus_server>]  <file_name>
@@ -42,4 +40,11 @@ Options:
   -s SERVER, --server=SERVER
                         tango data server device name
 
+
+Example
+-------
+
+.. code:: bash
+
+	  nxsdata openfile -s p02/tangodataserver/exp.01  /user/data/myfile.h5
 

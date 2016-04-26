@@ -1,27 +1,32 @@
 Welcome to nxstools's documentation!
 ====================================
 
-Authors: Jan Kotanski, Eugen Wintersberger, Halil Pasic
+Authors: Jan Kotanski
+
+------------
 Introduction
+------------
 
-Configuration tools for NeXDaTaS Tango Servers
+Configuration tools for NeXDaTaS Tango Servers consists of the following command-line scripts:
+  - **nxscollect** uploads external images into NeXus/HDF5 file
+  - **nxsconfig** reads NeXus Configuration Server settings
+  - **nxscreate** creates NeXus Configuration components
+  - **nxsdata** runs NeXus Data Writer
+  - **nxsetup** setups NeXDaTaS Tango Server environment
 
-consists of the following command-line scripts:
-  - **nxscollect** to upload external images into NeXus/HDF5 file
-  - **nxsconfig** to read NeXus Configuration Server settings
-  - **nxscreate** to create NeXus Configuration components
-  - **nxsdata** to run NeXus Data Writer
-  - **nxsetup** to setup NeXDaTaS Tango Server environment
 as well as the **nxstools** package which allows perform these operations
 directly from a python code.
 
--------------------------
-Installation from sources
--------------------------
+------------
+Installation
+------------
 
 Install the dependencies:
 
-    PyTango
+    PyTango, sphinx
+
+From sources
+""""""""""""
 
 Download the latest NXS Tools version from
 
@@ -29,26 +34,46 @@ Download the latest NXS Tools version from
 
 Extract sources and run
 
-$ python setup.py install
+.. code:: bash
+	  
+	  $ python setup.py install
 
+Debian packages
+"""""""""""""""
 
-Contents
-========
+Debian Jessie (and Wheezy) packages can be found in the HDRI repository.
 
-.. toctree::
-   :maxdepth: 4
+To install the debian packages, add the PGP repository key
 
-   nxscollect
-   nxsconfig
-   nxscreate
-   nxsdata
-   nxsetup
-   nxstools
+.. code:: bash
 
-Indices and tables
-==================
+	  $ sudo su
+	  $ wget -q -O - http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+and then download the corresponding source list
 
+.. code:: bash
+
+	  $ cd /etc/apt/sources.list.d
+	  $ wget http://repos.pni-hdri.de/jessie-pni-hdri.list
+
+Finally,
+
+.. code:: bash
+
+	  $ apt-get update
+	  $ apt-get install python-nxstools
+
+To instal other NexDaTaS packages	  
+
+.. code:: bash
+	  
+	  $ apt-get install python-nxswriter nxsconfigserver-db python-nxsconfigserver nxsconfigtool
+
+and for Sardana related packages
+
+.. code:: bash
+
+	  $ apt-get install python-nxsrecselector nxselector
+
+for component selector.
