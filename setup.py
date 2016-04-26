@@ -69,7 +69,7 @@ SETUPDATA = dict(
             'project': ('setup.py', name),
             'version': ('setup.py', version),
             'release': ('setup.py', release)}},
-    long_description=read('README')
+    long_description=read('README.rst')
 )
 
 
