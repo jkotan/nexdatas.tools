@@ -1,0 +1,9 @@
+Configuration tools for NeXDaTaS Tango Servers
+consists of the following command-line scripts:
+    nxscollect: to upload external images into NeXus/HDF5 file
+    nxsconfig: to read NeXus Configuration Server settings
+    nxscreate: to create NeXus Configuration components
+    nxsdata: to run NeXus Data Writer
+    nxsetup: to setup NeXDaTaS Tango Server environment
+as well as the nxstools package which allows perform these operations
+directly from a python code.

@@ -36,19 +36,21 @@ from sphinx.setup_command import BuildDoc
 release = IPKG.__version__
 version = ".".join(release.split(".")[:2])
 name = "NXSTools"
+author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic",
+glicense = "GNU GENERAL PUBLIC LICENSE, version 3",
 
 #: metadata for distutils
 SETUPDATA = dict(
     name="nexdatas.tools",
     version=IPKG.__version__,
-    author="Jan Kotanski, Eugen Wintersberger , Halil Pasic",
+    author=author,
     author_email="jankotan@gmail.com, eugen.wintersberger@gmail.com, "
     + "halil.pasic@gmail.com",
     maintainer="Jan Kotanski, Eugen Wintersberger , Halil Pasic",
     maintainer_email="jankotan@gmail.com, eugen.wintersberger@gmail.com, "
     + "halil.pasic@gmail.com",
-    description=("Configuration tool  for creating components"),
-    license="GNU GENERAL PUBLIC LICENSE, version 3",
+    license=glicense,
+    description=("Configuration tools for NeXDaTaS Tango Servers"),
     keywords="configuration writer Tango component nexus data",
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
@@ -67,7 +69,7 @@ SETUPDATA = dict(
             'project': ('setup.py', name),
             'version': ('setup.py', version),
             'release': ('setup.py', release)}},
-    long_description=read('README.rst')
+    long_description=read('README')
 )
 
 

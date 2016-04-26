@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'nxstools'
-copyright = u'2016, Author'
+copyright = u'2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -202,7 +202,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'nxstools.tex', u'nxstools Documentation',
-   u'Author', 'manual'),
+   u'Jan Kotanski', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -232,7 +232,17 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'nxstools', u'nxstools Documentation',
-     [u'Author'], 1)
+     [u'Jan Kotanski'], 1),
+    ('nxscollect', 'nxscollect', u'nxscollect Documentation',
+     [u'Jan Kotanski'], 1),
+    ('nxsconfig', 'nxsconfig', u'nxsconfig Documentation',
+     [u'Jan Kotanski'], 1),
+    ('nxscreate', 'nxscreate', u'nxscreate Documentation',
+     [u'Jan Kotanski'], 1),
+    ('nxsdata', 'nxsdata', u'nxsdata Documentation',
+     [u'Jan Kotanski'], 1),
+    ('nxsetup', 'nxsetup', u'nxsetup Documentation',
+     [u'Jan Kotanski'], 1),
 ]
 
 # If true, show URL addresses after external links.
@@ -246,7 +256,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'nxstools', u'nxstools Documentation',
-   u'Author', 'nxstools', 'One line description of project.',
+   u'Jan Kotanski', 'nxstools', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -267,9 +277,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'nxstools'
-epub_author = u'Author'
-epub_publisher = u'Author'
-epub_copyright = u'2016, Author'
+epub_author = u'Jan Kotanski'
+epub_publisher = u'Jan Kotanski'
+epub_copyright = u'2016, Jan Kotanski'
 
 # The basename for the epub file. It defaults to the project name.
 #epub_basename = u'nxstools'
