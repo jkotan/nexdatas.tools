@@ -67,4 +67,5 @@ Example
 .. code:: bash
 
 	  nxsconfig list -s p02/xmlconfigserver/exp.01 -d
-
+	  nxsconfig info
+	  nxsconfig geometry

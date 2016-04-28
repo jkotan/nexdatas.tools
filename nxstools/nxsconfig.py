@@ -261,6 +261,12 @@ class ConfigServer(object):
         parameters = []
         description = []
         dss = self._cnfServer.AvailableDataSources()
+        if not dss:
+            sys.stderr.write(
+                "\n'%s' does not have any datasources\n\n"
+                % self._cnfServer.name())
+            sys.stderr.flush()
+            return ""
         for ar in args:
             if ar not in dss:
                 sys.stderr.write(
@@ -309,6 +315,12 @@ class ConfigServer(object):
         parameters = []
         description = []
         cmps = self._cnfServer.AvailableComponents()
+        if not cmps:
+            sys.stderr.write(
+                "\n'%s' does not have any components\n\n"
+                % self._cnfServer.name())
+            sys.stderr.flush()
+            return ""
         for ar in args:
             if ar not in cmps:
                 sys.stderr.write(
@@ -366,6 +378,12 @@ class ConfigServer(object):
         xmls = ""
         description = []
         cmps = self._cnfServer.AvailableComponents()
+        if not cmps:
+            sys.stderr.write(
+                "\n'%s' does not have any components\n\n"
+                % self._cnfServer.name())
+            sys.stderr.flush()
+            return ""
         for ar in args:
             if ar not in cmps:
                 sys.stderr.write(
@@ -540,7 +558,9 @@ def _createParser():
     #: usage example
     usage = "usage: nxsconfig <command> [-s <config_server>] " \
             + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
-            + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n\n" \
+            + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n" \
+            + "       nxsconfig info\n" \
+            + "       nxsconfig geometry\n\n" \
             + "Commands: \n" \
             + "   list [-s <config_server>] [-m | -p] \n" \
             + "          list names of available components\n" \
