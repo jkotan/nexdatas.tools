@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "April 26, 2016" "2.0" "NXSTools"
+.TH "NXSTOOLS" "1" "April 28, 2016" "2.0" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -52,6 +52,11 @@ Authors: Jan Kotanski
 .sp
 as well as the \fBnxstools\fP package which allows perform these operations
 directly from a python code.
+.nf
+Source code: \fI\%https://github.com//nexdatas/tools\fP
+Web page: \fI\%http://www.desy.de/~jkotan/nxstools\fP
+.fi
+.sp
 .SH INSTALLATION
 .sp
 Install the dependencies:
@@ -302,6 +307,8 @@ split result with space characters
 .nf
 .ft C
 nxsconfig list \-s p02/xmlconfigserver/exp.01 \-d
+nxsconfig info
+nxsconfig geometry
 .ft P
 .fi
 .UNINDENT
