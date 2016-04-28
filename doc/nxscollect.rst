@@ -22,7 +22,7 @@ Options:
   -t, --test            exceute the process in test mode without changing any
                         files
   -c COMPRESSION, --compression=COMPRESSION
-                        deflate compression rate from 0 to 9
+                        deflate compression rate from 0 to 9 (default: 2)
   -s, --skip_missing    skip missing files
   -r, --replace_nexus_file
                         if it is set the old file is not copied into a file
