@@ -261,8 +261,8 @@ Synopsis
 	  nxscreate comp [options] [name1] [name2] ...
 
 - with -b: datasources are created in Configuration Server database
-- without -b: datasources are created on the local filesystem in -d <directory> 
-- default <directory> is '.' 
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default <directory> is '.'
 - default <server> is taken from Tango DB
 - default <strategy> is step
 - default <type> is NX_FLOAT
@@ -300,9 +300,8 @@ Example
 
 .. code:: bash
 
-	  nxscreate comp  counter 
-	  nxscreate comp -f1 -l -p exp_c01 -b 
-	  nxscreate comp -c lambda -d /home/user/xmldir/ 
-	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m 
+	  nxscreate comp  counter
+	  nxscreate comp -f1 -l3 -p exp_c -b
+	  nxscreate comp -c lambda -d /home/user/xmldir/
+	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m
 	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -s STEP -t NX_FLOAT64 -i -b -c SPECTRUM
-	    
