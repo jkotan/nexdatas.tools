@@ -17,7 +17,7 @@ Configuration tools for NeXDaTaS Tango Servers consists of the following command
 as well as the **nxstools** package which allows perform these operations
 directly from a python code.
 
-| Source code: https://github.com//nexdatas/tools
+| Source code: https://github.com/nexdatas/tools
 | Web page: http://www.desy.de/~jkotan/nxstools
 
 ------------
@@ -73,10 +73,10 @@ To instal other NexDaTaS packages
 	  
 	  $ apt-get install python-nxswriter nxsconfigserver-db python-nxsconfigserver nxsconfigtool
 
-and for Sardana related packages
+and 
 
 .. code:: bash
 
 	  $ apt-get install python-nxsrecselector nxselector python-sardana-nxsrecorder
 
-for component selector.
+for Component Selector and Sardana related packages.
