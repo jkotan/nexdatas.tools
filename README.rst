@@ -77,6 +77,6 @@ and for Sardana related packages
 
 .. code:: bash
 
-	  $ apt-get install python-nxsrecselector nxselector
+	  $ apt-get install python-nxsrecselector nxselector python-sardana-nxsrecorder
 
 for component selector.
