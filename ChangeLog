@@ -1,4 +1,8 @@
 2016-04-28 Jan Kotanski <jankotan@gmail.com>
+	* nxscreate: fix docu
+	* tagged as v2.0.2
+
+2016-04-28 Jan Kotanski <jankotan@gmail.com>
 	* nxsconfig: info if none of component/datasource exists
 	* tagged as v2.0.1
 
