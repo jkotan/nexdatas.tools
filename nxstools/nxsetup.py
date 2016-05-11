@@ -431,11 +431,16 @@ class SetUp(object):
         try:
             dp.Open()
         except:
-            print("createConfigServer: "
-                  "%s cannot connect the"
-                  " database with JSONSettings: \n%s " % (
-                      self.cserver_name, jsonsettings))
-            print("try to change the settings")
+            try:
+                jsettings = json.loads(jsonsettings)
+                jsettings['read_default_file'] = '/var/lib/nxsconfigserver/.my.cnf'
+                dp.JSONSettings = str(json.dumps(jsettings))
+            except:
+                print("createConfigServer: "
+                      "%s cannot connect the"
+                      " database with JSONSettings: \n%s " % (
+                          self.cserver_name, jsonsettings))
+                print("try to change the settings")
             return 0
 
         return 1
