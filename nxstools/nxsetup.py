@@ -435,6 +435,7 @@ class SetUp(object):
                 jsettings = json.loads(jsonsettings)
                 jsettings['read_default_file'] = '/var/lib/nxsconfigserver/.my.cnf'
                 dp.JSONSettings = str(json.dumps(jsettings))
+                dp.Open()
             except:
                 print("createConfigServer: "
                       "%s cannot connect the"
