@@ -158,9 +158,9 @@ class Collector(object):
             filelist.append(filename)
         if not self.__skipmissing:
             raise Exception(
-                "Cannot open and of %s files" % sorted(set(filelist)))
+                "Cannot open any of %s files" % sorted(set(filelist)))
         else:
-            print("Cannot open and of %s files" % sorted(set(filelist)))
+            print("Cannot open any of %s files" % sorted(set(filelist)))
         return None
 
     def _loadimage(self, filename):
@@ -263,7 +263,7 @@ class Collector(object):
 
         :param files: a list of file stings
         :param node: hdf5 parent node
-        :param filedname: field name
+        :param fieldname: field name
         :param fieldattrs: dictionary with field attributes
         :param fieldcompression: field compression rate
         """
