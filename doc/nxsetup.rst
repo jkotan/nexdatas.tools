@@ -16,6 +16,8 @@ Synopsis
 
 	  nxsetup -x [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
 
+	  nxsetup -x nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig  NXSConfigServer
+
 	  nxsetup -r [<server_class1> <server_class2> ... ]
 
 	  nxsetup -a [<server_class1> <server_class2> ... ]
@@ -34,8 +36,10 @@ Options:
                         the database name
   -j CSJSON, --csjson=CSJSON
                         JSONSettings for the configuration server, (default:
-                        '{"host": "localhost","db": <DBNAME>, "use_unicode":
-                        true', "read_default_file": "/home/<USER>/.my.cnf"})
+			'{"host": "localhost","db": <DBNAME>, "use_unicode": true',
+			"read_default_file": "/home/<USER>/.my.cnf"}'
+			or '{"host": "localhost","db": <DBNAME>, "use_unicode": true',
+			"read_default_file": "/var/lib/nxsconfigserver/.my.cnf"}')
   -x, --execute         setup servers action
   -o OLDNAME, --oldname=OLDNAME
                         old property name
@@ -52,9 +56,9 @@ Example
 
 .. code:: bash
 
-	  nxsetup -x 
+	  nxsetup -x
 
-	  nxsetup -a /usr/share/pyshared/sardananxsrecorder 
+	  nxsetup -a /usr/share/pyshared/sardananxsrecorder
 
 	  nxsetup -p -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
 

@@ -24,6 +24,7 @@ import PyTango
 import os
 import sys
 import time
+import json
 from optparse import OptionParser
 
 
@@ -436,13 +437,14 @@ class SetUp(object):
                 jsettings['read_default_file'] = '/var/lib/nxsconfigserver/.my.cnf'
                 dp.JSONSettings = str(json.dumps(jsettings))
                 dp.Open()
-            except:
+            except Exception as e:
+                print str(e)
                 print("createConfigServer: "
                       "%s cannot connect the"
                       " database with JSONSettings: \n%s " % (
                           self.cserver_name, jsonsettings))
                 print("try to change the settings")
-            return 0
+                return 0
 
         return 1
 
@@ -516,10 +518,18 @@ def _createParser(user):
                     knownHosts[_hostname]['dbname'],
                 )
     else:
-        usage = "\n\n %prog -x -b <beamline> -m <masterHost> " + \
-                "-u <local_user> -d <dbname> [-j jsonsettings] " + \
-                " [<server_class1> <server_class2> ... ] " + \
-                "\n\n %prog -r [<server_class1> <server_class2> ... ] "
+        usage = "\n\n %prog -x -b <beamline> -m <masterHost> " \
+                + "-u <local_user> -d <dbname> [-j jsonsettings] " \
+                + " [<server_class1> <server_class2> ... ] " \
+                + "\n\n %prog -r [<server_class1> <server_class2> ... ]\n\n" \
+                + "e.g.: nxsetup -x \n" \
+                + "      nxsetup -x nxsetup -x -b p09 -m haso228 -u p09user" \
+                + " -d nxsconfig  NXSConfigServer\n" \
+                + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
+                + "      nxsetup -p -n DefaultPreselectedComponents" \
+                + " -o DefaultAutomaticComponents NXSRecSelector\n" \
+                + "      nxsetup -r MacroServer/haso228k\n"
+
     parser = OptionParser(usage=usage)
     parser.add_option("-b", "--beamline", action="store", type="string",
                       dest="beamline", help="name of the beamline")
@@ -534,8 +544,11 @@ def _createParser(user):
                       help="JSONSettings for the configuration server, "
                       "(default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
                       " \"use_unicode\": true',"
-                      " \"read_default_file\": \"/home/<USER>/.my.cnf\""
-                      "})")
+                      " \"read_default_file\": \"/home/<USER>/.my.cnf\"}'"
+                      " or '{\"host\": \"localhost\",\"db\": <DBNAME>,"
+                      " \"use_unicode\": true',"
+                      " \"read_default_file\": "
+                      "\"/var/lib/nxsconfigserver/.my.cnf\"}')")
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")
