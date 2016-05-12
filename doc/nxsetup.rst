@@ -16,8 +16,6 @@ Synopsis
 
 	  nxsetup -x [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
 
-	  nxsetup -x nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig  NXSConfigServer
-
 	  nxsetup -r [<server_class1> <server_class2> ... ]
 
 	  nxsetup -a [<server_class1> <server_class2> ... ]
@@ -28,18 +26,19 @@ Synopsis
 Options:
   -h, --help            show this help message and exit
   -b BEAMLINE, --beamline=BEAMLINE
-                        name of the beamline
+                        name of the beamline ( default: 'nxs' )
   -m MASTERHOST, --masterHost=MASTERHOST
-                        the host that stores the Mg
+                        the host that stores the Mg ( default: <localhost> )
   -u USER, --user=USER  the local user
   -d DBNAME, --database=DBNAME
-                        the database name
+                        the database name ( default: 'tango' )
   -j CSJSON, --csjson=CSJSON
-                        JSONSettings for the configuration server, (default:
-			'{"host": "localhost","db": <DBNAME>, "use_unicode": true',
-			"read_default_file": "/home/<USER>/.my.cnf"}'
-			or '{"host": "localhost","db": <DBNAME>, "use_unicode": true',
-			"read_default_file": "/var/lib/nxsconfigserver/.my.cnf"}')
+                        JSONSettings for the configuration server.
+                        ( default: '{"host": "localhost","db": <DBNAME>,
+                        "use_unicode": true', "read_default_file":
+                        <MY_CNF_FILE>}'  where <MY_CNF_FILE> stays for
+                        "/home/<USER>/.my.cnf" or
+                        "/var/lib/nxsconfigserver/.my.cnf" )
   -x, --execute         setup servers action
   -o OLDNAME, --oldname=OLDNAME
                         old property name
@@ -57,6 +56,8 @@ Example
 .. code:: bash
 
 	  nxsetup -x
+
+	  nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig  NXSConfigServer
 
 	  nxsetup -a /usr/share/pyshared/sardananxsrecorder
 

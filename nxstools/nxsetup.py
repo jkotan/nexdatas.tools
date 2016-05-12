@@ -434,7 +434,8 @@ class SetUp(object):
         except:
             try:
                 jsettings = json.loads(jsonsettings)
-                jsettings['read_default_file'] = '/var/lib/nxsconfigserver/.my.cnf'
+                jsettings['read_default_file'] = \
+                    '/var/lib/nxsconfigserver/.my.cnf'
                 dp.JSONSettings = str(json.dumps(jsettings))
                 dp.Open()
             except Exception as e:
@@ -504,67 +505,70 @@ def _createParser(user):
 
     :param user: user name
     """
+    user = user or "<USER>"
+    usage = "\n\n %prog -x [-b <beamline>] [-m <masterHost>] " \
+            + "[-u <local_user>] [-d <dbname>] [-j jsonsettings] " \
+            + " [<server_class1> <server_class2> ... ]\n\n" \
+            + " %prog -r [<server_class1> <server_class2> ... ]\n\n" \
+            + " %prog -p -n newname -o oldname " \
+            + "[<server_class1> <server_class2> ... ]\n\n" \
+            + " %prog -a <recorder_path>\n\n " \
+            + "e.g.: nxsetup -x\n" \
+            + "      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig" \
+            + " NXSConfigServer\n" \
+            + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
+            + "      nxsetup -p -n DefaultPreselectedComponents" \
+            + " -o DefaultAutomaticComponents NXSRecSelector\n" \
+            + "      nxsetup -r MacroServer/haso228k\n" \
+                
     if _hostname in knownHosts.keys():
-        usage = "\n\n %prog -x [-j <jsonsettings>]" + \
-                " [<server_class1> <server_class2> ... ] " + \
-                "\n\n %prog -r [<server_class1> <server_class2> ... ] " + \
-                "\n\n %prog -p -n newname -o oldname " + \
-                "[<server_class1> <server_class2> ... ] " + \
-                "\n\n  (%s is known, -b %s, -m %s -u %s -d %s ) \n" % (
+                usage += "\n  (%s is known, -b %s -m %s -u %s -d %s )" % (
                     _hostname,
                     knownHosts[_hostname]['beamline'],
                     knownHosts[_hostname]['masterHost'],
                     user,
-                    knownHosts[_hostname]['dbname'],
-                )
-    else:
-        usage = "\n\n %prog -x -b <beamline> -m <masterHost> " \
-                + "-u <local_user> -d <dbname> [-j jsonsettings] " \
-                + " [<server_class1> <server_class2> ... ] " \
-                + "\n\n %prog -r [<server_class1> <server_class2> ... ]\n\n" \
-                + "e.g.: nxsetup -x \n" \
-                + "      nxsetup -x nxsetup -x -b p09 -m haso228 -u p09user" \
-                + " -d nxsconfig  NXSConfigServer\n" \
-                + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
-                + "      nxsetup -p -n DefaultPreselectedComponents" \
-                + " -o DefaultAutomaticComponents NXSRecSelector\n" \
-                + "      nxsetup -r MacroServer/haso228k\n"
+                    knownHosts[_hostname]['dbname']
+                ) 
 
     parser = OptionParser(usage=usage)
-    parser.add_option("-b", "--beamline", action="store", type="string",
-                      dest="beamline", help="name of the beamline")
-    parser.add_option("-m", "--masterHost", action="store", type="string",
-                      dest="masterHost", help="the host that stores the Mg")
-    parser.add_option("-u", "--user", action="store", type="string",
-                      dest="user", help="the local user")
-    parser.add_option("-d", "--database", action="store", type="string",
-                      dest="dbname", help="the database name")
-    parser.add_option("-j", "--csjson", action="store", type="string",
-                      dest="csjson",
-                      help="JSONSettings for the configuration server, "
-                      "(default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
-                      " \"use_unicode\": true',"
-                      " \"read_default_file\": \"/home/<USER>/.my.cnf\"}'"
-                      " or '{\"host\": \"localhost\",\"db\": <DBNAME>,"
-                      " \"use_unicode\": true',"
-                      " \"read_default_file\": "
-                      "\"/var/lib/nxsconfigserver/.my.cnf\"}')")
+    parser.add_option("-r", "--restart", action="store_true",
+                      default=False, dest="restart",
+                      help="restart server(s) action")
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")
+    parser.add_option("-b", "--beamline", action="store", type="string",
+                      dest="beamline", help="name of the beamline"
+                      " ( default: 'nxs' )")
+    parser.add_option("-m", "--masterHost", action="store", type="string",
+                      dest="masterHost", help="the host that stores the Mg"
+                      " ( default: <localhost> )")
+    parser.add_option("-u", "--user", action="store", type="string",
+                      dest="user", help="the local user"
+                      " ( default: 'tango' )")
+    parser.add_option("-d", "--database", action="store", type="string",
+                      dest="dbname", help="the database name"
+                      "  ( default: 'nxsconfig')")
+    parser.add_option("-j", "--csjson", action="store", type="string",
+                      dest="csjson",
+                      help="JSONSettings for the configuration server. "
+                      "( default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
+                      " \"use_unicode\": true',"
+                      " \"read_default_file\": <MY_CNF_FILE>}'"
+                      "  where <MY_CNF_FILE> stays for"
+                      " \"/home/<USER>/.my.cnf\""
+                      " or \"/var/lib/nxsconfigserver/.my.cnf\" )")
+    parser.add_option("-a", "--add-recorder-path", action="store",
+                      type="string", dest="recpath",
+                      help="add recorder path to the RecorderPath property"
+                      " of all MacroServers")
+    parser.add_option("-p", "--move-prop", action="store_true",
+                      default=False, dest="moveprop",
+                      help="change property name")
     parser.add_option("-o", "--oldname", action="store", type="string",
                       dest="oldname", help="old property name")
     parser.add_option("-n", "--newname", action="store", type="string",
                       dest="newname", help="new property name")
-    parser.add_option("-r", "--restart", action="store_true",
-                      default=False, dest="restart",
-                      help="restart server(s) action")
-    parser.add_option("-a", "--add-recorder-path", action="store",
-                      type="string", dest="recpath",
-                      help="add recorder path")
-    parser.add_option("-p", "--move-prop", action="store_true",
-                      default=False, dest="moveprop",
-                      help="change property name")
     return parser
 
 
@@ -591,29 +595,32 @@ def main():
             if _hostname in knownHosts.keys():
                 options.beamline = knownHosts[_hostname]['beamline']
             else:
-                parser.print_help()
-                print("\n")
-                sys.exit(255)
+                options.beamline = 'nxs'
+
         if options.masterHost is None:
             if _hostname in knownHosts.keys():
                 options.masterHost = knownHosts[_hostname]['masterHost']
             else:
-                parser.print_help()
-                sys.exit(255)
+                options.masterHost = _hostname
 
         if options.user is None:
             if _hostname in knownHosts.keys():
                 options.user = local_user
             else:
-                parser.print_help()
-                sys.exit(255)
+                options.user = 'tango'
 
         if options.dbname is None:
             if _hostname in knownHosts.keys():
                 options.dbname = knownHosts[_hostname]['dbname']
             else:
-                parser.print_help()
-                sys.exit(255)
+                options.dbname = 'nxsconfig'
+
+        print("\noptions are set to:  -b %s -m %s -u %s -d %s \n" % (
+            options.beamline,
+            options.masterHost,
+            options.user,
+            options.dbname,
+        ))
 
         setUp = SetUp()
 

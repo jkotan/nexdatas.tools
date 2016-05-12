@@ -1,4 +1,4 @@
-2016-05-XX Jan Kotanski <jankotan@gmail.com>
+2016-05-12 Jan Kotanski <jankotan@gmail.com>
 	* nxsetup: add default 'read_default_file' = '/var/lib/nxsconfigserver/.my.cnf'
 	* tagged as v2.1.0
 
