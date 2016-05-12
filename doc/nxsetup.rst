@@ -14,9 +14,11 @@ Synopsis
 
 .. code:: bash
 
-	  nxsetup -x [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
+	  nxsetup -x [-b <beamline>] [-m <masterHost>] [-u <local_user>] [-d <dbname>] [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
 
-	  nxsetup -r [<server_class1> <server_class2> ... ]
+	  nxsetup -r [-l level] [<server_class1> <server_class2> ... ]
+
+	  nxsetup -s [-l level] [<server_class1> <server_class2> ... ]
 
 	  nxsetup -a [<server_class1> <server_class2> ... ]
 
@@ -45,6 +47,9 @@ Options:
   -n NEWNAME, --newname=NEWNAME
                         new property name
   -r, --restart         restart server(s) action
+  -s, --start           start server(s) action
+  -l LEVEL, --level=LEVEL
+                        startup level
   -a RECPATH, --add-recorder-path=RECPATH
                         add recorder path
   -p, --move-prop       change property name
@@ -63,4 +68,6 @@ Example
 
 	  nxsetup -p -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
 
-	  nxsetup -r MacroServer/haso228k
+	  nxsetup -s Pool/haso228 -l2
+
+          nxsetup -r MacroServer -l3

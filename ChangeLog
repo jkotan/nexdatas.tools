@@ -1,5 +1,7 @@
 2016-05-12 Jan Kotanski <jankotan@gmail.com>
 	* nxsetup: add default 'read_default_file' = '/var/lib/nxsconfigserver/.my.cnf'
+	* nxsetup: add level options for --restart and --start command
+	* nxsetup: add --start command
 	* tagged as v2.1.0
 
 2016-05-02 Jan Kotanski <jankotan@gmail.com>

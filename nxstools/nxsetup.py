@@ -218,7 +218,7 @@ class SetUp(object):
         time.sleep(0.2)
         return res
 
-    def restartServer(self, name, host=None):
+    def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
         :param name: server name
@@ -245,19 +245,21 @@ class SetUp(object):
                         svl = vl.split('\t')[0]
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
-                            if '/' in name:
-                                self._changeLevel(name, 4)
-                            else:
-                                self._changeLevel(svl, 4)
-                        if started and svl in started:
+                            self._changeLevel(svl, 4)
+                        if (started and svl in started) or not restart:
                             if '/' in name:
                                 cname = svl
                             else:
                                 cname = svl.split('/')[0]
                             if cname == name:
-                                adminproxy.DevStop(svl)
+                                if level is not None:
+                                    self._changeLevel(svl, level, tohigher=False)
+                                if started and svl in started:
+                                    adminproxy.DevStop(svl)
+                                    sys.stdout.write("Restarting: %s" % svl)
+                                else:
+                                    sys.stdout.write("Starting: %s" % svl)
                                 problems = True
-                                sys.stdout.write("Restarting: %s" % svl)
                                 counter = 0
                                 while problems and counter < 100:
                                     try:
@@ -274,14 +276,14 @@ class SetUp(object):
                                     print("Warning: Process with the server"
                                           "instance could be suspended")
 
-    def _changeLevel(self, name, level):
+    def _changeLevel(self, name, level, tohigher=True):
         """ change startup level
 
         :param name: server name
         :param level: new startup level
         """
         sinfo = self.db.get_server_info(name)
-        if level > sinfo.level:
+        if not tohigher or level > sinfo.level:
             sinfo.level = level
         self.db.put_server_info(sinfo)
         return True
@@ -510,6 +512,7 @@ def _createParser(user):
             + "[-u <local_user>] [-d <dbname>] [-j jsonsettings] " \
             + " [<server_class1> <server_class2> ... ]\n\n" \
             + " %prog -r [<server_class1> <server_class2> ... ]\n\n" \
+            + " %prog -s [<server_class1> <server_class2> ... ]\n\n" \
             + " %prog -p -n newname -o oldname " \
             + "[<server_class1> <server_class2> ... ]\n\n" \
             + " %prog -a <recorder_path>\n\n " \
@@ -519,7 +522,8 @@ def _createParser(user):
             + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
             + "      nxsetup -p -n DefaultPreselectedComponents" \
             + " -o DefaultAutomaticComponents NXSRecSelector\n" \
-            + "      nxsetup -r MacroServer/haso228k\n" \
+            + "      nxsetup -r Pool/haso228 -l 2 \n" \
+            + "      nxsetup -s MacroServer -l 3 \n" \
                 
     if _hostname in knownHosts.keys():
                 usage += "\n  (%s is known, -b %s -m %s -u %s -d %s )" % (
@@ -531,9 +535,6 @@ def _createParser(user):
                 ) 
 
     parser = OptionParser(usage=usage)
-    parser.add_option("-r", "--restart", action="store_true",
-                      default=False, dest="restart",
-                      help="restart server(s) action")
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",
                       help="setup servers action")
@@ -569,6 +570,14 @@ def _createParser(user):
                       dest="oldname", help="old property name")
     parser.add_option("-n", "--newname", action="store", type="string",
                       dest="newname", help="new property name")
+    parser.add_option("-r", "--restart", action="store_true",
+                      default=False, dest="restart",
+                      help="restart server(s) action")
+    parser.add_option("-s", "--start", action="store_true",
+                      default=False, dest="start",
+                      help="start server(s) action")
+    parser.add_option("-l", "--level", action="store", type=int, default=-1,
+                      dest="level", help="startup level")
     return parser
 
 
@@ -585,7 +594,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if not options.execute and not options.restart and not options.recpath \
-       and not options.moveprop:
+       and not options.moveprop and not options.start :
         parser.print_help()
         print("\n")
         sys.exit(255)
@@ -658,7 +667,18 @@ def main():
         servers = args if args else [
             "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
         for server in servers:
-            setUp.restartServer(server)
+            setUp.restartServer(
+                server, level=(options.level if options.level > -1 else None))
+
+    if options.start:
+        setUp = SetUp()
+        servers = args if args else [
+            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
+        for server in servers:
+            setUp.restartServer(
+                server,
+                level=(options.level if options.level > -1 else None),
+                restart=False)
 
     if options.recpath:
         setUp = SetUp()
