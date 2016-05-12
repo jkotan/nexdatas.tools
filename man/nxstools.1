@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "May 02, 2016" "2.0" "NXSTools"
+.TH "NXSTOOLS" "1" "May 12, 2016" "2.1" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -875,9 +875,11 @@ The nxsetup is is a command\-line setup tool for NeXus servers.  It allows to se
 .sp
 .nf
 .ft C
-nxsetup \-x [\-j <jsonsettings>] [<server_class1> <server_class2> ... ]
+nxsetup \-x [\-b <beamline>] [\-m <masterHost>] [\-u <local_user>] [\-d <dbname>] [\-j <jsonsettings>] [<server_class1> <server_class2> ... ]
 
-nxsetup \-r [<server_class1> <server_class2> ... ]
+nxsetup \-r [\-l level] [<server_class1> <server_class2> ... ]
+
+nxsetup \-s [\-l level] [<server_class1> <server_class2> ... ]
 
 nxsetup \-a [<server_class1> <server_class2> ... ]
 
@@ -895,21 +897,24 @@ nxsetup \-p \-n newname \-o oldname [<server_class1> <server_class2> ... ]
 show this help message and exit
 .TP
 .BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline\fB= BEAMLINE
-name of the beamline
+name of the beamline ( default: \(aqnxs\(aq )
 .TP
 .BI \-m \ MASTERHOST\fP,\fB \ \-\-masterHost\fB= MASTERHOST
-the host that stores the Mg
+the host that stores the Mg ( default: <localhost> )
 .TP
 .BI \-u \ USER\fP,\fB \ \-\-user\fB= USER
 the local user
 .TP
 .BI \-d \ DBNAME\fP,\fB \ \-\-database\fB= DBNAME
-the database name
+the database name ( default: \(aqtango\(aq )
 .TP
 .BI \-j \ CSJSON\fP,\fB \ \-\-csjson\fB= CSJSON
-JSONSettings for the configuration server, (default:
-\(aq{"host": "localhost","db": <DBNAME>, "use_unicode":
-true\(aq, "read_default_file": "/home/<USER>/.my.cnf"})
+JSONSettings for the configuration server.
+( default: \(aq{"host": "localhost","db": <DBNAME>,
+"use_unicode": true\(aq, "read_default_file":
+<MY_CNF_FILE>}\(aq  where <MY_CNF_FILE> stays for
+"/home/<USER>/.my.cnf" or
+"/var/lib/nxsconfigserver/.my.cnf" )
 .TP
 .B \-x\fP,\fB  \-\-execute
 setup servers action
@@ -922,6 +927,12 @@ new property name
 .TP
 .B \-r\fP,\fB  \-\-restart
 restart server(s) action
+.TP
+.B \-s\fP,\fB  \-\-start
+start server(s) action
+.TP
+.BI \-l \ LEVEL\fP,\fB \ \-\-level\fB= LEVEL
+startup level
 .TP
 .BI \-a \ RECPATH\fP,\fB \ \-\-add\-recorder\-path\fB= RECPATH
 add recorder path
@@ -938,11 +949,15 @@ change property name
 .ft C
 nxsetup \-x
 
+nxsetup \-x \-b p09 \-m haso228 \-u p09user \-d nxsconfig  NXSConfigServer
+
 nxsetup \-a /usr/share/pyshared/sardananxsrecorder
 
 nxsetup \-p \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
 
-nxsetup \-r MacroServer/haso228k
+nxsetup \-s Pool/haso228 \-l2
+
+nxsetup \-r MacroServer \-l3
 .ft P
 .fi
 .UNINDENT
@@ -1274,7 +1289,7 @@ creates selector server
 .UNINDENT
 .INDENT 7.0
 .TP
-.B restartServer(name, host=None)
+.B restartServer(name, host=None, level=None, restart=True)
 restarts server
 .INDENT 7.0
 .TP
