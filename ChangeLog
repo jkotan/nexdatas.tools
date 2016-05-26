@@ -1,3 +1,7 @@
+2016-05-26 Jan Kotanski <jankotan@gmail.com>
+	* fix for fetching shape and dtype
+	* tagged as v1.23.2
+
 2016-04-15 Jan Kotanski <jankotan@gmail.com>
 	* fix for fetching shape and dtype
 	* tagged as v1.23.1
