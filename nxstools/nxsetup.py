@@ -253,7 +253,8 @@ class SetUp(object):
                                 cname = svl.split('/')[0]
                             if cname == name:
                                 if level is not None:
-                                    self._changeLevel(svl, level, tohigher=False)
+                                    self._changeLevel(
+                                        svl, level, tohigher=False)
                                 if started and svl in started:
                                     adminproxy.DevStop(svl)
                                     sys.stdout.write("Restarting: %s" % svl)
@@ -523,8 +524,8 @@ def _createParser(user):
             + "      nxsetup -p -n DefaultPreselectedComponents" \
             + " -o DefaultAutomaticComponents NXSRecSelector\n" \
             + "      nxsetup -r Pool/haso228 -l 2 \n" \
-            + "      nxsetup -s MacroServer -l 3 \n" \
-                
+            + "      nxsetup -s MacroServer -l 3 \n"
+
     if _hostname in knownHosts.keys():
                 usage += "\n  (%s is known, -b %s -m %s -u %s -d %s )" % (
                     _hostname,
@@ -532,7 +533,7 @@ def _createParser(user):
                     knownHosts[_hostname]['masterHost'],
                     user,
                     knownHosts[_hostname]['dbname']
-                ) 
+                )
 
     parser = OptionParser(usage=usage)
     parser.add_option("-x", "--execute", action="store_true",
@@ -594,7 +595,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if not options.execute and not options.restart and not options.recpath \
-       and not options.moveprop and not options.start :
+       and not options.moveprop and not options.start:
         parser.print_help()
         print("\n")
         sys.exit(255)
