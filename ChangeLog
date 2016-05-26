@@ -1,3 +1,7 @@
+2016-05-26 Jan Kotanski <jankotan@gmail.com>
+	* nxsparser: fix for dim $datasources
+	* tagged as v2.1.1
+
 2016-05-12 Jan Kotanski <jankotan@gmail.com>
 	* nxsetup: add default 'read_default_file' = '/var/lib/nxsconfigserver/.my.cnf'
 	* nxsetup: add level options for --restart and --start command
