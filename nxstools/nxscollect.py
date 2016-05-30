@@ -126,17 +126,19 @@ class Collector(object):
         :returns: absolute image file name
         """
         filelist = []
-        if nname is not None and '.nxs' == self.__nexusfilename[-4:]:
+
+        if nname is not None:
             tmpfname = '%s/%s/%s' % (
-                self.__nexusfilename[:-4], nname,
+                os.path.splitext(self.__nexusfilename)[0],
+                nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
                 return tmpfname
             else:
                 filelist.append(tmpfname)
-        if nname is not None and '.nxs' == self.__fullfilename[-4:]:
             tmpfname = '%s/%s/%s' % (
-                self.__fullfilename[:-4], nname,
+                os.path.splitext(self.__fullfilename)[0],
+                nname,
                 filename.split("/")[-1])
             if os.path.exists(tmpfname):
                 return tmpfname
@@ -289,7 +291,8 @@ class Collector(object):
                         field = self._getfield(
                             node, fieldname, dtype, shape,
                             fieldattrs, fieldcompression)
-                    if self.__testmode or ind == field.shape[0]:
+
+                    if field and ind == field.shape[0]:
                         if not self.__testmode:
                             field.grow(0, 1)
                             field[-1, ...] = data

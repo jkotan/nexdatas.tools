@@ -1,3 +1,7 @@
+2016-05-30 Jan Kotanski <jankotan@gmail.com>
+	* nxscollect: add collection of files with other then nxs extension
+	* tagged as v2.1.2
+
 2016-05-26 Jan Kotanski <jankotan@gmail.com>
 	* nxsparser: fix for dim $datasources
 	* tagged as v2.1.1

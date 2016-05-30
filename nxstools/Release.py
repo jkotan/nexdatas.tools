@@ -20,4 +20,4 @@
 """  NXS tools release version"""
 
 #: package version
-__version__ = "2.1.1"
+__version__ = "2.1.2"
