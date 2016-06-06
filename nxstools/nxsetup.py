@@ -619,7 +619,7 @@ def main():
                 options.masterHost = _hostname
 
         if options.user is None:
-            if _hostname in knownHosts.keys():
+            if local_user:
                 options.user = local_user
             else:
                 options.user = 'tango'
