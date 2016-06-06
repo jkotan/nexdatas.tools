@@ -1,3 +1,8 @@
+2016-06-06 Jan Kotanski <jankotan@gmail.com>
+	* nxsetup: fix serching for local user
+	* nxsetup: add setting up NXSConfigServer only with 'read_default_file'
+	* tagged as v2.1.3
+
 2016-05-30 Jan Kotanski <jankotan@gmail.com>
 	* nxscollect: add collection of files with other then nxs extension
 	* tagged as v2.1.2
