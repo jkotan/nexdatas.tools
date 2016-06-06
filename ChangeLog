@@ -1,4 +1,5 @@
-2016-06-XX Jan Kotanski <jankotan@gmail.com>
+2016-06-06 Jan Kotanski <jankotan@gmail.com>
+	* nxsetup: fix serching for local user
 	* nxsetup: add setting up NXSConfigServer only with 'read_default_file'
 	* tagged as v2.1.3
 
