@@ -18,7 +18,7 @@ as well as the **nxstools** package which allows perform these operations
 directly from a python code.
 
 | Source code: https://github.com/nexdatas/tools
-| Web page: http://www.desy.de/~jkotan/nxstools
+| Web page: https://nexdatas.github.io/tools
 
 ------------
 Installation
@@ -33,7 +33,7 @@ From sources
 
 Download the latest NXS Tools version from
 
-    https://github.com/jkotan/nexdatas.tools/
+    https://github.com/nexdatas/tools
 
 Extract sources and run
 
