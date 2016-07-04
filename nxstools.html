@@ -1,0 +1,1915 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxstools package &mdash; NXSTools 2.1.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="NXSTools 2.1.3 documentation" href="index.html" />
+    <link rel="prev" title="nxsetup" href="nxsetup.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxsetup.html" title="nxsetup"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">nxstools package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
+<li><a class="reference internal" href="#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li><a class="reference internal" href="#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li><a class="reference internal" href="#module-nxstools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nxsetup.html"
+                        title="previous chapter">nxsetup</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/nxstools.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="nxstools-package">
+<h1>nxstools package<a class="headerlink" href="#nxstools-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nxstools.nxscollect">
+<span id="nxstools-nxscollect-module"></span><h2>nxstools.nxscollect module<a class="headerlink" href="#module-nxstools.nxscollect" title="Permalink to this headline">¶</a></h2>
+<p>Command-line tool to merge images of external file-formats
+into the master NeXus file</p>
+<dl class="class">
+<dt id="nxstools.nxscollect.Collector">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscollect.</tt><tt class="descname">Collector</tt><big>(</big><em>nexusfilename</em>, <em>compression=2</em>, <em>skipmissing=False</em>, <em>storeold=False</em>, <em>testmode=False</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscollect.html#Collector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscollect.Collector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Collector merge images of external file-formats
+into the master NeXus file</p>
+<p>The constructor creates the collector object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>nexusfilename</strong> &#8211; the nexus file name</li>
+<li><strong>compression</strong> &#8211; compression rate</li>
+<li><strong>skipmissing</strong> &#8211; if skip missing images</li>
+<li><strong>storeold</strong> &#8211; if backup the input file</li>
+<li><strong>testmode</strong> &#8211; if run in a test mode</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscollect.Collector.collect">
+<tt class="descname">collect</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscollect.html#Collector.collect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscollect.Collector.collect" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a temporary file,
+collects the all image files defined by hdf5
+postrun fields of NXcollection groups and renames the temporary file
+to the origin one if the action was successful</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxscollect.main">
+<tt class="descclassname">nxstools.nxscollect.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscollect.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscollect.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main program function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsconfig">
+<span id="nxstools-nxsconfig-module"></span><h2>nxstools.nxsconfig module<a class="headerlink" href="#module-nxstools.nxsconfig" title="Permalink to this headline">¶</a></h2>
+<p>Command-line tool for ascess to the nexdatas configuration server</p>
+<dl class="class">
+<dt id="nxstools.nxsconfig.ConfigServer">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsconfig.</tt><tt class="descname">ConfigServer</tt><big>(</big><em>device</em>, <em>nonewline=False</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsconfig.html#ConfigServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsconfig.ConfigServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>configuration server adapter</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>device</strong> &#8211; device name of the configuration server</li>
+<li><strong>nonewline</strong> &#8211; if the output should not be separated
+by the new line character</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsconfig.ConfigServer.performCommand">
+<tt class="descname">performCommand</tt><big>(</big><em>command</em>, <em>ds</em>, <em>args</em>, <em>mandatory=False</em>, <em>private=False</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsconfig.html#ConfigServer.performCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsconfig.ConfigServer.performCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>performs requested command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>command</strong> &#8211; executed command: &#8216;list&#8217;, &#8216;show&#8217;, &#8216;get&#8217;,
+&#8216;variables&#8217;, &#8216;sources&#8217;, &#8216;record&#8217;, &#8216;merge&#8217;,
+&#8216;components&#8217;, &#8216;data&#8217;, &#8216;describe&#8217;, &#8216;info&#8217;, &#8216;geometry&#8217;</li>
+<li><strong>ds</strong> &#8211; flag set True for datasources</li>
+<li><strong>args</strong> &#8211; list of item names</li>
+<li><strong>mandatory</strong> &#8211; flag set True for mandatory components</li>
+<li><strong>private</strong> &#8211; flag set True for components starting with &#8216;__&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">resulting string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsconfig.main">
+<tt class="descclassname">nxstools.nxsconfig.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsconfig.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsconfig.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main program function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_clientds">
+<span id="nxstools-nxscreate-clientds-module"></span><h2>nxstools.nxscreate_clientds module<a class="headerlink" href="#module-nxstools.nxscreate_clientds" title="Permalink to this headline">¶</a></h2>
+<p>CLIENT datasource creator</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_clientds.main">
+<tt class="descclassname">nxstools.nxscreate_clientds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_clientds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_clientds.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main program function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_comp">
+<span id="nxstools-nxscreate-comp-module"></span><h2>nxstools.nxscreate_comp module<a class="headerlink" href="#module-nxstools.nxscreate_comp" title="Permalink to this headline">¶</a></h2>
+<p>component creator</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_comp.main">
+<tt class="descclassname">nxstools.nxscreate_comp.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_comp.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_comp.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_deviceds">
+<span id="nxstools-nxscreate-deviceds-module"></span><h2>nxstools.nxscreate_deviceds module<a class="headerlink" href="#module-nxstools.nxscreate_deviceds" title="Permalink to this headline">¶</a></h2>
+<p>TANGO datasources creator for devices</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_deviceds.main">
+<tt class="descclassname">nxstools.nxscreate_deviceds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_deviceds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_deviceds.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_onlinecp">
+<span id="nxstools-nxscreate-onlinecp-module"></span><h2>nxstools.nxscreate_onlinecp module<a class="headerlink" href="#module-nxstools.nxscreate_onlinecp" title="Permalink to this headline">¶</a></h2>
+<p>component creator from online files</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_onlinecp.main">
+<tt class="descclassname">nxstools.nxscreate_onlinecp.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_onlinecp.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_onlinecp.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_onlineds">
+<span id="nxstools-nxscreate-onlineds-module"></span><h2>nxstools.nxscreate_onlineds module<a class="headerlink" href="#module-nxstools.nxscreate_onlineds" title="Permalink to this headline">¶</a></h2>
+<p>datasource creator from online files</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_onlineds.main">
+<tt class="descclassname">nxstools.nxscreate_onlineds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_onlineds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_onlineds.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreate_tangods">
+<span id="nxstools-nxscreate-tangods-module"></span><h2>nxstools.nxscreate_tangods module<a class="headerlink" href="#module-nxstools.nxscreate_tangods" title="Permalink to this headline">¶</a></h2>
+<p>TANGO datasource creator</p>
+<dl class="function">
+<dt id="nxstools.nxscreate_tangods.main">
+<tt class="descclassname">nxstools.nxscreate_tangods.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_tangods.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_tangods.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsdata">
+<span id="nxstools-nxsdata-module"></span><h2>nxstools.nxsdata module<a class="headerlink" href="#module-nxstools.nxsdata" title="Permalink to this headline">¶</a></h2>
+<p>Command-line tool to ascess to Tango Data Server</p>
+<dl class="class">
+<dt id="nxstools.nxsdata.NexusServer">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsdata.</tt><tt class="descname">NexusServer</tt><big>(</big><em>device</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>configuration server adapter</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>device</strong> &#8211; device name of configuration server</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.closeEntry">
+<tt class="descname">closeEntry</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.closeEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.closeEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>closes the entry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.closeFile">
+<tt class="descname">closeFile</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.closeFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.closeFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>closes the file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.openEntry">
+<tt class="descname">openEntry</tt><big>(</big><em>xmlconfig</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.openEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.openEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>opens an entry</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlconfig</strong> &#8211; xml configuration string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.openFile">
+<tt class="descname">openFile</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.openFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.openFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>opens the h5 file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; h5 file name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.performCommand">
+<tt class="descname">performCommand</tt><big>(</big><em>command</em>, <em>args</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.performCommand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.performCommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>perform requested command</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>command</strong> &#8211; called command</li>
+<li><strong>args</strong> &#8211; list of item names</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.record">
+<tt class="descname">record</tt><big>(</big><em>jsondata</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>records one step</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> &#8211; step JSON data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsdata.NexusServer.setData">
+<tt class="descname">setData</tt><big>(</big><em>jsondata</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#NexusServer.setData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.NexusServer.setData" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the global JSON data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> &#8211; global JSON data</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdata.main">
+<tt class="descclassname">nxstools.nxsdata.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdata.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdata.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsetup">
+<span id="nxstools-nxsetup-module"></span><h2>nxstools.nxsetup module<a class="headerlink" href="#module-nxstools.nxsetup" title="Permalink to this headline">¶</a></h2>
+<p>Set Up NeXus Tango Servers</p>
+<dl class="class">
+<dt id="nxstools.nxsetup.SetUp">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsetup.</tt><tt class="descname">SetUp</tt><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers</p>
+<p>constructor</p>
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.changePropertyName">
+<tt class="descname">changePropertyName</tt><big>(</big><em>server</em>, <em>oldname</em>, <em>newname</em>, <em>sclass=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.changePropertyName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.changePropertyName" title="Permalink to this definition">¶</a></dt>
+<dd><p>changes property name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>server</strong> &#8211; server name</li>
+<li><strong>oldname</strong> &#8211; old property name</li>
+<li><strong>newname</strong> &#8211; new property name</li>
+<li><strong>scalss</strong> &#8211; server class name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.changeRecorderPath">
+<tt class="descname">changeRecorderPath</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.changeRecorderPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.changeRecorderPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds a new recorder path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; new recorder path</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.createConfigServer">
+<tt class="descname">createConfigServer</tt><big>(</big><em>beamline</em>, <em>masterHost</em>, <em>jsonsettings=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.createConfigServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.createConfigServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates configuration server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>beamline</strong> &#8211; beamline name</li>
+<li><strong>materHost</strong> &#8211; master host of data writer</li>
+<li><strong>jsonsettings</strong> &#8211; connection settings to DB in json</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.createDataWriter">
+<tt class="descname">createDataWriter</tt><big>(</big><em>beamline</em>, <em>masterHost</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.createDataWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.createDataWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates data writer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>beamline</strong> &#8211; beamline name</li>
+<li><strong>materHost</strong> &#8211; master host of data writer</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.createSelector">
+<tt class="descname">createSelector</tt><big>(</big><em>beamline</em>, <em>masterHost</em>, <em>writer=None</em>, <em>cserver=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.createSelector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.createSelector" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates selector server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>beamline</strong> &#8211; beamline name</li>
+<li><strong>materHost</strong> &#8211; master host of data writer</li>
+<li><strong>writer</strong> &#8211; writer device name</li>
+<li><strong>cserver</strong> &#8211; configuration server device name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsetup.SetUp.restartServer">
+<tt class="descname">restartServer</tt><big>(</big><em>name</em>, <em>host=None</em>, <em>level=None</em>, <em>restart=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#SetUp.restartServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.SetUp.restartServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>restarts server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; server name</li>
+<li><strong>host</strong> &#8211; server host name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsetup.knownHosts">
+<tt class="descclassname">nxstools.nxsetup.</tt><tt class="descname">knownHosts</tt><em class="property"> = {'hzgpp07eh4': {'masterHost': 'hzgpp07eh4', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp06ctrl': {'masterHost': 'haspp06ctrl', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspecsicl4': {'masterHost': 'haspecsicl4', 'user': 'lacluser', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp02ch2': {'masterHost': 'haspp02ch2', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp02ch1': {'masterHost': 'haspp02ch1', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haso107d1': {'masterHost': 'haso107d1', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp11oh': {'masterHost': 'haspp11oh', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'hasmlqj': {'masterHost': 'hasmlqj', 'user': 'lqjuser', 'dbname': 'nxsconfig', 'beamline': 'lqj'}, 'haspp06nc1': {'masterHost': 'haspp06nc1', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspp03nano': {'masterHost': 'haspp03nano', 'user': 'p03nano', 'dbname': 'nxsconfig', 'beamline': 'p03nano'}, 'haspp04exp1': {'masterHost': 'haspp04exp1', 'user': 'p04user', 'dbname': 'nxsconfig', 'beamline': 'p04'}, 'haspp02ch1a': {'masterHost': 'haspp02ch1a', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp10e1': {'masterHost': 'haspp10e1', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haso113b': {'masterHost': 'haso113b', 'user': 'blume', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp10e2': {'masterHost': 'haspp10e2', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haspp09dif': {'masterHost': 'haspp09dif', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haso113u': {'masterHost': 'haso113u', 'user': 'blume', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haso228k': {'masterHost': 'haso228k', 'user': 'jkotan', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp03': {'masterHost': 'haspp03', 'user': 'p03user', 'dbname': 'nxsconfig', 'beamline': 'p03'}, 'haspp10lcx': {'masterHost': 'haspp10lcx', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haspp11user02': {'masterHost': 'haspp11user02', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'haspp09haxps': {'masterHost': 'haspp09maxps', 'user': 'p09haxps', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hascmexp': {'masterHost': 'hascmexp', 'user': 'cmexp', 'dbname': 'nxsconfig', 'beamline': 'cmexp'}, 'haspp04exp2': {'masterHost': 'haspp04exp2', 'user': 'p04user', 'dbname': 'nxsconfig', 'beamline': 'p04'}, 'haso107klx': {'masterHost': 'haso107klx', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hasp029rack': {'masterHost': 'hasp029rack', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'hasnp64oh': {'masterHost': 'hasnp64oh', 'user': 'p64user', 'dbname': 'nxsconfig', 'beamline': 'p64'}, 'haspp09': {'masterHost': 'haspp09', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp08': {'masterHost': 'haspp08', 'user': 'p08user', 'dbname': 'nxsconfig', 'beamline': 'p08'}, 'haso111tb': {'masterHost': 'haso111tb', 'user': 'tnunez', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp09mag': {'masterHost': 'haspp09mag', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hasnp66': {'masterHost': 'hasnp66', 'user': 'p66user', 'dbname': 'nxsconfig', 'beamline': 'p66'}, 'hasnp65': {'masterHost': 'hasnp65', 'user': 'p65user', 'dbname': 'nxsconfig', 'beamline': 'p65'}, 'hasnp64': {'masterHost': 'hasnp64', 'user': 'p64user', 'dbname': 'nxsconfig', 'beamline': 'p64'}, 'haspp11sardana': {'masterHost': 'haspp11sardana', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'hzgpp07eh1': {'masterHost': 'hzgpp07eh1', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp10lab': {'masterHost': 'haspp10lab', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'hastodt': {'masterHost': 'hastodt', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hzgpp07eh3': {'masterHost': 'hzgpp07eh3', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haso111n': {'masterHost': 'haso111n', 'user': 'tnunez', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp07eh2': {'masterHost': 'haspp07eh2', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp21lab': {'masterHost': 'haspp21lab', 'user': 'p21user', 'dbname': 'nxsconfig', 'beamline': 'p21'}, 'has6117b': {'masterHost': 'has6117b', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'hasmfmc': {'masterHost': 'hasmfmc', 'user': 'delayusr', 'dbname': 'nxsconfig', 'beamline': 'fmc'}, 'hasdelay': {'masterHost': 'hasdelay', 'user': 'delayusr', 'dbname': 'nxsconfig', 'beamline': 'delay'}, 'haspp06mc01': {'masterHost': 'haspp06mc01', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspp01eh1': {'masterHost': 'haspp01eh1', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}, 'haspp01eh2': {'masterHost': 'haspp01eh2', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}, 'haspp01eh3': {'masterHost': 'haspp01eh3', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}}</em><a class="headerlink" href="#nxstools.nxsetup.knownHosts" title="Permalink to this definition">¶</a></dt>
+<dd><p>all SardanaHosts and DataBaseHosts should be known</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsetup.main">
+<tt class="descclassname">nxstools.nxsetup.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsetup.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsetup.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main program function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxscreator">
+<span id="nxstools-nxscreator-module"></span><h2>nxstools.nxscreator module<a class="headerlink" href="#module-nxstools.nxscreator" title="Permalink to this headline">¶</a></h2>
+<p>Command-line tool for creating to the nexdatas configuration server</p>
+<dl class="exception">
+<dt id="nxstools.nxscreator.CPExistsException">
+<em class="property">exception </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">CPExistsException</tt><a class="reference internal" href="_modules/nxstools/nxscreator.html#CPExistsException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.CPExistsException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Component already exists exception</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.ClientDSCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">ClientDSCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#ClientDSCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.ClientDSCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>client datasource creator</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.ClientDSCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#ClientDSCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.ClientDSCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a client datasource xml and stores it in DB or filesytem</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.ComponentCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">ComponentCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#ComponentCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.ComponentCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>component creator</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.ComponentCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#ComponentCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.ComponentCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a component xml and stores it in DB or filesytem</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.Creator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">Creator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>configuration server adapter</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.Device">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">Device</tt><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>device from online.xml</p>
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.attribute">
+<tt class="descname">attribute</tt><a class="headerlink" href="#nxstools.nxscreator.Device.attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>attribute name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.dtype">
+<tt class="descname">dtype</tt><a class="headerlink" href="#nxstools.nxscreator.Device.dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>data type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.Device.findAttribute">
+<tt class="descname">findAttribute</tt><big>(</big><em>tangohost</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.findAttribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.findAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets attribute and datasource group of online.xml device</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tangohost</strong> &#8211; tango host</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.group">
+<tt class="descname">group</tt><a class="headerlink" href="#nxstools.nxscreator.Device.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>datasource tango group</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.host">
+<tt class="descname">host</tt><a class="headerlink" href="#nxstools.nxscreator.Device.host" title="Permalink to this definition">¶</a></dt>
+<dd><p>host without port</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.hostname">
+<tt class="descname">hostname</tt><a class="headerlink" href="#nxstools.nxscreator.Device.hostname" title="Permalink to this definition">¶</a></dt>
+<dd><p>host name with port</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.module">
+<tt class="descname">module</tt><a class="headerlink" href="#nxstools.nxscreator.Device.module" title="Permalink to this definition">¶</a></dt>
+<dd><p>device module</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.name">
+<tt class="descname">name</tt><a class="headerlink" href="#nxstools.nxscreator.Device.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>device name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.port">
+<tt class="descname">port</tt><a class="headerlink" href="#nxstools.nxscreator.Device.port" title="Permalink to this definition">¶</a></dt>
+<dd><p>tango port</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.sardanahostname">
+<tt class="descname">sardanahostname</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sardanahostname" title="Permalink to this definition">¶</a></dt>
+<dd><p>sardana host name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.sardananame">
+<tt class="descname">sardananame</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sardananame" title="Permalink to this definition">¶</a></dt>
+<dd><p>sardana name with port</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.Device.setSardanaName">
+<tt class="descname">setSardanaName</tt><big>(</big><em>tolower</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.setSardanaName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.setSardanaName" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets sardana name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tolower</strong> &#8211; If True name in lowercase</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.Device.splitHostPort">
+<tt class="descname">splitHostPort</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.splitHostPort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.splitHostPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>spilts host name from port</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.tdevice">
+<tt class="descname">tdevice</tt><a class="headerlink" href="#nxstools.nxscreator.Device.tdevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>device type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.DeviceDSCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">DeviceDSCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#DeviceDSCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.DeviceDSCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>device datasource creator</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.DeviceDSCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#DeviceDSCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.DeviceDSCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a tango datasources xml of given device
+and stores it in DB or filesytem</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.OnlineCPCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">OnlineCPCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>component creator of all online.xml complex devices</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="nxstools.nxscreator.OnlineCPCreator.components">
+<tt class="descname">components</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>component xml dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.OnlineCPCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates components of all online.xml complex devices</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.OnlineCPCreator.createXMLs">
+<tt class="descname">createXMLs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator.createXMLs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.createXMLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates component xmls of all online.xml complex devices</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.OnlineCPCreator.datasources">
+<tt class="descname">datasources</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.datasources" title="Permalink to this definition">¶</a></dt>
+<dd><p>datasource xml dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.OnlineCPCreator.listcomponents">
+<tt class="descname">listcomponents</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator.listcomponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.listcomponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of components with xml templates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of components with xml templates</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.OnlineDSCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">OnlineDSCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineDSCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>datasource creator of all online.xml simple devices</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.OnlineDSCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineDSCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates datasources of all online.xml simple devices</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.OnlineDSCreator.createXMLs">
+<tt class="descname">createXMLs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineDSCreator.createXMLs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.createXMLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates datasource xmls of all online.xml simple devices</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.OnlineDSCreator.datasources">
+<tt class="descname">datasources</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.datasources" title="Permalink to this definition">¶</a></dt>
+<dd><p>datasource xml dictionary</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.TangoDSCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">TangoDSCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#TangoDSCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.TangoDSCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>tango datasource creator</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> &#8211; command options</li>
+<li><strong>args</strong> &#8211; command arguments</li>
+<li><strong>printouts</strong> &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.TangoDSCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#TangoDSCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.TangoDSCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a tango datasource xml and stores it in DB or filesytem</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="nxstools.nxscreator.WrongParameterError">
+<em class="property">exception </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">WrongParameterError</tt><a class="reference internal" href="_modules/nxstools/nxscreator.html#WrongParameterError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.WrongParameterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>wrong parameter exception</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsparser">
+<span id="nxstools-nxsparser-module"></span><h2>nxstools.nxsparser module<a class="headerlink" href="#module-nxstools.nxsparser" title="Permalink to this headline">¶</a></h2>
+<p>Command-line tool for ascess to the nexdatas configuration server</p>
+<dl class="class">
+<dt id="nxstools.nxsparser.ParserTools">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsparser.</tt><tt class="descname">ParserTools</tt><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>configuration server adapter</p>
+<dl class="classmethod">
+<dt id="nxstools.nxsparser.ParserTools.mergeDefinitions">
+<em class="property">classmethod </em><tt class="descname">mergeDefinitions</tt><big>(</big><em>xmls</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools.mergeDefinitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools.mergeDefinitions" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>merges the xmls list of definitions xml strings</dt>
+<dd>to one output xml string</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmls</strong> &#8211; a list of xml string with definitions</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">one output xml string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="nxstools.nxsparser.ParserTools.parseDataSources">
+<em class="property">classmethod </em><tt class="descname">parseDataSources</tt><big>(</big><em>xmlc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools.parseDataSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools.parseDataSources" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides datasources and its records from xml string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="nxstools.nxsparser.ParserTools.parseFields">
+<em class="property">classmethod </em><tt class="descname">parseFields</tt><big>(</big><em>xmlc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools.parseFields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools.parseFields" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides datasources and its records from xml string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="nxstools.nxsparser.ParserTools.parseLinks">
+<em class="property">classmethod </em><tt class="descname">parseLinks</tt><big>(</big><em>xmlc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools.parseLinks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools.parseLinks" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides datasources and its records from xml string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="nxstools.nxsparser.ParserTools.parseRecord">
+<em class="property">classmethod </em><tt class="descname">parseRecord</tt><big>(</big><em>xmlc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#ParserTools.parseRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.ParserTools.parseRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides source record from xml string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">source record</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsparser.TableTools">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsparser.</tt><tt class="descname">TableTools</tt><big>(</big><em>description</em>, <em>nonone=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#TableTools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.TableTools" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>configuration server adapter</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>description</strong> &#8211; description list</li>
+<li><strong>nonone</strong> &#8211; list of parameters which have to exist to be shown</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsparser.TableTools.generateList">
+<tt class="descname">generateList</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsparser.html#TableTools.generateList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsparser.TableTools.generateList" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate row lists of table</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">table rows</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsparser.TableTools.headers">
+<tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsparser.TableTools.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>table headers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsparser.TableTools.title">
+<tt class="descname">title</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsparser.TableTools.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>table title</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsxml">
+<span id="nxstools-nxsxml-module"></span><h2>nxstools.nxsxml module<a class="headerlink" href="#module-nxstools.nxsxml" title="Permalink to this headline">¶</a></h2>
+<p>Creator of XML configuration files</p>
+<dl class="class">
+<dt id="nxstools.nxsxml.NAttr">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NAttr</tt><big>(</big><em>parent</em>, <em>nameAttr</em>, <em>typeAttr=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Attribute tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> &#8211; name attribute</li>
+<li><strong>typeAttr</strong> &#8211; type attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NAttr.setStrategy">
+<tt class="descname">setStrategy</tt><big>(</big><em>mode='STEP'</em>, <em>trigger=None</em>, <em>value=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NAttr.setStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NAttr.setStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the attribute strategy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mode</strong> &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
+<li><strong>trigger</strong> &#8211; for asynchronous writting,
+e.g. with different subentries</li>
+<li><strong>value</strong> &#8211; label for postrun mode</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NDSource">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NDSource</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Source tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> &#8211; parent tag element</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NDSource.addDoc">
+<tt class="descname">addDoc</tt><big>(</big><em>doc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDSource.addDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDSource.addDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds doc tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NDSource.initClient">
+<tt class="descname">initClient</tt><big>(</big><em>name</em>, <em>recordName</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDSource.initClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDSource.initClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets paramters for Client data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; name of datasource</li>
+<li><strong>recordName</strong> &#8211; name of the data object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NDSource.initDBase">
+<tt class="descname">initDBase</tt><big>(</big><em>name</em>, <em>dbtype</em>, <em>query</em>, <em>dbname=None</em>, <em>rank=None</em>, <em>mycnf=None</em>, <em>user=None</em>, <em>passwd=None</em>, <em>dsn=None</em>, <em>mode=None</em>, <em>host=None</em>, <em>port=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDSource.initDBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDSource.initDBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets parameters of DataBase</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; name of datasource</li>
+<li><strong>dbname</strong> &#8211; name of used DataBase</li>
+<li><strong>query</strong> &#8211; database query</li>
+<li><strong>dbtype</strong> &#8211; type of the database, i.e. MYSQL, PGSQL, ORACLE</li>
+<li><strong>rank</strong> &#8211; rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE</li>
+<li><strong>mycnf</strong> &#8211; MYSQL config file</li>
+<li><strong>user</strong> &#8211; database user name</li>
+<li><strong>passwd</strong> &#8211; database user password</li>
+<li><strong>dsn</strong> &#8211; DSN string to initialize ORACLE and PGSQL databases</li>
+<li><strong>mode</strong> &#8211; mode for ORACLE databases, i.e. SYSDBA or SYSOPER</li>
+<li><strong>host</strong> &#8211; name of the host</li>
+<li><strong>port</strong> &#8211; port number</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NDSource.initTango">
+<tt class="descname">initTango</tt><big>(</big><em>name</em>, <em>device</em>, <em>memberType</em>, <em>recordName</em>, <em>host=None</em>, <em>port=None</em>, <em>encoding=None</em>, <em>group=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDSource.initTango"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDSource.initTango" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets paramters for Tango device</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; name of datasource</li>
+<li><strong>device</strong> &#8211; device name</li>
+<li><strong>memberType</strong> &#8211; type of the data object, i.e. attribute,
+property, command</li>
+<li><strong>recordName</strong> &#8211; name of the data object</li>
+<li><strong>host</strong> &#8211; host name</li>
+<li><strong>port</strong> &#8211; port</li>
+<li><strong>encoding</strong> &#8211; encoding of DevEncoded data</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NDeviceGroup">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NDeviceGroup</tt><big>(</big><em>parent</em>, <em>deviceName</em>, <em>nameAttr</em>, <em>typeAttr=''</em>, <em>commands=True</em>, <em>blackAttrs=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDeviceGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDeviceGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NGroup" title="nxstools.nxsxml.NGroup"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NGroup</span></tt></a></p>
+<p>Tango device tag creator</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>deviceName</strong> &#8211; tango device name</li>
+<li><strong>nameAttr</strong> &#8211; name attribute</li>
+<li><strong>typeAttr</strong> &#8211; type attribute</li>
+<li><strong>commands</strong> &#8211; if we call the commands</li>
+<li><strong>blackAttrs</strong> &#8211; list of excluded attributes</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="nxstools.nxsxml.NDeviceGroup.nTypes">
+<tt class="descname">nTypes</tt><em class="property"> = ['NX_CHAR', 'NX_BOOLEAN', 'NX_INT32', 'NX_INT32', 'NX_FLOAT32', 'NX_FLOAT64', 'NX_UINT32', 'NX_UINT32', 'NX_CHAR', 'NX_CHAR', 'NX_INT32', 'NX_INT32', 'NX_FLOAT32', 'NX_FLOAT64', 'NX_UINT32', 'NX_UINT32', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_BOOLEAN', 'NX_CHAR', 'NX_INT64', 'NX_UINT64', 'NX_INT64', 'NX_UINT64', 'NX_INT32', 'NX_CHAR']</em><a class="headerlink" href="#nxstools.nxsxml.NDeviceGroup.nTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>NeXuS types corresponding to the Tango types</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.NDeviceGroup.tTypes">
+<tt class="descname">tTypes</tt><em class="property"> = ['DevVoid', 'DevBoolean', 'DevShort', 'DevLong', 'DevFloat', 'DevDouble', 'DevUShort', 'DevULong', 'DevString', 'DevVarCharArray', 'DevVarShortArray', 'DevVarLongArray', 'DevVarFloatArray', 'DevVarDoubleArray', 'DevVarUShortArray', 'DevVarULongArray', 'DevVarStringArray', 'DevVarLongStringArray', 'DevVarDoubleStringArray', 'DevState', 'ConstDevString', 'DevVarBooleanArray', 'DevUChar', 'DevLong64', 'DevULong64', 'DevVarLong64Array', 'DevVarULong64Array', 'DevInt', 'DevEncoded']</em><a class="headerlink" href="#nxstools.nxsxml.NDeviceGroup.tTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tango types</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NDim">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NDim</tt><big>(</big><em>parent</em>, <em>indexAttr</em>, <em>valueAttr</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Dim tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>indexAttr</strong> &#8211; index attribute</li>
+<li><strong>valueAttr</strong> &#8211; value attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NDimensions">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NDimensions</tt><big>(</big><em>parent</em>, <em>rankAttr</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Dimensions tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>rankAttr</strong> &#8211; rank attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NDimensions.dim">
+<tt class="descname">dim</tt><big>(</big><em>indexAttr</em>, <em>valueAttr</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NDimensions.dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NDimensions.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds dim tag</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>indexAttr</strong> &#8211; index attribute</li>
+<li><strong>valueAttr</strong> &#8211; value attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.NDimensions.dims">
+<tt class="descname">dims</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NDimensions.dims" title="Permalink to this definition">¶</a></dt>
+<dd><p>container with dim tag wrapper</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NField">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NField</tt><big>(</big><em>parent</em>, <em>nameAttr</em>, <em>typeAttr=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Field tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> &#8211; name attribute</li>
+<li><strong>typeAttr</strong> &#8211; type attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NField.addAttr">
+<tt class="descname">addAttr</tt><big>(</big><em>attrName</em>, <em>attrType</em>, <em>attrValue=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NField.addAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NField.addAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds attribute tag</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>attrName</strong> &#8211; name attribute</li>
+<li><strong>attrType</strong> &#8211; type attribute</li>
+<li><strong>attrValue</strong> &#8211; content of the attribute tag</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NField.addDoc">
+<tt class="descname">addDoc</tt><big>(</big><em>doc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NField.addDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NField.addDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds doc tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NField.setStrategy">
+<tt class="descname">setStrategy</tt><big>(</big><em>mode='STEP'</em>, <em>trigger=None</em>, <em>value=None</em>, <em>grows=None</em>, <em>compression=False</em>, <em>rate=None</em>, <em>shuffle=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NField.setStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NField.setStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the field strategy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mode</strong> &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
+<li><strong>trigger</strong> &#8211; for asynchronous writting,
+e.g. with different subentries</li>
+<li><strong>value</strong> &#8211; label for postrun mode</li>
+<li><strong>grows</strong> &#8211; growing dimension</li>
+<li><strong>compression</strong> &#8211; flag if compression shuold be applied</li>
+<li><strong>rate</strong> &#8211; compression rate</li>
+<li><strong>shuffle</strong> &#8211; flag if compression shuffle</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NField.setUnits">
+<tt class="descname">setUnits</tt><big>(</big><em>unitsAttr</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NField.setUnits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NField.setUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets the field unit</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unitsAttr</strong> &#8211; the field unit</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NGroup">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NGroup</tt><big>(</big><em>parent</em>, <em>nameAttr</em>, <em>typeAttr=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Group tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> &#8211; name attribute</li>
+<li><strong>typeAttr</strong> &#8211; type attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NGroup.addAttr">
+<tt class="descname">addAttr</tt><big>(</big><em>attrName</em>, <em>attrType</em>, <em>attrValue=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NGroup.addAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NGroup.addAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds attribute: tag</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>attrName</strong> &#8211; name attribute</li>
+<li><strong>attrType</strong> &#8211; type attribute</li>
+<li><strong>attrValue</strong> &#8211; content of the attribute tag</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NGroup.addDoc">
+<tt class="descname">addDoc</tt><big>(</big><em>doc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NGroup.addDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NGroup.addDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds doc tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NLink">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NLink</tt><big>(</big><em>parent</em>, <em>nameAttr</em>, <em>gTarget</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxsxml.NTag</span></tt></a></p>
+<p>Link tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> &#8211; name attribute</li>
+<li><strong>gTarget</strong> &#8211; target attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NLink.addDoc">
+<tt class="descname">addDoc</tt><big>(</big><em>doc</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NLink.addDoc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NLink.addDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds doc tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.NTag">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">NTag</tt><big>(</big><em>parent</em>, <em>tagName</em>, <em>nameAttr=''</em>, <em>typeAttr=''</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NTag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NTag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>tag wrapper</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tagName</strong> &#8211; tag name</li>
+<li><strong>parent</strong> &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> &#8211; value of name attribute</li>
+<li><strong>typeAttr</strong> &#8211; value of type attribute</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.NTag.addTagAttr">
+<tt class="descname">addTagAttr</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NTag.addTagAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NTag.addTagAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds tag attribute</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; attribute name</li>
+<li><strong>value</strong> &#8211; attribute value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NTag.addText">
+<tt class="descname">addText</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NTag.addText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NTag.addText" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.NTag.elem">
+<tt class="descname">elem</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NTag.elem" title="Permalink to this definition">¶</a></dt>
+<dd><p>tag element from minidom</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.NTag.root">
+<tt class="descname">root</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NTag.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML minidom root</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.NTag.setText">
+<tt class="descname">setText</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#NTag.setText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.NTag.setText" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets tag content</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; tag content</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsxml.XMLFile">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">XMLFile</tt><big>(</big><em>fname</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#XMLFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.XMLFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>XML file object</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fname</strong> &#8211; XML file name</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsxml.XMLFile.dump">
+<tt class="descname">dump</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#XMLFile.dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.XMLFile.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>dumps XML structure into the XML file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Brief:</th><td class="field-body">It opens XML file, calls prettyPrint and closes the XML file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.XMLFile.elem">
+<tt class="descname">elem</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.elem" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML definition element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.XMLFile.fname">
+<tt class="descname">fname</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.fname" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML file name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxsxml.XMLFile.prettyPrint">
+<tt class="descname">prettyPrint</tt><big>(</big><em>etNode=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#XMLFile.prettyPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.XMLFile.prettyPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>prints pretty XML making use of minidom</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>etNode</strong> &#8211; node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pretty XML string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsxml.XMLFile.root">
+<tt class="descname">root</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>XML root instance</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsxml.main">
+<tt class="descclassname">nxstools.nxsxml.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxsxml.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsxml.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.nxsdevicetools">
+<span id="nxstools-nxsdevicetools-module"></span><h2>nxstools.nxsdevicetools module<a class="headerlink" href="#module-nxstools.nxsdevicetools" title="Permalink to this headline">¶</a></h2>
+<p>NDTS TANGO device tools</p>
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.checkServer">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">checkServer</tt><big>(</big><em>name='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#checkServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.checkServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides server device name if only one or error in the other case</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">server device name or empty string if error appears</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.ctModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">ctModules</tt><em class="property"> = ['mca8715roi', 'onedroi', 'sis3820', 'sis3302roi', 'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2', 'tangoattributectctrl']</em><a class="headerlink" href="#nxstools.nxsdevicetools.ctModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>counter/timer modules</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.findClassName">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">findClassName</tt><big>(</big><em>server</em>, <em>name</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#findClassName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.findClassName" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds class name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; device name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">class name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.generateDeviceNames">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">generateDeviceNames</tt><big>(</big><em>prefix</em>, <em>first</em>, <em>last</em>, <em>minimal=False</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#generateDeviceNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.generateDeviceNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates device names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>prefix</strong> &#8211; device name prefix</li>
+<li><strong>first</strong> &#8211; first device index</li>
+<li><strong>last</strong> &#8211; last device index</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">device names</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.getAttributes">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getAttributes</tt><big>(</big><em>device</em>, <em>host=None</em>, <em>port=10000</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getAttributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of device attributes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>device</strong> &#8211; tango device name</li>
+<li><strong>host</strong> &#8211; device host</li>
+<li><strong>port</strong> &#8211; device port</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of device attributes</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.getClassName">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getClassName</tt><big>(</big><em>devicename='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getClassName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getClassName" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides device class name</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>devicename</strong> &#8211; device name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">class name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.getDataSourceComponents">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getDataSourceComponents</tt><big>(</big><em>server</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getDataSourceComponents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getDataSourceComponents" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets datasource components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> &#8211; configuration server</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary with datasource components</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.getServerTangoHost">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getServerTangoHost</tt><big>(</big><em>server</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getServerTangoHost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getServerTangoHost" title="Permalink to this definition">¶</a></dt>
+<dd><p>fetches the server tango host</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> &#8211; tango server</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">tango host</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.getServers">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getServers</tt><big>(</big><em>name='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getServers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getServers" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides server device names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server instance name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of the server device names</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.ioRegModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">ioRegModules</tt><em class="property"> = ['sis3610']</em><a class="headerlink" href="#nxstools.nxsdevicetools.ioRegModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>IO register modules</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.listServers">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">listServers</tt><big>(</big><em>server</em>, <em>name='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#listServers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.listServers" title="Permalink to this definition">¶</a></dt>
+<dd><p>finds server names</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server instance name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">server list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.moduleAttributes">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleAttributes</tt><em class="property"> = {'tip551': ['Value', 'Voltage'], 'e6c': ['Position', 'Position'], 'pie710': ['Position', 'Position'], 'vfcadc': ['Value', 'Counts'], 'pie712': ['Position', 'Position'], 'sis3820': ['Value', 'Counts'], 'mca_sis3302new': ['Value', 'Data'], 'sis3302roi': ['Value', None], 'spk': ['Position', 'Position'], 'mca_sis3302': ['Value', 'Data'], 'absbox': ['Position', 'Position'], 'mca_8701': ['Value', 'Data'], 'smchydra': ['Position', 'Position'], 'xmcd': ['Value', None], 'oms58': ['Position', 'Position'], 'onedroi': ['Value', None], 'mca8715roi': ['Value', None], 'motor_tango': ['Position', 'Position'], 'counter_tango': ['Value', 'Counts'], 'dgg2': ['Value', 'SampleTime'], 'omsmaxv': ['Position', 'Position'], 'tangoattributectctrl': ['Value', None], 'e6c_p09_eh2': ['Position', 'Position'], 'mca_xia': ['Value', None], 'mythenroi': ['Value', None], 'lom': ['Position', 'Position'], 'tip830': ['Value', 'Counts'], 'mhzdaqp01': ['Value', None], 'kohzu': ['Position', 'Position'], 'sis3610': ['Value', 'Value']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>attributes of device modules to acquire with elements:</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.moduleMultiAttributes">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleMultiAttributes</tt><em class="property"> = {'perkinelmer': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pilatus2m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus1m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pco4000': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'mythen': ['Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime', 'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'], 'lambda2m': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'pilatus300k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'perkinelmerdetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pco': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus6m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'lambda': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'marccd': ['FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'], 'pedetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'], 'pcoedge': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus100k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleMultiAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>important attributes of modules</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.moduleTemplateFiles">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleTemplateFiles</tt><em class="property"> = {'pilatus1m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus1m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pco4000': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus2m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus2m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus300k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus300k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pedetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmer': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmerdetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'lambda2m': ['lambda2m.xml', 'lambda2m_m1_external_data.ds.xml', 'lambda2m_m2_external_data.ds.xml', 'lambda2m_m3_external_data.ds.xml'], 'pco': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus6m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus6m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus100k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus100k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'marccd': ['marccd.xml', 'marccd_postrun.ds.xml'], 'pcoedge': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'lambda': ['lambda.xml', 'lambda_external_data.ds.xml']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleTemplateFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>xml template files of modules</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.motorModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">motorModules</tt><em class="property"> = ['absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c', 'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2']</em><a class="headerlink" href="#nxstools.nxsdevicetools.motorModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>modules of motors</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.oneDModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">oneDModules</tt><em class="property"> = ['mca_xia']</em><a class="headerlink" href="#nxstools.nxsdevicetools.oneDModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>modules of 1D detectors</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.openServer">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">openServer</tt><big>(</big><em>device</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#openServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.openServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>opens connection to the configuration server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>configuration</strong> &#8211; server device</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">configuration server proxy</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.storeComponent">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">storeComponent</tt><big>(</big><em>name</em>, <em>xml</em>, <em>server</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#storeComponent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.storeComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>stores components in Configuration Server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; component name</li>
+<li><strong>xml</strong> &#8211; component xml string</li>
+<li><strong>server</strong> &#8211; configuration server</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="nxstools.nxsdevicetools.storeDataSource">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">storeDataSource</tt><big>(</big><em>name</em>, <em>xml</em>, <em>server</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#storeDataSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.storeDataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>stores datasources in Configuration Server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; datasource name</li>
+<li><strong>xml</strong> &#8211; datasource xml string</li>
+<li><strong>server</strong> &#8211; configuration server</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.twoDModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">twoDModules</tt><em class="property"> = ['pilatus100k', 'pilatus300k', 'pilatus1m', 'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector', 'lambda', 'pedetector', 'perkinelmer', 'pco', 'pcoedge', 'marccd', 'perkinelmer', 'lcxcamera', 'limaccd', 'eigerpsi', 'eigerdectris']</em><a class="headerlink" href="#nxstools.nxsdevicetools.twoDModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>modules of 2d detectors</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.zeroDModules">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">zeroDModules</tt><em class="property"> = ['tip830']</em><a class="headerlink" href="#nxstools.nxsdevicetools.zeroDModules" title="Permalink to this definition">¶</a></dt>
+<dd><p>modules of 0D detectors</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools.filenamegenerator">
+<span id="nxstools-filenamegenerator-module"></span><h2>nxstools.filenamegenerator module<a class="headerlink" href="#module-nxstools.filenamegenerator" title="Permalink to this headline">¶</a></h2>
+<p>Filename generator</p>
+<dl class="class">
+<dt id="nxstools.filenamegenerator.FilenameGenerator">
+<em class="property">class </em><tt class="descclassname">nxstools.filenamegenerator.</tt><tt class="descname">FilenameGenerator</tt><big>(</big><em>fname_template</em>, <em>start_index=0</em>, <em>stop_index=None</em><big>)</big><a class="reference internal" href="_modules/nxstools/filenamegenerator.html#FilenameGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Generate image file names</p>
+<p>(c) Copyright 2015 Eugen Wintersberger &lt;<a class="reference external" href="mailto:eugen&#46;wintersberger&#37;&#52;&#48;gmail&#46;com">eugen<span>&#46;</span>wintersberger<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+(c) Copyright 2015 DESY
+This file is part of nx2img.</p>
+<p>nx2img is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.</p>
+<p>nx2img is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with nx2img.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<p>Generator class creating image file names.</p>
+<dl class="staticmethod">
+<dt id="nxstools.filenamegenerator.FilenameGenerator.from_slice">
+<em class="property">static </em><tt class="descname">from_slice</tt><big>(</big><em>file_template</em><big>)</big><a class="reference internal" href="_modules/nxstools/filenamegenerator.html#FilenameGenerator.from_slice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator.from_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static factory method to create a filename_generator instance
+from a sliced user input</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxstools">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nxstools" title="Permalink to this headline">¶</a></h2>
+<p>NXS tools</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxsetup.html" title="nxsetup"
+             >previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

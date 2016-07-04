@@ -1,0 +1,777 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxstools.nxsconfig &mdash; NXSTools 2.1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="NXSTools 2.1.3 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NXSTools 2.1.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for nxstools.nxsconfig</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c">#</span>
+<span class="c">#    Copyright (C) 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+
+<span class="sd">&quot;&quot;&quot; Command-line tool for ascess to the nexdatas configuration server &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">ParserTools</span><span class="p">,</span> <span class="n">TableTools</span>
+
+<span class="kn">from</span> <span class="nn">.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">checkServer</span><span class="p">,</span> <span class="n">listServers</span><span class="p">,</span> <span class="n">openServer</span><span class="p">)</span>
+
+
+<span class="c">##</span>
+<div class="viewcode-block" id="ConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer">[docs]</a><span class="k">class</span> <span class="nc">ConfigServer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">nonewline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param device: device name of the configuration server</span>
+<span class="sd">        :param nonewline: if the output should not be separated</span>
+<span class="sd">                          by the new line character</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#: spliting character</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__char</span> <span class="o">=</span> <span class="s">&quot; &quot;</span> <span class="k">if</span> <span class="n">nonewline</span> <span class="k">else</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="c">#: configuration server proxy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_listCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lists the DB item names</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param mandatory: flag set True for mandatory components</span>
+<span class="sd">        :param private: flag set True for components starting with &#39;__&#39;</span>
+<span class="sd">        :returns: list op item names</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mandatory</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableDataSources</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mandatory</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">MandatoryComponents</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">private</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">cp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;__&quot;</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">cp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;__&quot;</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_sourcesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lists datasources of the components</span>
+
+<span class="sd">        :param components: given components</span>
+<span class="sd">        :returns: list of datasource names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                 <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">component</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mandatory</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentDataSources</span><span class="p">(</span><span class="n">component</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentsDataSources</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_componentsCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lists components of the components</span>
+
+<span class="sd">        :param components: given components</span>
+<span class="sd">        :returns: list of component names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                 <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">component</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DependentComponents</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_variablesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lists variable of the components</span>
+
+<span class="sd">        :param components: given components</span>
+<span class="sd">        :returns: list of datasource names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                 <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">component</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mandatory</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentVariables</span><span class="p">(</span><span class="n">component</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentsVariables</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">__getDataSources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides datasources and its records for a given component</span>
+
+<span class="sd">        :param name: given component or datasource</span>
+<span class="sd">        :returns: tuple with names and records</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">interNames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">xmlcp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Components</span><span class="p">([</span><span class="n">name</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">xmlc</span> <span class="ow">in</span> <span class="n">xmlcp</span><span class="p">:</span>
+            <span class="n">dslist</span> <span class="o">=</span> <span class="n">ParserTools</span><span class="o">.</span><span class="n">parseDataSources</span><span class="p">(</span><span class="n">xmlc</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dslist</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ds</span><span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">]:</span>
+                    <span class="n">interNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">ds</span><span class="p">[</span><span class="s">&quot;source&quot;</span><span class="p">]:</span>
+                    <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s">&quot;source&quot;</span><span class="p">])</span>
+
+            <span class="n">allNames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentDataSources</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">allNames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">interNames</span><span class="p">:</span>
+                    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">records</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_recordCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; lists datasources of the component</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param name: given component or datasource</span>
+<span class="sd">        :returns: list of record names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                 <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="n">names</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getDataSources</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">dsrcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableDataSources</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dsrcs</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Datasource &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                 <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">nm</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">xmls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DataSources</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">xml</span> <span class="ow">in</span> <span class="n">xmls</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xml</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">rec</span> <span class="o">=</span> <span class="n">ParserTools</span><span class="o">.</span><span class="n">parseRecord</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">rec</span><span class="p">:</span>
+                        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="s">&quot;Error: Datasource &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be parsed</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">xml</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span>
+                                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">records</span>
+
+    <span class="k">def</span> <span class="nf">_showCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; shows the DB items</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param mandatory: flag set True for mandatory components</span>
+<span class="sd">        :returns: list of XML items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="n">dsrc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableDataSources</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dsrc</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: DataSource &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                     <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DataSources</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                                     <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">mandatory</span><span class="p">:</span>
+                <span class="n">mand</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">MandatoryComponents</span><span class="p">())</span>
+                <span class="n">mand</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Components</span><span class="p">(</span><span class="n">mand</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Components</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_getCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides final configuration</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :returns: XML configuration string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                        <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="s">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">CreateConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">XMLString</span>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__describeDataSources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides description of datasources</span>
+
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param headers: list of output parameters</span>
+<span class="sd">        :returns: list with description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xmls</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableDataSources</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dss</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39; does not have any datasources</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dss</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s">&quot;Error: DataSource &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                    <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">[</span><span class="s">&quot;source_type&quot;</span><span class="p">,</span> <span class="s">&quot;source&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">dsxmls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DataSources</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xmls</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dsxmls</span><span class="p">):</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="n">ParserTools</span><span class="o">.</span><span class="n">parseDataSources</span><span class="p">(</span><span class="n">xmls</span><span class="p">)</span>
+                <span class="n">ttools</span> <span class="o">=</span> <span class="n">TableTools</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+                <span class="n">ttools</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;    DataSource: &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+                <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dsxmls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DataSources</span><span class="p">(</span><span class="n">dss</span><span class="p">)</span>
+            <span class="n">xmls</span> <span class="o">=</span> <span class="n">ParserTools</span><span class="o">.</span><span class="n">mergeDefinitions</span><span class="p">(</span><span class="n">dsxmls</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ParserTools</span><span class="o">.</span><span class="n">parseDataSources</span><span class="p">(</span><span class="n">xmls</span><span class="p">))</span>
+            <span class="n">ttools</span> <span class="o">=</span> <span class="n">TableTools</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+                <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">Hint: add datasource names as command arguments &quot;</span>
+                <span class="s">&quot;or -m for mandatory components </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">description</span>
+
+    <span class="k">def</span> <span class="nf">__describeComponents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                             <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides description of components</span>
+
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param headers: list of output parameters</span>
+<span class="sd">        :param nonone: list of parameters which have to exist to be shown</span>
+<span class="sd">        :param private: flag set True for components starting with &#39;__&#39;</span>
+<span class="sd">        :returns: list with description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xmls</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cmps</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39; does not have any components</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                    <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">private</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">cmps</span> <span class="k">if</span> <span class="n">cp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;__&quot;</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="n">cmps</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">cp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;__&quot;</span><span class="p">)]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">cmps</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">cpxmls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">instantiatedComponents</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">cpxmls</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">cpxmls</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">instantiatedComponents</span><span class="p">([</span><span class="n">ar</span><span class="p">]))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">cpxmls</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Components</span><span class="p">([</span><span class="n">ar</span><span class="p">]))</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                            <span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be instantiated</span><span class="se">\n</span><span class="s">&quot;</span>
+                            <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xmls</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cpxmls</span><span class="p">):</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="n">ParserTools</span><span class="o">.</span><span class="n">parseFields</span><span class="p">(</span><span class="n">xmls</span><span class="p">)</span>
+                <span class="n">parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ParserTools</span><span class="o">.</span><span class="n">parseLinks</span><span class="p">(</span><span class="n">xmls</span><span class="p">))</span>
+                <span class="n">ttools</span> <span class="o">=</span> <span class="n">TableTools</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">nonone</span><span class="p">)</span>
+                <span class="n">ttools</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;    Component: &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+                    <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+                <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">Hint: add component names as command arguments &quot;</span>
+                <span class="s">&quot;or -m for mandatory components </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">description</span>
+
+    <span class="k">def</span> <span class="nf">__describeConfiguration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides description of final configuration</span>
+
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param headers: list of output parameters</span>
+<span class="sd">        :param nonone: list of parameters which have to exist to be shown</span>
+<span class="sd">        :returns: list with description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xmls</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cmps</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39; does not have any components</span><span class="se">\n\n</span><span class="s">&quot;</span>
+                <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored in &quot;</span>
+                    <span class="s">&quot;the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">CreateConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">xmls</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">XMLString</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">xmls</span><span class="p">:</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ParserTools</span><span class="o">.</span><span class="n">parseFields</span><span class="p">(</span><span class="n">xmls</span><span class="p">))</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ParserTools</span><span class="o">.</span><span class="n">parseLinks</span><span class="p">(</span><span class="n">xmls</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="s">&quot;</span><span class="se">\n</span><span class="s">Hint: add components as command arguments &quot;</span>
+                <span class="s">&quot;or -m for mandatory components </span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="n">ttools</span> <span class="o">=</span> <span class="n">TableTools</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+            <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+        <span class="k">return</span> <span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_describeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides description of configuration elements</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param md: flag set True for mandatory components</span>
+<span class="sd">        :param pr: flag set True for private components</span>
+<span class="sd">        :returns: list with description</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeDataSources</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">md</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">pr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_infoCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Provides info for given elements</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param md: flag set True for mandatory components</span>
+<span class="sd">        :param pr: flag set True for private components</span>
+<span class="sd">        :returns: list with description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cpheaders</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s">&quot;source_name&quot;</span><span class="p">,</span>
+            <span class="s">&quot;source_type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;nexus_type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;shape&quot;</span><span class="p">,</span>
+            <span class="s">&quot;strategy&quot;</span><span class="p">,</span>
+            <span class="s">&quot;source&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">nonone</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeDataSources</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">md</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">nonone</span><span class="p">,</span> <span class="n">pr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">nonone</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_geometryCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides geometry info for given elements</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param md: flag set True for mandatory components</span>
+<span class="sd">        :param pr: flag set True for private components</span>
+<span class="sd">        :returns: list with description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cpheaders</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s">&quot;nexus_path&quot;</span><span class="p">,</span>
+            <span class="s">&quot;source_name&quot;</span><span class="p">,</span>
+            <span class="s">&quot;units&quot;</span><span class="p">,</span>
+            <span class="s">&quot;trans_type&quot;</span><span class="p">,</span>
+            <span class="s">&quot;trans_vector&quot;</span><span class="p">,</span>
+            <span class="s">&quot;trans_offset&quot;</span><span class="p">,</span>
+            <span class="s">&quot;depends_on&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">md</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">pr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_dataCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides varaible values</span>
+
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :returns: JSON with variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Variables</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Variables</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">_mergeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides merged components</span>
+
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :returns: XML configuration string with merged components</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ds</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">ar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ar</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                        <span class="s">&quot;Error: Component &#39;</span><span class="si">%s</span><span class="s">&#39; not stored &quot;</span>
+                        <span class="s">&quot;in the configuration server</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ar</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="s">&quot;&quot;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Merge</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConfigServer.performCommand"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.performCommand">[docs]</a>    <span class="k">def</span> <span class="nf">performCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                       <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; performs requested command</span>
+
+<span class="sd">        :param command: executed command: &#39;list&#39;, &#39;show&#39;, &#39;get&#39;,</span>
+<span class="sd">                        &#39;variables&#39;, &#39;sources&#39;, &#39;record&#39;, &#39;merge&#39;,</span>
+<span class="sd">                        &#39;components&#39;, &#39;data&#39;, &#39;describe&#39;, &#39;info&#39;, &#39;geometry&#39;</span>
+<span class="sd">        :param ds: flag set True for datasources</span>
+<span class="sd">        :param args: list of item names</span>
+<span class="sd">        :param mandatory: flag set True for mandatory components</span>
+<span class="sd">        :param private: flag set True for components starting with &#39;__&#39;</span>
+<span class="sd">        :returns: resulting string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;list&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_listCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;show&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_showCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;get&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;merge&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mergeCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;sources&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sourcesCmd</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;components&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_componentsCmd</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;variables&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variablesCmd</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;data&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataCmd</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;record&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recordCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;describe&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_describeCmd</span><span class="p">(</span>
+                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;info&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_infoCmd</span><span class="p">(</span>
+                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;geometry&#39;</span><span class="p">:</span>
+            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geometryCmd</span><span class="p">(</span>
+                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_createParser</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; creates command-line parameters parser</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#: usage example</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: nxsconfig &lt;command&gt; [-s &lt;config_server&gt;] &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; [-d] [-m] [&lt;name1&gt;] [&lt;name2&gt;] [&lt;name3&gt;] ... </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;       nxsconfig info</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;       nxsconfig geometry</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;Commands: </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   list [-s &lt;config_server&gt;] [-m | -p] </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          list names of available components</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   list -d [-s &lt;config_server&gt;] </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          list names of available datasources</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   show [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show components with given names </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   show -d [-s &lt;config_server&gt;] dsource_name1 &quot;</span>  \
+            <span class="o">+</span> <span class="s">&quot;dsource_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show datasources with given names </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   get [-s &lt;config_server&gt;]  [-m] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get merged configuration of components </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   sources [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get a list of component datasources </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   components [-s &lt;config_server&gt;] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get a list of dependent components </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   variables [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get a list of component variables </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   data [-s &lt;config_server&gt;] json_data </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          set values of component variables </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   record [-s &lt;config_server&gt;]  component_name1  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get a list of datasource record names &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;from component</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   record -d [-s &lt;config_server&gt;] datasource_name1  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get a list of datasource record names   </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   servers [-s &lt;config_server/host&gt;] </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          get lists of configuration servers from &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;the current tango host</span><span class="se">\n</span><span class="s">&quot;</span>\
+            <span class="o">+</span> <span class="s">&quot;   describe [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show all parameters of given components </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   describe|info -d [-s &lt;config_server&gt;] dsource_name1 &quot;</span>  \
+            <span class="o">+</span> <span class="s">&quot;dsource_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show all parameters of given datasources </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   info [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show source parameters of given components </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;   geometry [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;          show transformation parameters &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;of given components </span><span class="se">\n</span><span class="s">&quot;</span>
+
+    <span class="c">#: option parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation on datasources&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                      <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#: pipe arguments</span>
+    <span class="n">pipe</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c">#: run options</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
+        <span class="c">#: system pipe</span>
+        <span class="n">pipe</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+    <span class="n">commands</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;show&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;variables&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;sources&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s">&#39;record&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;merge&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;components&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s">&#39;describe&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;geometry&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">_createParser</span><span class="p">()</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;servers&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">listServers</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s">&#39;NXSConfigServer&#39;</span><span class="p">)))</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">commands</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c">#: command-line and pipe arguments</span>
+    <span class="n">parg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">pipe</span><span class="p">:</span>
+        <span class="n">parg</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">commands</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="c">#: configuration server</span>
+    <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+
+    <span class="c">#: result to print</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">performCommand</span><span class="p">(</span>
+        <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">parg</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NXSTools 2.1.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

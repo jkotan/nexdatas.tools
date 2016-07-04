@@ -1,0 +1,949 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxstools.nxscreator &mdash; NXSTools 2.1.3 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="NXSTools 2.1.3 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NXSTools 2.1.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for nxstools.nxscreator</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c">#</span>
+<span class="c">#    Copyright (C) 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+
+<span class="sd">&quot;&quot;&quot; Command-line tool for creating to the nexdatas configuration server &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="kn">import</span> <span class="n">parse</span>
+<span class="kn">from</span> <span class="nn">nxstools</span> <span class="kn">import</span> <span class="n">nxsdevicetools</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">storeDataSource</span><span class="p">,</span> <span class="n">getDataSourceComponents</span><span class="p">,</span> <span class="n">storeComponent</span><span class="p">,</span>
+    <span class="n">moduleAttributes</span><span class="p">,</span> <span class="n">moduleMultiAttributes</span><span class="p">,</span> <span class="n">motorModules</span><span class="p">,</span>
+    <span class="n">moduleTemplateFiles</span><span class="p">,</span> <span class="n">generateDeviceNames</span><span class="p">,</span> <span class="n">getServerTangoHost</span><span class="p">,</span>
+    <span class="n">openServer</span><span class="p">,</span> <span class="n">findClassName</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxsxml</span> <span class="kn">import</span> <span class="p">(</span><span class="n">XMLFile</span><span class="p">,</span> <span class="n">NDSource</span><span class="p">,</span> <span class="n">NGroup</span><span class="p">,</span> <span class="n">NField</span><span class="p">,</span> <span class="n">NLink</span><span class="p">,</span>
+                             <span class="n">NDimensions</span><span class="p">)</span>
+
+<span class="n">NXSTOOLS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">nxsdevicetools</span><span class="o">.</span><span class="n">__file__</span><span class="p">)</span>
+<span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">PyTango</span>
+    <span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="CPExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPExistsException">[docs]</a><span class="k">class</span> <span class="nc">CPExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Component already exists exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; device from online.xml</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;dtype&#39;</span><span class="p">,</span> <span class="s">&#39;module&#39;</span><span class="p">,</span> <span class="s">&#39;tdevice&#39;</span><span class="p">,</span> <span class="s">&#39;hostname&#39;</span><span class="p">,</span> <span class="s">&#39;sardananame&#39;</span><span class="p">,</span>
+        <span class="s">&#39;sardanahostname&#39;</span><span class="p">,</span> <span class="s">&#39;host&#39;</span><span class="p">,</span> <span class="s">&#39;port&#39;</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="s">&#39;attribute&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#: device name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: data type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: device module</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: device type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: host name with port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: sardana name with port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: sardana host name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: host without port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: tango port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: datasource tango group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: attribute name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="Device.splitHostPort"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.splitHostPort">[docs]</a>    <span class="k">def</span> <span class="nf">splitHostPort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; spilts host name from port</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> \
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;hostname not defined&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Device.findAttribute"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.findAttribute">[docs]</a>    <span class="k">def</span> <span class="nf">findAttribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tangohost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; sets attribute and datasource group of online.xml device</span>
+
+<span class="sd">        :param tangohost: tango host</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mhost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="ow">or</span> <span class="n">tangohost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c"># if module.lower() in motorModules:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">motorModules</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">&#39;stepping_motor&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
+        <span class="k">elif</span> <span class="n">PYTANGO</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">moduleAttributes</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mhost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+                <span class="n">mdevice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+
+                <span class="n">sarattr</span> <span class="o">=</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">sarattr</span> <span class="ow">or</span> \
+                   <span class="n">sarattr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dp</span><span class="o">.</span><span class="n">get_attribute_list</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Missing attribute: Value&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">mhost</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="n">mdevice</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">sarattr</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
+</div>
+<div class="viewcode-block" id="Device.setSardanaName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.setSardanaName">[docs]</a>    <span class="k">def</span> <span class="nf">setSardanaName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolower</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; sets sardana name</span>
+
+<span class="sd">        :param tolower: If True name in lowercase</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sardananame</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">tolower</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Creator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Creator">[docs]</a><span class="k">class</span> <span class="nc">Creator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param options:  command options</span>
+<span class="sd">        :param args: command arguments</span>
+<span class="sd">        :param printouts: if printout is enable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#: creator options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="c">#: creator arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="c">#: if printout is enable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span> <span class="o">=</span> <span class="n">printouts</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_createTangoDataSource</span><span class="p">(</span>
+            <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+            <span class="n">attribute</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates TANGO datasource file</span>
+
+<span class="sd">        :param name: device name</span>
+<span class="sd">        :param directory: output file directory</span>
+<span class="sd">        :param fileprefix: file name prefix</span>
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :param device: device name</span>
+<span class="sd">        :param attribute: attribute name</span>
+<span class="sd">        :param host: tango host name</span>
+<span class="sd">        :param port: tango port</span>
+<span class="sd">        :parma group: datasource tango group</span>
+<span class="sd">        :returns: xml string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="s">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span>
+                     <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">storeDataSource</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">fileprefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">xml</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_createClientDataSource</span><span class="p">(</span>
+            <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">dsname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates CLIENT datasource file</span>
+
+<span class="sd">        :param name: device name</span>
+<span class="sd">        :param directory: output file directory</span>
+<span class="sd">        :param fileprefix: file name prefix</span>
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :param dsname: datasource name</span>
+<span class="sd">        :returns: xml string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dname</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">dsname</span> <span class="k">else</span> <span class="n">dsname</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">dname</span><span class="p">))</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">dname</span><span class="p">)</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="n">sr</span><span class="o">.</span><span class="n">initClient</span><span class="p">(</span><span class="n">dname</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dname</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">fileprefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">xml</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__patheval</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; splits nexus path into list</span>
+
+<span class="sd">        :param nexuspath: nexus path</span>
+<span class="sd">        :returns: nexus path in lists of (name, NXtype)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pathlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">spath</span> <span class="o">=</span> <span class="n">nexuspath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">spath</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">spath</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">nlist</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nlist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> \
+                       <span class="nb">len</span><span class="p">(</span><span class="n">nlist</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;NX&quot;</span><span class="p">):</span>
+                        <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nlist</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">:],</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">nlist</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;NX&quot;</span><span class="p">):</span>
+                        <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">:],</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&quot;NX&quot;</span> <span class="o">+</span> <span class="n">nlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+            <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">spath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">None</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pathlist</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__createTree</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
+                     <span class="n">strategy</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
+
+<span class="sd">        :param df: definition parent node</span>
+<span class="sd">        :param nexuspath: nexus path</span>
+<span class="sd">        :param name: name</span>
+<span class="sd">        :param nexusType: nexus type</span>
+<span class="sd">        :param strategy: strategy mode</span>
+<span class="sd">        :param units: field units</span>
+<span class="sd">        :param links: if create link</span>
+<span class="sd">        :param chunk: chunk size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pathlist</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__patheval</span><span class="p">(</span><span class="n">nexuspath</span><span class="p">)</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">df</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pathlist</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">parent</span> <span class="o">==</span> <span class="n">df</span><span class="p">:</span>
+                <span class="n">entry</span> <span class="o">=</span> <span class="n">child</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="n">child</span>
+        <span class="k">if</span> <span class="n">pathlist</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">pathlist</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">name</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">)</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">field</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;$datasources.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">chunk</span> <span class="o">!=</span> <span class="s">&#39;SCALAR&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">chunk</span> <span class="o">==</span> <span class="s">&#39;SPECTRUM&#39;</span><span class="p">:</span>
+                    <span class="n">NDimensions</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">chunk</span> <span class="o">==</span> <span class="s">&#39;IMAGE&#39;</span><span class="p">:</span>
+                    <span class="n">NDimensions</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&quot;2&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">link</span> <span class="ow">and</span> <span class="n">entry</span><span class="p">:</span>
+                <span class="n">npath</span> <span class="o">=</span> <span class="p">(</span><span class="n">nexuspath</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span> \
+                    <span class="k">if</span> <span class="n">nexuspath</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;/&#39;</span> <span class="k">else</span> <span class="n">nexuspath</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="s">&quot;data&quot;</span><span class="p">,</span> <span class="s">&quot;NXdata&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">link</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">npath</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">NLink</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">npath</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_createComponent</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">,</span>
+                         <span class="n">strategy</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates component file</span>
+
+<span class="sd">        :param name: datasource name</span>
+<span class="sd">        :param directory: output file directory</span>
+<span class="sd">        :param fileprefix: file name prefix</span>
+<span class="sd">        :param nexuspath: nexus path</span>
+<span class="sd">        :param strategy: field strategy</span>
+<span class="sd">        :param nexusType: nexus Type of the field</span>
+<span class="sd">        :param units: field units</span>
+<span class="sd">        :param link: nxdata link</span>
+<span class="sd">        :param server: configuration server</span>
+<span class="sd">        :returns: component xml</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">defpath</span> <span class="o">=</span> <span class="s">&#39;/entry$var.serialno:NXentry/instrument&#39;</span> \
+                  <span class="o">+</span> <span class="s">&#39;/collection/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__createTree</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span> <span class="ow">or</span> <span class="n">defpath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
+                         <span class="n">strategy</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
+
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">storeComponent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">fileprefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">xml</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getText</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
+
+<span class="sd">        :param node: DOM node</span>
+<span class="sd">        :returns: xml content string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">xml</span><span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;lt;&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;gt;&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span> \
+            <span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;quot;&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;amp;&quot;</span><span class="p">,</span> <span class="s">&quot;&amp;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getChildText</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">childname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
+
+<span class="sd">        :param parent: parent node</span>
+<span class="sd">        :param childname: child name</span>
+<span class="sd">        :returns: text string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">))</span> <span class="k">else</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="WrongParameterError"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.WrongParameterError">[docs]</a><span class="k">class</span> <span class="nc">WrongParameterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; wrong parameter exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="ComponentCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ComponentCreator">[docs]</a><span class="k">class</span> <span class="nc">ComponentCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; component creator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ComponentCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ComponentCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates a component xml and stores it in DB or filesytem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">aargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;CollCompCreator Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;CollCompCreator Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">aargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">minimal</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">+=</span> <span class="n">aargs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING: </span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;STORING: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_createComponent</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">nexuspath</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">strategy</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+                <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">fieldlinks</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">sourcelinks</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">chunk</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="TangoDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator">[docs]</a><span class="k">class</span> <span class="nc">TangoDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; tango datasource creator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TangoDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates a tango datasource xml and stores it in DB or filesytem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dvargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;TangoDSCreator: Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;TangoDSCreator: Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+            <span class="n">dvargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+            <span class="n">dsargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dvargs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dvargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dvargs</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s">: </span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dvargs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">&quot;STORING </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dvargs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="n">dvargs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ClientDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator">[docs]</a><span class="k">class</span> <span class="nc">ClientDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; client datasource creator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ClientDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates a client datasource xml and stores it in DB or filesytem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dsargs</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">aargs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;ClientDSCreator: Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                    <span class="s">&quot;ClientDSCreator: Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+            <span class="n">aargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">dsource</span><span class="p">:</span>
+                <span class="n">dsaargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">dsource</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">)</span> <span class="o">+</span> <span class="n">dsaargs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_args</span> <span class="o">+=</span> <span class="n">aargs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dsargs</span><span class="p">:</span>
+            <span class="n">dsargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING: </span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;STORING: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_createClientDataSource</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+</div></div>
+<div class="viewcode-block" id="DeviceDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DeviceDSCreator">[docs]</a><span class="k">class</span> <span class="nc">DeviceDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; device datasource creator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DeviceDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DeviceDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates a tango datasources xml of given device</span>
+<span class="sd">            and stores it in DB or filesytem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">:</span>
+            <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">: </span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;STORING </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">dsname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                <span class="n">dsname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">database</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">datasource</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">nogroup</span> <span class="k">else</span> <span class="bp">None</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="OnlineDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; datasource creator of all online.xml simple devices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param options:  command options</span>
+<span class="sd">        :param args: command arguments</span>
+<span class="sd">        :param printouts: if printout is enable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Creator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="p">)</span>
+        <span class="c">#: datasource xml dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+
+<span class="sd">        :param dv: online device object</span>
+<span class="sd">        :param dscps: datasource components</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">60</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)),</span>
+                    <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="OnlineDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OnlineDSCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">dscps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dscps</span> <span class="o">=</span> <span class="n">getDataSourceComponents</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">dscps</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;module&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;device&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;hostname&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardananame&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                    <span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardanahostname&quot;</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">splitHostPort</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">&quot;ERROR </span><span class="si">%s</span><span class="s">: host for module </span><span class="si">%s</span><span class="s"> of </span><span class="si">%s</span><span class="s"> &quot;</span>
+                              <span class="s">&quot;type not defined&quot;</span>
+                              <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+                    <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+                    <span class="k">continue</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">findAttribute</span><span class="p">(</span><span class="n">tangohost</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">setSardanaName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="p">)</span>
+                    <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="p">(</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">==</span> <span class="s">&#39;module_tango&#39;</span>
+                        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span>
+                        <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="ow">in</span> <span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">==</span> <span class="s">&#39;module_tango&#39;</span><span class="p">:</span>
+                        <span class="n">module</span> <span class="o">=</span> <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">module</span> <span class="o">=</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span>
+                    <span class="n">multattr</span> <span class="o">=</span> <span class="n">moduleMultiAttributes</span><span class="p">[</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">multattr</span><span class="p">:</span>
+                        <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                        <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                            <span class="n">dsname</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                            <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                            <span class="s">&quot;</span><span class="si">%s</span><span class="s">_&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                        <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                        <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">,</span> <span class="n">dscps</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span>
+                            <span class="s">&quot;SKIPPING </span><span class="si">%s</span><span class="s">:    module </span><span class="si">%s</span><span class="s"> of </span><span class="si">%s</span><span class="s"> type not defined&quot;</span>
+                            <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+
+</div></div>
+<div class="viewcode-block" id="OnlineCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineCPCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; component creator of all online.xml complex devices</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param options: command options</span>
+<span class="sd">        :param args: command arguments</span>
+<span class="sd">        :param printouts: if printout is enable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Creator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="p">)</span>
+        <span class="c">#: datasource xml dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c">#: component xml dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+
+<span class="sd">        :param dv: online device object</span>
+<span class="sd">        :param dscps: datasource components</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">60</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)),</span>
+                    <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getModuleName</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides module name</span>
+
+<span class="sd">        :param device: device name</span>
+<span class="sd">        :returns: module name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">classname</span> <span class="o">=</span> <span class="n">findClassName</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">device</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">classname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="n">classname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;module_tango&#39;</span> \
+                   <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="mi">3</span> \
+                   <span class="ow">and</span> <span class="n">device</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> \
+                   <span class="ow">in</span> <span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="n">device</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span>
+
+<div class="viewcode-block" id="OnlineCPCreator.listcomponents"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.listcomponents">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides a list of components with xml templates</span>
+
+<span class="sd">        :returns: list of components with xml templates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">cpnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;module&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;device&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;hostname&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardananame&quot;</span><span class="p">)</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                    <span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardanahostname&quot;</span><span class="p">)</span>
+
+                <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getModuleName</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">moduleTemplateFiles</span><span class="p">:</span>
+                        <span class="n">cpnames</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+        <span class="k">return</span> <span class="n">cpnames</span>
+</div>
+<div class="viewcode-block" id="OnlineCPCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates components of all online.xml complex devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">component</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">proxy</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+                    <span class="n">proxy</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+                    <span class="n">acps</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">availableComponents</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot connect to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cpname</span> <span class="ow">in</span> <span class="n">acps</span> <span class="ow">or</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">acps</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
+                        <span class="s">&quot;Component &#39;</span><span class="si">%s</span><span class="s">&#39; already exists.&quot;</span> <span class="o">%</span> <span class="n">cpname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">server</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">cpxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">storeComponent</span><span class="p">(</span><span class="n">cpname</span><span class="p">,</span> <span class="n">cpxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">cpxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">cpname</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cpxml</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OnlineCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">component</span>
+
+        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="n">cpname</span> <span class="o">=</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">cpname</span><span class="p">:</span>
+                    <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;module&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;hostname&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardananame&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                        <span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardanahostname&quot;</span><span class="p">)</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">splitHostPort</span><span class="p">()</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                            <span class="k">print</span><span class="p">(</span><span class="s">&quot;ERROR </span><span class="si">%s</span><span class="s">: host for module </span><span class="si">%s</span><span class="s"> of </span><span class="si">%s</span><span class="s"> &quot;</span>
+                                  <span class="s">&quot;type not defined&quot;</span>
+                                  <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+                        <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+                        <span class="k">continue</span>
+                    <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getModuleName</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
+                        <span class="n">multattr</span> <span class="o">=</span> <span class="n">moduleMultiAttributes</span><span class="p">[</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">multattr</span><span class="p">:</span>
+                            <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                            <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                                <span class="n">dsname</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                                <span class="s">&quot;</span><span class="si">%s</span><span class="s">_&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                            <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                            <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">moduleTemplateFiles</span><span class="p">:</span>
+                            <span class="n">xmlfiles</span> <span class="o">=</span> <span class="n">moduleTemplateFiles</span><span class="p">[</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+                            <span class="k">for</span> <span class="n">xmlfile</span> <span class="ow">in</span> <span class="n">xmlfiles</span><span class="p">:</span>
+                                <span class="n">newname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replaceName</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span>
+                                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+                                        <span class="s">&#39;</span><span class="si">%s</span><span class="s">/xmltemplates/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                                            <span class="n">NXSTOOLS_PATH</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">),</span> <span class="s">&quot;r&quot;</span>
+                                <span class="p">)</span> <span class="k">as</span> <span class="n">content_file</span><span class="p">:</span>
+                                    <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                                <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span>
+                                <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                                <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">newname</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">xmlfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.ds.xml&quot;</span><span class="p">):</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+
+            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+</div>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_replaceName</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cpname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; replaces name prefix of xml templates files</span>
+
+<span class="sd">        :param filename: template filename</span>
+<span class="sd">        :param cpname: output prefix</span>
+<span class="sd">        :returns: output filename</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.ds.xml&quot;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.xml&quot;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">sname</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">sname</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpname</span>
+        <span class="k">return</span> <span class="s">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sname</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">NXSTools 2.1.3 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

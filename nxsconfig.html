@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxsconfig &mdash; NXSTools 2.1.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="NXSTools 2.1.3 documentation" href="index.html" />
+    <link rel="next" title="nxscreate" href="nxscreate.html" />
+    <link rel="prev" title="nxcollect" href="nxscollect.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxscreate.html" title="nxscreate"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nxscollect.html" title="nxcollect"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">nxsconfig</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nxscollect.html"
+                        title="previous chapter">nxcollect</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nxscreate.html"
+                        title="next chapter">nxscreate</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/nxsconfig.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="nxsconfig">
+<h1>nxsconfig<a class="headerlink" href="#nxsconfig" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The nxsconfig program
+is a command-line interface to NXS Configuration Tango Server.
+It allows one to read XML configuration datasources
+and components. It also gives possibility to
+perform the process of component merging.</p>
+</div>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig &lt;command&gt; [-s &lt;config_server&gt;]  [-d] [-m] [-n] [&lt;name1&gt;] [&lt;name2&gt;] [&lt;name3&gt;] ...
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Commands:</dt>
+<dd><dl class="first last docutils">
+<dt>list [-s &lt;config_server&gt;] [-m]</dt>
+<dd>list names of available components</dd>
+<dt>list -d [-s &lt;config_server&gt;]</dt>
+<dd>list names of available datasources</dd>
+<dt>show [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
+<dd>show components with given names</dd>
+<dt>show -d [-s &lt;config_server&gt;] dsource_name1 dsource_name2 ...</dt>
+<dd>show datasources with given names</dd>
+<dt>get [-s &lt;config_server&gt;]  [-m] component_name1 component_name2 ...</dt>
+<dd>get merged configuration of components</dd>
+<dt>sources [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
+<dd>get a list of component datasources</dd>
+<dt>components [-s &lt;config_server&gt;] component_name1 component_name2 ...</dt>
+<dd>get a list of dependent components</dd>
+<dt>variables [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
+<dd>get a list of component variables</dd>
+<dt>data [-s &lt;config_server&gt;] json_data</dt>
+<dd>set values of component variables</dd>
+<dt>record [-s &lt;config_server&gt;]  component_name1</dt>
+<dd>get a list of datasource record names from component</dd>
+<dt>record -d [-s &lt;config_server&gt;] datasource_name1</dt>
+<dd>get a list of datasource record names</dd>
+<dt>servers [-s &lt;config_server/host&gt;]</dt>
+<dd>get lists of configuration servers from the current tango host</dd>
+<dt>describe [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
+<dd>show all parameters of given components</dd>
+<dt>describe|info -d [-s &lt;config_server&gt;] dsource_name1 dsource_name2 ...</dt>
+<dd>show all parameters of given datasources</dd>
+<dt>info [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
+<dd>show source parameters of given components</dd>
+<dt>geometry [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
+<dd>show transformation parameters of given components</dd>
+</dl>
+</dd>
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d</span>, <span class="option">--datasources</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>perform operation on datasources</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>make use mandatory components as well</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></td>
+<td>make use private components, i.e. starting with &#8216;__&#8217;</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>split result with space characters</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig list -s p02/xmlconfigserver/exp.01 -d
+nxsconfig info
+nxsconfig geometry
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxscreate.html" title="nxscreate"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nxscollect.html" title="nxcollect"
+             >previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

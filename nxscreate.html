@@ -1,0 +1,617 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxscreate &mdash; NXSTools 2.1.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="NXSTools 2.1.3 documentation" href="index.html" />
+    <link rel="next" title="nxsdata" href="nxsdata.html" />
+    <link rel="prev" title="nxsconfig" href="nxsconfig.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxsdata.html" title="nxsdata"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nxsconfig.html" title="nxsconfig"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">nxscreate</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#nxscreate-clientds">nxscreate clientds</a><ul>
+<li><a class="reference internal" href="#id1">Synopsis</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-tangods">nxscreate tangods</a><ul>
+<li><a class="reference internal" href="#id2">Synopsis</a></li>
+<li><a class="reference internal" href="#id3">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-deviceds">nxscreate deviceds</a><ul>
+<li><a class="reference internal" href="#id4">Synopsis</a></li>
+<li><a class="reference internal" href="#id5">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-onlineds">nxscreate onlineds</a><ul>
+<li><a class="reference internal" href="#id6">Synopsis</a></li>
+<li><a class="reference internal" href="#id7">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-onlinecp">nxscreate onlinecp</a><ul>
+<li><a class="reference internal" href="#id8">Synopsis</a></li>
+<li><a class="reference internal" href="#id9">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a><ul>
+<li><a class="reference internal" href="#id10">Synopsis</a></li>
+<li><a class="reference internal" href="#id11">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nxsconfig.html"
+                        title="previous chapter">nxsconfig</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nxsdata.html"
+                        title="next chapter">nxsdata</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/nxscreate.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="nxscreate">
+<h1>nxscreate<a class="headerlink" href="#nxscreate" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The nxscreate program allows one to create simple datasources and components.</p>
+</div>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate  &lt;command&gt; [ &lt;options&gt;]  [&lt;arg1&gt; [&lt;arg2&gt;  ...]]
+</pre></div>
+</div>
+<p>The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.</p>
+</div>
+<div class="section" id="nxscreate-clientds">
+<h2>nxscreate clientds<a class="headerlink" href="#nxscreate-clientds" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of CLIENT datasources.</p>
+<div class="section" id="id1">
+<h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate clientds [options] [name1] [name2]
+</pre></div>
+</div>
+<ul class="simple">
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device prefix, i.e. exp_c (mandatory w/o &lt;name1&gt;)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>first index (mandatory w/o &lt;name1&gt;)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>last index (mandatory w/o &lt;name1&gt;)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output datasource directory</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>DSOURCE</var></span>, <span class="option">--datasource-prefix=<var>DSOURCE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>datasource prefix, i.e. counter</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device name without first &#8216;0&#8217;</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate clientds starttime -b
+nxscreate clientds title -d /home/user/xmldir
+nxscreate clientds -p exp_c -f1 -l4 -b
+nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-tangods">
+<h2>nxscreate tangods<a class="headerlink" href="#nxscreate-tangods" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of TANGO datasources.</p>
+<div class="section" id="id2">
+<h3>Synopsis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods [options]
+</pre></div>
+</div>
+<ul class="simple">
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+<li>default &lt;datasource&gt; is &#8216;exp_mot&#8217;</li>
+<li>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device prefix, i.e. exp_c (mandatory)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>first index (mandatory)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>last index (mandatory)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-a <var>ATTRIBUTE</var></span>, <span class="option">--attribute=<var>ATTRIBUTE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>tango attribute name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>datasource-prefix</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output datasource directory</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>tango host name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>tango host port</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id3">
+<h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot
+nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b
+nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b
+nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s hasppXX.desy.de -b
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-deviceds">
+<h2>nxscreate deviceds<a class="headerlink" href="#nxscreate-deviceds" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of TANGO datasources for all device attributes.</p>
+<div class="section" id="id4">
+<h3>Synopsis<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
+</pre></div>
+</div>
+<ul class="simple">
+<li>without &lt;dv_attr1&gt;: datasources for all attributes are created</li>
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+<li>default &lt;datasource&gt; is &#8216;exp_mot&#8217;</li>
+<li>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device=<var>DEVICE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device, i.e. p09/pilatus300k/01 (mandatory)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>datasource-prefix</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output datasource directory</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>tango host name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>tango host port</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n</span>, <span class="option">--no-group</span></kbd></td>
+<td>don&#8217;t create common group with a name of datasource
+prefix</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id5">
+<h3>Example<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate deviceds  -v p09/pilatus/haso228k
+nxscreate deviceds  -v p09/lambda2m/haso228k  -s haslambda -b
+nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy ExposureTime
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-onlineds">
+<h2>nxscreate onlineds<a class="headerlink" href="#nxscreate-onlineds" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of motor datasources from an online xml file.</p>
+<div class="section" id="id6">
+<h3>Synopsis<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds [options] inputFile
+</pre></div>
+</div>
+<ul class="simple">
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>with -d &lt;directory&gt;: datasources are created on the local filesystem</li>
+<li>without -b or -d &lt;directory&gt;: run in the test mode</li>
+<li>default &lt;inputFile&gt; is &#8216;/online_dir/online.xml&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output directory where datasources will be saved</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
+<td>do not change aliases into lower case</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id7">
+<h3>Example<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds -b
+nxscreate onlineds -d /home/user/xmldir
+nxscreate onlineds
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-onlinecp">
+<h2>nxscreate onlinecp<a class="headerlink" href="#nxscreate-onlinecp" title="Permalink to this headline">¶</a></h2>
+<p>It creates a detector component from the online.xml file
+and its set of datasources.</p>
+<div class="section" id="id8">
+<h3>Synopsis<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp [options] inputFile
+</pre></div>
+</div>
+<ul class="simple">
+<li>without &#8216;-c &lt;component&gt;&#8217;: show a list of possible components</li>
+<li>without &#8216;-d &lt;dircetory&gt;:  components are created in Configuration Server database</li>
+<li>with -d &lt;directory&gt;: components are created on the local filesystem</li>
+<li>default &lt;inputFile&gt; is &#8216;/online_dir/online.xml&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component=<var>COMPONENT</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>component namerelated to the device name from
+&lt;inputFile&gt;</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
+<td>do not change aliases into lower case</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>overwrite existing component</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output directory where datasources will be stored. If
+it is not set components are stored in Configuration
+Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id9">
+<h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp
+nxscreate onlinecp -c pilatus
+nxscreate onlinecp -c lambda -d /home/user/xmldir/
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-comp">
+<h2>nxscreate comp<a class="headerlink" href="#nxscreate-comp" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of simple components.</p>
+<div class="section" id="id10">
+<h3>Synopsis<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp [options] [name1] [name2] ...
+</pre></div>
+</div>
+<ul class="simple">
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+<li>default &lt;strategy&gt; is step</li>
+<li>default &lt;type&gt; is NX_FLOAT</li>
+<li>default &lt;chunk&gt; is SCALAR</li>
+<li>default &lt;nexuspath&gt; is &#8216;/entry$var.serialno:NXentry/instrument/collection/</li>
+</ul>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device prefix, i.e. exp_c</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>first index</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>last index</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output component directory</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-n <var>NEXUSPATH</var></span>, <span class="option">--nexuspath=<var>NEXUSPATH</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>nexus path with field name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-s <var>STRATEGY</var></span>, <span class="option">--strategy=<var>STRATEGY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>writing strategy, i.e. STEP, INIT, FINAL, POSTRUN</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t <var>TYPE</var></span>, <span class="option">--type=<var>TYPE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>nexus type of the field</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-u <var>UNITS</var></span>, <span class="option">--units=<var>UNITS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>nexus units of the field</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-k</span>, <span class="option">--links</span></kbd></td>
+<td>create datasource links</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-c <var>CHUNK</var></span>, <span class="option">--chunk=<var>CHUNK</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>chunk format, i.e. SCALAR, SPECTRUM, IMAGE</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>device name without first &#8216;0&#8217;</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id11">
+<h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp  counter
+nxscreate comp -f1 -l3 -p exp_c -b
+nxscreate comp -c lambda -d /home/user/xmldir/
+nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m
+nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&#39; eh1_mca01 -s STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nxsdata.html" title="nxsdata"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nxsconfig.html" title="nxsconfig"
+             >previous</a> |</li>
+        <li><a href="index.html">NXSTools 2.1.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
