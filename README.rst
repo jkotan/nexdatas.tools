@@ -8,17 +8,18 @@ Introduction
 ------------
 
 Configuration tools for NeXDaTaS Tango Servers consists of the following command-line scripts:
-  - **nxscollect** uploads external images into NeXus/HDF5 file
-  - **nxsconfig** reads NeXus Configuration Server settings
-  - **nxscreate** creates NeXus Configuration components
-  - **nxsdata** runs NeXus Data Writer
-  - **nxsetup** setups NeXDaTaS Tango Server environment
+  - `nxscollect <https://nexdatas.github.io/tools/nxscollect.html>`__ uploads external images into NeXus/HDF5 file
+  - `nxsconfig <https://nexdatas.github.io/tools/nxsconfig.html>`__ reads NeXus Configuration Server settings
+  - `nxscreate <https://nexdatas.github.io/tools/nxscreate.html>`__ creates NeXus Configuration components
+  - `nxsdata <https://nexdatas.github.io/tools/nxsdata.html>`__ runs NeXus Data Writer
+  - `nxsetup <https://nexdatas.github.io/tools/nxsetup.html>`__ setups NeXDaTaS Tango Server environment
 
 as well as the **nxstools** package which allows perform these operations
 directly from a python code.
 
 | Source code: https://github.com/nexdatas/tools
 | Web page: https://nexdatas.github.io/tools
+| NexDaTaS Web page: https://nexdatas.github.io
 
 ------------
 Installation
@@ -26,14 +27,14 @@ Installation
 
 Install the dependencies:
 
-    PyTango, sphinx
+|    PyTango, sphinx
 
 From sources
 """"""""""""
 
 Download the latest NXS Tools version from
 
-    https://github.com/nexdatas/tools
+|    https://github.com/nexdatas/tools
 
 Extract sources and run
 
