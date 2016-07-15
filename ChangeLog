@@ -1,3 +1,7 @@
+2016-06-XX Jan Kotanski <jankotan@gmail.com>
+	* nxsvcreate: add stdcomp action
+	* tagged as v2.2.0
+
 2016-06-06 Jan Kotanski <jankotan@gmail.com>
 	* nxsetup: fix serching for local user
 	* nxsetup: add setting up NXSConfigServer only with 'read_default_file'

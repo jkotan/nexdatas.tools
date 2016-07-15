@@ -22,13 +22,13 @@
 import copy
 import os
 
-from xml.dom.minidom import parse
+from xml.dom.minidom import parse, parseString
 from nxstools import nxsdevicetools
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, moduleMultiAttributes, motorModules,
     moduleTemplateFiles, generateDeviceNames, getServerTangoHost,
-    openServer, findClassName)
+    openServer, findClassName, standardComponentVariables)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
@@ -630,7 +630,7 @@ class OnlineDSCreator(Creator):
             device = device.nextSibling
 
 
-class OnlineCPCreator(Creator):
+class CPCreator(Creator):
     """ component creator of all online.xml complex devices
     """
 
@@ -646,6 +646,63 @@ class OnlineCPCreator(Creator):
         self.datasources = {}
         #: component xml dictionary
         self.components = {}
+
+    def create(self):
+        """ creates components of all online.xml complex devices
+        """
+        cpname = self._options.component
+        if not hasattr(self._options, "directory") or \
+           not self._options.directory:
+            server = self._options.server
+            if not self._options.overwrite:
+                try:
+                    proxy = openServer(server)
+                    proxy.Open()
+                    acps = proxy.availableComponents()
+                except:
+                    raise Exception("Cannot connect to %s" % server)
+
+                if cpname in acps or (
+                        self._options.lower and cpname.lower() in acps):
+                    raise CPExistsException(
+                        "Component '%s' already exists." % cpname)
+
+        self.createXMLs()
+        server = self._options.server
+        if not hasattr(self._options, "directory") or \
+           not self._options.directory:
+            for dsname, dsxml in self.datasources.items():
+                storeDataSource(dsname, dsxml, server)
+            for cpname, cpxml in self.components.items():
+                storeComponent(cpname, cpxml, server)
+        else:
+            for dsname, dsxml in self.datasources.items():
+                myfile = open("%s/%s%s.ds.xml" % (
+                    self._options.directory,
+                    self._options.file, dsname), "w")
+                myfile.write(dsxml)
+                myfile.close()
+            for cpname, cpxml in self.components.items():
+                myfile = open("%s/%s%s.xml" % (
+                    self._options.directory,
+                    self._options.file, cpname), "w")
+                myfile.write(cpxml)
+                myfile.close()
+
+
+class OnlineCPCreator(CPCreator):
+
+    def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options: command options
+        :type options: :class:`optparse.Values`
+        :param args: command arguments
+        :type args: :obj:`list`< :obj:`str` >
+        :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
+        """
+        CPCreator.__init__(self, options, args, printouts)
 
     def _printAction(self, dv, dscps=None):
         """ prints out information about the performed action
@@ -722,48 +779,6 @@ class OnlineCPCreator(Creator):
                         cpnames.add(dv.name)
             device = device.nextSibling
         return cpnames
-
-    def create(self):
-        """ creates components of all online.xml complex devices
-        """
-        cpname = self._options.component
-        if not hasattr(self._options, "directory") or \
-           not self._options.directory:
-            server = self._options.server
-            if not self._options.overwrite:
-                try:
-                    proxy = openServer(server)
-                    proxy.Open()
-                    acps = proxy.availableComponents()
-                except:
-                    raise Exception("Cannot connect to %s" % server)
-
-                if cpname in acps or (
-                        self._options.lower and cpname.lower() in acps):
-                    raise CPExistsException(
-                        "Component '%s' already exists." % cpname)
-
-        self.createXMLs()
-        server = self._options.server
-        if not hasattr(self._options, "directory") or \
-           not self._options.directory:
-            for dsname, dsxml in self.datasources.items():
-                storeDataSource(dsname, dsxml, server)
-            for cpname, cpxml in self.components.items():
-                storeComponent(cpname, cpxml, server)
-        else:
-            for dsname, dsxml in self.datasources.items():
-                myfile = open("%s/%s%s.ds.xml" % (
-                    self._options.directory,
-                    self._options.file, dsname), "w")
-                myfile.write(dsxml)
-                myfile.close()
-            for cpname, cpxml in self.components.items():
-                myfile = open("%s/%s%s.xml" % (
-                    self._options.directory,
-                    self._options.file, cpname), "w")
-                myfile.write(cpxml)
-                myfile.close()
 
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
@@ -850,6 +865,137 @@ class OnlineCPCreator(Creator):
         sname[0] = cpname
         return "_".join(sname)
 
+
+class StandardCPCreator(CPCreator):
+    """ component creator of standard templates
+    """
+
+    def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options: command options
+        :type options: :class:`optparse.Values`
+        :param args: command arguments
+        :type args: :obj:`list`< :obj:`str` >
+        :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
+        """
+        CPCreator.__init__(self, options, args, printouts)
+        self.__params = {}
+
+    def listcomponenttypes(self):
+        """ provides a list of standard component types
+
+        :returns: list of standard component types
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return standardComponentVariables.keys()
+
+    def listcomponentvariables(self):
+        """ provides a list of standard component types
+
+        :returns: list of standard component types
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+
+        if self._options.cptype not in standardComponentVariables.keys():
+            raise Exception(
+                "Component type %s not in %s" %
+                (self._options.cptype, standardComponentVariables.keys()))
+        return standardComponentVariables[self._options.cptype]
+
+    def createXMLs(self):
+        """ creates component xmls of all online.xml complex devices
+        """
+        self.datasources = {}
+        self.components = {}
+        if self._args:
+            self.__params = dict(zip(self._args[::2], self._args[1::2]))
+        else:
+            self.__params = {}
+        cpname = self._options.component
+        module = self._options.cptype
+        if self._options.lower:
+            cpname = cpname.lower()
+            module = module.lower()
+        if module not in standardComponentVariables.keys():
+            raise Exception(
+                "Component type %s not in %s" %
+                (module, standardComponentVariables.keys()))
+
+        xmlfile = "%s.xml" % module
+        with open(
+                '%s/xmltemplates/%s' % (
+                    NXSTOOLS_PATH, xmlfile), "r"
+        ) as content_file:
+            xmlcontent = content_file.read()
+            xml = xmlcontent.replace("$(name)", cpname)
+            missing = []
+            for var in standardComponentVariables[module]:
+                if var in self.__params.keys():
+                    xml = xml.replace("$(%s)" % var, self.__params[var])
+                else:
+                    missing.append(var)
+            if missing:
+                indom = parseString(xml)
+                nodes = indom.getElementsByTagName("attribute")
+                nodes.extend(indom.getElementsByTagName("field"))
+                for node in nodes:
+                    text = self.__getText(node)
+                    for ms in missing:
+                        label = "$(%s)" % ms
+                        if label in text:
+                            parent = node.parentNode
+                            parent.removeChild(node)
+                            break
+                xml = indom.toxml()
+                if self._printouts:
+                    print("MISSING %s" % missing)
+                for var in missing:
+                    xml = xml.replace("$(%s)" % var, "")
+                lines = xml.split('\n')
+                xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
+            self._printAction()
+            self.components[cpname] = xml
+
+    def _printAction(self):
+        """ prints out information about the performed action
+
+        :param dv: online device object
+        :param dscps: datasource components
+        """
+        if self._printouts:
+            if hasattr(self._options, "directory") and \
+               self._options.directory:
+                print("CREATING '%s' of '%s' type in '%s/%s%s.xml' with %s" % (
+                    self._options.component,
+                    self._options.cptype,
+                    self._options.directory,
+                    self._options.file,
+                    self._options.component,
+                    self.__params))
+            else:
+                print("CREATING '%s' of '%s' type on '%s' with %s" % (
+                    self._options.component,
+                    self._options.cptype,
+                    self._options.server,
+                    self.__params))
+
+    @classmethod
+    def __getText(cls, node):
+        """ collects text from text child nodes
+
+        :param node: parent node
+        :type node: :obj:`xml.dom.minidom.Node`
+        """
+        text = ""
+        if node:
+            child = node.firstChild
+            while child:
+                if child.nodeType == child.TEXT_NODE:
+                    text += child.data
+                child = child.nextSibling
+        return text
 
 if __name__ == "__main__":
     pass

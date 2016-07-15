@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXslit" name="$(name)">
+        <group type="NXcollection" name="collection">
+          <field units="mm" type="NX_FLOAT" name="x_right">
+            <strategy mode="INIT"/>$datasources.$(right)</field>
+          <field units="mm" type="NX_FLOAT" name="y_top">
+            <strategy mode="INIT"/>$datasources.$(top)</field>
+          <field units="mm" type="NX_FLOAT" name="y_bottom">
+            <strategy mode="INIT"/>$datasources.$(bottom)</field>
+          <field units="mm" type="NX_FLOAT" name="x_left">
+            <strategy mode="INIT"/>$datasources.$(left)</field>
+          <field units="mm" type="NX_FLOAT" name="x_offset">
+            <strategy mode="INIT"/>$datasources.$(xoffset)</field>
+          <field units="mm" type="NX_FLOAT" name="y_offset">
+            <strategy mode="INIT"/>$datasources.$(yoffset)</field>
+        </group>
+        <field units="mm" type="NX_FLOAT" name="x_gap">
+          <strategy mode="INIT"/>$datasources.$(xgap)</field>
+        <field units="mm" type="NX_FLOAT" name="y_gap">
+          <strategy mode="INIT"/>$datasources.$(ygap)</field>
+      </group>
+    </group>
+  </group>
+</definition>

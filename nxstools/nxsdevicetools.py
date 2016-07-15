@@ -51,7 +51,17 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
-#: xml template files of modules
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     xml template files of modules
+standardComponentVariables = {
+    'slit': ['xgap', 'ygap', 'xoffset', 'yoffset',
+             'left', 'right', 'bottom', 'top'],
+    'source': ['beamcurrent', 'sourceenergy'],
+    'undulator': ['undulator', 'gap', 'taper'],
+}
+
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     xml template files of modules
 moduleTemplateFiles = {
     'pilatus100k': ['pilatus.xml',
                     'pilatus_postrun.ds.xml',

@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXinsertion_device" name="insertion_device">
+        <field units="mm" type="NX_FLOAT64" name="gap">
+	  <doc>separation between opposing pairs of magnetic poles</doc>
+          <strategy mode="INIT"/>$datasources.$(gap)</field>
+        <field units="mm" type="NX_FLOAT64" name="taper">
+	  <doc>gap difference between upstream and downstream ends of the insertion device</doc>
+          <strategy mode="INIT"/>$datasources.$(taper)</field>
+        <group type="NXcollection" name="collection">
+          <field units="mm" type="NX_FLOAT64" name="position">
+            <strategy mode="INIT"/>$datasources.$(undulator)</field>
+        </group>
+      </group>
+    </group>
+  </group>
+</definition>
