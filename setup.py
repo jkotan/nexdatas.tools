@@ -54,8 +54,8 @@ SETUPDATA = dict(
     keywords="configuration writer Tango component nexus data",
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
-    packages=["nxstools"],
-    package_data={'nxstools': ['xmltemplates/*.xml']},
+    packages=["nxstools", "nxstools.xmltemplates"],
+    package_data={'nxstools.xmltemplates': ['xmltemplates/*.xml']},
     scripts=[
         'nxsconfig',
         'nxsdata',
