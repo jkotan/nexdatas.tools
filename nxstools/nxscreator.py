@@ -28,7 +28,8 @@ from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, moduleMultiAttributes, motorModules,
     moduleTemplateFiles, generateDeviceNames, getServerTangoHost,
-    openServer, findClassName, standardComponentVariables)
+    openServer, findClassName, standardComponentVariables,
+    standardComponentTemplateFiles)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
@@ -689,6 +690,28 @@ class CPCreator(Creator):
                 myfile.write(cpxml)
                 myfile.close()
 
+    @classmethod
+    def _replaceName(cls, filename, cpname, module=None):
+        """ replaces name prefix of xml templates files
+
+        :param filename: template filename
+        :type filename: :obj:`str`
+        :param cpname: output prefix
+        :type cpname: :obj:`str`
+        :param module: module name
+        :type module: :obj:`str`
+        :returns: output filename
+        :rtype: :obj:`str`
+        """
+        if filename.endswith(".ds.xml"):
+            filename = filename[:-7]
+        elif filename.endswith(".xml"):
+            filename = filename[:-4]
+        sname = filename.split("_")
+        if not module or module == sname[0]:
+            sname[0] = cpname
+        return "_".join(sname)
+
 
 class OnlineCPCreator(CPCreator):
 
@@ -849,22 +872,6 @@ class OnlineCPCreator(CPCreator):
 
             device = device.nextSibling
 
-    @classmethod
-    def _replaceName(cls, filename, cpname):
-        """ replaces name prefix of xml templates files
-
-        :param filename: template filename
-        :param cpname: output prefix
-        :returns: output filename
-        """
-        if filename.endswith(".ds.xml"):
-            filename = filename[:-7]
-        elif filename.endswith(".xml"):
-            filename = filename[:-4]
-        sname = filename.split("_")
-        sname[0] = cpname
-        return "_".join(sname)
-
 
 class StandardCPCreator(CPCreator):
     """ component creator of standard templates
@@ -882,6 +889,7 @@ class StandardCPCreator(CPCreator):
         """
         CPCreator.__init__(self, options, args, printouts)
         self.__params = {}
+        self.__specialparams = {}
 
     def listcomponenttypes(self):
         """ provides a list of standard component types
@@ -904,11 +912,20 @@ class StandardCPCreator(CPCreator):
                 (self._options.cptype, standardComponentVariables.keys()))
         return standardComponentVariables[self._options.cptype]
 
+    def __setspecialparams(self):
+        server = self._options.server
+        host, port = getServerTangoHost(server).split(":")
+        self.__specialparams['__tangohost__'] = host
+        self.__specialparams['__tangoport__'] = port
+        proxy = openServer(server)
+        self.__specialparams['__configdevice__'] = proxy.name()
+        
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
         """
         self.datasources = {}
         self.components = {}
+        self.__setspecialparams()
         if self._args:
             self.__params = dict(zip(self._args[::2], self._args[1::2]))
         else:
@@ -923,60 +940,73 @@ class StandardCPCreator(CPCreator):
                 "Component type %s not in %s" %
                 (module, standardComponentVariables.keys()))
 
-        xmlfile = "%s.xml" % module
-        with open(
-                '%s/xmltemplates/%s' % (
-                    NXSTOOLS_PATH, xmlfile), "r"
-        ) as content_file:
-            xmlcontent = content_file.read()
-            xml = xmlcontent.replace("$(name)", cpname)
-            missing = []
-            for var in standardComponentVariables[module]:
-                if var in self.__params.keys():
-                    xml = xml.replace("$(%s)" % var, self.__params[var])
+        if module in standardComponentTemplateFiles:
+            xmlfiles = standardComponentTemplateFiles[module]
+        else:
+            xmlfiles = ["%s.xml" % module]
+        for xmlfile in xmlfiles:
+            newname = self._replaceName(xmlfile, cpname, module)
+            with open(
+                    '%s/xmltemplates/%s' % (
+                        NXSTOOLS_PATH, xmlfile), "r"
+            ) as content_file:
+                xmlcontent = content_file.read()
+                xml = xmlcontent.replace("$(name)", cpname)
+                missing = []
+                for var, desc in standardComponentVariables[module].items():
+                    if var in self.__params.keys():
+                        xml = xml.replace("$(%s)" % var, self.__params[var])
+                    elif var in self.__specialparams.keys():
+                        xml = xml.replace("$(%s)" % var, self.__specialparams[var])
+                    elif desc["default"] is not None:
+                        xml = xml.replace("$(%s)" % var, desc["default"])
+                    else:
+                        missing.append(var)
+                if missing:
+                    indom = parseString(xml)
+                    nodes = indom.getElementsByTagName("attribute")
+                    nodes.extend(indom.getElementsByTagName("field"))
+                    for node in nodes:
+                        text = self.__getText(node)
+                        for ms in missing:
+                            label = "$(%s)" % ms
+                            if label in text:
+                                parent = node.parentNode
+                                parent.removeChild(node)
+                                break
+                    xml = indom.toxml()
+                    if self._printouts:
+                        print("MISSING %s" % missing)
+                    for var in missing:
+                        xml = xml.replace("$(%s)" % var, "")
+                    lines = xml.split('\n')
+                    xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
+                if xmlfile.endswith(".ds.xml"):
+                    self._printAction(newname)
+                    self.datasources[newname] = xml
                 else:
-                    missing.append(var)
-            if missing:
-                indom = parseString(xml)
-                nodes = indom.getElementsByTagName("attribute")
-                nodes.extend(indom.getElementsByTagName("field"))
-                for node in nodes:
-                    text = self.__getText(node)
-                    for ms in missing:
-                        label = "$(%s)" % ms
-                        if label in text:
-                            parent = node.parentNode
-                            parent.removeChild(node)
-                            break
-                xml = indom.toxml()
-                if self._printouts:
-                    print("MISSING %s" % missing)
-                for var in missing:
-                    xml = xml.replace("$(%s)" % var, "")
-                lines = xml.split('\n')
-                xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
-            self._printAction()
-            self.components[cpname] = xml
+                    self._printAction(newname)
+                    self.components[newname] = xml
 
-    def _printAction(self):
+    def _printAction(self, name):
         """ prints out information about the performed action
 
-        :param dv: online device object
-        :param dscps: datasource components
+        :param name: component name
+        :type name: :obj:`str`
         """
         if self._printouts:
             if hasattr(self._options, "directory") and \
                self._options.directory:
-                print("CREATING '%s' of '%s' type in '%s/%s%s.xml' with %s" % (
-                    self._options.component,
+                print("CREATING '%s' of '%s' in '%s/%s%s.xml' with %s" % (
+                    name,
                     self._options.cptype,
                     self._options.directory,
                     self._options.file,
                     self._options.component,
                     self.__params))
             else:
-                print("CREATING '%s' of '%s' type on '%s' with %s" % (
-                    self._options.component,
+                print("CREATING '%s' of '%s' on '%s' with %s" % (
+                    name,
                     self._options.cptype,
                     self._options.server,
                     self.__params))

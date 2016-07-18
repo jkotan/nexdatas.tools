@@ -51,13 +51,119 @@ moduleAttributes = {
     'xmcd': ['Value', None],
 }
 
+#: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , \
+#:     [:obj:`str` or :obj:`None`, :obj:`str`] > >)
+#:     standatd component template variables
+#:     and its [default value, doc string]
+standardComponentVariables = {
+    'slit': {
+        'xgap': {
+            'default': None,
+            'doc': "horizontal gap (datasource)"
+        },
+        'ygap': {
+            'default': None,
+            'doc': "vertical gap (datasource)"
+        },
+        'xoffset': {
+            'default': None,
+            'doc': "horizontal offset (datasource)"
+        },
+        'yoffset': {
+            'default': None,
+            'doc': "vertiacal offset (datasource)"
+        },
+        'left': {
+            'default': None,
+            'doc': "left blade position (datasource)"
+        },
+        'right': {
+            'default': None,
+            'doc': "right blade position (datasource)"
+        },
+        'bottom': {
+            'default': None,
+            'doc': "bottom blade position (datasource)"
+        },
+        'top': {
+            'default': None,
+            'doc': "top blade position (datasource)"
+        }
+    },
+    'source': {
+        'beamcurrent': {
+            'default': None,
+            'doc': "ring beam current (datasource)"
+        },
+        'sourceenergy': {
+            'default': None,
+            'doc': "ring beam energy (datasource)"
+        }
+    },
+    'undulator': {
+        'energy': {
+            'default': None,
+            'doc': "undulator energy (datasource)"
+        },
+        'gap': {
+            'default': None,
+            'doc': "separation between opposing pairs of magnetic pole"
+            " (datasource)"
+        },
+        'taper': {
+            'default': None,
+            'doc': "gap difference between upstream and downstream ends"
+            " of the insertion device (datasource)"
+        },
+        'harmonic': {
+            'default': None,
+            'doc': "undulator harmonic (datasource)"
+        },
+    },
+    'default': {
+        'shortname': {
+            'default': "P09",
+            'doc': "beamline short name (string)"
+        },
+        'longname': {
+            'default': "P09 Resonant Scattering and Diffraction beamline",
+            'doc': "beamline long name (string)"
+        },
+        'sourcename': {
+            'default': "PETRA III",
+            'doc': "source name (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
+        '__configdevice__': {
+            'default': "nxs/configserver/localhost",
+            'doc': "configuration server device name (string)"
+        },
+    },
+}
+
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
-standardComponentVariables = {
-    'slit': ['xgap', 'ygap', 'xoffset', 'yoffset',
-             'left', 'right', 'bottom', 'top'],
-    'source': ['beamcurrent', 'sourceenergy'],
-    'undulator': ['undulator', 'gap', 'taper'],
+standardComponentTemplateFiles = {
+    'slit': ['slit.xml'],
+    'source': ['source.xml'],
+    'undulator': ['undulator.xml'],
+    'default': ['default.xml',
+                'sample_name.ds.xml',
+                'chemical_formula.ds.xml',
+                'beamtime_id.ds.xml',
+                'start_time.ds.xml',
+                'end_time.ds.xml',
+                'nexdatas_version.ds.xml',
+                'nexdatas_configuration.ds.xml',
+                'title.ds.xml',
+            ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)

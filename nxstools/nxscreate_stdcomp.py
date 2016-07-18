@@ -98,25 +98,28 @@ def main():
 
     creator = StandardCPCreator(options, args)
     if options.component and options.cptype:
+        if not options.server:
+            options.server = checkServer()
+            if not options.server:
+                parser.print_help()
+                print("")
+                sys.exit(0)
 
         if options.directory:
             print("OUTPUT DIR: %s" % options.directory)
         else:
-            if not options.server:
-                options.server = checkServer()
-                if not options.server:
-                    parser.print_help()
-                    print("")
-                    sys.exit(0)
-                print("SERVER: %s" % options.server)
+            print("SERVER: %s" % options.server)
 
         try:
             creator.create()
         except CPExistsException as e:
             print(str(e))
     elif options.cptype:
-        lst = creator.listcomponentvariables()
-        print("\nCOMPONENT VARIABLES: \n   %s" % " ".join(list(lst)))
+        dct = creator.listcomponentvariables()
+        print("\nCOMPONENT VARIABLES:")
+        for var, desc in dct.items():
+            print("  %s - %s [default: '%s']"
+                  % (var, desc['doc'], desc['default']))
     else:
         lst = creator.listcomponenttypes()
         print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(list(lst)))
