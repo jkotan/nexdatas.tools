@@ -68,8 +68,8 @@ def main():
                       dest="cptype", default="")
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
-#    parser.add_option("-p", "--xml-package", dest="xmlpackage",
-#                      help="xml template package")
+    parser.add_option("-p", "--xml-package", dest="xmlpackage",
+                      help="xml template package")
     parser.add_option("-n", "--nolower", action="store_false",
                       default=True, dest="lower",
                       help="do not change aliases into lower case")

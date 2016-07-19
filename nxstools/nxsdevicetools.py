@@ -22,19 +22,118 @@
 import sys
 import os
 import time
-from xmltemplates import (
-    moduleAttributes,
-    standardComponentVariables,
-    standardComponentTemplateFiles,
-    moduleTemplateFiles,
-    moduleMultiAttributes,
-    twoDModules,
-    motorModules,
-    ctModules,
-    zeroDModules,
-    oneDModules,
-    ioRegModules
-)
+
+standardComponentVariables = {}
+standardComponentTemplateFiles = {}
+moduleTemplateFiles = {}
+moduleMultiAttributes = {}
+
+
+class PackageHandler(object):
+    """ xml templates package loader
+    """
+
+    def __init__(self, packagename='nxstools.xmltemplates'):
+        """ constructor
+
+        :param packagename: full package name
+        :type packagename: :obj:`str`
+        """
+        self.packagename = None
+        self.package = None
+        self.packagepath = None
+        self.loadXMLTemplates(packagename)
+
+    def loadXMLTemplates(self, packagename):
+        """ load xml template module variables
+
+        :param packagename: full package name
+        :type packagename: :obj:`str`
+        """
+        self.packagename = packagename
+        global standardComponentVariables
+        global standardComponentTemplateFiles
+        global moduleTemplateFiles
+        global moduleMultiAttributes
+        self.package = __import__(
+            packagename, globals(), locals(), packagename[-1])
+        standardComponentVariables = \
+            self.package.standardComponentVariables
+        standardComponentTemplateFiles = \
+            self.package.standardComponentTemplateFiles
+        moduleTemplateFiles = \
+            self.package.moduleTemplateFiles
+        moduleMultiAttributes = \
+            self.package.moduleMultiAttributes
+        self.packagepath = os.path.dirname(self.package.__file__)
+
+xmlPackageHandler = PackageHandler()
+
+
+#: attributes of device modules to acquire with elements:
+#  'module': [<sardana_pool_attr>, <original_tango_attr>]
+moduleAttributes = {
+    'counter_tango': ['Value', 'Counts'],
+    'dgg2': ['Value', 'SampleTime'],
+    'mca_8701': ['Value', 'Data'],
+    'mca_sis3302new': ['Value', 'Data'],
+    'mca_sis3302': ['Value', 'Data'],
+    'mythenroi': ['Value', None],
+    'mca8715roi': ['Value', None],
+    'sis3302roi': ['Value', None],
+    'sis3610': ['Value', 'Value'],
+    'sis3820': ['Value', 'Counts'],
+    'tangoattributectctrl': ['Value', None],
+    'tip551': ['Value', 'Voltage'],
+    'tip830': ['Value', 'Counts'],
+    'vfcadc': ['Value', 'Counts'],
+    'xmcd': ['Value', None],
+}
+
+
+#: modules of 2d detectors
+twoDModules = [
+    'pilatus100k', 'pilatus300k', 'pilatus1m',
+    'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
+    'lambda', 'pedetector', 'perkinelmer',
+    'pco', 'pcoedge', 'marccd', 'perkinelmer',
+    #
+    'lcxcamera', 'limaccd', 'eigerpsi',
+    'eigerdectris'
+]
+
+
+#: modules of motors
+motorModules = [
+    'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
+    'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
+    #
+    #    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
+    #    'hexa',
+    #    'tm', 'cube', , 'piezonv40', 'smaractmcs',
+    #    'slt', 'bscryotempcontrolp01',
+    #    'dcm_energy', 'elom', 'diffracmu',  'tcpipmotor',
+    #    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
+    #    'smarpod', 'mult',
+    #
+    #    'oxfcryo700',
+]
+
+#: counter/timer modules
+ctModules = [
+    'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
+    'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
+    'tangoattributectctrl'
+]
+
+#: modules of 0D detectors
+zeroDModules = ['tip830']
+
+#: modules of 1D detectors
+oneDModules = ['mca_xia']
+
+#: IO register modules
+ioRegModules = ['sis3610']
 
 
 PYTANGO = False

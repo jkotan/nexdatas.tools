@@ -74,6 +74,8 @@ def main():
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
+    parser.add_option("-p", "--xml-package", dest="xmlpackage",
+                      help="xml template package")
 
     (options, args) = parser.parse_args()
 

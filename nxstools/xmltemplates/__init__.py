@@ -19,25 +19,6 @@
 
 """  xml templates """
 
-#: attributes of device modules to acquire with elements:
-#  'module': [<sardana_pool_attr>, <original_tango_attr>]
-moduleAttributes = {
-    'counter_tango': ['Value', 'Counts'],
-    'dgg2': ['Value', 'SampleTime'],
-    'mca_8701': ['Value', 'Data'],
-    'mca_sis3302new': ['Value', 'Data'],
-    'mca_sis3302': ['Value', 'Data'],
-    'mythenroi': ['Value', None],
-    'mca8715roi': ['Value', None],
-    'sis3302roi': ['Value', None],
-    'sis3610': ['Value', 'Value'],
-    'sis3820': ['Value', 'Counts'],
-    'tangoattributectctrl': ['Value', None],
-    'tip551': ['Value', 'Voltage'],
-    'tip830': ['Value', 'Counts'],
-    'vfcadc': ['Value', 'Counts'],
-    'xmcd': ['Value', None],
-}
 
 #: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , \
 #:     [:obj:`str` or :obj:`None`, :obj:`str`] > >)
@@ -142,16 +123,17 @@ standardComponentTemplateFiles = {
     'slit': ['slit.xml'],
     'source': ['source.xml'],
     'undulator': ['undulator.xml'],
-    'default': ['default.xml',
-                'sample_name.ds.xml',
-                'chemical_formula.ds.xml',
-                'beamtime_id.ds.xml',
-                'start_time.ds.xml',
-                'end_time.ds.xml',
-                'nexdatas_version.ds.xml',
-                'nexdatas_configuration.ds.xml',
-                'title.ds.xml',
-            ],
+    'default': [
+        'default.xml',
+        'sample_name.ds.xml',
+        'chemical_formula.ds.xml',
+        'beamtime_id.ds.xml',
+        'start_time.ds.xml',
+        'end_time.ds.xml',
+        'nexdatas_version.ds.xml',
+        'nexdatas_configuration.ds.xml',
+        'title.ds.xml',
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -335,48 +317,3 @@ moduleMultiAttributes = {
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
 }
-
-#: modules of 2d detectors
-twoDModules = [
-    'pilatus100k', 'pilatus300k', 'pilatus1m',
-    'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
-    'lambda', 'pedetector', 'perkinelmer',
-    'pco', 'pcoedge', 'marccd', 'perkinelmer',
-    #
-    'lcxcamera', 'limaccd', 'eigerpsi',
-    'eigerdectris'
-]
-
-
-#: modules of motors
-motorModules = [
-    'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
-    'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
-    #
-    #    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
-    #    'hexa',
-    #    'tm', 'cube', , 'piezonv40', 'smaractmcs',
-    #    'slt', 'bscryotempcontrolp01',
-    #    'dcm_energy', 'elom', 'diffracmu',  'tcpipmotor',
-    #    'galil_dmc', 'pico8742', 'oxfcryo700ctrl', 'analyzer', 'nfpaxis',
-    #    'smarpod', 'mult',
-    #
-    #    'oxfcryo700',
-]
-
-#: counter/timer modules
-ctModules = [
-    'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
-    'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
-    'tangoattributectctrl'
-]
-
-#: modules of 0D detectors
-zeroDModules = ['tip830']
-
-#: modules of 1D detectors
-oneDModules = ['mca_xia']
-
-#: IO register modules
-ioRegModules = ['sis3610']
-

@@ -24,16 +24,16 @@ import os
 
 from xml.dom.minidom import parse, parseString
 from nxstools import nxsdevicetools
+import nxstools.nxsdevicetools
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
-    moduleAttributes, moduleMultiAttributes, motorModules,
+    moduleAttributes, motorModules,
     moduleTemplateFiles, generateDeviceNames, getServerTangoHost,
-    openServer, findClassName, standardComponentVariables,
-    standardComponentTemplateFiles)
+    openServer, findClassName,
+    xmlPackageHandler)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
-NXSTOOLS_PATH = os.path.dirname(nxsdevicetools.__file__)
 PYTANGO = False
 try:
     import PyTango
@@ -78,6 +78,12 @@ class Device(object):
         self.group = None
         #: attribute name
         self.attribute = None
+
+    def tolower(self):
+        self.name = self.name.lower()
+        self.module = self.module.lower()
+        self.tdevice = self.tdevice.lower()
+        self.hostname = self.hostname.lower()
 
     def splitHostPort(self):
         """ spilts host name from port
@@ -519,6 +525,10 @@ class OnlineDSCreator(Creator):
         Creator.__init__(self, options, args, printouts)
         #: datasource xml dictionary
         self.datasources = {}
+        if options.xmlpackage:
+            xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        self.xmltemplatepath = xmlPackageHandler.packagepath
+        self.xmlpackage = xmlPackageHandler.package
 
     def _printAction(self, dv, dscps=None):
         """ prints out information about the performed action
@@ -586,6 +596,8 @@ class OnlineDSCreator(Creator):
                 dv.sardananame = self._getChildText(device, "sardananame")
                 dv.sardanahostname = self._getChildText(
                     device, "sardanahostname")
+                if self._options.lower:
+                    dv.tolower()
                 try:
                     dv.splitHostPort()
                 except:
@@ -603,16 +615,18 @@ class OnlineDSCreator(Creator):
                         dv.name, None, None, None,
                         dv.tdevice, dv.attribute, dv.host, dv.port, dv.group)
                     self.datasources[dv.name] = xml
-                if (dv.module in moduleMultiAttributes.keys()) or (
+                if (dv.module in
+                    self.xmlpackage.moduleMultiAttributes.keys()) or (
                         dv.module == 'module_tango'
                         and len(dv.tdevice.split('/')) == 3
                         and dv.tdevice.split('/')[1]
-                        in moduleMultiAttributes.keys()):
+                        in self.xmlpackage.moduleMultiAttributes.keys()):
                     if dv.module == 'module_tango':
                         module = dv.tdevice.split('/')[1]
                     else:
                         module = dv.module
-                    multattr = moduleMultiAttributes[module.lower()]
+                    multattr = self.xmlpackage.moduleMultiAttributes[
+                        module.lower()]
                     for at in multattr:
                         dsname = "%s_%s" % (dv.name.lower(), at.lower())
                         xml = self._createTangoDataSource(
@@ -647,6 +661,11 @@ class CPCreator(Creator):
         self.datasources = {}
         #: component xml dictionary
         self.components = {}
+        #: component xml dictionary
+        if options.xmlpackage:
+            xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        self.xmltemplatepath = xmlPackageHandler.packagepath
+        self.xmlpackage = xmlPackageHandler.package
 
     def create(self):
         """ creates components of all online.xml complex devices
@@ -749,24 +768,25 @@ class OnlineCPCreator(CPCreator):
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
 
-    @classmethod
-    def _getModuleName(cls, device):
+    def _getModuleName(self, device):
         """ provides module name
 
         :param device: device name
         :returns: module name
         """
-        if device.module.lower() in moduleMultiAttributes.keys():
+        if device.module.lower() in \
+           self.xmlpackage.moduleMultiAttributes.keys():
             return device.module.lower()
         elif len(device.tdevice.split('/')) == 3:
             try:
                 classname = findClassName(device.hostname, device.tdevice)
-                if classname.lower() in moduleMultiAttributes.keys():
+                if classname.lower() \
+                   in self.xmlpackage.moduleMultiAttributes.keys():
                     return classname.lower()
                 if device.module.lower() == 'module_tango' \
                    and len(device.tdevice.split('/')) == 3 \
                    and device.tdevice.split('/')[1] \
-                   in moduleMultiAttributes.keys():
+                   in self.xmlpackage.moduleMultiAttributes.keys():
                     return device.tdevice.split('/')[1].lower()
             except:
                 return
@@ -798,7 +818,7 @@ class OnlineCPCreator(CPCreator):
 
                 module = self._getModuleName(dv)
                 if module:
-                    if module.lower() in moduleTemplateFiles:
+                    if module.lower() in self.xmlpackage.moduleTemplateFiles:
                         cpnames.add(dv.name)
             device = device.nextSibling
         return cpnames
@@ -841,7 +861,8 @@ class OnlineCPCreator(CPCreator):
                         continue
                     module = self._getModuleName(dv)
                     if module:
-                        multattr = moduleMultiAttributes[module.lower()]
+                        multattr = self.xmlpackage.moduleMultiAttributes[
+                            module.lower()]
                         for at in multattr:
                             dsname = "%s_%s" % (dv.name.lower(), at.lower())
                             xml = self._createTangoDataSource(
@@ -852,13 +873,15 @@ class OnlineCPCreator(CPCreator):
                             mdv = copy.copy(dv)
                             mdv.name = dsname
                             self._printAction(mdv)
-                        if module.lower() in moduleTemplateFiles:
-                            xmlfiles = moduleTemplateFiles[module.lower()]
+                        if module.lower() \
+                           in self.xmlpackage.moduleTemplateFiles:
+                            xmlfiles = self.xmlpackage.moduleTemplateFiles[
+                                module.lower()]
                             for xmlfile in xmlfiles:
                                 newname = self._replaceName(xmlfile, cpname)
                                 with open(
-                                        '%s/xmltemplates/%s' % (
-                                            NXSTOOLS_PATH, xmlfile), "r"
+                                        '%s/%s' % (
+                                            self.xmltemplatepath, xmlfile), "r"
                                 ) as content_file:
                                     xmlcontent = content_file.read()
                                 xml = xmlcontent.replace("$(name)", cpname)
@@ -897,7 +920,7 @@ class StandardCPCreator(CPCreator):
         :returns: list of standard component types
         :rtype: :obj:`list` <:obj:`str`>
         """
-        return standardComponentVariables.keys()
+        return self.xmlpackage.standardComponentVariables.keys()
 
     def listcomponentvariables(self):
         """ provides a list of standard component types
@@ -906,11 +929,14 @@ class StandardCPCreator(CPCreator):
         :rtype: :obj:`list` <:obj:`str`>
         """
 
-        if self._options.cptype not in standardComponentVariables.keys():
+        if self._options.cptype not \
+           in self.xmlpackage.standardComponentVariables.keys():
             raise Exception(
                 "Component type %s not in %s" %
-                (self._options.cptype, standardComponentVariables.keys()))
-        return standardComponentVariables[self._options.cptype]
+                (self._options.cptype,
+                 self.xmlpackage.standardComponentVariables.keys()))
+        return self.xmlpackage.standardComponentVariables[
+            self._options.cptype]
 
     def __setspecialparams(self):
         server = self._options.server
@@ -919,7 +945,7 @@ class StandardCPCreator(CPCreator):
         self.__specialparams['__tangoport__'] = port
         proxy = openServer(server)
         self.__specialparams['__configdevice__'] = proxy.name()
-        
+
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
         """
@@ -935,29 +961,31 @@ class StandardCPCreator(CPCreator):
         if self._options.lower:
             cpname = cpname.lower()
             module = module.lower()
-        if module not in standardComponentVariables.keys():
+        if module not in self.xmlpackage.standardComponentVariables.keys():
             raise Exception(
                 "Component type %s not in %s" %
-                (module, standardComponentVariables.keys()))
+                (module, self.xmlpackage.standardComponentVariables.keys()))
 
-        if module in standardComponentTemplateFiles:
-            xmlfiles = standardComponentTemplateFiles[module]
+        if module in self.xmlpackage.standardComponentTemplateFiles:
+            xmlfiles = self.xmlpackage.standardComponentTemplateFiles[module]
         else:
             xmlfiles = ["%s.xml" % module]
         for xmlfile in xmlfiles:
             newname = self._replaceName(xmlfile, cpname, module)
             with open(
-                    '%s/xmltemplates/%s' % (
-                        NXSTOOLS_PATH, xmlfile), "r"
+                    '%s/%s' % (
+                        self.xmltemplatepath, xmlfile), "r"
             ) as content_file:
                 xmlcontent = content_file.read()
                 xml = xmlcontent.replace("$(name)", cpname)
                 missing = []
-                for var, desc in standardComponentVariables[module].items():
+                for var, desc in self.xmlpackage.standardComponentVariables[
+                        module].items():
                     if var in self.__params.keys():
                         xml = xml.replace("$(%s)" % var, self.__params[var])
                     elif var in self.__specialparams.keys():
-                        xml = xml.replace("$(%s)" % var, self.__specialparams[var])
+                        xml = xml.replace("$(%s)" % var,
+                                          self.__specialparams[var])
                     elif desc["default"] is not None:
                         xml = xml.replace("$(%s)" % var, desc["default"])
                     else:
