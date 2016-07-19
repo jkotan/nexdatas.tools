@@ -35,12 +35,14 @@ class ConfigServer(object):
         """ constructor
 
         :param device: device name of the configuration server
+        :type device: :obj:`str`
         :param nonewline: if the output should not be separated
                           by the new line character
+        :type nonewline: :obj:`bool`
         """
-        #: spliting character
+        #: (:obj:`str`) spliting character
         self.__char = " " if nonewline else "\n"
-        #: configuration server proxy
+        #: (:class:`PyTango.DeviceProxy`) configuration server proxy
         self._cnfServer = openServer(device)
         self._cnfServer.Open()
 
@@ -48,11 +50,15 @@ class ConfigServer(object):
         """ lists the DB item names
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param mandatory: flag set True for mandatory components
+        :type mandatory: :obj:`bool`
         :param private: flag set True for components starting with '__'
+        :type private: :obj:`bool`
         :returns: list op item names
-
+        :rtype: :obj:`list` <:obj:`str`>
         """
+
         if ds:
             if not mandatory:
                 return self._cnfServer.AvailableDataSources()
@@ -71,7 +77,9 @@ class ConfigServer(object):
         """ lists datasources of the components
 
         :param components: given components
+        :type components: :obj:`list` <:obj:`str`>
         :returns: list of datasource names
+        :rtype: :obj:`list` <:obj:`str`>
         """
         cmps = self._cnfServer.AvailableComponents()
         result = []
@@ -93,7 +101,9 @@ class ConfigServer(object):
         """ lists components of the components
 
         :param components: given components
+        :type components: :obj:`list` <:obj:`str`>
         :returns: list of component names
+        :rtype: :obj:`list` <:obj:`str`>
         """
         cmps = self._cnfServer.AvailableComponents()
         result = []
@@ -111,7 +121,9 @@ class ConfigServer(object):
         """ lists variable of the components
 
         :param components: given components
+        :type components: :obj:`list` <:obj:`str`>
         :returns: list of datasource names
+        :rtype: :obj:`list` <:obj:`str`>
         """
         cmps = self._cnfServer.AvailableComponents()
         result = []
@@ -133,7 +145,9 @@ class ConfigServer(object):
         """ provides datasources and its records for a given component
 
         :param name: given component or datasource
+        :type name: :obj:`str`
         :returns: tuple with names and records
+        :rtype: (:obj:`str` , :obj:`str`)
         """
         records = []
         names = []
@@ -157,8 +171,11 @@ class ConfigServer(object):
         """ lists datasources of the component
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param name: given component or datasource
+        :type name: :obj:`str`
         :returns: list of record names
+        :rtype: :obj:`list` <:obj:`str`>
         """
         if not ds:
             cmps = self._cnfServer.AvailableComponents()
@@ -199,9 +216,13 @@ class ConfigServer(object):
         """ shows the DB items
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param mandatory: flag set True for mandatory components
+        :type mandatory: :obj:`bool`
         :returns: list of XML items
+        :rtype: :obj:`list` <:obj:`str`>
         """
         if ds:
             dsrc = self._cnfServer.AvailableDataSources()
@@ -232,8 +253,11 @@ class ConfigServer(object):
         """ provides final configuration
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :returns: XML configuration string
+        :rtype: :obj:`str`
         """
         if ds:
             return ""
@@ -254,8 +278,11 @@ class ConfigServer(object):
         """ provides description of datasources
 
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
         """
         xmls = ""
         parameters = []
@@ -306,10 +333,15 @@ class ConfigServer(object):
         """ provides description of components
 
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
+        :type nonone: :obj:`list` <:obj:`str`>
         :param private: flag set True for components starting with '__'
+        :type private: :obj:`bool`
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
         """
         xmls = ""
         parameters = []
@@ -371,9 +403,13 @@ class ConfigServer(object):
         """ provides description of final configuration
 
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
+        :type nonone: :obj:`list` <:obj:`str`>
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
         """
         xmls = ""
         description = []
@@ -412,10 +448,15 @@ class ConfigServer(object):
         """ provides description of configuration elements
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param md: flag set True for mandatory components
+        :type md: :obj:`bool`
         :param pr: flag set True for private components
+        :type pr: :obj:`bool`
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
 
         """
         if ds:
@@ -429,10 +470,15 @@ class ConfigServer(object):
         """ Provides info for given elements
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param md: flag set True for mandatory components
+        :type md: :obj:`bool`
         :param pr: flag set True for private components
+        :type pr: :obj:`bool`
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
         """
 
         cpheaders = [
@@ -455,10 +501,15 @@ class ConfigServer(object):
         """ provides geometry info for given elements
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param md: flag set True for mandatory components
+        :type md: :obj:`bool`
         :param pr: flag set True for private components
+        :type pr: :obj:`bool`
         :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
         """
         cpheaders = [
             "nexus_path",
@@ -480,7 +531,9 @@ class ConfigServer(object):
         """ provides varaible values
 
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :returns: JSON with variables
+        :rtype: :obj:`str`
         """
         if len(args) > 0:
             self._cnfServer.Variables = args[0]
@@ -490,8 +543,11 @@ class ConfigServer(object):
         """ provides merged components
 
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :returns: XML configuration string with merged components
+        :rtype: :obj:`str`
         """
         if ds:
             return ""
@@ -514,11 +570,17 @@ class ConfigServer(object):
         :param command: executed command: 'list', 'show', 'get',
                         'variables', 'sources', 'record', 'merge',
                         'components', 'data', 'describe', 'info', 'geometry'
+        :type command: :obj:`str`
         :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         :param mandatory: flag set True for mandatory components
+        :type mandatory: :obj:`bool`
         :param private: flag set True for components starting with '__'
+        :type private: :obj:`bool`
         :returns: resulting string
+        :rtype: :obj:`str`
 
         """
         string = ""
@@ -554,8 +616,11 @@ class ConfigServer(object):
 
 def _createParser():
     """ creates command-line parameters parser
+
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
-    #: usage example
+    #: (:obj:`str`) usage example
     usage = "usage: nxsconfig <command> [-s <config_server>] " \
             + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
             + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n" \
@@ -608,7 +673,7 @@ def _createParser():
             + "          show transformation parameters " \
             + "of given components \n"
 
-    #: option parser
+    #: (:class:`optparse.OptionParser`) option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-s", "--server", dest="server",
                       help="configuration server device name")

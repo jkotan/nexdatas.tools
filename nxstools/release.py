@@ -19,5 +19,5 @@
 
 """  NXS tools release version"""
 
-#: package version
+#: (:obj:`str`) package version
 __version__ = "2.2.0"

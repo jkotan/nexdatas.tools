@@ -31,7 +31,9 @@ class ParserTools(object):
     def _getPureText(cls, node):
         """ provides  xml content of the node
         :param node: DOM node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: xml content string
+        :rtype: :obj:`str`
         """
         rc = []
         for child in node.childNodes:
@@ -44,7 +46,9 @@ class ParserTools(object):
         """ provides  xml content of the node
 
         :param node: DOM node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: xml content string
+        :rtype: :obj:`str`
         """
         if not node:
             return
@@ -61,7 +65,9 @@ class ParserTools(object):
         """ fetches record name or query from datasource node
 
         :param node: datasource node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: record name or query
+        :rtype: :obj:`str`
         """
         withRec = ["CLIENT", "TANGO"]
         withQuery = ["DB"]
@@ -113,7 +119,9 @@ class ParserTools(object):
             to one output xml string
 
         :param xmls: a list of xml string with definitions
+        :type xmls: :obj:`list` <:obj:`str`>
         :returns: one output xml string
+        :rtype: :obj:`str`
         """
         rxml = ""
         if xmls:
@@ -133,7 +141,9 @@ class ParserTools(object):
         """ provides datasources and its records from xml string
 
         :param xmlc: xml string
+        :type xmlc: :obj:`str`
         :returns: list of datasource descriptions
+        :rtype: :obj:`list` <:obj:`dict` <:obj:`str`, :obj:`str`>>
         """
         indom = parseString(xmlc)
         return cls.__getDataSources(indom)
@@ -143,7 +153,9 @@ class ParserTools(object):
         """ provides datasources and its records from xml string
 
         :param xmlc: xml string
+        :type xmlc: :obj:`str`
         :returns: list of datasource descriptions
+        :rtype: :obj:`list` <:obj:`dict` <:obj:`str`, :obj:`str`>>
         """
         if direct:
             dss = cls.__getChildrenByTagName(node, "datasource")
@@ -174,7 +186,9 @@ class ParserTools(object):
         """ provides node path
 
         :param node: minidom node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: node path
+        :rtype: :obj:`str`
         """
         name = cls.__getAttr(node, "name")
         while node.parentNode:
@@ -195,7 +209,9 @@ class ParserTools(object):
         """ provides value of attirbute
 
         :param node: minidom node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: attribute value
+        :rtype: :obj:`str`
         """
         if node.hasAttribute(name):
             return node.attributes[name].value
@@ -217,7 +233,9 @@ class ParserTools(object):
         """ provides node shape
 
         :param node: minidom node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: shape list
+        :rtype: :obj:`list` <:obj:`int`>
         """
         rank = int(node.attributes["rank"].value)
         #        shape = ['*'] * rank
@@ -257,8 +275,11 @@ class ParserTools(object):
         """ provides direct children by tag name
 
         :param parent: parent node
+        :type parent: :class:`xml.dom.minidom.Node`
         :param name: tag name
+        :type name: :obj:`str`
         :returns: list of children
+        :rtype: :obj:`list` <:class:`xml.dom.minidom.Node`>
         """
         children = []
         for child in parent.childNodes:
@@ -273,7 +294,9 @@ class ParserTools(object):
         """ provides datasources and its records from xml string
 
         :param xmlc: xml string
+        :type xmlc: :obj:`str`
         :returns: list of datasource descriptions
+        :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "field"
         indom = parseString(xmlc)
@@ -335,8 +358,9 @@ class ParserTools(object):
         """ provides datasources and its records from xml string
 
         :param xmlc: xml string
+        :type xmlc: :obj:`str`
         :returns: list of datasource descriptions
-
+        :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "link"
         indom = parseString(xmlc)
@@ -388,7 +412,9 @@ class ParserTools(object):
         """ provides source record from xml string
 
         :param xmlc: xml string
+        :type xmlc: :obj:`str`
         :returns: source record
+        :rtype: :obj:`str`
         """
         indom = parseString(xmlc)
         return cls._getRecord(indom)
@@ -401,13 +427,20 @@ class TableTools(object):
     def __init__(self, description, nonone=None):
         """ constructor
 
-        :param description:  description list
+        :param description: description list
+        :type description:  :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
+        :type nonone:  :obj:`list` <:obj:`str`>
         """
+        #: (:obj:`list` <:obj:`str`>)
+        #:    list of parameters which have to exist to be shown
         self.__nonone = nonone or []
+        #: (:obj:`list` <:obj:`str`>)
+        #:    description list
         self.__description = []
+        #: (:obj:`dict` <:obj:`str` , :obj:`int`>) header sizes
         self.__hdsizes = {}
-        #: table headers
+        #: (:obj:`list` <:obj:`str`>) table headers
         self.headers = [
             'nexus_path',
             'nexus_type',
@@ -423,7 +456,7 @@ class TableTools(object):
             'source',
             'value',
         ]
-        #: table title
+        #: (:obj:`str`) table title
         self.title = None
         self.__loadDescription(description)
 
@@ -431,6 +464,7 @@ class TableTools(object):
         """ loads description
 
         :param description:  description list
+        :type description:  :obj:`list` <:obj:`str`>
         """
         for desc in description:
             skip = False
@@ -462,10 +496,12 @@ class TableTools(object):
 
     @classmethod
     def __toString(cls, lst):
-        """ convers list to string
+        """ converts list to string
 
         :param lst: given list
+        :type lst: :obj:`list` <:obj:`str`>
         :returns: list in string representation
+        :rtype: :obj:`str`
         """
         res = []
         for it in lst:
@@ -476,6 +512,7 @@ class TableTools(object):
         """ generate row lists of table
 
         :returns:  table rows
+        :rtype: :obj:`list` <:obj:`str`>
         """
         lst = [""]
         if self.title is not None:

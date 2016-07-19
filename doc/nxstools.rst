@@ -125,6 +125,14 @@ nxstools.filenamegenerator module
     :undoc-members:
     :show-inheritance:
 
+nxstools.release module
+---------------------------------
+
+.. automodule:: nxstools.release
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Module contents
 ---------------
 

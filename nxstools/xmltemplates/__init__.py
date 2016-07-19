@@ -20,8 +20,7 @@
 """  xml templates """
 
 
-#: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , \
-#:     [:obj:`str` or :obj:`None`, :obj:`str`] > >)
+#: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , :obj:`str` > >)
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
@@ -203,7 +202,8 @@ moduleTemplateFiles = {
                'marccd_postrun.ds.xml'],
 }
 
-#: important attributes of modules
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     important attributes of modules
 moduleMultiAttributes = {
     'pco': [
         'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',

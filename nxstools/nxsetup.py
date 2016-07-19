@@ -28,11 +28,12 @@ import json
 from optparse import OptionParser
 
 
-#: host name
+#: (:obj:`str`) host name
 _hostname = socket.gethostname()
 
 
-#: all SardanaHosts and DataBaseHosts should be known
+#: (:obj:`dict` <:obj:`dict` <:obj:`str` , :obj:`str` > > )
+#:    all SardanaHosts and DataBaseHosts should be known
 knownHosts = {
     'hasdelay': {'beamline': 'delay', 'masterHost': 'hasdelay',
                  'user': 'delayusr', 'dbname': 'nxsconfig'},
@@ -143,20 +144,25 @@ class SetUp(object):
         """ constructor
         """
         try:
+            #: (:class:`PyTango.Database`) tango database server
             self.db = PyTango.Database()
         except:
             print("Can't connect to tango database on %s" %
                   os.getenv('TANGO_HOST'))
             sys.exit(255)
 
+        #: (:obj:`str`) NeXus writer device name   
         self.writer_name = None
+        #: (:obj:`str`) NeXus config server device name   
         self.cserver_name = None
-        self._psub = None
 
     def changeRecorderPath(self, path):
         """ adds a new recorder path
 
         :param path: new recorder path
+        :type path: :obj:`str`
+        :returns: True if record path was added
+        :rtype: :obj:`bool`
         """
         res = False
         if not os.path.isdir(path):
@@ -188,9 +194,15 @@ class SetUp(object):
         """ changes property name
 
         :param server: server name
+        :type server: :obj:`str`
         :param oldname: old property name
+        :type oldname: :obj:`str`
         :param newname: new property name
-        :param scalss: server class name
+        :type newname: :obj:`str`
+        :param sclass: server class name
+        :type sclass: :obj:`str`
+        :returns: True if property name was changed
+        :rtype: :obj:`bool`
 
         """
         sclass = sclass or server
@@ -222,7 +234,13 @@ class SetUp(object):
         """ restarts server
 
         :param name: server name
+        :type name: :obj:`str`
         :param host: server host name
+        :type host: :obj:`str`
+        :param level: start up level
+        :type level: :obj:`int`
+        :param restart:  if server should be restarted
+        :type restart: :obj:`bool`
         """
         if name:
             if not host:
@@ -281,7 +299,11 @@ class SetUp(object):
         """ change startup level
 
         :param name: server name
+        :type name: :obj:`str`
         :param level: new startup level
+        :type level: :obj:`int`
+        :returns: True if level was changed
+        :rtype: :obj:`bool`
         """
         sinfo = self.db.get_server_info(name)
         if not tohigher or level > sinfo.level:
@@ -293,10 +315,17 @@ class SetUp(object):
         """ starts the server up
 
         :param new: new server name
+        :type new: :obj:`str`
         :param level: startup level
+        :type level: :obj:`int`
         :param host: tango host name
+        :type host: :obj:`str`
         :param ctrl: control mode
+        :type ctrl: :obj:`str`
         :param device: device name
+        :type device: :obj:`str`
+        :returns: True if server was started up
+        :rtype: :obj:`bool`
         """
         server = self.db.get_server_class_list(new)
         if len(server) == 0:
@@ -350,14 +379,18 @@ class SetUp(object):
         """ creates data writer
 
         :param beamline: beamline name
-        :param materHost: master host of data writer
+        :type beamline: :obj:`str`
+        :param masterHost: master host of data writer
+        :type masterHost: :obj:`str`
+        :returns: True if server was created
+        :rtype: :obj:`bool`
         """
         if not beamline:
             print("createDataWriter: no beamline given ")
-            return 0
+            return False
         if not masterHost:
             print("createDataWriter: no masterHost given ")
-            return 0
+            return False
 
         class_name = 'NXSDataWriter'
         server = class_name
@@ -369,7 +402,7 @@ class SetUp(object):
 
             if server_name in self.db.get_server_list(server_name):
                 print("createDataWriter: DB contains already %s" % server_name)
-                return 0
+                return False
 
             di = PyTango.DbDevInfo()
             di.name = self.writer_name
@@ -384,21 +417,26 @@ class SetUp(object):
 
         self._startupServer(full_class_name, 1, hostname, 1, self.writer_name)
 
-        return 1
+        return True
 
     def createConfigServer(self, beamline, masterHost, jsonsettings=None):
         """ creates configuration server
 
         :param beamline: beamline name
-        :param materHost: master host of data writer
+        :type beamline: :obj:`str`
+        :param masterHost: master host of data writer
+        :type masterHost: :obj:`str`
         :param jsonsettings: connection settings to DB in json
+        :type jsonsettings: :obj:`str`
+        :returns: True if server was created
+        :rtype: :obj:`bool`
         """
         if not beamline:
             print("createConfigServer: no beamline given ")
-            return 0
+            return False
         if not masterHost:
             print("createConfigServer: no masterHost given ")
-            return 0
+            return False
 
         class_name = 'NXSConfigServer'
         server = class_name
@@ -410,7 +448,7 @@ class SetUp(object):
             if server_name in self.db.get_server_list(server_name):
                 print("createConfigServer: DB contains already %s"
                       % server_name)
-                return 0
+                return False
 
             di = PyTango.DbDevInfo()
             di.name = self.cserver_name
@@ -453,24 +491,30 @@ class SetUp(object):
                           " database with JSONSettings: \n%s " % (
                               self.cserver_name, jsonsettings))
                     print("try to change the settings")
-                    return 0
+                    return False
 
-        return 1
+        return True
 
     def createSelector(self, beamline, masterHost, writer=None, cserver=None):
         """ creates selector server
 
         :param beamline: beamline name
-        :param materHost: master host of data writer
+        :type beamline: :obj:`str`
+        :param masterHost: master host of data writer
+        :type masterHost: :obj:`str`
         :param writer: writer device name
+        :type writer: :obj:`str`
         :param cserver: configuration server device name
+        :type cserver: :obj:`str`
+        :returns: True if server was created
+        :rtype: :obj:`bool`
         """
         if not beamline:
             print("createSelector: no beamline given ")
-            return 0
+            return False
         if not masterHost:
             print("createSelector: no masterHost given ")
-            return 0
+            return False
         if writer:
             self.writer_name = writer
         if cserver:
@@ -486,7 +530,7 @@ class SetUp(object):
 
             if server_name in self.db.get_server_list(server_name):
                 print("createSelector: DB contains already %s" % server_name)
-                return 0
+                return False
 
             di = PyTango.DbDevInfo()
             di.name = device_name
@@ -505,13 +549,16 @@ class SetUp(object):
             if self.writer_name:
                 dp.writerDevice = self.writer_name
 
-        return 1
+        return True
 
 
 def _createParser(user):
     """ creates parser
 
     :param user: user name
+    :type user: :obj:`str`
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
     user = user or "<USER>"
     usage = "\n\n %prog -x [-b <beamline>] [-m <masterHost>] " \

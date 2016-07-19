@@ -23,9 +23,18 @@ import sys
 import os
 import time
 
+#: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , :obj:`str` > >)
+#:     standatd component template variables
+#:     and its [default value, doc string]
 standardComponentVariables = {}
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     xml template files of modules
 standardComponentTemplateFiles = {}
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     xml template files of modules
 moduleTemplateFiles = {}
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     important attributes of modules
 moduleMultiAttributes = {}
 
 
@@ -67,6 +76,7 @@ class PackageHandler(object):
             self.package.moduleMultiAttributes
         self.packagepath = os.path.dirname(self.package.__file__)
 
+#: (:class:`PackageHandler`) xml template package handler
 xmlPackageHandler = PackageHandler()
 
 
@@ -91,7 +101,7 @@ moduleAttributes = {
 }
 
 
-#: modules of 2d detectors
+#: (:obj:`list` <:obj:`str`>) modules of 2d detectors
 twoDModules = [
     'pilatus100k', 'pilatus300k', 'pilatus1m',
     'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector',
@@ -103,7 +113,7 @@ twoDModules = [
 ]
 
 
-#: modules of motors
+#: (:obj:`list` <:obj:`str`>) modules of motors
 motorModules = [
     'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
     'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
@@ -119,23 +129,24 @@ motorModules = [
     #    'oxfcryo700',
 ]
 
-#: counter/timer modules
+#: (:obj:`list` <:obj:`str`>) counter/timer modules
 ctModules = [
     'mca8715roi', 'onedroi', 'sis3820', 'sis3302roi',
     'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2',
     'tangoattributectctrl'
 ]
 
-#: modules of 0D detectors
+#: (:obj:`list` <:obj:`str`>) modules of 0D detectors
 zeroDModules = ['tip830']
 
-#: modules of 1D detectors
+#: (:obj:`list` <:obj:`str`>) modules of 1D detectors
 oneDModules = ['mca_xia']
 
-#: IO register modules
+#: (:obj:`list` <:obj:`str`>) IO register modules
 ioRegModules = ['sis3610']
 
 
+#: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
     import PyTango
@@ -156,9 +167,13 @@ def generateDeviceNames(prefix, first, last, minimal=False):
     """ generates device names
 
     :param prefix: device name prefix
+    :type prefix: :obj:`str`
     :param first: first device index
+    :type first: :obj:`int`
     :param last: last device index
+    :type last: :obj:`int`
     :returns: device names
+    :rtype: :obj:`list` <:obj:`str`>
     """
     names = []
     if prefix.strip():
@@ -175,10 +190,13 @@ def getAttributes(device, host=None, port=10000):
     """ provides a list of device attributes
 
     :param device: tango device name
+    :type device: :obj:`str`
     :param host: device host
+    :type host: :obj:`str`
     :param port: device port
+    :type port: :obj:`int`
     :returns: list of device attributes
-
+    :rtype: :obj:`list` <:obj:`str`>
     """
     if host:
         dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
@@ -191,8 +209,10 @@ def getAttributes(device, host=None, port=10000):
 def openServer(device):
     """ opens connection to the configuration server
 
-    :param configuration: server device
+    :param configuration: server device name
+    :type configuration: :obj:`str`
     :returns: configuration server proxy
+    :rtype: :class:`PyTango.DeviceProxy`
     """
     found = False
     cnt = 0
@@ -232,8 +252,11 @@ def storeDataSource(name, xml, server):
     """ stores datasources in Configuration Server
 
     :param name: datasource name
+    :type name: :obj:`str`
     :param xml: datasource xml string
+    :type xml: :obj:`str`
     :param server: configuration server
+    :type server: :obj:`str`
     """
     proxy = openServer(server)
     proxy.Open()
@@ -242,10 +265,12 @@ def storeDataSource(name, xml, server):
 
 
 def getServerTangoHost(server):
-    """ fetches the server tango host
+    """ fetches the server tango_host:tango_port
 
     :param server: tango server
+    :type server: :obj:`str`
     :returns: tango host
+    :rtype: :obj:`str` 
     """
     proxy = openServer(server)
     host = proxy.get_db_host()
@@ -260,7 +285,9 @@ def getDataSourceComponents(server):
     """ gets datasource components
 
     :param server: configuration server
+    :type server: :obj:`str`
     :returns: dictionary with datasource components
+    :rtype: :obj:`dict` <:obj:`str`, :obj:`list` <:obj:`str`>>
     """
     dscps = {}
     proxy = openServer(server)
@@ -285,8 +312,11 @@ def storeComponent(name, xml, server):
     """ stores components in Configuration Server
 
     :param name: component name
+    :type name: :obj:`str`
     :param xml: component xml string
+    :type xml: :obj:`str`
     :param server: configuration server
+    :type server: :obj:`str`
     """
     proxy = openServer(server)
     proxy.Open()
@@ -294,12 +324,14 @@ def storeComponent(name, xml, server):
     proxy.StoreComponent(str(name))
 
 
-def getClassName(devicename='NXSConfigServer'):
+def getClassName(devicename):
     """ provides device class name
 
     :param devicename: device name
+    :type devicename: :obj:`str` 
     :returns: class name
-    """
+    :rtype: :obj:`str`
+   """
     try:
         db = PyTango.Database()
     except:
@@ -316,7 +348,9 @@ def getServers(name='NXSConfigServer'):
     """ provides server device names
 
     :param name: server instance name
+    :type name: :obj:`str` 
     :returns: list of the server device names
+    :rtype: :obj:`list` <:obj:`str`>
 
     """
     try:
@@ -336,10 +370,15 @@ def _remoteCall(server, func, *args, **kwargs):
     """ executes function on remove tango host db setup
 
     :param server: remove tango server device name
+    :type server: :obj:`str`
     :param func: executed function
+    :type func: :obj:`instancemethod`
     :param args: function list arguments
+    :type args: :obj:`list` <`and`>
     :param kwargs: function dict arguments
+    :type args: :obj:`dict` <:obj:`str` , `any`>
     :returns: function result
+    :rtype: `any`
     """
     lserver = None
     if server and server.strip():
@@ -362,7 +401,9 @@ def listServers(server, name='NXSConfigServer'):
     """ finds server names
 
     :param name: server instance name
+    :type name: :obj:`str`
     :returns: server list
+    :rtype: :obj:`list` <:obj:`str`>
     """
     return _remoteCall(server, getServers, name)
 
@@ -371,7 +412,9 @@ def findClassName(server, name):
     """ finds class name
 
     :param name: device name
+    :type name: :obj:`str`
     :returns: class name
+    :rtype: :obj:`str`
     """
     return _remoteCall(server, getClassName, name)
 
@@ -380,7 +423,9 @@ def checkServer(name='NXSConfigServer'):
     """ provides server device name if only one or error in the other case
 
     :param name: server name
+    :type name: :obj:`str`
     :returns: server device name or empty string if error appears
+    :rtype: :obj:`str`
     """
     servers = getServers(name)
     if not servers:

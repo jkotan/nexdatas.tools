@@ -23,8 +23,12 @@ import os
 from distutils.core import setup
 
 
-#: reading a file
 def read(fname):
+    """reading a file
+
+    :param fname: file name
+    :type fname: :obj:`str`
+    """
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 PKG = "nxstools"

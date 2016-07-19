@@ -27,6 +27,7 @@ from nxstools.nxsdevicetools import (
     checkServer, getAttributes, getServerTangoHost)
 from nxstools.nxscreator import DeviceDSCreator
 
+#: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
     import PyTango
@@ -37,6 +38,9 @@ except:
 
 def _createParser():
     """ creates parser
+
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
     #: usage example
     usage = "usage: %prog deviceds [options] [dv_attr1 " \

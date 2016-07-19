@@ -34,6 +34,7 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
 
+#: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
     import PyTango
@@ -56,30 +57,32 @@ class Device(object):
         'sardanahostname', 'host', 'port', 'group', 'attribute']
 
     def __init__(self):
-        #: device name
+        #: (:obj:`str`) device name
         self.name = None
-        #: data type
+        #: (:obj:`str`) data type
         self.dtype = None
-        #: device module
+        #: (:obj:`str`) device module
         self.module = None
-        #: device type
+        #: (:obj:`str`) device type
         self.tdevice = None
-        #: host name with port
+        #: (:obj:`str`) host name with port
         self.hostname = None
-        #: sardana name with port
+        #: (:obj:`str`) sardana name with port
         self.sardananame = None
-        #: sardana host name
+        #: (:obj:`str`) sardana host name
         self.sardanahostname = None
-        #: host without port
+        #: (:obj:`str`) host without port
         self.host = None
-        #: tango port
+        #: (:obj:`str`) tango port
         self.port = None
-        #: datasource tango group
+        #: (:obj:`str`) datasource tango group
         self.group = None
-        #: attribute name
+        #: (:obj:`str`) attribute name
         self.attribute = None
 
     def tolower(self):
+        """ converts `name`, `module`, `tdevice`, `hostname` into lower case
+        """
         self.name = self.name.lower()
         self.module = self.module.lower()
         self.tdevice = self.tdevice.lower()
@@ -101,6 +104,7 @@ class Device(object):
         """ sets attribute and datasource group of online.xml device
 
         :param tangohost: tango host
+        :type tangohost: :obj:`str`
         """
         mhost = self.sardanahostname or tangohost
         self.group = None
@@ -136,6 +140,7 @@ class Device(object):
         """ sets sardana name
 
         :param tolower: If True name in lowercase
+        :type tolower: :obj:`bool`
         """
         self.name = self.sardananame or self.name
         if tolower:
@@ -150,14 +155,17 @@ class Creator(object):
         """ constructor
 
         :param options:  command options
+        :type options: :class:`optparse.Values`
         :param args: command arguments
+        :type args: :obj:`list` < :obj:`str` >
         :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
         """
-        #: creator options
+        #: (:class:`optparse.Values`) creator options
         self._options = options
-        #: creator arguments
+        #: (:obj:`list` < :obj:`str` >) creator arguments
         self._args = args
-        #: if printout is enable
+        #: (:obj:`bool`) if printout is enable
         self._printouts = printouts
 
     @classmethod
@@ -167,15 +175,25 @@ class Creator(object):
         """ creates TANGO datasource file
 
         :param name: device name
+        :type name: :obj:`str`
         :param directory: output file directory
+        :type directory: :obj:`str`
         :param fileprefix: file name prefix
+        :type fileprefix: :obj:`str`
         :param server: server name
+        :type server: :obj:`str`
         :param device: device name
+        :type device: :obj:`str`
         :param attribute: attribute name
+        :type attribute: :obj:`str`
         :param host: tango host name
+        :type host: :obj:`str`
         :param port: tango port
+        :type port: :obj:`str`
         :parma group: datasource tango group
+        :type group: :obj:`str`
         :returns: xml string
+        :rtype: :obj:`str`
         """
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
         sr = NDSource(df)
@@ -194,11 +212,17 @@ class Creator(object):
         """ creates CLIENT datasource file
 
         :param name: device name
+        :type name: :obj:`str`
         :param directory: output file directory
+        :type directory: :obj:`str`
         :param fileprefix: file name prefix
+        :type fileprefix: :obj:`str`
         :param server: server name
+        :type server: :obj:`str`
         :param dsname: datasource name
+        :type dsname: :obj:`str`
         :returns: xml string
+        :rtype: :obj:`str`
         """
         dname = name if not dsname else dsname
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, dname))
@@ -217,7 +241,9 @@ class Creator(object):
         """ splits nexus path into list
 
         :param nexuspath: nexus path
+        :type nexuspath: :obj:`str`
         :returns: nexus path in lists of (name, NXtype)
+        :rtype: :obj:`list` < (:obj:`str`, :obj:`str`) > 
         """
         pathlist = []
         spath = nexuspath.split("/")
@@ -245,13 +271,21 @@ class Creator(object):
         """ create nexus node tree
 
         :param df: definition parent node
+        :type df: :class:'nxstools.nxsxml.XMLFile'
         :param nexuspath: nexus path
+        :type nexuspath: :obj:`str`
         :param name: name
+        :type name: :obj:`str`
         :param nexusType: nexus type
+        :type nexusType: :obj:`str`
         :param strategy: strategy mode
+        :type startegy: :obj:`str`
         :param units: field units
+        :type units: :obj:`str`
         :param links: if create link
-        :param chunk: chunk size
+        :type links: :obj:`bool`
+        :param chunk: chunk size, e.g. `SCALAR`, `SPECTRUM` or `IMAGE`
+        :type chunk: :obj:`str`
         """
 
         pathlist = cls.__patheval(nexuspath)
@@ -289,15 +323,25 @@ class Creator(object):
         """ creates component file
 
         :param name: datasource name
+        :type name: :obj:`str`
         :param directory: output file directory
+        :type directory: :obj:`str`
         :param fileprefix: file name prefix
+        :type fileprefix: :obj:`str`
         :param nexuspath: nexus path
+        :type nexuspath: :obj:`str`
         :param strategy: field strategy
+        :type startegy: :obj:`str`
         :param nexusType: nexus Type of the field
+        :type nexusType: :obj:`str`
         :param units: field units
+        :type units: :obj:`str`
         :param link: nxdata link
+        :type links: :obj:`bool`
         :param server: configuration server
+        :type server: :obj:`str`
         :returns: component xml
+        :rtype: :obj:`str`
         """
         defpath = '/entry$var.serialno:NXentry/instrument' \
                   + '/collection/%s' % (name)
@@ -317,7 +361,9 @@ class Creator(object):
         """ provides xml content of the node
 
         :param node: DOM node
+        :type node: :class:`xml.dom.minidom.Node`
         :returns: xml content string
+        :rtype: :obj:`str`
         """
         if not node:
             return
@@ -334,8 +380,11 @@ class Creator(object):
         """ provides text of child named by childname
 
         :param parent: parent node
+        :type parent: :class:`xml.dom.minidom.Node`
         :param childname: child name
+        :type childname: :opj:`str`
         :returns: text string
+        :rtype: :obj:`str`
         """
         return cls._getText(
             parent.getElementsByTagName(childname)[0]) \
@@ -518,23 +567,30 @@ class OnlineDSCreator(Creator):
     def __init__(self, options, args, printouts=True):
         """ constructor
 
-        :param options:  command options
+        :param options: command options
+        :type options: :class:`optparse.Values`
         :param args: command arguments
+        :type args: :obj:`list` <:obj:`str` >
         :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
         """
         Creator.__init__(self, options, args, printouts)
-        #: datasource xml dictionary
+        #: (:obj:`dict` <:obj:`str`, :obj:`str` >) datasource xml dictionary
         self.datasources = {}
         if options.xmlpackage:
             xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        #: (:obj:`str`) xml template component package path
         self.xmltemplatepath = xmlPackageHandler.packagepath
+        #: (:obj:`str`) xml template component package
         self.xmlpackage = xmlPackageHandler.package
 
     def _printAction(self, dv, dscps=None):
         """ prints out information about the performed action
 
         :param dv: online device object
+        :type dv: :class:`Device`
         :param dscps: datasource components
+        :type dscps: :obj:`dict` <:obj:`str`, :obj:`list` < :obj:`str` > >
         """
         if self._printouts:
             if hasattr(self._options, "directory") and \
@@ -653,18 +709,23 @@ class CPCreator(Creator):
         """ constructor
 
         :param options: command options
+        :type options: :class:`optparse.Values`
         :param args: command arguments
+        :type args: :obj:`list` <:obj:`str` >
         :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
         """
         Creator.__init__(self, options, args, printouts)
-        #: datasource xml dictionary
+        #: (:obj:`dict` <:obj:`str`, :obj:`str` >) datasource xml dictionary
         self.datasources = {}
-        #: component xml dictionary
+        #: (:obj:`dict` <:obj:`str`, :obj:`str` >) component xml dictionary
         self.components = {}
         #: component xml dictionary
         if options.xmlpackage:
             xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        #: (:obj:`str`) xml template component package path
         self.xmltemplatepath = xmlPackageHandler.packagepath
+        #: (:obj:`str`) xml template component package
         self.xmlpackage = xmlPackageHandler.package
 
     def create(self):
@@ -740,7 +801,7 @@ class OnlineCPCreator(CPCreator):
         :param options: command options
         :type options: :class:`optparse.Values`
         :param args: command arguments
-        :type args: :obj:`list`< :obj:`str` >
+        :type args: :obj:`list` < :obj:`str` >
         :param printouts: if printout is enable
         :type printouts: :obj:`bool`
         """
@@ -750,7 +811,9 @@ class OnlineCPCreator(CPCreator):
         """ prints out information about the performed action
 
         :param dv: online device object
+        :type dv: :class:`Device` 
         :param dscps: datasource components
+        :type dscps: :obj:`dict` <:obj:`str`, :obj:`list` < :obj:`str` > >
         """
         if self._printouts:
             if hasattr(self._options, "directory") and \
@@ -772,7 +835,9 @@ class OnlineCPCreator(CPCreator):
         """ provides module name
 
         :param device: device name
+        :type device: :obj:`str`
         :returns: module name
+        :rtype: :obj:`str`
         """
         if device.module.lower() in \
            self.xmlpackage.moduleMultiAttributes.keys():
@@ -795,6 +860,7 @@ class OnlineCPCreator(CPCreator):
         """ provides a list of components with xml templates
 
         :returns: list of components with xml templates
+        :rtype: :obj:`list` <:obj:`str` >
         """
         indom = parse(self._args[0])
         hw = indom.getElementsByTagName("hw")
@@ -906,7 +972,7 @@ class StandardCPCreator(CPCreator):
         :param options: command options
         :type options: :class:`optparse.Values`
         :param args: command arguments
-        :type args: :obj:`list`< :obj:`str` >
+        :type args: :obj:`list` < :obj:`str` >
         :param printouts: if printout is enable
         :type printouts: :obj:`bool`
         """
@@ -939,6 +1005,10 @@ class StandardCPCreator(CPCreator):
             self._options.cptype]
 
     def __setspecialparams(self):
+        """ sets special parameters, 
+        i.e. __tangohost__, __tangoport__ and __configdevice__
+        
+        """
         server = self._options.server
         host, port = getServerTangoHost(server).split(":")
         self.__specialparams['__tangohost__'] = host
@@ -1045,6 +1115,8 @@ class StandardCPCreator(CPCreator):
 
         :param node: parent node
         :type node: :obj:`xml.dom.minidom.Node`
+        :returns: node content text
+        :rtype: :obj:`str`
         """
         text = ""
         if node:

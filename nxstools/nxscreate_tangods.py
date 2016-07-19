@@ -26,6 +26,7 @@ from optparse import OptionParser
 from nxstools.nxsdevicetools import checkServer, getServerTangoHost
 from nxstools.nxscreator import (TangoDSCreator, WrongParameterError)
 
+#: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
     import PyTango
@@ -36,6 +37,9 @@ except:
 
 def _createParser():
     """ creates parser
+
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
     #: usage example
     usage = "usage: %prog tangods [options]\n" \

@@ -41,10 +41,15 @@ class Collector(object):
         """ The constructor creates the collector object
 
         :param nexusfilename: the nexus file name
+        :type nexusfilename: :obj:`str`
         :param compression: compression rate
+        :type compression: :obj:`int`
         :param skipmissing: if skip missing images
+        :type skipmissing: :obj:`bool`
         :param storeold: if backup the input file
+        :type storeold: :obj:`bool`
         :param testmode: if run in a test mode
+        :type testmode: :obj:`bool`
         """
         self.__nexusfilename = nexusfilename
         self.__compression = compression
@@ -67,7 +72,8 @@ class Collector(object):
     def _signalhandler(self, sig, _):
         """ signal handler
 
-        :param sig: signal name
+        :param sig: signal name, i.e. 'SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'
+        :type sig: :obj:`str`
         """
         if sig in self.__siginfo.keys():
             self.__break = True
@@ -92,8 +98,10 @@ class Collector(object):
     def _filegenerator(self, filestr):
         """ provides file name generator from file string
 
-        :params filestr: file string
+        :param filestr: file string
+        :type: filestr: :obj:`str`
         :returns: file name generator or a list of file names
+        :rtype: :class:`methodinstance`
         """
         if self.__filepattern.match(filestr):
             return FilenameGenerator.from_slice(filestr)
@@ -107,9 +115,11 @@ class Collector(object):
         """ provides absolute image file name
 
         :param filename: image file name
+        :type: filename: :obj:`str`
         :param masterfile: nexus file name
-
+        :type: masterfile: :obj:`str`
         :returns: absolute image file name
+        :rtype: :obj:`str`
         """
         if not os.path.isabs(filename):
             nexusfilepath = os.path.join('/', *os.path.abspath(
@@ -121,9 +131,12 @@ class Collector(object):
         """ searches for absolute image file name
 
         :param filename: image file name
+        :type: filename: :obj:`str`
         :param nname: hdf5 node name
+        :typ nname: :obj:`str`
 
         :returns: absolute image file name
+        :rtype: :obj:`str`
         """
         filelist = []
 
@@ -169,7 +182,9 @@ class Collector(object):
         """ loads image from file
 
         :param filename: image file name
+        :type filename: :obj:`str`
         :returns: (image data, image data type, image shape)
+        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` <:obj:`int`>)
         """
         try:
             dtype = None
@@ -193,7 +208,9 @@ class Collector(object):
         """ loads image from hdf5 file
 
         :param filename: hdf5 image file name
+        :type filename: :obj:`str`
         :returns: (image data, image data type, image shape)
+        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` <:obj:`int`>)
         """
         try:
             dtype = None
@@ -220,6 +237,7 @@ class Collector(object):
         """ adds attributes to the parent node in nexus file
 
         :param node: parent hdf5 node
+        :type node: parent hdf5 node
         :param attrs: dictionary with attributes
         """
         attrs = attrs or {}
@@ -234,12 +252,20 @@ class Collector(object):
         """ creates a field in nexus file
 
         :param node: parent hdf5 node
+        :type node: :class:`pni.io.nx.h5.nxgroup` or \
+                    :class:`pni.io.nx.h5.nxlink` 
         :param fieldname: field name
+        :type fieldname: :obj:`str`
         :param dtype: field data type
+        :type dtype: :obj:`str`
         :param shape: filed data shape
+        :type shape: :obj:`list` <:obj:`int`>
         :param fieldattrs: dictionary with field attributes
+        :type fieldattrs: :obj:`dict` <:obj:`str`, :obj:`str`>
         :param fieldcompression: field compression rate
+        :type fieldcompression: :obj:`int`
         :returns: hdf5 field node
+        :rtype: :class:`pni.io.nx.h5.nxfield` 
         """
         field = None
         if fieldname in node.names():
@@ -263,11 +289,17 @@ class Collector(object):
                        fieldcompression=None):
         """ collects images
 
-        :param files: a list of file stings
+        :param files: a list of file strings
+        :type files: :obj:`list` <:obj:`str`>
         :param node: hdf5 parent node
+        :type node: :class:`pni.io.nx.h5.nxgroup` or \
+                    :class:`pni.io.nx.h5.nxlink`
         :param fieldname: field name
+        :type fieldname: :obj:`str`
         :param fieldattrs: dictionary with field attributes
+        :type fieldattrs: :obj:`dict` <:obj:`str`, :obj:`str`>
         :param fieldcompression: field compression rate
+        :type fieldcompression: :obj:`int`
         """
         fieldname = fieldname or "data"
         field = None
@@ -306,7 +338,10 @@ class Collector(object):
         by hdf5 postrun fields bellow hdf5 parent node
 
         :param parent: hdf5 parent node
+        :type parent: :class:`pni.io.nx.h5.nxgroup` or \
+                      :class:`pni.io.nx.h5.nxlink` 
         :param collection: if parent is of NXcollection type
+        :type collection: :obj:`bool`
         """
         if hasattr(parent, "names"):
             if collection:
@@ -380,14 +415,17 @@ class Collector(object):
 
 def _createParser():
     """ creates command-line parameters parser
+
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
-    #: usage example
+    #: (:obj:`str`) usage example
     usage = "usage: \n" \
             + " nxscollect [-x|-t] [<options>] <command> <main_nexus_file> \n" \
             + " e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
             + " "
 
-    #: option parser
+    #: (:class:`optparse.OptionParser`) option parser
     parser = OptionParser(usage=usage)
     parser.add_option("-x", "--execute", action="store_true",
                       default=False, dest="execute",

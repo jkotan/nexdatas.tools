@@ -41,10 +41,21 @@ class FilenameGenerator(object):
     along with nx2img.  If not, see <http://www.gnu.org/licenses/>.
 
     Generator class creating image file names.
+
+    :param fname_template: file name template
+    :type fname_template: :obj:`str`
+    :param start_index: file start index
+    :type start_index: :obj:`int`
+    :param stop_index: file stop index
+    :type stop_index: :obj:`int`
     """
     def __init__(self, fname_template, start_index=0, stop_index=None):
+
+        #: (:obj:`int`) file start index
         self.file_index = start_index
+        #: (:obj:`str`) file name template
         self.file_template = fname_template
+        #: (:obj:`int`) file stop index
         self.stop_index = stop_index
 
     def __call__(self):
@@ -60,6 +71,11 @@ class FilenameGenerator(object):
         """
         Static factory method to create a filename_generator instance
         from a sliced user input
+
+        :param file_template: file template
+        :type file_template: :obj:`str`
+        :returns: filename generator object
+        :rtype: :class:`FilenameGenerator`
         """
 
         (file_format, start_index_str, stop_index_str) = \

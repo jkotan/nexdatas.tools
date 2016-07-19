@@ -34,13 +34,16 @@ class NexusServer(object):
         """ constructor
 
         :param device: device name of configuration server
+        :type device: :obj:`str`
         """
+        #: (:class:`PyTango.DeviceProxy`) NeXus writer device proxy
         self.tdwServer = openServer(device)
 
     def openFile(self, filename):
         """ opens the h5 file
 
         :param filename: h5 file name
+        :type filename: :obj:`str`
         """
         self.tdwServer.Init()
         self.tdwServer.FileName = str(filename)
@@ -50,6 +53,7 @@ class NexusServer(object):
         """ sets the global JSON data
 
         :param jsondata: global JSON data
+        :type jsondata: :obj:`str`
         """
         self.tdwServer.JSONRecord = str(jsondata)
 
@@ -57,6 +61,7 @@ class NexusServer(object):
         """ opens an entry
 
         :param xmlconfig: xml configuration string
+        :type xmlconfig: :obj:`str`
         """
         self.tdwServer.XMLSettings = str(xmlconfig)
         self.tdwServer.OpenEntry()
@@ -65,6 +70,7 @@ class NexusServer(object):
         """ records one step
 
         :param jsondata: step JSON data
+        :type jsondata: :obj:`str`
         """
         self.tdwServer.Record(jsondata)
 
@@ -83,7 +89,9 @@ class NexusServer(object):
         """ perform requested command
 
         :param command: called command
+        :type command: :obj:`str`
         :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
         """
         if command == 'openfile':
             return self.openFile(args[0])
@@ -101,6 +109,9 @@ class NexusServer(object):
 
 def _createParser():
     """ creates command-line parameters parser
+
+    :returns: option parser
+    :rtype: :class:`optparse.OptionParser`
     """
     #: usage example
     usage = "usage: nxsdata <command> [-s <nexus_server>] " \

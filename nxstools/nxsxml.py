@@ -33,15 +33,19 @@ class NTag(object):
     def __init__(self, parent, tagName, nameAttr="", typeAttr=""):
         """ constructor
 
-        :param tagName: tag name
         :param parent: parent tag element
+        :type parent: :class:`NTag`
+        :param tagName: tag name
+        :type tagName: :obj:`str`
         :param nameAttr: value of name attribute
+        :type nameAttr: :obj:`str`
         :param typeAttr: value of type attribute
+        :type typeAttr: :obj:`str`
         """
 
-        #: XML minidom root
+        #: (:class:`xml.dom.minidom.Node`) XML minidom root
         self.root = parent.root
-        #: tag element from minidom
+        #: (:class:`xml.dom.minidom.Element`) tag element from minidom
         self.elem = self.root.createElement(tagName)
         parent.elem.appendChild(self.elem)
 
@@ -54,7 +58,9 @@ class NTag(object):
         """ adds tag attribute
 
         :param name: attribute name
+        :type name: :obj:`str`
         :param value: attribute value
+        :type value: :obj:`str`
         """
         self.elem.setAttribute(name, value)
 
@@ -62,6 +68,7 @@ class NTag(object):
         """ sets tag content
 
         :param text: tag content
+        :type text: :obj:`str`
         """
         ptext = self.root.createTextNode(text)
         self.elem.appendChild(ptext)
@@ -70,6 +77,7 @@ class NTag(object):
         """ adds tag content
 
         :param text: tag content
+        :type text: :obj:`str`
         """
         ptext = self.root.createTextNode(text)
         self.elem.appendChild(ptext)
@@ -83,8 +91,11 @@ class NAttr(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param nameAttr: name attribute
+        :type nameAttr: :obj:`str`
         :param typeAttr: type attribute
+        :type typeAttr: :obj:`str`
         """
         NTag.__init__(self, parent, "attribute", nameAttr, typeAttr)
 
@@ -92,9 +103,12 @@ class NAttr(NTag):
         """ sets the attribute strategy
 
         :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        :type mode: :obj:`str`
         :param trigger: for asynchronous writting,
                         e.g. with different subentries
+        :type trigger: :obj:`str`
         :param value: label for postrun mode
+        :type value: :obj:`str`
         """
         #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
@@ -114,19 +128,24 @@ class NGroup(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param nameAttr: name attribute
+        :type nameAttr: :obj:`str`
         :param typeAttr: type attribute
+        :type typeAttr: :obj:`str`
         """
         NTag.__init__(self, parent, "group", nameAttr, typeAttr)
-        #: list of doc tag contents
+        #: (:obj:`list` <:obj:`str`> ) list of doc tag contents
         self._doc = []
-        #: container with attribute tag wrappers
+        #: (:obj:`dict` <:obj:`str` , :obj:`str`> )
+        #:    container with attribute tag wrappers
         self._gAttr = {}
 
     def addDoc(self, doc):
         """ adds doc tag content
 
         :param doc: doc tag content
+        :type doc: :obj:`str`
         """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
@@ -135,8 +154,11 @@ class NGroup(NTag):
         """adds attribute: tag
 
         :param attrName: name attribute
+        :type attrName: :obj:`str`
         :param attrType: type attribute
+        :type attrType: :obj:`str`
         :param attrValue: content of the attribute tag
+        :type attrValue: :obj:`str`
         """
         print attrName, attrType, attrValue
         at = NAttr(self, attrName, attrType)
@@ -154,8 +176,11 @@ class NLink(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param nameAttr: name attribute
+        :type nameAttr: :obj:`str`
         :param gTarget: target attribute
+        :type gTarget: :obj:`str`
         """
         NTag.__init__(self, parent, "link", nameAttr)
         self.addTagAttr("target", gTarget)
@@ -166,6 +191,7 @@ class NLink(NTag):
         """ adds doc tag content
 
         :param doc: doc tag content
+        :type doc: :obj:`str`
         """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
@@ -179,18 +205,23 @@ class NDimensions(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param rankAttr: rank attribute
+        :type rankAttr: :obj:`str`
         """
         NTag.__init__(self, parent, "dimensions")
         self.addTagAttr("rank", rankAttr)
-        #: container with dim tag wrapper
+        #: (:obj:`dict` <:obj:`str`, :class:`NDim`>)
+        #:    container with dim tag wrapper
         self.dims = {}
 
     def dim(self, indexAttr, valueAttr):
         """ adds dim tag
 
         :param indexAttr: index attribute
+        :type indexAttr: :obj:`str`
         :param valueAttr: value attribute
+        :type valueAttr: :obj:`str`
         """
         self.dims[indexAttr] = NDim(self, indexAttr, valueAttr)
 
@@ -203,8 +234,11 @@ class NDim(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param indexAttr: index attribute
+        :type indexAttr: :obj:`str`
         :param valueAttr: value attribute
+        :type valueAttr: :obj:`str`
         """
         NTag.__init__(self, parent, "dim")
         self.addTagAttr("index", indexAttr)
@@ -219,14 +253,18 @@ class NField(NTag):
         """constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param nameAttr: name attribute
+        :type nameAttr: :obj:`str`
         :param typeAttr: type attribute
+        :type typeAttr: :obj:`str`
         """
         NTag.__init__(self, parent, "field", nameAttr, typeAttr)
 
-        #: list of doc tag contents
+        #: (:obj:`list` <:obj:`str`> ) list of doc tag contents
         self._doc = []
-        #: container with attribute tag wrappers
+        #: (:obj:`dict` <:obj:`str` , :obj:`str`> )
+        #:    container with attribute tag wrappers
         self._attr = {}
 
     def setStrategy(self, mode="STEP", trigger=None, value=None,
@@ -235,13 +273,20 @@ class NField(NTag):
         """ sets the field strategy
 
         :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+        :type mode: :obj:`str`
         :param trigger: for asynchronous writting,
                         e.g. with different subentries
+        :type trigger: :obj:`str`
         :param value: label for postrun mode
+        :type value: :obj:`str`
         :param grows: growing dimension
+        :type grows: :obj:`str`
         :param compression: flag if compression shuold be applied
+        :type compression: :obj:`str`
         :param rate: compression rate
+        :type rate: :obj:`str`
         :param shuffle: flag if compression shuffle
+        :type shuffle: :obj:`str`
         """
         #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
@@ -266,6 +311,7 @@ class NField(NTag):
         """ sets the field unit
 
         :param unitsAttr: the field unit
+        :type unitsAttr: :obj:`str`
         """
         self.addTagAttr("units", unitsAttr)
 
@@ -273,6 +319,7 @@ class NField(NTag):
         """ adds doc tag content
 
         :param doc: doc tag content
+        :type doc: :obj:`str`
         """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
@@ -281,8 +328,11 @@ class NField(NTag):
         """ adds attribute tag
 
         :param attrName: name attribute
+        :type attrName: :obj:`str`
         :param attrType: type attribute
+        :type attrType: :obj:`str`
         :param attrValue: content of the attribute tag
+        :type attrValue: :obj:`str`
         """
         self._attr[attrName] = NAttr(self, attrName, attrType)
         if attrValue != '':
@@ -298,6 +348,7 @@ class NDSource(NTag):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         """
         NTag.__init__(self, parent, "datasource")
 
@@ -310,17 +361,29 @@ class NDSource(NTag):
         """ sets parameters of DataBase
 
         :param name: name of datasource
+        :type name: :obj:`str`
         :param dbname: name of used DataBase
+        :type dbname: :obj:`str`
         :param query: database query
+        :type query: :obj:`str`
         :param dbtype: type of the database, i.e. MYSQL, PGSQL, ORACLE
+        :type dbtype: :obj:`str`
         :param rank: rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
+        :type rank: :obj:`str`
         :param mycnf: MYSQL config file
+        :type mycnf: :obj:`str`
         :param user: database user name
+        :type user: :obj:`str`
         :param passwd: database user password
+        :type passwd: :obj:`str`
         :param dsn: DSN string to initialize ORACLE and PGSQL databases
+        :type dsn: :obj:`str`
         :param mode: mode for ORACLE databases, i.e. SYSDBA or SYSOPER
+        :type mode: :obj:`str`
         :param host: name of the host
+        :type host: :obj:`str`
         :param port: port number
+        :type port: :obj:`str`
         """
         self.addTagAttr("type", "DB")
         self.addTagAttr("name", name)
@@ -354,13 +417,20 @@ class NDSource(NTag):
         """ sets paramters for Tango device
 
         :param name: name of datasource
+        :type name: :obj:`str`
         :param device: device name
+        :type device: :obj:`str`
         :param memberType: type of the data object, i.e. attribute,
                            property, command
+        :type memberType: :obj:`str`
         :param recordName: name of the data object
+        :type recordName: :obj:`str`
         :param host: host name
+        :type host: :obj:`str`
         :param port: port
+        :type port: :obj:`str`
         :param encoding: encoding of DevEncoded data
+        :type encoding: :obj:`str`
         """
         self.addTagAttr("type", "TANGO")
         self.addTagAttr("name", name)
@@ -385,7 +455,9 @@ class NDSource(NTag):
         """ sets paramters for Client data
 
         :param name: name of datasource
+        :type name: :obj:`str`
         :param recordName: name of the data object
+        :type recordName: :obj:`str`
         """
         self.addTagAttr("type", "CLIENT")
         self.addTagAttr("name", name)
@@ -396,6 +468,7 @@ class NDSource(NTag):
         """ adds doc tag content
 
         :param doc: doc tag content
+        :type doc: :obj:`str`
         """
         self._doc.append(NTag(self, "doc"))
         self._doc[-1].addText(doc)
@@ -405,7 +478,7 @@ class NDeviceGroup(NGroup):
     """ Tango device tag creator
     """
 
-    #: Tango types
+    #: (:obj:`list` < :obj:`str`>) Tango types
     tTypes = ["DevVoid",
               "DevBoolean",
               "DevShort",
@@ -436,7 +509,7 @@ class NDeviceGroup(NGroup):
               "DevInt",
               "DevEncoded"]
 
-    #: NeXuS types corresponding to the Tango types
+    #: (:obj:`list` <:obj:`str`>) NeXuS types corresponding to the Tango types
     nTypes = ["NX_CHAR",
               "NX_BOOLEAN",
               "NX_INT32",
@@ -472,20 +545,26 @@ class NDeviceGroup(NGroup):
         """ constructor
 
         :param parent: parent tag element
+        :type parent: :class:`NTag`
         :param deviceName: tango device name
+        :type deviceName: :obj:`str`
         :param nameAttr: name attribute
+        :type nameAttr: :obj:`str`
         :param typeAttr: type attribute
+        :type typeAttr: :obj:`str`
         :param commands: if we call the commands
+        :type commands: :obj:`bool`
         :param blackAttrs: list of excluded attributes
+        :type blackAttrs: :obj:`list` <:obj:`str`>
         """
         NGroup.__init__(self, parent, nameAttr, typeAttr)
-        #: device proxy
+        #: (:class:`PyTango.DeviceProxy`) device proxy
         self._proxy = PyTango.DeviceProxy(deviceName)
-        #: fields of the device
+        #: (:obj:`dict` <:obj:`str`, :class:`NTag`>) fields of the device
         self._fields = {}
-        #: blacklist for Attributes
+        #: (:obj:`list` <:obj:`str`>) blacklist for Attributes
         self._blackAttrs = blackAttrs if blackAttrs else []
-        #: the device name
+        #: (:obj:`str`) the device name
         self._deviceName = deviceName
 
         self._fetchProperties()
@@ -598,12 +677,13 @@ class XMLFile(object):
         """ constructor
 
         :param fname: XML file name
+        :type fname: :obj:`str`
         """
-        #: XML file name
+        #: (:obj:`str`) XML file name
         self.fname = fname
-        #: XML root instance
+        #: (:class:`xml.dom.minidom.Document`) XML root instance
         self.root = Document()
-        #: XML definition element
+        #: (:class:`xml.dom.minidom.Element`) XML definition element
         self.elem = self.root.createElement("definition")
         self.root.appendChild(self.elem)
 
@@ -611,7 +691,7 @@ class XMLFile(object):
         """prints pretty XML making use of minidom
 
         :param etNode: node
-        :returns: pretty XML string
+        :type etNode: :class:`xml.dom.minidom`
         """
         node = etNode if etNode else self.root
         return node.toprettyxml(indent="  ")

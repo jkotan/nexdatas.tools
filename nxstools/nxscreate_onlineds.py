@@ -25,6 +25,7 @@ import os
 from nxstools.nxsdevicetools import checkServer
 from nxstools.nxscreator import OnlineDSCreator
 
+#: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
     import PyTango
