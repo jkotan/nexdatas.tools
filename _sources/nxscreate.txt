@@ -191,6 +191,8 @@ Options:
                         configuration server device name
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -p XMLPACKAGE, --xml-package=XMLPACKAGE
+                        xml template package
 
 Example
 """""""
@@ -237,6 +239,8 @@ Options:
                         Server database
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -p XMLPACKAGE, --xml-package=XMLPACKAGE
+                        xml template package
 
 Example
 """""""
@@ -246,6 +250,55 @@ Example
 	  nxscreate onlinecp
 	  nxscreate onlinecp -c pilatus
 	  nxscreate onlinecp -c lambda -d /home/user/xmldir/
+
+
+nxscreate stdcomp
+------------------
+
+It creates a standard component from the xml template files
+and its set of datasources.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
+
+- without '-t <type>': show a list of possible component types
+- with '-t <type>  and without -c <component>: show a list of component variables for the given component type
+- without '-d <dircetory>:  components are created in Configuration Server database
+- with -d <directory>: components are created on the local filesystem
+- [name1 value1 [name2 value2] ...] sequence  defines component variable values 
+
+Options:
+  -h, --help            show this help message and exit
+  -c COMPONENT, --component=COMPONENT
+                        component name
+  -t CPTYPE, --type=CPTYPE
+                        component type
+  -r SERVER, --server=SERVER
+                        configuration server device name
+  -p XMLPACKAGE, --xml-package=XMLPACKAGE
+                        xml template package
+  -n, --nolower         do not change aliases into lower case
+  -o, --overwrite       overwrite existing component
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be stored. If
+                        it is not set components are stored in Configuration
+                        Server database
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+
+			
+Example
+"""""""
+
+.. code:: bash
+
+          nxscreate stdcomp  
+          nxscreate stdcomp -t slit 
+          nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
 
 
 nxscreate comp

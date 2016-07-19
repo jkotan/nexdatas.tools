@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsparser &mdash; NXSTools 2.1.3 documentation</title>
+    <title>nxstools.nxsparser &mdash; NXSTools 2.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.1.3',
+        VERSION:     '2.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.1.3 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.2.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -86,6 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
 </ul>
 </li>
@@ -118,6 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -199,7 +201,9 @@
     <span class="k">def</span> <span class="nf">_getPureText</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides  xml content of the node</span>
 <span class="sd">        :param node: DOM node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: xml content string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">childNodes</span><span class="p">:</span>
@@ -212,7 +216,9 @@
         <span class="sd">&quot;&quot;&quot; provides  xml content of the node</span>
 
 <span class="sd">        :param node: DOM node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: xml content string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
             <span class="k">return</span>
@@ -229,7 +235,9 @@
         <span class="sd">&quot;&quot;&quot; fetches record name or query from datasource node</span>
 
 <span class="sd">        :param node: datasource node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: record name or query</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">withRec</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;CLIENT&quot;</span><span class="p">,</span> <span class="s">&quot;TANGO&quot;</span><span class="p">]</span>
         <span class="n">withQuery</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;DB&quot;</span><span class="p">]</span>
@@ -281,7 +289,9 @@
 <span class="sd">            to one output xml string</span>
 
 <span class="sd">        :param xmls: a list of xml string with definitions</span>
+<span class="sd">        :type xmls: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :returns: one output xml string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rxml</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
         <span class="k">if</span> <span class="n">xmls</span><span class="p">:</span>
@@ -301,7 +311,9 @@
         <span class="sd">&quot;&quot;&quot; provides datasources and its records from xml string</span>
 
 <span class="sd">        :param xmlc: xml string</span>
+<span class="sd">        :type xmlc: :obj:`str`</span>
 <span class="sd">        :returns: list of datasource descriptions</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">__getDataSources</span><span class="p">(</span><span class="n">indom</span><span class="p">)</span>
@@ -311,7 +323,9 @@
         <span class="sd">&quot;&quot;&quot; provides datasources and its records from xml string</span>
 
 <span class="sd">        :param xmlc: xml string</span>
+<span class="sd">        :type xmlc: :obj:`str`</span>
 <span class="sd">        :returns: list of datasource descriptions</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">direct</span><span class="p">:</span>
             <span class="n">dss</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">&quot;datasource&quot;</span><span class="p">)</span>
@@ -342,7 +356,9 @@
         <span class="sd">&quot;&quot;&quot; provides node path</span>
 
 <span class="sd">        :param node: minidom node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: node path</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">node</span><span class="o">.</span><span class="n">parentNode</span><span class="p">:</span>
@@ -363,7 +379,9 @@
         <span class="sd">&quot;&quot;&quot; provides value of attirbute</span>
 
 <span class="sd">        :param node: minidom node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: attribute value</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
@@ -385,7 +403,9 @@
         <span class="sd">&quot;&quot;&quot; provides node shape</span>
 
 <span class="sd">        :param node: minidom node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :returns: shape list</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:obj:`int`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rank</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&quot;rank&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="c">#        shape = [&#39;*&#39;] * rank</span>
@@ -425,8 +445,11 @@
         <span class="sd">&quot;&quot;&quot; provides direct children by tag name</span>
 
 <span class="sd">        :param parent: parent node</span>
+<span class="sd">        :type parent: :class:`xml.dom.minidom.Node`</span>
 <span class="sd">        :param name: tag name</span>
+<span class="sd">        :type name: :obj:`str`</span>
 <span class="sd">        :returns: list of children</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:class:`xml.dom.minidom.Node`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">childNodes</span><span class="p">:</span>
@@ -441,7 +464,9 @@
         <span class="sd">&quot;&quot;&quot; provides datasources and its records from xml string</span>
 
 <span class="sd">        :param xmlc: xml string</span>
+<span class="sd">        :type xmlc: :obj:`str`</span>
 <span class="sd">        :returns: list of datasource descriptions</span>
+<span class="sd">        :rtype: :obj:`list` &lt; :obj:`dict` &lt;:obj:`str`, `any`&gt; &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tagname</span> <span class="o">=</span> <span class="s">&quot;field&quot;</span>
         <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlc</span><span class="p">)</span>
@@ -503,8 +528,9 @@
         <span class="sd">&quot;&quot;&quot; provides datasources and its records from xml string</span>
 
 <span class="sd">        :param xmlc: xml string</span>
+<span class="sd">        :type xmlc: :obj:`str`</span>
 <span class="sd">        :returns: list of datasource descriptions</span>
-
+<span class="sd">        :rtype: :obj:`list` &lt; :obj:`dict` &lt;:obj:`str`, `any`&gt; &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tagname</span> <span class="o">=</span> <span class="s">&quot;link&quot;</span>
         <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlc</span><span class="p">)</span>
@@ -556,7 +582,9 @@
         <span class="sd">&quot;&quot;&quot; provides source record from xml string</span>
 
 <span class="sd">        :param xmlc: xml string</span>
+<span class="sd">        :type xmlc: :obj:`str`</span>
 <span class="sd">        :returns: source record</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_getRecord</span><span class="p">(</span><span class="n">indom</span><span class="p">)</span>
@@ -569,13 +597,20 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
-<span class="sd">        :param description:  description list</span>
+<span class="sd">        :param description: description list</span>
+<span class="sd">        :type description:  :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :param nonone: list of parameters which have to exist to be shown</span>
+<span class="sd">        :type nonone:  :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt;)</span>
+        <span class="c">#:    list of parameters which have to exist to be shown</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__nonone</span> <span class="o">=</span> <span class="n">nonone</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt;)</span>
+        <span class="c">#:    description list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__description</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c">#: (:obj:`dict` &lt;:obj:`str` , :obj:`int`&gt;) header sizes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__hdsizes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c">#: table headers</span>
+        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt;) table headers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s">&#39;nexus_path&#39;</span><span class="p">,</span>
             <span class="s">&#39;nexus_type&#39;</span><span class="p">,</span>
@@ -591,7 +626,7 @@
             <span class="s">&#39;source&#39;</span><span class="p">,</span>
             <span class="s">&#39;value&#39;</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="c">#: table title</span>
+        <span class="c">#: (:obj:`str`) table title</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__loadDescription</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
 
@@ -599,6 +634,7 @@
         <span class="sd">&quot;&quot;&quot; loads description</span>
 
 <span class="sd">        :param description:  description list</span>
+<span class="sd">        :type description:  :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">description</span><span class="p">:</span>
             <span class="n">skip</span> <span class="o">=</span> <span class="bp">False</span>
@@ -630,10 +666,12 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__toString</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; convers list to string</span>
+        <span class="sd">&quot;&quot;&quot; converts list to string</span>
 
 <span class="sd">        :param lst: given list</span>
+<span class="sd">        :type lst: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :returns: list in string representation</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
@@ -644,6 +682,7 @@
         <span class="sd">&quot;&quot;&quot; generate row lists of table</span>
 
 <span class="sd">        :returns:  table rows</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>

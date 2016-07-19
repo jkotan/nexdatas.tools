@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools package &mdash; NXSTools 2.1.3 documentation</title>
+    <title>nxstools package &mdash; NXSTools 2.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.1.3',
+        VERSION:     '2.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.1.3 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.2.0 documentation" href="index.html" />
     <link rel="prev" title="nxsetup" href="nxsetup.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -86,6 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
 </ul>
 </li>
@@ -118,6 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-nxstools.release">nxstools.release module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -151,6 +153,7 @@
 <li><a class="reference internal" href="#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li><a class="reference internal" href="#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
 <li><a class="reference internal" href="#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li><a class="reference internal" href="#module-nxstools.release">nxstools.release module</a></li>
 <li><a class="reference internal" href="#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -212,11 +215,11 @@ into the master NeXus file</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nexusfilename</strong> &#8211; the nexus file name</li>
-<li><strong>compression</strong> &#8211; compression rate</li>
-<li><strong>skipmissing</strong> &#8211; if skip missing images</li>
-<li><strong>storeold</strong> &#8211; if backup the input file</li>
-<li><strong>testmode</strong> &#8211; if run in a test mode</li>
+<li><strong>nexusfilename</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; the nexus file name</li>
+<li><strong>compression</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; compression rate</li>
+<li><strong>skipmissing</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if skip missing images</li>
+<li><strong>storeold</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if backup the input file</li>
+<li><strong>testmode</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if run in a test mode</li>
 </ul>
 </td>
 </tr>
@@ -254,8 +257,8 @@ to the origin one if the action was successful</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>device</strong> &#8211; device name of the configuration server</li>
-<li><strong>nonewline</strong> &#8211; if the output should not be separated
+<li><strong>device</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name of the configuration server</li>
+<li><strong>nonewline</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if the output should not be separated
 by the new line character</li>
 </ul>
 </td>
@@ -271,17 +274,20 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>command</strong> &#8211; executed command: &#8216;list&#8217;, &#8216;show&#8217;, &#8216;get&#8217;,
+<li><strong>command</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; executed command: &#8216;list&#8217;, &#8216;show&#8217;, &#8216;get&#8217;,
 &#8216;variables&#8217;, &#8216;sources&#8217;, &#8216;record&#8217;, &#8216;merge&#8217;,
 &#8216;components&#8217;, &#8216;data&#8217;, &#8216;describe&#8217;, &#8216;info&#8217;, &#8216;geometry&#8217;</li>
-<li><strong>ds</strong> &#8211; flag set True for datasources</li>
-<li><strong>args</strong> &#8211; list of item names</li>
-<li><strong>mandatory</strong> &#8211; flag set True for mandatory components</li>
-<li><strong>private</strong> &#8211; flag set True for components starting with &#8216;__&#8217;</li>
+<li><strong>ds</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; flag set True for datasources</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; list of item names</li>
+<li><strong>mandatory</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; flag set True for mandatory components</li>
+<li><strong>private</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; flag set True for components starting with &#8216;__&#8217;</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">resulting string</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">resulting string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></p>
 </td>
 </tr>
 </tbody>
@@ -300,6 +306,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_clientds">
 <span id="nxstools-nxscreate-clientds-module"></span><h2>nxstools.nxscreate_clientds module<a class="headerlink" href="#module-nxstools.nxscreate_clientds" title="Permalink to this headline">¶</a></h2>
 <p>CLIENT datasource creator</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_clientds.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_clientds.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_clientds.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_clientds.main">
 <tt class="descclassname">nxstools.nxscreate_clientds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_clientds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_clientds.main" title="Permalink to this definition">¶</a></dt>
@@ -310,6 +322,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_comp">
 <span id="nxstools-nxscreate-comp-module"></span><h2>nxstools.nxscreate_comp module<a class="headerlink" href="#module-nxstools.nxscreate_comp" title="Permalink to this headline">¶</a></h2>
 <p>component creator</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_comp.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_comp.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_comp.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_comp.main">
 <tt class="descclassname">nxstools.nxscreate_comp.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_comp.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_comp.main" title="Permalink to this definition">¶</a></dt>
@@ -320,6 +338,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_deviceds">
 <span id="nxstools-nxscreate-deviceds-module"></span><h2>nxstools.nxscreate_deviceds module<a class="headerlink" href="#module-nxstools.nxscreate_deviceds" title="Permalink to this headline">¶</a></h2>
 <p>TANGO datasources creator for devices</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_deviceds.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_deviceds.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_deviceds.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_deviceds.main">
 <tt class="descclassname">nxstools.nxscreate_deviceds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_deviceds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_deviceds.main" title="Permalink to this definition">¶</a></dt>
@@ -330,6 +354,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_onlinecp">
 <span id="nxstools-nxscreate-onlinecp-module"></span><h2>nxstools.nxscreate_onlinecp module<a class="headerlink" href="#module-nxstools.nxscreate_onlinecp" title="Permalink to this headline">¶</a></h2>
 <p>component creator from online files</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_onlinecp.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_onlinecp.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_onlinecp.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_onlinecp.main">
 <tt class="descclassname">nxstools.nxscreate_onlinecp.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_onlinecp.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_onlinecp.main" title="Permalink to this definition">¶</a></dt>
@@ -340,6 +370,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_onlineds">
 <span id="nxstools-nxscreate-onlineds-module"></span><h2>nxstools.nxscreate_onlineds module<a class="headerlink" href="#module-nxstools.nxscreate_onlineds" title="Permalink to this headline">¶</a></h2>
 <p>datasource creator from online files</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_onlineds.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_onlineds.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_onlineds.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_onlineds.main">
 <tt class="descclassname">nxstools.nxscreate_onlineds.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_onlineds.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_onlineds.main" title="Permalink to this definition">¶</a></dt>
@@ -350,6 +386,12 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreate_tangods">
 <span id="nxstools-nxscreate-tangods-module"></span><h2>nxstools.nxscreate_tangods module<a class="headerlink" href="#module-nxstools.nxscreate_tangods" title="Permalink to this headline">¶</a></h2>
 <p>TANGO datasource creator</p>
+<dl class="data">
+<dt id="nxstools.nxscreate_tangods.PYTANGO">
+<tt class="descclassname">nxstools.nxscreate_tangods.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreate_tangods.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxscreate_tangods.main">
 <tt class="descclassname">nxstools.nxscreate_tangods.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreate_tangods.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreate_tangods.main" title="Permalink to this definition">¶</a></dt>
@@ -370,7 +412,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>device</strong> &#8211; device name of configuration server</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>device</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name of configuration server</td>
 </tr>
 </tbody>
 </table>
@@ -394,7 +436,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlconfig</strong> &#8211; xml configuration string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlconfig</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; xml configuration string</td>
 </tr>
 </tbody>
 </table>
@@ -408,7 +450,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; h5 file name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; h5 file name</td>
 </tr>
 </tbody>
 </table>
@@ -423,8 +465,8 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>command</strong> &#8211; called command</li>
-<li><strong>args</strong> &#8211; list of item names</li>
+<li><strong>command</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; called command</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; list of item names</li>
 </ul>
 </td>
 </tr>
@@ -440,7 +482,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> &#8211; step JSON data</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; step JSON data</td>
 </tr>
 </tbody>
 </table>
@@ -454,10 +496,16 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> &#8211; global JSON data</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jsondata</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; global JSON data</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsdata.NexusServer.tdwServer">
+<tt class="descname">tdwServer</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsdata.NexusServer.tdwServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://www.esrf.fr/computing/cs/tango/tango_doc/kernel_doc/pytango/latest/client_api/device_proxy.html#PyTango.DeviceProxy" title="(in PyTango v8.1)"><tt class="xref py py-class docutils literal"><span class="pre">PyTango.DeviceProxy</span></tt></a>) NeXus writer device proxy</p>
 </dd></dl>
 
 </dd></dl>
@@ -486,12 +534,18 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>server</strong> &#8211; server name</li>
-<li><strong>oldname</strong> &#8211; old property name</li>
-<li><strong>newname</strong> &#8211; new property name</li>
-<li><strong>scalss</strong> &#8211; server class name</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>server</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server name</li>
+<li><strong>oldname</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; old property name</li>
+<li><strong>newname</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; new property name</li>
+<li><strong>sclass</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server class name</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if property name was changed</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a></p>
 </td>
 </tr>
 </tbody>
@@ -506,7 +560,11 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; new recorder path</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; new recorder path</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if record path was added</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -520,11 +578,17 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>beamline</strong> &#8211; beamline name</li>
-<li><strong>materHost</strong> &#8211; master host of data writer</li>
-<li><strong>jsonsettings</strong> &#8211; connection settings to DB in json</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>beamline</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; beamline name</li>
+<li><strong>masterHost</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; master host of data writer</li>
+<li><strong>jsonsettings</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; connection settings to DB in json</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if server was created</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a></p>
 </td>
 </tr>
 </tbody>
@@ -539,10 +603,16 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>beamline</strong> &#8211; beamline name</li>
-<li><strong>materHost</strong> &#8211; master host of data writer</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>beamline</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; beamline name</li>
+<li><strong>masterHost</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; master host of data writer</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if server was created</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a></p>
 </td>
 </tr>
 </tbody>
@@ -557,16 +627,34 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>beamline</strong> &#8211; beamline name</li>
-<li><strong>materHost</strong> &#8211; master host of data writer</li>
-<li><strong>writer</strong> &#8211; writer device name</li>
-<li><strong>cserver</strong> &#8211; configuration server device name</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>beamline</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; beamline name</li>
+<li><strong>masterHost</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; master host of data writer</li>
+<li><strong>writer</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; writer device name</li>
+<li><strong>cserver</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; configuration server device name</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if server was created</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a></p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsetup.SetUp.cserver_name">
+<tt class="descname">cserver_name</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsetup.SetUp.cserver_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) NeXus config server device name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxsetup.SetUp.db">
+<tt class="descname">db</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsetup.SetUp.db" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://www.esrf.fr/computing/cs/tango/tango_doc/kernel_doc/pytango/latest/database.html#PyTango.Database" title="(in PyTango v8.1)"><tt class="xref py py-class docutils literal"><span class="pre">PyTango.Database</span></tt></a>) tango database server</p>
 </dd></dl>
 
 <dl class="method">
@@ -578,8 +666,10 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; server name</li>
-<li><strong>host</strong> &#8211; server host name</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server name</li>
+<li><strong>host</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server host name</li>
+<li><strong>level</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; start up level</li>
+<li><strong>restart</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if server should be restarted</li>
 </ul>
 </td>
 </tr>
@@ -587,12 +677,21 @@ by the new line character</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="nxstools.nxsetup.SetUp.writer_name">
+<tt class="descname">writer_name</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsetup.SetUp.writer_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) NeXus writer device name</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="data">
 <dt id="nxstools.nxsetup.knownHosts">
 <tt class="descclassname">nxstools.nxsetup.</tt><tt class="descname">knownHosts</tt><em class="property"> = {'hzgpp07eh4': {'masterHost': 'hzgpp07eh4', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp06ctrl': {'masterHost': 'haspp06ctrl', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspecsicl4': {'masterHost': 'haspecsicl4', 'user': 'lacluser', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp02ch2': {'masterHost': 'haspp02ch2', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp02ch1': {'masterHost': 'haspp02ch1', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haso107d1': {'masterHost': 'haso107d1', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp11oh': {'masterHost': 'haspp11oh', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'hasmlqj': {'masterHost': 'hasmlqj', 'user': 'lqjuser', 'dbname': 'nxsconfig', 'beamline': 'lqj'}, 'haspp06nc1': {'masterHost': 'haspp06nc1', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspp03nano': {'masterHost': 'haspp03nano', 'user': 'p03nano', 'dbname': 'nxsconfig', 'beamline': 'p03nano'}, 'haspp04exp1': {'masterHost': 'haspp04exp1', 'user': 'p04user', 'dbname': 'nxsconfig', 'beamline': 'p04'}, 'haspp02ch1a': {'masterHost': 'haspp02ch1a', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'haspp10e1': {'masterHost': 'haspp10e1', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haso113b': {'masterHost': 'haso113b', 'user': 'blume', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp10e2': {'masterHost': 'haspp10e2', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haspp09dif': {'masterHost': 'haspp09dif', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haso113u': {'masterHost': 'haso113u', 'user': 'blume', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haso228k': {'masterHost': 'haso228k', 'user': 'jkotan', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp03': {'masterHost': 'haspp03', 'user': 'p03user', 'dbname': 'nxsconfig', 'beamline': 'p03'}, 'haspp10lcx': {'masterHost': 'haspp10lcx', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'haspp11user02': {'masterHost': 'haspp11user02', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'haspp09haxps': {'masterHost': 'haspp09maxps', 'user': 'p09haxps', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hascmexp': {'masterHost': 'hascmexp', 'user': 'cmexp', 'dbname': 'nxsconfig', 'beamline': 'cmexp'}, 'haspp04exp2': {'masterHost': 'haspp04exp2', 'user': 'p04user', 'dbname': 'nxsconfig', 'beamline': 'p04'}, 'haso107klx': {'masterHost': 'haso107klx', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hasp029rack': {'masterHost': 'hasp029rack', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'hasnp64oh': {'masterHost': 'hasnp64oh', 'user': 'p64user', 'dbname': 'nxsconfig', 'beamline': 'p64'}, 'haspp09': {'masterHost': 'haspp09', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp08': {'masterHost': 'haspp08', 'user': 'p08user', 'dbname': 'nxsconfig', 'beamline': 'p08'}, 'haso111tb': {'masterHost': 'haso111tb', 'user': 'tnunez', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp09mag': {'masterHost': 'haspp09mag', 'user': 'p09user', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hasnp66': {'masterHost': 'hasnp66', 'user': 'p66user', 'dbname': 'nxsconfig', 'beamline': 'p66'}, 'hasnp65': {'masterHost': 'hasnp65', 'user': 'p65user', 'dbname': 'nxsconfig', 'beamline': 'p65'}, 'hasnp64': {'masterHost': 'hasnp64', 'user': 'p64user', 'dbname': 'nxsconfig', 'beamline': 'p64'}, 'haspp11sardana': {'masterHost': 'haspp11sardana', 'user': 'p11user', 'dbname': 'nxsconfig', 'beamline': 'p11'}, 'hzgpp07eh1': {'masterHost': 'hzgpp07eh1', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp10lab': {'masterHost': 'haspp10lab', 'user': 'p10user', 'dbname': 'nxsconfig', 'beamline': 'p10'}, 'hastodt': {'masterHost': 'hastodt', 'user': 'kracht', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'hzgpp07eh3': {'masterHost': 'hzgpp07eh3', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haso111n': {'masterHost': 'haso111n', 'user': 'tnunez', 'dbname': 'nxsconfig', 'beamline': 'p09'}, 'haspp07eh2': {'masterHost': 'haspp07eh2', 'user': 'p07user', 'dbname': 'nxsconfig', 'beamline': 'p07'}, 'haspp21lab': {'masterHost': 'haspp21lab', 'user': 'p21user', 'dbname': 'nxsconfig', 'beamline': 'p21'}, 'has6117b': {'masterHost': 'has6117b', 'user': 'p02user', 'dbname': 'nxsconfig', 'beamline': 'p02'}, 'hasmfmc': {'masterHost': 'hasmfmc', 'user': 'delayusr', 'dbname': 'nxsconfig', 'beamline': 'fmc'}, 'hasdelay': {'masterHost': 'hasdelay', 'user': 'delayusr', 'dbname': 'nxsconfig', 'beamline': 'delay'}, 'haspp06mc01': {'masterHost': 'haspp06mc01', 'user': 'p06user', 'dbname': 'nxsconfig', 'beamline': 'p06'}, 'haspp01eh1': {'masterHost': 'haspp01eh1', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}, 'haspp01eh2': {'masterHost': 'haspp01eh2', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}, 'haspp01eh3': {'masterHost': 'haspp01eh3', 'user': 'p01user', 'dbname': 'nxsconfig', 'beamline': 'p01'}}</em><a class="headerlink" href="#nxstools.nxsetup.knownHosts" title="Permalink to this definition">¶</a></dt>
-<dd><p>all SardanaHosts and DataBaseHosts should be known</p>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt; &gt; )</dt>
+<dd>all SardanaHosts and DataBaseHosts should be known</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -605,6 +704,57 @@ by the new line character</li>
 <div class="section" id="module-nxstools.nxscreator">
 <span id="nxstools-nxscreator-module"></span><h2>nxstools.nxscreator module<a class="headerlink" href="#module-nxstools.nxscreator" title="Permalink to this headline">¶</a></h2>
 <p>Command-line tool for creating to the nexdatas configuration server</p>
+<dl class="class">
+<dt id="nxstools.nxscreator.CPCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">CPCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#CPCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.CPCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
+<p>component creator of all online.xml complex devices</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="nxstools.nxscreator.CPCreator.components">
+<tt class="descname">components</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.CPCreator.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) component xml dictionary</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.CPCreator.create">
+<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#CPCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.CPCreator.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates components of all online.xml complex devices</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.CPCreator.datasources">
+<tt class="descname">datasources</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.CPCreator.datasources" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) datasource xml dictionary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.CPCreator.xmlpackage">
+<tt class="descname">xmlpackage</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.CPCreator.xmlpackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) xml template component package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.CPCreator.xmltemplatepath">
+<tt class="descname">xmltemplatepath</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.CPCreator.xmltemplatepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) xml template component package path</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="exception">
 <dt id="nxstools.nxscreator.CPExistsException">
 <em class="property">exception </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">CPExistsException</tt><a class="reference internal" href="_modules/nxstools/nxscreator.html#CPExistsException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.CPExistsException" title="Permalink to this definition">¶</a></dt>
@@ -623,9 +773,9 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -650,9 +800,9 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -677,9 +827,9 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -695,13 +845,13 @@ by the new line character</li>
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.attribute">
 <tt class="descname">attribute</tt><a class="headerlink" href="#nxstools.nxscreator.Device.attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>attribute name</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) attribute name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.dtype">
 <tt class="descname">dtype</tt><a class="headerlink" href="#nxstools.nxscreator.Device.dtype" title="Permalink to this definition">¶</a></dt>
-<dd><p>data type</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) data type</p>
 </dd></dl>
 
 <dl class="method">
@@ -712,7 +862,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tangohost</strong> &#8211; tango host</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tangohost</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tango host</td>
 </tr>
 </tbody>
 </table>
@@ -721,49 +871,49 @@ by the new line character</li>
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.group">
 <tt class="descname">group</tt><a class="headerlink" href="#nxstools.nxscreator.Device.group" title="Permalink to this definition">¶</a></dt>
-<dd><p>datasource tango group</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) datasource tango group</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.host">
 <tt class="descname">host</tt><a class="headerlink" href="#nxstools.nxscreator.Device.host" title="Permalink to this definition">¶</a></dt>
-<dd><p>host without port</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) host without port</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.hostname">
 <tt class="descname">hostname</tt><a class="headerlink" href="#nxstools.nxscreator.Device.hostname" title="Permalink to this definition">¶</a></dt>
-<dd><p>host name with port</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) host name with port</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.module">
 <tt class="descname">module</tt><a class="headerlink" href="#nxstools.nxscreator.Device.module" title="Permalink to this definition">¶</a></dt>
-<dd><p>device module</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) device module</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.name">
 <tt class="descname">name</tt><a class="headerlink" href="#nxstools.nxscreator.Device.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>device name</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) device name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.port">
 <tt class="descname">port</tt><a class="headerlink" href="#nxstools.nxscreator.Device.port" title="Permalink to this definition">¶</a></dt>
-<dd><p>tango port</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) tango port</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.sardanahostname">
 <tt class="descname">sardanahostname</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sardanahostname" title="Permalink to this definition">¶</a></dt>
-<dd><p>sardana host name</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana host name</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.sardananame">
 <tt class="descname">sardananame</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sardananame" title="Permalink to this definition">¶</a></dt>
-<dd><p>sardana name with port</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana name with port</p>
 </dd></dl>
 
 <dl class="method">
@@ -774,7 +924,7 @@ by the new line character</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tolower</strong> &#8211; If True name in lowercase</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tolower</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; If True name in lowercase</td>
 </tr>
 </tbody>
 </table>
@@ -789,7 +939,13 @@ by the new line character</li>
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.tdevice">
 <tt class="descname">tdevice</tt><a class="headerlink" href="#nxstools.nxscreator.Device.tdevice" title="Permalink to this definition">¶</a></dt>
-<dd><p>device type</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) device type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.Device.tolower">
+<tt class="descname">tolower</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.tolower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.tolower" title="Permalink to this definition">¶</a></dt>
+<dd><p>converts <cite>name</cite>, <cite>module</cite>, <cite>tdevice</cite>, <cite>hostname</cite> into lower case</p>
 </dd></dl>
 
 </dd></dl>
@@ -805,9 +961,9 @@ by the new line character</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -825,44 +981,25 @@ and stores it in DB or filesytem</p>
 <dl class="class">
 <dt id="nxstools.nxscreator.OnlineCPCreator">
 <em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">OnlineCPCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.Creator" title="nxstools.nxscreator.Creator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.Creator</span></tt></a></p>
-<p>component creator of all online.xml complex devices</p>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.CPCreator" title="nxstools.nxscreator.CPCreator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.CPCreator</span></tt></a></p>
 <p>constructor</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="nxstools.nxscreator.OnlineCPCreator.components">
-<tt class="descname">components</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.components" title="Permalink to this definition">¶</a></dt>
-<dd><p>component xml dictionary</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="nxstools.nxscreator.OnlineCPCreator.create">
-<tt class="descname">create</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>creates components of all online.xml complex devices</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="nxstools.nxscreator.OnlineCPCreator.createXMLs">
 <tt class="descname">createXMLs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#OnlineCPCreator.createXMLs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.createXMLs" title="Permalink to this definition">¶</a></dt>
 <dd><p>creates component xmls of all online.xml complex devices</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="nxstools.nxscreator.OnlineCPCreator.datasources">
-<tt class="descname">datasources</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineCPCreator.datasources" title="Permalink to this definition">¶</a></dt>
-<dd><p>datasource xml dictionary</p>
 </dd></dl>
 
 <dl class="method">
@@ -874,6 +1011,8 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of components with xml templates</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;</td>
 </tr>
 </tbody>
 </table>
@@ -892,9 +1031,9 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -915,7 +1054,84 @@ and stores it in DB or filesytem</p>
 <dl class="attribute">
 <dt id="nxstools.nxscreator.OnlineDSCreator.datasources">
 <tt class="descname">datasources</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.datasources" title="Permalink to this definition">¶</a></dt>
-<dd><p>datasource xml dictionary</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) datasource xml dictionary</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.OnlineDSCreator.xmlpackage">
+<tt class="descname">xmlpackage</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.xmlpackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) xml template component package</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.nxscreator.OnlineDSCreator.xmltemplatepath">
+<tt class="descname">xmltemplatepath</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxscreator.OnlineDSCreator.xmltemplatepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) xml template component package path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxscreator.PYTANGO">
+<tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxscreator.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxscreator.StandardCPCreator">
+<em class="property">class </em><tt class="descclassname">nxstools.nxscreator.</tt><tt class="descname">StandardCPCreator</tt><big>(</big><em>options</em>, <em>args</em>, <em>printouts=True</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#StandardCPCreator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.StandardCPCreator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxscreator.CPCreator" title="nxstools.nxscreator.CPCreator"><tt class="xref py py-class docutils literal"><span class="pre">nxstools.nxscreator.CPCreator</span></tt></a></p>
+<p>component creator of standard templates</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxscreator.StandardCPCreator.createXMLs">
+<tt class="descname">createXMLs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#StandardCPCreator.createXMLs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.StandardCPCreator.createXMLs" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates component xmls of all online.xml complex devices</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.StandardCPCreator.listcomponenttypes">
+<tt class="descname">listcomponenttypes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#StandardCPCreator.listcomponenttypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.StandardCPCreator.listcomponenttypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of standard component types</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of standard component types</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="nxstools.nxscreator.StandardCPCreator.listcomponentvariables">
+<tt class="descname">listcomponentvariables</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#StandardCPCreator.listcomponentvariables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.StandardCPCreator.listcomponentvariables" title="Permalink to this definition">¶</a></dt>
+<dd><p>provides a list of standard component types</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of standard component types</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -931,9 +1147,9 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>options</strong> &#8211; command options</li>
-<li><strong>args</strong> &#8211; command arguments</li>
-<li><strong>printouts</strong> &#8211; if printout is enable</li>
+<li><strong>options</strong> (<tt class="xref py py-class docutils literal"><span class="pre">optparse.Values</span></tt>) &#8211; command options</li>
+<li><strong>args</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt;) &#8211; command arguments</li>
+<li><strong>printouts</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if printout is enable</li>
 </ul>
 </td>
 </tr>
@@ -974,9 +1190,11 @@ and stores it in DB or filesytem</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmls</strong> &#8211; a list of xml string with definitions</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmls</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; a list of xml string with definitions</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">one output xml string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -990,9 +1208,11 @@ and stores it in DB or filesytem</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; xml string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1006,9 +1226,11 @@ and stores it in DB or filesytem</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; xml string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <cite>any</cite>&gt; &gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1022,9 +1244,11 @@ and stores it in DB or filesytem</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; xml string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of datasource descriptions</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <cite>any</cite>&gt; &gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1038,9 +1262,11 @@ and stores it in DB or filesytem</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> &#8211; xml string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xmlc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; xml string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">source record</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1059,8 +1285,8 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>description</strong> &#8211; description list</li>
-<li><strong>nonone</strong> &#8211; list of parameters which have to exist to be shown</li>
+<li><strong>description</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; description list</li>
+<li><strong>nonone</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; list of parameters which have to exist to be shown</li>
 </ul>
 </td>
 </tr>
@@ -1076,6 +1302,8 @@ and stores it in DB or filesytem</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">table rows</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1083,13 +1311,13 @@ and stores it in DB or filesytem</p>
 <dl class="attribute">
 <dt id="nxstools.nxsparser.TableTools.headers">
 <tt class="descname">headers</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsparser.TableTools.headers" title="Permalink to this definition">¶</a></dt>
-<dd><p>table headers</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) table headers</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxsparser.TableTools.title">
 <tt class="descname">title</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsparser.TableTools.title" title="Permalink to this definition">¶</a></dt>
-<dd><p>table title</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) table title</p>
 </dd></dl>
 
 </dd></dl>
@@ -1109,9 +1337,9 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>nameAttr</strong> &#8211; name attribute</li>
-<li><strong>typeAttr</strong> &#8211; type attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>typeAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
 </ul>
 </td>
 </tr>
@@ -1126,10 +1354,10 @@ and stores it in DB or filesytem</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mode</strong> &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
-<li><strong>trigger</strong> &#8211; for asynchronous writting,
+<li><strong>mode</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
+<li><strong>trigger</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; for asynchronous writting,
 e.g. with different subentries</li>
-<li><strong>value</strong> &#8211; label for postrun mode</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; label for postrun mode</li>
 </ul>
 </td>
 </tr>
@@ -1149,7 +1377,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> &#8211; parent tag element</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</td>
 </tr>
 </tbody>
 </table>
@@ -1161,7 +1389,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; doc tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1176,8 +1404,8 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; name of datasource</li>
-<li><strong>recordName</strong> &#8211; name of the data object</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of datasource</li>
+<li><strong>recordName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of the data object</li>
 </ul>
 </td>
 </tr>
@@ -1194,18 +1422,18 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; name of datasource</li>
-<li><strong>dbname</strong> &#8211; name of used DataBase</li>
-<li><strong>query</strong> &#8211; database query</li>
-<li><strong>dbtype</strong> &#8211; type of the database, i.e. MYSQL, PGSQL, ORACLE</li>
-<li><strong>rank</strong> &#8211; rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE</li>
-<li><strong>mycnf</strong> &#8211; MYSQL config file</li>
-<li><strong>user</strong> &#8211; database user name</li>
-<li><strong>passwd</strong> &#8211; database user password</li>
-<li><strong>dsn</strong> &#8211; DSN string to initialize ORACLE and PGSQL databases</li>
-<li><strong>mode</strong> &#8211; mode for ORACLE databases, i.e. SYSDBA or SYSOPER</li>
-<li><strong>host</strong> &#8211; name of the host</li>
-<li><strong>port</strong> &#8211; port number</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of datasource</li>
+<li><strong>dbname</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of used DataBase</li>
+<li><strong>query</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; database query</li>
+<li><strong>dbtype</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type of the database, i.e. MYSQL, PGSQL, ORACLE</li>
+<li><strong>rank</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE</li>
+<li><strong>mycnf</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; MYSQL config file</li>
+<li><strong>user</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; database user name</li>
+<li><strong>passwd</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; database user password</li>
+<li><strong>dsn</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; DSN string to initialize ORACLE and PGSQL databases</li>
+<li><strong>mode</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; mode for ORACLE databases, i.e. SYSDBA or SYSOPER</li>
+<li><strong>host</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of the host</li>
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; port number</li>
 </ul>
 </td>
 </tr>
@@ -1222,14 +1450,14 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; name of datasource</li>
-<li><strong>device</strong> &#8211; device name</li>
-<li><strong>memberType</strong> &#8211; type of the data object, i.e. attribute,
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of datasource</li>
+<li><strong>device</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name</li>
+<li><strong>memberType</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type of the data object, i.e. attribute,
 property, command</li>
-<li><strong>recordName</strong> &#8211; name of the data object</li>
-<li><strong>host</strong> &#8211; host name</li>
-<li><strong>port</strong> &#8211; port</li>
-<li><strong>encoding</strong> &#8211; encoding of DevEncoded data</li>
+<li><strong>recordName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name of the data object</li>
+<li><strong>host</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; host name</li>
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; port</li>
+<li><strong>encoding</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; encoding of DevEncoded data</li>
 </ul>
 </td>
 </tr>
@@ -1250,12 +1478,12 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>deviceName</strong> &#8211; tango device name</li>
-<li><strong>nameAttr</strong> &#8211; name attribute</li>
-<li><strong>typeAttr</strong> &#8211; type attribute</li>
-<li><strong>commands</strong> &#8211; if we call the commands</li>
-<li><strong>blackAttrs</strong> &#8211; list of excluded attributes</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>deviceName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tango device name</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>typeAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
+<li><strong>commands</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) &#8211; if we call the commands</li>
+<li><strong>blackAttrs</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) &#8211; list of excluded attributes</li>
 </ul>
 </td>
 </tr>
@@ -1264,13 +1492,13 @@ property, command</li>
 <dl class="attribute">
 <dt id="nxstools.nxsxml.NDeviceGroup.nTypes">
 <tt class="descname">nTypes</tt><em class="property"> = ['NX_CHAR', 'NX_BOOLEAN', 'NX_INT32', 'NX_INT32', 'NX_FLOAT32', 'NX_FLOAT64', 'NX_UINT32', 'NX_UINT32', 'NX_CHAR', 'NX_CHAR', 'NX_INT32', 'NX_INT32', 'NX_FLOAT32', 'NX_FLOAT64', 'NX_UINT32', 'NX_UINT32', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_CHAR', 'NX_BOOLEAN', 'NX_CHAR', 'NX_INT64', 'NX_UINT64', 'NX_INT64', 'NX_UINT64', 'NX_INT32', 'NX_CHAR']</em><a class="headerlink" href="#nxstools.nxsxml.NDeviceGroup.nTypes" title="Permalink to this definition">¶</a></dt>
-<dd><p>NeXuS types corresponding to the Tango types</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) NeXuS types corresponding to the Tango types</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxsxml.NDeviceGroup.tTypes">
 <tt class="descname">tTypes</tt><em class="property"> = ['DevVoid', 'DevBoolean', 'DevShort', 'DevLong', 'DevFloat', 'DevDouble', 'DevUShort', 'DevULong', 'DevString', 'DevVarCharArray', 'DevVarShortArray', 'DevVarLongArray', 'DevVarFloatArray', 'DevVarDoubleArray', 'DevVarUShortArray', 'DevVarULongArray', 'DevVarStringArray', 'DevVarLongStringArray', 'DevVarDoubleStringArray', 'DevState', 'ConstDevString', 'DevVarBooleanArray', 'DevUChar', 'DevLong64', 'DevULong64', 'DevVarLong64Array', 'DevVarULong64Array', 'DevInt', 'DevEncoded']</em><a class="headerlink" href="#nxstools.nxsxml.NDeviceGroup.tTypes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tango types</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt; <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) Tango types</p>
 </dd></dl>
 
 </dd></dl>
@@ -1286,9 +1514,9 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>indexAttr</strong> &#8211; index attribute</li>
-<li><strong>valueAttr</strong> &#8211; value attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>indexAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; index attribute</li>
+<li><strong>valueAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; value attribute</li>
 </ul>
 </td>
 </tr>
@@ -1307,8 +1535,8 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>rankAttr</strong> &#8211; rank attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>rankAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; rank attribute</li>
 </ul>
 </td>
 </tr>
@@ -1323,8 +1551,8 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>indexAttr</strong> &#8211; index attribute</li>
-<li><strong>valueAttr</strong> &#8211; value attribute</li>
+<li><strong>indexAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; index attribute</li>
+<li><strong>valueAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; value attribute</li>
 </ul>
 </td>
 </tr>
@@ -1335,7 +1563,10 @@ property, command</li>
 <dl class="attribute">
 <dt id="nxstools.nxsxml.NDimensions.dims">
 <tt class="descname">dims</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NDimensions.dims" title="Permalink to this definition">¶</a></dt>
-<dd><p>container with dim tag wrapper</p>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference internal" href="#nxstools.nxsxml.NDim" title="nxstools.nxsxml.NDim"><tt class="xref py py-class docutils literal"><span class="pre">NDim</span></tt></a>&gt;)</dt>
+<dd>container with dim tag wrapper</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1351,9 +1582,9 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>nameAttr</strong> &#8211; name attribute</li>
-<li><strong>typeAttr</strong> &#8211; type attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>typeAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
 </ul>
 </td>
 </tr>
@@ -1368,9 +1599,9 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>attrName</strong> &#8211; name attribute</li>
-<li><strong>attrType</strong> &#8211; type attribute</li>
-<li><strong>attrValue</strong> &#8211; content of the attribute tag</li>
+<li><strong>attrName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>attrType</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
+<li><strong>attrValue</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; content of the attribute tag</li>
 </ul>
 </td>
 </tr>
@@ -1386,7 +1617,7 @@ property, command</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; doc tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1401,14 +1632,14 @@ property, command</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mode</strong> &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
-<li><strong>trigger</strong> &#8211; for asynchronous writting,
+<li><strong>mode</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</li>
+<li><strong>trigger</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; for asynchronous writting,
 e.g. with different subentries</li>
-<li><strong>value</strong> &#8211; label for postrun mode</li>
-<li><strong>grows</strong> &#8211; growing dimension</li>
-<li><strong>compression</strong> &#8211; flag if compression shuold be applied</li>
-<li><strong>rate</strong> &#8211; compression rate</li>
-<li><strong>shuffle</strong> &#8211; flag if compression shuffle</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; label for postrun mode</li>
+<li><strong>grows</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; growing dimension</li>
+<li><strong>compression</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; flag if compression shuold be applied</li>
+<li><strong>rate</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; compression rate</li>
+<li><strong>shuffle</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; flag if compression shuffle</li>
 </ul>
 </td>
 </tr>
@@ -1424,7 +1655,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unitsAttr</strong> &#8211; the field unit</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>unitsAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; the field unit</td>
 </tr>
 </tbody>
 </table>
@@ -1443,9 +1674,9 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>nameAttr</strong> &#8211; name attribute</li>
-<li><strong>typeAttr</strong> &#8211; type attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>typeAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
 </ul>
 </td>
 </tr>
@@ -1460,9 +1691,9 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>attrName</strong> &#8211; name attribute</li>
-<li><strong>attrType</strong> &#8211; type attribute</li>
-<li><strong>attrValue</strong> &#8211; content of the attribute tag</li>
+<li><strong>attrName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>attrType</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; type attribute</li>
+<li><strong>attrValue</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; content of the attribute tag</li>
 </ul>
 </td>
 </tr>
@@ -1478,7 +1709,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; doc tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1497,9 +1728,9 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>nameAttr</strong> &#8211; name attribute</li>
-<li><strong>gTarget</strong> &#8211; target attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; name attribute</li>
+<li><strong>gTarget</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; target attribute</li>
 </ul>
 </td>
 </tr>
@@ -1513,7 +1744,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> &#8211; doc tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; doc tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1532,10 +1763,10 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>tagName</strong> &#8211; tag name</li>
-<li><strong>parent</strong> &#8211; parent tag element</li>
-<li><strong>nameAttr</strong> &#8211; value of name attribute</li>
-<li><strong>typeAttr</strong> &#8211; value of type attribute</li>
+<li><strong>parent</strong> (<a class="reference internal" href="#nxstools.nxsxml.NTag" title="nxstools.nxsxml.NTag"><tt class="xref py py-class docutils literal"><span class="pre">NTag</span></tt></a>) &#8211; parent tag element</li>
+<li><strong>tagName</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tag name</li>
+<li><strong>nameAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; value of name attribute</li>
+<li><strong>typeAttr</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; value of type attribute</li>
 </ul>
 </td>
 </tr>
@@ -1550,8 +1781,8 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; attribute name</li>
-<li><strong>value</strong> &#8211; attribute value</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; attribute name</li>
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; attribute value</li>
 </ul>
 </td>
 </tr>
@@ -1567,7 +1798,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1576,13 +1807,13 @@ e.g. with different subentries</li>
 <dl class="attribute">
 <dt id="nxstools.nxsxml.NTag.elem">
 <tt class="descname">elem</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NTag.elem" title="Permalink to this definition">¶</a></dt>
-<dd><p>tag element from minidom</p>
+<dd><p>(<tt class="xref py py-class docutils literal"><span class="pre">xml.dom.minidom.Element</span></tt>) tag element from minidom</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxsxml.NTag.root">
 <tt class="descname">root</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.NTag.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>XML minidom root</p>
+<dd><p>(<tt class="xref py py-class docutils literal"><span class="pre">xml.dom.minidom.Node</span></tt>) XML minidom root</p>
 </dd></dl>
 
 <dl class="method">
@@ -1593,7 +1824,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> &#8211; tag content</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tag content</td>
 </tr>
 </tbody>
 </table>
@@ -1611,7 +1842,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fname</strong> &#8211; XML file name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fname</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; XML file name</td>
 </tr>
 </tbody>
 </table>
@@ -1632,13 +1863,13 @@ e.g. with different subentries</li>
 <dl class="attribute">
 <dt id="nxstools.nxsxml.XMLFile.elem">
 <tt class="descname">elem</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.elem" title="Permalink to this definition">¶</a></dt>
-<dd><p>XML definition element</p>
+<dd><p>(<tt class="xref py py-class docutils literal"><span class="pre">xml.dom.minidom.Element</span></tt>) XML definition element</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="nxstools.nxsxml.XMLFile.fname">
 <tt class="descname">fname</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.fname" title="Permalink to this definition">¶</a></dt>
-<dd><p>XML file name</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) XML file name</p>
 </dd></dl>
 
 <dl class="method">
@@ -1649,9 +1880,7 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>etNode</strong> &#8211; node</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">pretty XML string</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>etNode</strong> (<tt class="xref py py-class docutils literal"><span class="pre">xml.dom.minidom</span></tt>) &#8211; node</td>
 </tr>
 </tbody>
 </table>
@@ -1660,7 +1889,7 @@ e.g. with different subentries</li>
 <dl class="attribute">
 <dt id="nxstools.nxsxml.XMLFile.root">
 <tt class="descname">root</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsxml.XMLFile.root" title="Permalink to this definition">¶</a></dt>
-<dd><p>XML root instance</p>
+<dd><p>(<tt class="xref py py-class docutils literal"><span class="pre">xml.dom.minidom.Document</span></tt>) XML root instance</p>
 </dd></dl>
 
 </dd></dl>
@@ -1675,6 +1904,42 @@ e.g. with different subentries</li>
 <div class="section" id="module-nxstools.nxsdevicetools">
 <span id="nxstools-nxsdevicetools-module"></span><h2>nxstools.nxsdevicetools module<a class="headerlink" href="#module-nxstools.nxsdevicetools" title="Permalink to this headline">¶</a></h2>
 <p>NDTS TANGO device tools</p>
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.PYTANGO">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">PYTANGO</tt><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxsdevicetools.PYTANGO" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">bool</span></tt></a>) True if PyTango available</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="nxstools.nxsdevicetools.PackageHandler">
+<em class="property">class </em><tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">PackageHandler</tt><big>(</big><em>packagename='nxstools.xmltemplates'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#PackageHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.PackageHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p>xml templates package loader</p>
+<p>constructor</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packagename</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; full package name</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="nxstools.nxsdevicetools.PackageHandler.loadXMLTemplates">
+<tt class="descname">loadXMLTemplates</tt><big>(</big><em>packagename</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#PackageHandler.loadXMLTemplates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.PackageHandler.loadXMLTemplates" title="Permalink to this definition">¶</a></dt>
+<dd><p>load xml template module variables</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>packagename</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; full package name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="nxstools.nxsdevicetools.checkServer">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">checkServer</tt><big>(</big><em>name='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#checkServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.checkServer" title="Permalink to this definition">¶</a></dt>
@@ -1683,9 +1948,11 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">server device name or empty string if error appears</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1694,7 +1961,7 @@ e.g. with different subentries</li>
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.ctModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">ctModules</tt><em class="property"> = ['mca8715roi', 'onedroi', 'sis3820', 'sis3302roi', 'xmcd', 'vfcadc', 'mythenroi', 'mhzdaqp01', 'dgg2', 'tangoattributectctrl']</em><a class="headerlink" href="#nxstools.nxsdevicetools.ctModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>counter/timer modules</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) counter/timer modules</p>
 </dd></dl>
 
 <dl class="function">
@@ -1705,9 +1972,11 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; device name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">class name</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1722,13 +1991,16 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>prefix</strong> &#8211; device name prefix</li>
-<li><strong>first</strong> &#8211; first device index</li>
-<li><strong>last</strong> &#8211; last device index</li>
+<li><strong>prefix</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name prefix</li>
+<li><strong>first</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; first device index</li>
+<li><strong>last</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; last device index</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">device names</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">device names</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</p>
 </td>
 </tr>
 </tbody>
@@ -1744,13 +2016,16 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>device</strong> &#8211; tango device name</li>
-<li><strong>host</strong> &#8211; device host</li>
-<li><strong>port</strong> &#8211; device port</li>
+<li><strong>device</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tango device name</li>
+<li><strong>host</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device host</li>
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; device port</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of device attributes</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of device attributes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</p>
 </td>
 </tr>
 </tbody>
@@ -1759,15 +2034,17 @@ e.g. with different subentries</li>
 
 <dl class="function">
 <dt id="nxstools.nxsdevicetools.getClassName">
-<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getClassName</tt><big>(</big><em>devicename='NXSConfigServer'</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getClassName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getClassName" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getClassName</tt><big>(</big><em>devicename</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getClassName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getClassName" title="Permalink to this definition">¶</a></dt>
 <dd><p>provides device class name</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>devicename</strong> &#8211; device name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>devicename</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; device name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">class name</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1781,9 +2058,11 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> &#8211; configuration server</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; configuration server</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">dictionary with datasource components</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>, <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1792,14 +2071,16 @@ e.g. with different subentries</li>
 <dl class="function">
 <dt id="nxstools.nxsdevicetools.getServerTangoHost">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">getServerTangoHost</tt><big>(</big><em>server</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxsdevicetools.html#getServerTangoHost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsdevicetools.getServerTangoHost" title="Permalink to this definition">¶</a></dt>
-<dd><p>fetches the server tango host</p>
+<dd><p>fetches the server tango_host:tango_port</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> &#8211; tango server</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>server</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tango server</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">tango host</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1813,9 +2094,11 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server instance name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server instance name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of the server device names</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1824,7 +2107,7 @@ e.g. with different subentries</li>
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.ioRegModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">ioRegModules</tt><em class="property"> = ['sis3610']</em><a class="headerlink" href="#nxstools.nxsdevicetools.ioRegModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>IO register modules</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) IO register modules</p>
 </dd></dl>
 
 <dl class="function">
@@ -1835,9 +2118,11 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> &#8211; server instance name</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server instance name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">server list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;</td>
 </tr>
 </tbody>
 </table>
@@ -1852,25 +2137,31 @@ e.g. with different subentries</li>
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.moduleMultiAttributes">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleMultiAttributes</tt><em class="property"> = {'perkinelmer': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pilatus2m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus1m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pco4000': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'mythen': ['Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime', 'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'], 'lambda2m': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'pilatus300k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'perkinelmerdetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pco': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus6m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'lambda': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'marccd': ['FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'], 'pedetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'], 'pcoedge': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus100k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleMultiAttributes" title="Permalink to this definition">¶</a></dt>
-<dd><p>important attributes of modules</p>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt; &gt;)</dt>
+<dd>important attributes of modules</dd>
+</dl>
 </dd></dl>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.moduleTemplateFiles">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleTemplateFiles</tt><em class="property"> = {'pilatus1m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus1m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pco4000': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus2m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus2m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus300k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus300k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pedetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmer': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmerdetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'lambda2m': ['lambda2m.xml', 'lambda2m_m1_external_data.ds.xml', 'lambda2m_m2_external_data.ds.xml', 'lambda2m_m3_external_data.ds.xml'], 'pco': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus6m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus6m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus100k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus100k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'marccd': ['marccd.xml', 'marccd_postrun.ds.xml'], 'pcoedge': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'lambda': ['lambda.xml', 'lambda_external_data.ds.xml']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleTemplateFiles" title="Permalink to this definition">¶</a></dt>
-<dd><p>xml template files of modules</p>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt; &gt;)</dt>
+<dd>xml template files of modules</dd>
+</dl>
 </dd></dl>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.motorModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">motorModules</tt><em class="property"> = ['absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c', 'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2']</em><a class="headerlink" href="#nxstools.nxsdevicetools.motorModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>modules of motors</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) modules of motors</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.oneDModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">oneDModules</tt><em class="property"> = ['mca_xia']</em><a class="headerlink" href="#nxstools.nxsdevicetools.oneDModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>modules of 1D detectors</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) modules of 1D detectors</p>
 </dd></dl>
 
 <dl class="function">
@@ -1881,12 +2172,33 @@ e.g. with different subentries</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>configuration</strong> &#8211; server device</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>configuration</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; server device name</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">configuration server proxy</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://www.esrf.fr/computing/cs/tango/tango_doc/kernel_doc/pytango/latest/client_api/device_proxy.html#PyTango.DeviceProxy" title="(in PyTango v8.1)"><tt class="xref py py-class docutils literal"><span class="pre">PyTango.DeviceProxy</span></tt></a></td>
+</tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.standardComponentTemplateFiles">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">standardComponentTemplateFiles</tt><em class="property"> = {'default': ['default.xml', 'sample_name.ds.xml', 'chemical_formula.ds.xml', 'beamtime_id.ds.xml', 'start_time.ds.xml', 'end_time.ds.xml', 'nexdatas_version.ds.xml', 'nexdatas_configuration.ds.xml', 'title.ds.xml'], 'source': ['source.xml'], 'slit': ['slit.xml'], 'undulator': ['undulator.xml']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.standardComponentTemplateFiles" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt; &gt;)</dt>
+<dd>xml template files of modules</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.standardComponentVariables">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">standardComponentVariables</tt><em class="property"> = {'default': {'__configdevice__': {'default': 'nxs/configserver/localhost', 'doc': 'configuration server device name (string)'}, 'sourcename': {'default': 'PETRA III', 'doc': 'source name (string)'}, '__tangoport__': {'default': '10000', 'doc': 'tango port (string)'}, 'longname': {'default': 'P09 Resonant Scattering and Diffraction beamline', 'doc': 'beamline long name (string)'}, '__tangohost__': {'default': 'localhost', 'doc': 'tango host (string)'}, 'shortname': {'default': 'P09', 'doc': 'beamline short name (string)'}}, 'source': {'sourceenergy': {'default': None, 'doc': 'ring beam energy (datasource)'}, 'beamcurrent': {'default': None, 'doc': 'ring beam current (datasource)'}}, 'slit': {'xgap': {'default': None, 'doc': 'horizontal gap (datasource)'}, 'right': {'default': None, 'doc': 'right blade position (datasource)'}, 'left': {'default': None, 'doc': 'left blade position (datasource)'}, 'top': {'default': None, 'doc': 'top blade position (datasource)'}, 'ygap': {'default': None, 'doc': 'vertical gap (datasource)'}, 'bottom': {'default': None, 'doc': 'bottom blade position (datasource)'}, 'xoffset': {'default': None, 'doc': 'horizontal offset (datasource)'}, 'yoffset': {'default': None, 'doc': 'vertiacal offset (datasource)'}}, 'undulator': {'energy': {'default': None, 'doc': 'undulator energy (datasource)'}, 'taper': {'default': None, 'doc': 'gap difference between upstream and downstream ends of the insertion device (datasource)'}, 'harmonic': {'default': None, 'doc': 'undulator harmonic (datasource)'}, 'gap': {'default': None, 'doc': 'separation between opposing pairs of magnetic pole (datasource)'}}}</em><a class="headerlink" href="#nxstools.nxsdevicetools.standardComponentVariables" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> &gt; &gt;)</dt>
+<dd>standatd component template variables
+and its [default value, doc string]</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -1898,9 +2210,9 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; component name</li>
-<li><strong>xml</strong> &#8211; component xml string</li>
-<li><strong>server</strong> &#8211; configuration server</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; component name</li>
+<li><strong>xml</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; component xml string</li>
+<li><strong>server</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; configuration server</li>
 </ul>
 </td>
 </tr>
@@ -1917,9 +2229,9 @@ e.g. with different subentries</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> &#8211; datasource name</li>
-<li><strong>xml</strong> &#8211; datasource xml string</li>
-<li><strong>server</strong> &#8211; configuration server</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; datasource name</li>
+<li><strong>xml</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; datasource xml string</li>
+<li><strong>server</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; configuration server</li>
 </ul>
 </td>
 </tr>
@@ -1930,13 +2242,19 @@ e.g. with different subentries</li>
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.twoDModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">twoDModules</tt><em class="property"> = ['pilatus100k', 'pilatus300k', 'pilatus1m', 'pilatus2m', 'pilatus6m', 'pco4000', 'perkinelmerdetector', 'lambda', 'pedetector', 'perkinelmer', 'pco', 'pcoedge', 'marccd', 'perkinelmer', 'lcxcamera', 'limaccd', 'eigerpsi', 'eigerdectris']</em><a class="headerlink" href="#nxstools.nxsdevicetools.twoDModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>modules of 2d detectors</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) modules of 2d detectors</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="nxstools.nxsdevicetools.xmlPackageHandler">
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">xmlPackageHandler</tt><em class="property"> = &lt;nxstools.nxsdevicetools.PackageHandler object at 0x7f1409f08b50&gt;</em><a class="headerlink" href="#nxstools.nxsdevicetools.xmlPackageHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference internal" href="#nxstools.nxsdevicetools.PackageHandler" title="nxstools.nxsdevicetools.PackageHandler"><tt class="xref py py-class docutils literal"><span class="pre">PackageHandler</span></tt></a>) xml template package handler</p>
 </dd></dl>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.zeroDModules">
 <tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">zeroDModules</tt><em class="property"> = ['tip830']</em><a class="headerlink" href="#nxstools.nxsdevicetools.zeroDModules" title="Permalink to this definition">¶</a></dt>
-<dd><p>modules of 0D detectors</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt;) modules of 0D detectors</p>
 </dd></dl>
 
 </div>
@@ -1962,15 +2280,62 @@ GNU General Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License
 along with nx2img.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 <p>Generator class creating image file names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fname_template</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; file name template</li>
+<li><strong>start_index</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; file start index</li>
+<li><strong>stop_index</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) &#8211; file stop index</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="nxstools.filenamegenerator.FilenameGenerator.file_index">
+<tt class="descname">file_index</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator.file_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) file start index</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.filenamegenerator.FilenameGenerator.file_template">
+<tt class="descname">file_template</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator.file_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) file name template</p>
+</dd></dl>
+
 <dl class="staticmethod">
 <dt id="nxstools.filenamegenerator.FilenameGenerator.from_slice">
 <em class="property">static </em><tt class="descname">from_slice</tt><big>(</big><em>file_template</em><big>)</big><a class="reference internal" href="_modules/nxstools/filenamegenerator.html#FilenameGenerator.from_slice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator.from_slice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Static factory method to create a filename_generator instance
 from a sliced user input</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_template</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; file template</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">filename generator object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#nxstools.filenamegenerator.FilenameGenerator" title="nxstools.filenamegenerator.FilenameGenerator"><tt class="xref py py-class docutils literal"><span class="pre">FilenameGenerator</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nxstools.filenamegenerator.FilenameGenerator.stop_index">
+<tt class="descname">stop_index</tt><em class="property"> = None</em><a class="headerlink" href="#nxstools.filenamegenerator.FilenameGenerator.stop_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>) file stop index</p>
 </dd></dl>
 
 </dd></dl>
 
+</div>
+<div class="section" id="module-nxstools.release">
+<span id="nxstools-release-module"></span><h2>nxstools.release module<a class="headerlink" href="#module-nxstools.release" title="Permalink to this headline">¶</a></h2>
+<p>NXS tools release version</p>
 </div>
 <div class="section" id="module-nxstools">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nxstools" title="Permalink to this headline">¶</a></h2>

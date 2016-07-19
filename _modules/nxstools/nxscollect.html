@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscollect &mdash; NXSTools 2.1.3 documentation</title>
+    <title>nxstools.nxscollect &mdash; NXSTools 2.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.1.3',
+        VERSION:     '2.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.1.3 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.2.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -86,6 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
 </ul>
 </li>
@@ -118,6 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
 </ul>
 </li>
@@ -209,10 +211,15 @@
         <span class="sd">&quot;&quot;&quot; The constructor creates the collector object</span>
 
 <span class="sd">        :param nexusfilename: the nexus file name</span>
+<span class="sd">        :type nexusfilename: :obj:`str`</span>
 <span class="sd">        :param compression: compression rate</span>
+<span class="sd">        :type compression: :obj:`int`</span>
 <span class="sd">        :param skipmissing: if skip missing images</span>
+<span class="sd">        :type skipmissing: :obj:`bool`</span>
 <span class="sd">        :param storeold: if backup the input file</span>
+<span class="sd">        :type storeold: :obj:`bool`</span>
 <span class="sd">        :param testmode: if run in a test mode</span>
+<span class="sd">        :type testmode: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__nexusfilename</span> <span class="o">=</span> <span class="n">nexusfilename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__compression</span> <span class="o">=</span> <span class="n">compression</span>
@@ -235,7 +242,8 @@
     <span class="k">def</span> <span class="nf">_signalhandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sig</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; signal handler</span>
 
-<span class="sd">        :param sig: signal name</span>
+<span class="sd">        :param sig: signal name, i.e. &#39;SIGINT&#39;, &#39;SIGHUP&#39;, &#39;SIGALRM&#39;, &#39;SIGTERM&#39;</span>
+<span class="sd">        :type sig: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">sig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__siginfo</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__break</span> <span class="o">=</span> <span class="bp">True</span>
@@ -260,8 +268,10 @@
     <span class="k">def</span> <span class="nf">_filegenerator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filestr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides file name generator from file string</span>
 
-<span class="sd">        :params filestr: file string</span>
+<span class="sd">        :param filestr: file string</span>
+<span class="sd">        :type: filestr: :obj:`str`</span>
 <span class="sd">        :returns: file name generator or a list of file names</span>
+<span class="sd">        :rtype: :class:`methodinstance`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filepattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">filestr</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">FilenameGenerator</span><span class="o">.</span><span class="n">from_slice</span><span class="p">(</span><span class="n">filestr</span><span class="p">)</span>
@@ -275,9 +285,11 @@
         <span class="sd">&quot;&quot;&quot; provides absolute image file name</span>
 
 <span class="sd">        :param filename: image file name</span>
+<span class="sd">        :type: filename: :obj:`str`</span>
 <span class="sd">        :param masterfile: nexus file name</span>
-
+<span class="sd">        :type: masterfile: :obj:`str`</span>
 <span class="sd">        :returns: absolute image file name</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
             <span class="n">nexusfilepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
@@ -289,9 +301,12 @@
         <span class="sd">&quot;&quot;&quot; searches for absolute image file name</span>
 
 <span class="sd">        :param filename: image file name</span>
+<span class="sd">        :type: filename: :obj:`str`</span>
 <span class="sd">        :param nname: hdf5 node name</span>
+<span class="sd">        :typ nname: :obj:`str`</span>
 
 <span class="sd">        :returns: absolute image file name</span>
+<span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filelist</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -337,7 +352,9 @@
         <span class="sd">&quot;&quot;&quot; loads image from file</span>
 
 <span class="sd">        :param filename: image file name</span>
+<span class="sd">        :type filename: :obj:`str`</span>
 <span class="sd">        :returns: (image data, image data type, image shape)</span>
+<span class="sd">        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` &lt;:obj:`int`&gt;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="bp">None</span>
@@ -361,7 +378,9 @@
         <span class="sd">&quot;&quot;&quot; loads image from hdf5 file</span>
 
 <span class="sd">        :param filename: hdf5 image file name</span>
+<span class="sd">        :type filename: :obj:`str`</span>
 <span class="sd">        :returns: (image data, image data type, image shape)</span>
+<span class="sd">        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` &lt;:obj:`int`&gt;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="bp">None</span>
@@ -388,6 +407,7 @@
         <span class="sd">&quot;&quot;&quot; adds attributes to the parent node in nexus file</span>
 
 <span class="sd">        :param node: parent hdf5 node</span>
+<span class="sd">        :type node: parent hdf5 node</span>
 <span class="sd">        :param attrs: dictionary with attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="n">attrs</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -402,12 +422,20 @@
         <span class="sd">&quot;&quot;&quot; creates a field in nexus file</span>
 
 <span class="sd">        :param node: parent hdf5 node</span>
+<span class="sd">        :type node: :class:`pni.io.nx.h5.nxgroup` or \</span>
+<span class="sd">                    :class:`pni.io.nx.h5.nxlink` </span>
 <span class="sd">        :param fieldname: field name</span>
+<span class="sd">        :type fieldname: :obj:`str`</span>
 <span class="sd">        :param dtype: field data type</span>
+<span class="sd">        :type dtype: :obj:`str`</span>
 <span class="sd">        :param shape: filed data shape</span>
+<span class="sd">        :type shape: :obj:`list` &lt;:obj:`int`&gt;</span>
 <span class="sd">        :param fieldattrs: dictionary with field attributes</span>
+<span class="sd">        :type fieldattrs: :obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;</span>
 <span class="sd">        :param fieldcompression: field compression rate</span>
+<span class="sd">        :type fieldcompression: :obj:`int`</span>
 <span class="sd">        :returns: hdf5 field node</span>
+<span class="sd">        :rtype: :class:`pni.io.nx.h5.nxfield` </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
@@ -431,11 +459,17 @@
                        <span class="n">fieldcompression</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; collects images</span>
 
-<span class="sd">        :param files: a list of file stings</span>
+<span class="sd">        :param files: a list of file strings</span>
+<span class="sd">        :type files: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :param node: hdf5 parent node</span>
+<span class="sd">        :type node: :class:`pni.io.nx.h5.nxgroup` or \</span>
+<span class="sd">                    :class:`pni.io.nx.h5.nxlink`</span>
 <span class="sd">        :param fieldname: field name</span>
+<span class="sd">        :type fieldname: :obj:`str`</span>
 <span class="sd">        :param fieldattrs: dictionary with field attributes</span>
+<span class="sd">        :type fieldattrs: :obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;</span>
 <span class="sd">        :param fieldcompression: field compression rate</span>
+<span class="sd">        :type fieldcompression: :obj:`int`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span> <span class="ow">or</span> <span class="s">&quot;data&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
@@ -474,7 +508,10 @@
 <span class="sd">        by hdf5 postrun fields bellow hdf5 parent node</span>
 
 <span class="sd">        :param parent: hdf5 parent node</span>
+<span class="sd">        :type parent: :class:`pni.io.nx.h5.nxgroup` or \</span>
+<span class="sd">                      :class:`pni.io.nx.h5.nxlink` </span>
 <span class="sd">        :param collection: if parent is of NXcollection type</span>
+<span class="sd">        :type collection: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="s">&quot;names&quot;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">collection</span><span class="p">:</span>
@@ -548,14 +585,17 @@
 </div></div>
 <span class="k">def</span> <span class="nf">_createParser</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; creates command-line parameters parser</span>
+
+<span class="sd">    :returns: option parser</span>
+<span class="sd">    :rtype: :class:`optparse.OptionParser`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c">#: usage example</span>
+    <span class="c">#: (:obj:`str`) usage example</span>
     <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: </span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; nxscollect [-x|-t] [&lt;options&gt;] &lt;command&gt; &lt;main_nexus_file&gt; </span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs </span><span class="se">\n\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; &quot;</span>
 
-    <span class="c">#: option parser</span>
+    <span class="c">#: (:class:`optparse.OptionParser`) option parser</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--execute&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
                       <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;execute&quot;</span><span class="p">,</span>
