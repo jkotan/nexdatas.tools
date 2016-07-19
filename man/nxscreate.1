@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "July 14, 2016" "2.1" "NXSTools"
+.TH "NXSCREATE" "1" "July 19, 2016" "2.2" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -332,6 +332,9 @@ configuration server device name
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
+.TP
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+xml template package
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -402,6 +405,9 @@ Server database
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
+.TP
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+xml template package
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -413,6 +419,81 @@ file prefix, i.e. counter
 nxscreate onlinecp
 nxscreate onlinecp \-c pilatus
 nxscreate onlinecp \-c lambda \-d /home/user/xmldir/
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE STDCOMP
+.sp
+It creates a standard component from the xml template files
+and its set of datasources.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+without \(aq\-t <type>\(aq: show a list of possible component types
+.IP \(bu 2
+with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
+.IP \(bu 2
+without \(aq\-d <dircetory>:  components are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: components are created on the local filesystem
+.IP \(bu 2
+[name1 value1 [name2 value2] ...] sequence  defines component variable values
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
+component name
+.TP
+.BI \-t \ CPTYPE\fP,\fB \ \-\-type\fB= CPTYPE
+component type
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+xml template package
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing component
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be stored. If
+it is not set components are stored in Configuration
+Server database
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate stdcomp
+nxscreate stdcomp \-t slit
+nxscreate stdcomp \-t slit \-c front_slit1 xgap slt1x ygap slt1y
 .ft P
 .fi
 .UNINDENT
