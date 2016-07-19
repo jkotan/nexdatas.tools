@@ -1,5 +1,5 @@
 2016-07-19 Jan Kotanski <jankotan@gmail.com>
-	* nxsvcreate: add stdcomp action
+	* nxscreate: add stdcomp action
 	* tagged as v2.2.0
 
 2016-06-06 Jan Kotanski <jankotan@gmail.com>
