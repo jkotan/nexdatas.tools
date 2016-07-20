@@ -1,3 +1,7 @@
+2016-07-20 Jan Kotanski <jankotan@gmail.com>
+	* fix for missing xml templates
+	* tagged as v2.2.1
+
 2016-07-19 Jan Kotanski <jankotan@gmail.com>
 	* nxscreate: add stdcomp action
 	* tagged as v2.2.0

@@ -59,7 +59,7 @@ SETUPDATA = dict(
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
     packages=["nxstools", "nxstools.xmltemplates"],
-    package_data={'nxstools.xmltemplates': ['xmltemplates/*.xml']},
+    package_data={'nxstools.xmltemplates': ['*.xml']},
     scripts=[
         'nxsconfig',
         'nxsdata',
