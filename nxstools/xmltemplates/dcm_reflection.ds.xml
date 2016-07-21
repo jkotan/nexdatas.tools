@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_reflection">
+    <result name="result">
+import PyTango
+dp = PyTango.DeviceProxy("$(dcmdevice)")
+version = dp.get_property("Version")['Version'][0]
+crystal = dp.crystal
+if version != '11':
+    ds.result = [3,1,1] if crystal == 1 else [1,1,1]
+else:
+    ds.result = [2,2,0] if crystal == 1 else [1,1,1]
+    </result>
+  </datasource>
+</definition>

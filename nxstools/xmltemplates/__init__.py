@@ -114,6 +114,92 @@ standardComponentVariables = {
             'doc': "configuration server device name (string)"
         },
     },
+    'dcm': {
+        'energy': {
+            'default': None,
+            'doc': "monochromator energy (datasource)"
+        },
+        'lat': {
+            'default': None,
+            'doc': "horizontal lattice translation of the first cristal"
+            " (datasource)"
+        },
+        'yaw' : {
+            'default': None,
+            'doc': "yaw rotation of the first cristal"
+            " (datasource)"
+        },
+        'roll1' : {
+            'default': None,
+            'doc': "roll rotation of the first cristal"
+            " (datasource)"
+        },
+        'roll2' : {
+            'default': None,
+            'doc': "roll rotation of the second cristal"
+            " (datasource)"
+        },
+        'pitch2' : {
+            'default': None,
+            'doc': "pitch rotation of the second cristal"
+            " (datasource)"
+        },
+        'perp2' : {
+            'default': None,
+            'doc': ""
+            " (datasource)"
+        },
+        'par2' : {
+            'default': None,
+            'doc': ""
+            " (datasource)"
+        },
+        'braggangle' : {
+            'default': None,
+            'doc': ""
+            " (datasource)"
+        },
+        'jack1' : {
+            'default': None,
+            'doc': "first vertical jack of table"
+            " (datasource)"
+        },
+        'jack2' : {
+            'default': None,
+            'doc': "second vertical jack of table"
+            " (datasource)"
+        },
+        'jack3' : {
+            'default': None,
+            'doc': "third vertical jack of table"
+            " (datasource)"
+        },
+        'table' : {
+            'default': None,
+            'doc': "vertical position of table"
+            " (datasource)"
+        },
+        'oxfordhorizontal' : {
+            'default': None,
+            'doc': " horizontal translation"
+            " (datasource)"
+        },
+        'exitoffset' : {
+            'default': None,
+            'doc': " exit offset"
+            " (datasource)"
+        },
+        'theta' : {
+            'default': None,
+            'doc': "theta angle"
+            " (datasource)"
+        },
+        'dcmdevice' : {
+            'default': None,
+            'doc': "FMBOxfDCMEnergy tango device"
+            " (string)"
+        },
+    },
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -133,6 +219,9 @@ standardComponentTemplateFiles = {
         'nexdatas_configuration.ds.xml',
         'title.ds.xml',
     ],
+    'dcm': ['dcm.xml',
+            'dcm_reflection.ds.xml',
+        ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)

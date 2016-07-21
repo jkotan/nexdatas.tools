@@ -119,13 +119,14 @@ def main():
     elif options.cptype:
         dct = creator.listcomponentvariables()
         print("\nCOMPONENT VARIABLES:")
-        for var, desc in dct.items():
+        for var in sorted(dct.keys()):
+            desc = dct[var]
             if not var.startswith('__') and not var.endswith('__'):
                 print("  %s - %s [default: '%s']"
                       % (var, desc['doc'], desc['default']))
     else:
-        lst = creator.listcomponenttypes()
-        print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(list(lst)))
+        lst = sorted(creator.listcomponenttypes())
+        print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(lst))
 
 
 if __name__ == "__main__":
