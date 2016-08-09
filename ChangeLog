@@ -1,6 +1,7 @@
-2016-XX-XX Jan Kotanski <jankotan@gmail.com>
+2016-08-09 Jan Kotanski <jankotan@gmail.com>
 	* add dcm component
-	* tagged as v2.2.2
+	* make args and options in creator public
+	* tagged as v2.3.0
 	
 2016-07-20 Jan Kotanski <jankotan@gmail.com>
 	* fix for missing xml templates
