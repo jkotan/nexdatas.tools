@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscollect &mdash; NXSTools 2.2.0 documentation</title>
+    <title>nxstools.nxscollect &mdash; NXSTools 2.3.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.2.0',
+        VERSION:     '2.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.2.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.3.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.2</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -423,7 +423,7 @@
 
 <span class="sd">        :param node: parent hdf5 node</span>
 <span class="sd">        :type node: :class:`pni.io.nx.h5.nxgroup` or \</span>
-<span class="sd">                    :class:`pni.io.nx.h5.nxlink` </span>
+<span class="sd">                    :class:`pni.io.nx.h5.nxlink`</span>
 <span class="sd">        :param fieldname: field name</span>
 <span class="sd">        :type fieldname: :obj:`str`</span>
 <span class="sd">        :param dtype: field data type</span>
@@ -435,7 +435,7 @@
 <span class="sd">        :param fieldcompression: field compression rate</span>
 <span class="sd">        :type fieldcompression: :obj:`int`</span>
 <span class="sd">        :returns: hdf5 field node</span>
-<span class="sd">        :rtype: :class:`pni.io.nx.h5.nxfield` </span>
+<span class="sd">        :rtype: :class:`pni.io.nx.h5.nxfield`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
@@ -509,7 +509,7 @@
 
 <span class="sd">        :param parent: hdf5 parent node</span>
 <span class="sd">        :type parent: :class:`pni.io.nx.h5.nxgroup` or \</span>
-<span class="sd">                      :class:`pni.io.nx.h5.nxlink` </span>
+<span class="sd">                      :class:`pni.io.nx.h5.nxlink`</span>
 <span class="sd">        :param collection: if parent is of NXcollection type</span>
 <span class="sd">        :type collection: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
