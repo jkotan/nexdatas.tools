@@ -270,7 +270,7 @@ def getServerTangoHost(server):
     :param server: tango server
     :type server: :obj:`str`
     :returns: tango host
-    :rtype: :obj:`str` 
+    :rtype: :obj:`str`
     """
     proxy = openServer(server)
     host = proxy.get_db_host()
@@ -328,7 +328,7 @@ def getClassName(devicename):
     """ provides device class name
 
     :param devicename: device name
-    :type devicename: :obj:`str` 
+    :type devicename: :obj:`str`
     :returns: class name
     :rtype: :obj:`str`
    """
@@ -348,7 +348,7 @@ def getServers(name='NXSConfigServer'):
     """ provides server device names
 
     :param name: server instance name
-    :type name: :obj:`str` 
+    :type name: :obj:`str`
     :returns: list of the server device names
     :rtype: :obj:`list` <:obj:`str`>
 

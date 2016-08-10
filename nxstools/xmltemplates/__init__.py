@@ -124,77 +124,77 @@ standardComponentVariables = {
             'doc': "horizontal lattice translation of the first cristal"
             " (datasource)"
         },
-        'yaw' : {
+        'yaw': {
             'default': None,
             'doc': "yaw rotation of the first cristal"
             " (datasource)"
         },
-        'roll1' : {
+        'roll1': {
             'default': None,
             'doc': "roll rotation of the first cristal"
             " (datasource)"
         },
-        'roll2' : {
+        'roll2': {
             'default': None,
             'doc': "roll rotation of the second cristal"
             " (datasource)"
         },
-        'pitch2' : {
+        'pitch2': {
             'default': None,
             'doc': "pitch rotation of the second cristal"
             " (datasource)"
         },
-        'perp2' : {
+        'perp2': {
             'default': None,
-            'doc': ""
+            'doc': "vertical translation of the second cristal"
             " (datasource)"
         },
-        'par2' : {
+        'par2': {
             'default': None,
-            'doc': ""
+            'doc': "beam parallel translation of the second cristal"
             " (datasource)"
         },
-        'braggangle' : {
+        'braggangle': {
             'default': None,
-            'doc': ""
+            'doc': "bragg angle"
             " (datasource)"
         },
-        'jack1' : {
+        'jack1': {
             'default': None,
             'doc': "first vertical jack of table"
             " (datasource)"
         },
-        'jack2' : {
+        'jack2': {
             'default': None,
             'doc': "second vertical jack of table"
             " (datasource)"
         },
-        'jack3' : {
+        'jack3': {
             'default': None,
             'doc': "third vertical jack of table"
             " (datasource)"
         },
-        'table' : {
+        'table': {
             'default': None,
             'doc': "vertical position of table"
             " (datasource)"
         },
-        'oxfordhorizontal' : {
+        'oxfordhorizontal': {
             'default': None,
             'doc': " horizontal translation"
             " (datasource)"
         },
-        'exitoffset' : {
+        'exitoffset': {
             'default': None,
             'doc': " exit offset"
             " (datasource)"
         },
-        'theta' : {
+        'theta': {
             'default': None,
             'doc': "theta angle"
             " (datasource)"
         },
-        'dcmdevice' : {
+        'dcmdevice': {
             'default': None,
             'doc': "FMBOxfDCMEnergy tango device"
             " (string)"
@@ -219,9 +219,10 @@ standardComponentTemplateFiles = {
         'nexdatas_configuration.ds.xml',
         'title.ds.xml',
     ],
-    'dcm': ['dcm.xml',
-            'dcm_reflection.ds.xml',
-        ],
+    'dcm': [
+        'dcm.xml',
+        'dcm_reflection.ds.xml',
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)

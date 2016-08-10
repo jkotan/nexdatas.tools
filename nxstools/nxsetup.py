@@ -151,9 +151,9 @@ class SetUp(object):
                   os.getenv('TANGO_HOST'))
             sys.exit(255)
 
-        #: (:obj:`str`) NeXus writer device name   
+        #: (:obj:`str`) NeXus writer device name
         self.writer_name = None
-        #: (:obj:`str`) NeXus config server device name   
+        #: (:obj:`str`) NeXus config server device name
         self.cserver_name = None
 
     def changeRecorderPath(self, path):

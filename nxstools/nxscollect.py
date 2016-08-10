@@ -253,7 +253,7 @@ class Collector(object):
 
         :param node: parent hdf5 node
         :type node: :class:`pni.io.nx.h5.nxgroup` or \
-                    :class:`pni.io.nx.h5.nxlink` 
+                    :class:`pni.io.nx.h5.nxlink`
         :param fieldname: field name
         :type fieldname: :obj:`str`
         :param dtype: field data type
@@ -265,7 +265,7 @@ class Collector(object):
         :param fieldcompression: field compression rate
         :type fieldcompression: :obj:`int`
         :returns: hdf5 field node
-        :rtype: :class:`pni.io.nx.h5.nxfield` 
+        :rtype: :class:`pni.io.nx.h5.nxfield`
         """
         field = None
         if fieldname in node.names():
@@ -339,7 +339,7 @@ class Collector(object):
 
         :param parent: hdf5 parent node
         :type parent: :class:`pni.io.nx.h5.nxgroup` or \
-                      :class:`pni.io.nx.h5.nxlink` 
+                      :class:`pni.io.nx.h5.nxlink`
         :param collection: if parent is of NXcollection type
         :type collection: :obj:`bool`
         """

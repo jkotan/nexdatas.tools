@@ -243,7 +243,7 @@ class Creator(object):
         :param nexuspath: nexus path
         :type nexuspath: :obj:`str`
         :returns: nexus path in lists of (name, NXtype)
-        :rtype: :obj:`list` < (:obj:`str`, :obj:`str`) > 
+        :rtype: :obj:`list` < (:obj:`str`, :obj:`str`) >
         """
         pathlist = []
         spath = nexuspath.split("/")
@@ -811,7 +811,7 @@ class OnlineCPCreator(CPCreator):
         """ prints out information about the performed action
 
         :param dv: online device object
-        :type dv: :class:`Device` 
+        :type dv: :class:`Device`
         :param dscps: datasource components
         :type dscps: :obj:`dict` <:obj:`str`, :obj:`list` < :obj:`str` > >
         """
@@ -1005,9 +1005,9 @@ class StandardCPCreator(CPCreator):
             self.options.cptype]
 
     def __setspecialparams(self):
-        """ sets special parameters, 
+        """ sets special parameters,
         i.e. __tangohost__, __tangoport__ and __configdevice__
-        
+
         """
         server = self.options.server
         host, port = getServerTangoHost(server).split(":")
