@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.4.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.4.0',
+        VERSION:     '2.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.5.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.5</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -216,7 +216,11 @@
 <div class="viewcode-block" id="CPExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPExistsException">[docs]</a><span class="k">class</span> <span class="nc">CPExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Component already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="DSExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DSExistsException">[docs]</a><span class="k">class</span> <span class="nc">DSExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; DataSource already exists exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 </div>
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -278,7 +282,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;hostname not defined&quot;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Device.findDevice"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.findDevice">[docs]</a>    <span class="k">def</span> <span class="nf">findDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tangohost</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; sets attribute and datasource group of online.xml device</span>
+        <span class="sd">&quot;&quot;&quot; sets sardana device name and sardana host/port of online.xml device</span>
 
 <span class="sd">        :param tangohost: tango host</span>
 <span class="sd">        :type tangohost: :obj:`str`</span>
@@ -368,6 +372,56 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
         <span class="c">#: (:obj:`bool`) if printout is enable</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span> <span class="o">=</span> <span class="n">printouts</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_areComponentsAvailable</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; checks if the components are available</span>
+
+<span class="sd">        :param names: component names</span>
+<span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :type server: :obj:`str`</span>
+<span class="sd">        :param lower: checks lower case name</span>
+<span class="sd">        :type lower: :obj:`bool`</span>
+<span class="sd">        :returns: a subset of available components</span>
+<span class="sd">        :rtype:  :obj:`list` &lt; :obj:`str` &gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">proxy</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+            <span class="n">proxy</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+            <span class="n">acps</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">availableComponents</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot connect to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
+        <span class="n">cps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">acps</span> <span class="ow">or</span> <span class="p">(</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">acps</span><span class="p">):</span>
+                <span class="n">cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cps</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_areDataSourcesAvailable</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; checks if the datasources are available</span>
+
+<span class="sd">        :param names: datasource names</span>
+<span class="sd">        :type names: :obj:`list` &lt; :obj:`str` &gt;</span>
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :type server: :obj:`str`</span>
+<span class="sd">        :param lower: checks lower case name</span>
+<span class="sd">        :type lower: :obj:`bool`</span>
+<span class="sd">        :returns: a subset of available datasources</span>
+<span class="sd">        :rtype:  :obj:`list` &lt; :obj:`str` &gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">proxy</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+            <span class="n">proxy</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+            <span class="n">adss</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">availableDataSources</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot connect to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
+        <span class="n">dss</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">adss</span> <span class="ow">or</span> <span class="p">(</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">adss</span><span class="p">):</span>
+                <span class="n">dss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dss</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_createTangoDataSource</span><span class="p">(</span>
@@ -625,6 +679,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_areComponentsAvailable</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">existing</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
+                        <span class="s">&quot;Components &#39;</span><span class="si">%s</span><span class="s">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
@@ -671,6 +733,14 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dvargs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dvargs</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_areDataSourcesAvailable</span><span class="p">(</span>
+                    <span class="n">dsargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">existing</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">DSExistsException</span><span class="p">(</span>
+                        <span class="s">&quot;DataSources &#39;</span><span class="si">%s</span><span class="s">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dvargs</span><span class="p">)):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
@@ -721,6 +791,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_areDataSourcesAvailable</span><span class="p">(</span>
+                    <span class="n">dsargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">existing</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">DSExistsException</span><span class="p">(</span>
+                        <span class="s">&quot;DataSources &#39;</span><span class="si">%s</span><span class="s">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING: </span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -742,6 +820,18 @@
         <span class="sd">&quot;&quot;&quot; creates a tango datasources xml of given device</span>
 <span class="sd">            and stores it in DB or filesytem</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s">&quot;</span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span>
+                <span class="p">]</span>
+                <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_areDataSourcesAvailable</span><span class="p">(</span>
+                    <span class="n">dsargs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">existing</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">DSExistsException</span><span class="p">(</span>
+                        <span class="s">&quot;DataSources &#39;</span><span class="si">%s</span><span class="s">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
@@ -937,15 +1027,8 @@
            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
             <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">proxy</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
-                    <span class="n">proxy</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
-                    <span class="n">acps</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">availableComponents</span><span class="p">()</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot connect to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">cpname</span> <span class="ow">in</span> <span class="n">acps</span> <span class="ow">or</span> <span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">acps</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_areComponentsAvailable</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">cpname</span><span class="p">],</span> <span class="n">server</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
                         <span class="s">&quot;Component &#39;</span><span class="si">%s</span><span class="s">&#39; already exists.&quot;</span> <span class="o">%</span> <span class="n">cpname</span><span class="p">)</span>
 

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate_tangods &mdash; NXSTools 2.4.0 documentation</title>
+    <title>nxstools.nxscreate_tangods &mdash; NXSTools 2.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.4.0',
+        VERSION:     '2.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.4.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.5.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.5</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -214,10 +214,10 @@
     <span class="c">#: usage example</span>
     <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: %prog tangods [options]</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; e.g.</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; hasppXX.desy.de -b </span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; - with -b: datasources are created&quot;</span> \
@@ -232,7 +232,7 @@
     <span class="c">#: option parser</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c (mandatory)&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span>
@@ -246,17 +246,21 @@
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango attribute name&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;Position&quot;</span><span class="p">)</span>
 
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource-prefix&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource-prefix &quot;</span>
+                      <span class="s">&quot;(useful for avoiding duplicated datasource names)&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasource&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;exp_mot&quot;</span><span class="p">)</span>
 
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing datasources&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;output datasource directory&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--host&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--host&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango host name&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;host&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--port&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
@@ -265,7 +269,8 @@
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
                       <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in Configuration Server database&quot;</span><span class="p">)</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;store datasources in &quot;</span>
+                      <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
 
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>

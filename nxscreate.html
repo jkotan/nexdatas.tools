@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.4.0 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.4.0',
+        VERSION:     '2.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.4.0 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.5.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.5</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -255,7 +255,7 @@
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>show this help message and exit</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>device prefix, i.e. exp_c (mandatory w/o &lt;name1&gt;)</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -267,6 +267,10 @@
 </tr>
 <tr><td>&nbsp;</td><td>last index (mandatory w/o &lt;name1&gt;)</td></tr>
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>overwrite existing datasources</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>output datasource directory</td></tr>
@@ -277,10 +281,10 @@
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-s <var>DSOURCE</var></span>, <span class="option">--datasource-prefix=<var>DSOURCE</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>datasource prefix, i.e. counter</td></tr>
+<tr><td>&nbsp;</td><td>datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
+<td>store datasources in Configuration Server database</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></td>
 </tr>
@@ -298,8 +302,8 @@
 <h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate clientds starttime -b
 nxscreate clientds title -d /home/user/xmldir
-nxscreate clientds -p exp_c -f1 -l4 -b
-nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
+nxscreate clientds -v exp_c -f1 -l4 -b
+nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
 </pre></div>
 </div>
 </div>
@@ -330,7 +334,7 @@ nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>show this help message and exit</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>device prefix, i.e. exp_c (mandatory)</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -346,9 +350,14 @@ nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 </tr>
 <tr><td>&nbsp;</td><td>tango attribute name</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
+<kbd><span class="option">-s <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>datasource-prefix</td></tr>
+<tr><td>&nbsp;</td><td>datasource-prefix (useful for avoiding duplicated
+datasource names)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>overwrite existing datasources</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
@@ -358,7 +367,7 @@ nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 </tr>
 <tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
+<kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>tango host name</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -367,7 +376,7 @@ nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 <tr><td>&nbsp;</td><td>tango host port</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
+<td>store datasources in Configuration Server database</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
 </tr>
@@ -379,10 +388,10 @@ nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 </div>
 <div class="section" id="id3">
 <h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot
-nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b
-nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b
-nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s hasppXX.desy.de -b
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot
+nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
+nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
+nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
 </pre></div>
 </div>
 </div>
@@ -439,7 +448,7 @@ nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s hasppXX.desy.de -b
 <tr><td>&nbsp;</td><td>tango host port</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
+<td>store datasources in Configuration Server database</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-n</span>, <span class="option">--no-group</span></kbd></td>
 <td>don&#8217;t create common group with a name of datasource
@@ -691,7 +700,7 @@ nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>show this help message and exit</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
+<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>device prefix, i.e. exp_c</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -702,6 +711,10 @@ nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
 <kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>last index</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>overwrite existing components</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
@@ -715,7 +728,7 @@ nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
 </tr>
 <tr><td>&nbsp;</td><td>nexus path with field name</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>STRATEGY</var></span>, <span class="option">--strategy=<var>STRATEGY</var></span></kbd></td>
+<kbd><span class="option">-g <var>STRATEGY</var></span>, <span class="option">--strategy=<var>STRATEGY</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>writing strategy, i.e. STEP, INIT, FINAL, POSTRUN</td></tr>
 <tr><td class="option-group" colspan="2">
@@ -751,11 +764,11 @@ nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
 </div>
 <div class="section" id="id13">
 <h3>Example<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp  counter
-nxscreate comp -f1 -l3 -p exp_c -b
-nxscreate comp -c lambda -d /home/user/xmldir/
-nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m
-nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&#39; eh1_mca01 -s STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp counter
+nxscreate comp -f1 -l3 -v exp_c -b
+nxscreate comp lambda -d /home/user/xmldir/
+nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
+nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&#39; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
 </pre></div>
 </div>
 </div>
