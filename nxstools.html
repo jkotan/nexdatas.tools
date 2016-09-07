@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools package &mdash; NXSTools 2.3.0 documentation</title>
+    <title>nxstools package &mdash; NXSTools 2.4.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.3.0',
+        VERSION:     '2.4.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.3.0 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.4.0 documentation" href="index.html" />
     <link rel="prev" title="nxsetup" href="nxsetup.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -880,6 +880,20 @@ by the new line character</li>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="nxstools.nxscreator.Device.findDevice">
+<tt class="descname">findDevice</tt><big>(</big><em>tangohost</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.findDevice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.findDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>sets attribute and datasource group of online.xml device</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tangohost</strong> (<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) &#8211; tango host</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="nxstools.nxscreator.Device.group">
 <tt class="descname">group</tt><a class="headerlink" href="#nxstools.nxscreator.Device.group" title="Permalink to this definition">¶</a></dt>
@@ -928,6 +942,12 @@ by the new line character</li>
 <dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana name with port</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.sdevice">
+<tt class="descname">sdevice</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sdevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana device name</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="nxstools.nxscreator.Device.setSardanaName">
 <tt class="descname">setSardanaName</tt><big>(</big><em>tolower</em><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.setSardanaName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.setSardanaName" title="Permalink to this definition">¶</a></dt>
@@ -942,6 +962,12 @@ by the new line character</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="nxstools.nxscreator.Device.shost">
+<tt class="descname">shost</tt><a class="headerlink" href="#nxstools.nxscreator.Device.shost" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana host without port</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="nxstools.nxscreator.Device.splitHostPort">
 <tt class="descname">splitHostPort</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/nxstools/nxscreator.html#Device.splitHostPort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxscreator.Device.splitHostPort" title="Permalink to this definition">¶</a></dt>
@@ -949,9 +975,15 @@ by the new line character</li>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="nxstools.nxscreator.Device.sport">
+<tt class="descname">sport</tt><a class="headerlink" href="#nxstools.nxscreator.Device.sport" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) sardana tango port</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="nxstools.nxscreator.Device.tdevice">
 <tt class="descname">tdevice</tt><a class="headerlink" href="#nxstools.nxscreator.Device.tdevice" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) device type</p>
+<dd><p>(<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>) tango device name</p>
 </dd></dl>
 
 <dl class="method">
@@ -2148,7 +2180,7 @@ e.g. with different subentries</li>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.moduleMultiAttributes">
-<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleMultiAttributes</tt><em class="property"> = {'perkinelmer': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pilatus2m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus1m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pco4000': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'mythen': ['Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime', 'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'], 'lambda2m': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'pilatus300k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'perkinelmerdetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pco': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus6m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'lambda': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'marccd': ['FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'], 'pedetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'], 'pcoedge': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus100k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleMultiAttributes" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleMultiAttributes</tt><em class="property"> = {'perkinelmer': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'pilatus2m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus1m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pco4000': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'mythen': ['Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime', 'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'], 'lambda2m': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'mca_xia': [], 'pilatus300k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'perkinelmerdetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction'], 'mca_xia&#64;pool': ['CountsRoI', 'RoIEnd', 'RoIStart', 'Value'], 'pco': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'pilatus6m': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames'], 'lambda': ['TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo', 'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages', 'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix', 'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode', 'TotalLossFrames', 'CompressorShuffle', 'CompressionRate', 'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin', 'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection', 'LiveLastImageData'], 'marccd': ['FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'], 'pedetector': ['BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart', 'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger', 'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory', 'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages', 'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData', 'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'], 'pcoedge': ['DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'Binning_x', 'Binning_y', 'ROI_x_min', 'ROI_x_max', 'ROI_y_min', 'ROI_y_max', 'Pixelrate', 'ADCs', 'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp', 'RecorderMode'], 'pilatus100k': ['DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken', 'NbExposures', 'NbFrames']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleMultiAttributes" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt; &gt;)</dt>
 <dd>important attributes of modules</dd>
@@ -2157,7 +2189,7 @@ e.g. with different subentries</li>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.moduleTemplateFiles">
-<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleTemplateFiles</tt><em class="property"> = {'pilatus1m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus1m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pco4000': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus2m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus2m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus300k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus300k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pedetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmer': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'perkinelmerdetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'lambda2m': ['lambda2m.xml', 'lambda2m_m1_external_data.ds.xml', 'lambda2m_m2_external_data.ds.xml', 'lambda2m_m3_external_data.ds.xml'], 'pco': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus6m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus6m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus100k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus100k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'marccd': ['marccd.xml', 'marccd_postrun.ds.xml'], 'pcoedge': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'lambda': ['lambda.xml', 'lambda_external_data.ds.xml']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleTemplateFiles" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">moduleTemplateFiles</tt><em class="property"> = {'perkinelmer': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'pilatus1m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus1m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pco4000': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'lambda2m': ['lambda2m.xml', 'lambda2m_m1_external_data.ds.xml', 'lambda2m_m2_external_data.ds.xml', 'lambda2m_m3_external_data.ds.xml'], 'pco': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus2m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus2m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'mca_xia': ['mcaxia.xml'], 'pilatus': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'perkinelmerdetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'pilatus300k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus300k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'pilatus6m': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus6m_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml'], 'lambda': ['lambda.xml', 'lambda_external_data.ds.xml'], 'marccd': ['marccd.xml', 'marccd_postrun.ds.xml'], 'pedetector': ['perkinelmerdetector.xml', 'perkinelmerdetector_postrun.ds.xml', 'perkinelmerdetector_description.ds.xml', 'perkinelmerdetector_fileindex_cb.ds.xml'], 'pcoedge': ['pco.xml', 'pco_postrun.ds.xml', 'pco_description.ds.xml', 'pco_filestartnum_cb.ds.xml'], 'pilatus100k': ['pilatus.xml', 'pilatus_postrun.ds.xml', 'pilatus100k_description.ds.xml', 'pilatus_filestartnum_cb.ds.xml']}</em><a class="headerlink" href="#nxstools.nxsdevicetools.moduleTemplateFiles" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>(<a class="reference external" href="http://docs.python.org/2.7/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">dict</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a> , <a class="reference external" href="http://docs.python.org/2.7/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a> &lt;<a class="reference external" href="http://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">str</span></tt></a>&gt; &gt;)</dt>
 <dd>xml template files of modules</dd>
@@ -2259,7 +2291,7 @@ and its [default value, doc string]</dd>
 
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.xmlPackageHandler">
-<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">xmlPackageHandler</tt><em class="property"> = &lt;nxstools.nxsdevicetools.PackageHandler object at 0x7fdb2bc7ed90&gt;</em><a class="headerlink" href="#nxstools.nxsdevicetools.xmlPackageHandler" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">nxstools.nxsdevicetools.</tt><tt class="descname">xmlPackageHandler</tt><em class="property"> = &lt;nxstools.nxsdevicetools.PackageHandler object at 0x7f63a87db110&gt;</em><a class="headerlink" href="#nxstools.nxsdevicetools.xmlPackageHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>(<a class="reference internal" href="#nxstools.nxsdevicetools.PackageHandler" title="nxstools.nxsdevicetools.PackageHandler"><tt class="xref py py-class docutils literal"><span class="pre">PackageHandler</span></tt></a>) xml template package handler</p>
 </dd></dl>
 
