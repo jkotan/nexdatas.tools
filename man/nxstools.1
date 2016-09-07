@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "September 07, 2016" "2.4" "NXSTools"
+.TH "NXSTOOLS" "1" "September 07, 2016" "2.5" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -359,7 +359,7 @@ default <server> is taken from Tango DB
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory w/o <name1>)
 .TP
 .BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
@@ -368,6 +368,9 @@ first index (mandatory w/o <name1>)
 .BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
 last index (mandatory w/o <name1>)
 .TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing datasources
+.TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
@@ -375,10 +378,10 @@ output datasource directory
 file prefix, i.e. counter
 .TP
 .BI \-s \ DSOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DSOURCE
-datasource prefix, i.e. counter
+datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)
 .TP
 .B \-b\fP,\fB  \-\-database
-store components in Configuration Server database
+store datasources in Configuration Server database
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
 device name without first \(aq0\(aq
@@ -395,8 +398,8 @@ configuration server device name
 .ft C
 nxscreate clientds starttime \-b
 nxscreate clientds title \-d /home/user/xmldir
-nxscreate clientds \-p exp_c \-f1 \-l4 \-b
-nxscreate clientds \-p hasppXX:10000/expchan/vfcadc_exp/ \-f1 \-l8  \-m \-b \-s exp_vfc
+nxscreate clientds \-v exp_c \-f1 \-l4 \-b
+nxscreate clientds \-v hasppXX:10000/expchan/vfcadc_exp/ \-f1 \-l8  \-m \-b \-s exp_vfc
 .ft P
 .fi
 .UNINDENT
@@ -437,7 +440,7 @@ default <host>, <port> are taken from <server>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory)
 .TP
 .BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
@@ -449,8 +452,12 @@ last index (mandatory)
 .BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
 tango attribute name
 .TP
-.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
-datasource\-prefix
+.BI \-s \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+datasource\-prefix (useful for avoiding duplicated
+datasource names)
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing datasources
 .TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
@@ -458,14 +465,14 @@ output datasource directory
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+.BI \-u \ HOST\fP,\fB \ \-\-host\fB= HOST
 tango host name
 .TP
 .BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
-store components in Configuration Server database
+store datasources in Configuration Server database
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
@@ -477,10 +484,10 @@ configuration server device name
 .sp
 .nf
 .ft C
-nxscreate tangods \-f1 \-l2  \-p p09/motor/exp. \-o exp_mot
-nxscreate tangods \-f1 \-l32  \-p p02/motor/eh1a. \-o exp_mot \-b
-nxscreate tangods \-f1 \-l32  \-p p01/motor/oh1. \-o exp_mot \-b
-nxscreate tangods \-f1 \-l8  \-p pXX/slt/exp. \-o slt_exp_ \-s hasppXX.desy.de \-b
+nxscreate tangods \-f1 \-l2  \-v p09/motor/exp. \-s exp_mot
+nxscreate tangods \-f1 \-l32  \-v p02/motor/eh1a. \-s exp_mot \-b
+nxscreate tangods \-f1 \-l32  \-v p01/motor/oh1. \-s exp_mot \-b
+nxscreate tangods \-f1 \-l8  \-v pXX/slt/exp. \-s slt_exp_ \-u hasppXX.desy.de \-b
 .ft P
 .fi
 .UNINDENT
@@ -542,7 +549,7 @@ tango host name
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
-store components in Configuration Server database
+store datasources in Configuration Server database
 .TP
 .B \-n\fP,\fB  \-\-no\-group
 don\(aqt create common group with a name of datasource
@@ -819,7 +826,7 @@ default <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c
 .TP
 .BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
@@ -827,6 +834,9 @@ first index
 .TP
 .BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
 last index
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing components
 .TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output component directory
@@ -837,7 +847,7 @@ file prefix, i.e. counter
 .BI \-n \ NEXUSPATH\fP,\fB \ \-\-nexuspath\fB= NEXUSPATH
 nexus path with field name
 .TP
-.BI \-s \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
+.BI \-g \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
 writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
 .TP
 .BI \-t \ TYPE\fP,\fB \ \-\-type\fB= TYPE
@@ -868,11 +878,11 @@ device name without first \(aq0\(aq
 .sp
 .nf
 .ft C
-nxscreate comp  counter
-nxscreate comp \-f1 \-l3 \-p exp_c \-b
-nxscreate comp \-c lambda \-d /home/user/xmldir/
-nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-p sis3302_1_roi \-f1 \-l4  \-s STEP \-t NX_FLOAT64 \-k \-b \-m
-nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-s STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+nxscreate comp counter
+nxscreate comp \-f1 \-l3 \-v exp_c \-b
+nxscreate comp lambda \-d /home/user/xmldir/
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
 .ft P
 .fi
 .UNINDENT
@@ -1623,6 +1633,13 @@ constructor
 .UNINDENT
 .INDENT 0.0
 .TP
+.B exception nxstools.nxscreator.DSExistsException
+Bases: \fI\%exceptions.Exception\fP
+.sp
+DataSource already exists exception
+.UNINDENT
+.INDENT 0.0
+.TP
 .B class nxstools.nxscreator.Device
 Bases: \fI\%object\fP
 .sp
@@ -1650,7 +1667,7 @@ sets attribute and datasource group of online.xml device
 .INDENT 7.0
 .TP
 .B findDevice(tangohost)
-sets attribute and datasource group of online.xml device
+sets sardana device name and sardana host/port of online.xml device
 .INDENT 7.0
 .TP
 .B Parameters
@@ -2911,7 +2928,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f63a87db110>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fda6f75a610>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

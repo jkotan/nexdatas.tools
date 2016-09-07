@@ -38,18 +38,19 @@ Synopsis
 
 Options:
   -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
+  -v DEVICE, --device-prefix=DEVICE
                         device prefix, i.e. exp_c (mandatory w/o <name1>)
   -f FIRST, --first=FIRST
                         first index (mandatory w/o <name1>)
   -l LAST, --last=LAST  last index (mandatory w/o <name1>)
+  -o, --overwrite       overwrite existing datasources
   -d DIRECTORY, --directory=DIRECTORY
                         output datasource directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
   -s DSOURCE, --datasource-prefix=DSOURCE
-                        datasource prefix, i.e. counter
-  -b, --database        store components in Configuration Server database
+                        datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)
+  -b, --database        store datasources in Configuration Server database
   -m, --minimal_device  device name without first '0'
   -r SERVER, --server=SERVER
                         configuration server device name
@@ -61,8 +62,8 @@ Example
 
 	   nxscreate clientds starttime -b
 	   nxscreate clientds title -d /home/user/xmldir
-	   nxscreate clientds -p exp_c -f1 -l4 -b
-	   nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
+	   nxscreate clientds -v exp_c -f1 -l4 -b
+	   nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
 
 nxscreate tangods
 -----------------
@@ -85,22 +86,24 @@ Synopsis
 
 Options:
   -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
+  -v DEVICE, --device-prefix=DEVICE
                         device prefix, i.e. exp_c (mandatory)
   -f FIRST, --first=FIRST
                         first index (mandatory)
   -l LAST, --last=LAST  last index (mandatory)
   -a ATTRIBUTE, --attribute=ATTRIBUTE
                         tango attribute name
-  -o DATASOURCE, --datasource-prefix=DATASOURCE
-                        datasource-prefix
+  -s DATASOURCE, --datasource-prefix=DATASOURCE
+                        datasource-prefix (useful for avoiding duplicated
+                        datasource names)
+  -o, --overwrite       overwrite existing datasources
   -d DIRECTORY, --directory=DIRECTORY
                         output datasource directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
-  -s HOST, --host=HOST  tango host name
+  -u HOST, --host=HOST  tango host name
   -t PORT, --port=PORT  tango host port
-  -b, --database        store components in Configuration Server database
+  -b, --database        store datasources in Configuration Server database
   -r SERVER, --server=SERVER
                         configuration server device name
 
@@ -109,10 +112,10 @@ Example
 
 .. code:: bash
 
-	   nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot
-	   nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b
-	   nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b
-	   nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s hasppXX.desy.de -b
+	   nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot
+	   nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
+	   nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
+	   nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
 
 
 nxscreate deviceds
@@ -147,7 +150,7 @@ Options:
                         file prefix, i.e. counter
   -s HOST, --host=HOST  tango host name
   -t PORT, --port=PORT  tango host port
-  -b, --database        store components in Configuration Server database
+  -b, --database        store datasources in Configuration Server database
   -n, --no-group        don't create common group with a name of datasource
                         prefix
   -r SERVER, --server=SERVER
@@ -324,18 +327,19 @@ Synopsis
 
 Options:
   -h, --help            show this help message and exit
-  -p DEVICE, --device-prefix=DEVICE
+  -v DEVICE, --device-prefix=DEVICE
                         device prefix, i.e. exp_c
   -f FIRST, --first=FIRST
                         first index
   -l LAST, --last=LAST  last index
+  -o, --overwrite       overwrite existing components
   -d DIRECTORY, --directory=DIRECTORY
                         output component directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
   -n NEXUSPATH, --nexuspath=NEXUSPATH
                         nexus path with field name
-  -s STRATEGY, --strategy=STRATEGY
+  -g STRATEGY, --strategy=STRATEGY
                         writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
   -t TYPE, --type=TYPE  nexus type of the field
   -u UNITS, --units=UNITS
@@ -353,8 +357,8 @@ Example
 
 .. code:: bash
 
-	  nxscreate comp  counter
-	  nxscreate comp -f1 -l3 -p exp_c -b
-	  nxscreate comp -c lambda -d /home/user/xmldir/
-	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4  -s STEP -t NX_FLOAT64 -k -b -m
-	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -s STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+	  nxscreate comp counter
+	  nxscreate comp -f1 -l3 -v exp_c -b
+	  nxscreate comp lambda -d /home/user/xmldir/
+	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
+	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM

@@ -46,7 +46,11 @@ except:
 class CPExistsException(Exception):
     """ Component already exists exception
     """
-    pass
+
+
+class DSExistsException(Exception):
+    """ DataSource already exists exception
+    """
 
 
 class Device(object):
@@ -108,7 +112,7 @@ class Device(object):
             raise Exception("hostname not defined")
 
     def findDevice(self, tangohost):
-        """ sets attribute and datasource group of online.xml device
+        """ sets sardana device name and sardana host/port of online.xml device
 
         :param tangohost: tango host
         :type tangohost: :obj:`str`
@@ -198,6 +202,56 @@ class Creator(object):
         self.args = args
         #: (:obj:`bool`) if printout is enable
         self._printouts = printouts
+
+    @classmethod
+    def _areComponentsAvailable(cls, names, server, lower=False):
+        """ checks if the components are available
+
+        :param names: component names
+        :type names: :obj:`list` < :obj:`str` >
+        :param server: server name
+        :type server: :obj:`str`
+        :param lower: checks lower case name
+        :type lower: :obj:`bool`
+        :returns: a subset of available components
+        :rtype:  :obj:`list` < :obj:`str` >
+        """
+        try:
+            proxy = openServer(server)
+            proxy.Open()
+            acps = proxy.availableComponents()
+        except:
+            raise Exception("Cannot connect to %s" % server)
+        cps = []
+        for name in names:
+            if name in acps or (lower and name.lower() in acps):
+                cps.append(name)
+        return cps
+
+    @classmethod
+    def _areDataSourcesAvailable(cls, names, server, lower=False):
+        """ checks if the datasources are available
+
+        :param names: datasource names
+        :type names: :obj:`list` < :obj:`str` >
+        :param server: server name
+        :type server: :obj:`str`
+        :param lower: checks lower case name
+        :type lower: :obj:`bool`
+        :returns: a subset of available datasources
+        :rtype:  :obj:`list` < :obj:`str` >
+        """
+        try:
+            proxy = openServer(server)
+            proxy.Open()
+            adss = proxy.availableDataSources()
+        except:
+            raise Exception("Cannot connect to %s" % server)
+        dss = []
+        for name in names:
+            if name in adss or (lower and name.lower() in adss):
+                dss.append(name)
+        return dss
 
     @classmethod
     def _createTangoDataSource(
@@ -455,6 +509,14 @@ class ComponentCreator(Creator):
         if not len(self.args):
             raise WrongParameterError("")
 
+        if self.options.database:
+            if not self.options.overwrite:
+                existing = self._areComponentsAvailable(
+                    self.args, self.options.server)
+                if existing:
+                    raise CPExistsException(
+                        "Components '%s' already exist." % existing)
+
         for name in self.args:
             if not self.options.database:
                 if self._printouts:
@@ -501,6 +563,14 @@ class TangoDSCreator(Creator):
 
         if not dvargs or not len(dvargs):
             raise WrongParameterError("")
+
+        if self.options.database:
+            if not self.options.overwrite:
+                existing = self._areDataSourcesAvailable(
+                    dsargs, self.options.server)
+                if existing:
+                    raise DSExistsException(
+                        "DataSources '%s' already exist." % existing)
 
         for i in range(len(dvargs)):
             if not self.options.database:
@@ -551,6 +621,14 @@ class ClientDSCreator(Creator):
         if not len(self.args):
             raise WrongParameterError("")
 
+        if self.options.database:
+            if not self.options.overwrite:
+                existing = self._areDataSourcesAvailable(
+                    dsargs, self.options.server)
+                if existing:
+                    raise DSExistsException(
+                        "DataSources '%s' already exist." % existing)
+
         for i in range(len(self.args)):
             if not self.options.database:
                 print("CREATING: %s%s.ds.xml" % (
@@ -572,6 +650,18 @@ class DeviceDSCreator(Creator):
         """ creates a tango datasources xml of given device
             and stores it in DB or filesytem
         """
+        if self.options.database:
+            if not self.options.overwrite:
+                dsargs = [
+                    "%s%s" % (self.options.datasource.lower(), at.lower())
+                    for at in self.args
+                ]
+                existing = self._areDataSourcesAvailable(
+                    dsargs, self.options.server)
+                if existing:
+                    raise DSExistsException(
+                        "DataSources '%s' already exist." % existing)
+
         for at in self.args:
             dsname = "%s%s" % (self.options.datasource.lower(), at.lower())
             if not self.options.database:
@@ -767,15 +857,8 @@ class CPCreator(Creator):
            not self.options.directory:
             server = self.options.server
             if not self.options.overwrite:
-                try:
-                    proxy = openServer(server)
-                    proxy.Open()
-                    acps = proxy.availableComponents()
-                except:
-                    raise Exception("Cannot connect to %s" % server)
-
-                if cpname in acps or (
-                        self.options.lower and cpname.lower() in acps):
+                if self._areComponentsAvailable(
+                        [cpname], server, self.options.lower):
                     raise CPExistsException(
                         "Component '%s' already exists." % cpname)
 

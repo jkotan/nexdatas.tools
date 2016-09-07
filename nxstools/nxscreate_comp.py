@@ -44,19 +44,19 @@ def _createParser():
     #: usage example
     usage = "usage: %prog comp [options] [name1] [name2]\n" \
         + " e.g.\n" \
-        + "       nxscreate comp  counter \n" \
-        + "       nxscreate comp -f1 -l -p exp_c01 -b \n" \
-        + "       nxscreate comp -c lambda -d /home/user/xmldir/ \n" \
+        + "       nxscreate comp counter \n" \
+        + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
+        + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
         + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
-        + "sis3302:NXdetector/collection:NXcollection/' -p sis3302_1_roi -f1 -l4 "\
-        + " -s STEP -t NX_FLOAT64 -k -b -m \n"\
+        + "sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4 "\
+        + " -g STEP -t NX_FLOAT64 -k -b -m \n"\
         + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
-        + "eh1_mca01:NXdetector/data' eh1_mca01 -s STEP -t NX_FLOAT64" \
+        + "eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64" \
         + " -i -b -c SPECTRUM\n" \
         + "\n" \
-        + " - with -b: datasources are created" \
+        + " - with -b: components are created (without datasources)" \
         + " in Configuration Server database\n" \
-        + " - without -b: datasources are created" \
+        + " - without -b: components are created (without datasources)" \
         + " on the local filesystem in -d <directory> \n" \
         + " - default: <directory> is '.' \n" \
         + "            <server> is taken from Tango DB\n" \
@@ -69,7 +69,7 @@ def _createParser():
     #: option parser
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-p", "--device-prefix", type="string",
+    parser.add_option("-v", "--device-prefix", type="string",
                       help="device prefix, i.e. exp_c",
                       dest="device", default="")
     parser.add_option("-f", "--first",
@@ -79,6 +79,9 @@ def _createParser():
                       help="last index",
                       dest="last", default=None)
 
+    parser.add_option("-o", "--overwrite", action="store_true",
+                      default=False, dest="overwrite",
+                      help="overwrite existing components")
     parser.add_option("-d", "--directory", type="string",
                       help="output component directory",
                       dest="directory", default=".")
@@ -90,7 +93,7 @@ def _createParser():
                       help="nexus path with field name",
                       dest="nexuspath", default="")
 
-    parser.add_option("-s", "--strategy", type="string",
+    parser.add_option("-g", "--strategy", type="string",
                       help="writing strategy, i.e. "
                       "STEP, INIT, FINAL, POSTRUN",
                       dest="strategy", default="STEP")

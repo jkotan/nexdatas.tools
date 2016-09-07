@@ -44,10 +44,10 @@ def _createParser():
     #: usage example
     usage = "usage: %prog tangods [options]\n" \
         + " e.g.\n" \
-        + "       nxscreate tangods -f1 -l2  -p p09/motor/exp. -o exp_mot \n" \
-        + "       nxscreate tangods -f1 -l32  -p p02/motor/eh1a. -o exp_mot -b \n" \
-        + "       nxscreate tangods -f1 -l32  -p p01/motor/oh1. -o exp_mot -b \n" \
-        + "       nxscreate tangods -f1 -l8  -p pXX/slt/exp. -o slt_exp_ -s" \
+        + "       nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot \n" \
+        + "       nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b \n" \
+        + "       nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b \n" \
+        + "       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u" \
         + " hasppXX.desy.de -b \n" \
         + "\n" \
         + " - with -b: datasources are created" \
@@ -62,7 +62,7 @@ def _createParser():
     #: option parser
     parser = OptionParser(usage=usage)
 
-    parser.add_option("-p", "--device-prefix", type="string",
+    parser.add_option("-v", "--device-prefix", type="string",
                       help="device prefix, i.e. exp_c (mandatory)",
                       dest="device", default="")
     parser.add_option("-f", "--first",
@@ -76,17 +76,21 @@ def _createParser():
                       help="tango attribute name",
                       dest="attribute", default="Position")
 
-    parser.add_option("-o", "--datasource-prefix", type="string",
-                      help="datasource-prefix",
+    parser.add_option("-s", "--datasource-prefix", type="string",
+                      help="datasource-prefix "
+                      "(useful for avoiding duplicated datasource names)",
                       dest="datasource", default="exp_mot")
 
+    parser.add_option("-o", "--overwrite", action="store_true",
+                      default=False, dest="overwrite",
+                      help="overwrite existing datasources")
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
-    parser.add_option("-s", "--host", type="string",
+    parser.add_option("-u", "--host", type="string",
                       help="tango host name",
                       dest="host", default="")
     parser.add_option("-t", "--port", type="string",
@@ -95,7 +99,8 @@ def _createParser():
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
-                      help="store components in Configuration Server database")
+                      help="store datasources in "
+                      "Configuration Server database")
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")

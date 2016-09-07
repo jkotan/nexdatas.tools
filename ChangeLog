@@ -1,4 +1,13 @@
 2016-09-07 Jan Kotanski <jankotan@gmail.com>
+	* change the following options of nxscreate:
+	  --device-prefix:	-p -> -v
+	  --datasource-prefix: 	-o -> -s
+	  --host:		-s -> -u
+	  --strategy:	        -s -> -g
+	* add --overwrite (-o) to tangods, clientds, deviceds, comp
+	* tagged as v2.5.0
+
+2016-09-07 Jan Kotanski <jankotan@gmail.com>
 	* add mcaxia component
 	* tagged as v2.4.0
 

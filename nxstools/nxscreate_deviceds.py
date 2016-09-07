@@ -47,9 +47,9 @@ def _createParser():
         + "[dv_attr2 [dv_attr3 ...]]]\n " \
         + " e.g.\n" \
         + "       nxscreate deviceds  -v p09/pilatus/haso228k \n" \
-        + "       nxscreate deviceds  -v p09/lambda2m/haso228k  -s haslambda -b \n" \
+        + "       nxscreate deviceds  -v p09/lambda2m/haso228k -u haslambda -b \n" \
         + "       nxscreate deviceds  -v p09/pilatus300k/haso228k -b" \
-        + " -o pilatus300k_ RoI Energy ExposureTime\n" \
+        + " -s pilatus300k_ RoI Energy ExposureTime\n" \
         + "\n" \
         + " - without <dv_attr1>: datasources for all attributes are created\n" \
         + " - with -b: datasources are created" \
@@ -68,17 +68,21 @@ def _createParser():
                       help="device, i.e. p09/pilatus300k/01 (mandatory)",
                       dest="device", default="")
 
-    parser.add_option("-o", "--datasource-prefix", type="string",
-                      help="datasource-prefix",
+    parser.add_option("-s", "--datasource-prefix", type="string",
+                      help="datasource-prefix"
+                      " (useful for avoiding duplicated datasource names)",
                       dest="datasource", default="")
 
+    parser.add_option("-o", "--overwrite", action="store_true",
+                      default=False, dest="overwrite",
+                      help="overwrite existing datasources")
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
                       dest="directory", default=".")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")
-    parser.add_option("-s", "--host", type="string",
+    parser.add_option("-u", "--host", type="string",
                       help="tango host name",
                       dest="host", default="")
     parser.add_option("-t", "--port", type="string",

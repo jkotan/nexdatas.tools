@@ -46,8 +46,8 @@ def _createParser():
         + " e.g.\n" \
         + "       nxscreate clientds starttime -b  \n" \
         + "       nxscreate clientds title -d /home/user/xmldir \n" \
-        + "       nxscreate clientds -p exp_c -f1 -l4 -b  \n" \
-        + "       nxscreate clientds -p hasppXX:10000/expchan/vfcadc_exp/" \
+        + "       nxscreate clientds -v exp_c -f1 -l4 -b  \n" \
+        + "       nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/" \
         + " -f1 -l8  -m -b -s exp_vfc\n" \
         + "\n" \
         + " - with -b: datasources are created" \
@@ -58,7 +58,7 @@ def _createParser():
         + "            <server> is taken from Tango DB\n"
     #: option parser
     parser = OptionParser(usage=usage)
-    parser.add_option("-p", "--device-prefix", type="string",
+    parser.add_option("-v", "--device-prefix", type="string",
                       help="device prefix, i.e. exp_c (mandatory w/o <name1>)",
                       dest="device", default="")
     parser.add_option("-f", "--first",
@@ -68,6 +68,9 @@ def _createParser():
                       help="last index (mandatory w/o <name1>)",
                       dest="last", default=None)
 
+    parser.add_option("-o", "--overwrite", action="store_true",
+                      default=False, dest="overwrite",
+                      help="overwrite existing datasources")
     parser.add_option("-d", "--directory", type="string",
                       help="output datasource directory",
                       dest="directory", default=".")
@@ -76,12 +79,14 @@ def _createParser():
                       dest="file", default="")
 
     parser.add_option("-s", "--datasource-prefix", type="string",
-                      help="datasource prefix, i.e. counter",
+                      help="datasource prefix, i.e. counter"
+                      " (useful for avoiding duplicated datasource names)",
                       dest="dsource", default="")
 
     parser.add_option("-b", "--database", action="store_true",
                       default=False, dest="database",
-                      help="store components in Configuration Server database")
+                      help="store datasources in "
+                      "Configuration Server database")
     parser.add_option("-m", "--minimal_device", action="store_true",
                       default=False, dest="minimal",
                       help="device name without first '0'")

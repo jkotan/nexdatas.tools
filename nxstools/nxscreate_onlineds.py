@@ -52,7 +52,8 @@ def main():
         + " on the local filesystem\n" \
         + " - without -b or -d <directory>: run in the test mode\n" \
         + " - default: <inputFile> is '/online_dir/online.xml' \n" \
-        + "            <server> is taken from Tango DB\n"
+        + "            <server> is taken from Tango DB\n\n" \
+        + " `onlineds` overwrites existing datasources\n"
 
     #: option parser
     parser = OptionParser(usage=usage)
