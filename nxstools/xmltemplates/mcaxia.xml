@@ -1,0 +1,24 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXdetector" name="$(name)">
+        <field type="NX_FLOAT64" name="data">$datasources.$(name)_value<strategy mode="STEP"/>
+          <dimensions rank="1"/>
+        </field>
+        <group type="NXcollection" name="collection">
+          <field type="NX_FLOAT64" name="countsroi">$datasources.$(name)_countsroi<strategy mode="STEP"/>
+          </field>
+          <field type="NX_FLOAT64" name="roistart">$datasources.$(name)_roistart<strategy mode="INIT"/>
+          </field>
+          <field type="NX_FLOAT64" name="roiend">$datasources.$(name)_roiend<strategy mode="INIT"/>
+          </field>
+        </group>
+      </group>
+    </group>
+    <group type="NXdata" name="data">
+      <link target="entry$var.serialno/instrument/$(name)/data" name="$(name)"/>
+      <link target="entry$var.serialno/instrument/$(name)/collection/countsroi" name="$(name)_countsroi"/>
+    </group>
+  </group>
+</definition>
