@@ -184,6 +184,8 @@ Synopsis
 - default <inputFile> is '/online_dir/online.xml'
 - default <server> is taken from Tango DB
 
+`onlineds` overwrites existing datasources
+
 Options:
   -h, --help            show this help message and exit
   -b, --database        store components in Configuration Server database
