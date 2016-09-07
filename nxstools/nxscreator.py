@@ -53,8 +53,9 @@ class Device(object):
     """ device from online.xml
     """
     __slots__ = [
-        'name', 'dtype', 'module', 'tdevice', 'hostname', 'sardananame',
-        'sardanahostname', 'host', 'port', 'group', 'attribute']
+        'name', 'dtype', 'module', 'tdevice', 'sdevice',
+        'hostname', 'sardananame', 'sardanahostname',
+        'host', 'port', 'shost', 'sport', 'group', 'attribute']
 
     def __init__(self):
         #: (:obj:`str`) device name
@@ -63,8 +64,10 @@ class Device(object):
         self.dtype = None
         #: (:obj:`str`) device module
         self.module = None
-        #: (:obj:`str`) device type
+        #: (:obj:`str`) tango device name
         self.tdevice = None
+        #: (:obj:`str`) sardana device name
+        self.sdevice = None
         #: (:obj:`str`) host name with port
         self.hostname = None
         #: (:obj:`str`) sardana name with port
@@ -75,6 +78,10 @@ class Device(object):
         self.host = None
         #: (:obj:`str`) tango port
         self.port = None
+        #: (:obj:`str`) sardana host without port
+        self.shost = None
+        #: (:obj:`str`) sardana tango port
+        self.sport = None
         #: (:obj:`str`) datasource tango group
         self.group = None
         #: (:obj:`str`) attribute name
@@ -99,6 +106,30 @@ class Device(object):
             self.host = None
             self.port = None
             raise Exception("hostname not defined")
+
+    def findDevice(self, tangohost):
+        """ sets attribute and datasource group of online.xml device
+
+        :param tangohost: tango host
+        :type tangohost: :obj:`str`
+        """
+        mhost = self.sardanahostname or tangohost
+        self.sdevice = None
+        self.shost = None
+        self.sport = None
+        if PYTANGO:
+            try:
+                dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
+                mdevice = str(dp.name())
+
+                self.hostname = mhost
+                self.shost = mhost.split(":")[0]
+                if len(mhost.split(":")) > 1:
+                    self.sport = mhost.split(":")[1]
+
+                self.sdevice = mdevice
+            except Exception:
+                pass
 
     def findAttribute(self, tangohost):
         """ sets attribute and datasource group of online.xml device
@@ -898,6 +929,7 @@ class OnlineCPCreator(CPCreator):
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         cpname = self.options.component
+        tangohost = getServerTangoHost(self.options.server)
 
         while device:
             if device.nodeName == 'device':
@@ -916,6 +948,7 @@ class OnlineCPCreator(CPCreator):
                     dv.sardanahostname = self._getChildText(
                         device, "sardanahostname")
 
+                    dv.findDevice(tangohost)
                     try:
                         dv.splitHostPort()
                     except:
@@ -927,18 +960,42 @@ class OnlineCPCreator(CPCreator):
                         continue
                     module = self._getModuleName(dv)
                     if module:
-                        multattr = self.xmlpackage.moduleMultiAttributes[
-                            module.lower()]
-                        for at in multattr:
-                            dsname = "%s_%s" % (dv.name.lower(), at.lower())
-                            xml = self._createTangoDataSource(
-                                dsname, None, None, None,
-                                dv.tdevice, at, dv.host, dv.port,
-                                "%s_" % (dv.name.lower()))
-                            self.datasources[dsname] = xml
-                            mdv = copy.copy(dv)
-                            mdv.name = dsname
-                            self._printAction(mdv)
+                        multattr = []
+                        smultattr = []
+                        if module.lower() in \
+                           self.xmlpackage.moduleMultiAttributes:
+                            multattr = self.xmlpackage.moduleMultiAttributes[
+                                module.lower()]
+                            for at in multattr:
+                                dsname = "%s_%s" % (
+                                    dv.name.lower(), at.lower())
+                                xml = self._createTangoDataSource(
+                                    dsname, None, None, None,
+                                    dv.tdevice, at, dv.host, dv.port,
+                                    "%s_" % (dv.name.lower()))
+                                self.datasources[dsname] = xml
+                                mdv = copy.copy(dv)
+                                mdv.name = dsname
+                                self._printAction(mdv)
+                        smodule = "%s@pool" % module.lower()
+                        if smodule in self.xmlpackage.moduleMultiAttributes:
+                            smultattr = self.xmlpackage.moduleMultiAttributes[
+                                smodule]
+                            if smultattr and not dv.sdevice:
+                                raise Exception(
+                                    "Device %s cannot be found" % dv.name)
+                            for at in smultattr:
+                                dsname = "%s_%s" % (
+                                    dv.name.lower(), at.lower())
+                                xml = self._createTangoDataSource(
+                                    dsname, None, None, None,
+                                    dv.sdevice, at, dv.shost, dv.sport,
+                                    "%s_" % (dv.name.lower()))
+                                #   "__CLIENT__")
+                                self.datasources[dsname] = xml
+                                mdv = copy.copy(dv)
+                                mdv.name = dsname
+                                self._printAction(mdv)
                         if module.lower() \
                            in self.xmlpackage.moduleTemplateFiles:
                             xmlfiles = self.xmlpackage.moduleTemplateFiles[

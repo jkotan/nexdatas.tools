@@ -1,3 +1,7 @@
+2016-09-07 Jan Kotanski <jankotan@gmail.com>
+	* add mcaxia component
+	* tagged as v2.4.0
+
 2016-08-10 Jan Kotanski <jankotan@gmail.com>
 	* add dcm component
 	* make args and options in creator public

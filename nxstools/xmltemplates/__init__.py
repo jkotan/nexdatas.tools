@@ -290,11 +290,19 @@ moduleTemplateFiles = {
     ],
     'marccd': ['marccd.xml',
                'marccd_postrun.ds.xml'],
+    'mca_xia': [
+        'mcaxia.xml'
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     important attributes of modules
 moduleMultiAttributes = {
+    'mca_xia': [
+    ],
+    'mca_xia@pool': [
+        'CountsRoI', 'RoIEnd', 'RoIStart', 'Value',
+    ],
     'pco': [
         'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',
         'FileDir', 'FilePostfix', 'FilePrefix', 'FileStartNum',
