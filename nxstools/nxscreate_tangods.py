@@ -44,9 +44,11 @@ def _createParser():
     #: usage example
     usage = "usage: %prog tangods [options]\n" \
         + " e.g.\n" \
-        + "       nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot \n" \
-        + "       nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b \n" \
-        + "       nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b \n" \
+        + "       nxscreate tangods -f1 -l2 -v p09/motor/exp. -s exp_mot \n" \
+        + "       nxscreate tangods -f1 -l32 -v p02/motor/eh1a. -s exp_mot" \
+        + "-b \n" \
+        + "       nxscreate tangods -f1 -l32 -v p01/motor/oh1. " \
+        + "-s exp_mot -b\n" \
         + "       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u" \
         + " hasppXX.desy.de -b \n" \
         + "\n" \

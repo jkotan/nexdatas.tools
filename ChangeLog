@@ -1,3 +1,7 @@
+2016-09-16 Jan Kotanski <jankotan@gmail.com>
+	* add replacing device, hostname in nxscreator onlinecp
+	* tagged as v2.6.0
+
 2016-09-07 Jan Kotanski <jankotan@gmail.com>
 	* change the following options of nxscreate:
 	  --device-prefix:	-p -> -v

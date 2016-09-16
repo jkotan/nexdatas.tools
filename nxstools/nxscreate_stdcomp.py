@@ -20,11 +20,9 @@
 """ component creator from standard templates """
 
 import sys
-import os
 
 from nxstools.nxsdevicetools import checkServer
-from nxstools.nxscreator import (
-    OnlineCPCreator, CPExistsException, StandardCPCreator)
+from nxstools.nxscreator import (CPExistsException, StandardCPCreator)
 
 PYTANGO = False
 try:

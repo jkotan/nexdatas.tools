@@ -20,7 +20,6 @@
 """ Command-line tool for creating to the nexdatas configuration server """
 
 import copy
-import os
 
 from xml.dom.minidom import parse, parseString
 from nxstools import nxsdevicetools
@@ -64,7 +63,7 @@ class Device(object):
     def __init__(self):
         #: (:obj:`str`) device name
         self.name = None
-        #: (:obj:`str`) data type
+        #: (:obj:`str`) device type
         self.dtype = None
         #: (:obj:`str`) device module
         self.module = None
@@ -906,6 +905,12 @@ class CPCreator(Creator):
             sname[0] = cpname
         return "_".join(sname)
 
+    def createXMLs(self):
+        """ creates component xmls of all online.xml complex devices
+        abstract method
+        """
+        pass
+
 
 class OnlineCPCreator(CPCreator):
 
@@ -1090,7 +1095,9 @@ class OnlineCPCreator(CPCreator):
                                             self.xmltemplatepath, xmlfile), "r"
                                 ) as content_file:
                                     xmlcontent = content_file.read()
-                                xml = xmlcontent.replace("$(name)", cpname)
+                                xml = xmlcontent.replace("$(name)", cpname)\
+                                    .replace("$(device)", dv.tdevice)\
+                                    .replace("$(hostname)", dv.hostname)
                                 mdv = copy.copy(dv)
                                 mdv.name = newname
                                 self._printAction(mdv)
