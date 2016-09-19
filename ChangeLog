@@ -1,5 +1,6 @@
-2016-09-16 Jan Kotanski <jankotan@gmail.com>
+2016-09-19 Jan Kotanski <jankotan@gmail.com>
 	* add replacing device, hostname in nxscreator onlinecp
+	* add info into the test mode for onlineds
 	* tagged as v2.6.0
 
 2016-09-07 Jan Kotanski <jankotan@gmail.com>

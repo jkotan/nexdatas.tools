@@ -718,9 +718,20 @@ class OnlineDSCreator(Creator):
                 print("CREATING %s: %s/%s%s.ds.xml" % (
                     dv.tdevice, self.options.directory,
                     self.options.file, dv.name))
-            else:
+            elif self.options.database:
                 print("CREATING %s %s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
+                    dv.hostname,
+                    dv.tdevice + " " * (
+                        60 - len(dv.tdevice) - len(dv.hostname)),
+                    ",".join(dscps[dv.name])
+                    if (dscps and dv.name in dscps and dscps[dv.name])
+                    else ""))
+            else:
+                print("TEST %s %s %s %s/%s %s" % (
+                    dv.name + ":" + " " * (34 - len(dv.name)),
+                    dv.dtype + ":" + " " * (20 - len(dv.dtype)),
+                    dv.module + ":" + " " * (24 - len(dv.module)),
                     dv.hostname,
                     dv.tdevice + " " * (
                         60 - len(dv.tdevice) - len(dv.hostname)),
@@ -735,8 +746,9 @@ class OnlineDSCreator(Creator):
         server = self.options.server
         if not hasattr(self.options, "directory") or \
            not self.options.directory:
-            for dsname, dsxml in self.datasources.items():
-                storeDataSource(dsname, dsxml, server)
+            if self.options.database:
+                for dsname, dsxml in self.datasources.items():
+                    storeDataSource(dsname, dsxml, server)
         else:
             for dsname, dsxml in self.datasources.items():
                 myfile = open("%s/%s%s.ds.xml" % (
@@ -816,7 +828,7 @@ class OnlineDSCreator(Creator):
                 elif not dv.attribute:
                     if self._printouts:
                         print(
-                            "SKIPPING %s:    module %s of %s type not defined"
+                            "SKIPPING %s:    module '%s' of '%s' type not defined"
                             % (dv.name, dv.module, dv.dtype))
             device = device.nextSibling
 
