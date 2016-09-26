@@ -293,6 +293,12 @@ moduleTemplateFiles = {
     'mca_xia': [
         'mcaxia.xml'
     ],
+    'eigerdectris': [
+        'eigerdectris.xml',
+        'eigerdectris_stepindex.ds.xml',
+        'eigerdectris_description_cb.ds.xml',
+        'eigerdectris_triggermode_cb.ds.xml'
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -414,4 +420,10 @@ moduleMultiAttributes = {
         'NbExposures', 'NbFrames'],
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
+    'eigerdectris': [
+        'TriggerMode', 'NbTriggers', 'Description', 'NbImages', 'BitDepth',
+        'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
+        'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
+        'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
 }

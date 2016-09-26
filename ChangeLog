@@ -1,3 +1,7 @@
+2016-09-XX Jan Kotanski <jankotan@gmail.com>
+	* add eigerdectris detecto to template components
+	* tagged as v2.6.1
+
 2016-09-19 Jan Kotanski <jankotan@gmail.com>
 	* add replacing device, hostname in nxscreator onlinecp
 	* add info into the test mode for onlineds

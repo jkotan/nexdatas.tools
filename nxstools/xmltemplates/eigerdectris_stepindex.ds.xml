@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_stepindex">
+    <result name="result">
+if "$(name)_stepindex" not in commonblock:
+    commonblock["$(name)_stepindex"] = 1
+else:
+    commonblock["$(name)_stepindex"] += 1
+ds.result = commonblock["$(name)_stepindex"]
+    </result>
+  </datasource>
+</definition>
