@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "September 07, 2016" "2.5" "NXSTools"
+.TH "NXSTOOLS" "1" "September 19, 2016" "2.6" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -598,6 +598,8 @@ default <inputFile> is \(aq/online_dir/online.xml\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
+.sp
+\fIonlineds\fP overwrites existing datasources
 .INDENT 0.0
 .TP
 .B Options:
@@ -1527,6 +1529,12 @@ creates components of all online.xml complex devices
 .UNINDENT
 .INDENT 7.0
 .TP
+.B createXMLs()
+creates component xmls of all online.xml complex devices
+abstract method
+.UNINDENT
+.INDENT 7.0
+.TP
 .B datasources = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) datasource xml dictionary
 .UNINDENT
@@ -1652,7 +1660,7 @@ device from online.xml
 .INDENT 7.0
 .TP
 .B dtype
-(\fI\%str\fP) data type
+(\fI\%str\fP) device type
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2928,7 +2936,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fda6f75a610>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7ff2a01a1650>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
