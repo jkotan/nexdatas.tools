@@ -1,5 +1,6 @@
-2016-09-XX Jan Kotanski <jankotan@gmail.com>
-	* add eigerdectris detecto to template components
+2016-09-30 Jan Kotanski <jankotan@gmail.com>
+	* fix dcm template components
+	* add test version of eigerdectris detector to template components
 	* tagged as v2.6.1
 
 2016-09-19 Jan Kotanski <jankotan@gmail.com>

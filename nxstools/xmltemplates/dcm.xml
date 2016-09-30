@@ -42,7 +42,7 @@
               </attribute>
             </field>
           </group>
-          <field type="NX_CHAR" name="chemical_formula">Si</field>
+          <field type="NX_CHAR" name="chemical_formula">Si<strategy mode="INIT"/></field>
         </group>
         <group type="NXcrystal" name="crystal2">
           <field type="NX_CHAR" name="usage">Bragg<strategy mode="INIT"/>
@@ -142,8 +142,8 @@
           </field>
         </group>
         <group type="NXcollection" name="collection">
-          <field units="mm" type="NX_FLOAT" name="oxford_horizontal">$datasources.$(oxfordhorizontal)</field>
-          <field units="mm" type="NX_FLOAT64" name="exit_offset">$datasources.$(exitoffset)</field>
+          <field units="mm" type="NX_FLOAT" name="oxford_horizontal"><strategy mode="INIT"/>$datasources.$(oxfordhorizontal)</field>
+          <field units="mm" type="NX_FLOAT64" name="exit_offset"><strategy mode="INIT"/>$datasources.$(exitoffset)</field>
           <field depends_on="dcm_jack1" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(theta)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
             </attribute>
@@ -154,7 +154,7 @@
             </attribute>
           </field>
         </group>
-        <field units="eV" type="NX_FLOAT64" name="energy">$datasources.$(energy)</field>
+        <field units="eV" type="NX_FLOAT64" name="energy"><strategy mode="INIT"/>$datasources.$(energy)</field>
       </group>
     </group>
   </group>

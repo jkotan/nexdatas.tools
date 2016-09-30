@@ -33,9 +33,11 @@ else:
 path += '%s/%s_' % ("$(name)", filepattern)
 tmode = ds.$(name)_triggermode
 if tmode.lower() in ['ints', 'exts']:
-    totnbimages = ds.$(name)_nbimages * commonblock["$(name)_stepindex"]
+    totnbimages = sum(commonblock["$(name)_stepindex"])
+elif tmode.lower() in ['exte']:
+    totnbimages = ds.$(name)_nbtriggers
 else:
-    totnbimages = commonblock["$(name)_stepindex"]
+    totnbimages = len(commonblock["$(name)_stepindex"])
 nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile
 ds.result = tmode.lower()
 root = commonblock["__nxroot__"]
@@ -50,6 +52,7 @@ for nbf in range(1, nbfiles+1):
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
+    $datasources.$(name)_nbtriggers
     
   </datasource>
 </definition>

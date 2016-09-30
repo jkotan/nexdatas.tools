@@ -3,10 +3,11 @@
   <datasource type="PYEVAL" name="$(name)_stepindex">
     <result name="result">
 if "$(name)_stepindex" not in commonblock:
-    commonblock["$(name)_stepindex"] = 1
+    commonblock["$(name)_stepindex"] = [int(ds.$(name)_nbimages)]
 else:
-    commonblock["$(name)_stepindex"] += 1
-ds.result = commonblock["$(name)_stepindex"]
+    commonblock["$(name)_stepindex"].append(int(ds.$(name)_nbimages))
+ds.result = len(commonblock["$(name)_stepindex"])
     </result>
+    $datasources.$(name)_nbimages
   </datasource>
 </definition>
