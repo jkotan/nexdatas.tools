@@ -1,4 +1,8 @@
 2016-10-06 Jan Kotanski <jankotan@gmail.com>
+	* refresh dcm standard component
+	* tagged as v2.7.1
+
+2016-10-06 Jan Kotanski <jankotan@gmail.com>
 	* add support for nxscreate tangods without indexes
 	* tagged as v2.7.0
 
