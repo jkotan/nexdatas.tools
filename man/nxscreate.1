@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "October 06, 2016" "2.6" "NXSTools"
+.TH "NXSCREATE" "1" "October 06, 2016" "2.7" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -163,10 +163,10 @@ show this help message and exit
 device prefix, i.e. exp_c (mandatory)
 .TP
 .BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
-first index (mandatory)
+first index
 .TP
 .BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
-last index (mandatory)
+last index
 .TP
 .BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
 tango attribute name
@@ -193,6 +193,9 @@ tango host port
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
+.BI \-g \ GROUP\fP,\fB \ \-\-group\fB= GROUP
+device group name
+.TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
@@ -207,6 +210,8 @@ nxscreate tangods \-f1 \-l2  \-v p09/motor/exp. \-s exp_mot
 nxscreate tangods \-f1 \-l32  \-v p02/motor/eh1a. \-s exp_mot \-b
 nxscreate tangods \-f1 \-l32  \-v p01/motor/oh1. \-s exp_mot \-b
 nxscreate tangods \-f1 \-l8  \-v pXX/slt/exp. \-s slt_exp_ \-u hasppXX.desy.de \-b
+nxscreate tangods \-v petra/globals/keyword \-s source_current \-u haso228 \-t 10000 \e
+                  \-a BeamCurrent \-b \-r p09/nxsconfigserver/haso228 \-o \-g __CLIENT__
 .ft P
 .fi
 .UNINDENT
