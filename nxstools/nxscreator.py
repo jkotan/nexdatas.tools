@@ -552,8 +552,10 @@ class TangoDSCreator(Creator):
                     first = int(self.options.first)
                 except:
                     first = 1
-                dvargs = generateDeviceNames(self.options.device, first, last)
-                dsargs = generateDeviceNames(self.options.datasource, first, last)
+                dvargs = generateDeviceNames(
+                    self.options.device, first, last)
+                dsargs = generateDeviceNames(
+                    self.options.datasource, first, last)
             except:
                 dvargs = [str(self.options.device)]
                 dsargs = [str(self.options.datasource)]
@@ -827,7 +829,8 @@ class OnlineDSCreator(Creator):
                 elif not dv.attribute:
                     if self._printouts:
                         print(
-                            "SKIPPING %s:    module '%s' of '%s' type not defined"
+                            "SKIPPING %s:    module '%s' of '%s' "
+                            "type not defined"
                             % (dv.name, dv.module, dv.dtype))
             device = device.nextSibling
 
