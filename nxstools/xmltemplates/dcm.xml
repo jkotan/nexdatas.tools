@@ -144,6 +144,8 @@
         <group type="NXcollection" name="collection">
           <field units="mm" type="NX_FLOAT" name="oxford_horizontal"><strategy mode="INIT"/>$datasources.$(oxfordhorizontal)</field>
           <field units="mm" type="NX_FLOAT64" name="exit_offset"><strategy mode="INIT"/>$datasources.$(exitoffset)</field>
+          <field units="deg/mm" type="NX_FLOAT64" name="unit_calibration"><strategy mode="INIT"/>$datasources.$(unitcalibration)</field>
+          <field type="NX_INT64" name="crystal"><strategy mode="INIT"/>$datasources.$(crystal)</field>
           <field depends_on="dcm_jack1" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(theta)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
             </attribute>

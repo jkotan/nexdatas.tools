@@ -6,10 +6,10 @@
         <doc>generic description of the storage ring</doc>
         <field units="mA" type="NX_FLOAT" name="current">
           <doc>storage ring current</doc>
-          <strategy mode="INIT"/>$datasources.$(beamcurrent)</field>
+          <strategy mode="INIT" canfail="true"/>$datasources.$(beamcurrent)</field>
         <field units="GeV" type="NX_FLOAT" name="energy">
 	  <doc>beam energy</doc>
-          <strategy mode="INIT"/>$datasources.$(sourceenergy)</field>
+          <strategy mode="INIT" canfail="true"/>$datasources.$(sourceenergy)</field>
       </group>
     </group>
   </group>

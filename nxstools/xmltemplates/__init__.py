@@ -126,22 +126,22 @@ standardComponentVariables = {
         },
         'yaw': {
             'default': None,
-            'doc': "yaw rotation of the first cristal"
+            'doc': "phi rotation of the first cristal"
             " (datasource)"
         },
         'roll1': {
             'default': None,
-            'doc': "roll rotation of the first cristal"
+            'doc': "chi rotation of the first cristal"
             " (datasource)"
         },
         'roll2': {
             'default': None,
-            'doc': "roll rotation of the second cristal"
+            'doc': "chi rotation of the second cristal"
             " (datasource)"
         },
         'pitch2': {
             'default': None,
-            'doc': "pitch rotation of the second cristal"
+            'doc': "theta rotation of the second cristal"
             " (datasource)"
         },
         'perp2': {
@@ -184,6 +184,16 @@ standardComponentVariables = {
             'doc': " horizontal translation"
             " (datasource)"
         },
+        'unitcalibration': {
+            'default': None,
+            'doc': " unit calibration from dcmmotor"
+            " (datasource)"
+        },
+        'crystal': {
+            'default': None,
+            'doc': " type of crystal i.e. 0->Si111,1->Si311,2->Si111 ChannelCut "
+            " (datasource)"
+        },
         'exitoffset': {
             'default': None,
             'doc': " exit offset"
@@ -222,6 +232,8 @@ standardComponentTemplateFiles = {
     'dcm': [
         'dcm.xml',
         'dcm_reflection.ds.xml',
+        'dcm_unitcalibration.ds.xml',
+        'dcm_crystal.ds.xml',
     ],
 }
 
