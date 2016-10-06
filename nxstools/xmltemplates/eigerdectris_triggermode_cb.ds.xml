@@ -32,12 +32,7 @@ else:
 #path += '%s/%s_master.h5://entry' % ($(name), filepattern)
 path += '%s/%s_' % ("$(name)", filepattern)
 tmode = ds.$(name)_triggermode
-if tmode.lower() in ['ints', 'exts']:
-    totnbimages = sum(commonblock["$(name)_stepindex"])
-elif tmode.lower() in ['exte']:
-    totnbimages = ds.$(name)_nbtriggers
-else:
-    totnbimages = len(commonblock["$(name)_stepindex"])
+totnbimages = sum(commonblock["$(name)_stepindex"])
 nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile
 ds.result = tmode.lower()
 root = commonblock["__nxroot__"]
