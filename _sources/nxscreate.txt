@@ -89,8 +89,8 @@ Options:
   -v DEVICE, --device-prefix=DEVICE
                         device prefix, i.e. exp_c (mandatory)
   -f FIRST, --first=FIRST
-                        first index (mandatory)
-  -l LAST, --last=LAST  last index (mandatory)
+                        first index
+  -l LAST, --last=LAST  last index
   -a ATTRIBUTE, --attribute=ATTRIBUTE
                         tango attribute name
   -s DATASOURCE, --datasource-prefix=DATASOURCE
@@ -104,6 +104,8 @@ Options:
   -u HOST, --host=HOST  tango host name
   -t PORT, --port=PORT  tango host port
   -b, --database        store datasources in Configuration Server database
+  -g GROUP, --group=GROUP
+                        device group name
   -r SERVER, --server=SERVER
                         configuration server device name
 
@@ -115,7 +117,9 @@ Example
 	   nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot
 	   nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
 	   nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
-	   nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
+           nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
+           nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t 10000 \ 
+                             -a BeamCurrent -b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__
 
 
 nxscreate deviceds

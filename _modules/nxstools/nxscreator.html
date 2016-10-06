@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.6.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.7.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.6.0',
+        VERSION:     '2.7.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.6.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.7.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.7</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -717,18 +717,18 @@
         <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
-                    <span class="s">&quot;TangoDSCreator: Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
                 <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">first</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">dvargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
-                    <span class="s">&quot;TangoDSCreator: Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
-
-            <span class="n">dvargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
-            <span class="n">dsargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">)</span>
+                <span class="n">dvargs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">)]</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dvargs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dvargs</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
@@ -753,7 +753,8 @@
                 <span class="n">dvargs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">group</span> <span class="ow">or</span> <span class="bp">None</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="ClientDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator">[docs]</a><span class="k">class</span> <span class="nc">ClientDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
@@ -998,7 +999,8 @@
                 <span class="k">elif</span> <span class="ow">not</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
                         <span class="k">print</span><span class="p">(</span>
-                            <span class="s">&quot;SKIPPING </span><span class="si">%s</span><span class="s">:    module &#39;</span><span class="si">%s</span><span class="s">&#39; of &#39;</span><span class="si">%s</span><span class="s">&#39; type not defined&quot;</span>
+                            <span class="s">&quot;SKIPPING </span><span class="si">%s</span><span class="s">:    module &#39;</span><span class="si">%s</span><span class="s">&#39; of &#39;</span><span class="si">%s</span><span class="s">&#39; &quot;</span>
+                            <span class="s">&quot;type not defined&quot;</span>
                             <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
             <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
 
