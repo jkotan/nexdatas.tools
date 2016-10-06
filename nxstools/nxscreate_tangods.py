@@ -49,6 +49,10 @@ def _createParser():
         + "-b \n" \
         + "       nxscreate tangods -f1 -l32 -v p01/motor/oh1. " \
         + "-s exp_mot -b\n" \
+        + "       nxscreate tangods -v petra/globals/keyword " \
+        + "-s source_current -u haso228 -t 10000 \\ \n "\
+        + "                        -a BeamCurrent " \
+        + "-b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__\n" \
         + "       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u" \
         + " hasppXX.desy.de -b \n" \
         + "\n" \
@@ -68,10 +72,10 @@ def _createParser():
                       help="device prefix, i.e. exp_c (mandatory)",
                       dest="device", default="")
     parser.add_option("-f", "--first",
-                      help="first index (mandatory)",
+                      help="first index",
                       dest="first", default="1")
     parser.add_option("-l", "--last",
-                      help="last index (mandatory)",
+                      help="last index",
                       dest="last", default=None)
 
     parser.add_option("-a", "--attribute", type="string",
@@ -103,6 +107,9 @@ def _createParser():
                       default=False, dest="database",
                       help="store datasources in "
                       "Configuration Server database")
+    parser.add_option("-g", "--group", type="string",
+                      help="device group name",
+                      dest="group", default="")
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")

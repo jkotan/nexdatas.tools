@@ -547,18 +547,16 @@ class TangoDSCreator(Creator):
         dsargs = []
         if self.options.device.strip():
             try:
-                first = int(self.options.first)
-            except:
-                raise WrongParameterError(
-                    "TangoDSCreator: Invalid --first parameter\n")
-            try:
                 last = int(self.options.last)
+                try:
+                    first = int(self.options.first)
+                except:
+                    first = 1
+                dvargs = generateDeviceNames(self.options.device, first, last)
+                dsargs = generateDeviceNames(self.options.datasource, first, last)
             except:
-                raise WrongParameterError(
-                    "TangoDSCreator: Invalid --last parameter\n")
-
-            dvargs = generateDeviceNames(self.options.device, first, last)
-            dsargs = generateDeviceNames(self.options.datasource, first, last)
+                dvargs = [str(self.options.device)]
+                dsargs = [str(self.options.datasource)]
 
         if not dvargs or not len(dvargs):
             raise WrongParameterError("")
@@ -583,7 +581,8 @@ class TangoDSCreator(Creator):
                 dvargs[i],
                 self.options.attribute,
                 self.options.host,
-                self.options.port)
+                self.options.port,
+                self.options.group or None)
 
 
 class ClientDSCreator(Creator):

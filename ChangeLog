@@ -1,4 +1,8 @@
 2016-10-06 Jan Kotanski <jankotan@gmail.com>
+	* add support for nxscreate tangods without indexes
+	* tagged as v2.7.0
+
+2016-10-06 Jan Kotanski <jankotan@gmail.com>
 	* simplify the template component of eiger dectris
 	* tagged as v2.6.2
 
