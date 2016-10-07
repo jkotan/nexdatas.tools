@@ -117,6 +117,10 @@ standardComponentVariables = {
     'dcm': {
         'energy': {
             'default': None,
+            'doc': "synchronized monochromator energy (datasource)"
+        },
+        'energyfmb': {
+            'default': None,
             'doc': "monochromator energy (datasource)"
         },
         'lat': {
