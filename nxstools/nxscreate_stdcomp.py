@@ -79,6 +79,9 @@ def main():
                       " If it is not set components are stored in "
                       "Configuration Server database",
                       dest="directory", default="")
+    parser.add_option("-e", "--external", type="string",
+                      help="external configuration server",
+                      dest="external", default="")
     parser.add_option("-x", "--file-prefix", type="string",
                       help="file prefix, i.e. counter",
                       dest="file", default="")

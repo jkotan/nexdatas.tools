@@ -766,7 +766,8 @@ class OnlineDSCreator(Creator):
         """ creates datasource xmls of all online.xml simple devices
         """
         self.datasources = {}
-        tangohost = getServerTangoHost(self.options.server)
+        tangohost = getServerTangoHost(
+            self.options.external or self.options.server)
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
@@ -1035,7 +1036,8 @@ class OnlineCPCreator(CPCreator):
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         cpname = self.options.component
-        tangohost = getServerTangoHost(self.options.server)
+        tangohost = getServerTangoHost(
+            self.options.external or self.options.server)
 
         while device:
             if device.nodeName == 'device':
@@ -1174,7 +1176,7 @@ class StandardCPCreator(CPCreator):
         i.e. __tangohost__, __tangoport__ and __configdevice__
 
         """
-        server = self.options.server
+        server = self.options.external or self.options.server
         host, port = getServerTangoHost(server).split(":")
         self.__specialparams['__tangohost__'] = host
         self.__specialparams['__tangoport__'] = port

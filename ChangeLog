@@ -1,5 +1,6 @@
 2016-10-11 Jan Kotanski <jankotan@gmail.com>
 	* fix for findDevice
+	* add external config server options to nxscreate
 	* add elementtype options into nxscreate tangods
 	* update dcm standard components
 	* tagged as v2.8.0
