@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.7.1 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.8.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.7.1',
+        VERSION:     '2.8.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.7.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.8.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.7</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.8</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -295,7 +295,7 @@
                 <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mhost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
                 <span class="n">mdevice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">mhost</span>
+                <span class="c">#  self.hostname = mhost</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">shost</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">sport</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
@@ -425,7 +425,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_createTangoDataSource</span><span class="p">(</span>
             <span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
-            <span class="n">attribute</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+            <span class="n">elementname</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">elementtype</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates TANGO datasource file</span>
 
 <span class="sd">        :param name: device name</span>
@@ -438,21 +438,23 @@
 <span class="sd">        :type server: :obj:`str`</span>
 <span class="sd">        :param device: device name</span>
 <span class="sd">        :type device: :obj:`str`</span>
-<span class="sd">        :param attribute: attribute name</span>
-<span class="sd">        :type attribute: :obj:`str`</span>
+<span class="sd">        :param elementname: element name, e.g. attribute name</span>
+<span class="sd">        :type elementname: :obj:`str`</span>
 <span class="sd">        :param host: tango host name</span>
 <span class="sd">        :type host: :obj:`str`</span>
 <span class="sd">        :param port: tango port</span>
 <span class="sd">        :type port: :obj:`str`</span>
 <span class="sd">        :parma group: datasource tango group</span>
 <span class="sd">        :type group: :obj:`str`</span>
+<span class="sd">        :parma elementtype: element type, i.e. attribute, property or command</span>
+<span class="sd">        :type elementtype: :obj:`str`</span>
 <span class="sd">        :returns: xml string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-        <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="s">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span>
-                     <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+        <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">elementtype</span> <span class="ow">or</span> <span class="s">&quot;attribute&quot;</span><span class="p">,</span>
+                     <span class="n">elementname</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
         <span class="n">xml</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">server</span><span class="p">:</span>
             <span class="n">storeDataSource</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">xml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
@@ -754,7 +756,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">group</span> <span class="ow">or</span> <span class="bp">None</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">group</span> <span class="ow">or</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">elementtype</span> <span class="ow">or</span> <span class="s">&quot;attribute&quot;</span>
+            <span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="ClientDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator">[docs]</a><span class="k">class</span> <span class="nc">ClientDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
@@ -932,7 +936,8 @@
         <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
         <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
@@ -1201,7 +1206,8 @@
         <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
         <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
         <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">component</span>
-        <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
 
         <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s">&#39;device&#39;</span><span class="p">:</span>
@@ -1340,7 +1346,7 @@
 <span class="sd">        i.e. __tangohost__, __tangoport__ and __configdevice__</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
         <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="n">server</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__specialparams</span><span class="p">[</span><span class="s">&#39;__tangohost__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">host</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__specialparams</span><span class="p">[</span><span class="s">&#39;__tangoport__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span>

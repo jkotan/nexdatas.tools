@@ -106,6 +106,8 @@ Options:
   -b, --database        store datasources in Configuration Server database
   -g GROUP, --group=GROUP
                         device group name
+  -e ELEMENTTYPE, --elementtype=ELEMENTTYPE
+                        element type, i.e. attribute, property or command
   -r SERVER, --server=SERVER
                         configuration server device name
 
@@ -200,6 +202,8 @@ Options:
                         configuration server device name
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -e EXTERNAL, --external=EXTERNAL
+                        external configuration server
   -p XMLPACKAGE, --xml-package=XMLPACKAGE
                         xml template package
 
@@ -248,6 +252,8 @@ Options:
                         Server database
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -e EXTERNAL, --external=EXTERNAL
+                        external configuration server
   -p XMLPACKAGE, --xml-package=XMLPACKAGE
                         xml template package
 
@@ -296,6 +302,8 @@ Options:
                         output directory where datasources will be stored. If
                         it is not set components are stored in Configuration
                         Server database
+  -e EXTERNAL, --external=EXTERNAL
+                        external configuration server
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
 
