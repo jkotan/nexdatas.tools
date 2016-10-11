@@ -125,7 +125,7 @@ class Device(object):
                 dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
 
-                self.hostname = mhost
+                #  self.hostname = mhost
                 self.shost = mhost.split(":")[0]
                 if len(mhost.split(":")) > 1:
                     self.sport = mhost.split(":")[1]
