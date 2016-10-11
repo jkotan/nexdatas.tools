@@ -255,7 +255,7 @@ class Creator(object):
     @classmethod
     def _createTangoDataSource(
             cls, name, directory, fileprefix, server, device,
-            attribute, host, port="10000", group=None):
+            elementname, host, port="10000", group=None, elementtype=None):
         """ creates TANGO datasource file
 
         :param name: device name
@@ -268,21 +268,23 @@ class Creator(object):
         :type server: :obj:`str`
         :param device: device name
         :type device: :obj:`str`
-        :param attribute: attribute name
-        :type attribute: :obj:`str`
+        :param elementname: element name, e.g. attribute name
+        :type elementname: :obj:`str`
         :param host: tango host name
         :type host: :obj:`str`
         :param port: tango port
         :type port: :obj:`str`
         :parma group: datasource tango group
         :type group: :obj:`str`
+        :parma elementtype: element type, i.e. attribute, property or command
+        :type elementtype: :obj:`str`
         :returns: xml string
         :rtype: :obj:`str`
         """
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, name))
         sr = NDSource(df)
-        sr.initTango(name, device, "attribute", attribute, host, port,
-                     group=group)
+        sr.initTango(name, device, elementtype or "attribute",
+                     elementname, host, port, group=group)
         xml = df.prettyPrint()
         if server:
             storeDataSource(name, xml, server)
@@ -584,7 +586,9 @@ class TangoDSCreator(Creator):
                 self.options.attribute,
                 self.options.host,
                 self.options.port,
-                self.options.group or None)
+                self.options.group or None,
+                self.options.elementtype or "attribute"
+            )
 
 
 class ClientDSCreator(Creator):

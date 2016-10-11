@@ -110,6 +110,9 @@ def _createParser():
     parser.add_option("-g", "--group", type="string",
                       help="device group name",
                       dest="group", default="")
+    parser.add_option("-e", "--elementtype", type="string",
+                      help="element type, i.e. attribute, property or command",
+                      dest="elementtype", default="attribute")
 
     parser.add_option("-r", "--server", dest="server",
                       help="configuration server device name")
