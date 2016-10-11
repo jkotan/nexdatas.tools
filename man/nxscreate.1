@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "October 06, 2016" "2.7" "NXSTools"
+.TH "NXSCREATE" "1" "October 11, 2016" "2.8" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -196,6 +196,9 @@ store datasources in Configuration Server database
 .BI \-g \ GROUP\fP,\fB \ \-\-group\fB= GROUP
 device group name
 .TP
+.BI \-e \ ELEMENTTYPE\fP,\fB \ \-\-elementtype\fB= ELEMENTTYPE
+element type, i.e. attribute, property or command
+.TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
@@ -347,6 +350,9 @@ configuration server device name
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+external configuration server
+.TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .UNINDENT
@@ -419,6 +425,9 @@ Server database
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
+.TP
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+external configuration server
 .TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
@@ -494,6 +503,9 @@ overwrite existing component
 output directory where datasources will be stored. If
 it is not set components are stored in Configuration
 Server database
+.TP
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+external configuration server
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
