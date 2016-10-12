@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSETUP" "1" "October 11, 2016" "2.8" "NXSTools"
+.TH "NXSETUP" "1" "October 12, 2016" "2.9" "NXSTools"
 .SH NAME
 nxsetup \- set NeXDaTaS Tango Server environment up
 .
@@ -48,6 +48,8 @@ nxsetup \-s [\-l level] [<server_class1> <server_class2> ... ]
 nxsetup \-a [<server_class1> <server_class2> ... ]
 
 nxsetup \-p \-n newname \-o oldname [<server_class1> <server_class2> ... ]
+
+nxsetup \-c \-n propname \-o propvalue [<server_class1> <server_class2> ... ]
 .ft P
 .fi
 .UNINDENT
@@ -87,7 +89,10 @@ setup servers action
 old property name
 .TP
 .BI \-n \ NEWNAME\fP,\fB \ \-\-newname\fB= NEWNAME
-new property name
+(new) property name
+.TP
+.BI \-w \ PROPVALUE\fP,\fB \ \-\-propvalue\fB= PROPVALUE
+new property value
 .TP
 .B \-r\fP,\fB  \-\-restart
 restart server(s) action
@@ -122,6 +127,8 @@ nxsetup \-p \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSR
 nxsetup \-s Pool/haso228 \-l2
 
 nxsetup \-r MacroServer \-l3
+
+nxsetup \-c \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
 .ft P
 .fi
 .UNINDENT
