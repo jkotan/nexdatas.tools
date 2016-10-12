@@ -1,3 +1,7 @@
+2016-10-12 Jan Kotanski <jankotan@gmail.com>
+	* add change property value option into nxsetup
+	* tagged as v2.9.0
+
 2016-10-11 Jan Kotanski <jankotan@gmail.com>
 	* fix for findDevice
 	* add external config server options to nxscreate

@@ -230,6 +230,46 @@ class SetUp(object):
         time.sleep(0.2)
         return res
 
+    def changePropertyValue(self, server, newname, newvalue, sclass=None):
+        """ changes/sets property value
+
+        :param server: server name
+        :type server: :obj:`str`
+        :param newvalue: new property value
+        :type newvalue: :obj:`str`
+        :param newname: new property name
+        :type newname: :obj:`str`
+        :param sclass: server class name
+        :type sclass: :obj:`str`
+        :returns: True if property name was changed
+        :rtype: :obj:`bool`
+
+        """
+        if "/" in server:
+            sclass = sclass or server.split("/")[0]
+            fserver = server
+        else:
+            sclass = sclass or server
+            fserver = "%s/*" % server
+        res = False
+        value = json.loads(newvalue)
+        mss = self.db.get_server_list(fserver).value_string
+        for ms in mss:
+            devserv = self.db.get_device_class_list(ms).value_string
+            dev = devserv[0::2]
+            serv = devserv[1::2]
+            for idx, ser in enumerate(serv):
+                if ser == sclass:
+                    if dev[idx]:
+                        if value:
+                            value = [p for p in value if p]
+                            self.db.put_device_property(
+                                dev[idx],
+                                {newname: value})
+                            res = True
+        time.sleep(0.2)
+        return res
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -568,6 +608,8 @@ def _createParser(user):
             + " %prog -s [<server_class1> <server_class2> ... ]\n\n" \
             + " %prog -p -n newname -o oldname " \
             + "[<server_class1> <server_class2> ... ]\n\n" \
+            + " %prog -c -n propname -w newvalue " \
+            + "[<server_class1> <server_class2> ... ]\n\n" \
             + " %prog -a <recorder_path>\n\n " \
             + "e.g.: nxsetup -x\n" \
             + "      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig" \
@@ -575,6 +617,8 @@ def _createParser(user):
             + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
             + "      nxsetup -p -n DefaultPreselectedComponents" \
             + " -o DefaultAutomaticComponents NXSRecSelector\n" \
+            + "      nxsetup -c -n DefaultPreselectedComponents" \
+            + " -w \"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
             + "      nxsetup -r Pool/haso228 -l 2 \n" \
             + "      nxsetup -s MacroServer -l 3 \n"
 
@@ -619,10 +663,15 @@ def _createParser(user):
     parser.add_option("-p", "--move-prop", action="store_true",
                       default=False, dest="moveprop",
                       help="change property name")
+    parser.add_option("-c", "--change-prop", action="store_true",
+                      default=False, dest="changeprop",
+                      help="change property value")
     parser.add_option("-o", "--oldname", action="store", type="string",
                       dest="oldname", help="old property name")
     parser.add_option("-n", "--newname", action="store", type="string",
-                      dest="newname", help="new property name")
+                      dest="newname", help="(new) property name")
+    parser.add_option("-w", "--propvalue", action="store", type="string",
+                      dest="propvalue", help="new property value")
     parser.add_option("-r", "--restart", action="store_true",
                       default=False, dest="restart",
                       help="restart server(s) action")
@@ -647,7 +696,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if not options.execute and not options.restart and not options.recpath \
-       and not options.moveprop and not options.start:
+       and not options.moveprop and not options.changeprop and not options.start:
         parser.print_help()
         print("\n")
         sys.exit(255)
@@ -747,6 +796,17 @@ def main():
         for server in servers:
             if setUp.changePropertyName(
                     server, options.oldname, options.newname):
+                setUp.restartServer(server)
+
+    if options.changeprop:
+        if not options.newname or not options.propvalue or not args:
+            parser.print_help()
+            sys.exit(255)
+        servers = args or []
+        setUp = SetUp()
+        for server in servers:
+            if setUp.changePropertyValue(
+                    server, options.newname, options.propvalue):
                 setUp.restartServer(server)
 
 
