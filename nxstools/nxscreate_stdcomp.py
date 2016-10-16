@@ -126,6 +126,8 @@ def main():
                 print("  %s - %s [default: '%s']"
                       % (var, desc['doc'], desc['default']))
     else:
+        parser.print_help()
+        print("")
         lst = sorted(creator.listcomponenttypes())
         print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(lst))
 
