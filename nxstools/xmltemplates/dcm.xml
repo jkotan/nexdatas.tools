@@ -11,10 +11,10 @@
           <field type="NX_INT" name="reflection">
             <strategy mode="INIT"/>$datasources.$(name)_reflection<dimensions rank="1"/>
           </field>
-          <field type="NX_CHAR" name="depends_on">transformations/dcm_lat<strategy mode="INIT"/>
+          <field type="NX_CHAR" name="depends_on">transformations/lat<strategy mode="INIT"/>
           </field>
           <group type="NXtransformations" name="transformations">
-            <field depends_on="dcm_yaw" units="mm" type="NX_FLOAT64" name="dcm_lat">$datasources.$(lat)<strategy mode="INIT"/>
+            <field depends_on="chi" units="mm" type="NX_FLOAT64" name="lat">$datasources.$(lat)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
@@ -23,7 +23,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="../../transformations/dcm_bragg" units="mm" type="NX_FLOAT64" name="dcm_yaw">$datasources.$(yaw)<strategy mode="INIT"/>
+            <field depends_on="../../transformations/bragg" units="mm" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -32,7 +32,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="dcm_pitch" units="deg" type="NX_FLOAT64" name="dcm_roll1">$datasources.$(roll1)<strategy mode="INIT"/>
+            <field depends_on="phi" units="deg" type="NX_FLOAT64" name="chi">$datasources.$(roll1)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
@@ -53,10 +53,10 @@
           <field type="NX_INT" name="reflection">
             <strategy mode="INIT"/>
             <dimensions rank="1"/>$datasources.$(name)_reflection</field>
-          <field type="NX_CHAR" name="depends_on">transformations/dcm_roll2<strategy mode="INIT"/>
+          <field type="NX_CHAR" name="depends_on">transformations/chi<strategy mode="INIT"/>
           </field>
           <group type="NXtransformations" name="transformations">
-            <field depends_on="dcm_pitch" units="deg" type="NX_FLOAT64" name="dcm_roll2">$datasources.$(roll2)<strategy mode="INIT"/>
+            <field depends_on="theta" units="deg" type="NX_FLOAT64" name="chi">$datasources.$(roll2)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
@@ -65,7 +65,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="dcm_perp" units="deg" type="NX_FLOAT64" name="dcm_pitch">$datasources.$(pitch2)<strategy mode="INIT"/>
+            <field depends_on="perp" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(pitch2)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -74,7 +74,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="dcm_para" units="mm" type="NX_FLOAT64" name="dcm_perp">$datasources.$(perp2)<strategy mode="INIT"/>
+            <field depends_on="para" units="mm" type="NX_FLOAT64" name="perp">$datasources.$(perp2)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -83,7 +83,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="../../transformations/dcm_bragg" units="mm" type="NX_FLOAT64" name="dcm_para">$datasources.$(par2)<strategy mode="INIT"/>
+            <field depends_on="../../transformations/bragg" units="mm" type="NX_FLOAT64" name="para">$datasources.$(par2)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
@@ -96,7 +96,7 @@
           <field type="NX_CHAR" name="chemical_formula">Si</field>
         </group>
         <group type="NXtransformations" name="transformations">
-          <field depends_on="dcm_jack1" units="deg" type="NX_FLOAT64" name="dcm_bragg">$datasources.$(braggangle)<strategy mode="INIT"/>
+          <field depends_on="jack1" units="deg" type="NX_FLOAT64" name="bragg">$datasources.$(braggangle)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
             </attribute>
             <attribute type="NX_FLOAT64" name="vector">-1 0 0<dimensions rank="1">
@@ -105,7 +105,7 @@
               <strategy mode="INIT"/>
             </attribute>
           </field>
-          <field units="mm" type="NX_FLOAT64" name="dcm_jack1">$datasources.$(jack1)<strategy mode="INIT"/>
+          <field units="mm" type="NX_FLOAT64" name="jack1">$datasources.$(jack1)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
             <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -114,7 +114,7 @@
               <strategy mode="INIT"/>
             </attribute>
           </field>
-          <field units="mm" type="NX_FLOAT64" name="dcm_jack2">$datasources.$(jack2)<strategy mode="INIT"/>
+          <field units="mm" type="NX_FLOAT64" name="jack2">$datasources.$(jack2)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
             <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -123,7 +123,7 @@
               <strategy mode="INIT"/>
             </attribute>
           </field>
-          <field units="mm" type="NX_FLOAT64" name="dcm_jack3">$datasources.$(jack3)<strategy mode="INIT"/>
+          <field units="mm" type="NX_FLOAT64" name="jack3">$datasources.$(jack3)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
             <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
@@ -151,7 +151,7 @@
             <strategy mode="INIT"/>$datasources.$(unitcalibration)</field>
           <field type="NX_INT64" name="crystal">
             <strategy mode="INIT"/>$datasources.$(crystal)</field>
-          <field depends_on="dcm_jack1" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(theta)<strategy mode="INIT"/>
+          <field depends_on="jack1" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(theta)<strategy mode="INIT"/>
             <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
             </attribute>
             <attribute type="NX_FLOAT64" name="vector">-1 0 0<dimensions rank="1">

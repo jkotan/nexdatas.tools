@@ -1,3 +1,7 @@
+2016-10-XX Jan Kotanski <jankotan@gmail.com>
+	* fix filed names in dcm
+	* tagged as v2.9.2
+
 2016-10-17 Jan Kotanski <jankotan@gmail.com>
 	* add help printout for nxscreate stdcomp
 	* tagged as v2.9.1
