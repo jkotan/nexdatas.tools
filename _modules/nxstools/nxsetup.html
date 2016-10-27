@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsetup &mdash; NXSTools 2.8.0 documentation</title>
+    <title>nxstools.nxsetup &mdash; NXSTools 2.9.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.8.0',
+        VERSION:     '2.9.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.8.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.9.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.9</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -400,6 +400,46 @@
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 </div>
+<div class="viewcode-block" id="SetUp.changePropertyValue"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changePropertyValue">[docs]</a>    <span class="k">def</span> <span class="nf">changePropertyValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">newname</span><span class="p">,</span> <span class="n">newvalue</span><span class="p">,</span> <span class="n">sclass</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; changes/sets property value</span>
+
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :type server: :obj:`str`</span>
+<span class="sd">        :param newvalue: new property value</span>
+<span class="sd">        :type newvalue: :obj:`str`</span>
+<span class="sd">        :param newname: new property name</span>
+<span class="sd">        :type newname: :obj:`str`</span>
+<span class="sd">        :param sclass: server class name</span>
+<span class="sd">        :type sclass: :obj:`str`</span>
+<span class="sd">        :returns: True if property name was changed</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">server</span><span class="p">:</span>
+            <span class="n">sclass</span> <span class="o">=</span> <span class="n">sclass</span> <span class="ow">or</span> <span class="n">server</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fserver</span> <span class="o">=</span> <span class="n">server</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sclass</span> <span class="o">=</span> <span class="n">sclass</span> <span class="ow">or</span> <span class="n">server</span>
+            <span class="n">fserver</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/*&quot;</span> <span class="o">%</span> <span class="n">server</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">newvalue</span><span class="p">)</span>
+        <span class="n">mss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">fserver</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+        <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">mss</span><span class="p">:</span>
+            <span class="n">devserv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_class_list</span><span class="p">(</span><span class="n">ms</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">serv</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ser</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">serv</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">ser</span> <span class="o">==</span> <span class="n">sclass</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                            <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">value</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span>
+                                <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                                <span class="p">{</span><span class="n">newname</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
 <div class="viewcode-block" id="SetUp.restartServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.restartServer">[docs]</a>    <span class="k">def</span> <span class="nf">restartServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; restarts server</span>
 
@@ -738,6 +778,8 @@
             <span class="o">+</span> <span class="s">&quot; %prog -s [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; %prog -p -n newname -o oldname &quot;</span> \
             <span class="o">+</span> <span class="s">&quot;[&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; %prog -c -n propname -w newvalue &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;[&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; %prog -a &lt;recorder_path&gt;</span><span class="se">\n\n</span><span class="s"> &quot;</span> \
             <span class="o">+</span> <span class="s">&quot;e.g.: nxsetup -x</span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot;      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig&quot;</span> \
@@ -745,6 +787,8 @@
             <span class="o">+</span> <span class="s">&quot;      nxsetup -a /usr/share/pyshared/sardananxsrecorder</span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot;      nxsetup -p -n DefaultPreselectedComponents&quot;</span> \
             <span class="o">+</span> <span class="s">&quot; -o DefaultAutomaticComponents NXSRecSelector</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -c -n DefaultPreselectedComponents&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; -w </span><span class="se">\&quot;</span><span class="s">[</span><span class="se">\\\&quot;</span><span class="s">pinhole1</span><span class="se">\\\&quot;</span><span class="s">,</span><span class="se">\\\&quot;</span><span class="s">slit2</span><span class="se">\\\&quot;</span><span class="s">]</span><span class="se">\&quot;</span><span class="s"> NXSRecSelector/r228</span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot;      nxsetup -r Pool/haso228 -l 2 </span><span class="se">\n</span><span class="s">&quot;</span> \
             <span class="o">+</span> <span class="s">&quot;      nxsetup -s MacroServer -l 3 </span><span class="se">\n</span><span class="s">&quot;</span>
 
@@ -789,10 +833,15 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--move-prop&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
                       <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;moveprop&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;change property name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--change-prop&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;changeprop&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;change property value&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--oldname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
                       <span class="n">dest</span><span class="o">=</span><span class="s">&quot;oldname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;old property name&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--newname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;new property name&quot;</span><span class="p">)</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;(new) property name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-w&quot;</span><span class="p">,</span> <span class="s">&quot;--propvalue&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;propvalue&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;new property value&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--restart&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
                       <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;restart&quot;</span><span class="p">,</span>
                       <span class="n">help</span><span class="o">=</span><span class="s">&quot;restart server(s) action&quot;</span><span class="p">)</span>
@@ -817,7 +866,7 @@
     <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">execute</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">restart</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">recpath</span> \
-       <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+       <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">changeprop</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
@@ -917,6 +966,17 @@
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changePropertyName</span><span class="p">(</span>
                     <span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">oldname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span><span class="p">):</span>
+                <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">changeprop</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">propvalue</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changePropertyValue</span><span class="p">(</span>
+                    <span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">propvalue</span><span class="p">):</span>
                 <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
 
 </div>

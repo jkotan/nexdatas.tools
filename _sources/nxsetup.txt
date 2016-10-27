@@ -24,6 +24,8 @@ Synopsis
 
 	  nxsetup -p -n newname -o oldname [<server_class1> <server_class2> ... ]
 
+	  nxsetup -c -n propname -o propvalue [<server_class1> <server_class2> ... ]
+
 
 Options:
   -h, --help            show this help message and exit
@@ -45,7 +47,9 @@ Options:
   -o OLDNAME, --oldname=OLDNAME
                         old property name
   -n NEWNAME, --newname=NEWNAME
-                        new property name
+                        (new) property name
+  -w PROPVALUE, --propvalue=PROPVALUE
+                        new property value
   -r, --restart         restart server(s) action
   -s, --start           start server(s) action
   -l LEVEL, --level=LEVEL
@@ -71,3 +75,5 @@ Example
 	  nxsetup -s Pool/haso228 -l2
 
           nxsetup -r MacroServer -l3
+
+          nxsetup -c -n DefaultPreselectedComponents -w "[\"pinhole1\",\"slit2\"]" NXSRecSelector/r228
