@@ -60,8 +60,9 @@ Options:
        full_path filters (separated by commas without spaces). Default: '*'. E.g. '*:NXsample/*'
    -v VALUES, --values=VALUES
        field names which value should be stored (separated by commas without spaces). Default: depends_on
-   -g, --geometry        perform geometry full_path filters, i.e. *:NXtransformations/*,*/depends_on. It works only when -f is not defined
-
+   -g, --geometry        show fields with geometry full_path filters, i.e. *:NXtransformations/*,*/depends_on. It works only when -f is not defined
+   -s, --source          show datasource parameters
+   
 Example
 """""""
 

@@ -60,6 +60,14 @@ nxstools.nxscreate_onlineds module
     :undoc-members:
     :show-inheritance:
 
+nxstools.nxscreate_stdcomp module
+----------------------------------
+
+.. automodule:: nxstools.nxscreate_stdcomp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 nxstools.nxscreate_tangods module
 ---------------------------------
 
@@ -88,6 +96,30 @@ nxstools.nxscreator module
 --------------------------
 
 .. automodule:: nxstools.nxscreator
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsfileinfo_general module
+-----------------------------------
+
+.. automodule:: nxstools.nxsfileinfo_general
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsfileinfo_field module
+---------------------------------
+
+.. automodule:: nxstools.nxsfileinfo_field
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsfileparser module
+-----------------------------
+
+.. automodule:: nxstools.nxsfileparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -126,7 +158,7 @@ nxstools.filenamegenerator module
     :show-inheritance:
 
 nxstools.release module
----------------------------------
+-----------------------
 
 .. automodule:: nxstools.release
     :members:

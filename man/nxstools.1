@@ -37,13 +37,15 @@ Authors: Jan Kotanski
 Configuration tools for NeXDaTaS Tango Servers consists of the following command\-line scripts:
 .INDENT 0.0
 .IP \(bu 2
-\fI\%nxscollect\fP uploads external images into NeXus/HDF5 file
+\fI\%nxscollect\fP uploads external images into the NeXus/HDF5 file
 .IP \(bu 2
 \fI\%nxsconfig\fP reads NeXus Configuration Server settings
 .IP \(bu 2
 \fI\%nxscreate\fP creates NeXus Configuration components
 .IP \(bu 2
 \fI\%nxsdata\fP runs NeXus Data Writer
+.IP \(bu 2
+\fI\%nxsfileinfo\fP shows nedadata of the NeXus/HDF5 file
 .IP \(bu 2
 \fI\%nxsetup\fP setups NeXDaTaS Tango Server environment
 .UNINDENT
@@ -1055,7 +1057,10 @@ full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g.
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
 .B \-g\fP,\fB  \-\-geometry
-perform geometry full_path filters, i.e.*:NXtransformations/\fI,\fP/depends_on. It works only when \-f is not defined
+show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/depends_on. It works only when \-f is not defined
+.TP
+.B \-s\fP,\fB  \-\-source
+show datasource parameters
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1343,6 +1348,14 @@ datasource creator from online files
 .INDENT 0.0
 .TP
 .B nxstools.nxscreate_onlineds.main()
+the main function
+.UNINDENT
+.SS nxstools.nxscreate_stdcomp module
+.sp
+component creator from standard templates
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate_stdcomp.main()
 the main function
 .UNINDENT
 .SS nxstools.nxscreate_tangods module
@@ -2113,6 +2126,128 @@ creates a tango datasource xml and stores it in DB or filesytem
 Bases: \fI\%exceptions.Exception\fP
 .sp
 wrong parameter exception
+.UNINDENT
+.SS nxstools.nxsfileinfo_general module
+.sp
+NeXus main metadata viewer
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_general.PNIIO = True
+(\fI\%bool\fP) True if pni.io.nx.h5 available
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_general.main()
+the main function
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_general.parseentry(entry, description, keyvalue)
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_general.show(root)
+show general informations
+.INDENT 7.0
+.TP
+.B Parameters
+\fBroot\fP (\fBpni.io.nx.h5.nxroot\fP) \-\- nexus root node
+.UNINDENT
+.UNINDENT
+.SS nxstools.nxsfileinfo_field module
+.sp
+NeXus main metadata viewer
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_field.PNIIO = True
+(\fI\%bool\fP) True if pni.io.nx.h5 available
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo_field.main()
+the main function
+.UNINDENT
+.SS nxstools.nxsfileparser module
+.sp
+NeXus main metadata viewer
+.INDENT 0.0
+.TP
+.B class nxstools.nxsfileparser.NXSFileParser(root)
+Bases: \fI\%object\fP
+.sp
+Metadata parser for NeXus files
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+\fBroot\fP (\fBpni.io.nx.h5.nxroot\fP) \-\- nexus root node
+.UNINDENT
+.INDENT 7.0
+.TP
+.B attrdesc = None
+(<\fI\%dict\fP <\fI\%str\fP, 
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = None
+(\fI\%list\fP <\fI\%dict\fP <\fI\%str\fP, \fIany\fP> >) 
+.UNINDENT
+.INDENT 7.0
+.TP
+.B filters = None
+(\fBlist\(ga< :obj:\(gastr\fP>)  filters for \fIfull_path\fP names
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod getpath(path)
+converts full_path with NX_classes into nexus_path
+.INDENT 7.0
+.TP
+.B Parameters
+\fBpath\fP (\fI\%str\fP) \-\- nexus full_path
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B parse()
+parses the file and creates the filtered description list
+.UNINDENT
+.INDENT 7.0
+.TP
+.B valuestostore = None
+(\fBlist\(ga< :obj:\(gastr\fP>)  field names which value should be stored
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileparser.getdsname(xmlstring)
+provides datasource name from datasource xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileparser.getdssource(xmlstring)
+provides source from datasource xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileparser.getdstype(xmlstring)
+provides datasource type from datasource xml string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+.UNINDENT
 .UNINDENT
 .SS nxstools.nxsparser module
 .sp
@@ -3103,7 +3238,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fae0979e150>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f694bd84550>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
