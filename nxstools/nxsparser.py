@@ -61,7 +61,7 @@ class ParserTools(object):
             replace("&quot;", "\"").replace("&amp;", "&")
 
     @classmethod
-    def _getRecord(cls, node):
+    def getRecord(cls, node):
         """ fetches record name or query from datasource node
 
         :param node: datasource node
@@ -172,7 +172,7 @@ class ParserTools(object):
                     dsname = ds.attributes["name"].value
                 else:
                     dsname = None
-                record = cls._getRecord(ds)
+                record = cls.getRecord(ds)
                 dslist.append({
                     "source_type": dstype,
                     "source_name": dsname,
@@ -417,7 +417,7 @@ class ParserTools(object):
         :rtype: :obj:`str`
         """
         indom = parseString(xmlc)
-        return cls._getRecord(indom)
+        return cls.getRecord(indom)
 
 
 class TableTools(object):

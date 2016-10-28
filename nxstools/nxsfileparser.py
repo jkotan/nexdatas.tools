@@ -24,10 +24,61 @@ import sys
 import os
 import time
 import fnmatch
+from xml.dom.minidom import parseString
 
-from nxstools.nxsparser import TableTools
+from nxstools.nxsparser import TableTools, ParserTools
 
 from optparse import OptionParser
+
+
+def getdsname(xmlstring):
+    """ provides datasource name from datasource xml string
+
+    :param xmlstring: datasource xml string
+    :type xmlstring: :obj:`str`
+    """
+
+    indom = parseString(xmlstring)
+    nodes = indom.getElementsByTagName("datasource")
+    dsname = ""
+    if nodes:
+        ds = nodes[0]
+        if ds.hasAttribute("name"):
+            dsname = ds.attributes["name"].value
+    return dsname
+
+
+def getdstype(xmlstring):
+    """ provides datasource type from datasource xml string
+
+    :param xmlstring: datasource xml string
+    :type xmlstring: :obj:`str`
+    """
+
+    indom = parseString(xmlstring)
+    nodes = indom.getElementsByTagName("datasource")
+    dstype = ""
+    if nodes:
+        ds = nodes[0]
+        if ds.hasAttribute("type"):
+            dstype = str(ds.attributes["type"].value)
+    return dstype
+
+
+def getdssource(xmlstring):
+    """ provides source from datasource xml string
+
+    :param xmlstring: datasource xml string
+    :type xmlstring: :obj:`str`
+    """
+
+    indom = parseString(xmlstring)
+    nodes = indom.getElementsByTagName("datasource")
+    dssource = ""
+    if nodes:
+        ds = nodes[0]
+        dssource = ParserTools.getRecord(ds)
+    return dssource
 
 
 class NXSFileParser(object):
@@ -49,12 +100,16 @@ class NXSFileParser(object):
         #   [ :obj:`str`, :obj:`types.MethodType` ] >) \
         #    nexus field attribute show names and their type convertes
         self.attrdesc = {
-            "type": ["nexus_type", str],
+            "nexus_type": ["type", str],
             "units": ["units", str],
             "depends_on": ["depends_on", str],
-            "transformation_type": ["trans_type", str],
-            "vector": ["trans_vector", list],
-            "offset": ["trans_offset", list],
+            "trans_type": ["transformation_type", str],
+            "trans_vector": ["vector", str],
+            "trans_offset": ["offset", str],
+            "source_name": ["nexdatas_source", getdsname],
+            "source_type": ["nexdatas_source", getdstype],
+            "source": ["nexdatas_source", getdssource],
+            "strategy": ["nexdatas_strategy", str],
         }
         #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
         self.valuestostore = ["depends_on"]
@@ -99,8 +154,8 @@ class NXSFileParser(object):
             anames = [at.name for at in attrs]
 
             for key, vl in self.attrdesc.items():
-                if key in anames:
-                    desc[vl[0]] = str(attrs[key][...])
+                if vl[0] in anames:
+                    desc[key] = vl[1](attrs[vl[0]][...])
         if node.name in self.valuestostore and node.is_valid:
             desc["value"] = node[...]
 

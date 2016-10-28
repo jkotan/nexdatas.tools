@@ -81,8 +81,17 @@ def show(root):
                               ins.open("chemical_formula").read())
             print("Start time:             %s" % en.open("start_time").read())
             print("End time:               %s" % en.open("end_time").read())
+            if "program_name" in en.names():
+                pn = en.open("program_name")
+                pname = pn.read()
+                attr = pn.attributes
+                names = [at.name for at in attr]
+                if "scan_command" in names:
+                    scommand = attr["scan_command"][...]
+                    
+                print("Program:                %s [%s]" % (pname, scommand))
     print("=" * 80)
-    
+
 
 def main():
     """ the main function
@@ -91,8 +100,7 @@ def main():
     #: usage example
     usage = "usage: nxsfileinfo general <nexus_file_name>\n"\
         + "  e.g.: nxsfileinfo general saxs_ref1_02.nxs \n\n" \
-        + " show general information for the nexus file" 
-
+        + " show general information for the nexus file"
 
     #: option parser
     parser = OptionParser(usage=usage)

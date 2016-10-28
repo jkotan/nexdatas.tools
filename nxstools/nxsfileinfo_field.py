@@ -42,30 +42,36 @@ def main():
     """
 
     #: usage example
-    usage = "usage: nxsinfo geometry <file_name>\n"\
-        + "  e.g.: nxsinfo geometry saxs_ref1_02.nxs\n\n "\
-        + "show geometry information for the nexus file" 
+    usage = "usage: nxsinfo field <file_name>\n"\
+        + "  e.g.: nxsinfo field saxs_ref1_02.nxs\n\n "\
+        + "show field information for the nexus file"
 
     #: option parser
     parser = OptionParser(usage=usage)
     parser.add_option(
         "-c", "--columns", type="string",
-        help="names of column to be shown separated by commas "
-        "without spaces. The possible names are: "
+        help="names of column to be shown (separated by commas "
+        "without spaces). The possible names are: "
         "depends_on,dtype,full_path,nexus_path,nexus_type,shape,"
-        "trans_type,trans_offset,trans_vector,units,value,",
+        "source,source_name,source_type,strategy,trans_type,trans_offset,"
+        "trans_vector,units,value",
         dest="headers", default="")
     parser.add_option(
         "-f", "--filters", type="string",
-        help="full_path filters separated by commas "
-        "without spaces. Default: "
-        "*:NXtransformations/*,*/depends_on",
+        help="full_path filters (separated by commas "
+        "without spaces). Default: '*'. E.g. '*:NXsample/*'",
         dest="filters", default="")
     parser.add_option(
         "-v", "--values", type="string",
-        help="field names which value should be stored separated by commas "
-        "without spaces. Default: depends_on",
+        help="field names which value should be stored (separated by commas "
+        "without spaces). Default: depends_on",
         dest="values", default="")
+    parser.add_option(
+        "-g", "--geometry", action="store_true",
+        default=False, dest="geometry",
+        help="perform geometry full_path filters, i.e."
+        "*:NXtransformations/*,*/depends_on. "
+        "It works only when  -f is not defined")
 
     (options, args) = parser.parse_args()
 
@@ -87,8 +93,11 @@ def main():
         parser.print_help()
         sys.exit(255)
 
-    #: (:obj:`list`< :obj:`str`>)  full_path filters 
-    filters = ["*:NXtransformations/*", "*/depends_on"]
+    #: (:obj:`list`< :obj:`str`>)  full_path filters
+    filters = []
+    if options.geometry:
+        filters = ["*:NXtransformations/*", "*/depends_on"]
+
     #: (:obj:`list`< :obj:`str`>)  column headers
     headers = ["nexus_path", "nexus_type", "units",
                "trans_type", "trans_vector", "trans_offset",
@@ -96,7 +105,7 @@ def main():
 
     #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
     values = ["depends_on"]
-    
+
     if options.headers:
         headers = options.headers.split(',')
     if options.filters:
@@ -104,22 +113,20 @@ def main():
     if options.values:
         values = options.values.split(',')
 
-    
     rt = fl.root()
     nxsparser = NXSFileParser(rt)
     nxsparser.filters = filters
     nxsparser.valuestostore = values
     nxsparser.parse()
     fl.close()
-    
+
     description = []
     ttools = TableTools(nxsparser.description)
     ttools.title = "    file: '%s'" % args[0]
     ttools.headers = headers
     description.extend(ttools.generateList())
     print("\n".join(description))
-    
-    
+
+
 if __name__ == "__main__":
     main()
-

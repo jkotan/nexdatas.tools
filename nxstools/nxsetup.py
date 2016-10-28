@@ -107,7 +107,8 @@ knownHosts = {
                    'user': 'p10user', 'dbname': 'nxsconfig'},
     'haspp11oh': {'beamline': 'p11', 'masterHost': 'haspp11oh',
                   'user': 'p11user', 'dbname': 'nxsconfig'},
-    'haspp11sardana': {'beamline': 'p11', 'masterHost': 'haspp11sardana',
+    'haspp11sardana': {'beamline': 'p11',
+                       'masterHost': 'haspp11sardana',
                        'user': 'p11user', 'dbname': 'nxsconfig'},
     'haspp11user02': {'beamline': 'p11', 'masterHost': 'haspp11user02',
                       'user': 'p11user', 'dbname': 'nxsconfig'},
@@ -696,7 +697,8 @@ def main():
     (options, args) = parser.parse_args()
 
     if not options.execute and not options.restart and not options.recpath \
-       and not options.moveprop and not options.changeprop and not options.start:
+       and not options.moveprop and not options.changeprop \
+       and not options.start:
         parser.print_help()
         print("\n")
         sys.exit(255)

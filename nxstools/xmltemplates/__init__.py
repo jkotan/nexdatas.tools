@@ -190,12 +190,12 @@ standardComponentVariables = {
         },
         'unitcalibration': {
             'default': None,
-            'doc': " unit calibration from dcmmotor"
+            'doc': "unit calibration from dcmmotor"
             " (datasource)"
         },
         'crystal': {
             'default': None,
-            'doc': " type of crystal i.e. 0->Si111,1->Si311,2->Si111 ChannelCut "
+            'doc': "type of crystal i.e. 0->Si111,1->Si311,2->Si111 ChannelCut"
             " (datasource)"
         },
         'exitoffset': {

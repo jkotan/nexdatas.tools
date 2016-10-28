@@ -2,21 +2,22 @@
 import os
 import sys
 from nxstools import nxsfileinfo_general
-from nxstools import nxsfileinfo_geometry
+from nxstools import nxsfileinfo_field
 
 commandModules = {
     "general": nxsfileinfo_general,
-    "geometry": nxsfileinfo_geometry,
+    "field": nxsfileinfo_field,
 }
 
 if len(sys.argv) < 2 or sys.argv[1] not in commandModules.keys():
     message = "Usage: nxsfileinfo <command> [options]" \
-        + " [<arg1> [<arg2> ... ] ] \n\n" \
+        + " <nexus_file_name> \n\n" \
         + "Commands:\n\n" \
         + "    general \n" \
         + "         show general information for the nexus file \n\n" \
-        + "    geometry \n" \
-        + "         show geometry information for the nexus file \n\n" \
+        + "    field \n" \
+        + "         show field information for the nexus file \n\n\n" \
+        + "For further details:  nxsfileinfo <command> --help \n\n" \
 
     print(message)
 else:
