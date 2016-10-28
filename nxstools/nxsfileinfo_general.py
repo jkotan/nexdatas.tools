@@ -88,8 +88,8 @@ def show(root):
                 names = [at.name for at in attr]
                 if "scan_command" in names:
                     scommand = attr["scan_command"][...]
-                    
-                print("Program:                %s [%s]" % (pname, scommand))
+                    pname = "%s [%s]" % (pname, scommand)
+                print("Program:                %s" % pname)
     print("=" * 80)
 
 
