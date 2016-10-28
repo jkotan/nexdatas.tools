@@ -325,6 +325,8 @@ man_pages = [
      [u'Jan Kotanski'], 1),
     ('nxsdata', 'nxsdata', 'run NeXus Data Writer',
      [u'Jan Kotanski'], 1),
+    ('nxsfileinfo', 'nxsfileinfo', 'show metadata of the NeXus file',
+     [u'Jan Kotanski'], 1),
     ('nxsetup', 'nxsetup', 'set NeXDaTaS Tango Server environment up',
      [u'Jan Kotanski'], 1),
 ]

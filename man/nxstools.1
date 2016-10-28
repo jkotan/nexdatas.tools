@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "October 25, 2016" "2.9" "NXSTools"
+.TH "NXSTOOLS" "1" "October 28, 2016" "2.10" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -972,6 +972,103 @@ nxsdata openfile \-s p02/tangodataserver/exp.01  /user/data/myfile.h5
 .fi
 .UNINDENT
 .UNINDENT
+.SH NXSCREATE
+.SS Description
+.sp
+The nxsfileinfo program show metadata from nexus files
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo <command> [options] <nexus_file_name>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The following commands are available: general, field
+.SS nxscreate general
+.sp
+It shows general information for he nexus file.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo general <nexus_file_name>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo general saxs_ref1_02.nxs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate tangods
+.sp
+It shows field information for the nexus file.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Usage: nxsinfo field <file_name>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-c \ HEADERS\fP,\fB \ \-\-columns\fB= HEADERS
+names of column to be shown (separated by commas without spaces). The possible names are: depends_on,dtype,full_path,nexus_path,nexus_type,shape,source,source_name,source_type,strategy,trans_type,trans_offset,trans_vector,units,value
+.TP
+.BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
+full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
+.TP
+.BI \-v \ VALUES\fP,\fB \ \-\-values\fB= VALUES
+field names which value should be stored (separated by commas without spaces). Default: depends_on
+.TP
+.B \-g\fP,\fB  \-\-geometry
+perform geometry full_path filters, i.e.*:NXtransformations/\fI,\fP/depends_on. It works only when \-f is not defined
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsinfo field /tmp/saxs_ref1_02.nxs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
 .SH NXSETUP
 .SS Description
 .sp
@@ -1115,6 +1212,11 @@ collects the all image files defined by hdf5
 postrun fields of NXcollection groups and renames the temporary file
 to the origin one if the action was successful
 .UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.PNIIO = True
+(\fI\%bool\fP) True if pni.io.nx.h5 available
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -2021,6 +2123,22 @@ Command\-line tool for ascess to the nexdatas configuration server
 Bases: \fI\%object\fP
 .sp
 configuration server adapter
+.INDENT 7.0
+.TP
+.B classmethod getRecord(node)
+fetches record name or query from datasource node
+.INDENT 7.0
+.TP
+.B Parameters
+\fBnode\fP (\fBxml.dom.minidom.Node\fP) \-\- datasource node
+.TP
+.B Returns
+record name or query
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
 .INDENT 7.0
 .TP
 .B classmethod mergeDefinitions(xmls)
@@ -2936,7 +3054,7 @@ xml template files of modules
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.standardComponentVariables = {\(aqdefault\(aq: {\(aq__configdevice__\(aq: {\(aqdefault\(aq: \(aqnxs/configserver/localhost\(aq, \(aqdoc\(aq: \(aqconfiguration server device name (string)\(aq}, \(aqsourcename\(aq: {\(aqdefault\(aq: \(aqPETRA III\(aq, \(aqdoc\(aq: \(aqsource name (string)\(aq}, \(aq__tangoport__\(aq: {\(aqdefault\(aq: \(aq10000\(aq, \(aqdoc\(aq: \(aqtango port (string)\(aq}, \(aqlongname\(aq: {\(aqdefault\(aq: \(aqP09 Resonant Scattering and Diffraction beamline\(aq, \(aqdoc\(aq: \(aqbeamline long name (string)\(aq}, \(aq__tangohost__\(aq: {\(aqdefault\(aq: \(aqlocalhost\(aq, \(aqdoc\(aq: \(aqtango host (string)\(aq}, \(aqshortname\(aq: {\(aqdefault\(aq: \(aqP09\(aq, \(aqdoc\(aq: \(aqbeamline short name (string)\(aq}}, \(aqsource\(aq: {\(aqsourceenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam energy (datasource)\(aq}, \(aqbeamcurrent\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam current (datasource)\(aq}}, \(aqslit\(aq: {\(aqxgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal gap (datasource)\(aq}, \(aqright\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqright blade position (datasource)\(aq}, \(aqleft\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqleft blade position (datasource)\(aq}, \(aqtop\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtop blade position (datasource)\(aq}, \(aqygap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical gap (datasource)\(aq}, \(aqbottom\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbottom blade position (datasource)\(aq}, \(aqxoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal offset (datasource)\(aq}, \(aqyoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertiacal offset (datasource)\(aq}}, \(aqdcm\(aq: {\(aqtheta\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta angle (datasource)\(aq}, \(aqpitch2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta rotation of the second cristal (datasource)\(aq}, \(aqjack2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsecond vertical jack of table (datasource)\(aq}, \(aqjack3\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqthird vertical jack of table (datasource)\(aq}, \(aqjack1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqfirst vertical jack of table (datasource)\(aq}, \(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsynchronized monochromator energy (datasource)\(aq}, \(aqexitoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq exit offset (datasource)\(aq}, \(aqbraggangle\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbragg angle (datasource)\(aq}, \(aqoxfordhorizontal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq horizontal translation (datasource)\(aq}, \(aqcrystal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq type of crystal i.e. 0\->Si111,1\->Si311,2\->Si111 ChannelCut  (datasource)\(aq}, \(aqperp2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical translation of the second cristal (datasource)\(aq}, \(aqdcmdevice\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqFMBOxfDCMEnergy tango device (string)\(aq}, \(aqpar2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbeam parallel translation of the second cristal (datasource)\(aq}, \(aqunitcalibration\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq unit calibration from dcmmotor (datasource)\(aq}, \(aqlat\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal lattice translation of the first cristal (datasource)\(aq}, \(aqtable\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical position of table (datasource)\(aq}, \(aqyaw\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqphi rotation of the first cristal (datasource)\(aq}, \(aqroll2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the second cristal (datasource)\(aq}, \(aqenergyfmb\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqmonochromator energy (datasource)\(aq}, \(aqroll1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the first cristal (datasource)\(aq}}, \(aqundulator\(aq: {\(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator energy (datasource)\(aq}, \(aqtaper\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqgap difference between upstream and downstream ends of the insertion device (datasource)\(aq}, \(aqharmonic\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator harmonic (datasource)\(aq}, \(aqgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqseparation between opposing pairs of magnetic pole (datasource)\(aq}}}
+.B nxstools.nxsdevicetools.standardComponentVariables = {\(aqdefault\(aq: {\(aq__configdevice__\(aq: {\(aqdefault\(aq: \(aqnxs/configserver/localhost\(aq, \(aqdoc\(aq: \(aqconfiguration server device name (string)\(aq}, \(aqsourcename\(aq: {\(aqdefault\(aq: \(aqPETRA III\(aq, \(aqdoc\(aq: \(aqsource name (string)\(aq}, \(aq__tangoport__\(aq: {\(aqdefault\(aq: \(aq10000\(aq, \(aqdoc\(aq: \(aqtango port (string)\(aq}, \(aqlongname\(aq: {\(aqdefault\(aq: \(aqP09 Resonant Scattering and Diffraction beamline\(aq, \(aqdoc\(aq: \(aqbeamline long name (string)\(aq}, \(aq__tangohost__\(aq: {\(aqdefault\(aq: \(aqlocalhost\(aq, \(aqdoc\(aq: \(aqtango host (string)\(aq}, \(aqshortname\(aq: {\(aqdefault\(aq: \(aqP09\(aq, \(aqdoc\(aq: \(aqbeamline short name (string)\(aq}}, \(aqsource\(aq: {\(aqsourceenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam energy (datasource)\(aq}, \(aqbeamcurrent\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam current (datasource)\(aq}}, \(aqslit\(aq: {\(aqxgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal gap (datasource)\(aq}, \(aqright\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqright blade position (datasource)\(aq}, \(aqleft\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqleft blade position (datasource)\(aq}, \(aqtop\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtop blade position (datasource)\(aq}, \(aqygap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical gap (datasource)\(aq}, \(aqbottom\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbottom blade position (datasource)\(aq}, \(aqxoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal offset (datasource)\(aq}, \(aqyoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertiacal offset (datasource)\(aq}}, \(aqdcm\(aq: {\(aqtheta\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta angle (datasource)\(aq}, \(aqpitch2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta rotation of the second cristal (datasource)\(aq}, \(aqjack2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsecond vertical jack of table (datasource)\(aq}, \(aqjack3\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqthird vertical jack of table (datasource)\(aq}, \(aqjack1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqfirst vertical jack of table (datasource)\(aq}, \(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsynchronized monochromator energy (datasource)\(aq}, \(aqexitoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq exit offset (datasource)\(aq}, \(aqbraggangle\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbragg angle (datasource)\(aq}, \(aqoxfordhorizontal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq horizontal translation (datasource)\(aq}, \(aqcrystal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtype of crystal i.e. 0\->Si111,1\->Si311,2\->Si111 ChannelCut (datasource)\(aq}, \(aqperp2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical translation of the second cristal (datasource)\(aq}, \(aqdcmdevice\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqFMBOxfDCMEnergy tango device (string)\(aq}, \(aqpar2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbeam parallel translation of the second cristal (datasource)\(aq}, \(aqunitcalibration\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqunit calibration from dcmmotor (datasource)\(aq}, \(aqlat\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal lattice translation of the first cristal (datasource)\(aq}, \(aqtable\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical position of table (datasource)\(aq}, \(aqyaw\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqphi rotation of the first cristal (datasource)\(aq}, \(aqroll2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the second cristal (datasource)\(aq}, \(aqenergyfmb\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqmonochromator energy (datasource)\(aq}, \(aqroll1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the first cristal (datasource)\(aq}}, \(aqundulator\(aq: {\(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator energy (datasource)\(aq}, \(aqtaper\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqgap difference between upstream and downstream ends of the insertion device (datasource)\(aq}, \(aqharmonic\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator harmonic (datasource)\(aq}, \(aqgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqseparation between opposing pairs of magnetic pole (datasource)\(aq}}}
 .INDENT 7.0
 .TP
 .B (\fI\%dict\fP <\fI\%str\fP , \fI\%dict\fP <\fI\%str\fP , \fI\%str\fP > >)
@@ -2985,7 +3103,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f8c4fd55950>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fae0979e150>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
