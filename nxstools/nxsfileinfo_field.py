@@ -72,6 +72,10 @@ def main():
         help="perform geometry full_path filters, i.e."
         "*:NXtransformations/*,*/depends_on. "
         "It works only when  -f is not defined")
+    parser.add_option(
+        "-s", "--source", action="store_true",
+        default=False, dest="source",
+        help="show datasource parameters")
 
     (options, args) = parser.parse_args()
 
@@ -90,21 +94,29 @@ def main():
         fl = nx.open_file(args[0])
     except:
         sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n" % args[0])
-        parser.print_help()
+        parserp.rint_help()
         sys.exit(255)
+
+    #: (:obj:`list`< :obj:`str`>)  parameters which have to exists to be shown
+    toshow = None
 
     #: (:obj:`list`< :obj:`str`>)  full_path filters
     filters = []
-    if options.geometry:
-        filters = ["*:NXtransformations/*", "*/depends_on"]
 
     #: (:obj:`list`< :obj:`str`>)  column headers
-    headers = ["nexus_path", "nexus_type", "units",
-               "trans_type", "trans_vector", "trans_offset",
-               "depends_on"]
-
+    headers = ["nexus_path", "source_name", "units" , "dtype", "shape", "value"]
+    if options.geometry:
+        filters = ["*:NXtransformations/*", "*/depends_on"]
+        headers = ["nexus_path", "source_name", "units",
+                   "trans_type", "trans_vector", "trans_offset",
+                   "depends_on"]
+    if options.source:
+        headers = ["source_name", "nexus_type", "shape", "strategy",
+                   "source"]
+        toshow = ["source_name"]
     #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
     values = ["depends_on"]
+
 
     if options.headers:
         headers = options.headers.split(',')
@@ -121,7 +133,7 @@ def main():
     fl.close()
 
     description = []
-    ttools = TableTools(nxsparser.description)
+    ttools = TableTools(nxsparser.description, toshow)
     ttools.title = "    file: '%s'" % args[0]
     ttools.headers = headers
     description.extend(ttools.generateList())
