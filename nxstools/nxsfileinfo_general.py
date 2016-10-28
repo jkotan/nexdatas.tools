@@ -25,6 +25,8 @@ import time
 
 from optparse import OptionParser
 
+from .nxsparser import TableTools
+
 #: (:obj:`bool`) True if pni.io.nx.h5 available
 PNIIO = False
 try:
@@ -34,6 +36,105 @@ except:
     pass
 
 
+def parseentry(entry, description, keyvalue):
+    key, value = keyvalue
+    at = None
+    try:
+        at = entry.attributes["NX_class"]
+    except:
+        pass
+    if at and at[...] == 'NXentry':
+        description.append({key: "Scan entry:", value: entry.name})
+        description.append(None)
+        try:
+            description.append({key: "Title:", value: entry.open("title")[...]})
+        except:
+            sys.stderr.write("nxsfileinfo: title cannot be found\n")
+        try:
+            description.append({key: "Experiment identifier:",
+                                value: entry.open("experiment_identifier")[...]})
+        except:
+            sys.stderr.write("nxsfileinfo: experiment identifier cannot be found\n")
+        for ins in entry:
+            if isinstance(ins, nx._nxh5.nxgroup):
+                iat = ins.attributes["NX_class"]
+                if iat and iat[...] == 'NXinstrument':
+                    try:
+                        description.append({
+                            key: "Instrument name:",
+                            value: ins.open("name")[...]})
+                    except:
+                        sys.stderr.write(
+                            "nxsfileinfo: instrument name cannot be found\n")
+                    try:
+                        description.append({
+                            key: "Instrument  short name:",
+                            value:
+                            ins.open("name").attributes["short_name"][...]
+                        })
+                    except:
+                        sys.stderr.write(
+                            "nxsfileinfo: instrument short name cannot"
+                            " be found\n")
+
+                    for sr in ins:
+                        if isinstance(sr, nx._nxh5.nxgroup):
+                            sat = sr.attributes["NX_class"]
+                            if sat and sat[...] == 'NXsource':
+                                try:
+                                    description.append({
+                                        key: "Source name:",
+                                        value: sr.open("name")[...]})
+                                except:
+                                    sys.stderr.write(
+                                        "nxsfileinfo: Source name"
+                                        " cannot be found\n")
+                                try:
+                                    description.append({
+                                        key: "Source short name:",
+                                        value: sr.open("name").attributes[
+                                            "short_name"][...]})
+                                except:
+                                    sys.stderr.write(
+                                        "nxsfileinfo: Source name"
+                                        " cannot be found\n")
+                elif iat and iat[...] == 'NXsample':
+                    try:
+                        description.append({
+                            key: "Sample name:",
+                            value: ins.open("name")[...]})
+                    except:
+                        sys.stderr.write(
+                            "nxsfileinfo: sample name cannot be found\n")
+                    try:
+                        description.append({
+                            key: "Sample formula:",
+                            value: ins.open("chemical_formula")[...]})
+                    except:
+                        sys.stderr.write(
+                            "nxsfileinfo: sample formula cannot be found\n")
+        try:
+            description.append({key: "Start time:",
+                                value: entry.open("start_time")[...]})
+        except:
+            sys.stderr.write("nxsfileinfo: start time cannot be found\n")
+        try:
+            description.append({key: "End time:",
+                                value: entry.open("end_time")[...]})
+        except:
+            sys.stderr.write("nxsfileinfo: end time cannot be found\n")
+        if "program_name" in entry.names():
+            pn = entry.open("program_name")
+            pname = pn.read()
+            attr = pn.attributes
+            names = [at.name for at in attr]
+            if "scan_command" in names:
+                scommand = attr["scan_command"][...]
+                pname = "%s [%s]" % (pname, scommand)
+            description.append({key: "Program:", value: pname})
+
+
+
 def show(root):
     """ show general informations
 
@@ -41,56 +142,25 @@ def show(root):
     :type root: :class:`pni.io.nx.h5.nxroot`
     """
 
-    print("=" * 80)
-    print("File name:              %s" % root.attributes["file_name"][...])
+    description = []
+
+    attr = root.attributes
+
+    names = [at.name for at in attr]
+    fname = (attr["file_name"][...] if "file_name" in names else " ") or " "
+    headers = ["File name:", fname]
 
     for en in root:
-        at = None
-        try:
-            at = en.attributes["NX_class"]
-        except:
-            pass
-        if at and at[...] == 'NXentry':
-            print("-"*80)
-            print("Scan entry:             %s" % en.name)
-            print("-" * 80)
-            print("Title:                  %s" % en.open("title").read())
-            print("Experiment identifier:  %s" %
-                  en.open("experiment_identifier").read())
-            for ins in en:
-                if isinstance(ins, nx._nxh5.nxgroup):
-                    iat = ins.attributes["NX_class"]
-                    if iat and iat[...] == 'NXinstrument':
-                        print("Instrument name:        %s" %
-                              ins.open("name").read())
-                        print("Instrument short name:  %s" %
-                              ins.open("name").attributes["short_name"][...])
-                        for sr in ins:
-                            if isinstance(sr, nx._nxh5.nxgroup):
-                                sat = sr.attributes["NX_class"]
-                                if sat and sat[...] == 'NXsource':
-                                    print("Source name:            %s" %
-                                          sr.open("name").read())
-                                    print("Source short name:      %s" %
-                                          sr.open("name").attributes[
-                                              "short_name"][...])
-                    elif iat and iat[...] == 'NXsample':
-                        print("Sample name:            %s" %
-                              ins.open("name").read())
-                        print("Sample formula:         %s" %
-                              ins.open("chemical_formula").read())
-            print("Start time:             %s" % en.open("start_time").read())
-            print("End time:               %s" % en.open("end_time").read())
-            if "program_name" in en.names():
-                pn = en.open("program_name")
-                pname = pn.read()
-                attr = pn.attributes
-                names = [at.name for at in attr]
-                if "scan_command" in names:
-                    scommand = attr["scan_command"][...]
-                    pname = "%s [%s]" % (pname, scommand)
-                print("Program:                %s" % pname)
-    print("=" * 80)
+        parseentry(en, description, headers)
+    ttools = TableTools(description)
+    ttools.title = ""
+    ttools.headers = headers
+    description[:] = ttools.generateList()
+
+    if len(description) > 4:
+        print "=" * len(description[4])
+    print("\n".join(description).strip())
+    print "=" * len(description[4])
 
 
 def main():
@@ -126,6 +196,7 @@ def main():
         sys.exit(255)
 
     rt = fl.root()
+    description = []
     show(rt)
     fl.close()
 

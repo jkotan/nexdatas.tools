@@ -467,6 +467,9 @@ class TableTools(object):
         :type description:  :obj:`list` <:obj:`str`>
         """
         for desc in description:
+            if desc is None:
+                self.__description.append(desc)
+                continue
             skip = False
             field = desc.get("nexus_path", "").split('/')[-1]
             value = desc.get("value", "")
@@ -483,6 +486,8 @@ class TableTools(object):
                 self.__description.append(desc)
 
         for desc in self.__description:
+            if desc is None:
+                continue
             for hd, vl in desc.items():
                 if hd not in self.__nonone or vl:
                     if hd not in self.__hdsizes.keys():
@@ -528,6 +533,12 @@ class TableTools(object):
             line += "-" * (self.__hdsizes[hd] - 1) + " "
         lst.append(line)
         for desc in self.__description:
+            line = ""
+            if desc is None:
+                for hd in headers:
+                    line += "-" * (self.__hdsizes[hd] - 1) + " "
+                lst.append(line.rstrip())
+                continue
             line = ""
             for hd in headers:
                 vl = desc[hd] if hd in desc else None
