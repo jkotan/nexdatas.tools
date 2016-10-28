@@ -28,9 +28,15 @@ import shutil
 import fabio
 import signal
 from optparse import OptionParser
-from pni.io.nx.h5 import open_file, deflate_filter
 from .filenamegenerator import FilenameGenerator
 
+#: (:obj:`bool`) True if pni.io.nx.h5 available
+PNIIO = False
+try:
+    from pni.io.nx.h5 import open_file, deflate_filter
+    PNIIO = True
+except:
+    pass
 
 class Collector(object):
     """ Collector merge images of external file-formats
@@ -462,6 +468,11 @@ def main():
         print ""
         sys.exit(0)
 
+    if not PNIIO:
+        sys.stderr.write("nxsfileinfo: No pni.io.nx.h5 installed\n")
+        parser.print_help()
+        sys.exit(255)
+        
     if not options.execute and not options.test:
         parser.print_help()
         print ""

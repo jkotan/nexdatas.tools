@@ -66,6 +66,7 @@ SETUPDATA = dict(
         'nxscreate',
         'nxscollect',
         'nxsetup',
+        'nxsfileinfo',
     ],
     cmdclass={'build_sphinx': BuildDoc},
     command_options={
