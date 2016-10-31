@@ -27,6 +27,7 @@ from .nxsparser import ParserTools, TableTools
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
 
+
 ##
 class ConfigServer(object):
     """ configuration server adapter
@@ -613,8 +614,13 @@ class ConfigServer(object):
                 ds, args, mandatory, private))
         return string
 
-def servers(args):
-    print "SERVERS"
+commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
+            'record': 1, 'merge': 0, 'components': 0, 'data': 0,
+            'describe': 0, 'info': 0, 'geometry': 0, 'servers': 0}
+
+def servers(options):
+    print("\n".join(listServers(options.server, 'NXSConfigServer')))
+    return
 
 def _addargs(parser, private=True, args=None):
     """ adds parser arguments"""
@@ -639,7 +645,7 @@ def _addargs(parser, private=True, args=None):
     if args:
         parser.add_argument('args', metavar='N', type=str, nargs=args,
                             help='an integer for the accumulator')
-        
+
 def _createParser():
     """ creates command-line parameters parser
 
@@ -700,53 +706,17 @@ def _createParser():
             + "of given components \n"
 
     #: (:class:`argparse.ArgumentParser`) option parser
-    parser = ArgumentParser()
-    subparsers = parser.add_subparsers(help='sub-command help')
-    parser_list = subparsers.add_parser('list', help='list help')
-    _addargs(parser_list)
-    parser_show = subparsers.add_parser('show', help='show help')
-    _addargs(parser_show)
-    parser_get = subparsers.add_parser('get', help='get help')
-    _addargs(parser_get)
-    parser_variables = subparsers.add_parser('variables', help='variables help')
-    _addargs(parser_variables)
-    parser_sources = subparsers.add_parser('sources', help='sources help')
-    _addargs(parser_sources)
-    parser_servers = subparsers.add_parser('servers', help='servers help')
-    _addargs(parser_servers)
-    parser_record = subparsers.add_parser('record', help='record help')
-    _addargs(parser_record)
-    parser_merge = subparsers.add_parser('merge', help='merge help')
-    _addargs(parser_merge)
-    parser_components = subparsers.add_parser('components', help='components help')
-    _addargs(parser_components)
-    parser_data = subparsers.add_parser('data', help='data help')
-    _addargs(parser_data)
-    parser_describe = subparsers.add_parser('describe', help='describe help')
-    _addargs(parser_describe)
-    parser_info = subparsers.add_parser('info', help='info help')
-    _addargs(parser_info)
-    parser_geometry = subparsers.add_parser('geometry', help='geometry help')
-    _addargs(parser_geometry)
-    
-#    parser = ArgumentParser(usage=usage)
-#    parser.add_option("-s", "--server", dest="server",
-#                      help="configuration server device name")
-#    parser.add_option("-d", "--datasources", action="store_true",
-#                      default=False, dest="datasources",
-#                      help="perform operation on datasources")
-#    parser.add_option("-m", "--mandatory", action="store_true",
-#                      default=False, dest="mandatory",
-#                     help="make use mandatory components")
-#    parser.add_option("-p", "--private", action="store_true",
-#                      default=False, dest="private",
-#                      help="make use private components,"
-#                      " i.e. starting with '__'")
-#    parser.add_option("-n", "--no-newlines", action="store_true",
-#                      default=False, dest="nonewlines",
-#                      help="split result with space characters")
+    pars = {}
+    pars["parser"] = ArgumentParser()
+    subparsers = pars["parser"].add_subparsers(help='sub-command help')
 
-    return parser
+    for cmd in commands.keys():
+        pars[cmd] = subparsers.add_parser(cmd, help='%s help' % cmd)
+        _addargs(pars[cmd])
+
+    pars["servers"].set_defaults(func=servers)
+
+    return pars
 
 
 
@@ -761,26 +731,23 @@ def main():
         #: system pipe
         pipe = sys.stdin.readlines()
 
-    commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
-                'record': 1, 'merge': 0, 'components': 0, 'data': 0,
-                'describe': 0, 'info': 0, 'geometry': 0}
 
-    parser = _createParser()
-    options = parser.parse_args()
-    sys.exit(0)
+    pars = _createParser()
+    options = pars["parser"].parse_args()
+
 #    (options, args) = parser.parse_args()
-
-    if args and args[0] == 'servers':
-        print("\n".join(listServers(options.server, 'NXSConfigServer')))
-        return
 
     if not options.server:
         options.server = checkServer()
 
-    if not args or args[0] not in commands or not options.server:
-        parser.print_help()
-        print("")
-        sys.exit(0)
+    print options.server
+    options.func(options)
+    sys.exit(0)
+
+#    if not args or args[0] not in commands or not options.server:
+#        parser.print_help()
+#        print("")
+#        sys.exit(0)
 
     #: command-line and pipe arguments
     parg = args[1:]
@@ -793,6 +760,8 @@ def main():
 
     #: configuration server
     cnfserver = ConfigServer(options.server, options.nonewlines)
+
+    options.func(options)
 
     #: result to print
     result = cnfserver.performCommand(
