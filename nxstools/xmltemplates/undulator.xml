@@ -3,6 +3,11 @@
   <group type="NXentry" name="entry$var.serialno">
     <group type="NXinstrument" name="instrument">
       <group type="NXinsertion_device" name="insertion_device">
+        <field type="NX_CHAR" name="type">$(type)<doc>undulator or wiggler</doc>
+        </field>
+        <field units="m" type="NX_FLOAT" name="length">2<doc>length of insertion device</doc>
+        </field>
+        <doc>undulator U23</doc>
         <field units="mm" type="NX_FLOAT64" name="gap">
           <strategy mode="INIT"/>$datasources.$(gap)<doc>separation between opposing pairs of magnetic poles</doc>
         </field>
