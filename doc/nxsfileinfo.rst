@@ -62,13 +62,10 @@ Options:
        field names which value should be stored (separated by commas without spaces). Default: depends_on
    -g, --geometry        show fields with geometry full_path filters, i.e. *:NXtransformations/*,*/depends_on. It works only when -f is not defined
    -s, --source          show datasource parameters
-   
+
 Example
 """""""
 
 .. code:: bash
 
 	  nxsinfo field /tmp/saxs_ref1_02.nxs
-
-   
-	  
