@@ -15,6 +15,7 @@ Contents
    nxsconfig
    nxscreate
    nxsdata
+   nxsfileinfo
    nxsetup
    nxstools
        

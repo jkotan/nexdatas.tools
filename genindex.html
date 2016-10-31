@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Index &mdash; NXSTools 2.9.2 documentation</title>
+    <title>Index &mdash; NXSTools 2.10.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,7 +17,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.9.2',
+        VERSION:     '2.10.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -30,7 +30,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.9.2 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.10.0 documentation" href="index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.9</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.10</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -96,6 +96,13 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsdata.html#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="nxsfileinfo.html">nxscreate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxscreate-general">nxscreate general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxscreate-tangods">nxscreate tangods</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nxsetup.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsetup.html#synopsis">Synopsis</a></li>
@@ -111,10 +118,14 @@
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
@@ -188,6 +199,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
@@ -228,14 +240,18 @@
   <dt><a href="nxstools.html#nxstools.nxsxml.NTag.addTagAttr">addTagAttr() (nxstools.nxsxml.NTag method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#nxstools.nxsxml.NTag.addText">addText() (nxstools.nxsxml.NTag method)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#nxstools.nxscreator.Creator.args">args (nxstools.nxscreator.Creator attribute)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.attrdesc">attrdesc (nxstools.nxsfileparser.NXSFileParser attribute)</a>
   </dt>
 
       
@@ -395,6 +411,10 @@
   </dt>
 
       
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.description">description (nxstools.nxsfileparser.NXSFileParser attribute)</a>
+  </dt>
+
+      
   <dt><a href="nxstools.html#nxstools.nxscreator.Device">Device (class in nxstools.nxscreator)</a>
   </dt>
 
@@ -402,12 +422,12 @@
   <dt><a href="nxstools.html#nxstools.nxscreator.DeviceDSCreator">DeviceDSCreator (class in nxstools.nxscreator)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#nxstools.nxsxml.NDimensions.dim">dim() (nxstools.nxsxml.NDimensions method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#nxstools.nxsxml.NDimensions.dims">dims (nxstools.nxsxml.NDimensions attribute)</a>
   </dt>
@@ -459,6 +479,10 @@
   </dt>
 
       
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.filters">filters (nxstools.nxsfileparser.NXSFileParser attribute)</a>
+  </dt>
+
+      
   <dt><a href="nxstools.html#nxstools.nxscreator.Device.findAttribute">findAttribute() (nxstools.nxscreator.Device method)</a>
   </dt>
 
@@ -502,10 +526,30 @@
   <dt><a href="nxstools.html#nxstools.nxsdevicetools.getClassName">getClassName() (in module nxstools.nxsdevicetools)</a>
   </dt>
 
+      
+  <dt><a href="nxstools.html#nxstools.nxsdevicetools.getDataSourceComponents">getDataSourceComponents() (in module nxstools.nxsdevicetools)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.getdsname">getdsname() (in module nxstools.nxsfileparser)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.getdssource">getdssource() (in module nxstools.nxsfileparser)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="nxstools.html#nxstools.nxsdevicetools.getDataSourceComponents">getDataSourceComponents() (in module nxstools.nxsdevicetools)</a>
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.getdstype">getdstype() (in module nxstools.nxsfileparser)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.getpath">getpath() (nxstools.nxsfileparser.NXSFileParser class method)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsparser.ParserTools.getRecord">getRecord() (nxstools.nxsparser.ParserTools class method)</a>
   </dt>
 
       
@@ -638,6 +682,10 @@
   </dt>
 
         
+  <dt><a href="nxstools.html#nxstools.nxscreate_stdcomp.main">(in module nxstools.nxscreate_stdcomp)</a>
+  </dt>
+
+        
   <dt><a href="nxstools.html#nxstools.nxscreate_tangods.main">(in module nxstools.nxscreate_tangods)</a>
   </dt>
 
@@ -647,6 +695,14 @@
 
         
   <dt><a href="nxstools.html#nxstools.nxsetup.main">(in module nxstools.nxsetup)</a>
+  </dt>
+
+        
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_field.main">(in module nxstools.nxsfileinfo_field)</a>
+  </dt>
+
+        
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_general.main">(in module nxstools.nxsfileinfo_general)</a>
   </dt>
 
         
@@ -735,6 +791,10 @@
   </dt>
 
       
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser">NXSFileParser (class in nxstools.nxsfileparser)</a>
+  </dt>
+
+      
   <dt><a href="nxstools.html#module-nxstools">nxstools (module)</a>
   </dt>
 
@@ -746,12 +806,12 @@
   <dt><a href="nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds (module)</a>
   </dt>
@@ -773,6 +833,10 @@
   </dt>
 
       
+  <dt><a href="nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp (module)</a>
+  </dt>
+
+      
   <dt><a href="nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods (module)</a>
   </dt>
 
@@ -790,6 +854,18 @@
 
       
   <dt><a href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup (module)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field (module)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general (module)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser (module)</a>
   </dt>
 
       
@@ -851,7 +927,15 @@
   </dt>
 
       
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.parse">parse() (nxstools.nxsfileparser.NXSFileParser method)</a>
+  </dt>
+
+      
   <dt><a href="nxstools.html#nxstools.nxsparser.ParserTools.parseDataSources">parseDataSources() (nxstools.nxsparser.ParserTools class method)</a>
+  </dt>
+
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_general.parseentry">parseentry() (in module nxstools.nxsfileinfo_general)</a>
   </dt>
 
       
@@ -879,6 +963,20 @@
       <dd><dl>
         
   <dt><a href="nxstools.html#nxstools.nxsdata.NexusServer.performCommand">(nxstools.nxsdata.NexusServer method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="nxstools.html#nxstools.nxscollect.PNIIO">PNIIO (in module nxstools.nxscollect)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_field.PNIIO">(in module nxstools.nxsfileinfo_field)</a>
+  </dt>
+
+        
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_general.PNIIO">(in module nxstools.nxsfileinfo_general)</a>
   </dt>
 
       </dl></dd>
@@ -998,10 +1096,14 @@
   <dt><a href="nxstools.html#nxstools.nxsetup.SetUp">SetUp (class in nxstools.nxsetup)</a>
   </dt>
 
+      
+  <dt><a href="nxstools.html#nxstools.nxscreator.Device.shost">shost (nxstools.nxscreator.Device attribute)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="nxstools.html#nxstools.nxscreator.Device.shost">shost (nxstools.nxscreator.Device attribute)</a>
+  <dt><a href="nxstools.html#nxstools.nxsfileinfo_general.show">show() (in module nxstools.nxsfileinfo_general)</a>
   </dt>
 
       
@@ -1074,6 +1176,16 @@
 
       
   <dt><a href="nxstools.html#nxstools.nxsdevicetools.twoDModules">twoDModules (in module nxstools.nxsdevicetools)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="nxstools.html#nxstools.nxsfileparser.NXSFileParser.valuestostore">valuestostore (nxstools.nxsfileparser.NXSFileParser attribute)</a>
   </dt>
 
   </dl></td>
