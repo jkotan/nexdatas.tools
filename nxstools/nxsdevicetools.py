@@ -382,7 +382,7 @@ def _remoteCall(server, func, *args, **kwargs):
     """
     lserver = None
     localtango = None
-    if ":" in server and server.strip():
+    if server and ":" in server and server.strip():
         lserver = server.split("/")[0]
     if lserver:
         lserver = lserver.strip()

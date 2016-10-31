@@ -614,13 +614,15 @@ class ConfigServer(object):
                 ds, args, mandatory, private))
         return string
 
-commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
-            'record': 1, 'merge': 0, 'components': 0, 'data': 0,
-            'describe': 0, 'info': 0, 'geometry': 0, 'servers': 0}
+commands = ['list', 'show', 'get', 'variables', 'sources',
+            'record', 'merge', 'components', 'data',
+            'describe', 'info', 'geometry', 'servers']
+argreq = ['record']
+noprivate = ['components', 'sources', 'variables', 'record', 'show', 'get', 'data', 'merge']
+noargs = ['server']
 
 def servers(options):
-    print("\n".join(listServers(options.server, 'NXSConfigServer')))
-    return
+    return "\n".join(listServers(options.server, 'NXSConfigServer'))
 
 def _addargs(parser, private=True, args=None):
     """ adds parser arguments"""
@@ -643,8 +645,8 @@ def _addargs(parser, private=True, args=None):
                       help="split result with space characters")
 
     if args:
-        parser.add_argument('args', metavar='N', type=str, nargs=args,
-                            help='an integer for the accumulator')
+        parser.add_argument('args', metavar='name', type=str, nargs=args,
+                            help='names of components or datasources')
 
 def _createParser():
     """ creates command-line parameters parser
@@ -708,16 +710,27 @@ def _createParser():
     #: (:class:`argparse.ArgumentParser`) option parser
     pars = {}
     pars["parser"] = ArgumentParser()
-    subparsers = pars["parser"].add_subparsers(help='sub-command help')
+    subparsers = pars["parser"].add_subparsers(help='sub-command help', dest="subparser")
 
-    for cmd in commands.keys():
+
+    withoutargs = ['servers']
+
+    for cmd in commands:
         pars[cmd] = subparsers.add_parser(cmd, help='%s help' % cmd)
-        _addargs(pars[cmd])
+        _addargs(pars[cmd],
+                 cmd not in noprivate,
+                 None if cmd in noargs else '*')
 
-    pars["servers"].set_defaults(func=servers)
+        pars[cmd].set_defaults(func=perform)
 
     return pars
 
+def perform(options, cnfserver):
+    return cnfserver.performCommand(
+        options.subparser, options.datasources,
+        options.args if hasattr(options, "args") else None,
+        options.mandatory,
+        options.private if hasattr(options, "private") else None)
 
 
 def main():
@@ -740,33 +753,32 @@ def main():
     if not options.server:
         options.server = checkServer()
 
-    print options.server
-    options.func(options)
-    sys.exit(0)
 
 #    if not args or args[0] not in commands or not options.server:
 #        parser.print_help()
 #        print("")
 #        sys.exit(0)
 
-    #: command-line and pipe arguments
-    parg = args[1:]
-    if pipe:
-        parg.extend([p.strip() for p in pipe])
+#    print(options)
 
-    if len(parg) < commands[args[0]]:
-        parser.print_help()
+    #: command-line and pipe arguments
+    parg = []
+    if hasattr(options, "args"):
+        parg = options.args
+        if pipe:
+            parg.extend([p.strip() for p in pipe])
+            options.args[:] = parg
+
+    if len(parg) < (1 if options.subparser in argreq else 0):
+        pars[options.subparser].print_help()
         return
 
     #: configuration server
     cnfserver = ConfigServer(options.server, options.nonewlines)
 
-    options.func(options)
+    result = options.func(options, cnfserver)
 
     #: result to print
-    result = cnfserver.performCommand(
-        args[0], options.datasources, parg,
-        options.mandatory, options.private)
     if result.strip():
         print(result)
 
