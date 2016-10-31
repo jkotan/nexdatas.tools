@@ -351,8 +351,8 @@ def getServers(name='NXSConfigServer'):
     :type name: :obj:`str`
     :returns: list of the server device names
     :rtype: :obj:`list` <:obj:`str`>
-
     """
+
     try:
         db = PyTango.Database()
     except:
@@ -381,7 +381,8 @@ def _remoteCall(server, func, *args, **kwargs):
     :rtype: `any`
     """
     lserver = None
-    if server and server.strip():
+    localtango = None
+    if server and ":" in server and server.strip():
         lserver = server.split("/")[0]
     if lserver:
         lserver = lserver.strip()
