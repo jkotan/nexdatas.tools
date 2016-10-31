@@ -37,13 +37,6 @@ The beamtime ID at DESY is an 8 digit number.R</doc>
         <field type="NX_CHAR" name="probe">x-ray<strategy mode="INIT"/>
         </field>
       </group>
-      <group type="NXinsertion_device" name="insertion_device">
-        <field type="NX_CHAR" name="type">undulator<doc>undulator or wiggler</doc>
-        </field>
-        <field units="m" type="NX_FLOAT" name="length">2<doc>length of insertion device</doc>
-        </field>
-        <doc>undulator U23</doc>
-      </group>
       <field short_name="$(shortname)" type="NX_CHAR" name="name">$(longname)<strategy mode="INIT"/>
       </field>
     </group>

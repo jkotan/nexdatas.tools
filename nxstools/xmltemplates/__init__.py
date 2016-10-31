@@ -87,6 +87,15 @@ standardComponentVariables = {
             'default': None,
             'doc': "undulator harmonic (datasource)"
         },
+        'type': {
+            'default': "undulator",
+            'doc': "undulator or wiggler (string)"
+        },
+
+        'length': {
+            'default': "2",
+            'doc': "length of insertion device in meters (string)"
+        },
     },
     'default': {
         'shortname': {

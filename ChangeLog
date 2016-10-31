@@ -1,3 +1,7 @@
+2016-XX-XX Jan Kotanski <jankotan@gmail.com>
+	* move undulator part from default component to undulator
+	* tagged as v2.10.1
+
 2016-10-31 Jan Kotanski <jankotan@gmail.com>
 	* add nxsfileinfo command
 	* tagged as v2.10.0
