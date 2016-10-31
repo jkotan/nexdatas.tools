@@ -104,7 +104,7 @@ def main():
     filters = []
 
     #: (:obj:`list`< :obj:`str`>)  column headers
-    headers = ["nexus_path", "source_name", "units" , "dtype", "shape", "value"]
+    headers = ["nexus_path", "source_name", "units", "dtype", "shape", "value"]
     if options.geometry:
         filters = ["*:NXtransformations/*", "*/depends_on"]
         headers = ["nexus_path", "source_name", "units",
@@ -116,7 +116,6 @@ def main():
         toshow = ["source_name"]
     #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
     values = ["depends_on"]
-
 
     if options.headers:
         headers = options.headers.split(',')

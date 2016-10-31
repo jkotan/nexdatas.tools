@@ -47,14 +47,17 @@ def parseentry(entry, description, keyvalue):
         description.append({key: "Scan entry:", value: entry.name})
         description.append(None)
         try:
-            description.append({key: "Title:", value: entry.open("title")[...]})
+            description.append(
+                {key: "Title:", value: entry.open("title")[...]})
         except:
             sys.stderr.write("nxsfileinfo: title cannot be found\n")
         try:
-            description.append({key: "Experiment identifier:",
-                                value: entry.open("experiment_identifier")[...]})
+            description.append(
+                {key: "Experiment identifier:",
+                 value: entry.open("experiment_identifier")[...]})
         except:
-            sys.stderr.write("nxsfileinfo: experiment identifier cannot be found\n")
+            sys.stderr.write(
+                "nxsfileinfo: experiment identifier cannot be found\n")
         for ins in entry:
             if isinstance(ins, nx._nxh5.nxgroup):
                 iat = ins.attributes["NX_class"]
@@ -87,7 +90,7 @@ def parseentry(entry, description, keyvalue):
                                         value: sr.open("name")[...]})
                                 except:
                                     sys.stderr.write(
-                                        "nxsfileinfo: Source name"
+                                        "nxsfileinfo: source name"
                                         " cannot be found\n")
                                 try:
                                     description.append({
@@ -96,7 +99,7 @@ def parseentry(entry, description, keyvalue):
                                             "short_name"][...]})
                                 except:
                                     sys.stderr.write(
-                                        "nxsfileinfo: Source name"
+                                        "nxsfileinfo: source short name"
                                         " cannot be found\n")
                 elif iat and iat[...] == 'NXsample':
                     try:
@@ -132,7 +135,6 @@ def parseentry(entry, description, keyvalue):
                 scommand = attr["scan_command"][...]
                 pname = "%s [%s]" % (pname, scommand)
             description.append({key: "Program:", value: pname})
-
 
 
 def show(root):
