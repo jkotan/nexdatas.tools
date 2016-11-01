@@ -618,23 +618,34 @@ commands = ['list', 'show', 'get', 'variables', 'sources',
             'record', 'merge', 'components', 'data',
             'describe', 'info', 'geometry', 'servers']
 argreq = ['record']
-noprivate = ['components', 'sources', 'variables', 'record', 'show', 'get', 'data', 'merge']
+noprivate = ['components', 'sources', 'variables', 'record', 'show',
+             'merge', 'get', 'data', 'merge']
+nods = ['get', 'merge', 'components', 'variables', 'data', 'servers',
+        'info', 'geometry']
+nomd = ['get', 'merge', 'components', 'data', 'record', 'servers']
 noargs = ['server']
 
-def servers(options):
-    return "\n".join(listServers(options.server, 'NXSConfigServer'))
 
-def _addargs(parser, private=True, args=None):
+class ErrorException(Exception): pass
+
+class ArgumentParserExt(ArgumentParser):
+
+    def error(self, message):
+        raise ErrorException(message)
+
+def _addargs(parser, private=True, args=None, ds=True, md=True):
     """ adds parser arguments"""
 
     parser.add_argument("-s", "--server", dest="server",
                       help="configuration server device name")
-    parser.add_argument("-d", "--datasources", action="store_true",
-                      default=False, dest="datasources",
-                      help="perform operation on datasources")
-    parser.add_argument("-m", "--mandatory", action="store_true",
-                      default=False, dest="mandatory",
-                      help="make use mandatory components")
+    if ds:
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation on datasources")
+    if md:
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
     if private:
         parser.add_argument("-p", "--private", action="store_true",
                             default=False, dest="private",
@@ -655,7 +666,26 @@ def _createParser():
     :rtype: :class:`optparse.OptionParser`
     """
     #: (:obj:`str`) usage example
-    usage = "usage: nxsconfig <command> [-s <config_server>] " \
+    hlp = {
+        "list": "list names of available components (or datasources)",
+        "show": "show components (or datasources) with given names",
+        "get": "get full configuration of components (or datasources)",
+        "merge": "get merged configuration of components (or datasources)",
+        "sources": "get a list of component datasources",
+        "components": "get a list of dependent components",
+        "variables": "get a list of component variables",
+        "data": "get/set values of component variables",
+        "record": "get a list of datasource record names",
+        "servers": "get a list of configuration servers from"
+        + " the current tango host",
+        "describe": "show all parameters of given components"
+        + " (or datasources)",
+        "info": "show source parameters of given components"
+        + " (or datasources)",
+        "geometry": "show transformation parameters of given components"
+        + " (or datasources)",
+    }
+    usage = "nxsconfig <command> [-s <config_server>] " \
             + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
             + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n" \
             + "       nxsconfig info\n" \
@@ -682,7 +712,7 @@ def _createParser():
             + "          get a list of dependent components \n" \
             + "   variables [-s <config_server>] [-m] component_name1 " \
             + "component_name2 ... \n" \
-            + "          get a list of component variables \n" \
+            + "          set/get a list of component variables \n" \
             + "   data [-s <config_server>] json_data \n" \
             + "          set values of component variables \n" \
             + "   record [-s <config_server>]  component_name1  \n" \
@@ -709,17 +739,22 @@ def _createParser():
 
     #: (:class:`argparse.ArgumentParser`) option parser
     pars = {}
-    pars["parser"] = ArgumentParser()
-    subparsers = pars["parser"].add_subparsers(help='sub-command help', dest="subparser")
-
+    pars["parser"] = ArgumentParserExt(
+        prog='nxsconfig',
+        epilog= 'For more help type: nxsconfig <sub-command> -h')
+    subparsers = pars["parser"].add_subparsers(
+        help='sub-command help', dest="subparser")
 
     withoutargs = ['servers']
 
     for cmd in commands:
-        pars[cmd] = subparsers.add_parser(cmd, help='%s help' % cmd)
+        pars[cmd] = subparsers.add_parser(cmd, help='%s' % hlp[cmd])
         _addargs(pars[cmd],
                  cmd not in noprivate,
-                 None if cmd in noargs else '*')
+                 None if cmd in noargs else '*',
+                 cmd not in nods,
+                 cmd not in nomd
+        )
 
         pars[cmd].set_defaults(func=perform)
 
@@ -727,10 +762,12 @@ def _createParser():
 
 def perform(options, cnfserver):
     return cnfserver.performCommand(
-        options.subparser, options.datasources,
+        options.subparser,
+        options.datasources if hasattr(options, "datasources") else None,
         options.args if hasattr(options, "args") else None,
-        options.mandatory,
-        options.private if hasattr(options, "private") else None)
+        options.mandatory if hasattr(options, "mandatory") else None,
+        options.private if hasattr(options, "private") else None,
+    )
 
 
 def main():
@@ -744,23 +781,32 @@ def main():
         #: system pipe
         pipe = sys.stdin.readlines()
 
-
     pars = _createParser()
-    options = pars["parser"].parse_args()
+    try:
+        options = pars["parser"].parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        pars["parser"].print_help()
+        print("")
+        sys.exit(255)
+
 
 #    (options, args) = parser.parse_args()
 
     if not options.server:
         options.server = checkServer()
 
+#    print(options.server)
+
 
 #    if not args or args[0] not in commands or not options.server:
-#        parser.print_help()
-#        print("")
-#        sys.exit(0)
+    if not options.server:
+        pars[options.subparser].print_help()
+        print("")
+        sys.exit(255)
 
 #    print(options)
-
     #: command-line and pipe arguments
     parg = []
     if hasattr(options, "args"):
