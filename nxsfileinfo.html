@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsconfig &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.10.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -30,8 +30,8 @@
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="NXSTools 2.10.2 documentation" href="index.html" />
-    <link rel="next" title="nxscreate" href="nxscreate.html" />
-    <link rel="prev" title="nxcollect" href="nxscollect.html" />
+    <link rel="next" title="nxsetup" href="nxsetup.html" />
+    <link rel="prev" title="nxsdata" href="nxsdata.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -73,10 +73,10 @@
 <li class="toctree-l2"><a class="reference internal" href="nxscollect.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">nxsconfig</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxsconfig.html">nxsconfig</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nxsconfig.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsconfig.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsconfig.html#example">Example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxscreate.html">nxscreate</a><ul>
@@ -97,11 +97,11 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsdata.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="nxsfileinfo.html">nxscreate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#description">Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#synopsis">Synopsis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxscreate-general">nxscreate general</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxscreate-tangods">nxscreate tangods</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">nxscreate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxscreate-general">nxscreate general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxscreate-tangods">nxscreate tangods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -148,10 +148,19 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">nxsconfig</a><ul>
+<li><a class="reference internal" href="#">nxscreate</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#nxscreate-general">nxscreate general</a><ul>
+<li><a class="reference internal" href="#id1">Synopsis</a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-tangods">nxscreate tangods</a><ul>
+<li><a class="reference internal" href="#id2">Synopsis</a></li>
+<li><a class="reference internal" href="#id3">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -163,11 +172,11 @@
               
                 
   <li>
-    <a href="nxscollect.html" title="Previous Chapter: nxcollect"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; nxcollect</span>
+    <a href="nxsdata.html" title="Previous Chapter: nxsdata"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; nxsdata</span>
     </a>
   </li>
   <li>
-    <a href="nxscreate.html" title="Next Chapter: nxscreate"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">nxscreate &raquo;</span>
+    <a href="nxsetup.html" title="Next Chapter: nxsetup"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">nxsetup &raquo;</span>
     </a>
   </li>
               
@@ -195,58 +204,57 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="nxsconfig">
-<h1>nxsconfig<a class="headerlink" href="#nxsconfig" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="nxscreate">
+<h1>nxscreate<a class="headerlink" href="#nxscreate" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The nxsconfig program
-is a command-line interface to NXS Configuration Tango Server.
-It allows one to read XML configuration datasources
-and components. It also gives possibility to
-perform the process of component merging.</p>
+<p>The nxsfileinfo program show metadata from nexus files</p>
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig &lt;command&gt; [-s &lt;config_server&gt;]  [-d] [-m] [-n] [&lt;name1&gt;] [&lt;name2&gt;] [&lt;name3&gt;] ...
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsfileinfo &lt;command&gt; [options] &lt;nexus_file_name&gt;
+</pre></div>
+</div>
+<p>The following commands are available: general, field</p>
+</div>
+<div class="section" id="nxscreate-general">
+<h2>nxscreate general<a class="headerlink" href="#nxscreate-general" title="Permalink to this headline">¶</a></h2>
+<p>It shows general information for he nexus file.</p>
+<div class="section" id="id1">
+<h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsfileinfo general &lt;nexus_file_name&gt;
 </pre></div>
 </div>
 <dl class="docutils">
-<dt>Commands:</dt>
-<dd><dl class="first last docutils">
-<dt>list [-s &lt;config_server&gt;] [-m]</dt>
-<dd>list names of available components</dd>
-<dt>list -d [-s &lt;config_server&gt;]</dt>
-<dd>list names of available datasources</dd>
-<dt>show [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
-<dd>show components with given names</dd>
-<dt>show -d [-s &lt;config_server&gt;] dsource_name1 dsource_name2 ...</dt>
-<dd>show datasources with given names</dd>
-<dt>get [-s &lt;config_server&gt;]  [-m] component_name1 component_name2 ...</dt>
-<dd>get merged configuration of components</dd>
-<dt>sources [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
-<dd>get a list of component datasources</dd>
-<dt>components [-s &lt;config_server&gt;] component_name1 component_name2 ...</dt>
-<dd>get a list of dependent components</dd>
-<dt>variables [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
-<dd>get a list of component variables</dd>
-<dt>data [-s &lt;config_server&gt;] json_data</dt>
-<dd>set values of component variables</dd>
-<dt>record [-s &lt;config_server&gt;]  component_name1</dt>
-<dd>get a list of datasource record names from component</dd>
-<dt>record -d [-s &lt;config_server&gt;] datasource_name1</dt>
-<dd>get a list of datasource record names</dd>
-<dt>servers [-s &lt;config_server/host&gt;]</dt>
-<dd>get lists of configuration servers from the current tango host</dd>
-<dt>describe [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
-<dd>show all parameters of given components</dd>
-<dt>describe|info -d [-s &lt;config_server&gt;] dsource_name1 dsource_name2 ...</dt>
-<dd>show all parameters of given datasources</dd>
-<dt>info [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
-<dd>show source parameters of given components</dd>
-<dt>geometry [-s &lt;config_server&gt;] [-m | -p] component_name1 component_name2 ...</dt>
-<dd>show transformation parameters of given components</dd>
-</dl>
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+</tbody>
+</table>
 </dd>
+</dl>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsfileinfo general saxs_ref1_02.nxs
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-tangods">
+<h2>nxscreate tangods<a class="headerlink" href="#nxscreate-tangods" title="Permalink to this headline">¶</a></h2>
+<p>It shows field information for the nexus file.</p>
+<div class="section" id="id2">
+<h3>Synopsis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>Usage: nxsinfo field &lt;file_name&gt;
+</pre></div>
+</div>
+<dl class="docutils">
 <dt>Options:</dt>
 <dd><table class="first last docutils option-list" frame="void" rules="none">
 <col class="option" />
@@ -256,35 +264,33 @@ perform the process of component merging.</p>
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>show this help message and exit</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+<kbd><span class="option">-c <var>HEADERS</var></span>, <span class="option">--columns=<var>HEADERS</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td>&nbsp;</td><td>names of column to be shown (separated by commas without spaces). The possible names are: depends_on,dtype,full_path,nexus_path,nexus_type,shape,source,source_name,source_type,strategy,trans_type,trans_offset,trans_vector,units,value</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d</span>, <span class="option">--datasources</span></kbd></td>
+<kbd><span class="option">-f <var>FILTERS</var></span>, <span class="option">--filters=<var>FILTERS</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>perform operation on datasources</td></tr>
+<tr><td>&nbsp;</td><td>full_path filters (separated by commas without spaces). Default: &#8216;*&#8217;. E.g. &#8216;<em>:NXsample/</em>&#8216;</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></td>
+<kbd><span class="option">-v <var>VALUES</var></span>, <span class="option">--values=<var>VALUES</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>make use mandatory components as well</td></tr>
+<tr><td>&nbsp;</td><td>field names which value should be stored (separated by commas without spaces). Default: depends_on</td></tr>
 <tr><td class="option-group">
-<kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></td>
-<td>make use private components, i.e. starting with &#8216;__&#8217;</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>split result with space characters</td></tr>
+<kbd><span class="option">-g</span>, <span class="option">--geometry</span></kbd></td>
+<td>show fields with geometry full_path filters, i.e. <em>:NXtransformations/</em>,*/depends_on. It works only when -f is not defined</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-s</span>, <span class="option">--source</span></kbd></td>
+<td>show datasource parameters</td></tr>
 </tbody>
 </table>
 </dd>
 </dl>
 </div>
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig list -s p02/xmlconfigserver/exp.01 -d
-nxsconfig info
-nxsconfig geometry
+<div class="section" id="id3">
+<h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxsinfo field /tmp/saxs_ref1_02.nxs
 </pre></div>
+</div>
 </div>
 </div>
 </div>

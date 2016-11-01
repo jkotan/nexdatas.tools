@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate_onlineds &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxstools.nxsfileinfo_field &mdash; NXSTools 2.10.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -178,7 +178,7 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <h1>Source code for nxstools.nxscreate_onlineds</h1><div class="highlight"><pre>
+  <h1>Source code for nxstools.nxsfileinfo_field</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c">#</span>
@@ -198,102 +198,126 @@
 <span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="c">#</span>
 
-<span class="sd">&quot;&quot;&quot; datasource creator from online files &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot; NeXus main metadata viewer &quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">fnmatch</span>
 
-<span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="n">checkServer</span>
-<span class="kn">from</span> <span class="nn">nxstools.nxscreator</span> <span class="kn">import</span> <span class="n">OnlineDSCreator</span>
+<span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">TableTools</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="kn">import</span> <span class="n">NXSFileParser</span>
 
-<span class="c">#: (:obj:`bool`) True if PyTango available</span>
-<span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="c">#: (:obj:`bool`) True if pni.io.nx.h5 available</span>
+<span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">False</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">PyTango</span>
-    <span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nx</span>
+    <span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
 
-<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
 
-
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate_onlineds.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo_field.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; the main function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c">#: usage example</span>
-    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: %prog onlineds [options] [&lt;inputFile&gt;]</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; e.g.</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -d /home/user/xmldir </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds </span><span class="se">\n\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; - with -b: datasources are created&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; - with -d &lt;directory&gt;: datasources are created&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; on the local filesystem</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; - without -b or -d &lt;directory&gt;: run in the test mode</span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; - default: &lt;inputFile&gt; is &#39;/online_dir/online.xml&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot; `onlineds` overwrites existing datasources</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: nxsinfo field &lt;file_name&gt;</span><span class="se">\n</span><span class="s">&quot;</span>\
+        <span class="o">+</span> <span class="s">&quot;  e.g.: nxsinfo field saxs_ref1_02.nxs</span><span class="se">\n\n</span><span class="s"> &quot;</span>\
+        <span class="o">+</span> <span class="s">&quot;show field information for the nexus file&quot;</span>
 
     <span class="c">#: option parser</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in Configuration Server database&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where datasources will be saved&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">,</span> <span class="s">&quot;--external&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;external configuration server&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;xmlpackage&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;xml template package&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--columns&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;names of column to be shown (separated by commas &quot;</span>
+        <span class="s">&quot;without spaces). The possible names are: &quot;</span>
+        <span class="s">&quot;depends_on,dtype,full_path,nexus_path,nexus_type,shape,&quot;</span>
+        <span class="s">&quot;source,source_name,source_type,strategy,trans_type,trans_offset,&quot;</span>
+        <span class="s">&quot;trans_vector,units,value&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&quot;headers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--filters&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;full_path filters (separated by commas &quot;</span>
+        <span class="s">&quot;without spaces). Default: &#39;*&#39;. E.g. &#39;*:NXsample/*&#39;&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&quot;filters&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--values&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;field names which value should be stored (separated by commas &quot;</span>
+        <span class="s">&quot;without spaces). Default: depends_on&quot;</span><span class="p">,</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&quot;values&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s">&quot;-g&quot;</span><span class="p">,</span> <span class="s">&quot;--geometry&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;geometry&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform geometry full_path filters, i.e.&quot;</span>
+        <span class="s">&quot;*:NXtransformations/*,*/depends_on. &quot;</span>
+        <span class="s">&quot;It works only when  -f is not defined&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span>
+        <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--source&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;source&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s">&quot;show datasource parameters&quot;</span><span class="p">)</span>
 
     <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxscreate: No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">PNIIO</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: No pni.io.nx.h5 installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
-            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">):</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fl</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: File &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">parserp</span><span class="o">.</span><span class="n">rint_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;INPUT: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIR: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST MODE: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+    <span class="c">#: (:obj:`list`&lt; :obj:`str`&gt;)  parameters which have to exists to be shown</span>
+    <span class="n">toshow</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="n">creator</span> <span class="o">=</span> <span class="n">OnlineDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-    <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="c">#: (:obj:`list`&lt; :obj:`str`&gt;)  full_path filters</span>
+    <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c">#: (:obj:`list`&lt; :obj:`str`&gt;)  column headers</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;nexus_path&quot;</span><span class="p">,</span> <span class="s">&quot;source_name&quot;</span><span class="p">,</span> <span class="s">&quot;units&quot;</span><span class="p">,</span> <span class="s">&quot;dtype&quot;</span><span class="p">,</span> <span class="s">&quot;shape&quot;</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">geometry</span><span class="p">:</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;*:NXtransformations/*&quot;</span><span class="p">,</span> <span class="s">&quot;*/depends_on&quot;</span><span class="p">]</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;nexus_path&quot;</span><span class="p">,</span> <span class="s">&quot;source_name&quot;</span><span class="p">,</span> <span class="s">&quot;units&quot;</span><span class="p">,</span>
+                   <span class="s">&quot;trans_type&quot;</span><span class="p">,</span> <span class="s">&quot;trans_vector&quot;</span><span class="p">,</span> <span class="s">&quot;trans_offset&quot;</span><span class="p">,</span>
+                   <span class="s">&quot;depends_on&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">,</span> <span class="s">&quot;nexus_type&quot;</span><span class="p">,</span> <span class="s">&quot;shape&quot;</span><span class="p">,</span> <span class="s">&quot;strategy&quot;</span><span class="p">,</span>
+                   <span class="s">&quot;source&quot;</span><span class="p">]</span>
+        <span class="n">toshow</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;source_name&quot;</span><span class="p">]</span>
+    <span class="c">#: (:obj:`list`&lt; :obj:`str`&gt;)  field names which value should be stored</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;depends_on&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="n">rt</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+    <span class="n">nxsparser</span> <span class="o">=</span> <span class="n">NXSFileParser</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span>
+    <span class="n">nxsparser</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+    <span class="n">nxsparser</span><span class="o">.</span><span class="n">valuestostore</span> <span class="o">=</span> <span class="n">values</span>
+    <span class="n">nxsparser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+    <span class="n">fl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ttools</span> <span class="o">=</span> <span class="n">TableTools</span><span class="p">(</span><span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">toshow</span><span class="p">)</span>
+    <span class="n">ttools</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;    file: &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+    <span class="n">description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">description</span><span class="p">))</span>
 
 </div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
