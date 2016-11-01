@@ -97,6 +97,36 @@ standardComponentVariables = {
             'doc': "length of insertion device in meters (string)"
         },
     },
+    'beamtimeid': {
+        'shortname': {
+            'default': "P09",
+            'doc': "beamline short name (string)"
+        },
+        'currentdir': {
+            'default': "/gpfs/current",
+            'doc': "beamtime file directory (string)"
+        },
+        'currentprefix': {
+            'default': "beamtime-metadata-",
+            'doc': "beamtime file prefix (string)"
+        },
+        'currentpostfix': {
+            'default': "beamtime-metadata-",
+            'doc': "beamtime file postfix (string)"
+        },
+        'commissiondir': {
+            'default': "/gpfs/commissioning",
+            'doc': "commission file directory (string)"
+        },
+        'commissionprefix': {
+            'default': "commission-metadata-",
+            'doc': "commission file prefix (string)"
+        },
+        'commissionpostfix': {
+            'default': "commission-metadata-",
+            'doc': "commission file postfix (string)"
+        },
+    },
     'default': {
         'shortname': {
             'default': "P09",
@@ -231,6 +261,14 @@ standardComponentTemplateFiles = {
     'slit': ['slit.xml'],
     'source': ['source.xml'],
     'undulator': ['undulator.xml'],
+    'beamtimeid': [
+        'beamtimeid.xml',
+        'beamtimeid.ds.xml',
+        'beamtimeid_current.ds.xml',
+        'beamtimeid_commission.ds.xml',
+        'beamtimeid_local.ds.xml',
+        'start_time.ds.xml',
+    ],
     'default': [
         'default.xml',
         'sample_name.ds.xml',
