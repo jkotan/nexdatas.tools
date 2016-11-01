@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_local">
+    <result name="result">
+import socket
+ds.result = "%s_%s@%s" % ("$(shortname)", ds.start_time, socket.gethostname())
+    </result>
+    $datasources.start_time
+  </datasource>
+</definition>

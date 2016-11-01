@@ -20,6 +20,7 @@
 """ Command-line tool for creating to the nexdatas configuration server """
 
 import copy
+import os.path
 
 from xml.dom.minidom import parse, parseString
 from nxstools import nxsdevicetools
@@ -1203,10 +1204,12 @@ class StandardCPCreator(CPCreator):
                 "Component type %s not in %s" %
                 (module, self.xmlpackage.standardComponentVariables.keys()))
 
+        xmlfiles = []
         if module in self.xmlpackage.standardComponentTemplateFiles:
             xmlfiles = self.xmlpackage.standardComponentTemplateFiles[module]
         else:
-            xmlfiles = ["%s.xml" % module]
+            if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
+                xmlfiles = ["%s.xml" % module]
         for xmlfile in xmlfiles:
             newname = self._replaceName(xmlfile, cpname, module)
             with open(

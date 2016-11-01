@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_commission">
+    <result name="result">
+import os
+dirname  = "$(commissiondir)"
+fileprefix = "$(commisionprefix)"
+ext = "$(commissionext)"
+ds.result = ""
+
+if os.path.isdir(dirname):
+    btml = [fl for fl in  os.listdir(dirname)
+            if (fl.startswith(fileprefix)
+                and fl.endswith(ext))]
+    if btml:
+        ds.result = btml[0][len(fileprefix):-len(ext)]
+    </result>
+  </datasource>
+</definition>
