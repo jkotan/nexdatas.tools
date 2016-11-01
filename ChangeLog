@@ -1,4 +1,6 @@
-2016-XX-XX Jan Kotanski <jankotan@gmail.com>
+2016-11-01 Jan Kotanski <jankotan@gmail.com>
+	* add beamtimeid component
+	* fixes for getting TANGO_HOST from server name in nxsdevicetools
 	* move undulator part from default component to undulator
 	* tagged as v2.10.1
 
