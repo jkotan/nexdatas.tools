@@ -4,8 +4,8 @@
     <result name="result">
 import os
 dirname  = "$(commissiondir)"
-fileprefix = "$(commisionprefix)"
-ext = "$(commissionext)"
+fileprefix = "$(commissionprefix)"
+ext = "$(commissionpostfix)"
 ds.result = ""
 
 if os.path.isdir(dirname):

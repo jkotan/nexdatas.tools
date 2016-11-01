@@ -2,7 +2,7 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
-cpath = "$(commissionpath)"
+cpath = "$(commissiondir)"
 ds.result = None      
 if ds.$(name)_current and ds.$(name)_commission:
     root = commonblock["__nxroot__"]
