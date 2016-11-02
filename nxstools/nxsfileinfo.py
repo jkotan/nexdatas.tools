@@ -47,14 +47,23 @@ class General(object):
 
         :param root: nexus root node
         :type root: :class:`pni.io.nx.h5.nxroot`
-        :param root: parser options
-        :type root: :class:`argparse.Namespace`
-        """    
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
         self.__root = root
         self.__options = options
-        
 
     def parseentry(self, entry, description, keyvalue):
+        """ parse entry of nexus file
+
+        :param entry: nexus entry node
+        :type entry: :class:`pni.io.nx.h5.nxgroup`
+        :param description: dict description list
+        :type description: :obj:`list` <:obj:`dict` <:obj:`str`, `any` > >
+        :param keyvalue: (key, value) name pair of table headers
+        :type keyvalue: [:obj:`str`, :obj:`str`]
+
+        """
         key, value = keyvalue
         at = None
         try:
@@ -86,7 +95,8 @@ class General(object):
                                 value: ins.open("name")[...]})
                         except:
                             sys.stderr.write(
-                                "nxsfileinfo: instrument name cannot be found\n")
+                                "nxsfileinfo: instrument name cannot "
+                                "be found\n")
                         try:
                             description.append({
                                 key: "Instrument short name:",
@@ -133,7 +143,8 @@ class General(object):
                                 value: ins.open("chemical_formula")[...]})
                         except:
                             sys.stderr.write(
-                                "nxsfileinfo: sample formula cannot be found\n")
+                                "nxsfileinfo: sample formula cannot"
+                                " be found\n")
             try:
                 description.append({key: "Start time:",
                                     value: entry.open("start_time")[...]})
@@ -154,7 +165,6 @@ class General(object):
                     pname = "%s (%s)" % (pname, scommand)
                 description.append({key: "Program:", value: pname})
 
-
     def show(self):
         """ show general informations
         """
@@ -164,7 +174,8 @@ class General(object):
         attr = self.__root.attributes
 
         names = [at.name for at in attr]
-        fname = (attr["file_name"][...] if "file_name" in names else " ") or " "
+        fname = (attr["file_name"][...]
+                 if "file_name" in names else " ") or " "
         headers = ["File name:", fname]
 
         for en in self.__root:
@@ -180,7 +191,6 @@ class General(object):
         print "=" * len(description[4])
 
 
-
 class Field(object):
 
     def __init__(self, root, options):
@@ -190,10 +200,10 @@ class Field(object):
         :type root: :class:`pni.io.nx.h5.nxroot`
         :param root: parser options
         :type root: :class:`argparse.Namespace`
-        """    
+        """
         self.__root = root
         self.__options = options
-                
+
     def show(self):
         """ the main function
 
@@ -204,14 +214,16 @@ class Field(object):
             + "  e.g.: nxsinfo field saxs_ref1_02.nxs\n\n "\
             + "show field information for the nexus file"
 
-        #: (:obj:`list`< :obj:`str`>)  parameters which have to exists to be shown
+        #: (:obj:`list`< :obj:`str`>)   \
+        #     parameters which have to exists to be shown
         toshow = None
 
         #: (:obj:`list`< :obj:`str`>)  full_path filters
         filters = []
 
         #: (:obj:`list`< :obj:`str`>)  column headers
-        headers = ["nexus_path", "source_name", "units", "dtype", "shape", "value"]
+        headers = ["nexus_path", "source_name", "units",
+                   "dtype", "shape", "value"]
         if self.__options.geometry:
             filters = ["*:NXtransformations/*", "*/depends_on"]
             headers = ["nexus_path", "source_name", "units",
@@ -281,10 +293,11 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
         :rtype: :class:`NXSFileInfoArgParser`
         """
         #: usage example
-        description  = " Command-line tool for showing meta data from Nexus Files"
+        description = " Command-line tool for showing meta data" \
+                      + " from Nexus Files"
         #    \
-        #            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
-        #            + "/user/data/myfile.h5"
+        #  + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
+        #           + "/user/data/myfile.h5"
 
         hlp = {
             "general": "show general information for the nexus file",
@@ -297,7 +310,6 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
         pars = {}
         subparsers = self.add_subparsers(
             help='sub-command help', dest="subparser")
-
 
         for cmd in self.commands:
             pars[cmd] = subparsers.add_parser(
@@ -318,7 +330,8 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
             dest="filters", default="")
         pars['field'].add_argument(
             "-v", "--values",
-            help="field names which value should be stored (separated by commas "
+            help="field names which value should be stored"
+            " (separated by commas "
             "without spaces). Default: depends_on",
             dest="values", default="")
         pars['field'].add_argument(
@@ -342,8 +355,6 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
         return pars
 
 
-
-
 def main():
     """ the main program function
     """
@@ -351,7 +362,6 @@ def main():
     parser = NXSFileInfoArgParser(
         formatter_class=argparse.RawDescriptionHelpFormatter)
     pars = parser.createParser()
-
 
     try:
         options = parser.parse_args()
@@ -370,13 +380,14 @@ def main():
     try:
         fl = nx.open_file(options.args[0])
     except:
-        sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n" % options.args[0])
+        sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                         % options.args[0])
         parser.print_help()
         sys.exit(255)
 
     rt = fl.root()
 
-    cmdclasses = {"general" : General, "field": Field}
+    cmdclasses = {"general": General, "field": Field}
 
     fileparser = cmdclasses[options.subparser](rt, options)
     fileparser.show()

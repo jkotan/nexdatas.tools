@@ -107,6 +107,7 @@ class NexusServer(object):
         if command == 'closeentry':
             return self.closeEntry()
 
+
 class ErrorException(Exception):
     """ error parser exception """
     pass
@@ -120,15 +121,15 @@ class NXSDataArgParser(argparse.ArgumentParser):
     commands = ['openfile', 'openentry', 'setdata', 'record',
                 'closeentry', 'closefile']
     #: (:obj:`list` <:obj:`str`>) sub-commands with required argument
-    argreq = ['openfile', 'setdata', 'record' ]
+    argreq = ['openfile', 'setdata', 'record']
     #: (:obj:`list` <:obj:`str`>) sub-commands without arguments
     noargs = ['server', 'closeentry', 'closefile']
 
     def __init__(self, **kwargs):
-        """ constructor 
-        
+        """ constructor
+
         :param kwargs: :class:`argparse.ArgumentParser`
-                       parameter dictionary 
+                       parameter dictionary
         :type kwargs: :obj: `dict` <:obj:`str`, `any`>
         """
         argparse.ArgumentParser.__init__(self, **kwargs)
@@ -142,9 +143,6 @@ class NXSDataArgParser(argparse.ArgumentParser):
         """
         raise ErrorException(message)
 
-
-
-
     def createParser(self):
         """ creates command-line parameters parser
 
@@ -152,9 +150,10 @@ class NXSDataArgParser(argparse.ArgumentParser):
         :rtype: :class:`NXSDataArgParser`
         """
         #: usage example
-        description  = "Command-line tool for writing NeXus files with NXSDataWriter"
+        description = "Command-line tool for writing NeXus files" \
+                      + " with NXSDataWriter"
         #    \
-        #            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
+        # + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
         #            + "/user/data/myfile.h5"
 
         hlp = {
@@ -175,25 +174,32 @@ class NXSDataArgParser(argparse.ArgumentParser):
         subparsers = self.add_subparsers(
             help='sub-command help', dest="subparser")
 
-
         for cmd in self.commands:
             pars[cmd] = subparsers.add_parser(
                 cmd, help='%s' % hlp[cmd], description=hlp[cmd])
 
             pars[cmd].add_argument(
                 "-s", "--server", dest="server",
-                help=("tango host or writer server" if cmd=='servers' else
+                help=("tango host or writer server"
+                      if cmd == 'servers' else
                       "writer server device name")
             )
 
-        pars['openfile'].add_argument('args', metavar='file_name', type=str, nargs='?',
-                                      help='new newxus file name')
-        pars['openentry'].add_argument('args', metavar='xml_config', type=str, nargs='?',
-                                       help='nexus writer configuration string')
-        pars['setdata'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                                     help='json data string')
-        pars['record'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                                    help='json data string')
+        pars['openentry'].add_argument(
+            'args', metavar='xml_config', type=str, nargs='?',
+            help='nexus writer configuration string')
+        pars['setdata'].add_argument(
+            'args', metavar='json_data_string', type=str, nargs='?',
+            help='json data string')
+        pars['record'].add_argument(
+            'args', metavar='json_data_string', type=str, nargs='?',
+            help='json data string')
+
+        argcomplete.autocomplete(self)
+
+        pars['openfile'].add_argument(
+            'args', metavar='file_name', type=str, nargs='?',
+            help='new newxus file name')
         self.subparsers = pars
         return pars
 
@@ -212,8 +218,6 @@ def main():
     parser = NXSDataArgParser(
         formatter_class=argparse.RawDescriptionHelpFormatter)
     pars = parser.createParser()
-
-    argcomplete.autocomplete(parser)
 
     try:
         options = parser.parse_args()
@@ -243,11 +247,12 @@ def main():
     parg = []
     if hasattr(options, "args"):
         print type(options.args), options.args
-        parg = [options.args]  if options.args else []
+        parg = [options.args] if options.args else []
     if pipe:
         parg.append(pipe)
 
-    if len(parg) < (1 if options.subparser in NXSDataArgParser.argreq else 0):
+    if len(parg) < (1 if options.subparser
+                    in NXSDataArgParser.argreq else 0):
         pars[options.subparser].print_help()
         return
 

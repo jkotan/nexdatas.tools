@@ -641,10 +641,10 @@ class NXSConfigArgParser(argparse.ArgumentParser):
     noargs = ['server', 'list', 'data']
 
     def __init__(self, **kwargs):
-        """ constructor 
-        
+        """ constructor
+
         :param kwargs: :class:`argparse.ArgumentParser`
-                       parameter dictionary 
+                       parameter dictionary
         :type kwargs: :obj: `dict` <:obj:`str`, `any`>
         """
         argparse.ArgumentParser.__init__(self, **kwargs)
