@@ -187,13 +187,13 @@ class NXSDataArgParser(argparse.ArgumentParser):
             )
 
         pars['openfile'].add_argument('args', metavar='file_name', type=str, nargs='?',
-                                  help='new newxus file name')
+                                      help='new newxus file name')
         pars['openentry'].add_argument('args', metavar='xml_config', type=str, nargs='?',
-                                  help='nexus writer configuration string')
+                                       help='nexus writer configuration string')
         pars['setdata'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                                  help='json data string')
+                                     help='json data string')
         pars['record'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                                  help='json data string')
+                                    help='json data string')
         self.subparsers = pars
         return pars
 

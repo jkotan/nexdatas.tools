@@ -304,8 +304,9 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
                 cmd, help='%s' % hlp[cmd], description=hlp[cmd])
 
 
-            pars[cmd].add_argument('args', metavar='nexus_file', type=str, nargs=1,
-                                          help='new nexus file name')
+            pars[cmd].add_argument('args', metavar='nexus_file',
+                                   type=str, nargs=1,
+                                   help='new nexus file name')
 
         pars['field'].add_argument(
             "-c", "--columns",
