@@ -303,11 +303,6 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
             pars[cmd] = subparsers.add_parser(
                 cmd, help='%s' % hlp[cmd], description=hlp[cmd])
 
-
-            pars[cmd].add_argument('args', metavar='nexus_file',
-                                   type=str, nargs=1,
-                                   help='new nexus file name')
-
         pars['field'].add_argument(
             "-c", "--columns",
             help="names of column to be shown (separated by commas "
@@ -337,6 +332,12 @@ class NXSFileInfoArgParser(argparse.ArgumentParser):
             default=False, dest="source",
             help="show datasource parameters")
 
+        argcomplete.autocomplete(self)
+        for cmd in self.commands:
+            pars[cmd].add_argument('args', metavar='nexus_file',
+                                   type=str, nargs=1,
+                                   help='new nexus file name')
+
         self.subparsers = pars
         return pars
 
@@ -351,7 +352,6 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     pars = parser.createParser()
 
-    argcomplete.autocomplete(parser)
 
     try:
         options = parser.parse_args()
