@@ -640,36 +640,16 @@ class NXSConfigArgParser(argparse.ArgumentParser):
     #: (:obj:`list` <:obj:`str`>) sub-commands without arguments
     noargs = ['server', 'list', 'data']
 
-    def __init__(self,
-                 prog=None,
-                 usage=None,
-                 description=None,
-                 epilog=None,
-                 version=None,
-                 parents=[],
-                 formatter_class=argparse.HelpFormatter,
-                 prefix_chars='-',
-                 fromfile_prefix_chars=None,
-                 argument_default=None,
-                 conflict_handler='error',
-                 add_help=True):
+    def __init__(self, **kwargs):
+        """ constructor 
         
-        argparse.ArgumentParser.__init__(
-            self,
-            prog=prog,
-            usage=usage,
-            description=description,
-            epilog=epilog,
-            version=version,
-            parents=parents,
-            formatter_class=formatter_class,
-            prefix_chars=prefix_chars,
-            fromfile_prefix_chars=fromfile_prefix_chars,
-            argument_default=argument_default,
-            conflict_handler=conflict_handler,
-            add_help=add_help)
+        :param kwargs: :class:`argparse.ArgumentParser`
+                       parameter dictionary 
+        :type kwargs: :obj: `dict` <:obj:`str`, `any`>
+        """
+        argparse.ArgumentParser.__init__(self, **kwargs)
         self.subparsers = {}
-        
+
     def error(self, message):
         """ error handler
 
@@ -723,15 +703,15 @@ class NXSConfigArgParser(argparse.ArgumentParser):
             parser.add_argument('args', metavar='name', type=str, nargs=args,
                                 help='names of components or datasources')
 
-
     def createParser(self):
         """ creates command-line parameters parser
 
         :returns: option parser
         :rtype: :class:`ArgParser`
         """
-        description  = "Command-line tool for reading NeXus configuration " \
-                       + "from NXSConfigServer"
+
+        description = "Command-line tool for reading NeXus configuration " \
+                      + "from NXSConfigServer"
 
         #: (:obj:`str`) usage example
         hlp = {
@@ -756,7 +736,7 @@ class NXSConfigArgParser(argparse.ArgumentParser):
 
         self.description = description
         self.epilog = 'For more help:\n  nxsconfig <sub-command> -h'
-            
+
         pars = {}
         subparsers = self.add_subparsers(
             help='sub-command help', dest="subparser")
@@ -769,29 +749,31 @@ class NXSConfigArgParser(argparse.ArgumentParser):
                 None if cmd in self.noargs else '*',
                 cmd not in self.nods,
                 cmd not in self.nomd,
-                "tango host or configuration server" if cmd == 'servers' else None
+                "tango host or configuration server"
+                if cmd == 'servers' else None
             )
 
         pars['data'].add_argument('args', metavar='name', type=str, nargs='?',
                                   help='data dictionary in json string')
         self.subparsers = pars
         return pars
-        
+
+
 def main():
     """ the main program function
     """
     #: pipe arguments
     pipe = []
-    #: run options
-    options = None
     if not sys.stdin.isatty():
         #: system pipe
         pipe = sys.stdin.readlines()
 
-    parser = NXSConfigArgParser(prog='nxsconfig',
+    parser = NXSConfigArgParser(
         formatter_class=argparse.RawDescriptionHelpFormatter)
     pars = parser.createParser()
+
     argcomplete.autocomplete(parser)
+
     try:
         options = parser.parse_args()
     except ErrorException as e:
@@ -823,7 +805,8 @@ def main():
         parg.extend([p.strip() for p in pipe])
         options.args[:] = parg
 
-    if len(parg) < (1 if options.subparser in NXSConfigArgParser.argreq else 0):
+    if len(parg) < (
+            1 if options.subparser in NXSConfigArgParser.argreq else 0):
         pars[options.subparser].print_help()
         return
 
@@ -831,14 +814,13 @@ def main():
     cnfserver = ConfigServer(options.server, options.nonewlines)
 
     #: result to print
-    result=cnfserver.performCommand(
+    result = cnfserver.performCommand(
         options.subparser,
         options.datasources if hasattr(options, "datasources") else None,
         options.args if hasattr(options, "args") else None,
         options.mandatory if hasattr(options, "mandatory") else None,
         options.private if hasattr(options, "private") else None,
     )
-
 
     #: result to print
     if result.strip():

@@ -112,7 +112,7 @@ class ErrorException(Exception):
     pass
 
 
-class ArgParser(argparse.ArgumentParser):
+class NXSDataArgParser(argparse.ArgumentParser):
     """ Argument parser with error exception
     """
 
@@ -123,6 +123,16 @@ class ArgParser(argparse.ArgumentParser):
     argreq = ['openfile', 'setdata', 'record' ]
     #: (:obj:`list` <:obj:`str`>) sub-commands without arguments
     noargs = ['server', 'closeentry', 'closefile']
+
+    def __init__(self, **kwargs):
+        """ constructor 
+        
+        :param kwargs: :class:`argparse.ArgumentParser`
+                       parameter dictionary 
+        :type kwargs: :obj: `dict` <:obj:`str`, `any`>
+        """
+        argparse.ArgumentParser.__init__(self, **kwargs)
+        self.subparsers = {}
 
     def error(self, message):
         """ error handler
@@ -135,68 +145,57 @@ class ArgParser(argparse.ArgumentParser):
 
 
 
-def _createParser():
-    """ creates command-line parameters parser
+    def createParser(self):
+        """ creates command-line parameters parser
 
-    :returns: option parser
-    :rtype: :class:`ArgParser`
-    """
-    #: usage example
-    description  = "Command-line tool for writing NeXus files with NXSDataWriter"
-#    \
-#            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
-#            + "/user/data/myfile.h5"
+        :returns: option parser
+        :rtype: :class:`ArgParser`
+        """
+        #: usage example
+        description  = "Command-line tool for writing NeXus files with NXSDataWriter"
+        #    \
+        #            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
+        #            + "/user/data/myfile.h5"
 
-    hlp = {
-        "openfile": "open a new H5 file",
-        "setdata": "assign global JSON data",
-        "openentry": "create new entry",
-        "record": "record one step with step JSON data",
-        "closeentry": "close the current entry",
-        "closefile": "close the current file",
-        "servers": "get lists of tango data servers from "
-        "the current tango host",
-    }
+        hlp = {
+            "openfile": "open a new H5 file",
+            "setdata": "assign global JSON data",
+            "openentry": "create new entry",
+            "record": "record one step with step JSON data",
+            "closeentry": "close the current entry",
+            "closefile": "close the current file",
+            "servers": "get lists of tango data servers from "
+            "the current tango host",
+        }
 
-    pars = {}
-    pars["parser"] = ArgParser(
-        prog='nxsdata',
-        description=description,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog='For more help:\n  nxsdata <sub-command> -h')
-    subparsers = pars["parser"].add_subparsers(
-        help='sub-command help', dest="subparser")
+        self.description = description
+        self.epilog = 'For more help:\n  nxsdata <sub-command> -h'
+
+        pars = {}
+        subparsers = self.add_subparsers(
+            help='sub-command help', dest="subparser")
 
 
-#    #: option parser
-#    parser = OptionParser(usage=usage)
-#    parser.add_option("-s", "--server", dest="server",
-#                      help="tango data server device name")
+        for cmd in self.commands:
+            pars[cmd] = subparsers.add_parser(
+                cmd, help='%s' % hlp[cmd], description=hlp[cmd])
 
+            pars[cmd].add_argument(
+                "-s", "--server", dest="server",
+                help=("tango host or writer server" if cmd=='servers' else
+                      "writer server device name")
+            )
 
-    for cmd in ArgParser.commands:
-        pars[cmd] = subparsers.add_parser(
-            cmd, help='%s' % hlp[cmd], description=hlp[cmd])
-
-        pars[cmd].add_argument(
-            "-s", "--server", dest="server",
-            help=("tango host or writer server" if cmd=='servers' else
-                  "writer server device name")
-        )
-
-#        pars[cmd].set_defaults(func=perform)
-#        parser.add_argument('args', metavar='name', type=str, nargs=args,
-#                            help='names of components or datasources')
-
-    pars['openfile'].add_argument('args', metavar='file_name', type=str, nargs='?',
-                              help='new newxus file name')
-    pars['openentry'].add_argument('args', metavar='xml_config', type=str, nargs='?',
-                              help='nexus writer configuration string')
-    pars['setdata'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                              help='json data string')
-    pars['record'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
-                              help='json data string')
-    return pars
+        pars['openfile'].add_argument('args', metavar='file_name', type=str, nargs='?',
+                                  help='new newxus file name')
+        pars['openentry'].add_argument('args', metavar='xml_config', type=str, nargs='?',
+                                  help='nexus writer configuration string')
+        pars['setdata'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
+                                  help='json data string')
+        pars['record'].add_argument('args', metavar='json_data_string', type=str, nargs='?',
+                                  help='json data string')
+        self.subparsers = pars
+        return pars
 
 
 def main():
@@ -210,17 +209,18 @@ def main():
         #: system pipe
         pipe = "".join(pp)
 
+    parser = NXSDataArgParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    pars = parser.createParser()
 
-    #: run options
-    options = None
-    pars = _createParser()
-    argcomplete.autocomplete(pars["parser"])
+    argcomplete.autocomplete(parser)
+
     try:
-        options = pars["parser"].parse_args()
+        options = parser.parse_args()
     except ErrorException as e:
         sys.stderr.write("Error: %s\n" % str(e))
         sys.stderr.flush()
-        pars["parser"].print_help()
+        parser.print_help()
         print("")
         sys.exit(255)
 
@@ -247,7 +247,7 @@ def main():
     if pipe:
         parg.append(pipe)
 
-    if len(parg) < (1 if options.subparser in ArgParser.argreq else 0):
+    if len(parg) < (1 if options.subparser in NXSDataArgParser.argreq else 0):
         pars[options.subparser].print_help()
         return
 
