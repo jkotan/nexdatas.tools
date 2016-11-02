@@ -116,7 +116,7 @@ class NXSDataArgParser(argparse.ArgumentParser):
     """ Argument parser with error exception
     """
 
-    #: (:obj:`list` <:obj:`str`>) nxsconfig sub-commands
+    #: (:obj:`list` <:obj:`str`>) nxsdata sub-commands
     commands = ['openfile', 'openentry', 'setdata', 'record',
                 'closeentry', 'closefile']
     #: (:obj:`list` <:obj:`str`>) sub-commands with required argument
@@ -149,7 +149,7 @@ class NXSDataArgParser(argparse.ArgumentParser):
         """ creates command-line parameters parser
 
         :returns: option parser
-        :rtype: :class:`ArgParser`
+        :rtype: :class:`NXSDataArgParser`
         """
         #: usage example
         description  = "Command-line tool for writing NeXus files with NXSDataWriter"
