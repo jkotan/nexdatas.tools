@@ -27,8 +27,10 @@ import re
 import shutil
 import fabio
 import signal
-from optparse import OptionParser
+import argparse
+import argcomplete
 from .filenamegenerator import FilenameGenerator
+from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 
 #: (:obj:`bool`) True if pni.io.nx.h5 available
@@ -421,49 +423,64 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
-def _createParser():
+def _createParser(parser):
     """ creates command-line parameters parser
-
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
+    
+    :param parser: option parser
+    :type parser: :class:`nxstools.nxsargparser.NXSArgParser`
     """
-    #: (:obj:`str`) usage example
-    usage = "usage: \n" \
-            + " nxscollect [-x|-t] [<options>] <command> <main_nexus_file> \n" \
-            + " e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
-            + " "
+    parser.add_argument("-x", "--execute",
+                        action="store_true",
+                        default=False, dest="execute",
+                        help="execute the collection process"
+    )
+    parser.add_argument("-t", "--test", action="store_true",
+                        default=False, dest="test",
+                        help="execute the process in the test mode "
+                        + "without changing any files")
+    parser.add_argument("-c", "--compression", dest="compression",
+                        action="store", type=int, default=2,
+                        help="deflate compression rate from 0 to 9 (default: 2)")
+    parser.add_argument("-s", "--skip_missing", action="store_true",
+                        default=False, dest="skipmissing",
+                        help="skip missing files")
+    parser.add_argument("-r", "--replace_nexus_file", action="store_true",
+                        default=False, dest="replaceold",
+                        help="if it is set the old file is not copied into "
+                        "a file with .__nxscollect__old__* extension")
 
-    #: (:class:`optparse.OptionParser`) option parser
-    parser = OptionParser(usage=usage)
-    parser.add_option("-x", "--execute", action="store_true",
-                      default=False, dest="execute",
-                      help="execute the collection process")
-    parser.add_option("-t", "--test", action="store_true",
-                      default=False, dest="test",
-                      help="execute the process in the test mode "
-                      + "without changing any files")
-    parser.add_option("-c", "--compression", dest="compression",
-                      action="store", type=int, default=2,
-                      help="deflate compression rate from 0 to 9 (default: 2)")
-    parser.add_option("-s", "--skip_missing", action="store_true",
-                      default=False, dest="skipmissing",
-                      help="skip missing files")
-    parser.add_option("-r", "--replace_nexus_file", action="store_true",
-                      default=False, dest="replaceold",
-                      help="if it is set the old file is not copied into "
-                      "a file with .__nxscollect__old__* extension")
+    argcomplete.autocomplete(parser)
 
-    return parser
+    parser.add_argument('args', metavar='nexus_file',
+                        type=str, nargs='*',
+                        help='nexus files to be collected')
 
 
 def main():
     """ the main program function
     """
+    description = "  Command-line tool to merge images of external " \
+                  + "file-formats into the master NeXus file"
+    epilog = ""\
+            + " example:\n" \
+            + " nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n"
 
-    #: run options
-    options = None
-    parser = _createParser()
-    (options, nexusfiles) = parser.parse_args()
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    _createParser(parser)
+
+    try:
+        options = parser.parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
+    nexusfiles = options.args
 
     if not nexusfiles or not nexusfiles[0]:
         parser.print_help()

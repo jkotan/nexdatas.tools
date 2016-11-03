@@ -28,6 +28,7 @@ import argparse
 import argcomplete
 
 
+from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 from nxstools.nxsdevicetools import (
     checkServer, getAttributes, getServerTangoHost)
 from nxstools.nxscreator import (
@@ -43,38 +44,6 @@ try:
     PYTANGO = True
 except:
     pass
-
-
-class Runner(object):
-    """ abstract runner"""
-
-    #: (:obj:`str`) command description
-    description = "abstract runner"
-
-    #: (:obj:`str`) command epilog
-    epilog = None
-
-    def __init__(self, parser):
-        """ parser creator
-
-        :param parser: option parser
-        :type parser: :class:`NXSFileInfoArgParser`
-        """
-        #: (:class:`NXSFileInfoArgParser`) option parser
-        self._parser = parser
-
-    def create(self):
-        """ parser creator """
-
-    def postauto(self):
-        """ parser creator after autocomplete run """
-
-    def run(self, options):
-        """ run commandthe main program function
-
-        :param options: parser options
-        :type options: :class:`argparse.Namespace`
-        """
 
 
 class TangoDS(Runner):
@@ -735,10 +704,12 @@ class Comp(Runner):
                             help='component names to be created')
         return parser
 
-    def main():
-        """ the main function
-        """
+    def run(self, options):
+        """ the main program function
 
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
         ars = options.args or []
         if options.database and not options.server:
             if not PYTANGO:
@@ -866,86 +837,24 @@ class ClientDS(Runner):
             parser.print_help()
             sys.exit(255)
 
-
-class ErrorException(Exception):
-    """ error parser exception """
-    pass
-
-
-class NXSCreateArgParser(argparse.ArgumentParser):
-    """ Argument parser with error exception
-    """
-
-    #: (:obj:`dict` <:obj:`str`, :class:`Runner`>) \
-    #    nxsfileinfo sub-command classes
-    cmdrunners = [('clientds', ClientDS),
-                  ('tangods', TangoDS),
-                  ('deviceds', DeviceDS),
-                  ('onlineds', OnlineDS),
-                  ('onlinecp', OnlineCP),
-                  ('stdcomp', StdComp),
-                  ('comp', Comp)]
-
-    def __init__(self, **kwargs):
-        """ constructor
-
-        :param kwargs: :class:`argparse.ArgumentParser`
-                       parameter dictionary
-        :type kwargs: :obj: `dict` <:obj:`str`, `any`>
-        """
-        argparse.ArgumentParser.__init__(self, **kwargs)
-        self.subparsers = {}
-
-    def error(self, message):
-        """ error handler
-
-        :param message: error message
-        :type message: :obj:`str`
-        """
-        raise ErrorException(message)
-
-    def createParser(self):
-        """ creates command-line parameters parser
-
-        :returns: command runner
-        :rtype: :class:`Runner`
-        """
-        #: usage example
-        description = " Command-line tool for creating NXSConfigServer" \
-                      + " configuration of Nexus Files"
-
-        self.description = description
-        self.epilog = 'For more help:\n  nxscreate <sub-command> -h'
-
-        pars = {}
-        subparsers = self.add_subparsers(
-            help='sub-command help', dest="subparser")
-
-        for cmd, klass in self.cmdrunners:
-            self.subparsers[cmd] = subparsers.add_parser(
-                cmd, help='%s' % klass.description,
-                description=klass.description,
-                epilog=klass.epilog,
-                formatter_class=argparse.RawDescriptionHelpFormatter
-            )
-            pars[cmd] = klass(self.subparsers[cmd])
-            pars[cmd].create()
-
-        argcomplete.autocomplete(self)
-
-        for cmd, klass in self.cmdrunners:
-            pars[cmd].postauto()
-
-        return pars
-
-
 def main():
     """ the main program function
     """
+    description = " Command-line tool for creating NXSConfigServer" \
+                  + " configuration of Nexus Files"
 
-    parser = NXSCreateArgParser(
+    epilog = 'For more help:\n  nxscreate <sub-command> -h'
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    runners = parser.createParser()
+    parser.cmdrunners = [('clientds', ClientDS),
+                         ('tangods', TangoDS),
+                         ('deviceds', DeviceDS),
+                         ('onlineds', OnlineDS),
+                         ('onlinecp', OnlineCP),
+                         ('stdcomp', StdComp),
+                         ('comp', Comp)]
+    runners = parser.createSubParsers()
 
     try:
         options = parser.parse_args()
