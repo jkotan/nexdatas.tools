@@ -27,7 +27,6 @@ import argparse
 import argcomplete
 
 from .nxsparser import TableTools
-from optparse import OptionParser
 from .nxsfileparser import NXSFileParser
 
 
@@ -198,8 +197,8 @@ class Field(object):
 
         :param root: nexus root node
         :type root: :class:`pni.io.nx.h5.nxroot`
-        :param root: parser options
-        :type root: :class:`argparse.Namespace`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
         """
         self.__root = root
         self.__options = options
