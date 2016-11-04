@@ -25,7 +25,6 @@ import sys
 import time
 import fnmatch
 import argparse
-import argcomplete
 
 
 from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
@@ -836,6 +835,7 @@ class ClientDS(Runner):
             sys.stderr.write(str(e))
             parser.print_help()
             sys.exit(255)
+
 
 def main():
     """ the main program function

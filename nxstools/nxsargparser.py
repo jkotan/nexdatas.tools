@@ -23,6 +23,7 @@
 import argparse
 import argcomplete
 
+
 class Runner(object):
     """ abstract runner"""
 
@@ -54,6 +55,7 @@ class Runner(object):
         :type options: :class:`argparse.Namespace`
         """
 
+
 class ErrorException(Exception):
     """ error parser exception """
     pass
@@ -75,7 +77,6 @@ class NXSArgParser(argparse.ArgumentParser):
         #: (:obj:`dict` <:obj:`str`, :class:`Runner`>) \
         #    nxsfileinfo sub-command classes
         self.cmdrunners = []
-
 
     def error(self, message):
         """ error handler
@@ -112,5 +113,3 @@ class NXSArgParser(argparse.ArgumentParser):
             pars[cmd].postauto()
 
         return pars
-
-

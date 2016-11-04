@@ -425,29 +425,33 @@ class Collector(object):
 
 def _createParser(parser):
     """ creates command-line parameters parser
-    
+
     :param parser: option parser
     :type parser: :class:`nxstools.nxsargparser.NXSArgParser`
     """
-    parser.add_argument("-x", "--execute",
-                        action="store_true",
-                        default=False, dest="execute",
-                        help="execute the collection process"
-    )
-    parser.add_argument("-t", "--test", action="store_true",
-                        default=False, dest="test",
-                        help="execute the process in the test mode "
-                        + "without changing any files")
-    parser.add_argument("-c", "--compression", dest="compression",
-                        action="store", type=int, default=2,
-                        help="deflate compression rate from 0 to 9 (default: 2)")
-    parser.add_argument("-s", "--skip_missing", action="store_true",
-                        default=False, dest="skipmissing",
-                        help="skip missing files")
-    parser.add_argument("-r", "--replace_nexus_file", action="store_true",
-                        default=False, dest="replaceold",
-                        help="if it is set the old file is not copied into "
-                        "a file with .__nxscollect__old__* extension")
+    parser.add_argument(
+        "-x", "--execute",
+        action="store_true",
+        default=False, dest="execute",
+        help="execute the collection process")
+    parser.add_argument(
+        "-t", "--test", action="store_true",
+        default=False, dest="test",
+        help="execute the process in the test mode "
+        + "without changing any files")
+    parser.add_argument(
+        "-c", "--compression", dest="compression",
+        action="store", type=int, default=2,
+        help="deflate compression rate from 0 to 9 (default: 2)")
+    parser.add_argument(
+        "-s", "--skip_missing", action="store_true",
+        default=False, dest="skipmissing",
+        help="skip missing files")
+    parser.add_argument(
+        "-r", "--replace_nexus_file", action="store_true",
+        default=False, dest="replaceold",
+        help="if it is set the old file is not copied into "
+        "a file with .__nxscollect__old__* extension")
 
     argcomplete.autocomplete(parser)
 
@@ -461,9 +465,9 @@ def main():
     """
     description = "  Command-line tool to merge images of external " \
                   + "file-formats into the master NeXus file"
-    epilog = ""\
-            + " example:\n" \
-            + " nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n"
+    epilog = "" \
+             + " example:\n" \
+             + " nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n"
 
     parser = NXSArgParser(
         description=description, epilog=epilog,
