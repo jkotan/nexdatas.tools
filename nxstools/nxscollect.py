@@ -478,7 +478,6 @@ class Execute(Runner):
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
                 not options.replaceold, False)
-            print "COLLECT", nxsfile
             collector.collect()
 
 
