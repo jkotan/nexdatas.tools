@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.filenamegenerator &mdash; NXSTools 2.11.0 documentation</title>
+    <title>nxstools.nxsargparser &mdash; NXSTools 2.11.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -175,7 +175,7 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <h1>Source code for nxstools.filenamegenerator</h1><div class="highlight"><pre>
+  <h1>Source code for nxstools.nxsargparser</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c">#</span>
@@ -195,76 +195,102 @@
 <span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="c">#</span>
 
-<span class="sd">&quot;&quot;&quot; Filename generator &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot; NeXus tool argumen parser</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">argcomplete</span>
 
 
-<div class="viewcode-block" id="FilenameGenerator"><a class="viewcode-back" href="../../nxstools.html#nxstools.filenamegenerator.FilenameGenerator">[docs]</a><span class="k">class</span> <span class="nc">FilenameGenerator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate image file names</span>
+<div class="viewcode-block" id="Runner"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner">[docs]</a><span class="k">class</span> <span class="nc">Runner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; abstract runner&quot;&quot;&quot;</span>
 
-<span class="sd">    (c) Copyright 2015 Eugen Wintersberger &lt;eugen.wintersberger@gmail.com&gt;</span>
-<span class="sd">    (c) Copyright 2015 DESY</span>
-<span class="sd">    This file is part of nx2img.</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;abstract runner&quot;</span>
 
-<span class="sd">    nx2img is free software: you can redistribute it and/or modify</span>
-<span class="sd">    it under the terms of the GNU General Public License as published by</span>
-<span class="sd">    the Free Software Foundation, either version 2 of the License, or</span>
-<span class="sd">    (at your option) any later version.</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="bp">None</span>
 
-<span class="sd">    nx2img is distributed in the hope that it will be useful,</span>
-<span class="sd">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="sd">    GNU General Public License for more details.</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; parser creator</span>
 
-<span class="sd">    You should have received a copy of the GNU General Public License</span>
-<span class="sd">    along with nx2img.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">        :param parser: option parser</span>
+<span class="sd">        :type parser: :class:`NXSFileInfoArgParser`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#: (:class:`NXSFileInfoArgParser`) option parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="n">parser</span>
 
-<span class="sd">    Generator class creating image file names.</span>
+<div class="viewcode-block" id="Runner.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; parser creator &quot;&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="Runner.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="Runner.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; run commandthe main program function</span>
 
-<span class="sd">    :param fname_template: file name template</span>
-<span class="sd">    :type fname_template: :obj:`str`</span>
-<span class="sd">    :param start_index: file start index</span>
-<span class="sd">    :type start_index: :obj:`int`</span>
-<span class="sd">    :param stop_index: file stop index</span>
-<span class="sd">    :type stop_index: :obj:`int`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname_template</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop_index</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-
-        <span class="c">#: (:obj:`int`) file start index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_index</span> <span class="o">=</span> <span class="n">start_index</span>
-        <span class="c">#: (:obj:`str`) file name template</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">file_template</span> <span class="o">=</span> <span class="n">fname_template</span>
-        <span class="c">#: (:obj:`int`) file stop index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stop_index</span> <span class="o">=</span> <span class="n">stop_index</span>
-
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c"># if self.stop_index is -1 we loop forever, otherwise we stop</span>
-        <span class="c"># when the current index exceeds self.stop_index</span>
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_index</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_index</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_index</span><span class="p">:</span>
-            <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_template</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_index</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">file_index</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">yield</span> <span class="n">filename</span>
-
-    <span class="nd">@staticmethod</span>
-<div class="viewcode-block" id="FilenameGenerator.from_slice"><a class="viewcode-back" href="../../nxstools.html#nxstools.filenamegenerator.FilenameGenerator.from_slice">[docs]</a>    <span class="k">def</span> <span class="nf">from_slice</span><span class="p">(</span><span class="n">file_template</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Static factory method to create a filename_generator instance</span>
-<span class="sd">        from a sliced user input</span>
-
-<span class="sd">        :param file_template: file template</span>
-<span class="sd">        :type file_template: :obj:`str`</span>
-<span class="sd">        :returns: filename generator object</span>
-<span class="sd">        :rtype: :class:`FilenameGenerator`</span>
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="p">(</span><span class="n">file_format</span><span class="p">,</span> <span class="n">start_index_str</span><span class="p">,</span> <span class="n">stop_index_str</span><span class="p">)</span> <span class="o">=</span> \
-            <span class="n">file_template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
-        <span class="n">stop_index</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">stop_index_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">stop_index</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">stop_index_str</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="ErrorException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.ErrorException">[docs]</a><span class="k">class</span> <span class="nc">ErrorException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; error parser exception &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
 
-        <span class="n">start_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">start_index_str</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NXSArgParser"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser">[docs]</a><span class="k">class</span> <span class="nc">NXSArgParser</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Argument parser with error exception</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">FilenameGenerator</span><span class="p">(</span><span class="n">file_format</span><span class="p">,</span> <span class="n">start_index</span><span class="p">,</span> <span class="n">stop_index</span><span class="p">)</span></div></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param kwargs: :class:`argparse.ArgumentParser`</span>
+<span class="sd">                       parameter dictionary</span>
+<span class="sd">        :type kwargs: :obj: `dict` &lt;:obj:`str`, `any`&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subparsers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c">#: (:obj:`dict` &lt;:obj:`str`, :class:`Runner`&gt;) \</span>
+        <span class="c">#    nxsfileinfo sub-command classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmdrunners</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="NXSArgParser.error"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; error handler</span>
+
+<span class="sd">        :param message: error message</span>
+<span class="sd">        :type message: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="n">ErrorException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="NXSArgParser.createSubParsers"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser.createSubParsers">[docs]</a>    <span class="k">def</span> <span class="nf">createSubParsers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates command-line parameters parser</span>
+
+<span class="sd">        :returns: command runner</span>
+<span class="sd">        :rtype: :class:`Runner`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pars</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">subparsers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;sub-command help&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;subparser&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">klass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdrunners</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subparsers</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+                <span class="n">cmd</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">klass</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="n">klass</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="n">epilog</span><span class="o">=</span><span class="n">klass</span><span class="o">.</span><span class="n">epilog</span><span class="p">,</span>
+                <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span>
+            <span class="p">)</span>
+            <span class="n">pars</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span> <span class="o">=</span> <span class="n">klass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subparsers</span><span class="p">[</span><span class="n">cmd</span><span class="p">])</span>
+            <span class="n">pars</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+        <span class="n">argcomplete</span><span class="o">.</span><span class="n">autocomplete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">klass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdrunners</span><span class="p">:</span>
+            <span class="n">pars</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span><span class="o">.</span><span class="n">postauto</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">pars</span></div></div>
 </pre></div>
 
     </div>

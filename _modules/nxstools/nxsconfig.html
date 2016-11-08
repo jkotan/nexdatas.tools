@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsconfig &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxstools.nxsconfig &mdash; NXSTools 2.11.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.10.2',
+        VERSION:     '2.11.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.10.2 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.11.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.10</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -106,6 +106,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-set">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id2">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id4">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#example">Example</a></li>
 </ul>
 </li>
@@ -113,19 +116,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
@@ -202,13 +199,12 @@
 
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">ParserTools</span><span class="p">,</span> <span class="n">TableTools</span>
-
+<span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span><span class="n">checkServer</span><span class="p">,</span> <span class="n">listServers</span><span class="p">,</span> <span class="n">openServer</span><span class="p">)</span>
 
 
-<span class="c">##</span>
 <div class="viewcode-block" id="ConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer">[docs]</a><span class="k">class</span> <span class="nc">ConfigServer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -222,12 +218,12 @@
 <span class="sd">        :type nonewline: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c">#: (:obj:`str`) spliting character</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__char</span> <span class="o">=</span> <span class="s">&quot; &quot;</span> <span class="k">if</span> <span class="n">nonewline</span> <span class="k">else</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="s">&quot; &quot;</span> <span class="k">if</span> <span class="n">nonewline</span> <span class="k">else</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
         <span class="c">#: (:class:`PyTango.DeviceProxy`) configuration server proxy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_listCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ConfigServer.listCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.listCmd">[docs]</a>    <span class="k">def</span> <span class="nf">listCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; lists the DB item names</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -253,8 +249,8 @@
                 <span class="k">return</span> <span class="p">[</span><span class="n">cp</span> <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">cp</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;__&quot;</span><span class="p">)]</span>
         <span class="k">return</span> <span class="p">[]</span>
-
-    <span class="k">def</span> <span class="nf">_sourcesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.sourcesCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.sourcesCmd">[docs]</a>    <span class="k">def</span> <span class="nf">sourcesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; lists datasources of the components</span>
 
 <span class="sd">        :param components: given components</span>
@@ -277,8 +273,8 @@
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentsDataSources</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span>
-
-    <span class="k">def</span> <span class="nf">_componentsCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.componentsCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.componentsCmd">[docs]</a>    <span class="k">def</span> <span class="nf">componentsCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; lists components of the components</span>
 
 <span class="sd">        :param components: given components</span>
@@ -297,8 +293,8 @@
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">DependentComponents</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span>
-
-    <span class="k">def</span> <span class="nf">_variablesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.variablesCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.variablesCmd">[docs]</a>    <span class="k">def</span> <span class="nf">variablesCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; lists variable of the components</span>
 
 <span class="sd">        :param components: given components</span>
@@ -321,7 +317,7 @@
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">ComponentsVariables</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span>
-
+</div>
     <span class="k">def</span> <span class="nf">__getDataSources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides datasources and its records for a given component</span>
 
@@ -348,7 +344,7 @@
                     <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">records</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_recordCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="ConfigServer.recordCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.recordCmd">[docs]</a>    <span class="k">def</span> <span class="nf">recordCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; lists datasources of the component</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -358,6 +354,9 @@
 <span class="sd">        :returns: list of record names</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ds</span><span class="p">:</span>
             <span class="n">cmps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableComponents</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmps</span><span class="p">:</span>
@@ -367,7 +366,8 @@
                 <span class="k">return</span> <span class="p">[]</span>
             <span class="n">names</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getDataSources</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">dsrcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">AvailableDataSources</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">nm</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
@@ -392,8 +392,8 @@
                     <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
                     <span class="k">return</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">records</span>
-
-    <span class="k">def</span> <span class="nf">_showCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.showCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.showCmd">[docs]</a>    <span class="k">def</span> <span class="nf">showCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; shows the DB items</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -429,8 +429,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Components</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[]</span>
-
-    <span class="k">def</span> <span class="nf">_getCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.getCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.getCmd">[docs]</a>    <span class="k">def</span> <span class="nf">getCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides final configuration</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -454,7 +454,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">CreateConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">XMLString</span>
         <span class="k">return</span> <span class="s">&quot;&quot;</span>
-
+</div>
     <span class="k">def</span> <span class="nf">__describeDataSources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides description of datasources</span>
 
@@ -625,7 +625,7 @@
             <span class="n">ttools</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
         <span class="k">return</span> <span class="n">ttools</span><span class="o">.</span><span class="n">generateList</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_describeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+<div class="viewcode-block" id="ConfigServer.describeCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.describeCmd">[docs]</a>    <span class="k">def</span> <span class="nf">describeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides description of configuration elements</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -646,8 +646,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">pr</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_infoCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.infoCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.infoCmd">[docs]</a>    <span class="k">def</span> <span class="nf">infoCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Provides info for given elements</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -677,8 +677,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">nonone</span><span class="p">,</span> <span class="n">pr</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">nonone</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_geometryCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.geometryCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.geometryCmd">[docs]</a>    <span class="k">def</span> <span class="nf">geometryCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides geometry info for given elements</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -707,8 +707,8 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeComponents</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">,</span> <span class="n">private</span><span class="o">=</span><span class="n">pr</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__describeConfiguration</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">cpheaders</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_dataCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.dataCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.dataCmd">[docs]</a>    <span class="k">def</span> <span class="nf">dataCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides varaible values</span>
 
 <span class="sd">        :param args: list of item names</span>
@@ -716,11 +716,11 @@
 <span class="sd">        :returns: JSON with variables</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Variables</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Variables</span><span class="p">)]</span>
-
-    <span class="k">def</span> <span class="nf">_mergeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+</div>
+<div class="viewcode-block" id="ConfigServer.mergeCmd"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.mergeCmd">[docs]</a>    <span class="k">def</span> <span class="nf">mergeCmd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides merged components</span>
 
 <span class="sd">        :param ds: flag set True for datasources</span>
@@ -744,184 +744,626 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Merge</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="s">&quot;&quot;</span>
 
-<div class="viewcode-block" id="ConfigServer.performCommand"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.ConfigServer.performCommand">[docs]</a>    <span class="k">def</span> <span class="nf">performCommand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                       <span class="n">private</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; performs requested command</span>
+</div></div>
+<div class="viewcode-block" id="List"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.List">[docs]</a><span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; List runner&quot;&quot;&quot;</span>
 
-<span class="sd">        :param command: executed command: &#39;list&#39;, &#39;show&#39;, &#39;get&#39;,</span>
-<span class="sd">                        &#39;variables&#39;, &#39;sources&#39;, &#39;record&#39;, &#39;merge&#39;,</span>
-<span class="sd">                        &#39;components&#39;, &#39;data&#39;, &#39;describe&#39;, &#39;info&#39;, &#39;geometry&#39;</span>
-<span class="sd">        :type command: :obj:`str`</span>
-<span class="sd">        :param ds: flag set True for datasources</span>
-<span class="sd">        :type ds: :obj:`bool`</span>
-<span class="sd">        :param args: list of item names</span>
-<span class="sd">        :type args: :obj:`list` &lt;:obj:`str`&gt;</span>
-<span class="sd">        :param mandatory: flag set True for mandatory components</span>
-<span class="sd">        :type mandatory: :obj:`bool`</span>
-<span class="sd">        :param private: flag set True for components starting with &#39;__&#39;</span>
-<span class="sd">        :type private: :obj:`bool`</span>
-<span class="sd">        :returns: resulting string</span>
-<span class="sd">        :rtype: :obj:`str`</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;list names of available components (or datasources)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig list</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="List.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.List.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;list&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_listCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;show&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_showCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;get&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;merge&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mergeCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;sources&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sourcesCmd</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;components&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_componentsCmd</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;variables&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variablesCmd</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;data&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataCmd</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;record&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recordCmd</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;describe&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_describeCmd</span><span class="p">(</span>
-                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;info&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_infoCmd</span><span class="p">(</span>
-                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s">&#39;geometry&#39;</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geometryCmd</span><span class="p">(</span>
-                <span class="n">ds</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">private</span><span class="p">))</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                            <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="List.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.List.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">listCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">string</span>
 
 </div></div>
-<span class="k">def</span> <span class="nf">_createParser</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; creates command-line parameters parser</span>
+<div class="viewcode-block" id="Show"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Show">[docs]</a><span class="k">class</span> <span class="nc">Show</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Show runner&quot;&quot;&quot;</span>
 
-<span class="sd">    :returns: option parser</span>
-<span class="sd">    :rtype: :class:`optparse.OptionParser`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c">#: (:obj:`str`) usage example</span>
-    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;usage: nxsconfig &lt;command&gt; [-s &lt;config_server&gt;] &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; [-d] [-m] [&lt;name1&gt;] [&lt;name2&gt;] [&lt;name3&gt;] ... </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;       nxsconfig info</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;       nxsconfig geometry</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;Commands: </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   list [-s &lt;config_server&gt;] [-m | -p] </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          list names of available components</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   list -d [-s &lt;config_server&gt;] </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          list names of available datasources</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   show [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show components with given names </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   show -d [-s &lt;config_server&gt;] dsource_name1 &quot;</span>  \
-            <span class="o">+</span> <span class="s">&quot;dsource_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show datasources with given names </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   get [-s &lt;config_server&gt;]  [-m] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get merged configuration of components </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   sources [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get a list of component datasources </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   components [-s &lt;config_server&gt;] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get a list of dependent components </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   variables [-s &lt;config_server&gt;] [-m] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ... </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get a list of component variables </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   data [-s &lt;config_server&gt;] json_data </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          set values of component variables </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   record [-s &lt;config_server&gt;]  component_name1  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get a list of datasource record names &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;from component</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   record -d [-s &lt;config_server&gt;] datasource_name1  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get a list of datasource record names   </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   servers [-s &lt;config_server/host&gt;] </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          get lists of configuration servers from &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;the current tango host</span><span class="se">\n</span><span class="s">&quot;</span>\
-            <span class="o">+</span> <span class="s">&quot;   describe [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show all parameters of given components </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   describe|info -d [-s &lt;config_server&gt;] dsource_name1 &quot;</span>  \
-            <span class="o">+</span> <span class="s">&quot;dsource_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show all parameters of given datasources </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   info [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show source parameters of given components </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;   geometry [-s &lt;config_server&gt;] [-m | -p] component_name1 &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;component_name2 ...  </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;          show transformation parameters &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;of given components </span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;show components (or datasources) with given names&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig show dcm</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
 
-    <span class="c">#: (:class:`optparse.OptionParser`) option parser</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation on datasources&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
-                      <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="Show.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Show.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
 
-    <span class="k">return</span> <span class="n">parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                            <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components or datasources&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Show.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Show.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
 
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">showCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
 
+</div></div>
+<div class="viewcode-block" id="Get"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Get">[docs]</a><span class="k">class</span> <span class="nc">Get</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Get runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get full configuration of components (or datasources)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig get  dcm source slit1 slit2</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Get.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Get.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Get.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Get.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">getCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Merge"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Merge">[docs]</a><span class="k">class</span> <span class="nc">Merge</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Merge runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get merged configuration of components (or datasources)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig merge  slit1 dcm </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Merge.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Merge.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Merge.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Merge.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">getCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Sources"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Sources">[docs]</a><span class="k">class</span> <span class="nc">Sources</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Sources runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get a list of component datasources&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig sources slit1</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Sources.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Sources.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Sources.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Sources.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">sourcesCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Components"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Components">[docs]</a><span class="k">class</span> <span class="nc">Components</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Components runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get a list of dependent components&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig components dcm</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Components.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Components.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Components.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Components.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">componentsCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Variables"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Variables">[docs]</a><span class="k">class</span> <span class="nc">Variables</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Variables runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get a list of component variables&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig variables dcm</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Variables.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Variables.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Variables.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Variables.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">componentsCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Data"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Data">[docs]</a><span class="k">class</span> <span class="nc">Data</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Data runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get/set values of component variables&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig data </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig data &#39;{</span><span class="se">\&quot;</span><span class="s">sample_name</span><span class="se">\&quot;</span><span class="s">:</span><span class="se">\&quot;</span><span class="s">H2O</span><span class="se">\&quot;</span><span class="s">}&#39;</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Data.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Data.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;data dictionary in json string&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Data.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Data.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">dataCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Record"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Record">[docs]</a><span class="k">class</span> <span class="nc">Record</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Record runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get a list of datasource record names for &quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot;components or datasources&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig record -d exp_mot01 </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig record dcm </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Record.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Record.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;name of components or datasources&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Record.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Record.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">recordCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Servers"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Servers">[docs]</a><span class="k">class</span> <span class="nc">Servers</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Servers runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;get a list of configuration servers from&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; the current tango host&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig servers</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Servers.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Servers.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;tango host or configuration server&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Servers.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Servers.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">char</span> <span class="o">=</span> <span class="s">&quot; &quot;</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span> <span class="k">else</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">return</span> <span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">listServers</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s">&#39;NXSConfigServer&#39;</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="Describe"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Describe">[docs]</a><span class="k">class</span> <span class="nc">Describe</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Describe runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;show all parameters of given components&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; (or datasources)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig describe pilatus</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Describe.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Describe.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                            <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components or datasources&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Describe.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Describe.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">describeCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Info"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Info">[docs]</a><span class="k">class</span> <span class="nc">Info</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; List runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;show source parameters of given components&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; (or datasources)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig info slit1</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Info.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Info.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                            <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components or datasources&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Info.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Info.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">infoCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
+<div class="viewcode-block" id="Geometry"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Geometry">[docs]</a><span class="k">class</span> <span class="nc">Geometry</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; List runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;show transformation parameters of given components&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; (or datasources)&quot;</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsconfig geometry dcm</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Geometry.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Geometry.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">))</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--datasources&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasources&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;perform operation for datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--mandatory&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;mandatory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use mandatory components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--private&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;private&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;make use private components,&quot;</span>
+                            <span class="s">&quot; i.e. starting with &#39;__&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-newlines&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nonewlines&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;split result with space characters&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;names of components or datasources&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Geometry.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.Geometry.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        :returns: output information</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">char</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cnfserver</span><span class="o">.</span><span class="n">geometryCmd</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">string</span>
+
+</div></div>
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsconfig.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; the main program function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="c">#: pipe arguments</span>
     <span class="n">pipe</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c">#: run options</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">isatty</span><span class="p">():</span>
         <span class="c">#: system pipe</span>
         <span class="n">pipe</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-    <span class="n">commands</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;list&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;show&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;variables&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;sources&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s">&#39;record&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;merge&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;components&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                <span class="s">&#39;describe&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;geometry&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;Command-line tool for reading NeXus configuration &quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot;from NXSConfigServer&quot;</span>
 
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">_createParser</span><span class="p">()</span>
-    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&#39;For more help:</span><span class="se">\n</span><span class="s">  nxsconfig &lt;sub-command&gt; -h&#39;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">NXSArgParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">epilog</span><span class="o">=</span><span class="n">epilog</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">cmdrunners</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;list&#39;</span><span class="p">,</span> <span class="n">List</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;show&#39;</span><span class="p">,</span> <span class="n">Show</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="n">Get</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;variables&#39;</span><span class="p">,</span> <span class="n">Variables</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;sources&#39;</span><span class="p">,</span> <span class="n">Sources</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;record&#39;</span><span class="p">,</span> <span class="n">Record</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;merge&#39;</span><span class="p">,</span> <span class="n">Merge</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;components&#39;</span><span class="p">,</span> <span class="n">Components</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="n">Data</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;describe&#39;</span><span class="p">,</span> <span class="n">Describe</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="n">Info</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">Geometry</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;servers&#39;</span><span class="p">,</span> <span class="n">Servers</span><span class="p">)]</span>
+    <span class="n">runners</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">createSubParsers</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;servers&#39;</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">listServers</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s">&#39;NXSConfigServer&#39;</span><span class="p">)))</span>
-        <span class="k">return</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">commands</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ErrorException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">subparser</span> <span class="o">!=</span> <span class="s">&#39;servers&#39;</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">subparsers</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">subparser</span><span class="p">]</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
     <span class="c">#: command-line and pipe arguments</span>
-    <span class="n">parg</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">parg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&quot;args&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">]</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">parg</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">pipe</span><span class="p">:</span>
         <span class="n">parg</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pipe</span><span class="p">])</span>
+        <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">parg</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parg</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">commands</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-        <span class="k">return</span>
-
-    <span class="c">#: configuration server</span>
-    <span class="n">cnfserver</span> <span class="o">=</span> <span class="n">ConfigServer</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">nonewlines</span><span class="p">)</span>
-
-    <span class="c">#: result to print</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">cnfserver</span><span class="o">.</span><span class="n">performCommand</span><span class="p">(</span>
-        <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">options</span><span class="o">.</span><span class="n">datasources</span><span class="p">,</span> <span class="n">parg</span><span class="p">,</span>
-        <span class="n">options</span><span class="o">.</span><span class="n">mandatory</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">private</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">runners</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">subparser</span><span class="p">]</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
         <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
 </div>

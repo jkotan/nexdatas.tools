@@ -13,13 +13,13 @@ Synopsis
 
 .. code:: bash
 
-	   nxscollect [-x|-t] [<options>] <command> <main_nexus_file>
+	   nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 
 
 Options:
   -h, --help            show this help message and exit
-  -x, --execute         execute the collecting process
-  -t, --test            exceute the process in test mode without changing any
+  execute               execute the collecting process
+  test                  exceute the process in test mode without changing any
                         files
   -c COMPRESSION, --compression=COMPRESSION
                         deflate compression rate from 0 to 9 (default: 2)

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsetup &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxstools.nxsetup &mdash; NXSTools 2.11.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.10.2',
+        VERSION:     '2.11.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.10.2 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.11.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.10</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -106,6 +106,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-set">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id2">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id4">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#example">Example</a></li>
 </ul>
 </li>
@@ -113,19 +116,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
@@ -206,8 +203,9 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
 
+<span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
 
 <span class="c">#: (:obj:`str`) host name</span>
 <span class="n">_hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
@@ -774,117 +772,68 @@
         <span class="k">return</span> <span class="bp">True</span>
 
 </div></div>
-<span class="k">def</span> <span class="nf">_createParser</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; creates parser</span>
+<div class="viewcode-block" id="Set"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set">[docs]</a><span class="k">class</span> <span class="nc">Set</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; set runner&quot;&quot;&quot;</span>
 
-<span class="sd">    :param user: user name</span>
-<span class="sd">    :type user: :obj:`str`</span>
-<span class="sd">    :returns: option parser</span>
-<span class="sd">    :rtype: :class:`optparse.OptionParser`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="s">&quot;&lt;USER&gt;&quot;</span>
-    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s"> %prog -x [-b &lt;beamline&gt;] [-m &lt;masterHost&gt;] &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;[-u &lt;local_user&gt;] [-d &lt;dbname&gt;] [-j jsonsettings] &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; %prog -r [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; %prog -s [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; %prog -p -n newname -o oldname &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;[&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; %prog -c -n propname -w newvalue &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;[&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; %prog -a &lt;recorder_path&gt;</span><span class="se">\n\n</span><span class="s"> &quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;e.g.: nxsetup -x</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; NXSConfigServer</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -a /usr/share/pyshared/sardananxsrecorder</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -p -n DefaultPreselectedComponents&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; -o DefaultAutomaticComponents NXSRecSelector</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -c -n DefaultPreselectedComponents&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot; -w </span><span class="se">\&quot;</span><span class="s">[</span><span class="se">\\\&quot;</span><span class="s">pinhole1</span><span class="se">\\\&quot;</span><span class="s">,</span><span class="se">\\\&quot;</span><span class="s">slit2</span><span class="se">\\\&quot;</span><span class="s">]</span><span class="se">\&quot;</span><span class="s"> NXSRecSelector/r228</span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -r Pool/haso228 -l 2 </span><span class="se">\n</span><span class="s">&quot;</span> \
-            <span class="o">+</span> <span class="s">&quot;      nxsetup -s MacroServer -l 3 </span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;set up NXSConfigServer NXSDataWriter &quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot;and NXSRecSelector servers (a new version of -x)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup set</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup set -b p09 -m haso228 -u p09user &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-d nxsconfig NXSConfigServer</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
 
-    <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">usage</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  (</span><span class="si">%s</span><span class="s"> is known, -b </span><span class="si">%s</span><span class="s"> -m </span><span class="si">%s</span><span class="s"> -u </span><span class="si">%s</span><span class="s"> -d </span><span class="si">%s</span><span class="s"> )&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">_hostname</span><span class="p">,</span>
-                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;beamline&#39;</span><span class="p">],</span>
-                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;masterHost&#39;</span><span class="p">],</span>
-                    <span class="n">user</span><span class="p">,</span>
-                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;dbname&#39;</span><span class="p">]</span>
-                <span class="p">)</span>
+<div class="viewcode-block" id="Set.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--beamline&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;beamline&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;name of the beamline&quot;</span>
+            <span class="s">&quot; ( default: &#39;nxs&#39; )&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--masterHost&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;masterHost&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the host that stores the Mg&quot;</span>
+            <span class="s">&quot; ( default: &lt;localhost&gt; )&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--user&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the local user&quot;</span>
+            <span class="s">&quot; ( default: &#39;tango&#39; )&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the database name&quot;</span>
+            <span class="s">&quot;  ( default: &#39;nxsconfig&#39;)&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-j&quot;</span><span class="p">,</span> <span class="s">&quot;--csjson&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;csjson&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;JSONSettings for the configuration server. &quot;</span>
+            <span class="s">&quot;( default: &#39;{</span><span class="se">\&quot;</span><span class="s">host</span><span class="se">\&quot;</span><span class="s">: </span><span class="se">\&quot;</span><span class="s">localhost</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">db</span><span class="se">\&quot;</span><span class="s">: &lt;DBNAME&gt;,&quot;</span>
+            <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">use_unicode</span><span class="se">\&quot;</span><span class="s">: true&#39;,&quot;</span>
+            <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">read_default_file</span><span class="se">\&quot;</span><span class="s">: &lt;MY_CNF_FILE&gt;}&#39;&quot;</span>
+            <span class="s">&quot;  where &lt;MY_CNF_FILE&gt; stays for&quot;</span>
+            <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">/home/&lt;USER&gt;/.my.cnf</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+            <span class="s">&quot; or </span><span class="se">\&quot;</span><span class="s">/var/lib/nxsconfigserver/.my.cnf</span><span class="se">\&quot;</span><span class="s"> )&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Set.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Set.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
 
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--execute&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;execute&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;setup servers action&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--beamline&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;beamline&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;name of the beamline&quot;</span>
-                      <span class="s">&quot; ( default: &#39;nxs&#39; )&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--masterHost&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;masterHost&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the host that stores the Mg&quot;</span>
-                      <span class="s">&quot; ( default: &lt;localhost&gt; )&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--user&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the local user&quot;</span>
-                      <span class="s">&quot; ( default: &#39;tango&#39; )&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the database name&quot;</span>
-                      <span class="s">&quot;  ( default: &#39;nxsconfig&#39;)&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-j&quot;</span><span class="p">,</span> <span class="s">&quot;--csjson&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;csjson&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;JSONSettings for the configuration server. &quot;</span>
-                      <span class="s">&quot;( default: &#39;{</span><span class="se">\&quot;</span><span class="s">host</span><span class="se">\&quot;</span><span class="s">: </span><span class="se">\&quot;</span><span class="s">localhost</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">db</span><span class="se">\&quot;</span><span class="s">: &lt;DBNAME&gt;,&quot;</span>
-                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">use_unicode</span><span class="se">\&quot;</span><span class="s">: true&#39;,&quot;</span>
-                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">read_default_file</span><span class="se">\&quot;</span><span class="s">: &lt;MY_CNF_FILE&gt;}&#39;&quot;</span>
-                      <span class="s">&quot;  where &lt;MY_CNF_FILE&gt; stays for&quot;</span>
-                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">/home/&lt;USER&gt;/.my.cnf</span><span class="se">\&quot;</span><span class="s">&quot;</span>
-                      <span class="s">&quot; or </span><span class="se">\&quot;</span><span class="s">/var/lib/nxsconfigserver/.my.cnf</span><span class="se">\&quot;</span><span class="s"> )&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-a&quot;</span><span class="p">,</span> <span class="s">&quot;--add-recorder-path&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
-                      <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;recpath&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;add recorder path to the RecorderPath property&quot;</span>
-                      <span class="s">&quot; of all MacroServers&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--move-prop&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;moveprop&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;change property name&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--change-prop&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;changeprop&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;change property value&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--oldname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;oldname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;old property name&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--newname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;(new) property name&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-w&quot;</span><span class="p">,</span> <span class="s">&quot;--propvalue&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;propvalue&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;new property value&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--restart&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;restart&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;restart server(s) action&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--start&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;start&quot;</span><span class="p">,</span>
-                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;start server(s) action&quot;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--level&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;level&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;startup level&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">parser</span>
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">local_user</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">):</span>
+            <span class="n">local_user</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">local_user</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">]</span>
 
-
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; the main program function</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">local_user</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">):</span>
-        <span class="n">local_user</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">local_user</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">]</span>
-
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">_createParser</span><span class="p">(</span><span class="n">local_user</span><span class="p">)</span>
-    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">execute</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">restart</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">recpath</span> \
-       <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">changeprop</span> \
-       <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">execute</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">beamline</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">options</span><span class="o">.</span><span class="n">beamline</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;beamline&#39;</span><span class="p">]</span>
@@ -947,15 +896,37 @@
                 <span class="k">print</span><span class="p">(</span><span class="s">&quot;startup failed to create the nexus selector server&quot;</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">restart</span><span class="p">:</span>
-        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
-        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
-            <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
-            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span>
-                <span class="n">server</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">))</span>
+</div></div>
+<div class="viewcode-block" id="Start"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start">[docs]</a><span class="k">class</span> <span class="nc">Start</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; start runner&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;start tango server (a new version of -s)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup start Pool/haso228 -l 2</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Start.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--level&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;level&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;startup level&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Start.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Start.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
         <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
             <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
@@ -965,12 +936,42 @@
                 <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">),</span>
                 <span class="n">restart</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">:</span>
-        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changeRecorderPath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">):</span>
-            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="s">&quot;MacroServer&quot;</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="MoveProp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp">[docs]</a><span class="k">class</span> <span class="nc">MoveProp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; move-prop runner&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span><span class="p">:</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;change property name (a new version of -p)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup move-prop -n DefaultPreselectedComponents&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; -o DefaultAutomaticComponents NXSRecSelector</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="MoveProp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--newname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;(new) property name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--oldname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;oldname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;old property name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MoveProp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.MoveProp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">oldname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
             <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
@@ -981,7 +982,42 @@
                     <span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">oldname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span><span class="p">):</span>
                 <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">changeprop</span><span class="p">:</span>
+</div></div>
+<div class="viewcode-block" id="ChangeProp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp">[docs]</a><span class="k">class</span> <span class="nc">ChangeProp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; change-prop runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;change property value (a new version of -c)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup change-prop -n DefaultPreselectedComponents -w &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">[</span><span class="se">\\\&quot;</span><span class="s">pinhole1</span><span class="se">\\\&quot;</span><span class="s">,</span><span class="se">\\\&quot;</span><span class="s">slit2</span><span class="se">\\\&quot;</span><span class="s">]</span><span class="se">\&quot;</span><span class="s"> NXSRecSelector/r228</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="ChangeProp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--newname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;(new) property name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-w&quot;</span><span class="p">,</span> <span class="s">&quot;--propvalue&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;propvalue&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;new property value&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ChangeProp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.ChangeProp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">propvalue</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
             <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
@@ -992,6 +1028,147 @@
                     <span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">propvalue</span><span class="p">):</span>
                 <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
 
+</div></div>
+<div class="viewcode-block" id="AddRecorderPath"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath">[docs]</a><span class="k">class</span> <span class="nc">AddRecorderPath</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; add-recorder-path runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;add-recorder-path into MacroServer(s) property&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; (a new version of -a)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup add-record-path &quot;</span>\
+        <span class="o">+</span> <span class="s">&quot;/usr/share/pyshared/sardananxsrecorder</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="AddRecorderPath.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;recpath&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;recorder_path&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;sardana recorder path&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AddRecorderPath.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.AddRecorderPath.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changeRecorderPath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="s">&quot;MacroServer&quot;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="Restart"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart">[docs]</a><span class="k">class</span> <span class="nc">Restart</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; restart runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;restart tango server (a new version of -r)&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup restart Pool/haso228 -l 2</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Restart.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--level&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;level&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;startup level&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Restart.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Restart.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span>
+                <span class="n">server</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">))</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_supportoldcommands</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">oldnew</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;-x&#39;</span><span class="p">:</span> <span class="s">&#39;set&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--execute&#39;</span><span class="p">:</span> <span class="s">&#39;set&#39;</span><span class="p">,</span>
+        <span class="s">&#39;-r&#39;</span><span class="p">:</span> <span class="s">&#39;restart&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--restart&#39;</span><span class="p">:</span> <span class="s">&#39;restart&#39;</span><span class="p">,</span>
+        <span class="s">&#39;-s&#39;</span><span class="p">:</span> <span class="s">&#39;start&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--start&#39;</span><span class="p">:</span> <span class="s">&#39;start&#39;</span><span class="p">,</span>
+        <span class="s">&#39;-p&#39;</span><span class="p">:</span> <span class="s">&#39;move-prop&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--move-prop&#39;</span><span class="p">:</span> <span class="s">&#39;move-prop&#39;</span><span class="p">,</span>
+        <span class="s">&#39;-c&#39;</span><span class="p">:</span> <span class="s">&#39;change-prop&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--change-prop&#39;</span><span class="p">:</span> <span class="s">&#39;change-prop&#39;</span><span class="p">,</span>
+        <span class="s">&#39;-a&#39;</span><span class="p">:</span> <span class="s">&#39;add-recorder-path&#39;</span><span class="p">,</span>
+        <span class="s">&#39;--add-recorder-path&#39;</span><span class="p">:</span> <span class="s">&#39;add-recorder-path&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">oldnew</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">oldnew</span><span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;Command-line tool for setting up  NeXus Tango Servers&quot;</span>
+
+    <span class="n">_supportoldcommands</span><span class="p">()</span>
+
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&#39;For more help:</span><span class="se">\n</span><span class="s">  nxscreate &lt;sub-command&gt; -h&#39;</span>
+    <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">local_user</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">):</span>
+            <span class="n">local_user</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">local_user</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">]</span>
+        <span class="n">epilog</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">  (</span><span class="si">%s</span><span class="s"> is known: -b </span><span class="si">%s</span><span class="s"> -m </span><span class="si">%s</span><span class="s"> -u </span><span class="si">%s</span><span class="s"> -d </span><span class="si">%s</span><span class="s"> )&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">_hostname</span><span class="p">,</span>
+            <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;beamline&#39;</span><span class="p">],</span>
+            <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;masterHost&#39;</span><span class="p">],</span>
+            <span class="n">local_user</span><span class="p">,</span>
+            <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;dbname&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">NXSArgParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">epilog</span><span class="o">=</span><span class="n">epilog</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">cmdrunners</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="n">Set</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;restart&#39;</span><span class="p">,</span> <span class="n">Restart</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;start&#39;</span><span class="p">,</span> <span class="n">Start</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;move-prop&#39;</span><span class="p">,</span> <span class="n">MoveProp</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;change-prop&#39;</span><span class="p">,</span> <span class="n">ChangeProp</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;add-recorder-path&#39;</span><span class="p">,</span> <span class="n">AddRecorderPath</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">runners</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">createSubParsers</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ErrorException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="n">runners</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">subparser</span><span class="p">]</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 </div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>

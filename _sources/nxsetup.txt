@@ -7,8 +7,69 @@ Description
 
 The nxsetup is is a command-line setup tool for NeXus servers.  It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector in Tango environment, restart them or change property names.
 
+Synopsis
+--------
+
+.. code:: bash
+
+	  nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 
 
+The following commands are available: set, restart, start, move-prop, change-prop, add-recorder-path
+
+
+nxsetup set
+-----------
+
+It sets up NXSConfigServer NXSDataWriter and NXSRecSelector servers.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+    usage: nxsetup set [-h] [-b BEAMLINE] [-m MASTERHOST] [-u USER] [-d DBNAME]
+		       [-j CSJSON]
+		       [server_name [server_name ...]]
+
+    set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of -x)
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -b BEAMLINE, --beamline BEAMLINE
+			    name of the beamline ( default: 'nxs' )
+      -m MASTERHOST, --masterHost MASTERHOST
+			    the host that stores the Mg ( default: <localhost> )
+      -u USER, --user USER  the local user ( default: 'tango' )
+      -d DBNAME, --database DBNAME
+			    the database name ( default: 'nxsconfig')
+      -j CSJSON, --csjson CSJSON
+			    JSONSettings for the configuration server. ( default:
+			    '{"host": "localhost","db": <DBNAME>, "use_unicode":
+			    true', "read_default_file": <MY_CNF_FILE>}' where
+			    <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
+			    "/var/lib/nxsconfigserver/.my.cnf" )
+
+     examples:
+	   nxsetup set
+	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
+
+	  
+nxsetup set
+-----------
+
+It creates a set of CLIENT datasources.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+
+	  
 Synopsis
 --------
 

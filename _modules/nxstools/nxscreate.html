@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxstools.nxscreate &mdash; NXSTools 2.11.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.11.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="NXSTools 2.11.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          NXSTools</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../nxscollect.html">nxcollect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsconfig.html">nxsconfig</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxscreate.html">nxscreate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-clientds">nxscreate clientds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-tangods">nxscreate tangods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsdata.html">nxsdata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsfileinfo.html">nxscreate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxscreate-general">nxscreate general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxscreate-tangods">nxscreate tangods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-set">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id2">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#id4">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for nxstools.nxscreate</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c">#</span>
+<span class="c">#    Copyright (C) 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+
+<span class="sd">&quot;&quot;&quot;Command-line tool for creating NXSConfigServer configuration of Nexus Files</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">checkServer</span><span class="p">,</span> <span class="n">getAttributes</span><span class="p">,</span> <span class="n">getServerTangoHost</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxscreator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TangoDSCreator</span><span class="p">,</span> <span class="n">ClientDSCreator</span><span class="p">,</span> <span class="n">WrongParameterError</span><span class="p">,</span>
+    <span class="n">DeviceDSCreator</span><span class="p">,</span> <span class="n">OnlineDSCreator</span><span class="p">,</span> <span class="n">OnlineCPCreator</span><span class="p">,</span> <span class="n">CPExistsException</span><span class="p">,</span>
+    <span class="n">StandardCPCreator</span><span class="p">,</span> <span class="n">ComponentCreator</span><span class="p">)</span>
+
+
+<span class="c">#: (:obj:`bool`) True if PyTango available</span>
+<span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">PyTango</span>
+    <span class="n">PYTANGO</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="TangoDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS">[docs]</a><span class="k">class</span> <span class="nc">TangoDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; tangods runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create tango datasources&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -b: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without -b: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem in -d &lt;directory&gt; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * default: &lt;directory&gt; is &#39;.&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;datasource&gt; is &#39;exp_mot&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l2 -v p09/motor/exp. -s exp_mot </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32 -v p02/motor/eh1a. -s exp_mot&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-b </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l32 -v p01/motor/oh1. &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-s exp_mot -b</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -v petra/globals/keyword &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-s source_current -u haso228 -t 10000 </span><span class="se">\\</span><span class="s"> </span><span class="se">\n</span><span class="s"> &quot;</span>\
+        <span class="o">+</span> <span class="s">&quot;                        -a BeamCurrent &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; hasppXX.desy.de -b </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="TangoDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c (mandatory)&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;first index&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--last&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;last index&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;last&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-a&quot;</span><span class="p">,</span> <span class="s">&quot;--attribute&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango attribute name&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;Position&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource-prefix &quot;</span>
+            <span class="s">&quot;(useful for avoiding duplicated datasource names)&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasource&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;exp_mot&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output datasource directory&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--host&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango host name&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;host&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--port&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango host port&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;port&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store datasources in &quot;</span>
+            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-g&quot;</span><span class="p">,</span> <span class="s">&quot;--group&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device group name&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-e&quot;</span><span class="p">,</span> <span class="s">&quot;--elementtype&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;element type, i.e. attribute, property or command&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;elementtype&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;attribute&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parser</span>
+</div>
+<div class="viewcode-block" id="TangoDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.TangoDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="p">(</span><span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">host</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;nxscreate: No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;&quot;</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> \
+                    <span class="s">&quot;nxscreate: No Tango Host or PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+            <span class="n">hostport</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">hostport</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;CONFIG SERVER:&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;OUTPUT DIRECTORY:&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">TangoDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">WrongParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="DeviceDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS">[docs]</a><span class="k">class</span> <span class="nc">DeviceDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; deviceds runner&quot;&quot;&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create datasources for all device attributes&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * without &lt;dv_attr1&gt;: datasources for all&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; attributes are created</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * with -b: datasources are created&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * without -b: datasources are created&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; on the local filesystem in -d &lt;directory&gt; </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * default: &lt;directory&gt; is &#39;.&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;            &lt;datasource&gt; is &#39;exp_mot&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;            &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate deviceds  -v p09/pilatus/haso228k </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate deviceds  -v p09/lambda2m/haso228k -u&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;haslambda -b </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate deviceds  -v p09/pilatus300k/haso228k -b&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; -s pilatus300k_ RoI Energy ExposureTime</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="DeviceDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device, i.e. p09/pilatus300k/01 (mandatory)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource-prefix&quot;</span>
+                            <span class="s">&quot; (useful for avoiding duplicated&quot;</span>
+                            <span class="s">&quot; datasource names)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasource&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output datasource directory&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--host&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango host name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;host&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--port&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;tango host port&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;port&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in Configuration&quot;</span>
+                            <span class="s">&quot; Server database&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--no-group&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nogroup&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;don&#39;t create common group with a name of&quot;</span>
+                            <span class="s">&quot; datasource prefix&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;attribute_name&#39;</span><span class="p">,</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;attribute names of the tango device&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DeviceDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.DeviceDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="p">(</span><span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">host</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;nxscreate: No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span> <span class="s">&quot;&quot;</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> \
+                    <span class="s">&quot;nxscreate: No Tango Host or PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+            <span class="n">hostport</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">hostport</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;CONFIG SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIRECTORY: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="n">aargs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;CollCompCreator No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+            <span class="n">aargs</span> <span class="o">=</span> <span class="n">getAttributes</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">DeviceDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">aargs</span><span class="p">)</span>
+        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="OnlineDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS">[docs]</a><span class="k">class</span> <span class="nc">OnlineDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; onlineds runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create datasources from online.xml file&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -b: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -d &lt;directory&gt;: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without -b or -d &lt;directory&gt;: run in the test mode</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * default: &lt;inputFile&gt; is &#39;/online_dir/online.xml&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; `onlineds` overwrites existing datasources</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -d /home/user/xmldir </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds </span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="OnlineDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in&quot;</span>
+                            <span class="s">&quot; Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where&quot;</span>
+                            <span class="s">&quot; datasources will be saved&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">,</span> <span class="s">&quot;--external&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;external configuration server&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;xmlpackage&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;xml template package&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OnlineDS.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;online_file&#39;</span><span class="p">,</span>
+                                  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s">&#39;online.xml file&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OnlineDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;INPUT: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIR: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST MODE: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">OnlineDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="OnlineCP"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP">[docs]</a><span class="k">class</span> <span class="nc">OnlineCP</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; onlinecp runner&quot;&quot;&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create component from online.xml file&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without &#39;-c &lt;component&gt;&#39;: show a list of possible components</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without &#39;-d &lt;dircetory&gt;:  components are created in &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -d &lt;directory&gt;: components are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * default: &lt;inputFile&gt; is &#39;/online_dir/online.xml&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlinecp  </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlinecp -c pilatus </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlinecp -c lambda -d /home/user/xmldir/ </span><span class="se">\n\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="OnlineCP.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--component&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;component name&quot;</span> <span class="o">+</span>
+                            <span class="s">&quot;related to the device name from &lt;inputFile&gt;&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;component&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing component&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where &quot;</span>
+                            <span class="s">&quot;datasources will be stored.&quot;</span>
+                            <span class="s">&quot; If it is not set components are stored in &quot;</span>
+                            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">,</span> <span class="s">&quot;--external&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;external configuration server&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;xmlpackage&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;xml template package&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OnlineCP.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;online_file&#39;</span><span class="p">,</span>
+                                  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s">&#39;online.xml file&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OnlineCP.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxscreate: No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;/online_dir/online.xml&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;INPUT: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIR: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">OnlineCPCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">component</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">CPExistsException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lst</span> <span class="o">=</span> <span class="n">creator</span><span class="o">.</span><span class="n">listcomponents</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">POSSIBLE COMPONENTS: </span><span class="se">\n</span><span class="s">   </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">lst</span><span class="p">)))</span>
+
+</div></div>
+<div class="viewcode-block" id="StdComp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp">[docs]</a><span class="k">class</span> <span class="nc">StdComp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;  stdcomp runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create component from the standard templates&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without &#39;-t &lt;type&gt;&#39;: show a list of possible&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; component types</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with &#39;-t &lt;type&gt;  and without -c &lt;component&gt;:&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; show a list of component variables &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;for the given component type</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without &#39;-d &lt;dircetory&gt;:  components are created in &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -d &lt;directory&gt;: components are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * [name1 value1 [name2 value2] ...] sequence&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;  defines component variable values </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate stdcomp  </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate stdcomp -t slit </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate stdcomp -t slit -c front_slit1&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; xgap slt1x ygap slt1y</span><span class="se">\n\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="StdComp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--component&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;component name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;component&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--type&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;component type&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;cptype&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;xmlpackage&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;xml template package&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing component&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where &quot;</span>
+                            <span class="s">&quot;datasources will be stored.&quot;</span>
+                            <span class="s">&quot; If it is not set components are stored in &quot;</span>
+                            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-e&quot;</span><span class="p">,</span> <span class="s">&quot;--external&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;external configuration server&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;key value&#39;</span><span class="p">,</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;pairs of (key value) for template variables&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StdComp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.StdComp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxscreate: No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">StandardCPCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">component</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">cptype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                    <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIR: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">CPExistsException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">cptype</span><span class="p">:</span>
+            <span class="n">dct</span> <span class="o">=</span> <span class="n">creator</span><span class="o">.</span><span class="n">listcomponentvariables</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">COMPONENT VARIABLES:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">desc</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">var</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">var</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;__&#39;</span><span class="p">):</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;  </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s"> [default: &#39;</span><span class="si">%s</span><span class="s">&#39;]&quot;</span>
+                          <span class="o">%</span> <span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">desc</span><span class="p">[</span><span class="s">&#39;doc&#39;</span><span class="p">],</span> <span class="n">desc</span><span class="p">[</span><span class="s">&#39;default&#39;</span><span class="p">]))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">lst</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">listcomponenttypes</span><span class="p">())</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">POSSIBLE COMPONENT TYPES: </span><span class="se">\n</span><span class="s">   </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="Comp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp">[docs]</a><span class="k">class</span> <span class="nc">Comp</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; comp runner&quot;&quot;&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create simple components&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -b: components are created (without datasources)&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without -b: components are created (without datasources)&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem in -d &lt;directory&gt; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * default: &lt;directory&gt; is &#39;.&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;strategy&gt; is step</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;type&gt; is NX_FLOAT</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;chunk&gt; is SCALAR</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;nexuspath&gt; is &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;&#39;/entry$var.serialno:NXentry/instrument/collection/</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp counter </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -f1 -l -v exp_c01 -b </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp lambda -d /home/user/xmldir/ </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;sis3302:NXdetector/collection:NXcollection/&#39; &quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;-v sis3302_1_roi -f1 -l4 &quot;</span>\
+        <span class="o">+</span> <span class="s">&quot; -g STEP -t NX_FLOAT64 -k -b -m </span><span class="se">\n</span><span class="s">&quot;</span>\
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;eh1_mca01:NXdetector/data&#39; eh1_mca01 -g STEP -t NX_FLOAT64&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; -i -b -c SPECTRUM</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Comp.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;first index&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--last&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;last index&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;last&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output component directory&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nexuspath&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus path with field name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nexuspath&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-g&quot;</span><span class="p">,</span> <span class="s">&quot;--strategy&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;writing strategy, i.e. &quot;</span>
+                            <span class="s">&quot;STEP, INIT, FINAL, POSTRUN&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;strategy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--type&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus type of the field&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;NX_FLOAT&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--units&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus units of the field&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;units&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-k&quot;</span><span class="p">,</span> <span class="s">&quot;--links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;fieldlinks&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with field name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="s">&quot;--source-links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;sourcelinks&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with datasource name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in &quot;</span>
+                            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--chunk&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;chunk&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="s">&quot;SCALAR&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;chunk format, &quot;</span>
+                            <span class="s">&quot;i.e. SCALAR, SPECTRUM, IMAGE&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--minimal_device&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;minimal&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device name without first &#39;0&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;component_name&#39;</span><span class="p">,</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;component names to be created&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parser</span>
+</div>
+<div class="viewcode-block" id="Comp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;CollCompCreator No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;CONFIG SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIRECTORY: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">ComponentCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">WrongParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ClientDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS">[docs]</a><span class="k">class</span> <span class="nc">ClientDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; clientds runner&quot;&quot;&quot;</span>
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create client datasources&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * with -b: datasources are created&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * without -b: datasources are created&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; on the local filesystem in -d &lt;directory&gt; </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; * default: &lt;directory&gt; is &#39;.&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate clientds starttime -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate clientds title -d /home/user/xmldir </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate clientds -v exp_c -f1 -l4 -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;       nxscreate clientds -v &quot;</span> \
+             <span class="o">+</span> <span class="s">&quot;hasppXX:10000/expchan/vfcadc_exp/&quot;</span> \
+             <span class="o">+</span> <span class="s">&quot; -f1 -l8  -m -b -s exp_vfc</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="ClientDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; parser creator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c &quot;</span>
+                            <span class="s">&quot;(mandatory w/o &lt;name1&gt;)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;first index (mandatory w/o &lt;name1&gt;)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--last&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;last index (mandatory w/o &lt;name1&gt;)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;last&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing datasources&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output datasource directory&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource prefix, i.e. counter&quot;</span>
+                            <span class="s">&quot; (useful for avoiding duplicated &quot;</span>
+                            <span class="s">&quot;datasource names)&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dsource&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store datasources in &quot;</span>
+                            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--minimal_device&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;minimal&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device name without first &#39;0&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;device_name&#39;</span><span class="p">,</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;device names to create&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ClientDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;CONFIG SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIRECTORY: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">ClientDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[])</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">WrongParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot; Command-line tool for creating NXSConfigServer&quot;</span> \
+                  <span class="o">+</span> <span class="s">&quot; configuration of Nexus Files&quot;</span>
+
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&#39;For more help:</span><span class="se">\n</span><span class="s">  nxscreate &lt;sub-command&gt; -h&#39;</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">NXSArgParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">epilog</span><span class="o">=</span><span class="n">epilog</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">cmdrunners</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;clientds&#39;</span><span class="p">,</span> <span class="n">ClientDS</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;tangods&#39;</span><span class="p">,</span> <span class="n">TangoDS</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;deviceds&#39;</span><span class="p">,</span> <span class="n">DeviceDS</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;onlineds&#39;</span><span class="p">,</span> <span class="n">OnlineDS</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;onlinecp&#39;</span><span class="p">,</span> <span class="n">OnlineCP</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;stdcomp&#39;</span><span class="p">,</span> <span class="n">StdComp</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;comp&#39;</span><span class="p">,</span> <span class="n">Comp</span><span class="p">)]</span>
+    <span class="n">runners</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">createSubParsers</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ErrorException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="n">runners</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">subparser</span><span class="p">]</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

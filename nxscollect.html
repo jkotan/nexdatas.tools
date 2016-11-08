@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxcollect &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxcollect &mdash; NXSTools 2.11.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.10.2',
+        VERSION:     '2.11.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.10.2 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.11.0 documentation" href="index.html" />
     <link rel="next" title="nxsconfig" href="nxsconfig.html" />
     <link rel="prev" title="Welcome to nxstools’s documentation!" href="index.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.10</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -107,6 +107,9 @@
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nxsetup.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsetup.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsetup.html#nxsetup-set">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsetup.html#id2">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsetup.html#id4">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsetup.html#example">Example</a></li>
 </ul>
 </li>
@@ -114,19 +117,13 @@
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
@@ -203,25 +200,28 @@
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscollect [-x|-t] [&lt;options&gt;] &lt;command&gt; &lt;main_nexus_file&gt;
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscollect [execute|test] [&lt;options&gt;] &lt;command&gt; &lt;main_nexus_file&gt;
 </pre></div>
 </div>
 <dl class="docutils">
 <dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
+<dd><table class="first docutils option-list" frame="void" rules="none">
 <col class="option" />
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group">
 <kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
 <td>show this help message and exit</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-x</span>, <span class="option">--execute</span></kbd></td>
-<td>execute the collecting process</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-t</span>, <span class="option">--test</span></kbd></td>
-<td>exceute the process in test mode without changing any
-files</td></tr>
+</tbody>
+</table>
+<p>execute               execute the collecting process
+test                  exceute the process in test mode without changing any</p>
+<blockquote>
+<div>files</div></blockquote>
+<table class="last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-c <var>COMPRESSION</var></span>, <span class="option">--compression=<var>COMPRESSION</var></span></kbd></td>
 </tr>

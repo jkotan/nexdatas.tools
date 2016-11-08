@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsetup &mdash; NXSTools 2.10.2 documentation</title>
+    <title>nxsetup &mdash; NXSTools 2.11.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.10.2',
+        VERSION:     '2.11.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.10.2 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.11.0 documentation" href="index.html" />
     <link rel="next" title="nxstools package" href="nxstools.html" />
     <link rel="prev" title="nxscreate" href="nxsfileinfo.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.10</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -107,6 +107,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">nxsetup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-set">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">nxsetup set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
@@ -114,19 +117,13 @@
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_stdcomp">nxstools.nxscreate_stdcomp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreate">nxstools.nxscreate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_general">nxstools.nxsfileinfo_general module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo_field">nxstools.nxsfileinfo_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileinfo">nxstools.nxsfileinfo module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsfileparser">nxstools.nxsfileparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsargparser">nxstools.nxsargparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
@@ -151,6 +148,15 @@
 <li><a class="reference internal" href="#">nxsetup</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#nxsetup-set">nxsetup set</a><ul>
+<li><a class="reference internal" href="#id1">Synopsis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id2">nxsetup set</a><ul>
+<li><a class="reference internal" href="#id3">Synopsis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">Synopsis</a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
@@ -203,6 +209,57 @@
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate  &lt;command&gt; [ &lt;options&gt;]  [&lt;arg1&gt; [&lt;arg2&gt;  ...]]
+</pre></div>
+</div>
+<p>The following commands are available: set, restart, start, move-prop, change-prop, add-recorder-path</p>
+</div>
+<div class="section" id="nxsetup-set">
+<h2>nxsetup set<a class="headerlink" href="#nxsetup-set" title="Permalink to this headline">¶</a></h2>
+<p>It sets up NXSConfigServer NXSDataWriter and NXSRecSelector servers.</p>
+<div class="section" id="id1">
+<h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup set [-h] [-b BEAMLINE] [-m MASTERHOST] [-u USER] [-d DBNAME]
+                   [-j CSJSON]
+                   [server_name [server_name ...]]
+
+set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of -x)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -b BEAMLINE, --beamline BEAMLINE
+                        name of the beamline ( default: &#39;nxs&#39; )
+  -m MASTERHOST, --masterHost MASTERHOST
+                        the host that stores the Mg ( default: &lt;localhost&gt; )
+  -u USER, --user USER  the local user ( default: &#39;tango&#39; )
+  -d DBNAME, --database DBNAME
+                        the database name ( default: &#39;nxsconfig&#39;)
+  -j CSJSON, --csjson CSJSON
+                        JSONSettings for the configuration server. ( default:
+                        &#39;{&quot;host&quot;: &quot;localhost&quot;,&quot;db&quot;: &lt;DBNAME&gt;, &quot;use_unicode&quot;:
+                        true&#39;, &quot;read_default_file&quot;: &lt;MY_CNF_FILE&gt;}&#39; where
+                        &lt;MY_CNF_FILE&gt; stays for &quot;/home/&lt;USER&gt;/.my.cnf&quot; or
+                        &quot;/var/lib/nxsconfigserver/.my.cnf&quot; )
+
+ examples:
+       nxsetup set
+       nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>nxsetup set<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of CLIENT datasources.</p>
+<div class="section" id="id3">
+<h3>Synopsis<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>Synopsis<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxsetup -x [-b &lt;beamline&gt;] [-m &lt;masterHost&gt;] [-u &lt;local_user&gt;] [-d &lt;dbname&gt;] [-j &lt;jsonsettings&gt;] [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
 
 nxsetup -r [-l level] [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
