@@ -108,9 +108,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-set">nxsetup set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">nxsetup set</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">Synopsis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxstools.html">nxstools package</a><ul>
@@ -148,16 +150,12 @@
 <li><a class="reference internal" href="#">nxsetup</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#synopsis">Synopsis</a></li>
-<li><a class="reference internal" href="#nxsetup-set">nxsetup set</a><ul>
-<li><a class="reference internal" href="#id1">Synopsis</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id2">nxsetup set</a><ul>
-<li><a class="reference internal" href="#id3">Synopsis</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id4">Synopsis</a></li>
-<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#nxsetup-set">nxsetup set</a></li>
+<li><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
+<li><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
+<li><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
+<li><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
+<li><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
 </ul>
 </li>
 </ul>
@@ -216,9 +214,6 @@
 </div>
 <div class="section" id="nxsetup-set">
 <h2>nxsetup set<a class="headerlink" href="#nxsetup-set" title="Permalink to this headline">¶</a></h2>
-<p>It sets up NXSConfigServer NXSDataWriter and NXSRecSelector servers.</p>
-<div class="section" id="id1">
-<h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup set [-h] [-b BEAMLINE] [-m MASTERHOST] [-u USER] [-d DBNAME]
                    [-j CSJSON]
                    [server_name [server_name ...]]
@@ -250,116 +245,102 @@ optional arguments:
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="id2">
-<h2>nxsetup set<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>It creates a set of CLIENT datasources.</p>
-<div class="section" id="id3">
-<h3>Synopsis<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="id4">
-<h2>Synopsis<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsetup -x [-b &lt;beamline&gt;] [-m &lt;masterHost&gt;] [-u &lt;local_user&gt;] [-d &lt;dbname&gt;] [-j &lt;jsonsettings&gt;] [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
+<div class="section" id="nxsetup-restart">
+<h2>nxsetup restart<a class="headerlink" href="#nxsetup-restart" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup restart [-h] [-l LEVEL] [server_name [server_name ...]]
 
-nxsetup -r [-l level] [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
+restart tango server (a new version of -r)
 
-nxsetup -s [-l level] [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-nxsetup -a [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LEVEL, --level LEVEL
+                        startup level
 
-nxsetup -p -n newname -o oldname [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
-
-nxsetup -c -n propname -o propvalue [&lt;server_class1&gt; &lt;server_class2&gt; ... ]
+ examples:
+       nxsetup restart Pool/haso228 -l 2
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-b <var>BEAMLINE</var></span>, <span class="option">--beamline=<var>BEAMLINE</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>name of the beamline ( default: &#8216;nxs&#8217; )</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m <var>MASTERHOST</var></span>, <span class="option">--masterHost=<var>MASTERHOST</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>the host that stores the Mg ( default: &lt;localhost&gt; )</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>USER</var></span>, <span class="option">--user=<var>USER</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>the local user</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DBNAME</var></span>, <span class="option">--database=<var>DBNAME</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>the database name ( default: &#8216;tango&#8217; )</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-j <var>CSJSON</var></span>, <span class="option">--csjson=<var>CSJSON</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>JSONSettings for the configuration server.
-( default: &#8216;{&#8220;host&#8221;: &#8220;localhost&#8221;,&#8221;db&#8221;: &lt;DBNAME&gt;,
-&#8220;use_unicode&#8221;: true&#8217;, &#8220;read_default_file&#8221;:
-&lt;MY_CNF_FILE&gt;}&#8217;  where &lt;MY_CNF_FILE&gt; stays for
-&#8220;/home/&lt;USER&gt;/.my.cnf&#8221; or
-&#8220;/var/lib/nxsconfigserver/.my.cnf&#8221; )</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-x</span>, <span class="option">--execute</span></kbd></td>
-<td>setup servers action</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o <var>OLDNAME</var></span>, <span class="option">--oldname=<var>OLDNAME</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>old property name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n <var>NEWNAME</var></span>, <span class="option">--newname=<var>NEWNAME</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>(new) property name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-w <var>PROPVALUE</var></span>, <span class="option">--propvalue=<var>PROPVALUE</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>new property value</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-r</span>, <span class="option">--restart</span></kbd></td>
-<td>restart server(s) action</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-s</span>, <span class="option">--start</span></kbd></td>
-<td>start server(s) action</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l <var>LEVEL</var></span>, <span class="option">--level=<var>LEVEL</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>startup level</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-a <var>RECPATH</var></span>, <span class="option">--add-recorder-path=<var>RECPATH</var></span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>add recorder path</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p</span>, <span class="option">--move-prop</span></kbd></td>
-</tr>
-<tr><td>&nbsp;</td><td>change property name</td></tr>
-</tbody>
-</table>
-</dd>
-</dl>
 </div>
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsetup -x
+<div class="section" id="nxsetup-start">
+<h2>nxsetup start<a class="headerlink" href="#nxsetup-start" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup start [-h] [-l LEVEL] [server_name [server_name ...]]
 
-nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig  NXSConfigServer
+start tango server (a new version of -s)
 
-nxsetup -a /usr/share/pyshared/sardananxsrecorder
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-nxsetup -p -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LEVEL, --level LEVEL
+                        startup level
 
-nxsetup -s Pool/haso228 -l2
+ examples:
+       nxsetup start Pool/haso228 -l 2
+</pre></div>
+</div>
+</div>
+<div class="section" id="nxsetup-move-prop">
+<h2>nxsetup move-prop<a class="headerlink" href="#nxsetup-move-prop" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup move-prop [-h] [-n NEWNAME] [-o OLDNAME]
+                         [server_name [server_name ...]]
 
-nxsetup -r MacroServer -l3
+change property name (a new version of -p)
 
-nxsetup -c -n DefaultPreselectedComponents -w &quot;[\&quot;pinhole1\&quot;,\&quot;slit2\&quot;]&quot; NXSRecSelector/r228
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -n NEWNAME, --newname NEWNAME
+                        (new) property name
+  -o OLDNAME, --oldname OLDNAME
+                        old property name
+
+ examples:
+       nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
+</pre></div>
+</div>
+</div>
+<div class="section" id="nxsetup-change-prop">
+<h2>nxsetup change-prop<a class="headerlink" href="#nxsetup-change-prop" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup change-prop [-h] [-n NEWNAME] [-w PROPVALUE]
+                           [server_name [server_name ...]]
+
+change property value (a new version of -c)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -n NEWNAME, --newname NEWNAME
+                        (new) property name
+  -w PROPVALUE, --propvalue PROPVALUE
+                        new property value
+
+ examples:
+       nxsetup change-prop -n DefaultPreselectedComponents -w &quot;[\&quot;pinhole1\&quot;,\&quot;slit2\&quot;]&quot; NXSRecSelector/r228
+</pre></div>
+</div>
+</div>
+<div class="section" id="nxsetup-add-recorder-path">
+<h2>nxsetup add-recorder-path<a class="headerlink" href="#nxsetup-add-recorder-path" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup add-recorder-path [-h] recorder_path
+
+add-recorder-path into MacroServer(s) property (a new version of -a)
+
+positional arguments:
+  recorder_path  sardana recorder path
+
+optional arguments:
+  -h, --help     show this help message and exit
+
+ examples:
+       nxsetup add-record-path /usr/share/pyshared/sardananxsrecorder
 </pre></div>
 </div>
 </div>
