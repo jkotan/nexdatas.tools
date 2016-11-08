@@ -21,13 +21,12 @@
 
 import sys
 
-from optparse import OptionParser
+import argparse
 from .nxsparser import ParserTools, TableTools
-
+from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
 
 
-##
 class ConfigServer(object):
     """ configuration server adapter
     """
@@ -41,12 +40,12 @@ class ConfigServer(object):
         :type nonewline: :obj:`bool`
         """
         #: (:obj:`str`) spliting character
-        self.__char = " " if nonewline else "\n"
+        self.char = " " if nonewline else "\n"
         #: (:class:`PyTango.DeviceProxy`) configuration server proxy
         self._cnfServer = openServer(device)
         self._cnfServer.Open()
 
-    def _listCmd(self, ds, mandatory=False, private=False):
+    def listCmd(self, ds, mandatory=False, private=False):
         """ lists the DB item names
 
         :param ds: flag set True for datasources
@@ -73,7 +72,7 @@ class ConfigServer(object):
                         if not cp.startswith("__")]
         return []
 
-    def _sourcesCmd(self, components, mandatory=False):
+    def sourcesCmd(self, components, mandatory=False):
         """ lists datasources of the components
 
         :param components: given components
@@ -97,7 +96,7 @@ class ConfigServer(object):
 
         return result
 
-    def _componentsCmd(self, components):
+    def componentsCmd(self, components):
         """ lists components of the components
 
         :param components: given components
@@ -117,7 +116,7 @@ class ConfigServer(object):
 
         return result
 
-    def _variablesCmd(self, components, mandatory=False):
+    def variablesCmd(self, components, mandatory=False):
         """ lists variable of the components
 
         :param components: given components
@@ -167,7 +166,7 @@ class ConfigServer(object):
                     names.append(nm)
         return (names, records)
 
-    def _recordCmd(self, ds, name):
+    def recordCmd(self, ds, name):
         """ lists datasources of the component
 
         :param ds: flag set True for datasources
@@ -177,6 +176,9 @@ class ConfigServer(object):
         :returns: list of record names
         :rtype: :obj:`list` <:obj:`str`>
         """
+        if not name:
+            return []
+        name = name[0]
         if not ds:
             cmps = self._cnfServer.AvailableComponents()
             if name not in cmps:
@@ -186,7 +188,8 @@ class ConfigServer(object):
                 return []
             names, records = self.__getDataSources(name)
         else:
-            names.append(name)
+            names = [name]
+            records = []
 
         dsrcs = self._cnfServer.AvailableDataSources()
         for nm in names:
@@ -212,7 +215,7 @@ class ConfigServer(object):
                     return []
         return records
 
-    def _showCmd(self, ds, args, mandatory=False):
+    def showCmd(self, ds, args, mandatory=False):
         """ shows the DB items
 
         :param ds: flag set True for datasources
@@ -249,7 +252,7 @@ class ConfigServer(object):
                 return self._cnfServer.Components(args)
         return []
 
-    def _getCmd(self, ds, args):
+    def getCmd(self, ds, args):
         """ provides final configuration
 
         :param ds: flag set True for datasources
@@ -444,7 +447,7 @@ class ConfigServer(object):
             ttools.headers = headers
         return ttools.generateList()
 
-    def _describeCmd(self, ds, args, md, pr):
+    def describeCmd(self, ds, args, md, pr):
         """ provides description of configuration elements
 
         :param ds: flag set True for datasources
@@ -466,7 +469,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args)
 
-    def _infoCmd(self, ds, args, md, pr):
+    def infoCmd(self, ds, args, md, pr):
         """ Provides info for given elements
 
         :param ds: flag set True for datasources
@@ -497,7 +500,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
-    def _geometryCmd(self, ds, args, md, pr):
+    def geometryCmd(self, ds, args, md, pr):
         """ provides geometry info for given elements
 
         :param ds: flag set True for datasources
@@ -527,7 +530,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders)
 
-    def _dataCmd(self, args):
+    def dataCmd(self, args):
         """ provides varaible values
 
         :param args: list of item names
@@ -535,11 +538,11 @@ class ConfigServer(object):
         :returns: JSON with variables
         :rtype: :obj:`str`
         """
-        if len(args) > 0:
+        if args and len(args) > 0 and args[0]:
             self._cnfServer.Variables = args[0]
         return [str(self._cnfServer.Variables)]
 
-    def _mergeCmd(self, ds, args):
+    def mergeCmd(self, ds, args):
         """ provides merged components
 
         :param ds: flag set True for datasources
@@ -563,184 +566,626 @@ class ConfigServer(object):
             return self._cnfServer.Merge(args)
         return ""
 
-    def performCommand(self, command, ds, args, mandatory=False,
-                       private=False):
-        """ performs requested command
 
-        :param command: executed command: 'list', 'show', 'get',
-                        'variables', 'sources', 'record', 'merge',
-                        'components', 'data', 'describe', 'info', 'geometry'
-        :type command: :obj:`str`
-        :param ds: flag set True for datasources
-        :type ds: :obj:`bool`
-        :param args: list of item names
-        :type args: :obj:`list` <:obj:`str`>
-        :param mandatory: flag set True for mandatory components
-        :type mandatory: :obj:`bool`
-        :param private: flag set True for components starting with '__'
-        :type private: :obj:`bool`
-        :returns: resulting string
-        :rtype: :obj:`str`
+class List(Runner):
+    """ List runner"""
+
+    #: (:obj:`str`) command description
+    description = "list names of available components (or datasources)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig list\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
 
         """
-        string = ""
-        if command == 'list':
-            string = self.__char.join(self._listCmd(ds, mandatory, private))
-        elif command == 'show':
-            string = self.__char.join(self._showCmd(ds, args, mandatory))
-        elif command == 'get':
-            string = self._getCmd(ds, args)
-        elif command == 'merge':
-            string = self._mergeCmd(ds, args)
-        elif command == 'sources':
-            string = self.__char.join(self._sourcesCmd(args, mandatory))
-        elif command == 'components':
-            string = self.__char.join(self._componentsCmd(args))
-        elif command == 'variables':
-            string = self.__char.join(self._variablesCmd(args, mandatory))
-        elif command == 'data':
-            string = self.__char.join(self._dataCmd(args))
-        elif command == 'record':
-            string = self.__char.join(self._recordCmd(ds, args[0]))
-        elif command == 'describe':
-            string = self.__char.join(self._describeCmd(
-                ds, args, mandatory, private))
-        elif command == 'info':
-            string = self.__char.join(self._infoCmd(
-                ds, args, mandatory, private))
-        elif command == 'geometry':
-            string = self.__char.join(self._geometryCmd(
-                ds, args, mandatory, private))
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-p", "--private", action="store_true",
+                            default=False, dest="private",
+                            help="make use private components,"
+                            " i.e. starting with '__'")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.listCmd(
+            options.datasources, options.mandatory, options.private))
         return string
 
 
-def _createParser():
-    """ creates command-line parameters parser
+class Show(Runner):
+    """ Show runner"""
 
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
-    """
-    #: (:obj:`str`) usage example
-    usage = "usage: nxsconfig <command> [-s <config_server>] " \
-            + " [-d] [-m] [<name1>] [<name2>] [<name3>] ... \n" \
-            + " e.g.: nxsconfig list -s p02/xmlconfigserver/exp.01 -d\n" \
-            + "       nxsconfig info\n" \
-            + "       nxsconfig geometry\n\n" \
-            + "Commands: \n" \
-            + "   list [-s <config_server>] [-m | -p] \n" \
-            + "          list names of available components\n" \
-            + "   list -d [-s <config_server>] \n" \
-            + "          list names of available datasources\n" \
-            + "   show [-s <config_server>] [-m] component_name1 " \
-            + "component_name2 ...  \n" \
-            + "          show components with given names \n" \
-            + "   show -d [-s <config_server>] dsource_name1 "  \
-            + "dsource_name2 ...  \n" \
-            + "          show datasources with given names \n" \
-            + "   get [-s <config_server>]  [-m] component_name1 " \
-            + "component_name2 ...  \n" \
-            + "          get merged configuration of components \n" \
-            + "   sources [-s <config_server>] [-m] component_name1 " \
-            + "component_name2 ... \n" \
-            + "          get a list of component datasources \n" \
-            + "   components [-s <config_server>] component_name1 " \
-            + "component_name2 ... \n" \
-            + "          get a list of dependent components \n" \
-            + "   variables [-s <config_server>] [-m] component_name1 " \
-            + "component_name2 ... \n" \
-            + "          get a list of component variables \n" \
-            + "   data [-s <config_server>] json_data \n" \
-            + "          set values of component variables \n" \
-            + "   record [-s <config_server>]  component_name1  \n" \
-            + "          get a list of datasource record names " \
-            + "from component\n" \
-            + "   record -d [-s <config_server>] datasource_name1  \n" \
-            + "          get a list of datasource record names   \n" \
-            + "   servers [-s <config_server/host>] \n" \
-            + "          get lists of configuration servers from " \
-            + "the current tango host\n"\
-            + "   describe [-s <config_server>] [-m | -p] component_name1 " \
-            + "component_name2 ...  \n" \
-            + "          show all parameters of given components \n" \
-            + "   describe|info -d [-s <config_server>] dsource_name1 "  \
-            + "dsource_name2 ...  \n" \
-            + "          show all parameters of given datasources \n" \
-            + "   info [-s <config_server>] [-m | -p] component_name1 " \
-            + "component_name2 ...  \n" \
-            + "          show source parameters of given components \n" \
-            + "   geometry [-s <config_server>] [-m | -p] component_name1 " \
-            + "component_name2 ...  \n" \
-            + "          show transformation parameters " \
-            + "of given components \n"
+    #: (:obj:`str`) command description
+    description = "show components (or datasources) with given names"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig show dcm\n" \
+        + "\n"
 
-    #: (:class:`optparse.OptionParser`) option parser
-    parser = OptionParser(usage=usage)
-    parser.add_option("-s", "--server", dest="server",
-                      help="configuration server device name")
-    parser.add_option("-d", "--datasources", action="store_true",
-                      default=False, dest="datasources",
-                      help="perform operation on datasources")
-    parser.add_option("-m", "--mandatory", action="store_true",
-                      default=False, dest="mandatory",
-                      help="make use mandatory components")
-    parser.add_option("-p", "--private", action="store_true",
-                      default=False, dest="private",
-                      help="make use private components,"
-                      " i.e. starting with '__'")
-    parser.add_option("-n", "--no-newlines", action="store_true",
-                      default=False, dest="nonewlines",
-                      help="split result with space characters")
+    def create(self):
+        """ creates parser
 
-    return parser
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-p", "--private", action="store_true",
+                            default=False, dest="private",
+                            help="make use private components,"
+                            " i.e. starting with '__'")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.showCmd(
+            options.datasources, options.args, options.mandatory))
+        return string
+
+
+class Get(Runner):
+    """ Get runner"""
+
+    #: (:obj:`str`) command description
+    description = "get full configuration of components (or datasources)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig get  dcm source slit1 slit2\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.getCmd(
+            options.datasources, options.args))
+        return string
+
+
+class Merge(Runner):
+    """ Merge runner"""
+
+    #: (:obj:`str`) command description
+    description = "get merged configuration of components (or datasources)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig merge  slit1 dcm \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.getCmd(
+            options.datasources, options.args))
+        return string
+
+
+class Sources(Runner):
+    """ Sources runner"""
+
+    #: (:obj:`str`) command description
+    description = "get a list of component datasources"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig sources slit1\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.sourcesCmd(
+            options.args, options.mandatory))
+        return string
+
+
+class Components(Runner):
+    """ Components runner"""
+
+    #: (:obj:`str`) command description
+    description = "get a list of dependent components"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig components dcm\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.componentsCmd(
+            options.args))
+        return string
+
+
+class Variables(Runner):
+    """ Variables runner"""
+
+    #: (:obj:`str`) command description
+    description = "get a list of component variables"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig variables dcm\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.componentsCmd(
+            options.args, options.mandatory))
+        return string
+
+
+class Data(Runner):
+    """ Data runner"""
+
+    #: (:obj:`str`) command description
+    description = "get/set values of component variables"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig data \n" \
+        + "       nxsconfig data '{\"sample_name\":\"H2O\"}'\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='?',
+                            help='data dictionary in json string')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.dataCmd(
+            options.args))
+        return string
+
+
+class Record(Runner):
+    """ Record runner"""
+
+    #: (:obj:`str`) command description
+    description = "get a list of datasource record names for " \
+                  + "components or datasources"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig record -d exp_mot01 \n" \
+        + "       nxsconfig record dcm \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='?',
+                            help='name of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.recordCmd(
+            options.datasources, options.args))
+        return string
+
+
+class Servers(Runner):
+    """ Servers runner"""
+
+    #: (:obj:`str`) command description
+    description = "get a list of configuration servers from" \
+                  + " the current tango host"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig servers\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("tango host or configuration server"))
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        char = " " if options.nonewlines else "\n"
+        return char.join(listServers(options.server, 'NXSConfigServer'))
+
+
+class Describe(Runner):
+    """ Describe runner"""
+
+    #: (:obj:`str`) command description
+    description = "show all parameters of given components" \
+                  + " (or datasources)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig describe pilatus\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-p", "--private", action="store_true",
+                            default=False, dest="private",
+                            help="make use private components,"
+                            " i.e. starting with '__'")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.describeCmd(
+            options.datasources, options.args, options.mandatory,
+            options.private))
+        return string
+
+
+class Info(Runner):
+    """ List runner"""
+
+    #: (:obj:`str`) command description
+    description = "show source parameters of given components" \
+                  + " (or datasources)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig info slit1\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-p", "--private", action="store_true",
+                            default=False, dest="private",
+                            help="make use private components,"
+                            " i.e. starting with '__'")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.infoCmd(
+            options.datasources, options.args, options.mandatory,
+            options.private))
+        return string
+
+
+class Geometry(Runner):
+    """ List runner"""
+
+    #: (:obj:`str`) command description
+    description = "show transformation parameters of given components" \
+                  + " (or datasources)"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig geometry dcm\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
+        parser.add_argument("-p", "--private", action="store_true",
+                            default=False, dest="private",
+                            help="make use private components,"
+                            " i.e. starting with '__'")
+        parser.add_argument("-n", "--no-newlines", action="store_true",
+                            default=False, dest="nonewlines",
+                            help="split result with space characters")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, options.nonewlines)
+        string = cnfserver.char.join(cnfserver.geometryCmd(
+            options.datasources, options.args, options.mandatory,
+            options.private))
+        return string
 
 
 def main():
     """ the main program function
     """
+
     #: pipe arguments
     pipe = []
-    #: run options
-    options = None
     if not sys.stdin.isatty():
         #: system pipe
         pipe = sys.stdin.readlines()
 
-    commands = {'list': 0, 'show': 0, 'get': 0, 'variables': 0, 'sources': 0,
-                'record': 1, 'merge': 0, 'components': 0, 'data': 0,
-                'describe': 0, 'info': 0, 'geometry': 0}
+    description = "Command-line tool for reading NeXus configuration " \
+                  + "from NXSConfigServer"
 
-    parser = _createParser()
-    (options, args) = parser.parse_args()
+    epilog = 'For more help:\n  nxsconfig <sub-command> -h'
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.cmdrunners = [('list', List),
+                         ('show', Show),
+                         ('get', Get),
+                         ('variables', Variables),
+                         ('sources', Sources),
+                         ('record', Record),
+                         ('merge', Merge),
+                         ('components', Components),
+                         ('data', Data),
+                         ('describe', Describe),
+                         ('info', Info),
+                         ('geometry', Geometry),
+                         ('servers', Servers)]
+    runners = parser.createSubParsers()
 
-    if args and args[0] == 'servers':
-        print("\n".join(listServers(options.server, 'NXSConfigServer')))
-        return
-
-    if not options.server:
-        options.server = checkServer()
-
-    if not args or args[0] not in commands or not options.server:
+    try:
+        options = parser.parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
         parser.print_help()
         print("")
-        sys.exit(0)
+        sys.exit(255)
+
+    if options.subparser != 'servers':
+
+        if not options.server:
+            options.server = checkServer()
+
+        if not options.server:
+            parser.subparsers[options.subparser].print_help()
+            print("")
+            sys.exit(255)
 
     #: command-line and pipe arguments
-    parg = args[1:]
+    parg = []
+    if hasattr(options, "args"):
+        if not isinstance(options.args, list):
+            options.args = [options.args] if options.args else []
+        parg = options.args or []
     if pipe:
         parg.extend([p.strip() for p in pipe])
+        options.args[:] = parg
 
-    if len(parg) < commands[args[0]]:
-        parser.print_help()
-        return
-
-    #: configuration server
-    cnfserver = ConfigServer(options.server, options.nonewlines)
-
-    #: result to print
-    result = cnfserver.performCommand(
-        args[0], options.datasources, parg,
-        options.mandatory, options.private)
-    if result.strip():
+    result = runners[options.subparser].run(options)
+    if result and str(result).strip():
         print(result)
 
 

@@ -1,44 +1,5 @@
 #!/usr/bin/env python
-import os
-import sys
-from nxstools import nxscreate_onlineds
-from nxstools import nxscreate_onlinecp
-from nxstools import nxscreate_stdcomp
-from nxstools import nxscreate_clientds
-from nxstools import nxscreate_tangods
-from nxstools import nxscreate_deviceds
-from nxstools import nxscreate_comp
+from nxstools import nxscreate
 
-commandModules = {
-    "onlineds": nxscreate_onlineds,
-    "onlinecp": nxscreate_onlinecp,
-    "stdcomp": nxscreate_stdcomp,
-    "clientds": nxscreate_clientds,
-    "tangods": nxscreate_tangods,
-    "deviceds": nxscreate_deviceds,
-    "comp": nxscreate_comp,
-}
+nxscreate.main()
 
-if len(sys.argv) < 2 or sys.argv[1] not in commandModules.keys():
-    message = "Usage: nxscreate <command> [options]" \
-        + " [<arg1> [<arg2> ... ] ] \n\n" \
-        + "Commands:\n\n" \
-        + "    clientds \n" \
-        + "         create client datasources \n\n" \
-        + "    tangods \n" \
-        + "         create tango datasources \n\n" \
-        + "    deviceds \n" \
-        + "         create datasources for all device attributes \n\n" \
-        + "    onlineds \n" \
-        + "         create datasources from online.xml file \n\n" \
-        + "    onlinecp \n" \
-        + "         create component from online.xml file \n\n" \
-        + "    stdcomp \n" \
-        + "         create component from the standard templates \n\n" \
-        + "    comp \n" \
-        + "         create simple components \n\n"
-
-    print(message)
-else:
-    cmd = sys.argv[1]
-    commandModules[cmd].main()

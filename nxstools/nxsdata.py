@@ -21,9 +21,10 @@
 
 import sys
 
-from optparse import OptionParser
+import argparse
 
 from .nxsdevicetools import (checkServer, listServers, openServer)
+from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 
 class NexusServer(object):
@@ -85,67 +86,258 @@ class NexusServer(object):
         """
         self.tdwServer.CloseFile()
 
-    def performCommand(self, command, args):
-        """ perform requested command
 
-        :param command: called command
-        :type command: :obj:`str`
-        :param args: list of item names
-        :type args: :obj:`list` <:obj:`str`>
+class OpenFile(Runner):
+    """ OpenFile runner"""
+
+    #: (:obj:`str`) command description
+    description = "open a new H5 file"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata openfile /tmp/watertest.nxs \n" \
+        + "       nxsdata openfile -s p02/tangodataserver/exp.01  " \
+        + "/user/data/myfile.h5\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
         """
-        if command == 'openfile':
-            return self.openFile(args[0])
-        if command == 'setdata':
-            return self.setData(args[0].strip())
-        if command == 'openentry':
-            return self.openEntry(args[0].strip())
-        if command == 'record':
-            return self.record(args[0].strip())
-        if command == 'closefile':
-            return self.closeFile()
-        if command == 'closeentry':
-            return self.closeEntry()
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name")
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        parser = self._parser
+        parser.add_argument(
+            'args', metavar='file_name', type=str, nargs='?',
+            help='new newxus file name')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        if not options.args or len(options.args) < 1:
+            self._parser.print_help()
+            sys.exit(255)
+        return tdwserver.openFile(options.args[0])
 
 
-def _createParser():
-    """ creates command-line parameters parser
+class SetData(Runner):
+    """ SetData runner"""
 
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
-    """
-    #: usage example
-    usage = "usage: nxsdata <command> [-s <nexus_server>] " \
-            + " [<arg1> [<arg2>  ...]] \n" \
-            + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
-            + "/user/data/myfile.h5 \n\n" \
-            + "Commands: \n" \
-            + "   openfile [-s <nexus_server>]  <file_name> \n" \
-            + "          open new H5 file\n" \
-            + "   setdata [-s <nexus_server>] <json_data_string>  \n" \
-            + "          assign global JSON data\n" \
-            + "   openentry [-s <nexus_server>] <xml_config>  \n" \
-            + "          create new entry\n"\
-            + "   record [-s <nexus_server>]  <json_data_string>  \n" \
-            + "          record one step with step JSON data \n" \
-            + "   closeentry [-s <nexus_server>]   \n" \
-            + "          close the current entry \n" \
-            + "   closefile [-s <nexus_server>]  \n" \
-            + "          close the current file \n" \
-            + "   servers [-s <nexus_server/host>] \n" \
-            + "          get lists of tango data servers from " \
-            + "the current tango host\n" \
-            + " "
+    #: (:obj:`str`) command description
+    description = "assign global JSON data"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata setdata ... \n" \
+        + "\n"
 
-    #: option parser
-    parser = OptionParser(usage=usage)
-    parser.add_option("-s", "--server", dest="server",
-                      help="tango data server device name")
+    def create(self):
+        """ creates parser
 
-    return parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name"
+        )
+        parser.add_argument(
+            'args', metavar='json_data_string', type=str, nargs='?',
+            help='json data string')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        if not options.args or len(options.args) < 1:
+            self._parser.print_help()
+            sys.exit(255)
+        return tdwserver.setData(options.args[0].strip())
+
+
+class OpenEntry(Runner):
+    """ OpenEntry runner"""
+
+    #: (:obj:`str`) command description
+    description = "create new entry"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata openentry ... \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name")
+        parser.add_argument(
+            'args', metavar='xml_config', type=str, nargs='?',
+            help='nexus writer configuration string')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        if not options.args or len(options.args) < 1:
+            self._parser.print_help()
+            sys.exit(255)
+        return tdwserver.openEntry(options.args[0].strip())
+
+
+class Record(Runner):
+    """ Record runner"""
+
+    #: (:obj:`str`) command description
+    description = "record one step with step JSON data"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata record ... \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name")
+        parser.add_argument(
+            'args', metavar='json_data_string', type=str, nargs='?',
+            help='json data string')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        return tdwserver.record(
+            options.args[0].strip() if options.args else '{}')
+
+
+class CloseEntry(Runner):
+    """ CloseEntry runner"""
+
+    #: (:obj:`str`) command description
+    description = "close the current entry"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata closeentry \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name"
+        )
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        return tdwserver.closeEntry()
+
+
+class CloseFile(Runner):
+    """ CloseFile runner"""
+
+    #: (:obj:`str`) command description
+    description = "close the current file"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata closefile \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="writer server device name"
+        )
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        tdwserver = NexusServer(options.server)
+        return tdwserver.closeFile()
+
+
+class Servers(Runner):
+    """ Servers runner"""
+
+    #: (:obj:`str`) command description
+    description = "get lists of tango data servers from " \
+                  + "the current tango host"
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsdata servers \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help="tango host or writer server device name"
+        )
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        return "\n".join(listServers(options.server, 'NXSConfigServer'))
 
 
 def main():
-    """ the main function
+    """ the main program function
     """
 
     #: pipe arguments
@@ -155,41 +347,48 @@ def main():
         #: system pipe
         pipe = "".join(pp)
 
-    commands = {'openfile': 1, 'openentry': 0, 'setdata': 1, 'record': 1,
-                'closeentry': 0, 'closefile': 0}
-    #: run options
-    options = None
-    parser = _createParser()
-    (options, args) = parser.parse_args()
+    description = "Command-line tool for writing NeXus files" \
+                  + " with NXSDataWriter"
 
-    if args and args[0] == 'servers':
-        print "\n".join(listServers(options.server, 'NXSDataWriter'))
-        return
+    epilog = 'For more help:\n  nxsdata <sub-command> -h'
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.cmdrunners = [('openfile', OpenFile),
+                         ('setdata', SetData),
+                         ('openentry', OpenEntry),
+                         ('record', Record),
+                         ('closefile', CloseFile),
+                         ('closeentry', CloseEntry)]
+    runners = parser.createSubParsers()
 
-    if not options.server:
-        options.server = checkServer('NXSDataWriter')
-
-    if not args or args[0] not in commands or not options.server:
+    try:
+        options = parser.parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
         parser.print_help()
-        print ""
-        sys.exit(0)
+        print("")
+        sys.exit(255)
 
-    #: configuration server
-    tdwserver = NexusServer(options.server)
+    if options.subparser != 'servers':
+        if not options.server:
+            options.server = checkServer('NXSDataWriter')
+
+        if not options.server:
+            parser.subparsers[options.subparser].print_help()
+            print("")
+            sys.exit(255)
 
     #: command-line and pipe arguments
-    parg = args[1:]
+    parg = []
+    if hasattr(options, "args"):
+        parg = [options.args] if options.args else []
     if pipe:
         parg.append(pipe)
+    options.args = parg
 
-    if len(parg) < commands[args[0]]:
-        print "CMD", args[0], len(parg)
-        parser.print_help()
-        print ""
-        sys.exit(0)
-
-    #: result to print
-    result = tdwserver.performCommand(args[0], parg)
+    result = runners[options.subparser].run(options)
     if result and str(result).strip():
         print result
 

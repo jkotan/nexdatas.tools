@@ -27,8 +27,10 @@ import re
 import shutil
 import fabio
 import signal
-from optparse import OptionParser
+import argparse
+
 from .filenamegenerator import FilenameGenerator
+from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 
 #: (:obj:`bool`) True if pni.io.nx.h5 available
@@ -421,73 +423,147 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
-def _createParser():
-    """ creates command-line parameters parser
+class Execute(Runner):
+    """ Execute runner"""
 
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
+    #: (:obj:`str`) command description
+    description = "execute the collection process (a new version of -x)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxscollect execute -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-c", "--compression", dest="compression",
+            action="store", type=int, default=2,
+            help="deflate compression rate from 0 to 9 (default: 2)")
+        parser.add_argument(
+            "-s", "--skip_missing", action="store_true",
+            default=False, dest="skipmissing",
+            help="skip missing files")
+        parser.add_argument(
+            "-r", "--replace_nexus_file", action="store_true",
+            default=False, dest="replaceold",
+            help="if it is set the old file is not copied into "
+            "a file with .__nxscollect__old__* extension")
+
+    def postauto(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument('args', metavar='nexus_file',
+                            type=str, nargs='*',
+                            help='nexus files to be collected')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        nexusfiles = options.args
+        if not nexusfiles or not nexusfiles[0]:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+        # configuration server
+        for nxsfile in nexusfiles:
+            collector = Collector(
+                nxsfile, options.compression, options.skipmissing,
+                not options.replaceold, False)
+            print "COLLECT", nxsfile
+            collector.collect()
+
+
+class Test(Execute):
+    """ Test runner"""
+
+    #: (:obj:`str`) command description
+    description = "execute the process in the test mode " \
+                  + "without changing any files (a new version of -t)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxscollect test /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "\n"
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        nexusfiles = options.args
+        if not nexusfiles or not nexusfiles[0]:
+            parser.print_help()
+            print ""
+            sys.exit(0)
+
+        # configuration server
+        for nxsfile in nexusfiles:
+            collector = Collector(
+                nxsfile, options.compression, options.skipmissing,
+                not options.replaceold, True)
+            collector.collect()
+
+
+def _supportoldcommands():
+    """ replace the old command names to the new ones
     """
-    #: (:obj:`str`) usage example
-    usage = "usage: \n" \
-            + " nxscollect [-x|-t] [<options>] <command> <main_nexus_file> \n" \
-            + " e.g.: nxscollect -x -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
-            + " "
 
-    #: (:class:`optparse.OptionParser`) option parser
-    parser = OptionParser(usage=usage)
-    parser.add_option("-x", "--execute", action="store_true",
-                      default=False, dest="execute",
-                      help="execute the collection process")
-    parser.add_option("-t", "--test", action="store_true",
-                      default=False, dest="test",
-                      help="execute the process in the test mode "
-                      + "without changing any files")
-    parser.add_option("-c", "--compression", dest="compression",
-                      action="store", type=int, default=2,
-                      help="deflate compression rate from 0 to 9 (default: 2)")
-    parser.add_option("-s", "--skip_missing", action="store_true",
-                      default=False, dest="skipmissing",
-                      help="skip missing files")
-    parser.add_option("-r", "--replace_nexus_file", action="store_true",
-                      default=False, dest="replaceold",
-                      help="if it is set the old file is not copied into "
-                      "a file with .__nxscollect__old__* extension")
+    oldnew = {
+        '-x': 'execute',
+        '--execute': 'execute',
+        '-t': 'test',
+        '--test': 'test',
+    }
 
-    return parser
+    if sys.argv and len(sys.argv) > 1:
+        if sys.argv[1] in oldnew.keys():
+            sys.argv[1] = oldnew[sys.argv[1]]
 
 
 def main():
     """ the main program function
     """
+    description = "  Command-line tool to merge images of external " \
+                  + "file-formats into the master NeXus file"
 
-    #: run options
-    options = None
-    parser = _createParser()
-    (options, nexusfiles) = parser.parse_args()
+    epilog = 'For more help:\n  nxscollect <sub-command> -h'
+    _supportoldcommands()
 
-    if not nexusfiles or not nexusfiles[0]:
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.cmdrunners = [
+        ('execute', Execute),
+        ('test', Test)
+    ]
+    runners = parser.createSubParsers()
+
+    try:
+        options = parser.parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
         parser.print_help()
-        print ""
-        sys.exit(0)
+        print("")
+        sys.exit(255)
 
     if not PNIIO:
         sys.stderr.write("nxsfileinfo: No pni.io.nx.h5 installed\n")
         parser.print_help()
         sys.exit(255)
 
-    if not options.execute and not options.test:
-        parser.print_help()
-        print ""
-        sys.exit(0)
-
-    # configuration server
-    for nxsfile in nexusfiles:
-        collector = Collector(nxsfile,
-                              options.compression,
-                              options.skipmissing,
-                              not options.replaceold,
-                              options.test)
-        collector.collect()
+    runners[options.subparser].run(options)
 
 if __name__ == "__main__":
     main()

@@ -25,8 +25,9 @@ import os
 import sys
 import time
 import json
-from optparse import OptionParser
+import argparse
 
+from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 #: (:obj:`str`) host name
 _hostname = socket.gethostname()
@@ -593,117 +594,68 @@ class SetUp(object):
         return True
 
 
-def _createParser(user):
-    """ creates parser
+class Set(Runner):
+    """ set runner"""
 
-    :param user: user name
-    :type user: :obj:`str`
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
-    """
-    user = user or "<USER>"
-    usage = "\n\n %prog -x [-b <beamline>] [-m <masterHost>] " \
-            + "[-u <local_user>] [-d <dbname>] [-j jsonsettings] " \
-            + " [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -r [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -s [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -p -n newname -o oldname " \
-            + "[<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -c -n propname -w newvalue " \
-            + "[<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -a <recorder_path>\n\n " \
-            + "e.g.: nxsetup -x\n" \
-            + "      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig" \
-            + " NXSConfigServer\n" \
-            + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
-            + "      nxsetup -p -n DefaultPreselectedComponents" \
-            + " -o DefaultAutomaticComponents NXSRecSelector\n" \
-            + "      nxsetup -c -n DefaultPreselectedComponents" \
-            + " -w \"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
-            + "      nxsetup -r Pool/haso228 -l 2 \n" \
-            + "      nxsetup -s MacroServer -l 3 \n"
+    #: (:obj:`str`) command description
+    description = "set up NXSConfigServer NXSDataWriter " \
+                  + "and NXSRecSelector servers (a new version of -x)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup set\n" \
+        + "       nxsetup set -b p09 -m haso228 -u p09user " \
+        + "-d nxsconfig NXSConfigServer\n" \
+        + "\n"
 
-    if _hostname in knownHosts.keys():
-                usage += "\n  (%s is known, -b %s -m %s -u %s -d %s )" % (
-                    _hostname,
-                    knownHosts[_hostname]['beamline'],
-                    knownHosts[_hostname]['masterHost'],
-                    user,
-                    knownHosts[_hostname]['dbname']
-                )
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-b", "--beamline", action="store",
+            dest="beamline", help="name of the beamline"
+            " ( default: 'nxs' )")
+        parser.add_argument(
+            "-m", "--masterHost", action="store",
+            dest="masterHost", help="the host that stores the Mg"
+            " ( default: <localhost> )")
+        parser.add_argument(
+            "-u", "--user", action="store",
+            dest="user", help="the local user"
+            " ( default: 'tango' )")
+        parser.add_argument(
+            "-d", "--database", action="store",
+            dest="dbname", help="the database name"
+            "  ( default: 'nxsconfig')")
+        parser.add_argument(
+            "-j", "--csjson", action="store",
+            dest="csjson",
+            help="JSONSettings for the configuration server. "
+            "( default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
+            " \"use_unicode\": true',"
+            " \"read_default_file\": <MY_CNF_FILE>}'"
+            "  where <MY_CNF_FILE> stays for"
+            " \"/home/<USER>/.my.cnf\""
+            " or \"/var/lib/nxsconfigserver/.my.cnf\" )")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
 
-    parser = OptionParser(usage=usage)
-    parser.add_option("-x", "--execute", action="store_true",
-                      default=False, dest="execute",
-                      help="setup servers action")
-    parser.add_option("-b", "--beamline", action="store", type="string",
-                      dest="beamline", help="name of the beamline"
-                      " ( default: 'nxs' )")
-    parser.add_option("-m", "--masterHost", action="store", type="string",
-                      dest="masterHost", help="the host that stores the Mg"
-                      " ( default: <localhost> )")
-    parser.add_option("-u", "--user", action="store", type="string",
-                      dest="user", help="the local user"
-                      " ( default: 'tango' )")
-    parser.add_option("-d", "--database", action="store", type="string",
-                      dest="dbname", help="the database name"
-                      "  ( default: 'nxsconfig')")
-    parser.add_option("-j", "--csjson", action="store", type="string",
-                      dest="csjson",
-                      help="JSONSettings for the configuration server. "
-                      "( default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
-                      " \"use_unicode\": true',"
-                      " \"read_default_file\": <MY_CNF_FILE>}'"
-                      "  where <MY_CNF_FILE> stays for"
-                      " \"/home/<USER>/.my.cnf\""
-                      " or \"/var/lib/nxsconfigserver/.my.cnf\" )")
-    parser.add_option("-a", "--add-recorder-path", action="store",
-                      type="string", dest="recpath",
-                      help="add recorder path to the RecorderPath property"
-                      " of all MacroServers")
-    parser.add_option("-p", "--move-prop", action="store_true",
-                      default=False, dest="moveprop",
-                      help="change property name")
-    parser.add_option("-c", "--change-prop", action="store_true",
-                      default=False, dest="changeprop",
-                      help="change property value")
-    parser.add_option("-o", "--oldname", action="store", type="string",
-                      dest="oldname", help="old property name")
-    parser.add_option("-n", "--newname", action="store", type="string",
-                      dest="newname", help="(new) property name")
-    parser.add_option("-w", "--propvalue", action="store", type="string",
-                      dest="propvalue", help="new property value")
-    parser.add_option("-r", "--restart", action="store_true",
-                      default=False, dest="restart",
-                      help="restart server(s) action")
-    parser.add_option("-s", "--start", action="store_true",
-                      default=False, dest="start",
-                      help="start server(s) action")
-    parser.add_option("-l", "--level", action="store", type=int, default=-1,
-                      dest="level", help="startup level")
-    return parser
+    def run(self, options):
+        """ the main program function
 
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        local_user = None
+        args = options.args or []
+        if os.path.isfile('/home/etc/local_user'):
+            local_user = open('/home/etc/local_user').readline()
+        elif _hostname in knownHosts.keys():
+            local_user = knownHosts["user"]
 
-def main():
-    """ the main program function
-    """
-    local_user = None
-    if os.path.isfile('/home/etc/local_user'):
-        local_user = open('/home/etc/local_user').readline()
-    elif _hostname in knownHosts.keys():
-        local_user = knownHosts["user"]
-
-    parser = _createParser(local_user)
-    (options, args) = parser.parse_args()
-
-    if not options.execute and not options.restart and not options.recpath \
-       and not options.moveprop and not options.changeprop \
-       and not options.start:
-        parser.print_help()
-        print("\n")
-        sys.exit(255)
-
-    if options.execute:
         if options.beamline is None:
             if _hostname in knownHosts.keys():
                 options.beamline = knownHosts[_hostname]['beamline']
@@ -766,15 +718,37 @@ def main():
                 print("startup failed to create the nexus selector server")
                 sys.exit(255)
 
-    if options.restart:
-        setUp = SetUp()
-        servers = args if args else [
-            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
-        for server in servers:
-            setUp.restartServer(
-                server, level=(options.level if options.level > -1 else None))
 
-    if options.start:
+class Start(Runner):
+    """ start runner"""
+
+    #: (:obj:`str`) command description
+    description = "start tango server (a new version of -s)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup start Pool/haso228 -l 2\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-l", "--level", action="store", type=int, default=-1,
+            dest="level", help="startup level")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args or []
         setUp = SetUp()
         servers = args if args else [
             "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
@@ -784,12 +758,42 @@ def main():
                 level=(options.level if options.level > -1 else None),
                 restart=False)
 
-    if options.recpath:
-        setUp = SetUp()
-        if setUp.changeRecorderPath(options.recpath):
-            setUp.restartServer("MacroServer")
 
-    if options.moveprop:
+class MoveProp(Runner):
+    """ move-prop runner"""
+
+    #: (:obj:`str`) command description
+    description = "change property name (a new version of -p)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup move-prop -n DefaultPreselectedComponents" \
+        + " -o DefaultAutomaticComponents NXSRecSelector\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-n", "--newname", action="store",
+            dest="newname", help="(new) property name")
+        parser.add_argument(
+            "-o", "--oldname", action="store",
+            dest="oldname", help="old property name")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        args = options.args or []
         if not options.newname or not options.oldname or not args:
             parser.print_help()
             sys.exit(255)
@@ -800,7 +804,42 @@ def main():
                     server, options.oldname, options.newname):
                 setUp.restartServer(server)
 
-    if options.changeprop:
+
+class ChangeProp(Runner):
+    """ change-prop runner"""
+
+    #: (:obj:`str`) command description
+    description = "change property value (a new version of -c)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup change-prop -n DefaultPreselectedComponents -w " \
+        + "\"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-n", "--newname", action="store",
+            dest="newname", help="(new) property name")
+        parser.add_argument(
+            "-w", "--propvalue", action="store",
+            dest="propvalue", help="new property value")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        args = options.args or []
         if not options.newname or not options.propvalue or not args:
             parser.print_help()
             sys.exit(255)
@@ -811,6 +850,147 @@ def main():
                     server, options.newname, options.propvalue):
                 setUp.restartServer(server)
 
+
+class AddRecorderPath(Runner):
+    """ add-recorder-path runner"""
+
+    #: (:obj:`str`) command description
+    description = "add-recorder-path into MacroServer(s) property" \
+                  + " (a new version of -a)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup add-record-path "\
+        + "/usr/share/pyshared/sardananxsrecorder\n" \
+        + "\n"
+
+    def postauto(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            'recpath', metavar='recorder_path',
+            type=str, nargs=1,
+            help='sardana recorder path')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        setUp = SetUp()
+        if setUp.changeRecorderPath(options.recpath[0]):
+            setUp.restartServer("MacroServer")
+
+
+class Restart(Runner):
+    """ restart runner"""
+
+    #: (:obj:`str`) command description
+    description = "restart tango server (a new version of -r)"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup restart Pool/haso228 -l 2\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-l", "--level", action="store", type=int, default=-1,
+            dest="level", help="startup level")
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args or []
+        setUp = SetUp()
+        servers = args if args else [
+            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
+        for server in servers:
+            setUp.restartServer(
+                server, level=(options.level if options.level > -1 else None))
+
+
+def _supportoldcommands():
+    """ replace the old command names to the new ones
+    """
+
+    oldnew = {
+        '-x': 'set',
+        '--execute': 'set',
+        '-r': 'restart',
+        '--restart': 'restart',
+        '-s': 'start',
+        '--start': 'start',
+        '-p': 'move-prop',
+        '--move-prop': 'move-prop',
+        '-c': 'change-prop',
+        '--change-prop': 'change-prop',
+        '-a': 'add-recorder-path',
+        '--add-recorder-path': 'add-recorder-path',
+    }
+
+    if sys.argv and len(sys.argv) > 1:
+        if sys.argv[1] in oldnew.keys():
+            sys.argv[1] = oldnew[sys.argv[1]]
+
+
+def main():
+    """ the main program function
+    """
+    description = "Command-line tool for setting up  NeXus Tango Servers"
+
+    _supportoldcommands()
+
+    epilog = 'For more help:\n  nxscreate <sub-command> -h'
+    if _hostname in knownHosts.keys():
+        local_user = None
+        if os.path.isfile('/home/etc/local_user'):
+            local_user = open('/home/etc/local_user').readline()
+        elif _hostname in knownHosts.keys():
+            local_user = knownHosts["user"]
+        epilog += "\n\n  (%s is known: -b %s -m %s -u %s -d %s )" % (
+            _hostname,
+            knownHosts[_hostname]['beamline'],
+            knownHosts[_hostname]['masterHost'],
+            local_user,
+            knownHosts[_hostname]['dbname']
+        )
+
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.cmdrunners = [
+        ('set', Set),
+        ('restart', Restart),
+        ('start', Start),
+        ('move-prop', MoveProp),
+        ('change-prop', ChangeProp),
+        ('add-recorder-path', AddRecorderPath),
+    ]
+    runners = parser.createSubParsers()
+
+    try:
+        options = parser.parse_args()
+    except ErrorException as e:
+        sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
+    runners[options.subparser].run(options)
 
 if __name__ == "__main__":
     main()

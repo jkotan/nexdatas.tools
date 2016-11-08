@@ -91,7 +91,6 @@ standardComponentVariables = {
             'default': "undulator",
             'doc': "undulator or wiggler (string)"
         },
-
         'length': {
             'default': "2",
             'doc': "length of insertion device in meters (string)"
@@ -416,15 +415,6 @@ moduleMultiAttributes = {
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
-    'pedetector': [
-        'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
-        'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
-        'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
-        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
-        'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
-        'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
-        'SaveSubtracted', 'PerformDarkSubtraction'
-    ],
     'perkinelmerdetector': [
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
         'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
@@ -471,11 +461,10 @@ moduleMultiAttributes = {
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
         'SummedSaveImages', 'SkippedBetweenSaved', 'FilesAfterTrigger',
         'FilesBeforeTrigger', 'SummedDarkImages', 'OutputDirectory',
-        'FilePattern', 'FileName', 'LogFile', 'UserComment1',
+        'FilePattern', 'FileName', 'LogFile', 'UserComment1', 'CameraGain',
         'UserComment2', 'UserComment3', 'UserComment4', 'SaveRawImages',
         'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
-        'SaveSubtracted', 'PerformDarkSubtraction', 'CameraGain'
-
+        'SaveSubtracted', 'PerformDarkSubtraction'
     ],
     'pilatus': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
