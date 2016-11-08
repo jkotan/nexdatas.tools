@@ -1,3 +1,9 @@
+2016-11-08 Jan Kotanski <jankotan@gmail.com>
+	* refresh sub-commands
+	* switch to argparse
+	* add autocomplete
+	* tagged as v2.11.0
+
 2016-11-01 Jan Kotanski <jankotan@gmail.com>
 	* fix beamtimeid component
 	* tagged as v2.10.2
