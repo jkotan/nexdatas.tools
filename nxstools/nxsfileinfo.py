@@ -19,15 +19,12 @@
 
 """ Command-line tool for showing meta data from Nexus Files"""
 
-import os
 import sys
-import time
-import fnmatch
 import argparse
-import argcomplete
 
 from .nxsparser import TableTools
 from .nxsfileparser import NXSFileParser
+from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 
 #: (:obj:`bool`) True if pni.io.nx.h5 available
@@ -39,20 +36,45 @@ except:
     pass
 
 
-class General(object):
+class General(Runner):
+    """ General runner"""
 
-    def __init__(self, root, options):
-        """ constructor
+    #: (:obj:`str`) command description
+    description = "show general information for the nexus file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo general /user/data/myfile.nxs\n" \
+        + "\n"
 
-        :param root: nexus root node
-        :type root: :class:`pni.io.nx.h5.nxroot`
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            'args', metavar='nexus_file', type=str, nargs=1,
+            help='new nexus file name')
+
+    def run(self, options):
+        """ the main program function
+
         :param options: parser options
         :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
         """
-        self.__root = root
-        self.__options = options
+        try:
+            fl = nx.open_file(options.args[0])
+        except:
+            sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                             % options.args[0])
+            self._parser.print_help()
+            sys.exit(255)
 
-    def parseentry(self, entry, description, keyvalue):
+        root = fl.root()
+        self.show(root)
+        fl.close()
+
+    @classmethod
+    def parseentry(cls, entry, description, keyvalue):
         """ parse entry of nexus file
 
         :param entry: nexus entry node
@@ -164,20 +186,23 @@ class General(object):
                     pname = "%s (%s)" % (pname, scommand)
                 description.append({key: "Program:", value: pname})
 
-    def show(self):
+    def show(self, root):
         """ show general informations
+
+        :param root: nexus file root
+        :type root: class:`pni.io.nx.h5.nxroot`
         """
 
         description = []
 
-        attr = self.__root.attributes
+        attr = root.attributes
 
         names = [at.name for at in attr]
         fname = (attr["file_name"][...]
                  if "file_name" in names else " ") or " "
         headers = ["File name:", fname]
 
-        for en in self.__root:
+        for en in root:
             self.parseentry(en, description, headers)
         ttools = TableTools(description)
         ttools.title = ""
@@ -190,29 +215,87 @@ class General(object):
         print "=" * len(description[4])
 
 
-class Field(object):
+class Field(Runner):
+    """ Field runner"""
 
-    def __init__(self, root, options):
-        """ constructor
+    #: (:obj:`str`) command description
+    description = "show field information for the nexus file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo field /user/data/myfile.nxs\n" \
+        + "       nxsfileinfo field /user/data/myfile.nxs -g\n" \
+        + "       nxsfileinfo field /user/data/myfile.nxs -s\n" \
+        + "\n"
 
-        :param root: nexus root node
-        :type root: :class:`pni.io.nx.h5.nxroot`
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-c", "--columns",
+            help="names of column to be shown (separated by commas "
+            "without spaces). The possible names are: "
+            "depends_on,dtype,full_path,nexus_path,nexus_type,shape,"
+            "source,source_name,source_type,strategy,trans_type,trans_offset,"
+            "trans_vector,units,value",
+            dest="headers", default="")
+        self._parser.add_argument(
+            "-f", "--filters",
+            help="full_path filters (separated by commas "
+            "without spaces). Default: '*'. E.g. '*:NXsample/*'",
+            dest="filters", default="")
+        self._parser.add_argument(
+            "-v", "--values",
+            help="field names which value should be stored"
+            " (separated by commas "
+            "without spaces). Default: depends_on",
+            dest="values", default="")
+        self._parser.add_argument(
+            "-g", "--geometry", action="store_true",
+            default=False, dest="geometry",
+            help="perform geometry full_path filters, i.e."
+            "*:NXtransformations/*,*/depends_on. "
+            "It works only when  -f is not defined")
+        self._parser.add_argument(
+            "-s", "--source", action="store_true",
+            default=False, dest="source",
+            help="show datasource parameters")
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            'args', metavar='nexus_file', type=str, nargs=1,
+            help='new nexus file name')
+
+    def run(self, options):
+        """ the main program function
+
         :param options: parser options
         :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
         """
-        self.__root = root
-        self.__options = options
+        try:
+            fl = nx.open_file(options.args[0])
+        except:
+            sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                             % options.args[0])
+            self._parser.print_help()
+            sys.exit(255)
 
-    def show(self):
+        root = fl.root()
+        self.show(root, options)
+        fl.close()
+
+    def show(self, root, options):
         """ the main function
 
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :param root: nexus file root
+        :type root: class:`pni.io.nx.h5.nxroot`
         """
-
-        #: usage example
-        usage = "usage: nxsinfo field <file_name>\n"\
-            + "  e.g.: nxsinfo field saxs_ref1_02.nxs\n\n "\
-            + "show field information for the nexus file"
-
         #: (:obj:`list`< :obj:`str`>)   \
         #     parameters which have to exists to be shown
         toshow = None
@@ -223,144 +306,53 @@ class Field(object):
         #: (:obj:`list`< :obj:`str`>)  column headers
         headers = ["nexus_path", "source_name", "units",
                    "dtype", "shape", "value"]
-        if self.__options.geometry:
+        if options.geometry:
             filters = ["*:NXtransformations/*", "*/depends_on"]
             headers = ["nexus_path", "source_name", "units",
                        "trans_type", "trans_vector", "trans_offset",
                        "depends_on"]
-        if self.__options.source:
+        if options.source:
             headers = ["source_name", "nexus_type", "shape", "strategy",
                        "source"]
             toshow = ["source_name"]
         #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
         values = ["depends_on"]
 
-        if self.__options.headers:
-            headers = self.__options.headers.split(',')
-        if self.__options.filters:
-            filters = self.__options.filters.split(',')
-        if self.__options.values:
-            values = self.__options.values.split(',')
+        if options.headers:
+            headers = options.headers.split(',')
+        if options.filters:
+            filters = options.filters.split(',')
+        if options.values:
+            values = options.values.split(',')
 
-        nxsparser = NXSFileParser(self.__root)
+        nxsparser = NXSFileParser(root)
         nxsparser.filters = filters
         nxsparser.valuestostore = values
         nxsparser.parse()
 
         description = []
         ttools = TableTools(nxsparser.description, toshow)
-        ttools.title = "    file: '%s'" % self.__options.args[0]
+        ttools.title = "    file: '%s'" % options.args[0]
         ttools.headers = headers
         description.extend(ttools.generateList())
         print("\n".join(description))
-
-
-class ErrorException(Exception):
-    """ error parser exception """
-    pass
-
-
-class NXSFileInfoArgParser(argparse.ArgumentParser):
-    """ Argument parser with error exception
-    """
-
-    #: (:obj:`list` <:obj:`str`>) nxsfileinfo sub-commands
-    commands = ['general', 'field']
-
-    def __init__(self, **kwargs):
-        """ constructor
-
-        :param kwargs: :class:`argparse.ArgumentParser`
-                       parameter dictionary
-        :type kwargs: :obj: `dict` <:obj:`str`, `any`>
-        """
-        argparse.ArgumentParser.__init__(self, **kwargs)
-        self.subparsers = {}
-
-    def error(self, message):
-        """ error handler
-
-        :param message: error message
-        :type message: :obj:`str`
-        """
-        raise ErrorException(message)
-
-    def createParser(self):
-        """ creates command-line parameters parser
-
-        :returns: option parser
-        :rtype: :class:`NXSFileInfoArgParser`
-        """
-        #: usage example
-        description = " Command-line tool for showing meta data" \
-                      + " from Nexus Files"
-        #    \
-        #  + " e.g.: nxsdata openfile -s p02/tangodataserver/exp.01  " \
-        #           + "/user/data/myfile.h5"
-
-        hlp = {
-            "general": "show general information for the nexus file",
-            "field": "show field information for the nexus file",
-        }
-
-        self.description = description
-        self.epilog = 'For more help:\n  nxsfileinfo <sub-command> -h'
-
-        pars = {}
-        subparsers = self.add_subparsers(
-            help='sub-command help', dest="subparser")
-
-        for cmd in self.commands:
-            pars[cmd] = subparsers.add_parser(
-                cmd, help='%s' % hlp[cmd], description=hlp[cmd])
-
-        pars['field'].add_argument(
-            "-c", "--columns",
-            help="names of column to be shown (separated by commas "
-            "without spaces). The possible names are: "
-            "depends_on,dtype,full_path,nexus_path,nexus_type,shape,"
-            "source,source_name,source_type,strategy,trans_type,trans_offset,"
-            "trans_vector,units,value",
-            dest="headers", default="")
-        pars['field'].add_argument(
-            "-f", "--filters",
-            help="full_path filters (separated by commas "
-            "without spaces). Default: '*'. E.g. '*:NXsample/*'",
-            dest="filters", default="")
-        pars['field'].add_argument(
-            "-v", "--values",
-            help="field names which value should be stored"
-            " (separated by commas "
-            "without spaces). Default: depends_on",
-            dest="values", default="")
-        pars['field'].add_argument(
-            "-g", "--geometry", action="store_true",
-            default=False, dest="geometry",
-            help="perform geometry full_path filters, i.e."
-            "*:NXtransformations/*,*/depends_on. "
-            "It works only when  -f is not defined")
-        pars['field'].add_argument(
-            "-s", "--source", action="store_true",
-            default=False, dest="source",
-            help="show datasource parameters")
-
-        argcomplete.autocomplete(self)
-        for cmd in self.commands:
-            pars[cmd].add_argument('args', metavar='nexus_file',
-                                   type=str, nargs=1,
-                                   help='new nexus file name')
-
-        self.subparsers = pars
-        return pars
 
 
 def main():
     """ the main program function
     """
 
-    parser = NXSFileInfoArgParser(
+    description = "Command-line tool for showing meta data" \
+                  + " from Nexus Files"
+
+    epilog = 'For more help:\n  nxsfileinfo <sub-command> -h'
+    epilog = 'For more help:\n  nxsconfig <sub-command> -h'
+    parser = NXSArgParser(
+        description=description, epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    pars = parser.createParser()
+    parser.cmdrunners = [('field', Field),
+                         ('general', General)]
+    runners = parser.createSubParsers()
 
     try:
         options = parser.parse_args()
@@ -371,27 +363,9 @@ def main():
         print("")
         sys.exit(255)
 
-    if not PNIIO:
-        sys.stderr.write("nxsfileinfo: No pni.io.nx.h5 installed\n")
-        parser.print_help()
-        sys.exit(255)
-
-    try:
-        fl = nx.open_file(options.args[0])
-    except:
-        sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
-                         % options.args[0])
-        parser.print_help()
-        sys.exit(255)
-
-    rt = fl.root()
-
-    cmdclasses = {"general": General, "field": Field}
-
-    fileparser = cmdclasses[options.subparser](rt, options)
-    fileparser.show()
-
-    fl.close()
+    result = runners[options.subparser].run(options)
+    if result and str(result).strip():
+        print(result)
 
 
 if __name__ == "__main__":

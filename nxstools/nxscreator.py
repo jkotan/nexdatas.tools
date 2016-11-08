@@ -23,12 +23,10 @@ import copy
 import os.path
 
 from xml.dom.minidom import parse, parseString
-from nxstools import nxsdevicetools
-import nxstools.nxsdevicetools
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, motorModules,
-    moduleTemplateFiles, generateDeviceNames, getServerTangoHost,
+    generateDeviceNames, getServerTangoHost,
     openServer, findClassName,
     xmlPackageHandler)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
@@ -1248,7 +1246,8 @@ class StandardCPCreator(CPCreator):
                     for var in missing:
                         xml = xml.replace("$(%s)" % var, "")
                     lines = xml.split('\n')
-                    xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
+                    xml = '\n'.join([x for x in lines if len(x.strip())])
+#                    xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
                 if xmlfile.endswith(".ds.xml"):
                     self._printAction(newname)
                     self.datasources[newname] = xml

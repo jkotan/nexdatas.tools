@@ -21,7 +21,6 @@
 
 import sys
 
-import argcomplete
 import argparse
 from .nxsparser import ParserTools, TableTools
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
@@ -568,7 +567,6 @@ class ConfigServer(object):
         return ""
 
 
-
 class List(Runner):
     """ List runner"""
 
@@ -601,7 +599,6 @@ class List(Runner):
                             default=False, dest="nonewlines",
                             help="split result with space characters")
 
-
     def run(self, options):
         """ the main program function
 
@@ -614,7 +611,8 @@ class List(Runner):
         string = cnfserver.char.join(cnfserver.listCmd(
             options.datasources, options.mandatory, options.private))
         return string
-    
+
+
 class Show(Runner):
     """ Show runner"""
 
@@ -663,7 +661,6 @@ class Show(Runner):
         return string
 
 
-        
 class Get(Runner):
     """ Get runner"""
 
@@ -739,7 +736,7 @@ class Merge(Runner):
             options.datasources, options.args))
         return string
 
-        
+
 class Sources(Runner):
     """ Sources runner"""
 
@@ -860,7 +857,6 @@ class Variables(Runner):
         return string
 
 
-        
 class Data(Runner):
     """ Data runner"""
 
@@ -929,7 +925,6 @@ class Record(Runner):
         parser.add_argument('args', metavar='name', type=str, nargs='?',
                             help='name of components or datasources')
 
-
     def run(self, options):
         """ the main program function
 
@@ -939,8 +934,8 @@ class Record(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.recordCmd(options.datasources,
-            options.args))
+        string = cnfserver.char.join(cnfserver.recordCmd(
+            options.datasources, options.args))
         return string
 
 
@@ -1013,7 +1008,6 @@ class Describe(Runner):
                             help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components or datasources')
-        
 
     def run(self, options):
         """ the main program function
@@ -1030,13 +1024,12 @@ class Describe(Runner):
         return string
 
 
-
 class Info(Runner):
     """ List runner"""
 
     #: (:obj:`str`) command description
     description = "show source parameters of given components" \
-    + " (or datasources)"
+                  + " (or datasources)"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1162,7 +1155,6 @@ def main():
                          ('servers', Servers)]
     runners = parser.createSubParsers()
 
-
     try:
         options = parser.parse_args()
     except ErrorException as e:
@@ -1192,15 +1184,10 @@ def main():
         parg.extend([p.strip() for p in pipe])
         options.args[:] = parg
 
-#    if len(parg) < (
-#            1 if options.subparser in NXSConfigArgParser.argreq else 0):
-#        pars[options.subparser].print_help()
-#        return
-
-
     result = runners[options.subparser].run(options)
-    if result.strip():
+    if result and str(result).strip():
         print(result)
+
 
 if __name__ == "__main__":
     main()

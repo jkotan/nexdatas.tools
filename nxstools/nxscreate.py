@@ -22,8 +22,6 @@
 
 import os
 import sys
-import time
-import fnmatch
 import argparse
 
 
@@ -566,6 +564,7 @@ class StdComp(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        parser = self._parser
         if not PYTANGO:
             sys.stderr.write("nxscreate: No PyTango installed\n")
             parser.print_help()
@@ -628,7 +627,8 @@ class Comp(Runner):
         + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
         + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
-        + "sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4 "\
+        + "sis3302:NXdetector/collection:NXcollection/' " \
+        + "-v sis3302_1_roi -f1 -l4 "\
         + " -g STEP -t NX_FLOAT64 -k -b -m \n"\
         + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
         + "eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64" \
@@ -709,7 +709,8 @@ class Comp(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
-        ars = options.args or []
+        args = options.args or []
+        parser = self._parser
         if options.database and not options.server:
             if not PYTANGO:
                 sys.stderr.write("CollCompCreator No PyTango installed\n")
@@ -754,7 +755,8 @@ class ClientDS(Runner):
              + "       nxscreate clientds starttime -b  \n" \
              + "       nxscreate clientds title -d /home/user/xmldir \n" \
              + "       nxscreate clientds -v exp_c -f1 -l4 -b  \n" \
-             + "       nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/" \
+             + "       nxscreate clientds -v " \
+             + "hasppXX:10000/expchan/vfcadc_exp/" \
              + " -f1 -l8  -m -b -s exp_vfc\n"
 
     def create(self):

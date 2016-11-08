@@ -20,15 +20,10 @@
 """ NeXus main metadata viewer """
 
 import pni.io.nx.h5 as nx
-import sys
-import os
-import time
 import fnmatch
 from xml.dom.minidom import parseString
 
-from nxstools.nxsparser import TableTools, ParserTools
-
-from optparse import OptionParser
+from nxstools.nxsparser import ParserTools
 
 
 def getdsname(xmlstring):

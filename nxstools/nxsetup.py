@@ -594,37 +594,6 @@ class SetUp(object):
         return True
 
 
-def _createParser(user):
-    """ creates parser
-
-    :param user: user name
-    :type user: :obj:`str`
-    :returns: option parser
-    :rtype: :class:`optparse.OptionParser`
-    """
-    user = user or "<USER>"
-    usage = "\n\n %prog -x [-b <beamline>] [-m <masterHost>] " \
-            + "[-u <local_user>] [-d <dbname>] [-j jsonsettings] " \
-            + " [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -r [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -s [<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -p -n newname -o oldname " \
-            + "[<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -c -n propname -w newvalue " \
-            + "[<server_class1> <server_class2> ... ]\n\n" \
-            + " %prog -a <recorder_path>\n\n " \
-            + "e.g.: nxsetup -x\n" \
-            + "      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig" \
-            + " NXSConfigServer\n" \
-            + "      nxsetup -a /usr/share/pyshared/sardananxsrecorder\n" \
-            + "      nxsetup -p -n DefaultPreselectedComponents" \
-            + " -o DefaultAutomaticComponents NXSRecSelector\n" \
-            + "      nxsetup -c -n DefaultPreselectedComponents" \
-            + " -w \"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
-            + "      nxsetup -r Pool/haso228 -l 2 \n" \
-            + "      nxsetup -s MacroServer -l 3 \n"
-
-
 class Set(Runner):
     """ set runner"""
 
@@ -823,6 +792,7 @@ class MoveProp(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        parser = self._parser
         args = options.args or []
         if not options.newname or not options.oldname or not args:
             parser.print_help()
@@ -868,6 +838,7 @@ class ChangeProp(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        parser = self._parser
         args = options.args or []
         if not options.newname or not options.propvalue or not args:
             parser.print_help()
