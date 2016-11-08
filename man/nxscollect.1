@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "November 01, 2016" "2.10" "NXSTools"
+.TH "NXSCOLLECT" "1" "November 08, 2016" "2.11" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -39,7 +39,7 @@ The nxsconfig is  a command\-line tool dedicated to collect detector images of e
 .sp
 .nf
 .ft C
-nxscollect [\-x|\-t] [<options>] <command> <main_nexus_file>
+nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 .ft P
 .fi
 .UNINDENT
@@ -51,13 +51,16 @@ nxscollect [\-x|\-t] [<options>] <command> <main_nexus_file>
 .TP
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
-.TP
-.B \-x\fP,\fB  \-\-execute
-execute the collecting process
-.TP
-.B \-t\fP,\fB  \-\-test
-exceute the process in test mode without changing any
+.UNINDENT
+.sp
+execute               execute the collecting process
+test                  exceute the process in test mode without changing any
+.INDENT 7.0
+.INDENT 3.5
 files
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression\fB= COMPRESSION
 deflate compression rate from 0 to 9 (default: 2)

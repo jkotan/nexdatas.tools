@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSETUP" "1" "November 01, 2016" "2.10" "NXSTools"
+.TH "NXSETUP" "1" "November 08, 2016" "2.11" "NXSTools"
 .SH NAME
 nxsetup \- set NeXDaTaS Tango Server environment up
 .
@@ -39,96 +39,171 @@ The nxsetup is is a command\-line setup tool for NeXus servers.  It allows to se
 .sp
 .nf
 .ft C
-nxsetup \-x [\-b <beamline>] [\-m <masterHost>] [\-u <local_user>] [\-d <dbname>] [\-j <jsonsettings>] [<server_class1> <server_class2> ... ]
-
-nxsetup \-r [\-l level] [<server_class1> <server_class2> ... ]
-
-nxsetup \-s [\-l level] [<server_class1> <server_class2> ... ]
-
-nxsetup \-a [<server_class1> <server_class2> ... ]
-
-nxsetup \-p \-n newname \-o oldname [<server_class1> <server_class2> ... ]
-
-nxsetup \-c \-n propname \-o propvalue [<server_class1> <server_class2> ... ]
+nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.INDENT 0.0
-.TP
-.B Options:
-.INDENT 7.0
-.TP
-.B \-h\fP,\fB  \-\-help
-show this help message and exit
-.TP
-.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline\fB= BEAMLINE
-name of the beamline ( default: \(aqnxs\(aq )
-.TP
-.BI \-m \ MASTERHOST\fP,\fB \ \-\-masterHost\fB= MASTERHOST
-the host that stores the Mg ( default: <localhost> )
-.TP
-.BI \-u \ USER\fP,\fB \ \-\-user\fB= USER
-the local user
-.TP
-.BI \-d \ DBNAME\fP,\fB \ \-\-database\fB= DBNAME
-the database name ( default: \(aqtango\(aq )
-.TP
-.BI \-j \ CSJSON\fP,\fB \ \-\-csjson\fB= CSJSON
-JSONSettings for the configuration server.
-( default: \(aq{"host": "localhost","db": <DBNAME>,
-"use_unicode": true\(aq, "read_default_file":
-<MY_CNF_FILE>}\(aq  where <MY_CNF_FILE> stays for
-"/home/<USER>/.my.cnf" or
-"/var/lib/nxsconfigserver/.my.cnf" )
-.TP
-.B \-x\fP,\fB  \-\-execute
-setup servers action
-.TP
-.BI \-o \ OLDNAME\fP,\fB \ \-\-oldname\fB= OLDNAME
-old property name
-.TP
-.BI \-n \ NEWNAME\fP,\fB \ \-\-newname\fB= NEWNAME
-(new) property name
-.TP
-.BI \-w \ PROPVALUE\fP,\fB \ \-\-propvalue\fB= PROPVALUE
-new property value
-.TP
-.B \-r\fP,\fB  \-\-restart
-restart server(s) action
-.TP
-.B \-s\fP,\fB  \-\-start
-start server(s) action
-.TP
-.BI \-l \ LEVEL\fP,\fB \ \-\-level\fB= LEVEL
-startup level
-.TP
-.BI \-a \ RECPATH\fP,\fB \ \-\-add\-recorder\-path\fB= RECPATH
-add recorder path
-.TP
-.B \-p\fP,\fB  \-\-move\-prop
-change property name
-.UNINDENT
-.UNINDENT
-.SH EXAMPLE
+.sp
+The following commands are available: set, restart, start, move\-prop, change\-prop, add\-recorder\-path
+.SH NXSETUP SET
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxsetup \-x
+usage: nxsetup set [\-h] [\-b BEAMLINE] [\-m MASTERHOST] [\-u USER] [\-d DBNAME]
+                   [\-j CSJSON]
+                   [server_name [server_name ...]]
 
-nxsetup \-x \-b p09 \-m haso228 \-u p09user \-d nxsconfig  NXSConfigServer
+set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of \-x)
 
-nxsetup \-a /usr/share/pyshared/sardananxsrecorder
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-nxsetup \-p \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-b BEAMLINE, \-\-beamline BEAMLINE
+                        name of the beamline ( default: \(aqnxs\(aq )
+  \-m MASTERHOST, \-\-masterHost MASTERHOST
+                        the host that stores the Mg ( default: <localhost> )
+  \-u USER, \-\-user USER  the local user ( default: \(aqtango\(aq )
+  \-d DBNAME, \-\-database DBNAME
+                        the database name ( default: \(aqnxsconfig\(aq)
+  \-j CSJSON, \-\-csjson CSJSON
+                        JSONSettings for the configuration server. ( default:
+                        \(aq{"host": "localhost","db": <DBNAME>, "use_unicode":
+                        true\(aq, "read_default_file": <MY_CNF_FILE>}\(aq where
+                        <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
+                        "/var/lib/nxsconfigserver/.my.cnf" )
 
-nxsetup \-s Pool/haso228 \-l2
+ examples:
+       nxsetup set
+       nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP RESTART
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
 
-nxsetup \-r MacroServer \-l3
+restart tango server (a new version of \-r)
 
-nxsetup \-c \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-l LEVEL, \-\-level LEVEL
+                        startup level
+
+ examples:
+       nxsetup restart Pool/haso228 \-l 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP START
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup start [\-h] [\-l LEVEL] [server_name [server_name ...]]
+
+start tango server (a new version of \-s)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-l LEVEL, \-\-level LEVEL
+                        startup level
+
+ examples:
+       nxsetup start Pool/haso228 \-l 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP MOVE-PROP
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup move\-prop [\-h] [\-n NEWNAME] [\-o OLDNAME]
+                         [server_name [server_name ...]]
+
+change property name (a new version of \-p)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-n NEWNAME, \-\-newname NEWNAME
+                        (new) property name
+  \-o OLDNAME, \-\-oldname OLDNAME
+                        old property name
+
+ examples:
+       nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP CHANGE-PROP
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup change\-prop [\-h] [\-n NEWNAME] [\-w PROPVALUE]
+                           [server_name [server_name ...]]
+
+change property value (a new version of \-c)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-n NEWNAME, \-\-newname NEWNAME
+                        (new) property name
+  \-w PROPVALUE, \-\-propvalue PROPVALUE
+                        new property value
+
+ examples:
+       nxsetup change\-prop \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP ADD-RECORDER-PATH
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup add\-recorder\-path [\-h] recorder_path
+
+add\-recorder\-path into MacroServer(s) property (a new version of \-a)
+
+positional arguments:
+  recorder_path  sardana recorder path
+
+optional arguments:
+  \-h, \-\-help     show this help message and exit
+
+ examples:
+       nxsetup add\-record\-path /usr/share/pyshared/sardananxsrecorder
 .ft P
 .fi
 .UNINDENT

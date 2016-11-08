@@ -20,58 +20,10 @@ nxstools.nxsconfig module
     :undoc-members:
     :show-inheritance:
 
-nxstools.nxscreate_clientds module
-----------------------------------
+nxstools.nxscreate module
+-------------------------
 
-.. automodule:: nxstools.nxscreate_clientds
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_comp module
-------------------------------
-
-.. automodule:: nxstools.nxscreate_comp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_deviceds module
-----------------------------------
-
-.. automodule:: nxstools.nxscreate_deviceds
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_onlinecp module
-----------------------------------
-
-.. automodule:: nxstools.nxscreate_onlinecp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_onlineds module
-----------------------------------
-
-.. automodule:: nxstools.nxscreate_onlineds
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_stdcomp module
-----------------------------------
-
-.. automodule:: nxstools.nxscreate_stdcomp
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxscreate_tangods module
----------------------------------
-
-.. automodule:: nxstools.nxscreate_tangods
+.. automodule:: nxstools.nxscreate
     :members:
     :undoc-members:
     :show-inheritance:
@@ -85,7 +37,7 @@ nxstools.nxsdata module
     :show-inheritance:
 
 nxstools.nxsetup module
-------------------------
+-----------------------
 
 .. automodule:: nxstools.nxsetup
     :members:
@@ -100,18 +52,10 @@ nxstools.nxscreator module
     :undoc-members:
     :show-inheritance:
 
-nxstools.nxsfileinfo_general module
------------------------------------
+nxstools.nxsfileinfo module
+---------------------------
 
-.. automodule:: nxstools.nxsfileinfo_general
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-nxstools.nxsfileinfo_field module
----------------------------------
-
-.. automodule:: nxstools.nxsfileinfo_field
+.. automodule:: nxstools.nxsfileinfo
     :members:
     :undoc-members:
     :show-inheritance:
@@ -120,6 +64,14 @@ nxstools.nxsfileparser module
 -----------------------------
 
 .. automodule:: nxstools.nxsfileparser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+nxstools.nxsargparser module
+----------------------------
+
+.. automodule:: nxstools.nxsargparser
     :members:
     :undoc-members:
     :show-inheritance:
@@ -169,6 +121,11 @@ Module contents
 ---------------
 
 .. automodule:: nxstools
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: nxstools.xmltemplates
     :members:
     :undoc-members:
     :show-inheritance:

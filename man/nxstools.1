@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "November 01, 2016" "2.10" "NXSTools"
+.TH "NXSTOOLS" "1" "November 08, 2016" "2.11" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -162,7 +162,7 @@ The nxsconfig is  a command\-line tool dedicated to collect detector images of e
 .sp
 .nf
 .ft C
-nxscollect [\-x|\-t] [<options>] <command> <main_nexus_file>
+nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 .ft P
 .fi
 .UNINDENT
@@ -174,13 +174,16 @@ nxscollect [\-x|\-t] [<options>] <command> <main_nexus_file>
 .TP
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
-.TP
-.B \-x\fP,\fB  \-\-execute
-execute the collecting process
-.TP
-.B \-t\fP,\fB  \-\-test
-exceute the process in test mode without changing any
+.UNINDENT
+.sp
+execute               execute the collecting process
+test                  exceute the process in test mode without changing any
+.INDENT 7.0
+.INDENT 3.5
 files
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression\fB= COMPRESSION
 deflate compression rate from 0 to 9 (default: 2)
@@ -1084,96 +1087,171 @@ The nxsetup is is a command\-line setup tool for NeXus servers.  It allows to se
 .sp
 .nf
 .ft C
-nxsetup \-x [\-b <beamline>] [\-m <masterHost>] [\-u <local_user>] [\-d <dbname>] [\-j <jsonsettings>] [<server_class1> <server_class2> ... ]
-
-nxsetup \-r [\-l level] [<server_class1> <server_class2> ... ]
-
-nxsetup \-s [\-l level] [<server_class1> <server_class2> ... ]
-
-nxsetup \-a [<server_class1> <server_class2> ... ]
-
-nxsetup \-p \-n newname \-o oldname [<server_class1> <server_class2> ... ]
-
-nxsetup \-c \-n propname \-o propvalue [<server_class1> <server_class2> ... ]
+nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.INDENT 0.0
-.TP
-.B Options:
-.INDENT 7.0
-.TP
-.B \-h\fP,\fB  \-\-help
-show this help message and exit
-.TP
-.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline\fB= BEAMLINE
-name of the beamline ( default: \(aqnxs\(aq )
-.TP
-.BI \-m \ MASTERHOST\fP,\fB \ \-\-masterHost\fB= MASTERHOST
-the host that stores the Mg ( default: <localhost> )
-.TP
-.BI \-u \ USER\fP,\fB \ \-\-user\fB= USER
-the local user
-.TP
-.BI \-d \ DBNAME\fP,\fB \ \-\-database\fB= DBNAME
-the database name ( default: \(aqtango\(aq )
-.TP
-.BI \-j \ CSJSON\fP,\fB \ \-\-csjson\fB= CSJSON
-JSONSettings for the configuration server.
-( default: \(aq{"host": "localhost","db": <DBNAME>,
-"use_unicode": true\(aq, "read_default_file":
-<MY_CNF_FILE>}\(aq  where <MY_CNF_FILE> stays for
-"/home/<USER>/.my.cnf" or
-"/var/lib/nxsconfigserver/.my.cnf" )
-.TP
-.B \-x\fP,\fB  \-\-execute
-setup servers action
-.TP
-.BI \-o \ OLDNAME\fP,\fB \ \-\-oldname\fB= OLDNAME
-old property name
-.TP
-.BI \-n \ NEWNAME\fP,\fB \ \-\-newname\fB= NEWNAME
-(new) property name
-.TP
-.BI \-w \ PROPVALUE\fP,\fB \ \-\-propvalue\fB= PROPVALUE
-new property value
-.TP
-.B \-r\fP,\fB  \-\-restart
-restart server(s) action
-.TP
-.B \-s\fP,\fB  \-\-start
-start server(s) action
-.TP
-.BI \-l \ LEVEL\fP,\fB \ \-\-level\fB= LEVEL
-startup level
-.TP
-.BI \-a \ RECPATH\fP,\fB \ \-\-add\-recorder\-path\fB= RECPATH
-add recorder path
-.TP
-.B \-p\fP,\fB  \-\-move\-prop
-change property name
-.UNINDENT
-.UNINDENT
-.SS Example
+.sp
+The following commands are available: set, restart, start, move\-prop, change\-prop, add\-recorder\-path
+.SS nxsetup set
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxsetup \-x
+usage: nxsetup set [\-h] [\-b BEAMLINE] [\-m MASTERHOST] [\-u USER] [\-d DBNAME]
+                   [\-j CSJSON]
+                   [server_name [server_name ...]]
 
-nxsetup \-x \-b p09 \-m haso228 \-u p09user \-d nxsconfig  NXSConfigServer
+set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of \-x)
 
-nxsetup \-a /usr/share/pyshared/sardananxsrecorder
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-nxsetup \-p \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-b BEAMLINE, \-\-beamline BEAMLINE
+                        name of the beamline ( default: \(aqnxs\(aq )
+  \-m MASTERHOST, \-\-masterHost MASTERHOST
+                        the host that stores the Mg ( default: <localhost> )
+  \-u USER, \-\-user USER  the local user ( default: \(aqtango\(aq )
+  \-d DBNAME, \-\-database DBNAME
+                        the database name ( default: \(aqnxsconfig\(aq)
+  \-j CSJSON, \-\-csjson CSJSON
+                        JSONSettings for the configuration server. ( default:
+                        \(aq{"host": "localhost","db": <DBNAME>, "use_unicode":
+                        true\(aq, "read_default_file": <MY_CNF_FILE>}\(aq where
+                        <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
+                        "/var/lib/nxsconfigserver/.my.cnf" )
 
-nxsetup \-s Pool/haso228 \-l2
+ examples:
+       nxsetup set
+       nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxsetup restart
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup restart [\-h] [\-l LEVEL] [server_name [server_name ...]]
 
-nxsetup \-r MacroServer \-l3
+restart tango server (a new version of \-r)
 
-nxsetup \-c \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-l LEVEL, \-\-level LEVEL
+                        startup level
+
+ examples:
+       nxsetup restart Pool/haso228 \-l 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxsetup start
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup start [\-h] [\-l LEVEL] [server_name [server_name ...]]
+
+start tango server (a new version of \-s)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-l LEVEL, \-\-level LEVEL
+                        startup level
+
+ examples:
+       nxsetup start Pool/haso228 \-l 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxsetup move\-prop
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup move\-prop [\-h] [\-n NEWNAME] [\-o OLDNAME]
+                         [server_name [server_name ...]]
+
+change property name (a new version of \-p)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-n NEWNAME, \-\-newname NEWNAME
+                        (new) property name
+  \-o OLDNAME, \-\-oldname OLDNAME
+                        old property name
+
+ examples:
+       nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxsetup change\-prop
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup change\-prop [\-h] [\-n NEWNAME] [\-w PROPVALUE]
+                           [server_name [server_name ...]]
+
+change property value (a new version of \-c)
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+  \-n NEWNAME, \-\-newname NEWNAME
+                        (new) property name
+  \-w PROPVALUE, \-\-propvalue PROPVALUE
+                        new property value
+
+ examples:
+       nxsetup change\-prop \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxsetup add\-recorder\-path
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup add\-recorder\-path [\-h] recorder_path
+
+add\-recorder\-path into MacroServer(s) property (a new version of \-a)
+
+positional arguments:
+  recorder_path  sardana recorder path
+
+optional arguments:
+  \-h, \-\-help     show this help message and exit
+
+ examples:
+       nxsetup add\-record\-path /usr/share/pyshared/sardananxsrecorder
 .ft P
 .fi
 .UNINDENT
@@ -1220,8 +1298,86 @@ to the origin one if the action was successful
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxscollect.Execute(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Execute runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqexecute the collection process (a new version of \-x)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxscollect execute \-c1 /tmp/gpfs/raw/scan_234.nxs \en\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B nxstools.nxscollect.PNIIO = True
 (\fI\%bool\fP) True if pni.io.nx.h5 available
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscollect.Test(parser)
+Bases: \fBnxstools.nxscollect.Execute\fP
+.sp
+Test runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqexecute the process in the test mode without changing any files (a new version of \-t)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxscollect test /tmp/gpfs/raw/scan_234.nxs \en\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1231,6 +1387,51 @@ the main program function
 .SS nxstools.nxsconfig module
 .sp
 Command\-line tool for ascess to the nexdatas configuration server
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Components(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Components runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget a list of dependent components\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig components dcm\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B class nxstools.nxsconfig.ConfigServer(device, nonewline=False)
@@ -1252,20 +1453,147 @@ by the new line character
 .UNINDENT
 .INDENT 7.0
 .TP
-.B performCommand(command, ds, args, mandatory=False, private=False)
-performs requested command
+.B char = None
+(\fI\%str\fP) spliting character
+.UNINDENT
+.INDENT 7.0
+.TP
+.B componentsCmd(components)
+lists components of the components
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+.TP
+.B Returns
+list of component names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B dataCmd(args)
+provides varaible values
+.INDENT 7.0
+.TP
+.B Parameters
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.TP
+.B Returns
+JSON with variables
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B describeCmd(ds, args, md, pr)
+provides description of configuration elements
 .INDENT 7.0
 .TP
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBcommand\fP (\fI\%str\fP) \-\- executed command: \(aqlist\(aq, \(aqshow\(aq, \(aqget\(aq,
-\(aqvariables\(aq, \(aqsources\(aq, \(aqrecord\(aq, \(aqmerge\(aq,
-\(aqcomponents\(aq, \(aqdata\(aq, \(aqdescribe\(aq, \(aqinfo\(aq, \(aqgeometry\(aq
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.IP \(bu 2
+\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+.IP \(bu 2
+\fBpr\fP (\fI\%bool\fP) \-\- flag set True for private components
+.UNINDENT
+.TP
+.B Returns
+list with description
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B geometryCmd(ds, args, md, pr)
+provides geometry info for given elements
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
 .IP \(bu 2
 \fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
 .IP \(bu 2
 \fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.IP \(bu 2
+\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+.IP \(bu 2
+\fBpr\fP (\fI\%bool\fP) \-\- flag set True for private components
+.UNINDENT
+.TP
+.B Returns
+list with description
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B getCmd(ds, args)
+provides final configuration
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.UNINDENT
+.TP
+.B Returns
+XML configuration string
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B infoCmd(ds, args, md, pr)
+Provides info for given elements
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.IP \(bu 2
+\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+.IP \(bu 2
+\fBpr\fP (\fI\%bool\fP) \-\- flag set True for private components
+.UNINDENT
+.TP
+.B Returns
+list with description
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B listCmd(ds, mandatory=False, private=False)
+lists the DB item names
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
 .IP \(bu 2
 \fBmandatory\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
 .IP \(bu 2
@@ -1273,7 +1601,643 @@ performs requested command
 .UNINDENT
 .TP
 .B Returns
-resulting string
+list op item names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B mergeCmd(ds, args)
+provides merged components
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.UNINDENT
+.TP
+.B Returns
+XML configuration string with merged components
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B recordCmd(ds, name)
+lists datasources of the component
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBname\fP (\fI\%str\fP) \-\- given component or datasource
+.UNINDENT
+.TP
+.B Returns
+list of record names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B showCmd(ds, args, mandatory=False)
+shows the DB items
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+.IP \(bu 2
+\fBmandatory\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+.UNINDENT
+.TP
+.B Returns
+list of XML items
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B sourcesCmd(components, mandatory=False)
+lists datasources of the components
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+.TP
+.B Returns
+list of datasource names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B variablesCmd(components, mandatory=False)
+lists variable of the components
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+.TP
+.B Returns
+list of datasource names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Data(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Data runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget/set values of component variables\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig data \en       nxsconfig data \e\(aq{"sample_name":"H2O"}\e\(aq\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Describe(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Describe runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow all parameters of given components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig describe pilatus\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Geometry(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+List runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow transformation parameters of given components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig geometry dcm\en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Get(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Get runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget full configuration of components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig get  dcm source slit1 slit2\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Info(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+List runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow source parameters of given components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig info slit1\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.List(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+List runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqlist names of available components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig list\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Merge(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Merge runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget merged configuration of components (or datasources)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig merge  slit1 dcm \en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Record(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Record runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget a list of datasource record names for components or datasources\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig record \-d exp_mot01 \en       nxsconfig record dcm \en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Servers(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Servers runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget a list of configuration servers from the current tango host\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig servers\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Show(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Show runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow components (or datasources) with given names\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig show dcm\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Sources(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Sources runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget a list of component datasources\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig sources slit1\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Variables(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Variables runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget a list of component variables\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig variables dcm\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
 .TP
 .B Return type
 \fI\%str\fP
@@ -1285,95 +2249,393 @@ resulting string
 .B nxstools.nxsconfig.main()
 the main program function
 .UNINDENT
-.SS nxstools.nxscreate_clientds module
+.SS nxstools.nxscreate module
 .sp
-CLIENT datasource creator
+Command\-line tool for creating NXSConfigServer configuration of Nexus Files
 .INDENT 0.0
 .TP
-.B nxstools.nxscreate_clientds.PYTANGO = True
-(\fI\%bool\fP) True if PyTango available
+.B class nxstools.nxscreate.ClientDS(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+clientds runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
 .UNINDENT
-.INDENT 0.0
+.INDENT 7.0
 .TP
-.B nxstools.nxscreate_clientds.main()
+.B create()
+parser creator
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate client datasources\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = "\en * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en examples:\en       nxscreate clientds starttime \-b  \en       nxscreate clientds title \-d /home/user/xmldir \en       nxscreate clientds \-v exp_c \-f1 \-l4 \-b  \en       nxscreate clientds \-v hasppXX:10000/expchan/vfcadc_exp/ \-f1 \-l8  \-m \-b \-s exp_vfc\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
 the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
 .UNINDENT
-.SS nxstools.nxscreate_comp module
-.sp
-component creator
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxscreate_comp.PYTANGO = True
+.B class nxstools.nxscreate.Comp(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+comp runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate simple components\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * with \-b: components are created (without datasources) in Configuration Server database\en * without \-b: components are created (without datasources) on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en            <strategy> is step\en            <type> is NX_FLOAT\en            <chunk> is SCALAR\en            <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/\en examples:\en       nxscreate comp counter \en       nxscreate comp \-f1 \-l \-v exp_c01 \-b \en       nxscreate comp lambda \-d /home/user/xmldir/ \en       nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m \en       nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM\en\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreate.DeviceDS(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+deviceds runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate datasources for all device attributes\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * without <dv_attr1>: datasources for all attributes are created\en * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en            <datasource> is \(aqexp_mot\(aq \en            <host>, <port> are taken from <server>\en examples:\en       nxscreate deviceds  \-v p09/pilatus/haso228k \en       nxscreate deviceds  \-v p09/lambda2m/haso228k \-uhaslambda \-b \en       nxscreate deviceds  \-v p09/pilatus300k/haso228k \-b \-s pilatus300k_ RoI Energy ExposureTime\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreate.OnlineCP(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+onlinecp runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate component from online.xml file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * without \(aq\-c <component>\(aq: show a list of possible components\en * without \(aq\-d <dircetory>:  components are created in Configuration Server database\en * with \-d <directory>: components are created on the local filesystem\en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en examples:\en       nxscreate onlinecp  \en       nxscreate onlinecp \-c pilatus \en       nxscreate onlinecp \-c lambda \-d /home/user/xmldir/ \en\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreate.OnlineDS(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+onlineds runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate datasources from online.xml file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * with \-b: datasources are created in Configuration Server database\en * with \-d <directory>: datasources are created on the local filesystem\en * without \-b or \-d <directory>: run in the test mode\en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en\en \(gaonlineds\(ga overwrites existing datasources\en\en examples:\en       nxscreate onlineds \-b  \en       nxscreate onlineds \-d /home/user/xmldir \en       nxscreate onlineds \en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscreate.PYTANGO = True
 (\fI\%bool\fP) True if PyTango available
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxscreate_comp.main()
-the main function
-.UNINDENT
-.SS nxstools.nxscreate_deviceds module
+.B class nxstools.nxscreate.StdComp(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
 .sp
-TANGO datasources creator for devices
-.INDENT 0.0
-.TP
-.B nxstools.nxscreate_deviceds.PYTANGO = True
-(\fI\%bool\fP) True if PyTango available
-.UNINDENT
-.INDENT 0.0
-.TP
-.B nxstools.nxscreate_deviceds.main()
-the main function
-.UNINDENT
-.SS nxstools.nxscreate_onlinecp module
+stdcomp runner
 .sp
-component creator from online files
-.INDENT 0.0
+parser creator
+.INDENT 7.0
 .TP
-.B nxstools.nxscreate_onlinecp.PYTANGO = True
-(\fI\%bool\fP) True if PyTango available
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate component from the standard templates\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * without \(aq\-t <type>\(aq: show a list of possible component types\en * with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type\en * without \(aq\-d <dircetory>:  components are created in Configuration Server database\en * with \-d <directory>: components are created on the local filesystem\en * [name1 value1 [name2 value2] ...] sequence  defines component variable values \en examples:\en       nxscreate stdcomp  \en       nxscreate stdcomp \-t slit \en       nxscreate stdcomp \-t slit \-c front_slit1 xgap slt1x ygap slt1y\en\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxscreate_onlinecp.main()
-the main function
-.UNINDENT
-.SS nxstools.nxscreate_onlineds module
+.B class nxstools.nxscreate.TangoDS(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
 .sp
-datasource creator from online files
-.INDENT 0.0
-.TP
-.B nxstools.nxscreate_onlineds.PYTANGO = True
-(\fI\%bool\fP) True if PyTango available
-.UNINDENT
-.INDENT 0.0
-.TP
-.B nxstools.nxscreate_onlineds.main()
-the main function
-.UNINDENT
-.SS nxstools.nxscreate_stdcomp module
+tangods runner
 .sp
-component creator from standard templates
-.INDENT 0.0
+parser creator
+.INDENT 7.0
 .TP
-.B nxstools.nxscreate_stdcomp.main()
-the main function
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
 .UNINDENT
-.SS nxstools.nxscreate_tangods module
-.sp
-TANGO datasource creator
-.INDENT 0.0
+.INDENT 7.0
 .TP
-.B nxstools.nxscreate_tangods.PYTANGO = True
-(\fI\%bool\fP) True if PyTango available
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate tango datasources\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en            <datasource> is \(aqexp_mot\(aq \en            <host>, <port> are taken from <server>\en examples:\en       nxscreate tangods \-f1 \-l2 \-v p09/motor/exp. \-s exp_mot \en       nxscreate tangods \-f1 \-l32 \-v p02/motor/eh1a. \-s exp_mot\-b \en       nxscreate tangods \-f1 \-l32 \-v p01/motor/oh1. \-s exp_mot \-b\en       nxscreate tangods \-v petra/globals/keyword \-s source_current \-u haso228 \-t 10000 \e\e \en                         \-a BeamCurrent \-b \-r p09/nxsconfigserver/haso228 \-o \-g __CLIENT__\en       nxscreate tangods \-f1 \-l8  \-v pXX/slt/exp. \-s slt_exp_ \-u hasppXX.desy.de \-b \en\en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxscreate_tangods.main()
-the main function
+.B nxstools.nxscreate.main()
+the main program function
 .UNINDENT
 .SS nxstools.nxsdata module
 .sp
 Command\-line tool to ascess to Tango Data Server
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.CloseEntry(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+CloseEntry runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqclose the current entry\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata closeentry \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.CloseFile(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+CloseFile runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqclose the current file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata closefile \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B class nxstools.nxsdata.NexusServer(device)
@@ -1419,21 +2681,6 @@ opens the h5 file
 .UNINDENT
 .INDENT 7.0
 .TP
-.B performCommand(command, args)
-perform requested command
-.INDENT 7.0
-.TP
-.B Parameters
-.INDENT 7.0
-.IP \(bu 2
-\fBcommand\fP (\fI\%str\fP) \-\- called command
-.IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
-.UNINDENT
-.UNINDENT
-.UNINDENT
-.INDENT 7.0
-.TP
 .B record(jsondata)
 records one step
 .INDENT 7.0
@@ -1460,12 +2707,432 @@ sets the global JSON data
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxsdata.OpenEntry(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+OpenEntry runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate new entry\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata openentry ... \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.OpenFile(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+OpenFile runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqopen a new H5 file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata openfile /tmp/watertest.nxs \en       nxsdata openfile \-s p02/tangodataserver/exp.01  /user/data/myfile.h5\en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+parser creator after autocomplete run
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.Record(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Record runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqrecord one step with step JSON data\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata record ... \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.Servers(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Servers runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqget lists of tango data servers from the current tango host\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata servers \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsdata.SetData(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+SetData runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqassign global JSON data\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsdata setdata ... \en\en\(aq
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B nxstools.nxsdata.main()
-the main function
+the main program function
 .UNINDENT
 .SS nxstools.nxsetup module
 .sp
 Set Up NeXus Tango Servers
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.AddRecorderPath(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+add\-recorder\-path runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqadd\-recorder\-path into MacroServer(s) property (a new version of \-a)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup add\-record\-path /usr/share/pyshared/sardananxsrecorder\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.ChangeProp(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+change\-prop runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqchange property value (a new version of \-c)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup change\-prop \-n DefaultPreselectedComponents \-w "[\e\e"pinhole1\e\e",\e\e"slit2\e\e"]" NXSRecSelector/r228\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.MoveProp(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+move\-prop runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqchange property name (a new version of \-p)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.Restart(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+restart runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqrestart tango server (a new version of \-r)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup restart Pool/haso228 \-l 2\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.Set(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+set runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqset up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of \-x)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup set\en       nxsetup set \-b p09 \-m haso228 \-u p09user \-d nxsconfig NXSConfigServer\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .TP
 .B class nxstools.nxsetup.SetUp
@@ -1642,6 +3309,45 @@ restarts server
 .TP
 .B writer_name = None
 (\fI\%str\fP) NeXus writer device name
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.Start(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+start runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqstart tango server (a new version of \-s)\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup start Pool/haso228 \-l 2\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -2127,45 +3833,155 @@ Bases: \fI\%exceptions.Exception\fP
 .sp
 wrong parameter exception
 .UNINDENT
-.SS nxstools.nxsfileinfo_general module
+.SS nxstools.nxsfileinfo module
 .sp
-NeXus main metadata viewer
+Command\-line tool for showing meta data from Nexus Files
 .INDENT 0.0
 .TP
-.B nxstools.nxsfileinfo_general.PNIIO = True
-(\fI\%bool\fP) True if pni.io.nx.h5 available
+.B class nxstools.nxsfileinfo.Field(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Field runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
 .UNINDENT
-.INDENT 0.0
+.INDENT 7.0
 .TP
-.B nxstools.nxsfileinfo_general.main()
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow field information for the nexus file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsfileinfo field /user/data/myfile.nxs\en       nxsfileinfo field /user/data/myfile.nxs \-g\en       nxsfileinfo field /user/data/myfile.nxs \-s\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+parser creator after autocomplete run
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B show(root, options)
 the main function
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.IP \(bu 2
+\fBroot\fP (class:\fIpni.io.nx.h5.nxroot\fP) \-\- nexus file root
+.UNINDENT
+.UNINDENT
+.UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsfileinfo_general.parseentry(entry, description, keyvalue)
-.UNINDENT
-.INDENT 0.0
+.B class nxstools.nxsfileinfo.General(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+General runner
+.sp
+parser creator
+.INDENT 7.0
 .TP
-.B nxstools.nxsfileinfo_general.show(root)
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqshow general information for the nexus file\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsfileinfo general /user/data/myfile.nxs\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B classmethod parseentry(entry, description, keyvalue)
+parse entry of nexus file
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBentry\fP (\fBpni.io.nx.h5.nxgroup\fP) \-\- nexus entry node
+.IP \(bu 2
+\fBdescription\fP (\fI\%list\fP <\fI\%dict\fP <\fI\%str\fP, \fIany\fP > >) \-\- dict description list
+.IP \(bu 2
+\fBkeyvalue\fP ([\fI\%str\fP, \fI\%str\fP]) \-\- (key, value) name pair of table headers
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+parser creator after autocomplete run
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B show(root)
 show general informations
 .INDENT 7.0
 .TP
 .B Parameters
-\fBroot\fP (\fBpni.io.nx.h5.nxroot\fP) \-\- nexus root node
+\fBroot\fP (class:\fIpni.io.nx.h5.nxroot\fP) \-\- nexus file root
 .UNINDENT
 .UNINDENT
-.SS nxstools.nxsfileinfo_field module
-.sp
-NeXus main metadata viewer
+.UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsfileinfo_field.PNIIO = True
+.B nxstools.nxsfileinfo.PNIIO = True
 (\fI\%bool\fP) True if pni.io.nx.h5 available
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsfileinfo_field.main()
-the main function
+.B nxstools.nxsfileinfo.main()
+the main program function
 .UNINDENT
 .SS nxstools.nxsfileparser module
 .sp
@@ -2247,6 +4063,103 @@ provides datasource type from datasource xml string
 .TP
 .B Parameters
 \fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+.UNINDENT
+.UNINDENT
+.SS nxstools.nxsargparser module
+.sp
+NeXus tool argumen parser
+.INDENT 0.0
+.TP
+.B exception nxstools.nxsargparser.ErrorException
+Bases: \fI\%exceptions.Exception\fP
+.sp
+error parser exception
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsargparser.NXSArgParser(**kwargs)
+Bases: \fI\%argparse.ArgumentParser\fP
+.sp
+Argument parser with error exception
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+\fBkwargs\fP \-\- \fI\%argparse.ArgumentParser\fP
+parameter dictionary
+.UNINDENT
+.INDENT 7.0
+.TP
+.B cmdrunners = None
+(\fI\%dict\fP <\fI\%str\fP, \fBRunner\fP>) 
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createSubParsers()
+creates command\-line parameters parser
+.INDENT 7.0
+.TP
+.B Returns
+command runner
+.TP
+.B Return type
+\fBRunner\fP
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B error(message)
+error handler
+.INDENT 7.0
+.TP
+.B Parameters
+\fBmessage\fP (\fI\%str\fP) \-\- error message
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsargparser.Runner(parser)
+Bases: \fI\%object\fP
+.sp
+abstract runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+parser creator
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqabstract runner\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = None
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+parser creator after autocomplete run
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+run commandthe main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
 .UNINDENT
 .UNINDENT
 .SS nxstools.nxsparser module
@@ -3136,7 +5049,7 @@ attributes of device modules to acquire with elements:
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.moduleMultiAttributes = {\(aqperkinelmer\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpilatus2m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus1m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpco4000\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqmythen\(aq: [\(aqCounts1\(aq, \(aqCounts2\(aq, \(aqCountsMax\(aq, \(aqCountsTotal\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFileIndex\(aq, \(aqFilePrefix\(aq, \(aqLastImage\(aq, \(aqRoI1\(aq, \(aqRoI2\(aq], \(aqlambda2m\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmca_xia\(aq: [], \(aqpilatus300k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqeigerdectris\(aq: [\(aqTriggerMode\(aq, \(aqNbTriggers\(aq, \(aqDescription\(aq, \(aqNbImages\(aq, \(aqBitDepth\(aq, \(aqReadoutTime\(aq, \(aqCountTime\(aq, \(aqEnergyThreshold\(aq, \(aqFrameTime\(aq, \(aqRateCorrectionEnabled\(aq, \(aqFlatFieldEnabled\(aq, \(aqTemperature\(aq, \(aqAutoSummationEnabled\(aq, \(aqHumidity\(aq, \(aqPhotonEnergy\(aq, \(aqWavelength\(aq], \(aqperkinelmerdetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqmca_xia@pool\(aq: [\(aqCountsRoI\(aq, \(aqRoIEnd\(aq, \(aqRoIStart\(aq, \(aqValue\(aq], \(aqpco\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus6m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqlambda\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmarccd\(aq: [\(aqFrameShift\(aq, \(aqSavingDirectory\(aq, \(aqSavingPostfix\(aq, \(aqSavingPrefix\(aq], \(aqpedetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq, \(aqCameraGain\(aq], \(aqpcoedge\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus100k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq]}
+.B nxstools.nxsdevicetools.moduleMultiAttributes = {\(aqperkinelmer\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpilatus2m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus1m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpco4000\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqmythen\(aq: [\(aqCounts1\(aq, \(aqCounts2\(aq, \(aqCountsMax\(aq, \(aqCountsTotal\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFileIndex\(aq, \(aqFilePrefix\(aq, \(aqLastImage\(aq, \(aqRoI1\(aq, \(aqRoI2\(aq], \(aqlambda2m\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmca_xia\(aq: [], \(aqpilatus300k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqeigerdectris\(aq: [\(aqTriggerMode\(aq, \(aqNbTriggers\(aq, \(aqDescription\(aq, \(aqNbImages\(aq, \(aqBitDepth\(aq, \(aqReadoutTime\(aq, \(aqCountTime\(aq, \(aqEnergyThreshold\(aq, \(aqFrameTime\(aq, \(aqRateCorrectionEnabled\(aq, \(aqFlatFieldEnabled\(aq, \(aqTemperature\(aq, \(aqAutoSummationEnabled\(aq, \(aqHumidity\(aq, \(aqPhotonEnergy\(aq, \(aqWavelength\(aq], \(aqperkinelmerdetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqmca_xia@pool\(aq: [\(aqCountsRoI\(aq, \(aqRoIEnd\(aq, \(aqRoIStart\(aq, \(aqValue\(aq], \(aqpco\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus6m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqlambda\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmarccd\(aq: [\(aqFrameShift\(aq, \(aqSavingDirectory\(aq, \(aqSavingPostfix\(aq, \(aqSavingPrefix\(aq], \(aqpedetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpcoedge\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus100k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq]}
 .INDENT 7.0
 .TP
 .B (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
@@ -3238,7 +5151,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f5115847810>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7ff14abb5c50>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
@@ -3325,6 +5238,45 @@ NXS tools release version
 .SS Module contents
 .sp
 NXS tools
+.sp
+xml templates
+.INDENT 0.0
+.TP
+.B nxstools.xmltemplates.moduleMultiAttributes = {\(aqperkinelmer\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpilatus2m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus1m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpco4000\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqmythen\(aq: [\(aqCounts1\(aq, \(aqCounts2\(aq, \(aqCountsMax\(aq, \(aqCountsTotal\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFileIndex\(aq, \(aqFilePrefix\(aq, \(aqLastImage\(aq, \(aqRoI1\(aq, \(aqRoI2\(aq], \(aqlambda2m\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmca_xia\(aq: [], \(aqpilatus300k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqeigerdectris\(aq: [\(aqTriggerMode\(aq, \(aqNbTriggers\(aq, \(aqDescription\(aq, \(aqNbImages\(aq, \(aqBitDepth\(aq, \(aqReadoutTime\(aq, \(aqCountTime\(aq, \(aqEnergyThreshold\(aq, \(aqFrameTime\(aq, \(aqRateCorrectionEnabled\(aq, \(aqFlatFieldEnabled\(aq, \(aqTemperature\(aq, \(aqAutoSummationEnabled\(aq, \(aqHumidity\(aq, \(aqPhotonEnergy\(aq, \(aqWavelength\(aq], \(aqperkinelmerdetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqmca_xia@pool\(aq: [\(aqCountsRoI\(aq, \(aqRoIEnd\(aq, \(aqRoIStart\(aq, \(aqValue\(aq], \(aqpco\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqpilatus6m\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq], \(aqlambda\(aq: [\(aqTriggerMode\(aq, \(aqShutterTime\(aq, \(aqDelayTime\(aq, \(aqFrameNumbers\(aq, \(aqThreadNo\(aq, \(aqEnergyThreshold\(aq, \(aqOperatingMode\(aq, \(aqConfigFilePath\(aq, \(aqSaveAllImages\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqFilePreExt\(aq, \(aqFilePostfix\(aq, \(aqSaveFilePath\(aq, \(aqSaveFileName\(aq, \(aqLatestImageNumber\(aq, \(aqLiveMode\(aq, \(aqTotalLossFrames\(aq, \(aqCompressorShuffle\(aq, \(aqCompressionRate\(aq, \(aqCompressionEnabled\(aq, \(aqLayout\(aq, \(aqShutterTimeMax\(aq, \(aqShutterTimeMin\(aq, \(aqWidth\(aq, \(aqHeight\(aq, \(aqDepth\(aq, \(aqLiveFrameNo\(aq, \(aqDistortionCorrection\(aq, \(aqLiveLastImageData\(aq], \(aqmarccd\(aq: [\(aqFrameShift\(aq, \(aqSavingDirectory\(aq, \(aqSavingPostfix\(aq, \(aqSavingPrefix\(aq], \(aqpedetector\(aq: [\(aqBinningMode\(aq, \(aqFileIndex\(aq, \(aqExposureTime\(aq, \(aqSkippedAtStart\(aq, \(aqSummedSaveImages\(aq, \(aqSkippedBetweenSaved\(aq, \(aqFilesAfterTrigger\(aq, \(aqFilesBeforeTrigger\(aq, \(aqSummedDarkImages\(aq, \(aqOutputDirectory\(aq, \(aqFilePattern\(aq, \(aqFileName\(aq, \(aqLogFile\(aq, \(aqUserComment1\(aq, \(aqCameraGain\(aq, \(aqUserComment2\(aq, \(aqUserComment3\(aq, \(aqUserComment4\(aq, \(aqSaveRawImages\(aq, \(aqSaveDarkImages\(aq, \(aqPerformIntegration\(aq, \(aqSaveIntegratedData\(aq, \(aqSaveSubtracted\(aq, \(aqPerformDarkSubtraction\(aq], \(aqpcoedge\(aq: [\(aqDelayTime\(aq, \(aqExposureTime\(aq, \(aqNbFrames\(aq, \(aqTriggerMode\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqBinning_x\(aq, \(aqBinning_y\(aq, \(aqROI_x_min\(aq, \(aqROI_x_max\(aq, \(aqROI_y_min\(aq, \(aqROI_y_max\(aq, \(aqPixelrate\(aq, \(aqADCs\(aq, \(aqCoolingTemp\(aq, \(aqCoolingTempSet\(aq, \(aqImageTimeStamp\(aq, \(aqRecorderMode\(aq], \(aqpilatus100k\(aq: [\(aqDelayTime\(aq, \(aqExposurePeriod\(aq, \(aqExposureTime\(aq, \(aqFileDir\(aq, \(aqFilePostfix\(aq, \(aqFilePrefix\(aq, \(aqFileStartNum\(aq, \(aqLastImageTaken\(aq, \(aqNbExposures\(aq, \(aqNbFrames\(aq]}
+.INDENT 7.0
+.TP
+.B (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
+important attributes of modules
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.xmltemplates.moduleTemplateFiles = {\(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqeigerdectris\(aq: [\(aqeigerdectris.xml\(aq, \(aqeigerdectris_stepindex.ds.xml\(aq, \(aqeigerdectris_description_cb.ds.xml\(aq, \(aqeigerdectris_triggermode_cb.ds.xml\(aq], \(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus2m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqmca_xia\(aq: [\(aqmcaxia.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_external_data.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq]}
+.INDENT 7.0
+.TP
+.B (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
+xml template files of modules
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.xmltemplates.standardComponentTemplateFiles = {\(aqdcm\(aq: [\(aqdcm.xml\(aq, \(aqdcm_reflection.ds.xml\(aq, \(aqdcm_unitcalibration.ds.xml\(aq, \(aqdcm_crystal.ds.xml\(aq], \(aqundulator\(aq: [\(aqundulator.xml\(aq], \(aqdefault\(aq: [\(aqdefault.xml\(aq, \(aqsample_name.ds.xml\(aq, \(aqchemical_formula.ds.xml\(aq, \(aqbeamtime_id.ds.xml\(aq, \(aqstart_time.ds.xml\(aq, \(aqend_time.ds.xml\(aq, \(aqnexdatas_version.ds.xml\(aq, \(aqnexdatas_configuration.ds.xml\(aq, \(aqtitle.ds.xml\(aq], \(aqsource\(aq: [\(aqsource.xml\(aq], \(aqslit\(aq: [\(aqslit.xml\(aq], \(aqbeamtimeid\(aq: [\(aqbeamtimeid.xml\(aq, \(aqbeamtimeid.ds.xml\(aq, \(aqbeamtimeid_current.ds.xml\(aq, \(aqbeamtimeid_commission.ds.xml\(aq, \(aqbeamtimeid_local.ds.xml\(aq, \(aqstart_time.ds.xml\(aq]}
+.INDENT 7.0
+.TP
+.B (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
+xml template files of modules
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.xmltemplates.standardComponentVariables = {\(aqdcm\(aq: {\(aqtheta\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta angle (datasource)\(aq}, \(aqpitch2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtheta rotation of the second cristal (datasource)\(aq}, \(aqjack2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsecond vertical jack of table (datasource)\(aq}, \(aqjack3\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqthird vertical jack of table (datasource)\(aq}, \(aqjack1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqfirst vertical jack of table (datasource)\(aq}, \(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqsynchronized monochromator energy (datasource)\(aq}, \(aqexitoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq exit offset (datasource)\(aq}, \(aqbraggangle\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbragg angle (datasource)\(aq}, \(aqoxfordhorizontal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aq horizontal translation (datasource)\(aq}, \(aqcrystal\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtype of crystal i.e. 0\->Si111,1\->Si311,2\->Si111 ChannelCut (datasource)\(aq}, \(aqperp2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical translation of the second cristal (datasource)\(aq}, \(aqdcmdevice\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqFMBOxfDCMEnergy tango device (string)\(aq}, \(aqpar2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbeam parallel translation of the second cristal (datasource)\(aq}, \(aqunitcalibration\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqunit calibration from dcmmotor (datasource)\(aq}, \(aqlat\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal lattice translation of the first cristal (datasource)\(aq}, \(aqtable\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical position of table (datasource)\(aq}, \(aqyaw\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqphi rotation of the first cristal (datasource)\(aq}, \(aqroll2\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the second cristal (datasource)\(aq}, \(aqenergyfmb\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqmonochromator energy (datasource)\(aq}, \(aqroll1\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqchi rotation of the first cristal (datasource)\(aq}}, \(aqundulator\(aq: {\(aqtaper\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqgap difference between upstream and downstream ends of the insertion device (datasource)\(aq}, \(aqenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator energy (datasource)\(aq}, \(aqharmonic\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqundulator harmonic (datasource)\(aq}, \(aqgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqseparation between opposing pairs of magnetic pole (datasource)\(aq}, \(aqlength\(aq: {\(aqdefault\(aq: \(aq2\(aq, \(aqdoc\(aq: \(aqlength of insertion device in meters (string)\(aq}, \(aqtype\(aq: {\(aqdefault\(aq: \(aqundulator\(aq, \(aqdoc\(aq: \(aqundulator or wiggler (string)\(aq}}, \(aqdefault\(aq: {\(aq__configdevice__\(aq: {\(aqdefault\(aq: \(aqnxs/configserver/localhost\(aq, \(aqdoc\(aq: \(aqconfiguration server device name (string)\(aq}, \(aqsourcename\(aq: {\(aqdefault\(aq: \(aqPETRA III\(aq, \(aqdoc\(aq: \(aqsource name (string)\(aq}, \(aq__tangoport__\(aq: {\(aqdefault\(aq: \(aq10000\(aq, \(aqdoc\(aq: \(aqtango port (string)\(aq}, \(aqlongname\(aq: {\(aqdefault\(aq: \(aqP09 Resonant Scattering and Diffraction beamline\(aq, \(aqdoc\(aq: \(aqbeamline long name (string)\(aq}, \(aq__tangohost__\(aq: {\(aqdefault\(aq: \(aqlocalhost\(aq, \(aqdoc\(aq: \(aqtango host (string)\(aq}, \(aqshortname\(aq: {\(aqdefault\(aq: \(aqP09\(aq, \(aqdoc\(aq: \(aqbeamline short name (string)\(aq}}, \(aqsource\(aq: {\(aqsourceenergy\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam energy (datasource)\(aq}, \(aqbeamcurrent\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqring beam current (datasource)\(aq}}, \(aqslit\(aq: {\(aqxgap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal gap (datasource)\(aq}, \(aqright\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqright blade position (datasource)\(aq}, \(aqleft\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqleft blade position (datasource)\(aq}, \(aqtop\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqtop blade position (datasource)\(aq}, \(aqygap\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertical gap (datasource)\(aq}, \(aqbottom\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqbottom blade position (datasource)\(aq}, \(aqxoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqhorizontal offset (datasource)\(aq}, \(aqyoffset\(aq: {\(aqdefault\(aq: None, \(aqdoc\(aq: \(aqvertiacal offset (datasource)\(aq}}, \(aqbeamtimeid\(aq: {\(aqcurrentdir\(aq: {\(aqdefault\(aq: \(aq/gpfs/current\(aq, \(aqdoc\(aq: \(aqbeamtime file directory (string)\(aq}, \(aqcommissionprefix\(aq: {\(aqdefault\(aq: \(aqcommission\-metadata\-\(aq, \(aqdoc\(aq: \(aqcommission file prefix (string)\(aq}, \(aqcommissionpostfix\(aq: {\(aqdefault\(aq: \(aq.txt\(aq, \(aqdoc\(aq: \(aqcommission file postfix (string)\(aq}, \(aqcurrentprefix\(aq: {\(aqdefault\(aq: \(aqbeamtime\-metadata\-\(aq, \(aqdoc\(aq: \(aqbeamtime file prefix (string)\(aq}, \(aqcurrentpostfix\(aq: {\(aqdefault\(aq: \(aq.txt\(aq, \(aqdoc\(aq: \(aqbeamtime file postfix (string)\(aq}, \(aqshortname\(aq: {\(aqdefault\(aq: \(aqP09\(aq, \(aqdoc\(aq: \(aqbeamline short name (string)\(aq}, \(aqcommissiondir\(aq: {\(aqdefault\(aq: \(aq/gpfs/commissioning\(aq, \(aqdoc\(aq: \(aqcommission file directory (string)\(aq}}}
+.INDENT 7.0
+.TP
+.B (\fI\%dict\fP <\fI\%str\fP , \fI\%dict\fP <\fI\%str\fP , \fI\%str\fP > >)
+standatd component template variables
+and its [default value, doc string]
+.UNINDENT
+.UNINDENT
 .INDENT 0.0
 .IP \(bu 2
 \fIgenindex\fP

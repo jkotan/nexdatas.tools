@@ -7,73 +7,155 @@ Description
 
 The nxsetup is is a command-line setup tool for NeXus servers.  It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector in Tango environment, restart them or change property names.
 
-
-
 Synopsis
 --------
 
 .. code:: bash
 
-	  nxsetup -x [-b <beamline>] [-m <masterHost>] [-u <local_user>] [-d <dbname>] [-j <jsonsettings>] [<server_class1> <server_class2> ... ]
-
-	  nxsetup -r [-l level] [<server_class1> <server_class2> ... ]
-
-	  nxsetup -s [-l level] [<server_class1> <server_class2> ... ]
-
-	  nxsetup -a [<server_class1> <server_class2> ... ]
-
-	  nxsetup -p -n newname -o oldname [<server_class1> <server_class2> ... ]
-
-	  nxsetup -c -n propname -o propvalue [<server_class1> <server_class2> ... ]
+	  nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 
 
-Options:
-  -h, --help            show this help message and exit
-  -b BEAMLINE, --beamline=BEAMLINE
-                        name of the beamline ( default: 'nxs' )
-  -m MASTERHOST, --masterHost=MASTERHOST
-                        the host that stores the Mg ( default: <localhost> )
-  -u USER, --user=USER  the local user
-  -d DBNAME, --database=DBNAME
-                        the database name ( default: 'tango' )
-  -j CSJSON, --csjson=CSJSON
-                        JSONSettings for the configuration server.
-                        ( default: '{"host": "localhost","db": <DBNAME>,
-                        "use_unicode": true', "read_default_file":
-                        <MY_CNF_FILE>}'  where <MY_CNF_FILE> stays for
-                        "/home/<USER>/.my.cnf" or
-                        "/var/lib/nxsconfigserver/.my.cnf" )
-  -x, --execute         setup servers action
-  -o OLDNAME, --oldname=OLDNAME
-                        old property name
-  -n NEWNAME, --newname=NEWNAME
-                        (new) property name
-  -w PROPVALUE, --propvalue=PROPVALUE
-                        new property value
-  -r, --restart         restart server(s) action
-  -s, --start           start server(s) action
-  -l LEVEL, --level=LEVEL
-                        startup level
-  -a RECPATH, --add-recorder-path=RECPATH
-                        add recorder path
-  -p, --move-prop       change property name
+The following commands are available: set, restart, start, move-prop, change-prop, add-recorder-path
 
 
-Example
--------
+nxsetup set
+-----------
 
 .. code:: bash
 
-	  nxsetup -x
+    usage: nxsetup set [-h] [-b BEAMLINE] [-m MASTERHOST] [-u USER] [-d DBNAME]
+		       [-j CSJSON]
+		       [server_name [server_name ...]]
 
-	  nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig  NXSConfigServer
+    set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of -x)
 
-	  nxsetup -a /usr/share/pyshared/sardananxsrecorder
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
 
-	  nxsetup -p -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
+    optional arguments:
+      -h, --help            show this help message and exit
+      -b BEAMLINE, --beamline BEAMLINE
+			    name of the beamline ( default: 'nxs' )
+      -m MASTERHOST, --masterHost MASTERHOST
+			    the host that stores the Mg ( default: <localhost> )
+      -u USER, --user USER  the local user ( default: 'tango' )
+      -d DBNAME, --database DBNAME
+			    the database name ( default: 'nxsconfig')
+      -j CSJSON, --csjson CSJSON
+			    JSONSettings for the configuration server. ( default:
+			    '{"host": "localhost","db": <DBNAME>, "use_unicode":
+			    true', "read_default_file": <MY_CNF_FILE>}' where
+			    <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
+			    "/var/lib/nxsconfigserver/.my.cnf" )
 
-	  nxsetup -s Pool/haso228 -l2
+     examples:
+	   nxsetup set
+	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
 
-          nxsetup -r MacroServer -l3
+	  
+nxsetup restart
+---------------
 
-          nxsetup -c -n DefaultPreselectedComponents -w "[\"pinhole1\",\"slit2\"]" NXSRecSelector/r228
+.. code:: bash
+
+    usage: nxsetup restart [-h] [-l LEVEL] [server_name [server_name ...]]
+
+    restart tango server (a new version of -r)
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -l LEVEL, --level LEVEL
+			    startup level
+
+     examples:
+	   nxsetup restart Pool/haso228 -l 2
+
+nxsetup start
+-------------
+
+.. code:: bash
+
+    usage: nxsetup start [-h] [-l LEVEL] [server_name [server_name ...]]
+
+    start tango server (a new version of -s)
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -l LEVEL, --level LEVEL
+			    startup level
+
+     examples:
+	   nxsetup start Pool/haso228 -l 2
+
+
+nxsetup move-prop
+-----------------
+
+.. code:: bash
+
+    usage: nxsetup move-prop [-h] [-n NEWNAME] [-o OLDNAME]
+			     [server_name [server_name ...]]
+
+    change property name (a new version of -p)
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -n NEWNAME, --newname NEWNAME
+			    (new) property name
+      -o OLDNAME, --oldname OLDNAME
+			    old property name
+
+     examples:
+	   nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
+	  
+
+nxsetup change-prop
+-------------------
+
+.. code:: bash
+	  
+    usage: nxsetup change-prop [-h] [-n NEWNAME] [-w PROPVALUE]
+			       [server_name [server_name ...]]
+
+    change property value (a new version of -c)
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -n NEWNAME, --newname NEWNAME
+			    (new) property name
+      -w PROPVALUE, --propvalue PROPVALUE
+			    new property value
+
+     examples:
+	   nxsetup change-prop -n DefaultPreselectedComponents -w "[\"pinhole1\",\"slit2\"]" NXSRecSelector/r228
+
+
+nxsetup add-recorder-path
+-------------------------
+
+.. code:: bash
+
+    usage: nxsetup add-recorder-path [-h] recorder_path
+
+    add-recorder-path into MacroServer(s) property (a new version of -a)
+
+    positional arguments:
+      recorder_path  sardana recorder path
+
+    optional arguments:
+      -h, --help     show this help message and exit
+
+     examples:
+	   nxsetup add-record-path /usr/share/pyshared/sardananxsrecorder
