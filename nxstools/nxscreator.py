@@ -1247,7 +1247,6 @@ class StandardCPCreator(CPCreator):
                         xml = xml.replace("$(%s)" % var, "")
                     lines = xml.split('\n')
                     xml = '\n'.join([x for x in lines if len(x.strip())])
-#                    xml = '\n'.join(filter(lambda x: len(x.strip()), lines))
                 if xmlfile.endswith(".ds.xml"):
                     self._printAction(newname)
                     self.datasources[newname] = xml
