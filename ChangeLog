@@ -1,4 +1,8 @@
 2016-11-08 Jan Kotanski <jankotan@gmail.com>
+	* add nxsfileinfo man page into MANIFEST
+	* tagged as v2.11.1
+
+2016-11-08 Jan Kotanski <jankotan@gmail.com>
 	* refresh sub-commands
 	* switch to argparse
 	* add autocomplete
