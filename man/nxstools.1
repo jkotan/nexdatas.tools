@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "November 08, 2016" "2.11" "NXSTools"
+.TH "NXSTOOLS" "1" "November 10, 2016" "2.11" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -167,6 +167,9 @@ nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 .fi
 .UNINDENT
 .UNINDENT
+.sp
+execute               execute the collecting process
+test                  exceute the process in test mode without changing any files
 .INDENT 0.0
 .TP
 .B Options:
@@ -174,16 +177,6 @@ nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 .TP
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
-.UNINDENT
-.sp
-execute               execute the collecting process
-test                  exceute the process in test mode without changing any
-.INDENT 7.0
-.INDENT 3.5
-files
-.UNINDENT
-.UNINDENT
-.INDENT 7.0
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression\fB= COMPRESSION
 deflate compression rate from 0 to 9 (default: 2)
@@ -5151,7 +5144,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7ff14abb5c50>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fc380b08fd0>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

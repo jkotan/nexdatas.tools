@@ -15,12 +15,11 @@ Synopsis
 
 	   nxscollect [execute|test] [<options>] <command> <main_nexus_file>
 
+execute               execute the collecting process
+test                  exceute the process in test mode without changing any files
 
 Options:
   -h, --help            show this help message and exit
-  execute               execute the collecting process
-  test                  exceute the process in test mode without changing any
-                        files
   -c COMPRESSION, --compression=COMPRESSION
                         deflate compression rate from 0 to 9 (default: 2)
   -s, --skip_missing    skip missing files
