@@ -390,7 +390,7 @@ def main():
 
     result = runners[options.subparser].run(options)
     if result and str(result).strip():
-        print result
+        print(result)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,7 @@
+2016-11-10 Jan Kotanski <jankotan@gmail.com>
+	* fix fetching arguments for nxscreate onlineds/cp
+	* tagged as v2.11.2
+
 2016-11-08 Jan Kotanski <jankotan@gmail.com>
 	* add nxsfileinfo man page into MANIFEST
 	* tagged as v2.11.1

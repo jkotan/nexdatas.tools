@@ -377,7 +377,7 @@ class OnlineDS(Runner):
                 parser.print_help()
                 print("")
                 sys.exit(0)
-        args = options.args or []
+        args = [options.args] if options.args else []
         if not len(args) and os.path.isfile('/online_dir/online.xml'):
             args = ['/online_dir/online.xml']
 
@@ -473,7 +473,7 @@ class OnlineCP(Runner):
                 print("")
                 sys.exit(0)
 
-        args = options.args or []
+        args = [options.args] if options.args else []
         if not len(args) and os.path.isfile('/online_dir/online.xml'):
             args = ['/online_dir/online.xml']
 
