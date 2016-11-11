@@ -1,0 +1,51 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXmonitor" name="$(name)">
+	<doc>Beam position monitor in optics hutch</doc>
+	<field type="NX_CHAR" name="mode">monitor</field>
+	<group type="NXattenuator" name="attenuator">
+          <field type="NX_CHAR" name="type">
+          <strategy mode="INIT"/>$datasources.$(name)_foil</field>
+	  <group type="NXcollection" name="collection">
+            <field type="NX_FLOAT" name="foilpos">
+              <strategy mode="INIT"/>$datasources.$(foilpos)
+	      <doc>
+Foil Position    Ti    Ni      Out
+Mono QBPM        43    23       3
+Micro QBPM       23    43.5     3
+	      </doc>
+            </field>
+	  </group>
+	</group>
+	<field type="NX_CHAR" name="depends_on">transformations/x<strategy mode="INIT"/>
+	</field>
+	<group type="NXtransformations" name="transformations">
+          <field depends_on="y" units="mm" type="NX_FLOAT64" name="x">
+            <strategy mode="INIT"/>$datasources.$(x)
+            <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">1 0 0
+	    <strategy mode="INIT"/>
+            <dimensions rank="1">
+              <dim value="3" index="1"/>
+            </dimensions>
+            </attribute>
+          </field>
+          <field units="mm" type="NX_FLOAT64" name="y">
+            <strategy mode="INIT"/>$datasources.$(y)
+            <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">0 1 0
+	    <strategy mode="INIT"/>
+            <dimensions rank="1">
+              <dim value="3" index="1"/>
+            </dimensions>
+            </attribute>
+          </field>
+	</group>
+      </group>
+    </group>
+  </group>
+</definition>

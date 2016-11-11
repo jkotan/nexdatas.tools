@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_foil">
+    <result name="result">
+import json
+foilposdict = json.loads('$(foilposdict)')
+position = float(ds.$(foilpos))
+mindist = None
+foil = "None"
+for key, vl in foilposdict.items():
+    if mindist is None:
+        mindist = abs(vl - position)
+        foil = key
+    else:
+        dist = abs(vl - position)
+        if dist &lt; mindist:
+            mindist = dist
+            foil = key
+ds.result = foil
+    </result>
+ $datasources.$(foilpos)</datasource>
+</definition>

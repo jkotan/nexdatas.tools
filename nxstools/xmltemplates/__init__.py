@@ -24,6 +24,24 @@
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
+        'qbpm': {
+        'foilpos': {
+            'default': None,
+            'doc': "foil position (datasource)"
+        },
+        'x': {
+            'default': None,
+            'doc': "horizontal position (datasource)"
+        },
+        'y': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
+        'foilposdict': {
+            'default': '{"Ti": 43, "Ni": 23, "Out": 3}',
+            'doc': "foil_type position json dictionary (string)"
+        },
+    },
     'slit': {
         'xgap': {
             'default': None,
@@ -257,6 +275,10 @@ standardComponentVariables = {
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
 standardComponentTemplateFiles = {
+    'qbpm': [
+        'qbpm.xml',
+        'qbpm_foil.ds.xml',
+    ],
     'slit': ['slit.xml'],
     'source': ['source.xml'],
     'undulator': ['undulator.xml'],

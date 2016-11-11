@@ -1,3 +1,7 @@
+2016-11-11 Jan Kotanski <jankotan@gmail.com>
+	* add qbpm template component
+	* tagged as v2.11.3
+
 2016-11-10 Jan Kotanski <jankotan@gmail.com>
 	* fix fetching arguments for nxscreate onlineds/cp
 	* tagged as v2.11.2
