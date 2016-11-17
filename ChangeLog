@@ -1,5 +1,6 @@
 2016-11-XX Jan Kotanski <jankotan@gmail.com>
 	* add link into possible dropped nodes in template components
+	* add common?_common.ds.xml template datasources
 	* tagged as v2.12.0
 
 2016-11-11 Jan Kotanski <jankotan@gmail.com>
