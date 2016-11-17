@@ -1232,6 +1232,7 @@ class StandardCPCreator(CPCreator):
                     indom = parseString(xml)
                     nodes = indom.getElementsByTagName("attribute")
                     nodes.extend(indom.getElementsByTagName("field"))
+                    nodes.extend(indom.getElementsByTagName("link"))
                     for node in nodes:
                         text = self.__getText(node)
                         for ms in missing:

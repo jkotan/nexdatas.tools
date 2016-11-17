@@ -270,6 +270,30 @@ standardComponentVariables = {
             " (string)"
         },
     },
+    'common2': {
+        'dds': {
+            'default': None,
+            'doc': "default read datasource name (datasource)"
+        },
+        'ods': {
+            'default': None,
+            'doc': "optional detasource name (datasource)"
+        }
+    },
+    'common3': {
+        'dds': {
+            'default': None,
+            'doc': "default read datasource name (datasource)"
+        },
+        'ods1': {
+            'default': None,
+            'doc': "fist optional detasource name (datasource)"
+        },
+        'ods2': {
+            'default': None,
+            'doc': "second optional detasource name (datasource)"
+        }
+    },
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -306,6 +330,12 @@ standardComponentTemplateFiles = {
         'dcm_reflection.ds.xml',
         'dcm_unitcalibration.ds.xml',
         'dcm_crystal.ds.xml',
+    ],
+    'common2': [
+        'common2_common.ds.xml',
+    ],
+    'common3': [
+        'common3_common.ds.xml',
     ],
 }
 
