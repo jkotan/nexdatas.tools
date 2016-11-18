@@ -2,7 +2,7 @@
 <definition>
   <group type="NXentry" name="entry$var.serialno">
     <group type="NXinstrument" name="instrument">
-      <group type="NXmonitor" name="$(name)">
+      <group type="NXbpm" name="$(name)">
 	<doc>Beam position monitor in optics hutch</doc>
 	<field type="NX_CHAR" name="mode">monitor</field>
 	<group type="NXattenuator" name="attenuator">
