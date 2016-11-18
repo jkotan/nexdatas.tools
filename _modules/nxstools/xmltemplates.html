@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.11.0 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.12.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.11.0',
+        VERSION:     '2.12.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.11.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.12.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.11</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.12</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -204,6 +204,24 @@
 <span class="c">#:     standatd component template variables</span>
 <span class="c">#:     and its [default value, doc string]</span>
 <span class="n">standardComponentVariables</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;qbpm&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;foilpos&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil position (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal position (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;vertical position (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;foilposdict&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;{&quot;Ti&quot;: 43, &quot;Ni&quot;: 23, &quot;Out&quot;: 3}&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil_type position json dictionary (string)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
     <span class="s">&#39;slit&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;xgap&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -432,11 +450,39 @@
             <span class="s">&quot; (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
+    <span class="s">&#39;common2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;dds&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;default read datasource name (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;ods&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;optional detasource name (datasource)&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&#39;common3&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;dds&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;default read datasource name (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;ods1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;fist optional detasource name (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;ods2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;second optional detasource name (datasource)&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 <span class="c">#: (:obj:`dict` &lt;:obj:`str` , :obj:`list` &lt;:obj:`str`&gt; &gt;)</span>
 <span class="c">#:     xml template files of modules</span>
 <span class="n">standardComponentTemplateFiles</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;qbpm&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;qbpm.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;qbpm_foil.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
     <span class="s">&#39;slit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;slit.xml&#39;</span><span class="p">],</span>
     <span class="s">&#39;source&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;source.xml&#39;</span><span class="p">],</span>
     <span class="s">&#39;undulator&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;undulator.xml&#39;</span><span class="p">],</span>
@@ -464,6 +510,12 @@
         <span class="s">&#39;dcm_reflection.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;dcm_unitcalibration.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;dcm_crystal.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;common2&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;common2_common.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;common3&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;common3_common.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">}</span>
 
