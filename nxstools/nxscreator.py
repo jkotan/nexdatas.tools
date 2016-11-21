@@ -985,13 +985,13 @@ class OnlineCPCreator(CPCreator):
                 if classname.lower() \
                    in self.xmlpackage.moduleMultiAttributes.keys():
                     return classname.lower()
-                if device.module.lower() == 'module_tango' \
-                   and len(device.tdevice.split('/')) == 3 \
-                   and device.tdevice.split('/')[1] \
-                   in self.xmlpackage.moduleMultiAttributes.keys():
-                    return device.tdevice.split('/')[1].lower()
             except:
-                return
+                pass
+            if device.module.lower() == 'module_tango' \
+               and len(device.tdevice.split('/')) == 3 \
+               and device.tdevice.split('/')[1] \
+               in self.xmlpackage.moduleMultiAttributes.keys():
+                return device.tdevice.split('/')[1].lower()
 
     def listcomponents(self):
         """ provides a list of components with xml templates

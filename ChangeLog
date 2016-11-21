@@ -1,3 +1,7 @@
+2016-11-XX Jan Kotanski <jankotan@gmail.com>
+	* fix serching for module
+	* tagged as v2.12.1
+
 2016-11-18 Jan Kotanski <jankotan@gmail.com>
 	* change NXmonitor into NXbpm for qbpm
 	* add link into possible dropped nodes in template components
