@@ -1,7 +1,7 @@
 2016-11-22 Jan Kotanski <jankotan@gmail.com>
 	* fix serching for module
 	* add keithley component
-	* tagged as v2.12.1
+	* tagged as v2.13.0
 
 2016-11-18 Jan Kotanski <jankotan@gmail.com>
 	* change NXmonitor into NXbpm for qbpm
