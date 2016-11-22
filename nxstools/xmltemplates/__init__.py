@@ -24,7 +24,29 @@
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
-        'qbpm': {
+    'keithley': {
+        'gain': {
+            'default': None,
+            'doc': "gain in V/A (datasource)"
+        },
+        'risetime': {
+            'default': None,
+            'doc': "rise time (datasource)"
+        },
+        'current': {
+            'default': None,
+            'doc': "current in A (datasource)"
+        },
+        'voltage': {
+            'default': None,
+            'doc': "voltage in V (datasource)"
+        },
+        'sourvoltlevel': {
+            'default': None,
+            'doc': "source voltage level in V (datasource)"
+        },
+    },
+    'qbpm': {
         'foilpos': {
             'default': None,
             'doc': "foil position (datasource)"
@@ -529,5 +551,8 @@ moduleMultiAttributes = {
         'ReadoutTime', 'CountTime', 'EnergyThreshold', 'FrameTime',
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
         'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
+    ],
+    'keithley': [
+        'keithley.xml',
     ],
 }
