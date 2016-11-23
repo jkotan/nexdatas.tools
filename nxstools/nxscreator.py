@@ -98,7 +98,7 @@ class Device(object):
             v1 = getattr(self, at)
             v2 = getattr(dv, at)
             if v1 != v2:
-                dct[at] = (v1, v2)
+                dct[at] = (str(v1) if v1 else v1, str(v2) if v2 else v2)
         return dct
         
     def tolower(self):
@@ -1029,18 +1029,30 @@ class CompareOnlineDS(object):
         common = sorted(set(dct1.keys()) & set(dct2.keys()))
         d1md2 = sorted(set(dct1.keys()) - set(dct2.keys()))
         d2md1 = sorted(set(dct2.keys()) - set(dct1.keys()))
+        addd1 = dict((str(k), str(dct1[k].sardananame)
+                      if dct1[k].sardananame else dct1[k].sardananame)
+                     for k in d1md2)
+        addd2 = dict((str(k), str(dct2[k].sardananame)
+                      if dct2[k].sardananame else dct2[k].sardananame)
+                     for k in d2md1)
         diff = {}    
         for name in common:
             res = dct1[name].compare(dct2[name])
             if res:
                 diff[name] = res
         if self._printouts:
+            import pprint
             #   print "Common:", common
-            print("File1 - File2 names:\n\n  %s\n" % ", ".join(d1md2))
-            print("File2 - File1 names:\n\n  %s\n" % ", ".join(d2md1))
-            print("Diffrence in common part:\n\n  %s\n" % diff)
+            print("Additional from file1 {name: sardananam} :\n")
+            pprint.pprint(addd1)
+            print("\nAdditional from file2 {names: sardananame} :\n")
+            pprint.pprint(addd2)
+            # print("File1 - File2 names:\n\n  %s\n" % ", ".join(d1md2))
+            # print("File2 - File1 names:\n\n  %s\n" % ", ".join(d2md1))
+            # print("Diffrence in common part:\n\n  %s\n" % diff)
                 
-            
+            print("\nDiffrence in the common part:\n")
+            pprint.pprint(diff)
         
 class OnlineCPCreator(CPCreator):
 
