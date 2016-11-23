@@ -89,6 +89,18 @@ class Device(object):
         #: (:obj:`str`) attribute name
         self.attribute = None
 
+    def compare(self, dv):
+        dct = {}
+        tocompare = [
+            "name", "dtype", "module", "tdevice", "hostname",
+            "sardananame", "sardanahostname"]
+        for at in tocompare:
+            v1 = getattr(self, at)
+            v2 = getattr(dv, at)
+            if v1 != v2:
+                dct[at] = (v1, v2)
+        return dct
+        
     def tolower(self):
         """ converts `name`, `module`, `tdevice`, `hostname` into lower case
         """
@@ -930,6 +942,106 @@ class CPCreator(Creator):
         pass
 
 
+class CompareOnlineDS(object):
+
+    def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options:  command options
+        :type options: :class:`optparse.Values`
+        :param args: command arguments
+        :type args: :obj:`list` < :obj:`str` >
+        :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
+        """
+        #: (:class:`optparse.Values`) creator options
+        self.options = options
+        #: (:obj:`list` < :obj:`str` >) creator arguments
+        self.args = args
+        #: (:obj:`bool`) if printout is enable
+        self._printouts = printouts
+
+    @classmethod
+    def _getText(cls, node):
+        """ provides xml content of the node
+
+        :param node: DOM node
+        :type node: :class:`xml.dom.minidom.Node`
+        :returns: xml content string
+        :rtype: :obj:`str`
+        """
+        if not node:
+            return
+        xml = node.toxml()
+        start = xml.find('>')
+        end = xml.rfind('<')
+        if start == -1 or end < start:
+            return ""
+        return xml[start + 1:end].replace("&lt;", "<").replace("&gt;", "<"). \
+            replace("&quot;", "\"").replace("&amp;", "&")
+
+    @classmethod
+    def _getChildText(cls, parent, childname):
+        """ provides text of child named by childname
+
+        :param parent: parent node
+        :type parent: :class:`xml.dom.minidom.Node`
+        :param childname: child name
+        :type childname: :opj:`str`
+        :returns: text string
+        :rtype: :obj:`str`
+        """
+        return cls._getText(
+            parent.getElementsByTagName(childname)[0]) \
+            if len(parent.getElementsByTagName(childname)) else None
+
+    def load(self, fname):
+        dct = {}
+        indom = parse(fname)
+        hw = indom.getElementsByTagName("hw")
+        device = hw[0].firstChild
+        while device:
+            if device.nodeName == 'device':
+                name = self._getChildText(device, "name")
+                if self.options.lower:
+                    name = name.lower()
+                    dv = Device()
+                    dv.name = name
+                    dv.dtype = self._getChildText(device, "type")
+                    dv.module = self._getChildText(device, "module")
+                    dv.tdevice = self._getChildText(device, "device")
+                    dv.hostname = self._getChildText(device, "hostname")
+                    dv.sardananame = self._getChildText(device, "sardananame")
+                    dv.sardanahostname = self._getChildText(
+                        device, "sardanahostname")
+                    dct[name] = dv
+
+            device = device.nextSibling
+
+        
+        return dct
+        
+    def compare(self):
+        if self._printouts:
+            print("Comparing: %s\n" % " ".join(self.args))
+        dct1 = self.load(self.args[0])
+        dct2 = self.load(self.args[1])
+        common = sorted(set(dct1.keys()) & set(dct2.keys()))
+        d1md2 = sorted(set(dct1.keys()) - set(dct2.keys()))
+        d2md1 = sorted(set(dct2.keys()) - set(dct1.keys()))
+        diff = {}    
+        for name in common:
+            res = dct1[name].compare(dct2[name])
+            if res:
+                diff[name] = res
+        if self._printouts:
+            #   print "Common:", common
+            print("File1 - File2 names:\n\n  %s\n" % ", ".join(d1md2))
+            print("File2 - File1 names:\n\n  %s\n" % ", ".join(d2md1))
+            print("Diffrence in common part:\n\n  %s\n" % diff)
+                
+            
+        
 class OnlineCPCreator(CPCreator):
 
     def __init__(self, options, args, printouts=True):

@@ -31,7 +31,7 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxscreator import (
     TangoDSCreator, ClientDSCreator, WrongParameterError,
     DeviceDSCreator, OnlineDSCreator, OnlineCPCreator, CPExistsException,
-    StandardCPCreator, ComponentCreator)
+    StandardCPCreator, ComponentCreator, CompareOnlineDS)
 
 
 #: (:obj:`bool`) True if PyTango available
@@ -395,6 +395,54 @@ class OnlineDS(Runner):
 
         creator = OnlineDSCreator(options, args)
         creator.create()
+
+
+class Compare(Runner):
+    """ compare runner"""
+
+    #: (:obj:`str`) command description
+    description = "compare two online.xml files"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " * default: second file <online_file> is '/online_dir/online.xml' \n" \
+        + "            if only file is given\n\n" \
+        + " examples:\n" \
+        + "       nxscreate onlineds /online_dir/online.xml online.xml \n" \
+        + "       nxscreate compare online.xml \n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument("-n", "--nolower", action="store_false",
+                            default=True, dest="lower",
+                            help="do not change aliases into lower case")
+
+    def postauto(self):
+        """ creates parser
+        """
+        self._parser.add_argument('args', metavar='online_file',
+                                  type=str, nargs='+',
+                                  help='online.xml files')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args if options.args else []
+        parser = self._parser
+
+        if len(args) == 1 and os.path.isfile('/online_dir/online.xml'):
+            args.append('/online_dir/online.xml')
+
+        if len(args) == 1:
+            parser.print_help()
+            sys.exit(255)
+
+        creator = CompareOnlineDS(options, args)
+        creator.compare()
 
 
 class OnlineCP(Runner):
@@ -855,7 +903,8 @@ def main():
                          ('onlineds', OnlineDS),
                          ('onlinecp', OnlineCP),
                          ('stdcomp', StdComp),
-                         ('comp', Comp)]
+                         ('comp', Comp),
+                         ('compare', Compare)]
     runners = parser.createSubParsers()
 
     try:
