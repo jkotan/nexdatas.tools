@@ -100,7 +100,7 @@ class Device(object):
             if v1 != v2:
                 dct[at] = (str(v1) if v1 else v1, str(v2) if v2 else v2)
         return dct
-        
+
     def tolower(self):
         """ converts `name`, `module`, `tdevice`, `hostname` into lower case
         """
@@ -943,6 +943,8 @@ class CPCreator(Creator):
 
 
 class CompareOnlineDS(object):
+    """ comparing tool for online.xml files
+    """
 
     def __init__(self, options, args, printouts=True):
         """ constructor
@@ -995,7 +997,15 @@ class CompareOnlineDS(object):
             parent.getElementsByTagName(childname)[0]) \
             if len(parent.getElementsByTagName(childname)) else None
 
-    def load(self, fname):
+    def _load(self, fname):
+        """ loads device data from online.xml file
+
+        :param fname: filename
+        :type fname: :obj:`str`
+        :returns: dictionary with devices of the given name
+        :rtype: :obj:`dict` <:obj:`str`, :obj:`list` <:class:`Device`>>
+        """
+
         dct = {}
         indom = parse(fname)
         hw = indom.getElementsByTagName("hw")
@@ -1014,47 +1024,77 @@ class CompareOnlineDS(object):
                     dv.sardananame = self._getChildText(device, "sardananame")
                     dv.sardanahostname = self._getChildText(
                         device, "sardanahostname")
-                    dct[name] = dv
-
+                    if name not in dct.keys():
+                        dct[name] = []
+                    dct[name].append(dv)
             device = device.nextSibling
-
-        
         return dct
-        
+
     def compare(self):
         if self._printouts:
             print("Comparing: %s\n" % " ".join(self.args))
-        dct1 = self.load(self.args[0])
-        dct2 = self.load(self.args[1])
+        dct1 = self._load(self.args[0])
+        dct2 = self._load(self.args[1])
         common = sorted(set(dct1.keys()) & set(dct2.keys()))
         d1md2 = sorted(set(dct1.keys()) - set(dct2.keys()))
         d2md1 = sorted(set(dct2.keys()) - set(dct1.keys()))
-        addd1 = dict((str(k), str(dct1[k].sardananame)
-                      if dct1[k].sardananame else dct1[k].sardananame)
+        addd1 = dict((str(k), [(str(dv.sardananame)
+                                if dv.sardananame else dv.sardananame)
+                               for dv in dct1[k]])
                      for k in d1md2)
-        addd2 = dict((str(k), str(dct2[k].sardananame)
-                      if dct2[k].sardananame else dct2[k].sardananame)
+        addd2 = dict((str(k), [(str(dv.sardananame)
+                                if dv.sardananame else dv.sardananame)
+                               for dv in dct2[k]])
                      for k in d2md1)
-        diff = {}    
+        diff = {}
         for name in common:
-            res = dct1[name].compare(dct2[name])
-            if res:
-                diff[name] = res
+            ndiff = {}
+            l1 = [True] * len(dct1[name])
+            l2 = [True] * len(dct2[name])
+            for i1, dv1 in enumerate(dct1[name]):
+                for i2, dv2 in enumerate(dct2[name]):
+                    if l1[i1] and l2[i2]:
+                        res = dv1.compare(dv2)
+                        if not res:
+                            l1[i1] = False
+                            l2[i2] = False
+                            break
+                        else:
+                            ndiff["%s:%s" % (l1, l2)] = res
+            if True in l1 and True not in l2:
+                addd1[str(name)] = []
+                for i1, dv in enumerate(dct1[name]):
+                    if l1[i1]:
+                        addd1[str(name)].append(
+                            str(dv.sardananame)
+                            if dv.sardananame else dv.sardananame)
+            elif True not in l1 and True in l2:
+                addd2[str(name)] = []
+                for i2, dv in enumerate(dct2[name]):
+                    if l2[i2]:
+                        addd2[str(name)].append(
+                            str(dv.sardananame)
+                            if dv.sardananame else dv.sardananame)
+            if True in l1 or True in l2:
+                diff[str(name)] = []
+                for i1, dv1 in enumerate(dct1[name]):
+                    for i2, dv2 in enumerate(dct2[name]):
+                        if l1[i1] and l2[i2]:
+                            diff[str(name)].append(ndiff["%s:%s" % (l1, l2)])
+
         if self._printouts:
             import pprint
-            #   print "Common:", common
-            print("Additional from file1 {name: sardananam} :\n")
+            print("Additional devices in file1 {name: sardananame} :\n")
             pprint.pprint(addd1)
-            print("\nAdditional from file2 {names: sardananame} :\n")
+            print("\nAdditional devices in file2 {names: sardananame} :\n")
             pprint.pprint(addd2)
-            # print("File1 - File2 names:\n\n  %s\n" % ", ".join(d1md2))
-            # print("File2 - File1 names:\n\n  %s\n" % ", ".join(d2md1))
-            # print("Diffrence in common part:\n\n  %s\n" % diff)
-                
-            print("\nDiffrence in the common part:\n")
+            print("\nDiffrences in the common part:\n")
             pprint.pprint(diff)
-        
+
+
 class OnlineCPCreator(CPCreator):
+    """ component creator of online components
+    """
 
     def __init__(self, options, args, printouts=True):
         """ constructor
