@@ -252,30 +252,24 @@ class ConfigServer(object):
                 return self._cnfServer.Components(args)
         return []
 
-    def getCmd(self, ds, args):
+    def getCmd(self, args):
         """ provides final configuration
 
-        :param ds: flag set True for datasources
-        :type ds: :obj:`bool`
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
         :returns: XML configuration string
         :rtype: :obj:`str`
         """
-        if ds:
-            return ""
-        else:
-            cmps = self._cnfServer.AvailableComponents()
-            for ar in args:
-                if ar not in cmps:
-                    sys.stderr.write(
-                        "Error: Component '%s' not stored in "
-                        "the configuration server\n" % ar)
-                    sys.stderr.flush()
-                    return ""
-            self._cnfServer.CreateConfiguration(args)
-            return self._cnfServer.XMLString
-        return ""
+        cmps = self._cnfServer.AvailableComponents()
+        for ar in args:
+            if ar not in cmps:
+                sys.stderr.write(
+                    "Error: Component '%s' not stored in "
+                    "the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
+        self._cnfServer.CreateConfiguration(args)
+        return self._cnfServer.XMLString
 
     def __describeDataSources(self, args, headers=None):
         """ provides description of datasources
@@ -542,29 +536,23 @@ class ConfigServer(object):
             self._cnfServer.Variables = args[0]
         return [str(self._cnfServer.Variables)]
 
-    def mergeCmd(self, ds, args):
+    def mergeCmd(self, args):
         """ provides merged components
 
-        :param ds: flag set True for datasources
-        :type ds: :obj:`bool`
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
         :returns: XML configuration string with merged components
         :rtype: :obj:`str`
         """
-        if ds:
-            return ""
-        else:
-            cmps = self._cnfServer.AvailableComponents()
-            for ar in args:
-                if ar not in cmps:
-                    sys.stderr.write(
-                        "Error: Component '%s' not stored "
-                        "in the configuration server\n" % ar)
-                    sys.stderr.flush()
-                    return ""
-            return self._cnfServer.Merge(args)
-        return ""
+        cmps = self._cnfServer.AvailableComponents()
+        for ar in args:
+            if ar not in cmps:
+                sys.stderr.write(
+                    "Error: Component '%s' not stored "
+                    "in the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
+        return self._cnfServer.Merge(args)
 
 
 class List(Runner):
@@ -694,8 +682,7 @@ class Get(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.getCmd(
-            options.datasources, options.args))
+        string = cnfserver.char.join(cnfserver.getCmd(options.args))
         return string
 
 
@@ -732,8 +719,7 @@ class Merge(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.getCmd(
-            options.datasources, options.args))
+        string = cnfserver.char.join(cnfserver.getCmd(options.args))
         return string
 
 

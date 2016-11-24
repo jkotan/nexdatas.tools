@@ -1,3 +1,7 @@
+2016-11-XX Jan Kotanski <jankotan@gmail.com>
+	* fixes for nxsconfig get/merge
+	* tagged as v2.14.1
+
 2016-11-24 Jan Kotanski <jankotan@gmail.com>
 	* add nxscreate compare
 	* tagged as v2.14.0
