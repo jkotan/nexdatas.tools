@@ -682,7 +682,7 @@ class Get(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.getCmd(options.args))
+        string = str(cnfserver.getCmd(options.args))
         return string
 
 
@@ -719,7 +719,7 @@ class Merge(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.getCmd(options.args))
+        string = str(cnfserver.getCmd(options.args))
         return string
 
 
