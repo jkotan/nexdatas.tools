@@ -376,3 +376,34 @@ Example
 	  nxscreate comp lambda -d /home/user/xmldir/
 	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
 	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+
+
+nxscreate compare
+-----------------
+
+It compares two online.xml files
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  nxscreate compare [-h] [-n] online_file [online_file]
+
+- default: second <online_file> is '/online_dir/online.xml' if only file is given
+
+positional arguments:
+  online_file    online.xml files
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -n, --nolower  do not change aliases into lower case
+
+
+Example
+"""""""
+
+.. code:: bash
+
+	  nxscreate onlineds /online_dir/online.xml online.xml 
+	  nxscreate compare online.xml

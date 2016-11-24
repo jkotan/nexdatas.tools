@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.13.0 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.14.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.13.0',
+        VERSION:     '2.14.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.13.0 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.14.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.13</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.14</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -89,6 +89,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsdata.html">nxsdata</a><ul>
@@ -183,6 +184,11 @@
 <li><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a><ul>
 <li><a class="reference internal" href="#id12">Synopsis</a></li>
 <li><a class="reference internal" href="#id13">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-compare">nxscreate compare</a><ul>
+<li><a class="reference internal" href="#id14">Synopsis</a></li>
+<li><a class="reference internal" href="#id15">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -802,6 +808,44 @@ nxscreate comp -f1 -l3 -v exp_c -b
 nxscreate comp lambda -d /home/user/xmldir/
 nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
 nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&#39; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxscreate-compare">
+<h2>nxscreate compare<a class="headerlink" href="#nxscreate-compare" title="Permalink to this headline">¶</a></h2>
+<p>It compares two online.xml files</p>
+<div class="section" id="id14">
+<h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate compare [-h] [-n] online_file [online_file]
+</pre></div>
+</div>
+<ul class="simple">
+<li>default: second &lt;online_file&gt; is &#8216;/online_dir/online.xml&#8217; if only file is given</li>
+</ul>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd>online_file    online.xml files</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
+<td>do not change aliases into lower case</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id15">
+<h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds /online_dir/online.xml online.xml
+nxscreate compare online.xml
 </pre></div>
 </div>
 </div>

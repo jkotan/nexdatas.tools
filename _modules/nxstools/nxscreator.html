@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.13.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.14.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.13.0',
+        VERSION:     '2.14.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.13.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.14.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.13</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.14</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsdata.html">nxsdata</a><ul>
@@ -269,6 +270,18 @@
         <span class="c">#: (:obj:`str`) attribute name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="bp">None</span>
 
+<div class="viewcode-block" id="Device.compare"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tocompare</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;dtype&quot;</span><span class="p">,</span> <span class="s">&quot;module&quot;</span><span class="p">,</span> <span class="s">&quot;tdevice&quot;</span><span class="p">,</span> <span class="s">&quot;hostname&quot;</span><span class="p">,</span>
+            <span class="s">&quot;sardananame&quot;</span><span class="p">,</span> <span class="s">&quot;sardanahostname&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">tocompare</span><span class="p">:</span>
+            <span class="n">v1</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">)</span>
+            <span class="n">v2</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dv</span><span class="p">,</span> <span class="n">at</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">v1</span> <span class="o">!=</span> <span class="n">v2</span><span class="p">:</span>
+                <span class="n">dct</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span> <span class="k">if</span> <span class="n">v1</span> <span class="k">else</span> <span class="n">v1</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span> <span class="k">if</span> <span class="n">v2</span> <span class="k">else</span> <span class="n">v2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dct</span>
+</div>
 <div class="viewcode-block" id="Device.tolower"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.tolower">[docs]</a>    <span class="k">def</span> <span class="nf">tolower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; converts `name`, `module`, `tdevice`, `hostname` into lower case</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1110,7 +1123,159 @@
         <span class="k">pass</span>
 
 </div></div>
+<div class="viewcode-block" id="CompareOnlineDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS">[docs]</a><span class="k">class</span> <span class="nc">CompareOnlineDS</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; comparing tool for online.xml files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param options:  command options</span>
+<span class="sd">        :type options: :class:`optparse.Values`</span>
+<span class="sd">        :param args: command arguments</span>
+<span class="sd">        :type args: :obj:`list` &lt; :obj:`str` &gt;</span>
+<span class="sd">        :param printouts: if printout is enable</span>
+<span class="sd">        :type printouts: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#: (:class:`optparse.Values`) creator options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="c">#: (:obj:`list` &lt; :obj:`str` &gt;) creator arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="c">#: (:obj:`bool`) if printout is enable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span> <span class="o">=</span> <span class="n">printouts</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getText</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
+
+<span class="sd">        :param node: DOM node</span>
+<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :returns: xml content string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">&#39;&lt;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">xml</span><span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;lt;&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;gt;&quot;</span><span class="p">,</span> <span class="s">&quot;&lt;&quot;</span><span class="p">)</span><span class="o">.</span> \
+            <span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;quot;&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;&amp;amp;&quot;</span><span class="p">,</span> <span class="s">&quot;&amp;&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_getChildText</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">childname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
+
+<span class="sd">        :param parent: parent node</span>
+<span class="sd">        :type parent: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :param childname: child name</span>
+<span class="sd">        :type childname: :opj:`str`</span>
+<span class="sd">        :returns: text string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">))</span> <span class="k">else</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; loads device data from online.xml file</span>
+
+<span class="sd">        :param fname: filename</span>
+<span class="sd">        :type fname: :obj:`str`</span>
+<span class="sd">        :returns: dictionary with devices of the given name</span>
+<span class="sd">        :rtype: :obj:`dict` &lt;:obj:`str`, :obj:`list` &lt;:class:`Device`&gt;&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;hw&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;module&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;hostname&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardananame&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                        <span class="n">device</span><span class="p">,</span> <span class="s">&quot;sardanahostname&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
+        <span class="k">return</span> <span class="n">dct</span>
+
+<div class="viewcode-block" id="CompareOnlineDS.compare"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Comparing: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="n">dct1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dct2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">common</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">d1md2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">d2md1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">addd1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct1</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+                     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d1md2</span><span class="p">)</span>
+        <span class="n">addd2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct2</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+                     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d2md1</span><span class="p">)</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">common</span><span class="p">:</span>
+            <span class="n">ndiff</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="n">l2</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dct2</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">dv1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">dv2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct2</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">l1</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">l2</span><span class="p">[</span><span class="n">i2</span><span class="p">]:</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">dv1</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">dv2</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
+                            <span class="n">l1</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                            <span class="n">l2</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                            <span class="k">break</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">ndiff</span><span class="p">[</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">res</span>
+            <span class="k">if</span> <span class="bp">True</span> <span class="ow">in</span> <span class="n">l1</span> <span class="ow">and</span> <span class="bp">True</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
+                <span class="n">addd1</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">dv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">l1</span><span class="p">[</span><span class="n">i1</span><span class="p">]:</span>
+                        <span class="n">addd1</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">True</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">l1</span> <span class="ow">and</span> <span class="bp">True</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
+                <span class="n">addd2</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">dv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct2</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">l2</span><span class="p">[</span><span class="n">i2</span><span class="p">]:</span>
+                        <span class="n">addd2</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">True</span> <span class="ow">in</span> <span class="n">l1</span> <span class="ow">or</span> <span class="bp">True</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
+                <span class="n">diff</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">dv1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                    <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">dv2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct2</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                        <span class="k">if</span> <span class="n">l1</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">l2</span><span class="p">[</span><span class="n">i2</span><span class="p">]:</span>
+                            <span class="n">diff</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ndiff</span><span class="p">[</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pprint</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Additional devices in file1 {name: sardananame} :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Additional devices in file2 {names: sardananame} :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd2</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Diffrences in the common part:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+</div></div>
 <div class="viewcode-block" id="OnlineCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; component creator of online components</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
