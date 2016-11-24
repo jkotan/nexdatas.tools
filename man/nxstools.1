@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "November 22, 2016" "2.13" "NXSTools"
+.TH "NXSTOOLS" "1" "November 24, 2016" "2.14" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -900,6 +900,51 @@ nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
 nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
 nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate compare
+.sp
+It compares two online.xml files
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate compare [\-h] [\-n] online_file [online_file]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
+.UNINDENT
+.INDENT 0.0
+.TP
+.B positional arguments:
+online_file    online.xml files
+.TP
+.B optional arguments:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds /online_dir/online.xml online.xml
+nxscreate compare online.xml
 .ft P
 .fi
 .UNINDENT
@@ -2325,6 +2370,50 @@ the main program function
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxscreate.Compare(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+compare runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcompare two online.xml files\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * default: second file <online_file> is \(aq/online_dir/online.xml\(aq \en            if only file is given\en\en examples:\en       nxscreate onlineds /online_dir/online.xml online.xml \en       nxscreate compare online.xml \en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B class nxstools.nxscreate.DeviceDS(parser)
 Bases: \fBnxstools.nxsargparser.Runner\fP
 .sp
@@ -3447,6 +3536,41 @@ creates a client datasource xml and stores it in DB or filesytem
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxscreator.CompareOnlineDS(options, args, printouts=True)
+Bases: \fI\%object\fP
+.sp
+comparing tool for online.xml files
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B args = None
+(\fI\%list\fP < \fI\%str\fP >) creator arguments
+.UNINDENT
+.INDENT 7.0
+.TP
+.B compare()
+.UNINDENT
+.INDENT 7.0
+.TP
+.B options = None
+(\fBoptparse.Values\fP) creator options
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B class nxstools.nxscreator.ComponentCreator(options, args, printouts=True)
 Bases: \fBnxstools.nxscreator.Creator\fP
 .sp
@@ -3519,6 +3643,10 @@ device from online.xml
 .TP
 .B attribute
 (\fI\%str\fP) attribute name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B compare(dv)
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3657,6 +3785,8 @@ and stores it in DB or filesytem
 .TP
 .B class nxstools.nxscreator.OnlineCPCreator(options, args, printouts=True)
 Bases: \fBnxstools.nxscreator.CPCreator\fP
+.sp
+component creator of online components
 .sp
 constructor
 .INDENT 7.0
@@ -5144,7 +5274,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f7cf7c25cd0>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f22af184190>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

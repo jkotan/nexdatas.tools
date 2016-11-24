@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "November 22, 2016" "2.13" "NXSTools"
+.TH "NXSCREATE" "1" "November 24, 2016" "2.14" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -621,6 +621,51 @@ nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
 nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
 nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE COMPARE
+.sp
+It compares two online.xml files
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate compare [\-h] [\-n] online_file [online_file]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
+.UNINDENT
+.INDENT 0.0
+.TP
+.B positional arguments:
+online_file    online.xml files
+.TP
+.B optional arguments:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds /online_dir/online.xml online.xml
+nxscreate compare online.xml
 .ft P
 .fi
 .UNINDENT
