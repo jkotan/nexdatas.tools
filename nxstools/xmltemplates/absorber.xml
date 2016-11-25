@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXattenuator" name="$(name)">
+        <field units="" type="NX_FLOAT" name="attenuator_transmission">
+          <strategy mode="INIT"/>$datasources.$(attenfactor)</field>
+	<group type="NXcollection" name="collection">
+          <field units="" type="NX_FLOAT64" name="slidersin_position">
+          <strategy mode="INIT"/>$datasources.$(position)</field>
+	</group>
+      </group>
+    </group>
+  </group>
+</definition>

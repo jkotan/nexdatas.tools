@@ -25,6 +25,16 @@
 #:     and its [default value, doc string]
 standardComponentVariables = {
     'keithley': {
+        'absorber': {
+            'attenfactor': {
+                'default': None,
+                'doc': "attenuation factor (datasource)"
+            },
+            'position': {
+                'default': None,
+                'doc': "which sliders are in [bitarray] (datasource)"
+            },
+        },
         'gain': {
             'default': None,
             'doc': "gain in V/A (datasource)"
@@ -554,5 +564,8 @@ moduleMultiAttributes = {
     ],
     'keithley': [
         'keithley.xml',
+    ],
+    'absorber': [
+        'absorber.xml'
     ],
 }
