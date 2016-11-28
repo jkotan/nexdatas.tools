@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_postrun">
+    <result name="result">
+fsn = commonblock["MYFileStartNumber"] if "MYFileStartNumber" in commonblock.keys() else 1
+unixdir = (ds.$(name)_filedir).replace("\\","/")
+if len(unixdir)> 1 and unixdir[1] == ":":
+    unixdir = "/data" + unixdir[2:]
+if unixdir and unixdir[-1] == "/":
+ unixdir = unixdir[:-1]
+ds.result = "" + unixdir + "/" + ds.$(name)_fileprefix + "_%d.raw:" + str(fsn) + ":" +  str(ds.$(name)_fileindex-1)
+</result>
+ $datasources.$(name)_fileindex
+ $datasources.$(name)_filedir
+ $datasources.$(name)_fileprefix</datasource>
+</definition>

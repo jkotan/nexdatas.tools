@@ -402,6 +402,14 @@ standardComponentTemplateFiles = {
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
 moduleTemplateFiles = {
+    'mythen2': ['mythen.xml',
+                'mythen_postrun.ds.xml',
+                'mythen_filestartnumber.ds.xml',
+            ],
+    'mythen': ['mythen.xml',
+                'mythen_postrun.ds.xml',
+                'mythen_filestartnumber.ds.xml',
+            ],
     'pilatus100k': ['pilatus.xml',
                     'pilatus_postrun.ds.xml',
                     'pilatus100k_description.ds.xml',
@@ -545,10 +553,6 @@ moduleMultiAttributes = {
         'SaveDarkImages', 'PerformIntegration', 'SaveIntegratedData',
         'SaveSubtracted', 'PerformDarkSubtraction'
     ],
-    'mythen': [
-        'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
-        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
-    ],
     'lambda': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
         'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
@@ -582,6 +586,14 @@ moduleMultiAttributes = {
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
         'NbExposures', 'NbFrames'],
+    'mythen': [
+        'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
+        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
+    ],
+    'mythen2': [
+        'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
+        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
+    ],
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
     'eigerdectris': [
