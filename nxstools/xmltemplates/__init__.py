@@ -402,13 +402,9 @@ standardComponentTemplateFiles = {
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
 moduleTemplateFiles = {
-    'mythen2': ['mythen.xml',
-                'mythen_postrun.ds.xml',
-                'mythen_filestartnumber.ds.xml',
+    'mythen2': ['mythen2.xml'
             ],
-    'mythen': ['mythen.xml',
-                'mythen_postrun.ds.xml',
-                'mythen_filestartnumber.ds.xml',
+    'mythen': ['mythen.xml'
             ],
     'pilatus100k': ['pilatus.xml',
                     'pilatus_postrun.ds.xml',
@@ -588,11 +584,13 @@ moduleMultiAttributes = {
         'NbExposures', 'NbFrames'],
     'mythen': [
         'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
-        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
+        'FileDir', 'FileIndex', 'FilePrefix', 'Data', 'RoI1', 'RoI2'
     ],
     'mythen2': [
         'Counts1', 'Counts2', 'CountsMax', 'CountsTotal', 'ExposureTime',
-        'FileDir', 'FileIndex', 'FilePrefix', 'LastImage', 'RoI1', 'RoI2'
+        'FileDir', 'FileIndex', 'FilePrefix', 'Data',
+        'Energy', 'NbFrames', 'RoI1End', 'RoI2End', 'RoI1Start', 'RoI2Start',
+        'Threshold'
     ],
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
