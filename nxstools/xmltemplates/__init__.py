@@ -24,17 +24,39 @@
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
-    'keithley': {
-        'absorber': {
-            'attenfactor': {
-                'default': None,
-                'doc': "attenuation factor (datasource)"
-            },
-            'position': {
-                'default': None,
-                'doc': "which sliders are in [bitarray] (datasource)"
-            },
+    'samplehkl': {
+        'sname': {
+            'default': 'sample',
+            'doc': "sample group name (string)"
         },
+        'psi': {
+            'default': None,
+            'doc': "psi angle position of analyzer (datasource)"
+        },
+        'h': {
+            'default': None,
+            'doc': "h position in hkl space (datasource)"
+        },
+        'k': {
+            'default': None,
+            'doc': "k position in hkl space (datasource)"
+        },
+        'l': {
+            'default': None,
+            'doc': "l position in hkl space (datasource)"
+        },
+    },
+    'absorber': {
+        'attenfactor': {
+            'default': None,
+            'doc': "attenuation factor (datasource)"
+        },
+        'position': {
+            'default': None,
+            'doc': "which sliders are in [bitarray] (datasource)"
+        },
+    },
+    'keithley': {
         'gain': {
             'default': None,
             'doc': "gain in V/A (datasource)"
@@ -369,6 +391,12 @@ standardComponentTemplateFiles = {
     'common3': [
         'common3_common.ds.xml',
     ],
+    'absorber': [
+        'absorber.xml'
+    ],
+    'keithley': [
+        'keithley.xml',
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -562,10 +590,7 @@ moduleMultiAttributes = {
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
         'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
     ],
-    'keithley': [
-        'keithley.xml',
-    ],
-    'absorber': [
-        'absorber.xml'
+    'samplehkl': [
+        'samplehkl.xml'
     ],
 }
