@@ -236,9 +236,9 @@ class Field(Runner):
             "-c", "--columns",
             help="names of column to be shown (separated by commas "
             "without spaces). The possible names are: "
-            "depends_on,dtype,full_path,nexus_path,nexus_type,shape,"
-            "source,source_name,source_type,strategy,trans_type,trans_offset,"
-            "trans_vector,units,value",
+            "depends_on, dtype, full_path, nexus_path, nexus_type, shape,"
+            " source, source_name, source_type, strategy, trans_type, "
+            "trans_offset, trans_vector, units, value",
             dest="headers", default="")
         self._parser.add_argument(
             "-f", "--filters",

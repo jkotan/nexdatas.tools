@@ -1,6 +1,6 @@
-=========
-nxscreate
-=========
+===========
+nxsfileinfo
+===========
 
 Description
 -----------
@@ -18,8 +18,8 @@ Synopsis
 The following commands are available: general, field
 
 
-nxscreate general
-------------------
+nxsfileinfo general
+-------------------
 
 It shows general information for he nexus file.
 
@@ -40,7 +40,7 @@ Example
 
 	  nxsfileinfo general saxs_ref1_02.nxs
 
-nxscreate tangods
+nxsfileinfo field
 -----------------
 
 It shows field information for the nexus file.
@@ -50,12 +50,12 @@ Synopsis
 
 .. code:: bash
 
-	  Usage: nxsinfo field <file_name>
+	  Usage: nxsfileinfo field <file_name>
 
 Options:
    -h, --help            show this help message and exit
    -c HEADERS, --columns=HEADERS
-       names of column to be shown (separated by commas without spaces). The possible names are: depends_on,dtype,full_path,nexus_path,nexus_type,shape,source,source_name,source_type,strategy,trans_type,trans_offset,trans_vector,units,value
+       names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
    -f FILTERS, --filters=FILTERS
        full_path filters (separated by commas without spaces). Default: '*'. E.g. '*:NXsample/*'
    -v VALUES, --values=VALUES
@@ -68,4 +68,4 @@ Example
 
 .. code:: bash
 
-	  nxsinfo field /tmp/saxs_ref1_02.nxs
+	  nxsfileinfo field /tmp/saxs_ref1_02.nxs
