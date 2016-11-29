@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.14.1 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.15.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.14.1',
+        VERSION:     '2.15.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.14.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.15.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.14</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.15</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -97,11 +97,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../nxsfileinfo.html">nxscreate</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsfileinfo.html">nxsfileinfo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#synopsis">Synopsis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxscreate-general">nxscreate general</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxscreate-tangods">nxscreate tangods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -205,6 +205,38 @@
 <span class="c">#:     standatd component template variables</span>
 <span class="c">#:     and its [default value, doc string]</span>
 <span class="n">standardComponentVariables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;samplehkl&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;sname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;sample&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;sample group name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;psi&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;psi angle position of analyzer (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;h&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;h position in hkl space (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;k&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;k position in hkl space (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;l&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;l position in hkl space (datasource)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">&#39;absorber&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;attenfactor&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;attenuation factor (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;position&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;which sliders are in [bitarray] (datasource)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
     <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;gain&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -540,11 +572,21 @@
     <span class="s">&#39;common3&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;common3_common.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
+    <span class="s">&#39;absorber&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;absorber.xml&#39;</span>
+    <span class="p">],</span>
+    <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;keithley.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
 <span class="p">}</span>
 
 <span class="c">#: (:obj:`dict` &lt;:obj:`str` , :obj:`list` &lt;:obj:`str`&gt; &gt;)</span>
 <span class="c">#:     xml template files of modules</span>
 <span class="n">moduleTemplateFiles</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;mythen2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;mythen2.xml&#39;</span><span class="p">],</span>
+    <span class="s">&#39;mythen&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;mythen.xml&#39;</span><span class="p">,</span>
+               <span class="s">&#39;mythen_postrun.ds.xml&#39;</span><span class="p">,</span>
+               <span class="s">&#39;mythen_filestartnumber.ds.xml&#39;</span><span class="p">],</span>
     <span class="s">&#39;pilatus100k&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;pilatus.xml&#39;</span><span class="p">,</span>
                     <span class="s">&#39;pilatus_postrun.ds.xml&#39;</span><span class="p">,</span>
                     <span class="s">&#39;pilatus100k_description.ds.xml&#39;</span><span class="p">,</span>
@@ -688,10 +730,6 @@
         <span class="s">&#39;SaveDarkImages&#39;</span><span class="p">,</span> <span class="s">&#39;PerformIntegration&#39;</span><span class="p">,</span> <span class="s">&#39;SaveIntegratedData&#39;</span><span class="p">,</span>
         <span class="s">&#39;SaveSubtracted&#39;</span><span class="p">,</span> <span class="s">&#39;PerformDarkSubtraction&#39;</span>
     <span class="p">],</span>
-    <span class="s">&#39;mythen&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s">&#39;Counts1&#39;</span><span class="p">,</span> <span class="s">&#39;Counts2&#39;</span><span class="p">,</span> <span class="s">&#39;CountsMax&#39;</span><span class="p">,</span> <span class="s">&#39;CountsTotal&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span>
-        <span class="s">&#39;FileDir&#39;</span><span class="p">,</span> <span class="s">&#39;FileIndex&#39;</span><span class="p">,</span> <span class="s">&#39;FilePrefix&#39;</span><span class="p">,</span> <span class="s">&#39;LastImage&#39;</span><span class="p">,</span> <span class="s">&#39;RoI1&#39;</span><span class="p">,</span> <span class="s">&#39;RoI2&#39;</span>
-    <span class="p">],</span>
     <span class="s">&#39;lambda&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;TriggerMode&#39;</span><span class="p">,</span> <span class="s">&#39;ShutterTime&#39;</span><span class="p">,</span> <span class="s">&#39;DelayTime&#39;</span><span class="p">,</span> <span class="s">&#39;FrameNumbers&#39;</span><span class="p">,</span> <span class="s">&#39;ThreadNo&#39;</span><span class="p">,</span>
         <span class="s">&#39;EnergyThreshold&#39;</span><span class="p">,</span> <span class="s">&#39;OperatingMode&#39;</span><span class="p">,</span> <span class="s">&#39;ConfigFilePath&#39;</span><span class="p">,</span> <span class="s">&#39;SaveAllImages&#39;</span><span class="p">,</span>
@@ -725,6 +763,16 @@
         <span class="s">&#39;DelayTime&#39;</span><span class="p">,</span> <span class="s">&#39;ExposurePeriod&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span> <span class="s">&#39;FileDir&#39;</span><span class="p">,</span>
         <span class="s">&#39;FilePostfix&#39;</span><span class="p">,</span> <span class="s">&#39;FilePrefix&#39;</span><span class="p">,</span> <span class="s">&#39;FileStartNum&#39;</span><span class="p">,</span> <span class="s">&#39;LastImageTaken&#39;</span><span class="p">,</span>
         <span class="s">&#39;NbExposures&#39;</span><span class="p">,</span> <span class="s">&#39;NbFrames&#39;</span><span class="p">],</span>
+    <span class="s">&#39;mythen&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;Counts1&#39;</span><span class="p">,</span> <span class="s">&#39;Counts2&#39;</span><span class="p">,</span> <span class="s">&#39;CountsMax&#39;</span><span class="p">,</span> <span class="s">&#39;CountsTotal&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span>
+        <span class="s">&#39;FileDir&#39;</span><span class="p">,</span> <span class="s">&#39;FileIndex&#39;</span><span class="p">,</span> <span class="s">&#39;FilePrefix&#39;</span><span class="p">,</span> <span class="s">&#39;Data&#39;</span><span class="p">,</span> <span class="s">&#39;RoI1&#39;</span><span class="p">,</span> <span class="s">&#39;RoI2&#39;</span>
+    <span class="p">],</span>
+    <span class="s">&#39;mythen2&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;Counts1&#39;</span><span class="p">,</span> <span class="s">&#39;Counts2&#39;</span><span class="p">,</span> <span class="s">&#39;CountsMax&#39;</span><span class="p">,</span> <span class="s">&#39;CountsTotal&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span>
+        <span class="s">&#39;FileDir&#39;</span><span class="p">,</span> <span class="s">&#39;FileIndex&#39;</span><span class="p">,</span> <span class="s">&#39;FilePrefix&#39;</span><span class="p">,</span> <span class="s">&#39;Data&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Energy&#39;</span><span class="p">,</span> <span class="s">&#39;NbFrames&#39;</span><span class="p">,</span> <span class="s">&#39;RoI1End&#39;</span><span class="p">,</span> <span class="s">&#39;RoI2End&#39;</span><span class="p">,</span> <span class="s">&#39;RoI1Start&#39;</span><span class="p">,</span> <span class="s">&#39;RoI2Start&#39;</span><span class="p">,</span>
+        <span class="s">&#39;Threshold&#39;</span>
+    <span class="p">],</span>
     <span class="s">&#39;marccd&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;FrameShift&#39;</span><span class="p">,</span> <span class="s">&#39;SavingDirectory&#39;</span><span class="p">,</span> <span class="s">&#39;SavingPostfix&#39;</span><span class="p">,</span> <span class="s">&#39;SavingPrefix&#39;</span><span class="p">],</span>
     <span class="s">&#39;eigerdectris&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -733,8 +781,8 @@
         <span class="s">&#39;RateCorrectionEnabled&#39;</span><span class="p">,</span> <span class="s">&#39;FlatFieldEnabled&#39;</span><span class="p">,</span> <span class="s">&#39;Temperature&#39;</span><span class="p">,</span>
         <span class="s">&#39;AutoSummationEnabled&#39;</span><span class="p">,</span> <span class="s">&#39;Humidity&#39;</span><span class="p">,</span> <span class="s">&#39;PhotonEnergy&#39;</span><span class="p">,</span> <span class="s">&#39;Wavelength&#39;</span><span class="p">,</span>
     <span class="p">],</span>
-    <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s">&#39;keithley.xml&#39;</span><span class="p">,</span>
+    <span class="s">&#39;samplehkl&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;samplehkl.xml&#39;</span>
     <span class="p">],</span>
 <span class="p">}</span>
 </pre></div>
