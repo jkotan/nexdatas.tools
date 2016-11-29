@@ -1,7 +1,7 @@
-2016-11-XX Jan Kotanski <jankotan@gmail.com>
-	* add samplehkl
-	* add absorber
-	* tagged as v2.14.2
+2016-11-29 Jan Kotanski <jankotan@gmail.com>
+	* add samplehkl, absorber
+	* fixes for shpinx docu
+	* tagged as v2.15.0
 
 2016-11-24 Jan Kotanski <jankotan@gmail.com>
 	* fixes for nxsconfig get/merge
