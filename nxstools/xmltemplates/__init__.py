@@ -402,10 +402,10 @@ standardComponentTemplateFiles = {
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
 moduleTemplateFiles = {
-    'mythen2': ['mythen2.xml'
-            ],
-    'mythen': ['mythen.xml'
-            ],
+    'mythen2': ['mythen2.xml'],
+    'mythen': ['mythen.xml',
+               'mythen_postrun.ds.xml',
+               'mythen_filestartnumber.ds.xml'],
     'pilatus100k': ['pilatus.xml',
                     'pilatus_postrun.ds.xml',
                     'pilatus100k_description.ds.xml',
