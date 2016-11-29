@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "November 24, 2016" "2.14" "NXSTools"
+.TH "NXSFILEINFO" "1" "November 29, 2016" "2.15" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -46,7 +46,7 @@ nxsfileinfo <command> [options] <nexus_file_name>
 .UNINDENT
 .sp
 The following commands are available: general, field
-.SH NXSCREATE GENERAL
+.SH NXSFILEINFO GENERAL
 .sp
 It shows general information for he nexus file.
 .SS Synopsis
@@ -80,7 +80,7 @@ nxsfileinfo general saxs_ref1_02.nxs
 .fi
 .UNINDENT
 .UNINDENT
-.SH NXSCREATE TANGODS
+.SH NXSFILEINFO FIELD
 .sp
 It shows field information for the nexus file.
 .SS Synopsis
@@ -89,7 +89,7 @@ It shows field information for the nexus file.
 .sp
 .nf
 .ft C
-Usage: nxsinfo field <file_name>
+Usage: nxsfileinfo field <file_name>
 .ft P
 .fi
 .UNINDENT
@@ -103,7 +103,7 @@ Usage: nxsinfo field <file_name>
 show this help message and exit
 .TP
 .BI \-c \ HEADERS\fP,\fB \ \-\-columns\fB= HEADERS
-names of column to be shown (separated by commas without spaces). The possible names are: depends_on,dtype,full_path,nexus_path,nexus_type,shape,source,source_name,source_type,strategy,trans_type,trans_offset,trans_vector,units,value
+names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
 full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
@@ -124,7 +124,7 @@ show datasource parameters
 .sp
 .nf
 .ft C
-nxsinfo field /tmp/saxs_ref1_02.nxs
+nxsfileinfo field /tmp/saxs_ref1_02.nxs
 .ft P
 .fi
 .UNINDENT
