@@ -416,10 +416,11 @@ class Creator(object):
 
     @classmethod
     def _createComponent(cls, name, directory, fileprefix, nexuspath,
-                         strategy, nexusType, units, links, server, chunk):
+                         strategy, nexusType, units, links, server, chunk,
+                         dsname):
         """ creates component file
 
-        :param name: datasource name
+        :param name: component name
         :type name: :obj:`str`
         :param directory: output file directory
         :type directory: :obj:`str`
@@ -439,11 +440,13 @@ class Creator(object):
         :type server: :obj:`str`
         :returns: component xml
         :rtype: :obj:`str`
+        :param dsname: datasource name
+        :type dsname: :obj:`str`
         """
         defpath = '/entry$var.serialno:NXentry/instrument' \
-                  + '/collection/%s' % (name)
+                  + '/collection/%s' % (dsname or name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
-        cls.__createTree(df, nexuspath or defpath, name, nexusType,
+        cls.__createTree(df, nexuspath or defpath, dsname or name, nexusType,
                          strategy, units, links, chunk)
 
         xml = df.prettyPrint()
@@ -516,10 +519,26 @@ class ComponentCreator(Creator):
                     "CollCompCreator Invalid --last parameter\n")
             aargs = generateDeviceNames(self.options.device, first, last,
                                         self.options.minimal)
+            if self.options.datasource:
+                dsargs = generateDeviceNames(
+                    self.options.datasource, first, last,
+                    self.options.minimal) or None
+            else:
+                dsargs = None
+        else:
+            dsargs = None
+            
 
         self.args += aargs
         if not len(self.args):
             raise WrongParameterError("")
+
+        if dsargs is None and self.options.datasource:
+            dsargs = [self.options.datasource]
+        if dsargs is not None and len(self.args) != len(dsargs):
+            raise WrongParameterError(
+                "component names cannot be match into datasource namse")
+
 
         if self.options.database:
             if not self.options.overwrite:
@@ -529,7 +548,8 @@ class ComponentCreator(Creator):
                     raise CPExistsException(
                         "Components '%s' already exist." % existing)
 
-        for name in self.args:
+        for i, name in enumerate(self.args):
+            dsname = dsargs[i] if dsargs is not None else None
             if not self.options.database:
                 if self._printouts:
                     print("CREATING: %s%s.xml" % (self.options.file, name))
@@ -546,7 +566,7 @@ class ComponentCreator(Creator):
                 int(self.options.fieldlinks) + 2 * int(
                     self.options.sourcelinks),
                 self.options.server if self.options.database else None,
-                self.options.chunk)
+                self.options.chunk, dsname)
 
 
 class TangoDSCreator(Creator):

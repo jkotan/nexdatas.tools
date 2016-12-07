@@ -355,6 +355,8 @@ Options:
                         nexus path with field name
   -g STRATEGY, --strategy=STRATEGY
                         writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
+  -s DATASOURCE, --datasource-prefix DATASOURCE
+                        datasource-prefix or datasourcename
   -t TYPE, --type=TYPE  nexus type of the field
   -u UNITS, --units=UNITS
                         nexus units of the field

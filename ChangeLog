@@ -1,3 +1,8 @@
+2016-12-XX Jan Kotanski <jankotan@gmail.com>
+	* add datasource option into nxscreate comp
+	* fixes undulator length
+	* tagged as v2.16.0
+
 2016-11-29 Jan Kotanski <jankotan@gmail.com>
 	* add samplehkl, absorber
 	* fixes for shpinx docu

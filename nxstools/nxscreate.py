@@ -687,68 +687,86 @@ class Comp(Runner):
         """ creates parser
         """
         parser = self._parser
-        parser.add_argument("-v", "--device-prefix",
-                            help="device prefix, i.e. exp_c",
-                            dest="device", default="")
-        parser.add_argument("-f", "--first",
-                            help="first index",
-                            dest="first", default="1")
-        parser.add_argument("-l", "--last",
-                            help="last index",
-                            dest="last", default=None)
+        parser.add_argument(
+            "-v", "--device-prefix", help="device prefix, i.e. exp_c",
+            dest="device", default="")
+        parser.add_argument(
+            "-f", "--first", help="first index",
+            dest="first", default="1")
+        parser.add_argument(
+            "-l", "--last", help="last index",
+            dest="last", default=None)
+        parser.add_argument(
+            "-o", "--overwrite", action="store_true",
+            default=False, dest="overwrite",
+            help="overwrite existing components")
+        parser.add_argument(
+            "-d", "--directory",
+            help="output component directory",
+            dest="directory", default=".")
+        parser.add_argument(
+            "-x", "--file-prefix",
+            help="file prefix, i.e. counter",
+            dest="file", default="")
 
-        parser.add_argument("-o", "--overwrite", action="store_true",
-                            default=False, dest="overwrite",
-                            help="overwrite existing components")
-        parser.add_argument("-d", "--directory",
-                            help="output component directory",
-                            dest="directory", default=".")
-        parser.add_argument("-x", "--file-prefix",
-                            help="file prefix, i.e. counter",
-                            dest="file", default="")
+        parser.add_argument(
+            "-n", "--nexuspath",
+            help="nexus path with field name",
+            dest="nexuspath", default="")
 
-        parser.add_argument("-n", "--nexuspath",
-                            help="nexus path with field name",
-                            dest="nexuspath", default="")
+        parser.add_argument(
+            "-g", "--strategy",
+            help="writing strategy, i.e. "
+            "STEP, INIT, FINAL, POSTRUN",
+            dest="strategy", default="STEP")
+        parser.add_argument(
+            "-s", "--datasource-prefix",
+            help="datasource-prefix or datasourcename",
+            dest="datasource", default="")
+        parser.add_argument(
+            "-t", "--type",
+            help="nexus type of the field",
+            dest="type", default="NX_FLOAT")
+        parser.add_argument(
+            "-u", "--units",
+            help="nexus units of the field",
+            dest="units", default="")
 
-        parser.add_argument("-g", "--strategy",
-                            help="writing strategy, i.e. "
-                            "STEP, INIT, FINAL, POSTRUN",
-                            dest="strategy", default="STEP")
-        parser.add_argument("-t", "--type",
-                            help="nexus type of the field",
-                            dest="type", default="NX_FLOAT")
-        parser.add_argument("-u", "--units",
-                            help="nexus units of the field",
-                            dest="units", default="")
+        parser.add_argument(
+            "-k", "--links", action="store_true",
+            default=False, dest="fieldlinks",
+            help="create links with field name")
 
-        parser.add_argument("-k", "--links", action="store_true",
-                            default=False, dest="fieldlinks",
-                            help="create links with field name")
+        parser.add_argument(
+            "-i", "--source-links", action="store_true",
+            default=False, dest="sourcelinks",
+            help="create links with datasource name")
 
-        parser.add_argument("-i", "--source-links", action="store_true",
-                            default=False, dest="sourcelinks",
-                            help="create links with datasource name")
+        parser.add_argument(
+            "-b", "--database", action="store_true",
+            default=False, dest="database",
+            help="store components in "
+            "Configuration Server database")
 
-        parser.add_argument("-b", "--database", action="store_true",
-                            default=False, dest="database",
-                            help="store components in "
-                            "Configuration Server database")
+        parser.add_argument(
+            "-r", "--server", dest="server",
+            help="configuration server device name")
 
-        parser.add_argument("-r", "--server", dest="server",
-                            help="configuration server device name")
+        parser.add_argument(
+            "-c", "--chunk", dest="chunk",
+            default="SCALAR", help="chunk format, "
+            "i.e. SCALAR, SPECTRUM, IMAGE")
 
-        parser.add_argument("-c", "--chunk", dest="chunk",
-                            default="SCALAR", help="chunk format, "
-                            "i.e. SCALAR, SPECTRUM, IMAGE")
+        parser.add_argument(
+            "-m", "--minimal_device", action="store_true",
+            default=False, dest="minimal",
+            help="device name without first '0'")
 
-        parser.add_argument("-m", "--minimal_device", action="store_true",
-                            default=False, dest="minimal",
-                            help="device name without first '0'")
+        parser.add_argument(
+            'args', metavar='component_name',
+            type=str, nargs='*',
+            help='component names to be created')
 
-        parser.add_argument('args', metavar='component_name',
-                            type=str, nargs='*',
-                            help='component names to be created')
         return parser
 
     def run(self, options):

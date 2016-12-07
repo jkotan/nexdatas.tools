@@ -7,7 +7,7 @@
 	<field type="NX_CHAR" name="mode">monitor</field>
 	<group type="NXattenuator" name="attenuator">
           <field type="NX_CHAR" name="type">
-          <strategy mode="INIT"/>$datasources.$(name)_foil</field>
+          <strategy mode="INIT"/>$datasources.$(foil)</field>
 	  <group type="NXcollection" name="collection">
             <field type="NX_FLOAT" name="foilpos">
               <strategy mode="INIT"/>$datasources.$(foilpos)

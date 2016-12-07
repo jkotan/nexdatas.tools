@@ -2,10 +2,10 @@
 <definition>
   <group type="NXentry" name="entry$var.serialno">
     <group type="NXinstrument" name="instrument">
-      <group type="NXinsertion_device" name="insertion_device">
+      <group type="NXinsertion_device" name="$(uname)">
         <field type="NX_CHAR" name="type">$(type)<doc>undulator or wiggler</doc>
         </field>
-        <field units="m" type="NX_FLOAT" name="length">2<doc>length of insertion device</doc>
+        <field units="m" type="NX_FLOAT" name="length">$(length)<doc>length of insertion device</doc>
         </field>
         <doc>undulator U23</doc>
         <field units="mm" type="NX_FLOAT64" name="gap">

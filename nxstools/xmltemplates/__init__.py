@@ -79,6 +79,10 @@ standardComponentVariables = {
         },
     },
     'qbpm': {
+        'foil': {
+            'default': None,
+            'doc': "foil position, i.e. standard <cpname>_foil (datasource)"
+        },
         'foilpos': {
             'default': None,
             'doc': "foil position (datasource)"
@@ -141,6 +145,10 @@ standardComponentVariables = {
         }
     },
     'undulator': {
+        'uname': {
+            'default': 'insertion_device',
+            'doc': "insertion_device group name (string)"
+        },
         'energy': {
             'default': None,
             'doc': "undulator energy (datasource)"
