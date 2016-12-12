@@ -23,7 +23,7 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="../../transformations/bragg" units="mm" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
+            <field depends_on="../../transformations/bragg" units="deg" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
