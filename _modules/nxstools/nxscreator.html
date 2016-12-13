@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.15.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.17.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.15.0',
+        VERSION:     '2.17.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.15.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.17.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.15</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.17</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -597,10 +597,11 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_createComponent</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">,</span>
-                         <span class="n">strategy</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
+                         <span class="n">strategy</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span>
+                         <span class="n">dsname</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates component file</span>
 
-<span class="sd">        :param name: datasource name</span>
+<span class="sd">        :param name: component name</span>
 <span class="sd">        :type name: :obj:`str`</span>
 <span class="sd">        :param directory: output file directory</span>
 <span class="sd">        :type directory: :obj:`str`</span>
@@ -620,11 +621,13 @@
 <span class="sd">        :type server: :obj:`str`</span>
 <span class="sd">        :returns: component xml</span>
 <span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        :param dsname: datasource name</span>
+<span class="sd">        :type dsname: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">defpath</span> <span class="o">=</span> <span class="s">&#39;/entry$var.serialno:NXentry/instrument&#39;</span> \
-                  <span class="o">+</span> <span class="s">&#39;/collection/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                  <span class="o">+</span> <span class="s">&#39;/collection/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dsname</span> <span class="ow">or</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-        <span class="n">cls</span><span class="o">.</span><span class="n">__createTree</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span> <span class="ow">or</span> <span class="n">defpath</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__createTree</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span> <span class="ow">or</span> <span class="n">defpath</span><span class="p">,</span> <span class="n">dsname</span> <span class="ow">or</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
                          <span class="n">strategy</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
 
         <span class="n">xml</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">()</span>
@@ -697,10 +700,26 @@
                     <span class="s">&quot;CollCompCreator Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="n">aargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">:</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">minimal</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dsargs</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dsargs</span> <span class="o">=</span> <span class="bp">None</span>
+            
 
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">+=</span> <span class="n">aargs</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dsargs</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">:</span>
+            <span class="n">dsargs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">dsargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dsargs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
+                <span class="s">&quot;component names cannot be match into datasource namse&quot;</span><span class="p">)</span>
+
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
@@ -710,7 +729,8 @@
                     <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
                         <span class="s">&quot;Components &#39;</span><span class="si">%s</span><span class="s">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
+            <span class="n">dsname</span> <span class="o">=</span> <span class="n">dsargs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">dsargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="bp">None</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
                     <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING: </span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
@@ -727,7 +747,7 @@
                 <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">fieldlinks</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">sourcelinks</span><span class="p">),</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chunk</span><span class="p">,</span> <span class="n">dsname</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="TangoDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator">[docs]</a><span class="k">class</span> <span class="nc">TangoDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
@@ -1578,6 +1598,7 @@
                     <span class="n">nodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;attribute&quot;</span><span class="p">)</span>
                     <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;field&quot;</span><span class="p">))</span>
                     <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;link&quot;</span><span class="p">))</span>
+                    <span class="n">grnodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s">&quot;group&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
                         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getText</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
@@ -1586,6 +1607,15 @@
                                 <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parentNode</span>
                                 <span class="n">parent</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                                 <span class="k">break</span>
+                    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">grnodes</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">text</span> <span class="ow">and</span> <span class="s">&quot;$(&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
+                                <span class="n">label</span> <span class="o">=</span> <span class="s">&quot;$(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">ms</span>
+                                <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                                    <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parentNode</span>
+                                    <span class="n">parent</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                                    <span class="k">break</span>
                     <span class="n">xml</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
                         <span class="k">print</span><span class="p">(</span><span class="s">&quot;MISSING </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">missing</span><span class="p">)</span>

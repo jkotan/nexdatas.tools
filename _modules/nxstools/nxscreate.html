@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate &mdash; NXSTools 2.15.0 documentation</title>
+    <title>nxstools.nxscreate &mdash; NXSTools 2.17.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.15.0',
+        VERSION:     '2.17.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.15.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.17.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.15</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.17</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -868,68 +868,86 @@
         <span class="sd">&quot;&quot;&quot; creates parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;first index&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--last&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;last index&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;last&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-v&quot;</span><span class="p">,</span> <span class="s">&quot;--device-prefix&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;device prefix, i.e. exp_c&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-f&quot;</span><span class="p">,</span> <span class="s">&quot;--first&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;first index&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--last&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;last index&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;last&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output component directory&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;overwrite&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;overwrite existing components&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output component directory&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nexuspath&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus path with field name&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nexuspath&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nexuspath&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus path with field name&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;nexuspath&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-g&quot;</span><span class="p">,</span> <span class="s">&quot;--strategy&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;writing strategy, i.e. &quot;</span>
+            <span class="s">&quot;STEP, INIT, FINAL, POSTRUN&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;strategy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--datasource-prefix&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;datasource-prefix or datasourcename&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;datasource&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--type&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus type of the field&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;NX_FLOAT&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--units&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus units of the field&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;units&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-g&quot;</span><span class="p">,</span> <span class="s">&quot;--strategy&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;writing strategy, i.e. &quot;</span>
-                            <span class="s">&quot;STEP, INIT, FINAL, POSTRUN&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;strategy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--type&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus type of the field&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;NX_FLOAT&quot;</span><span class="p">)</span>
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--units&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;nexus units of the field&quot;</span><span class="p">,</span>
-                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;units&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-k&quot;</span><span class="p">,</span> <span class="s">&quot;--links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;fieldlinks&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with field name&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-k&quot;</span><span class="p">,</span> <span class="s">&quot;--links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;fieldlinks&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with field name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="s">&quot;--source-links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;sourcelinks&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with datasource name&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="s">&quot;--source-links&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;sourcelinks&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;create links with datasource name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in &quot;</span>
+            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in &quot;</span>
-                            <span class="s">&quot;Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--chunk&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;chunk&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&quot;SCALAR&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;chunk format, &quot;</span>
+            <span class="s">&quot;i.e. SCALAR, SPECTRUM, IMAGE&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--chunk&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;chunk&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="s">&quot;SCALAR&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;chunk format, &quot;</span>
-                            <span class="s">&quot;i.e. SCALAR, SPECTRUM, IMAGE&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--minimal_device&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;minimal&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device name without first &#39;0&#39;&quot;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--minimal_device&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
-                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;minimal&quot;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;device name without first &#39;0&#39;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;component_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;component names to be created&#39;</span><span class="p">)</span>
 
-        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;component_name&#39;</span><span class="p">,</span>
-                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
-                            <span class="n">help</span><span class="o">=</span><span class="s">&#39;component names to be created&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">parser</span>
 </div>
 <div class="viewcode-block" id="Comp.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.Comp.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
