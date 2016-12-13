@@ -2,7 +2,7 @@
 <definition>
   <group type="NXentry" name="entry$var.serialno">
     <group type="NXinstrument" name="instrument">
-      <group type="NXcollection" name="$(name)">
+      <group type="NXbeam_stop" name="$(name)">
         <field type="NX_CHAR" name="depends_on">transformations/y<strategy mode="INIT"/>
         </field>
         <group type="NXtransformations" name="transformations">
