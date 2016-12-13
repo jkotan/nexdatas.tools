@@ -24,6 +24,34 @@
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
+    'pinhole': {
+        'x': {
+            'default': None,
+            'doc': "horizontal position (datasource)"
+        },
+        'y': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
+        'z': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
+    },
+    'beamstop': {
+        'x': {
+            'default': None,
+            'doc': "horizontal position (datasource)"
+        },
+        'y': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
+        'z': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
+    },
     'samplehkl': {
         'sname': {
             'default': 'sample',
@@ -132,7 +160,23 @@ standardComponentVariables = {
         'top': {
             'default': None,
             'doc': "top blade position (datasource)"
-        }
+        },
+        'distance': {
+            'default': None,
+            'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distanceoffset': {
+            'default': None,
+            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+        },
+        'dependstop': {
+            'default': None,
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'transformations': {
+            'default': None,
+            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
+        },
     },
     'source': {
         'beamcurrent': {
@@ -142,7 +186,15 @@ standardComponentVariables = {
         'sourceenergy': {
             'default': None,
             'doc': "ring beam energy (datasource)"
-        }
+        },
+        'numberofbunches': {
+            'default': None,
+            'doc': "number of source bunches (datasource)"
+        },
+        'bunchmode': {
+            'default': 'Multi Bunch',
+            'doc': "bunch mode (string)"
+        },
     },
     'undulator': {
         'uname': {
@@ -174,6 +226,22 @@ standardComponentVariables = {
         'length': {
             'default': "2",
             'doc': "length of insertion device in meters (string)"
+        },
+        'distance': {
+            'default': None,
+            'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distanceoffset': {
+            'default': None,
+            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+        },
+        'dependstop': {
+            'default': None,
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'transformations': {
+            'default': None,
+            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
         },
     },
     'beamtimeid': {
@@ -404,6 +472,12 @@ standardComponentTemplateFiles = {
     ],
     'keithley': [
         'keithley.xml',
+    ],
+    'pinhole': [
+        'pinhole.xml',
+    ],
+    'beamstop': [
+        'beamstop.xml',
     ],
 }
 

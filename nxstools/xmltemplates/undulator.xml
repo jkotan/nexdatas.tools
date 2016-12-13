@@ -18,6 +18,22 @@
           <strategy mode="INIT"/>$datasources.$(energy)</field>
         <field type="NX_INT32" name="harmonic">
           <strategy mode="INIT"/>$datasources.$(harmonic)</field>
+        <group type="NXtransformations" name="$(transformations)">
+          <field offset_units="m" units="m" type="NX_FLOAT64" name="distance" transformation_type="translation">$(distance)<strategy mode="INIT"/>
+            <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="offset">$(distanceoffset)<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+        </group>
+        <field type="NX_CHAR" name="depends_on">transformations/$(dependstop)<strategy mode="INIT"/>
+        </field>
       </group>
     </group>
   </group>

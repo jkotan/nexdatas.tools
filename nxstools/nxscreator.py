@@ -1417,6 +1417,7 @@ class StandardCPCreator(CPCreator):
                     nodes = indom.getElementsByTagName("attribute")
                     nodes.extend(indom.getElementsByTagName("field"))
                     nodes.extend(indom.getElementsByTagName("link"))
+                    grnodes = indom.getElementsByTagName("group")
                     for node in nodes:
                         text = self.__getText(node)
                         for ms in missing:
@@ -1425,6 +1426,15 @@ class StandardCPCreator(CPCreator):
                                 parent = node.parentNode
                                 parent.removeChild(node)
                                 break
+                    for node in grnodes:
+                        text = node.getAttribute("name")
+                        if text and "$(" in text:
+                            for ms in missing:
+                                label = "$(%s)" % ms
+                                if label in text:
+                                    parent = node.parentNode
+                                    parent.removeChild(node)
+                                    break
                     xml = indom.toxml()
                     if self._printouts:
                         print("MISSING %s" % missing)
