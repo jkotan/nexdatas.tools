@@ -229,7 +229,7 @@ standardComponentVariables = {
         },
         'distance': {
             'default': None,
-            'doc': "distance for the sample in m, e.g. 0 (string)"
+            'doc': "distance from the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
             'default': None,
@@ -400,6 +400,30 @@ standardComponentVariables = {
             " (string)"
         },
     },
+    'collect2': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect (datasource)"
+        }
+    },
+    'collect3': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect (datasource)"
+        },
+        'third': {
+            'default': None,
+            'doc': "name of the third component to collect (datasource)"
+        }
+    },
     'common2': {
         'dds': {
             'default': None,
@@ -460,6 +484,12 @@ standardComponentTemplateFiles = {
         'dcm_reflection.ds.xml',
         'dcm_unitcalibration.ds.xml',
         'dcm_crystal.ds.xml',
+    ],
+    'collect2': [
+        'collect2.xml',
+    ],
+    'collect3': [
+        'collect3.xml',
     ],
     'common2': [
         'common2_common.ds.xml',

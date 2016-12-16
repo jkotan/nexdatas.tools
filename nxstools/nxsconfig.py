@@ -350,25 +350,35 @@ class ConfigServer(object):
                 % self._cnfServer.name())
             sys.stderr.flush()
             return ""
+        dargs = []
+        deps = {}
         for ar in args:
+            dargs.append(ar)
             if ar not in cmps:
                 sys.stderr.write(
                     "Error: Component '%s' not stored in "
                     "the configuration server\n" % ar)
                 sys.stderr.flush()
                 return ""
-        if not args:
-            if private:
-                args = [cp for cp in cmps if cp.startswith("__")]
             else:
-                args = [cp for cp in cmps if not cp.startswith("__")]
-        args = args or cmps
-        if args:
+                dars = self._cnfServer.dependentComponents([ar])
+                dars = list(set(dars) - set([ar]))
+                if dars:
+                    dargs.extend(dars)
+                    deps[ar] = dars
+                
+        if not dargs:
+            if private:
+                dargs = [cp for cp in cmps if cp.startswith("__")]
+            else:
+                dargs = [cp for cp in cmps if not cp.startswith("__")]
+        dargs = dargs or cmps
+        if dargs:
             try:
-                cpxmls = self._cnfServer.instantiatedComponents(args)
+                cpxmls = self._cnfServer.instantiatedComponents(dargs)
             except:
                 cpxmls = []
-                for ar in args:
+                for ar in dargs:
                     try:
                         cpxmls.extend(
                             self._cnfServer.instantiatedComponents([ar]))
@@ -383,7 +393,11 @@ class ConfigServer(object):
                 parameters = ParserTools.parseFields(xmls)
                 parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
-                ttools.title = "    Component: '%s'" % args[i]
+                if dargs[i] in deps:
+                    ttools.title = "    Component: '%s' %s" % (
+                        dargs[i], deps[dargs[i]])
+                else:
+                    ttools.title = "    Component: '%s'" % dargs[i]
                 if headers:
                     ttools.headers = headers
                 description.extend(ttools.generateList())

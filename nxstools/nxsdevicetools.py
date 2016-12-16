@@ -295,11 +295,15 @@ def getDataSourceComponents(server):
     acps = proxy.availableComponents()
     for cp in acps:
         try:
-            dss = proxy.componentDataSources(cp)
-            for ds in dss:
-                if ds not in dscps:
-                    dscps[ds] = []
-                dscps[ds].append(cp)
+            
+            depcps = proxy.dependentComponents([cp])
+            for dcp in depcps:
+                dss = proxy.componentDataSources(dcp)
+                for ds in dss:
+                    if ds not in dscps:
+                        dscps[ds] = []
+                    if cp not in dscps[ds]:    
+                        dscps[ds].append(cp)
         except Exception as e:
             sys.stderr.write(str(e))
             sys.stderr.write(
