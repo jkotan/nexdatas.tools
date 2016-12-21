@@ -19,7 +19,7 @@ Micro QBPM       23    43.5     3
             </field>
 	  </group>
 	</group>
-	<field type="NX_CHAR" name="depends_on">transformations/x<strategy mode="INIT"/>
+	<field type="NX_CHAR" name="depends_on">transformations/$(dependstop)<strategy mode="INIT"/>
 	</field>
 	<group type="NXtransformations" name="transformations">
           <field depends_on="y" units="mm" type="NX_FLOAT64" name="x">
@@ -33,7 +33,7 @@ Micro QBPM       23    43.5     3
             </dimensions>
             </attribute>
           </field>
-          <field units="mm" type="NX_FLOAT64" name="y">
+          <field depebds_on="$(dependsony)" units="mm" type="NX_FLOAT64" name="y">
             <strategy mode="INIT"/>$datasources.$(y)
             <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
@@ -42,6 +42,18 @@ Micro QBPM       23    43.5     3
             <dimensions rank="1">
               <dim value="3" index="1"/>
             </dimensions>
+            </attribute>
+          </field>
+          <field offset_units="m" units="m" type="NX_FLOAT64" name="distance" transformation_type="translation">$(distance)<strategy mode="INIT"/>
+            <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="offset">$(distanceoffset)<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
             </attribute>
           </field>
 	</group>

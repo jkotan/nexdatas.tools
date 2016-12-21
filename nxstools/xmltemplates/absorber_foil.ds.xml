@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_foil">
+    <result name="result">
+import json
+foillist = json.loads('$(foillist)')
+position = int(float(ds.$(position)) + 0.5)
+foil = []
+for pos, mat in enumerate(foillist):
+     foil.append(mat if pos &amp; position else "")
+ds.result = foil
+    </result>
+ $datasources.$(position)</datasource>
+</definition>

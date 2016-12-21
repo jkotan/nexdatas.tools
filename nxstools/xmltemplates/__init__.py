@@ -39,6 +39,11 @@ standardComponentVariables = {
         },
     },
     'beamstop': {
+
+        'description': {
+            'default': 'circular',
+            'doc': " circular or  rectangular (string)"
+        },
         'x': {
             'default': None,
             'doc': "horizontal position (datasource)"
@@ -83,6 +88,38 @@ standardComponentVariables = {
             'default': None,
             'doc': "which sliders are in [bitarray] (datasource)"
         },
+        'foil': {
+            'default': None,
+            'doc': "foil type, i.e. standard <cpname>_foil (datasource)"
+        },
+        'thickness': {
+            'default': None,
+            'doc': "foil thickness, i.e. standard <cpname>_thickness (datasource)"
+        },
+        'foillist': {
+            'default': '["Ag", "Ag", "Ag", "Ag", "", "Al", "Al", "Al", "Al"]',
+            'doc': "foil_type position json dictionary (string)"
+        },
+        'thicknesslist': {
+            'default': '[0.5, 0.05, 0.025, 0.0125, 0, 0.1, 0.3, 0.5, 1.0]',
+            'doc': "foil_type position json dictionary (string)"
+        },
+        'distance': {
+            'default': None,
+            'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distanceoffset': {
+            'default': None,
+            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+        },
+        'dependstop': {
+            'default': None,
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'transformations': {
+            'default': None,
+            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
+        },
     },
     'keithley': {
         'gain': {
@@ -109,7 +146,7 @@ standardComponentVariables = {
     'qbpm': {
         'foil': {
             'default': None,
-            'doc': "foil position, i.e. standard <cpname>_foil (datasource)"
+            'doc': "foil type, i.e. standard <cpname>_foil (datasource)"
         },
         'foilpos': {
             'default': None,
@@ -126,6 +163,22 @@ standardComponentVariables = {
         'foilposdict': {
             'default': '{"Ti": 43, "Ni": 23, "Out": 3}',
             'doc': "foil_type position json dictionary (string)"
+        },
+        'distance': {
+            'default': None,
+            'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distanceoffset': {
+            'default': None,
+            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+        },
+        'dependstop': {
+            'default': "x",
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'dependsony': {
+            'default': "",
+            'doc': "the  depends_on y field value,  e.g. distance (string)"
         },
     },
     'slit': {
@@ -498,7 +551,9 @@ standardComponentTemplateFiles = {
         'common3_common.ds.xml',
     ],
     'absorber': [
-        'absorber.xml'
+        'absorber.xml',
+        'absorber_foil.ds.xml',
+        'absorber_thickness.ds.xml',
     ],
     'keithley': [
         'keithley.xml',

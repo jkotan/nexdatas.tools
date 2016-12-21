@@ -1,3 +1,7 @@
+2016-12-21 Jan Kotanski <jankotan@gmail.com>
+	* extend absorber template component
+	* tagged as v2.18.0
+
 2016-12-16 Jan Kotanski <jankotan@gmail.com>
 	* fixes beamstop template components
 	* tagged as v2.17.1

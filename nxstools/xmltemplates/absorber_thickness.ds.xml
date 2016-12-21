@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_thickness">
+    <result name="result">
+import json
+thicknesslist = json.loads('$(thicknesslist)')
+position = int(float(ds.$(position)) + 0.5)
+thickness = []
+for pos, thick in enumerate(thicknesslist):
+     thickness.append(thick if pos &amp; position else 0.)
+ds.result = thickness
+    </result>
+ $datasources.$(position)</datasource>
+</definition>
