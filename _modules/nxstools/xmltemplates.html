@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.17.1 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.19.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.17.1',
+        VERSION:     '2.19.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.17.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.19.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.17</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.19</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -182,7 +182,7 @@
 <span class="c">#!/usr/bin/env python</span>
 <span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c">#</span>
-<span class="c">#    Copyright (C) 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c">#    Copyright (C) 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
 <span class="c">#</span>
 <span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
 <span class="c">#    it under the terms of the GNU General Public License as published by</span>
@@ -205,6 +205,90 @@
 <span class="c">#:     standatd component template variables</span>
 <span class="c">#:     and its [default value, doc string]</span>
 <span class="n">standardComponentVariables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;chcut&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;usage&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;Bragg&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the crystall usage, e.g. Laue (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;energy&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;synchronized monochromator energy (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;energyfmb&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;monochromator energy (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;lat&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal lattice translation of the first cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;yaw&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;phi rotation of the first cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;para&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;distance between the crystals&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;roll1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;chi rotation of the first cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;braggangle&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;bragg angle&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;jack1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;first vertical jack of table&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;jack2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;second vertical jack of table&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;jack3&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;third vertical jack of table&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;table&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;vertical position of table&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;oxfordhorizontal&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot; horizontal translation&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;unitcalibration&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot; unit calibration from dcmmotor&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;crystal&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot; type of crystal i.e. 0-&gt;Si111,1-&gt;Si311,2-&gt;Si111&quot;</span>
+            <span class="s">&quot; ChannelCut  (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;theta&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;theta angle&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;chcutdevice&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;FMBOxfDCMEnergy tango device name&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
     <span class="s">&#39;pinhole&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -218,11 +302,24 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;vertical position (datasource)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;xsign&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal position sign, e.g. &#39;-&#39; (string)&quot;</span>
+        <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;beamstop&#39;</span><span class="p">:</span> <span class="p">{</span>
+
+        <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;circular&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot; circular or  rectangular (string)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal position (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;xsign&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal position sign, e.g. &#39;-&#39; (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -264,6 +361,38 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;which sliders are in [bitarray] (datasource)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;foil&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil type, i.e. standard &lt;cpname&gt;_foil (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;thickness&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil thickness, i.e. standard &lt;cpname&gt;_thickness (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;foillist&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;[&quot;Ag&quot;, &quot;Ag&quot;, &quot;Ag&quot;, &quot;Ag&quot;, &quot;&quot;, &quot;Al&quot;, &quot;Al&quot;, &quot;Al&quot;, &quot;Al&quot;]&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil_type position json dictionary (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;thicknesslist&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;[0.5, 0.05, 0.025, 0.0125, 0, 0.1, 0.3, 0.5, 1.0]&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil_type position json dictionary (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;distance&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;distance for the sample in m, e.g. 0 (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation, e.g. distance (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;transformations&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. If it is  not set it is not created (string)&quot;</span>
+        <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;gain&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -290,7 +419,7 @@
     <span class="s">&#39;qbpm&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;foil&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil position, i.e. standard &lt;cpname&gt;_foil (datasource)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil type, i.e. standard &lt;cpname&gt;_foil (datasource)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;foilpos&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -307,6 +436,22 @@
         <span class="s">&#39;foilposdict&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;{&quot;Ti&quot;: 43, &quot;Ni&quot;: 23, &quot;Out&quot;: 3}&#39;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil_type position json dictionary (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;distance&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;distance for the sample in m, e.g. 0 (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;x&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation, e.g. distance (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;dependsony&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the  depends_on y field value,  e.g. distance (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;slit&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -482,6 +627,32 @@
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;dcm&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;usage&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;Bragg&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the crystall usage, e.g. Laue (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;topdependson2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;chi&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation of the second crystal, e.g. lat (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;phi1dependson&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;../../transformations/bragg&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the first cristal phi, e.g. theta (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;chi2dependson&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;theta&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the second cristal chi, e.g. phi (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;bend1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;bending of the first cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;bend2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;bending of the second cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;energy&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;synchronized monochromator energy (datasource)&quot;</span>
@@ -495,9 +666,19 @@
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal lattice translation of the first cristal&quot;</span>
             <span class="s">&quot; (datasource)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;lat2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;horizontal lattice translation of the second cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;yaw&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;phi rotation of the first cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;yaw2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;phi rotation of the second cristal&quot;</span>
             <span class="s">&quot; (datasource)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;roll1&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -508,6 +689,11 @@
         <span class="s">&#39;roll2&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;chi rotation of the second cristal&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;pitch1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;theta rotation of the first cristal&quot;</span>
             <span class="s">&quot; (datasource)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;pitch2&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -666,6 +852,12 @@
         <span class="s">&#39;dcm_unitcalibration.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;dcm_crystal.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
+    <span class="s">&#39;chcut&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;chcut.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;chcut_reflection.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;chcut_unitcalibration.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;chcut_crystal.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
     <span class="s">&#39;collect2&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;collect2.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
@@ -679,7 +871,9 @@
         <span class="s">&#39;common3_common.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="s">&#39;absorber&#39;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s">&#39;absorber.xml&#39;</span>
+        <span class="s">&#39;absorber.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;absorber_foil.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;absorber_thickness.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;keithley.xml&#39;</span><span class="p">,</span>
@@ -910,7 +1104,7 @@
       
     </p>
     <p>
-        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+        &copy; Copyright 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
