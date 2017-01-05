@@ -4,7 +4,7 @@
     <group type="NXinstrument" name="instrument">
       <group type="NXmonochromator" name="$(name)">
         <group type="NXcrystal" name="crystal1">
-          <field type="NX_CHAR" name="usage">Bragg<strategy mode="INIT"/>
+          <field type="NX_CHAR" name="usage">$(usage)<strategy mode="INIT"/>
           </field>
           <field type="NX_CHAR" name="type">Si<strategy mode="INIT"/>
           </field>
@@ -23,15 +23,6 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <field depends_on="../../transformations/bragg" units="deg" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
-              <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
-              </attribute>
-              <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
-                  <dim value="3" index="1"/>
-                </dimensions>
-                <strategy mode="INIT"/>
-              </attribute>
-            </field>
             <field depends_on="phi" units="deg" type="NX_FLOAT64" name="chi">$datasources.$(roll1)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
@@ -41,25 +32,65 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
+            <field depends_on="$(phi1dependson)" units="deg" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+            <field depends_on="../../transformations/bragg" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(pitch1)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+            <group type="NXcollection" name="collection">
+              <field type="NX_FLOAT" name="bending">
+              <strategy mode="INIT"/>$datasources.$(bend1)</field>
+            </group>
           </group>
           <field type="NX_CHAR" name="chemical_formula">Si<strategy mode="INIT"/>
           </field>
         </group>
         <group type="NXcrystal" name="crystal2">
-          <field type="NX_CHAR" name="usage">Bragg<strategy mode="INIT"/>
+          <field type="NX_CHAR" name="usage">$(usage)<strategy mode="INIT"/>
           </field>
           <field type="NX_CHAR" name="type">Si<strategy mode="INIT"/>
           </field>
           <field type="NX_INT" name="reflection">
             <strategy mode="INIT"/>
             <dimensions rank="1"/>$datasources.$(name)_reflection</field>
-          <field type="NX_CHAR" name="depends_on">transformations/chi<strategy mode="INIT"/>
+          <field type="NX_CHAR" name="depends_on">transformations/$(topdependson2)<strategy mode="INIT"/>
           </field>
           <group type="NXtransformations" name="transformations">
-            <field depends_on="theta" units="deg" type="NX_FLOAT64" name="chi">$datasources.$(roll2)<strategy mode="INIT"/>
+            <field depends_on="chi" units="mm" type="NX_FLOAT64" name="lat">$datasources.$(lat2)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+            <field depends_on="$(chi2dependson)" units="deg" type="NX_FLOAT64" name="chi">$datasources.$(roll2)<strategy mode="INIT"/>
               <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
               </attribute>
               <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+            <field depends_on="theta" units="deg" type="NX_FLOAT64" name="phi">$datasources.$(yaw2)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
                   <dim value="3" index="1"/>
                 </dimensions>
                 <strategy mode="INIT"/>
@@ -92,6 +123,10 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
+            <group type="NXcollection" name="collection">
+              <field type="NX_FLOAT" name="bending">
+              <strategy mode="INIT"/>$datasources.$(bend2)</field>
+            </group>
           </group>
           <field type="NX_CHAR" name="chemical_formula">Si</field>
         </group>

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2016 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2017 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -24,6 +24,90 @@
 #:     standatd component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
+    'chcut': {
+        'usage': {
+            'default': 'Bragg',
+            'doc': "the crystall usage, e.g. Laue (string)"
+        },
+        'energy': {
+            'default': None,
+            'doc': "synchronized monochromator energy (datasource)"
+        },
+        'energyfmb': {
+            'default': None,
+            'doc': "monochromator energy (datasource)"
+        },
+        'lat': {
+            'default': None,
+            'doc': "horizontal lattice translation of the first cristal"
+            " (datasource)"
+        },
+        'yaw': {
+            'default': None,
+            'doc': "phi rotation of the first cristal"
+            " (datasource)"
+        },
+        'para': {
+            'default': None,
+            'doc': "distance between the crystals"
+            " (string)"
+        },
+        'roll1': {
+            'default': None,
+            'doc': "chi rotation of the first cristal"
+            " (datasource)"
+        },
+        'braggangle': {
+            'default': None,
+            'doc': "bragg angle"
+            " (datasource)"
+        },
+        'jack1': {
+            'default': None,
+            'doc': "first vertical jack of table"
+            " (datasource)"
+        },
+        'jack2': {
+            'default': None,
+            'doc': "second vertical jack of table"
+            " (datasource)"
+        },
+        'jack3': {
+            'default': None,
+            'doc': "third vertical jack of table"
+            " (datasource)"
+        },
+        'table': {
+            'default': None,
+            'doc': "vertical position of table"
+            " (datasource)"
+        },
+        'oxfordhorizontal': {
+            'default': None,
+            'doc': " horizontal translation"
+            " (datasource)"
+        },
+        'unitcalibration': {
+            'default': None,
+            'doc': " unit calibration from dcmmotor"
+            " (datasource)"
+        },
+        'crystal': {
+            'default': None,
+            'doc': " type of crystal i.e. 0->Si111,1->Si311,2->Si111"
+            " ChannelCut  (datasource)"
+        },
+        'theta': {
+            'default': None,
+            'doc': "theta angle"
+            " (datasource)"
+        },
+        'chcutdevice': {
+            'default': None,
+            'doc': "FMBOxfDCMEnergy tango device name"
+            " (string)"
+        },
+    },
     'pinhole': {
         'x': {
             'default': None,
@@ -37,6 +121,10 @@ standardComponentVariables = {
             'default': None,
             'doc': "vertical position (datasource)"
         },
+        'xsign': {
+            'default': "",
+            'doc': "horizontal position sign, e.g. '-' (string)"
+        },
     },
     'beamstop': {
 
@@ -47,6 +135,10 @@ standardComponentVariables = {
         'x': {
             'default': None,
             'doc': "horizontal position (datasource)"
+        },
+        'xsign': {
+            'default': "",
+            'doc': "horizontal position sign, e.g. '-' (string)"
         },
         'y': {
             'default': None,
@@ -354,6 +446,32 @@ standardComponentVariables = {
         },
     },
     'dcm': {
+        'usage': {
+            'default': 'Bragg',
+            'doc': "the crystall usage, e.g. Laue (string)"
+        },
+        'topdependson2': {
+            'default': 'chi',
+            'doc': "the first transformation of the second crystal, e.g. lat (string)"
+        },
+        'phi1dependson': {
+            'default': '../../transformations/bragg',
+            'doc': "the depends_on field of the first cristal phi, e.g. theta (string)"
+        },
+        'chi2dependson': {
+            'default': 'theta',
+            'doc': "the depends_on field of the second cristal chi, e.g. phi (string)"
+        },
+        'bend1': {
+            'default': None,
+            'doc': "bending of the first cristal"
+            " (datasource)"
+        },
+        'bend2': {
+            'default': None,
+            'doc': "bending of the second cristal"
+            " (datasource)"
+        },
         'energy': {
             'default': None,
             'doc': "synchronized monochromator energy (datasource)"
@@ -367,9 +485,19 @@ standardComponentVariables = {
             'doc': "horizontal lattice translation of the first cristal"
             " (datasource)"
         },
+        'lat2': {
+            'default': None,
+            'doc': "horizontal lattice translation of the second cristal"
+            " (datasource)"
+        },
         'yaw': {
             'default': None,
             'doc': "phi rotation of the first cristal"
+            " (datasource)"
+        },
+        'yaw2': {
+            'default': None,
+            'doc': "phi rotation of the second cristal"
             " (datasource)"
         },
         'roll1': {
@@ -380,6 +508,11 @@ standardComponentVariables = {
         'roll2': {
             'default': None,
             'doc': "chi rotation of the second cristal"
+            " (datasource)"
+        },
+        'pitch1': {
+            'default': None,
+            'doc': "theta rotation of the first cristal"
             " (datasource)"
         },
         'pitch2': {
@@ -537,6 +670,12 @@ standardComponentTemplateFiles = {
         'dcm_reflection.ds.xml',
         'dcm_unitcalibration.ds.xml',
         'dcm_crystal.ds.xml',
+    ],
+    'chcut': [
+        'chcut.xml',
+        'chcut_reflection.ds.xml',
+        'chcut_unitcalibration.ds.xml',
+        'chcut_crystal.ds.xml',
     ],
     'collect2': [
         'collect2.xml',

@@ -23,7 +23,7 @@
             <strategy mode="INIT"/>$datasources.$(x)
 	    <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
-            <attribute type="NX_FLOAT64" name="vector">1 0 0
+            <attribute type="NX_FLOAT64" name="vector">$(xsign)1 0 0
 	    <strategy mode="INIT"/>
             <dimensions rank="1">
 	      <dim value="3" index="1"/>

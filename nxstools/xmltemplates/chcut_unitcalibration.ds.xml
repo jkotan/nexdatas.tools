@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_reflection">
+    <result name="result">
+import PyTango
+dp = PyTango.DeviceProxy("$(chcutdevice)")
+bdv = dp.get_property("BraggDevice")['BraggDevice'][0]
+bdp = PyTango.DeviceProxy(bdv)
+ds.result = bdp.unitcalibration
+    </result>
+  </datasource>
+</definition>

@@ -1,0 +1,120 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="entry$var.serialno">
+    <group type="NXinstrument" name="instrument">
+      <group type="NXmonochromator" name="$(name)">
+	<doc>$var(monochromatorname=$(name))</doc>
+        <group type="NXcrystal" name="crystal">
+          <field type="NX_CHAR" name="usage">$(usage)<strategy mode="INIT"/>
+          </field>
+          <field type="NX_CHAR" name="type">Si<strategy mode="INIT"/>
+          </field>
+          <field type="NX_INT" name="reflection">
+            <strategy mode="INIT"/>$datasources.$(name)_reflection<dimensions rank="1"/>
+          </field>
+          <field type="NX_CHAR" name="depends_on">transformations/para<strategy mode="INIT"/>
+          </field>
+          <group type="NXtransformations" name="transformations">
+            <field depends_on="lat" units="mm" type="NX_FLOAT64" name="para">$(para)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+            <field depends_on="../../transformations/bragg" units="mm" type="NX_FLOAT64" name="lat">$datasources.$(lat)<strategy mode="INIT"/>
+              <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+              </attribute>
+              <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                  <dim value="3" index="1"/>
+                </dimensions>
+                <strategy mode="INIT"/>
+              </attribute>
+            </field>
+          </group>
+          <field type="NX_CHAR" name="chemical_formula">Si<strategy mode="INIT"/>
+          </field>
+        </group>
+        <group type="NXtransformations" name="transformations">
+          <field depends_on="jack1" units="deg" type="NX_FLOAT64" name="bragg">$datasources.$(braggangle)<strategy mode="INIT"/>
+            <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+          <field units="mm" type="NX_FLOAT64" name="jack1">$datasources.$(jack1)<strategy mode="INIT"/>
+            <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+          <field units="mm" type="NX_FLOAT64" name="jack2">$datasources.$(jack2)<strategy mode="INIT"/>
+            <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+          <field units="mm" type="NX_FLOAT64" name="jack3">$datasources.$(jack3)<strategy mode="INIT"/>
+            <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+          <field depends_on="phi" units="mm" type="NX_FLOAT64" name="table">
+            <strategy mode="INIT"/>$datasources.$(table)<attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+	  <field  units="deg" type="NX_FLOAT64" name="phi">$datasources.$(yaw)<strategy mode="INIT"/>
+	    <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+	    </attribute>
+	    <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+		<dim value="3" index="1"/>
+	      </dimensions>
+	      <strategy mode="INIT"/>
+	    </attribute>
+	  </field>
+        </group>
+        <group type="NXcollection" name="collection">
+          <field units="mm" type="NX_FLOAT" name="oxford_horizontal">
+            <strategy mode="INIT"/>$datasources.$(oxfordhorizontal)</field>
+          <field units="deg/mm" type="NX_FLOAT64" name="unit_calibration">
+            <strategy mode="INIT"/>$datasources.$(unitcalibration)</field>
+          <field type="NX_INT64" name="crystal">
+            <strategy mode="INIT"/>$datasources.$(crystal)</field>
+          <field depends_on="jack1" units="deg" type="NX_FLOAT64" name="theta">$datasources.$(theta)<strategy mode="INIT"/>
+            <attribute type="NX_CHAR" name="transformation_type">rotation<strategy mode="INIT"/>
+            </attribute>
+            <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+          </field>
+          <field units="eV" type="NX_FLOAT64" name="energyfmb">
+            <strategy mode="INIT"/>$datasources.$(energyfmb)</field>
+        </group>
+        <field units="eV" type="NX_FLOAT64" name="energy">
+          <strategy mode="INIT"/>$datasources.$(energy)</field>
+      </group>
+    </group>
+  </group>
+</definition>

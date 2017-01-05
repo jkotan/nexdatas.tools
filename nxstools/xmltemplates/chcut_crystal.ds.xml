@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_crystal">
+    <result name="result">
+import PyTango
+dp = PyTango.DeviceProxy("$(chcutdevice)")
+ds.result = dp.crystal
+    </result>
+  </datasource>
+</definition>
