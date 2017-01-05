@@ -398,6 +398,10 @@ standardComponentVariables = {
             'default': "/gpfs/current",
             'doc': "beamtime file directory (string)"
         },
+        'localdir': {
+            'default': "/gpfs/local",
+            'doc': "local file directory (string)"
+        },
         'currentprefix': {
             'default': "beamtime-metadata-",
             'doc': "beamtime file prefix (string)"

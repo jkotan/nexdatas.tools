@@ -1,4 +1,8 @@
 2017-01-05 Jan Kotanski <jankotan@gmail.com>
+	* add gpfs/local into beamline directories
+	* tagged as v2.20.0
+
+2017-01-05 Jan Kotanski <jankotan@gmail.com>
 	* add channelcut template component
 	* extend dcm template component
 	* tagged as v2.19.0

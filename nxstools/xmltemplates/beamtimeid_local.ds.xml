@@ -3,7 +3,27 @@
   <datasource type="PYEVAL" name="$(name)_local">
     <result name="result">
 import socket
-ds.result = "%s_%s@%s" % ("$(shortname)", ds.start_time, socket.gethostname())
+import os
+dirname  = "$(localdir)"
+curprefix = "$(currentprefix)"
+curext = "$(currentpostfix)"
+comprefix = "$(commissionprefix)"
+comext = "$(commissionpostfix)"
+ds.result = ""
+if os.path.isdir(dirname):
+    btml = [fl for fl in  os.listdir(dirname)
+            if (fl.startswith(curprefix)
+                and fl.endswith(curext))]
+    if btml:
+        ds.result = btml[0][len(curprefix):-len(curext)]
+    else:
+        btml = [fl for fl in  os.listdir(dirname)
+                if (fl.startswith(comprefix)
+                    and fl.endswith(comext))]
+        if btml:
+            ds.result = btml[0][len(comprefix):-len(comext)]
+if not ds.result:
+    ds.result = "%s_%s@%s" % ("$(shortname)", ds.start_time, socket.gethostname())
     </result>
     $datasources.start_time
   </datasource>

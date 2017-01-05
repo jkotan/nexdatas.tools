@@ -2,15 +2,18 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
-cpath = "$(commissiondir)"
+compath = "$(commissiondir)"
+curpath = "$(currentdir)"
 ds.result = None      
 if ds.$(name)_current and ds.$(name)_commission:
     root = commonblock["__nxroot__"]
     fpath = root.filename
-    if fpath.startswith(cpath):
+    if fpath.startswith(compath):
         ds.result = ds.$(name)_commission
-    else:
+    elif fpath.startswith(curpath):
         ds.result = ds.$(name)_current
+    else:
+        ds.result = ds.$(name)_local
 elif ds.$(name)_current:
     ds.result = ds.$(name)_current
 elif ds.$(name)_commission:
