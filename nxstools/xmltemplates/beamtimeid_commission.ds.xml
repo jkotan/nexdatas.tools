@@ -8,12 +8,15 @@ fileprefix = "$(commissionprefix)"
 ext = "$(commissionpostfix)"
 ds.result = ""
 
-if os.path.isdir(dirname):
-    btml = [fl for fl in  os.listdir(dirname)
-            if (fl.startswith(fileprefix)
-                and fl.endswith(ext))]
-    if btml:
-        ds.result = btml[0][len(fileprefix):-len(ext)]
+try:
+    if os.path.isdir(dirname):
+	btml = [fl for fl in  os.listdir(dirname)
+		if (fl.startswith(fileprefix)
+		    and fl.endswith(ext))]
+	if btml:
+	    ds.result = btml[0][len(fileprefix):-len(ext)]
+except:
+    pass
     </result>
   </datasource>
 </definition>
