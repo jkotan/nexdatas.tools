@@ -1,4 +1,5 @@
-2017-01-XX Jan Kotanski <jankotan@gmail.com>
+2017-01-17 Jan Kotanski <jankotan@gmail.com>
+	* improve beamtime id template component
 	* extend chcut template component
 	* tagged as v2.21.0
 
