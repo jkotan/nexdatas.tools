@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.19.0 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.21.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.19.0',
+        VERSION:     '2.21.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.19.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.21.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.19</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.21</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -214,6 +214,10 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;synchronized monochromator energy (datasource)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;reflection&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;reflection from string (datasource)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;energyfmb&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;monochromator energy (datasource)&quot;</span>
@@ -353,6 +357,10 @@
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;absorber&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;y&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;vertical position (datasource)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;attenfactor&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;attenuation factor (datasource)&quot;</span>
@@ -579,6 +587,10 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;/gpfs/current&quot;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;beamtime file directory (string)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;localdir&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;/gpfs/local&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;local file directory (string)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;currentprefix&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;beamtime-metadata-&quot;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;beamtime file prefix (string)&quot;</span>
@@ -592,7 +604,7 @@
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;commission file directory (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;commissionprefix&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;commission-metadata-&quot;</span><span class="p">,</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;commissioning-metadata-&quot;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;commission file prefix (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;commissionpostfix&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -830,9 +842,6 @@
     <span class="s">&#39;beamtimeid&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;beamtimeid.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;beamtimeid.ds.xml&#39;</span><span class="p">,</span>
-        <span class="s">&#39;beamtimeid_current.ds.xml&#39;</span><span class="p">,</span>
-        <span class="s">&#39;beamtimeid_commission.ds.xml&#39;</span><span class="p">,</span>
-        <span class="s">&#39;beamtimeid_local.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;start_time.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -854,7 +863,6 @@
     <span class="p">],</span>
     <span class="s">&#39;chcut&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;chcut.xml&#39;</span><span class="p">,</span>
-        <span class="s">&#39;chcut_reflection.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;chcut_unitcalibration.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;chcut_crystal.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
