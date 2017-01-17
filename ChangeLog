@@ -1,3 +1,7 @@
+2017-01-XX Jan Kotanski <jankotan@gmail.com>
+	* extend chcut template component
+	* tagged as v2.21.0
+
 2017-01-06 Jan Kotanski <jankotan@gmail.com>
 	* add gpfs/local into beamline directories
 	* tagged as v2.20.1

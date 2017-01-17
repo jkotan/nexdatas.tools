@@ -2,27 +2,58 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
+import os
+import socket      
 compath = "$(commissiondir)"
 curpath = "$(currentdir)"
+locpath = "$(localdir)"
+curprefix = "$(currentprefix)"
+curext = "$(currentpostfix)"
+comprefix = "$(commissionprefix)"
+comext = "$(commissionpostfix)"
+
 ds.result = None      
-if ds.$(name)_current and ds.$(name)_commission:
-    root = commonblock["__nxroot__"]
-    fpath = root.filename
-    if fpath.startswith(compath):
-        ds.result = ds.$(name)_commission
-    elif fpath.startswith(curpath):
-        ds.result = ds.$(name)_current
-    else:
-        ds.result = ds.$(name)_local
-elif ds.$(name)_current:
-    ds.result = ds.$(name)_current
-elif ds.$(name)_commission:
-    ds.result = ds.$(name)_commission
-else:
-    ds.result = ds.$(name)_local
+root = commonblock["__nxroot__"]
+fpath = root.filename
+if fpath.startswith(curpath):
+    try: 
+        if os.path.isdir(curpath):
+            btml = [fl for fl in  os.listdir(curpath)
+                    if (fl.startswith(curprefix)
+                        and fl.endswith(curext))]
+        if btml:
+            ds.result = btml[0][len(curprefix):-len(curext)]
+    except:
+        pass
+if not ds.result and fpath.startswith(compath):
+    try: 
+        if os.path.isdir(compath):
+            btml = [fl for fl in  os.listdir(compath)
+                    if (fl.startswith(comprefix)
+                        and fl.endswith(comext))]
+        if btml:
+            ds.result = btml[0][len(comprefix):-len(comext)]
+    except:
+        pass
+if not ds.result and fpath.startswith(locpath):
+    try:
+        if os.path.isdir(locpath):
+            btml = [fl for fl in  os.listdir(locpath)
+                    if (fl.startswith(curprefix)
+                        and fl.endswith(curext))]
+            if btml:
+                ds.result = btml[0][len(curprefix):-len(curext)]
+            else:
+                btml = [fl for fl in  os.listdir(locpath)
+                        if (fl.startswith(comprefix)
+                            and fl.endswith(comext))]
+                if btml:
+                    ds.result = btml[0][len(comprefix):-len(comext)]
+    except:    
+        pass
+if not ds.result:
+    ds.result = "%s_%s@%s" % ("$(shortname)", ds.start_time, socket.gethostname())
     </result>
-    $datasources.$(name)_current
-    $datasources.$(name)_commission
-    $datasources.$(name)_local
+    $datasources.start_time
   </datasource>
 </definition>

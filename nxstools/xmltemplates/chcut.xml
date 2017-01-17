@@ -10,7 +10,7 @@
           <field type="NX_CHAR" name="type">Si<strategy mode="INIT"/>
           </field>
           <field type="NX_INT" name="reflection">
-            <strategy mode="INIT"/>$datasources.$(name)_reflection<dimensions rank="1"/>
+            <strategy mode="INIT"/>$(reflection)<dimensions rank="1"/>
           </field>
           <field type="NX_CHAR" name="depends_on">transformations/para<strategy mode="INIT"/>
           </field>

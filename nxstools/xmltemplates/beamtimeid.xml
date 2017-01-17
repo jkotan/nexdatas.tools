@@ -3,12 +3,6 @@
   <group type="NXentry" name="entry$var.serialno">
     <field type="NX_CHAR" name="experiment_identifier">
       <strategy mode="INIT"/>$datasources.$(name)
-      <attribute type="NX_CHAR" name="beamtimeid_current">
-        <strategy mode="INIT"/>$datasources.$(name)_current</attribute>
-      <attribute type="NX_CHAR" name="beamtimeid_commission">
-        <strategy mode="INIT"/>$datasources.$(name)_commission</attribute>
-      <attribute type="NX_CHAR" name="beamtimeid_local">
-        <strategy mode="INIT"/>$datasources.$(name)_local</attribute>
     </field>
   </group>
 </definition>

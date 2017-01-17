@@ -33,6 +33,10 @@ standardComponentVariables = {
             'default': None,
             'doc': "synchronized monochromator energy (datasource)"
         },
+        'reflection': {
+            'default': None,
+            'doc': "reflection from string (datasource)"
+        },
         'energyfmb': {
             'default': None,
             'doc': "monochromator energy (datasource)"
@@ -172,6 +176,10 @@ standardComponentVariables = {
         },
     },
     'absorber': {
+        'y': {
+            'default': None,
+            'doc': "vertical position (datasource)"
+        },
         'attenfactor': {
             'default': None,
             'doc': "attenuation factor (datasource)"
@@ -415,7 +423,7 @@ standardComponentVariables = {
             'doc': "commission file directory (string)"
         },
         'commissionprefix': {
-            'default': "commission-metadata-",
+            'default': "commissioning-metadata-",
             'doc': "commission file prefix (string)"
         },
         'commissionpostfix': {
@@ -653,9 +661,6 @@ standardComponentTemplateFiles = {
     'beamtimeid': [
         'beamtimeid.xml',
         'beamtimeid.ds.xml',
-        'beamtimeid_current.ds.xml',
-        'beamtimeid_commission.ds.xml',
-        'beamtimeid_local.ds.xml',
         'start_time.ds.xml',
     ],
     'default': [
@@ -677,7 +682,6 @@ standardComponentTemplateFiles = {
     ],
     'chcut': [
         'chcut.xml',
-        'chcut_reflection.ds.xml',
         'chcut_unitcalibration.ds.xml',
         'chcut_crystal.ds.xml',
     ],
