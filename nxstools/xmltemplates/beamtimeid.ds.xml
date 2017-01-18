@@ -35,20 +35,25 @@ if not ds.result and fpath.startswith(compath):
             ds.result = btml[0][len(comprefix):-len(comext)]
     except:
         pass
-if not ds.result and fpath.startswith(locpath):
+if not ds.result:
     try:
-        if os.path.isdir(locpath):
-            btml = [fl for fl in  os.listdir(locpath)
-                    if (fl.startswith(curprefix)
-                        and fl.endswith(curext))]
-            if btml:
-                ds.result = btml[0][len(curprefix):-len(curext)]
-            else:
-                btml = [fl for fl in  os.listdir(locpath)
-                        if (fl.startswith(comprefix)
-                            and fl.endswith(comext))]
+        dirpath = os.path.dirname(fpath)
+        while dirpath.startswith(locpath):
+            if os.path.isdir(dirpath):
+                btml = [fl for fl in  os.listdir(dirpath)
+                        if (fl.startswith(curprefix)
+                            and fl.endswith(curext))]
                 if btml:
-                    ds.result = btml[0][len(comprefix):-len(comext)]
+                    ds.result = btml[0][len(curprefix):-len(curext)]
+                    break
+                else:
+                    btml = [fl for fl in  os.listdir(dirpath)
+                            if (fl.startswith(comprefix)
+                                and fl.endswith(comext))]
+                    if btml:
+                        ds.result = btml[0][len(comprefix):-len(comext)]
+                        break
+            dirpath, tail = os.path.split(dirpath)
     except:    
         pass
 if not ds.result:

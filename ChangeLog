@@ -1,3 +1,7 @@
+2017-01-18 Jan Kotanski <jankotan@gmail.com>
+	* improve fetching beamtimeid from local directory in template components
+	* tagged as v2.21.1
+
 2017-01-17 Jan Kotanski <jankotan@gmail.com>
 	* improve beamtime id template component
 	* extend chcut template component
