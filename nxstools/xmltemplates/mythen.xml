@@ -40,8 +40,6 @@
             <strategy mode="FINAL"/>$datasources.$(name)_fileprefix</field>
           <field type="NX_CHAR" name="file_start_num">$datasources.$(name)_filestartnumber<strategy mode="INIT"/>
           </field>
-          <field type="NX_CHAR" name="last_image_taken">
-            <strategy mode="FINAL"/>$datasources.$(name)_lastimage</field>
           <field type="NX_INT64" name="file_last_num">
             <strategy mode="FINAL"/>$datasources.$(name)_fileindex</field>
           <field type="NX_CHAR" name="postrun">$datasources.$(name)_postrun<strategy mode="FINAL"/>
