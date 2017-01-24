@@ -50,10 +50,10 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <group type="NXcollection" name="collection">
-              <field type="NX_FLOAT" name="bending">
-              <strategy mode="INIT"/>$datasources.$(bend1)</field>
-            </group>
+          </group>
+          <group type="NXcollection" name="collection">
+            <field type="NX_FLOAT" name="bending">
+            <strategy mode="INIT"/>$datasources.$(bend1)</field>
           </group>
           <field type="NX_CHAR" name="chemical_formula">Si<strategy mode="INIT"/>
           </field>
@@ -123,10 +123,10 @@
                 <strategy mode="INIT"/>
               </attribute>
             </field>
-            <group type="NXcollection" name="collection">
-              <field type="NX_FLOAT" name="bending">
-              <strategy mode="INIT"/>$datasources.$(bend2)</field>
-            </group>
+          </group>
+          <group type="NXcollection" name="collection">
+            <field type="NX_FLOAT" name="bending">
+            <strategy mode="INIT"/>$datasources.$(bend2)</field>
           </group>
           <field type="NX_CHAR" name="chemical_formula">Si</field>
         </group>
