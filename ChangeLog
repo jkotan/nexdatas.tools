@@ -1,3 +1,7 @@
+2017-01-26 Jan Kotanski <jankotan@gmail.com>
+	* add defaults for hasep211eh and hasep24 into nxsetup
+	* tagged as v2.22.0
+
 2017-01-24 Jan Kotanski <jankotan@gmail.com>
 	* fix dcm template component
 	* tagged as v2.21.3
