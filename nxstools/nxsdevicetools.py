@@ -24,7 +24,7 @@ import os
 import time
 
 #: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , :obj:`str` > >)
-#:     standatd component template variables
+#:     standard component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {}
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
