@@ -863,7 +863,7 @@ class AddRecorderPath(Runner):
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxsetup add-record-path "\
+        + "       nxsetup add-recorder-path "\
         + "/usr/share/pyshared/sardananxsrecorder\n" \
         + "\n"
 

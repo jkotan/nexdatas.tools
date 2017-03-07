@@ -158,4 +158,4 @@ nxsetup add-recorder-path
       -h, --help     show this help message and exit
 
      examples:
-	   nxsetup add-record-path /usr/share/pyshared/sardananxsrecorder
+	   nxsetup add-recorder-path /usr/share/pyshared/sardananxsrecorder
