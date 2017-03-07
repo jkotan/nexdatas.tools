@@ -118,7 +118,7 @@ knownHosts = {
     'hasep211eh': {'beamline': 'p211', 'masterHost': 'hasep211eh',
                    'user': 'p211user', 'dbname': 'nxsconfig'},
     'hasep24': {'beamline': 'p24', 'masterHost': 'hasep24',
-                   'user': 'p24user', 'dbname': 'nxsconfig'},
+                'user': 'p24user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
     'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
@@ -603,7 +603,7 @@ class Set(Runner):
 
     #: (:obj:`str`) command description
     description = "set up NXSConfigServer NXSDataWriter " \
-                  + "and NXSRecSelector servers (a new version of -x)"
+                  + "and NXSRecSelector servers"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -727,7 +727,7 @@ class Start(Runner):
     """ start runner"""
 
     #: (:obj:`str`) command description
-    description = "start tango server (a new version of -s)"
+    description = "start tango server"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -767,7 +767,7 @@ class MoveProp(Runner):
     """ move-prop runner"""
 
     #: (:obj:`str`) command description
-    description = "change property name (a new version of -p)"
+    description = "change property name"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -813,7 +813,7 @@ class ChangeProp(Runner):
     """ change-prop runner"""
 
     #: (:obj:`str`) command description
-    description = "change property value (a new version of -c)"
+    description = "change property value"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -859,8 +859,7 @@ class AddRecorderPath(Runner):
     """ add-recorder-path runner"""
 
     #: (:obj:`str`) command description
-    description = "add-recorder-path into MacroServer(s) property" \
-                  + " (a new version of -a)"
+    description = "add-recorder-path into MacroServer(s) property"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -892,7 +891,7 @@ class Restart(Runner):
     """ restart runner"""
 
     #: (:obj:`str`) command description
-    description = "restart tango server (a new version of -r)"
+    description = "restart tango server"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \

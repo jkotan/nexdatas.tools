@@ -295,14 +295,14 @@ def getDataSourceComponents(server):
     acps = proxy.availableComponents()
     for cp in acps:
         try:
-            
+
             depcps = proxy.dependentComponents([cp])
             for dcp in depcps:
                 dss = proxy.componentDataSources(dcp)
                 for ds in dss:
                     if ds not in dscps:
                         dscps[ds] = []
-                    if cp not in dscps[ds]:    
+                    if cp not in dscps[ds]:
                         dscps[ds].append(cp)
         except Exception as e:
             sys.stderr.write(str(e))
@@ -330,6 +330,7 @@ def storeComponent(name, xml, server, mandatory=False):
     proxy.StoreComponent(str(name))
     if mandatory:
         proxy.SetMandatoryComponents([str(name)])
+
 
 def getClassName(devicename):
     """ provides device class name

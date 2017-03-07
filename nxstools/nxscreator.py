@@ -527,7 +527,6 @@ class ComponentCreator(Creator):
                 dsargs = None
         else:
             dsargs = None
-            
 
         self.args += aargs
         if not len(self.args):
@@ -538,7 +537,6 @@ class ComponentCreator(Creator):
         if dsargs is not None and len(self.args) != len(dsargs):
             raise WrongParameterError(
                 "component names cannot be match into datasource namse")
-
 
         if self.options.database:
             if not self.options.overwrite:
@@ -1142,7 +1140,7 @@ class OnlineCPCreator(CPCreator):
         """
         if self._printouts:
             if hasattr(self.options, "database") and \
-                self.options.database:
+               self.options.database:
                 print("CREATING %s %s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
                     dv.hostname,
@@ -1461,7 +1459,7 @@ class StandardCPCreator(CPCreator):
         """
         if self._printouts:
             if hasattr(self.options, "database") and \
-                self.options.database:
+               self.options.database:
                 print("CREATING '%s' of '%s' on '%s' with %s" % (
                     name,
                     self.options.cptype,

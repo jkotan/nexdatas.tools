@@ -194,7 +194,8 @@ standardComponentVariables = {
         },
         'thickness': {
             'default': None,
-            'doc': "foil thickness, i.e. standard <cpname>_thickness (datasource)"
+            'doc': "foil thickness, i.e. standard <cpname>_thickness "
+            "(datasource)"
         },
         'foillist': {
             'default': '["Ag", "Ag", "Ag", "Ag", "", "Al", "Al", "Al", "Al"]',
@@ -210,7 +211,8 @@ standardComponentVariables = {
         },
         'distanceoffset': {
             'default': None,
-            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+            'doc': "3-vector distance offset in m, e.g. sample-source "
+            "offset if the distance is taken from the source (string)"
         },
         'dependstop': {
             'default': None,
@@ -218,7 +220,8 @@ standardComponentVariables = {
         },
         'transformations': {
             'default': None,
-            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
+            'doc': "transformations group name i.e. 'transformations'. "
+            "If it is  not set it is not created (string)"
         },
     },
     'keithley': {
@@ -270,7 +273,8 @@ standardComponentVariables = {
         },
         'distanceoffset': {
             'default': None,
-            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+            'doc': "3-vector distance offset in m, e.g. sample-source "
+            "offset if the distance is taken from the source (string)"
         },
         'dependstop': {
             'default': "x",
@@ -320,7 +324,8 @@ standardComponentVariables = {
         },
         'distanceoffset': {
             'default': None,
-            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+            'doc': "3-vector distance offset in m, e.g. sample-source"
+            " offset if the distance is taken from the source (string)"
         },
         'dependstop': {
             'default': None,
@@ -328,7 +333,8 @@ standardComponentVariables = {
         },
         'transformations': {
             'default': None,
-            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
+            'doc': "transformations group name i.e. 'transformations'. "
+            "If it is  not set it is not created (string)"
         },
     },
     'source': {
@@ -386,7 +392,8 @@ standardComponentVariables = {
         },
         'distanceoffset': {
             'default': None,
-            'doc': "3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)"
+            'doc': "3-vector distance offset in m, e.g. sample-source offset "
+            "if the distance is taken from the source (string)"
         },
         'dependstop': {
             'default': None,
@@ -394,7 +401,8 @@ standardComponentVariables = {
         },
         'transformations': {
             'default': None,
-            'doc': "transformations group name i.e. 'transformations'. If it is  not set it is not created (string)"
+            'doc': "transformations group name i.e. 'transformations'. "
+            "If it is  not set it is not created (string)"
         },
     },
     'beamtimeid': {
@@ -464,15 +472,18 @@ standardComponentVariables = {
         },
         'topdependson2': {
             'default': 'chi',
-            'doc': "the first transformation of the second crystal, e.g. lat (string)"
+            'doc': "the first transformation of the second crystal,"
+            " e.g. lat (string)"
         },
         'phi1dependson': {
             'default': '../../transformations/bragg',
-            'doc': "the depends_on field of the first cristal phi, e.g. theta (string)"
+            'doc': "the depends_on field of the first cristal phi, "
+            "e.g. theta (string)"
         },
         'chi2dependson': {
             'default': 'theta',
-            'doc': "the depends_on field of the second cristal chi, e.g. phi (string)"
+            'doc': "the depends_on field of the second cristal chi, "
+            "e.g. phi (string)"
         },
         'bend1': {
             'default': None,

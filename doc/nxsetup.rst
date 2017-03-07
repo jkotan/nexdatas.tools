@@ -27,7 +27,7 @@ nxsetup set
 		       [-j CSJSON]
 		       [server_name [server_name ...]]
 
-    set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of -x)
+    set up NXSConfigServer NXSDataWriter and NXSRecSelector servers
 
     positional arguments:
       server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -60,7 +60,7 @@ nxsetup restart
 
     usage: nxsetup restart [-h] [-l LEVEL] [server_name [server_name ...]]
 
-    restart tango server (a new version of -r)
+    restart tango server
 
     positional arguments:
       server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -80,7 +80,7 @@ nxsetup start
 
     usage: nxsetup start [-h] [-l LEVEL] [server_name [server_name ...]]
 
-    start tango server (a new version of -s)
+    start tango server
 
     positional arguments:
       server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -102,7 +102,7 @@ nxsetup move-prop
     usage: nxsetup move-prop [-h] [-n NEWNAME] [-o OLDNAME]
 			     [server_name [server_name ...]]
 
-    change property name (a new version of -p)
+    change property name
 
     positional arguments:
       server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -126,7 +126,7 @@ nxsetup change-prop
     usage: nxsetup change-prop [-h] [-n NEWNAME] [-w PROPVALUE]
 			       [server_name [server_name ...]]
 
-    change property value (a new version of -c)
+    change property value
 
     positional arguments:
       server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -149,7 +149,7 @@ nxsetup add-recorder-path
 
     usage: nxsetup add-recorder-path [-h] recorder_path
 
-    add-recorder-path into MacroServer(s) property (a new version of -a)
+    add-recorder-path into MacroServer(s) property
 
     positional arguments:
       recorder_path  sardana recorder path

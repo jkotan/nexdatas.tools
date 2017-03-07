@@ -427,7 +427,7 @@ class Execute(Runner):
     """ Execute runner"""
 
     #: (:obj:`str`) command description
-    description = "execute the collection process (a new version of -x)"
+    description = "execute the collection process"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -486,7 +486,7 @@ class Test(Execute):
 
     #: (:obj:`str`) command description
     description = "execute the process in the test mode " \
-                  + "without changing any files (a new version of -t)"
+                  + "without changing any files"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \

@@ -1,4 +1,8 @@
 2017-03-07 Jan Kotanski <jankotan@gmail.com>
+	* update help for nxsetup and nxscollect
+	* tagged as v2.23.1
+
+2017-03-07 Jan Kotanski <jankotan@gmail.com>
 	* add -b and -m into nxscreate stdcomp
 	* add -b into nxscreate onlinecp
 	* tagged as v2.23.0

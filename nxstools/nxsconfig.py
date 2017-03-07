@@ -366,7 +366,7 @@ class ConfigServer(object):
                 if dars:
                     dargs.extend(dars)
                     deps[ar] = dars
-                
+
         if not dargs:
             if private:
                 dargs = [cp for cp in cmps if cp.startswith("__")]
