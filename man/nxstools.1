@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "February 28, 2017" "2.22" "NXSTools"
+.TH "NXSTOOLS" "1" "March 07, 2017" "2.23" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -668,9 +668,11 @@ nxscreate onlinecp [options] inputFile
 .IP \(bu 2
 without \(aq\-c <component>\(aq: show a list of possible components
 .IP \(bu 2
-without \(aq\-d <dircetory>:  components are created in Configuration Server database
+with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
-with \-d <directory>: components are created on the local filesystem
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 default <inputFile> is \(aq/online_dir/online.xml\(aq
 .IP \(bu 2
@@ -697,10 +699,11 @@ do not change aliases into lower case
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing component
 .TP
+.B \-b\fP,\fB  \-\-database
+store datasources in Configuration Server database
+.TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
-output directory where datasources will be stored. If
-it is not set components are stored in Configuration
-Server database
+output datasource directory
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
@@ -719,7 +722,8 @@ xml template package
 .nf
 .ft C
 nxscreate onlinecp
-nxscreate onlinecp \-c pilatus
+nxscreate onlinecp \-c lambda
+nxscreate onlinecp \-c pilatus \-b
 nxscreate onlinecp \-c lambda \-d /home/user/xmldir/
 .ft P
 .fi
@@ -746,9 +750,11 @@ without \(aq\-t <type>\(aq: show a list of possible component types
 .IP \(bu 2
 with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
 .IP \(bu 2
-without \(aq\-d <dircetory>:  components are created in Configuration Server database
+with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
-with \-d <directory>: components are created on the local filesystem
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 [name1 value1 [name2 value2] ...] sequence  defines component variable values
 .UNINDENT
@@ -778,10 +784,14 @@ do not change aliases into lower case
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing component
 .TP
+.B \-m\fP,\fB  \-\-mandatory
+set the component as mandatory
+.TP
+.B \-b\fP,\fB  \-\-database
+store datasources in Configuration Server database
+.TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
-output directory where datasources will be stored. If
-it is not set components are stored in Configuration
-Server database
+output datasource directory
 .TP
 .BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
@@ -797,8 +807,9 @@ file prefix, i.e. counter
 .nf
 .ft C
 nxscreate stdcomp
-nxscreate stdcomp \-t slit
-nxscreate stdcomp \-t slit \-c front_slit1 xgap slt1x ygap slt1y
+nxscreate stdcomp \-t source
+nxscreate stdcomp \-t slit \-c \-b front_slit1 xgap slt1x ygap slt1y
+nxscreate stdcomp \-t default \-c default \-b \-m
 .ft P
 .fi
 .UNINDENT
@@ -2469,7 +2480,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = " * without \(aq\-c <component>\(aq: show a list of possible components\en * without \(aq\-d <dircetory>:  components are created in Configuration Server database\en * with \-d <directory>: components are created on the local filesystem\en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en examples:\en       nxscreate onlinecp  \en       nxscreate onlinecp \-c pilatus \en       nxscreate onlinecp \-c lambda \-d /home/user/xmldir/ \en\en"
+.B epilog = " * without \(aq\-c <component>\(aq: show a list of possible components\en * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en examples:\en       nxscreate onlinecp  \en       nxscreate onlinecp \-c pilatus \-b \en       nxscreate onlinecp \-c lambda \-d /home/user/xmldir/ \en\en"
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -2562,7 +2573,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = " * without \(aq\-t <type>\(aq: show a list of possible component types\en * with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type\en * without \(aq\-d <dircetory>:  components are created in Configuration Server database\en * with \-d <directory>: components are created on the local filesystem\en * [name1 value1 [name2 value2] ...] sequence  defines component variable values \en examples:\en       nxscreate stdcomp  \en       nxscreate stdcomp \-t slit \en       nxscreate stdcomp \-t slit \-c front_slit1 xgap slt1x ygap slt1y\en\en"
+.B epilog = " * without \(aq\-t <type>\(aq: show a list of possible component types\en * with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type\en * with \-b: datasources are created in Configuration Server database\en * without \-b: datasources are created on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en * [name1 value1 [name2 value2] ...] sequence  defines component variable values \en examples:\en       nxscreate stdcomp  \en       nxscreate stdcomp \-t source \en       nxscreate stdcomp \-t default \-c default \-m \-b\en       nxscreate stdcomp \-t slit \-c front_slit1 \-b xgap slt1x ygap slt1y\en\en"
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5228,7 +5239,7 @@ and its [default value, doc string]
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.storeComponent(name, xml, server)
+.B nxstools.nxsdevicetools.storeComponent(name, xml, server, mandatory=False)
 stores components in Configuration Server
 .INDENT 7.0
 .TP
@@ -5240,6 +5251,8 @@ stores components in Configuration Server
 \fBxml\fP (\fI\%str\fP) \-\- component xml string
 .IP \(bu 2
 \fBserver\fP (\fI\%str\fP) \-\- configuration server
+.IP \(bu 2
+\fBmandatory\fP (\fI\%bool\fP) \-\- set component as mandatory
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5267,7 +5280,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f4b3bd98590>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fc0973e7890>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
