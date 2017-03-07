@@ -902,8 +902,8 @@ class CPCreator(Creator):
         """ creates components of all online.xml complex devices
         """
         cpname = self.options.component
-        if not hasattr(self.options, "directory") or \
-           not self.options.directory:
+        if hasattr(self.options, "database") and \
+           self.options.database:
             server = self.options.server
             if not self.options.overwrite:
                 if self._areComponentsAvailable(
@@ -913,12 +913,16 @@ class CPCreator(Creator):
 
         self.createXMLs()
         server = self.options.server
-        if not hasattr(self.options, "directory") or \
-           not self.options.directory:
+        if hasattr(self.options, "database") and \
+           self.options.database:
             for dsname, dsxml in self.datasources.items():
                 storeDataSource(dsname, dsxml, server)
             for cpname, cpxml in self.components.items():
-                storeComponent(cpname, cpxml, server)
+                mand = False
+                if hasattr(self.options, "mandatory") and \
+                   self.options.mandatory:
+                    mand = True
+                storeComponent(cpname, cpxml, server, mand)
         else:
             for dsname, dsxml in self.datasources.items():
                 myfile = open("%s/%s%s.ds.xml" % (
@@ -1137,12 +1141,8 @@ class OnlineCPCreator(CPCreator):
         :type dscps: :obj:`dict` <:obj:`str`, :obj:`list` < :obj:`str` > >
         """
         if self._printouts:
-            if hasattr(self.options, "directory") and \
-               self.options.directory:
-                print("CREATING %s: %s/%s%s.ds.xml" % (
-                    dv.tdevice, self.options.directory, self.options.file,
-                    dv.name))
-            else:
+            if hasattr(self.options, "database") and \
+                self.options.database:
                 print("CREATING %s %s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
                     dv.hostname,
@@ -1151,6 +1151,10 @@ class OnlineCPCreator(CPCreator):
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
+            else:
+                print("CREATING %s: %s/%s%s.ds.xml" % (
+                    dv.tdevice, self.options.directory, self.options.file,
+                    dv.name))
 
     def _getModuleName(self, device):
         """ provides module name
@@ -1456,20 +1460,20 @@ class StandardCPCreator(CPCreator):
         :type name: :obj:`str`
         """
         if self._printouts:
-            if hasattr(self.options, "directory") and \
-               self.options.directory:
+            if hasattr(self.options, "database") and \
+                self.options.database:
+                print("CREATING '%s' of '%s' on '%s' with %s" % (
+                    name,
+                    self.options.cptype,
+                    self.options.server,
+                    self.__params))
+            else:
                 print("CREATING '%s' of '%s' in '%s/%s%s.xml' with %s" % (
                     name,
                     self.options.cptype,
                     self.options.directory,
                     self.options.file,
                     self.options.component,
-                    self.__params))
-            else:
-                print("CREATING '%s' of '%s' on '%s' with %s" % (
-                    name,
-                    self.options.cptype,
-                    self.options.server,
                     self.__params))
 
     @classmethod

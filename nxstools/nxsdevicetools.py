@@ -312,7 +312,7 @@ def getDataSourceComponents(server):
     return dscps
 
 
-def storeComponent(name, xml, server):
+def storeComponent(name, xml, server, mandatory=False):
     """ stores components in Configuration Server
 
     :param name: component name
@@ -321,12 +321,15 @@ def storeComponent(name, xml, server):
     :type xml: :obj:`str`
     :param server: configuration server
     :type server: :obj:`str`
+    :param mandatory: set component as mandatory
+    :type mandatory: :obj:`bool`
     """
     proxy = openServer(server)
     proxy.Open()
     proxy.XMLString = str(xml)
     proxy.StoreComponent(str(name))
-
+    if mandatory:
+        proxy.SetMandatoryComponents([str(name)])
 
 def getClassName(devicename):
     """ provides device class name

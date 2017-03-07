@@ -452,15 +452,16 @@ class OnlineCP(Runner):
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " * without '-c <component>': show a list of possible components\n" \
-        + " * without '-d <dircetory>:  components are created in " \
-        + "Configuration Server database\n" \
-        + " * with -d <directory>: components are created" \
-        + " on the local filesystem\n" \
+        + " * with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " * without -b: datasources are created" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " * default: <directory> is '.' \n" \
         + " * default: <inputFile> is '/online_dir/online.xml' \n" \
         + "            <server> is taken from Tango DB\n" \
         + " examples:\n" \
         + "       nxscreate onlinecp  \n" \
-        + "       nxscreate onlinecp -c pilatus \n" \
+        + "       nxscreate onlinecp -c pilatus -b \n" \
         + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n\n"
 
     def create(self):
@@ -471,6 +472,10 @@ class OnlineCP(Runner):
                             help="component name" +
                             "related to the device name from <inputFile>",
                             dest="component", default="")
+        parser.add_argument("-b", "--database", action="store_true",
+                            default=False, dest="database",
+                            help="store components in"
+                            "Configuration Server database")
         parser.add_argument("-r", "--server", dest="server",
                             help="configuration server device name")
         parser.add_argument("-n", "--nolower", action="store_false",
@@ -480,11 +485,8 @@ class OnlineCP(Runner):
                             default=False, dest="overwrite",
                             help="overwrite existing component")
         parser.add_argument("-d", "--directory",
-                            help="output directory where "
-                            "datasources will be stored."
-                            " If it is not set components are stored in "
-                            "Configuration Server database",
-                            dest="directory", default="")
+                            help="output datasource directory",
+                            dest="directory", default=".")
         parser.add_argument("-x", "--file-prefix",
                             help="file prefix, i.e. counter",
                             dest="file", default="")
@@ -530,10 +532,10 @@ class OnlineCP(Runner):
             sys.exit(255)
 
         print("INPUT: %s" % args[0])
-        if options.directory:
-            print("OUTPUT DIR: %s" % options.directory)
-        else:
+        if options.database:
             print("SERVER: %s" % options.server)
+        else:
+            print("OUTPUT DIR: %s" % options.directory)
 
         creator = OnlineCPCreator(options, args)
         if options.component:
@@ -558,16 +560,18 @@ class StdComp(Runner):
         + " * with '-t <type>  and without -c <component>:" \
         + " show a list of component variables " \
         + "for the given component type\n" \
-        + " * without '-d <dircetory>:  components are created in " \
-        + "Configuration Server database\n" \
-        + " * with -d <directory>: components are created" \
-        + " on the local filesystem\n" \
+        + " * with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " * without -b: datasources are created" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " * default: <directory> is '.' \n" \
         + " * [name1 value1 [name2 value2] ...] sequence" \
         + "  defines component variable values \n" \
         + " examples:\n" \
         + "       nxscreate stdcomp  \n" \
-        + "       nxscreate stdcomp -t slit \n" \
-        + "       nxscreate stdcomp -t slit -c front_slit1" \
+        + "       nxscreate stdcomp -t source \n" \
+        + "       nxscreate stdcomp -t default -c default -m -b\n" \
+        + "       nxscreate stdcomp -t slit -c front_slit1 -b" \
         + " xgap slt1x ygap slt1y\n\n"
 
     def create(self):
@@ -590,12 +594,16 @@ class StdComp(Runner):
         parser.add_argument("-o", "--overwrite", action="store_true",
                             default=False, dest="overwrite",
                             help="overwrite existing component")
+        parser.add_argument("-b", "--database", action="store_true",
+                            default=False, dest="database",
+                            help="store components in"
+                            "Configuration Server database")
         parser.add_argument("-d", "--directory",
-                            help="output directory where "
-                            "datasources will be stored."
-                            " If it is not set components are stored in "
-                            "Configuration Server database",
-                            dest="directory", default="")
+                            help="output datasource directory",
+                            dest="directory", default=".")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="set the component as mandatory")
         parser.add_argument("-e", "--external",
                             help="external configuration server",
                             dest="external", default="")
@@ -629,10 +637,10 @@ class StdComp(Runner):
                     print("")
                     sys.exit(0)
 
-            if options.directory:
-                print("OUTPUT DIR: %s" % options.directory)
-            else:
+            if options.database:
                 print("SERVER: %s" % options.server)
+            else:
+                print("OUTPUT DIR: %s" % options.directory)
 
             try:
                 creator.create()

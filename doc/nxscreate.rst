@@ -231,8 +231,9 @@ Synopsis
 	  nxscreate onlinecp [options] inputFile
 
 - without '-c <component>': show a list of possible components
-- without '-d <dircetory>:  components are created in Configuration Server database
-- with -d <directory>: components are created on the local filesystem
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default <directory> is '.'
 - default <inputFile> is '/online_dir/online.xml'
 - default <server> is taken from Tango DB
 
@@ -246,10 +247,9 @@ Options:
                         configuration server device name
   -n, --nolower         do not change aliases into lower case
   -o, --overwrite       overwrite existing component
+  -b, --database        store datasources in Configuration Server database
   -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be stored. If
-                        it is not set components are stored in Configuration
-                        Server database
+                        output datasource directory
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
   -e EXTERNAL, --external=EXTERNAL
@@ -263,7 +263,8 @@ Example
 .. code:: bash
 
 	  nxscreate onlinecp
-	  nxscreate onlinecp -c pilatus
+	  nxscreate onlinecp -c lambda
+	  nxscreate onlinecp -c pilatus -b
 	  nxscreate onlinecp -c lambda -d /home/user/xmldir/
 
 
@@ -282,8 +283,9 @@ Synopsis
 
 - without '-t <type>': show a list of possible component types
 - with '-t <type>  and without -c <component>: show a list of component variables for the given component type
-- without '-d <dircetory>:  components are created in Configuration Server database
-- with -d <directory>: components are created on the local filesystem
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default <directory> is '.'
 - [name1 value1 [name2 value2] ...] sequence  defines component variable values 
 
 Options:
@@ -298,10 +300,10 @@ Options:
                         xml template package
   -n, --nolower         do not change aliases into lower case
   -o, --overwrite       overwrite existing component
+  -m, --mandatory       set the component as mandatory
+  -b, --database        store datasources in Configuration Server database
   -d DIRECTORY, --directory=DIRECTORY
-                        output directory where datasources will be stored. If
-                        it is not set components are stored in Configuration
-                        Server database
+                        output datasource directory
   -e EXTERNAL, --external=EXTERNAL
                         external configuration server
   -x FILE, --file-prefix=FILE
@@ -314,8 +316,9 @@ Example
 .. code:: bash
 
           nxscreate stdcomp  
-          nxscreate stdcomp -t slit 
-          nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
+          nxscreate stdcomp -t source
+          nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
+          nxscreate stdcomp -t default -c default -b -m
 
 
 nxscreate comp
