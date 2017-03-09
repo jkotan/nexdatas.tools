@@ -56,7 +56,8 @@ standardComponentVariables = {
         },
         'chiptemperature': {
             'default': None,
-            'doc': "detector chip temperature sensor for maia in Celsus (datasource)"
+            'doc': "detector chip temperature sensor for maia in Celsus "
+            "(datasource)"
         },
         'mosfettemperature': {
             'default': None,
@@ -97,7 +98,7 @@ standardComponentVariables = {
         'lineariseenable': {
             'default': None,
             'doc': "linearise enable status for maia (datasource)"
-        }, 
+        },
         'photonenable': {
             'default': None,
             'doc': "photon enable status for maia (datasource)"
@@ -1014,7 +1015,8 @@ moduleMultiAttributes = {
     'maiaprocessing': ['GaintrimEnable', 'LineariseEnable', 'PhotonEnable',
                        'PileupRejectEnable', 'PixelEnable',
                        'ThrottleEnable'],
-    'maiainterlock': ['BiasPeltierInterlock', 'BiasPeltierInterlockUptime', 'Pressure'],
+    'maiainterlock': ['BiasPeltierInterlock', 'BiasPeltierInterlockUptime',
+                      'Pressure'],
     'pilatus100k': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
