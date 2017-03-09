@@ -24,6 +24,161 @@
 #:     standard component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
+    'empty': {},
+    'maia': {
+        'runnumber': {
+            'default': None,
+            'doc': "run number of maia (datasource)"
+        },
+        'pressure': {
+            'default': None,
+            'doc': "gas pressure in mbar (datasource)"
+        },
+        'chillersetpoint': {
+            'default': None,
+            'doc': "chiller set point temperature in Celsus (datasource)"
+        },
+        'voltagesetpoint': {
+            'default': None,
+            'doc': "voltage set point temperature in Celsus (datasource)"
+        },
+        'leakagecurrent': {
+            'default': None,
+            'doc': "leakage current sensor for maia in A (datasource)"
+        },
+        'peltiercurrent': {
+            'default': None,
+            'doc': "peltier current sensor for maia in A (datasource)"
+        },
+        'watertemperature': {
+            'default': None,
+            'doc': "water temperature sensor for maia in Celsus (datasource)"
+        },
+        'chiptemperature': {
+            'default': None,
+            'doc': "detector chip temperature sensor for maia in Celsus (datasource)"
+        },
+        'mosfettemperature': {
+            'default': None,
+            'doc': "mosfet temperature sensor for maia in Celsus (datasource)"
+        },
+        'identity': {
+            'default': None,
+            'doc': "sensor identity for maia (datasource)"
+        },
+        'status': {
+            'default': None,
+            'doc': "interlock status for maia (datasource)"
+        },
+        'uptime': {
+            'default': None,
+            'doc': "interlock uptime for maia (datasource)"
+        },
+        'interlockpressure': {
+            'default': None,
+            'doc': "interlock pressure for maia in mbar (datasource)"
+        },
+        'maiastage': {
+            'default': 'empty',
+            'doc': "maia stage component name (component)"
+        },
+        'maiadimensions': {
+            'default': 'empty',
+            'doc': "maia dimensions component name (component)"
+        },
+        'maiafluxes': {
+            'default': 'empty',
+            'doc': "maia fluxes component name (component)"
+        },
+        'gaintrimenable': {
+            'default': None,
+            'doc': "gaintrim enable status for maia (datasource)"
+        },
+        'lineariseenable': {
+            'default': None,
+            'doc': "linearise enable status for maia (datasource)"
+        }, 
+        'photonenable': {
+            'default': None,
+            'doc': "photon enable status for maia (datasource)"
+        },
+        'pileuprejectionenable': {
+            'default': None,
+            'doc': "pileup rejection enable status for maia (datasource)"
+        },
+        'pixelenable': {
+            'default': None,
+            'doc': "pixel enable status for maia (datasource)"
+        },
+        'throttleenable': {
+            'default': None,
+            'doc': "throttle enable status for maia (datasource)"
+        },
+    },
+    'maiaflux': {
+        'detname': {
+            'default': "maia",
+            'doc': "detector (alias) name (string)"
+        },
+        'fname': {
+            'default': "fluxdevice",
+            'doc': "flux name group (string)"
+        },
+        'fluxname': {
+            'default': None,
+            'doc': "flux name for maia (datasource)"
+        },
+        'unit': {
+            'default': None,
+            'doc': "flux unit for maia (datasource)"
+        },
+        'source': {
+            'default': None,
+            'doc': "flux source for maia (datasource)"
+        },
+        'coefficient': {
+            'default': None,
+            'doc': "flux coefficient  for maia (datasource)"
+        },
+    },
+    'maiadimension': {
+        'detname': {
+            'default': "maia",
+            'doc': "detector (alias) name (string)"
+        },
+        'dname': {
+            'default': "dimension",
+            'doc': "dimension name group (string)"
+        },
+        'dimname': {
+            'default': None,
+            'doc': "dimension name for maia (datasource)"
+        },
+        'positionsource': {
+            'default': None,
+            'doc': "position source of dimension for maia (datasource)"
+        },
+        'pixelpitch': {
+            'default': None,
+            'doc': "pixel pitch of dimension for maia (datasource)"
+        },
+        'origin': {
+            'default': None,
+            'doc': "pixel origin of dimension for maia (datasource)"
+        },
+        'hysteresis': {
+            'default': None,
+            'doc': "pixel hysteresis of dimension for maia (datasource)"
+        },
+        'unit': {
+            'default': None,
+            'doc': "position units of dimension for maia (datasource)"
+        },
+        'numberofpixels': {
+            'default': None,
+            'doc': "number of pixels of dimension for maia (datasource)"
+        },
+    },
     'chcut': {
         'usage': {
             'default': 'Bragg',
@@ -696,6 +851,19 @@ standardComponentTemplateFiles = {
         'chcut_unitcalibration.ds.xml',
         'chcut_crystal.ds.xml',
     ],
+    'empty': [
+        'empty.xml',
+    ],
+    'maia': [
+        'maia.xml',
+        'empty.xml',
+    ],
+    'maiadimension': [
+        'maiadimension.xml',
+    ],
+    'maiaflux': [
+        'maiaflux.xml',
+    ],
     'collect2': [
         'collect2.xml',
     ],
@@ -836,6 +1004,17 @@ moduleMultiAttributes = {
         'CoolingTemp', 'CoolingTempSet', 'ImageTimeStamp',
         'RecorderMode',
     ],
+    'maialogger': ['RunNumber'],
+    'maiadimension': ['Name', 'PositionSource', 'PixelPitch', 'PixelOrigin',
+                      'PixelHysteresis', 'PositionUnit', 'PixelCoordExtent'],
+    'maiasensor': ['BiasVoltage', 'LeakageCurrent',
+                   'PeltierCurrent', 'WaterTemperature',
+                   'DetectorTemperature', 'MosfetTemperature', 'Identity'],
+    'maiaflux': ['FluxCoeff', 'FluxName', 'FluxUnit', 'FluxSource'],
+    'maiaprocessing': ['GaintrimEnable', 'LineariseEnable', 'PhotonEnable',
+                       'PileupRejectEnable', 'PixelEnable',
+                       'ThrottleEnable'],
+    'maiainterlock': ['BiasPeltierInterlock', 'BiasPeltierInterlockUptime', 'Pressure'],
     'pilatus100k': [
         'DelayTime', 'ExposurePeriod', 'ExposureTime', 'FileDir',
         'FilePostfix', 'FilePrefix', 'FileStartNum', 'LastImageTaken',
