@@ -3,7 +3,6 @@
   <datasource type="PYEVAL" name="$(name)_triggermode_cb">
     <result name="result">
 import PyTango
-import pni.io.nx.h5 as nx
 
 hostname = "$(hostname)"
 device = "$(device)"
@@ -35,15 +34,23 @@ tmode = ds.$(name)_triggermode
 totnbimages = sum(commonblock["$(name)_stepindex"])
 nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile
 ds.result = tmode.lower()
-root = commonblock["__nxroot__"]
+if "__root__" in commonblock.keys():
+    root = commonblock["__root__"]
+    if root.h5object.__class__.__name__ == "nxgroup":
+        import nxswriter.PNIWriter as nxw
+    else:
+        import nxswriter.H5PYWriter as nxw
+else:
+    root = commonblock["__nxroot__"]
+    import pni.io.nx.h5 as nxw
 en = root.open("entry$var.serialno")
 dt = en.open("data")
 ins = en.open("instrument")
 det = ins.open("$(name)")
 col = det.open("collection")
 for nbf in range(1, nbfiles+1):
-    nx.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-    nx.link("/entry$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "data_%06i" % nbf)
+    nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
+    nxw.link("/entry$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "data_%06i" % nbf)
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
