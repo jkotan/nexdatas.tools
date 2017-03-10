@@ -1,4 +1,5 @@
 2017-03-10 Jan Kotanski <jankotan@gmail.com>
+	* fix for maia
 	* improve eigerdectris component for h5py
 	* tagged as v2.24.1
 
