@@ -28,6 +28,8 @@ import shutil
 import fabio
 import signal
 import argparse
+import numpy
+import json
 
 from .filenamegenerator import FilenameGenerator
 from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
@@ -188,6 +190,39 @@ class Collector(object):
             print("Cannot open any of %s files" % sorted(set(filelist)))
         return None
 
+    def _loadrawimage(self, filename, dtype, shape=None):
+        """ loads image from file
+
+        :param filename: image file name
+        :type filename: :obj:`str`
+        :param dtype: field data type
+        :type dtype: :obj:`str`
+        :param shape: field shape
+        :type shape: :obj:`list` <:obj:`int` >
+        :returns: (image data, image data type, image shape)
+        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` <:obj:`int`>)
+        """
+        try:
+            idata = None
+
+            fl = open(filename, "rb")
+            idata = numpy.fromfile(fl, dtype=dtype)
+            if shape:
+                idata = idata.reshape(shape)
+            dtype = idata.dtype.__str__()
+            shape = idata.shape
+            if idata:
+                return idata, dtype, shape
+            else:
+                raise Exception("Cannot open a file %s" % filename)
+        except Exception:
+            if not self.__skipmissing:
+                raise Exception("Cannot open a file %s" % filename)
+            else:
+                print("Cannot open a file %s" % filename)
+
+            return None, None, None
+
     def _loadimage(self, filename):
         """ loads image from file
 
@@ -206,6 +241,8 @@ class Collector(object):
                 dtype = image.data.dtype.__str__()
                 shape = image.data.shape
                 return idata, dtype, shape
+            else:
+                raise Exception("Cannot open a file %s" % filename)
         except Exception:
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
@@ -296,7 +333,7 @@ class Collector(object):
             return field
 
     def _collectimages(self, files, node, fieldname=None, fieldattrs=None,
-                       fieldcompression=None):
+                       fieldcompression=None, dtype=None, shape=None):
         """ collects images
 
         :param files: a list of file strings
@@ -310,6 +347,10 @@ class Collector(object):
         :type fieldattrs: :obj:`dict` <:obj:`str`, :obj:`str`>
         :param fieldcompression: field compression rate
         :type fieldcompression: :obj:`int`
+        :param dtype: field data type
+        :type dtype: :obj:`str`
+        :param shape: field shape
+        :type shape: :obj:`list` <:obj:`int` >
         """
         fieldname = fieldname or "data"
         field = None
@@ -324,7 +365,10 @@ class Collector(object):
                 fname = self._findfile(fname, node.name)
                 if not fname:
                     continue
-                if not fname.endswith(".h5"):
+                if dtype:
+                    data, dtype, shape = self._loadrawimage(
+                        fname, dtype, shape)
+                elif not fname.endswith(".h5"):
                     data, dtype, shape = self._loadimage(fname)
                 else:
                     data, dtype, shape = self._loadh5data(fname)
@@ -361,6 +405,8 @@ class Collector(object):
                     if isinstance(files, (str, unicode)):
                         files = [files]
                     fieldname = "data"
+                    fielddtype = None
+                    fieldshape = None
                     fieldattrs = {}
                     fieldcompression = None
                     for at in inputfiles.attributes:
@@ -368,6 +414,10 @@ class Collector(object):
                             fieldname = at[...]
                         elif at.name == "fieldcompression":
                             fieldcompression = int(at[...])
+                        elif at.name == "fielddtype":
+                            fielddtype = at[...]
+                        elif at.name == "fieldshape":
+                            fieldshape = json.loads(at[...])
                         elif at.name.startswith("fieldattr_"):
                             atname = at.name[10:]
                             if atname:
@@ -381,7 +431,7 @@ class Collector(object):
                         fieldcompression = self.__compression
                     self._collectimages(
                         files, parent.parent, fieldname, fieldattrs,
-                        fieldcompression)
+                        fieldcompression, fielddtype, fieldshape)
             try:
                 names = parent.names()
             except Exception:
