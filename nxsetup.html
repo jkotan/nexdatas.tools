@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsetup &mdash; NXSTools 2.22.1 documentation</title>
+    <title>nxsetup &mdash; NXSTools 2.25.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.22.1',
+        VERSION:     '2.25.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.22.1 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.25.0 documentation" href="index.html" />
     <link rel="next" title="nxstools package" href="nxstools.html" />
     <link rel="prev" title="nxsfileinfo" href="nxsfileinfo.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -219,7 +219,7 @@
                    [-j CSJSON]
                    [server_name [server_name ...]]
 
-set up NXSConfigServer NXSDataWriter and NXSRecSelector servers (a new version of -x)
+set up NXSConfigServer NXSDataWriter and NXSRecSelector servers
 
 positional arguments:
   server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -250,7 +250,7 @@ optional arguments:
 <h2>nxsetup restart<a class="headerlink" href="#nxsetup-restart" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup restart [-h] [-l LEVEL] [server_name [server_name ...]]
 
-restart tango server (a new version of -r)
+restart tango server
 
 positional arguments:
   server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -269,7 +269,7 @@ optional arguments:
 <h2>nxsetup start<a class="headerlink" href="#nxsetup-start" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup start [-h] [-l LEVEL] [server_name [server_name ...]]
 
-start tango server (a new version of -s)
+start tango server
 
 positional arguments:
   server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -289,7 +289,7 @@ optional arguments:
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup move-prop [-h] [-n NEWNAME] [-o OLDNAME]
                          [server_name [server_name ...]]
 
-change property name (a new version of -p)
+change property name
 
 positional arguments:
   server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -311,7 +311,7 @@ optional arguments:
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup change-prop [-h] [-n NEWNAME] [-w PROPVALUE]
                            [server_name [server_name ...]]
 
-change property value (a new version of -c)
+change property value
 
 positional arguments:
   server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
@@ -332,7 +332,7 @@ optional arguments:
 <h2>nxsetup add-recorder-path<a class="headerlink" href="#nxsetup-add-recorder-path" title="Permalink to this headline">¶</a></h2>
 <div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup add-recorder-path [-h] recorder_path
 
-add-recorder-path into MacroServer(s) property (a new version of -a)
+add-recorder-path into MacroServer(s) property
 
 positional arguments:
   recorder_path  sardana recorder path
@@ -341,7 +341,7 @@ optional arguments:
   -h, --help     show this help message and exit
 
  examples:
-       nxsetup add-record-path /usr/share/pyshared/sardananxsrecorder
+       nxsetup add-recorder-path /usr/share/pyshared/sardananxsrecorder
 </pre></div>
 </div>
 </div>

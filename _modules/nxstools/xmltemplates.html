@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.22.1 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.25.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.22.1',
+        VERSION:     '2.25.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.22.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.25.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -205,6 +205,162 @@
 <span class="c">#:     standard component template variables</span>
 <span class="c">#:     and its [default value, doc string]</span>
 <span class="n">standardComponentVariables</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;empty&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s">&#39;maia&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;runnumber&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;run number of maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;pressure&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;gas pressure in mbar (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;chillersetpoint&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;chiller set point temperature in Celsus (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;voltagesetpoint&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;voltage set point temperature in Celsus (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;leakagecurrent&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;leakage current sensor for maia in A (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;peltiercurrent&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;peltier current sensor for maia in A (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;watertemperature&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;water temperature sensor for maia in Celsus (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;chiptemperature&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;detector chip temperature sensor for maia in Celsus &quot;</span>
+            <span class="s">&quot;(datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;mosfettemperature&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;mosfet temperature sensor for maia in Celsus (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;identity&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;sensor identity for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;status&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;interlock status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;uptime&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;interlock uptime for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;interlockpressure&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;interlock pressure for maia in mbar (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;maiastage&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;empty&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;maia stage component name (component)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;maiadimensions&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;empty&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;maia dimensions component name (component)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;maiafluxes&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;empty&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;maia fluxes component name (component)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;gaintrimenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;gaintrim enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;lineariseenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;linearise enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;photonenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;photon enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;pileuprejectionenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;pileup rejection enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;pixelenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;pixel enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;throttleenable&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;throttle enable status for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">&#39;maiaflux&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;detname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;maia&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;detector (alias) name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;fname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;fluxdevice&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;flux name group (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;fluxname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;flux name for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;unit&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;flux unit for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;flux source for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;coefficient&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;flux coefficient  for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">&#39;maiadimension&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;detname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;maia&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;detector (alias) name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;dname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;dimension&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;dimension name group (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;dimname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;dimension name for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;positionsource&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;position source of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;pixelpitch&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;pixel pitch of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;origin&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;pixel origin of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;hysteresis&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;pixel hysteresis of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;unit&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;position units of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;numberofpixels&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;number of pixels of dimension for maia (datasource)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
     <span class="s">&#39;chcut&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;usage&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;Bragg&#39;</span><span class="p">,</span>
@@ -375,7 +531,8 @@
         <span class="p">},</span>
         <span class="s">&#39;thickness&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil thickness, i.e. standard &lt;cpname&gt;_thickness (datasource)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;foil thickness, i.e. standard &lt;cpname&gt;_thickness &quot;</span>
+            <span class="s">&quot;(datasource)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;foillist&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;[&quot;Ag&quot;, &quot;Ag&quot;, &quot;Ag&quot;, &quot;Ag&quot;, &quot;&quot;, &quot;Al&quot;, &quot;Al&quot;, &quot;Al&quot;, &quot;Al&quot;]&#39;</span><span class="p">,</span>
@@ -391,7 +548,8 @@
         <span class="p">},</span>
         <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source &quot;</span>
+            <span class="s">&quot;offset if the distance is taken from the source (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -399,7 +557,8 @@
         <span class="p">},</span>
         <span class="s">&#39;transformations&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. If it is  not set it is not created (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. &quot;</span>
+            <span class="s">&quot;If it is  not set it is not created (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;keithley&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -451,7 +610,8 @@
         <span class="p">},</span>
         <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source &quot;</span>
+            <span class="s">&quot;offset if the distance is taken from the source (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;x&quot;</span><span class="p">,</span>
@@ -501,7 +661,8 @@
         <span class="p">},</span>
         <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source&quot;</span>
+            <span class="s">&quot; offset if the distance is taken from the source (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -509,7 +670,8 @@
         <span class="p">},</span>
         <span class="s">&#39;transformations&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. If it is  not set it is not created (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. &quot;</span>
+            <span class="s">&quot;If it is  not set it is not created (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -567,7 +729,8 @@
         <span class="p">},</span>
         <span class="s">&#39;distanceoffset&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset if the distance is taken from the source (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;3-vector distance offset in m, e.g. sample-source offset &quot;</span>
+            <span class="s">&quot;if the distance is taken from the source (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;dependstop&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -575,7 +738,8 @@
         <span class="p">},</span>
         <span class="s">&#39;transformations&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. If it is  not set it is not created (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. &quot;</span>
+            <span class="s">&quot;If it is  not set it is not created (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;beamtimeid&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -645,15 +809,18 @@
         <span class="p">},</span>
         <span class="s">&#39;topdependson2&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;chi&#39;</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation of the second crystal, e.g. lat (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation of the second crystal,&quot;</span>
+            <span class="s">&quot; e.g. lat (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;phi1dependson&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;../../transformations/bragg&#39;</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the first cristal phi, e.g. theta (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the first cristal phi, &quot;</span>
+            <span class="s">&quot;e.g. theta (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;chi2dependson&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;theta&#39;</span><span class="p">,</span>
-            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the second cristal chi, e.g. phi (string)&quot;</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the depends_on field of the second cristal chi, &quot;</span>
+            <span class="s">&quot;e.g. phi (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;bend1&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -866,6 +1033,19 @@
         <span class="s">&#39;chcut_unitcalibration.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;chcut_crystal.ds.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
+    <span class="s">&#39;empty&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;empty.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;maia&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;maia.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;empty.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;maiadimension&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;maiadimension.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;maiaflux&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;maiaflux.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
     <span class="s">&#39;collect2&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;collect2.xml&#39;</span><span class="p">,</span>
     <span class="p">],</span>
@@ -1006,6 +1186,18 @@
         <span class="s">&#39;CoolingTemp&#39;</span><span class="p">,</span> <span class="s">&#39;CoolingTempSet&#39;</span><span class="p">,</span> <span class="s">&#39;ImageTimeStamp&#39;</span><span class="p">,</span>
         <span class="s">&#39;RecorderMode&#39;</span><span class="p">,</span>
     <span class="p">],</span>
+    <span class="s">&#39;maialogger&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;RunNumber&#39;</span><span class="p">],</span>
+    <span class="s">&#39;maiadimension&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;PositionSource&#39;</span><span class="p">,</span> <span class="s">&#39;PixelPitch&#39;</span><span class="p">,</span> <span class="s">&#39;PixelOrigin&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;PixelHysteresis&#39;</span><span class="p">,</span> <span class="s">&#39;PositionUnit&#39;</span><span class="p">,</span> <span class="s">&#39;PixelCoordExtent&#39;</span><span class="p">],</span>
+    <span class="s">&#39;maiasensor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BiasVoltage&#39;</span><span class="p">,</span> <span class="s">&#39;LeakageCurrent&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;PeltierCurrent&#39;</span><span class="p">,</span> <span class="s">&#39;WaterTemperature&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;DetectorTemperature&#39;</span><span class="p">,</span> <span class="s">&#39;MosfetTemperature&#39;</span><span class="p">,</span> <span class="s">&#39;Identity&#39;</span><span class="p">],</span>
+    <span class="s">&#39;maiaflux&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;FluxCoeff&#39;</span><span class="p">,</span> <span class="s">&#39;FluxName&#39;</span><span class="p">,</span> <span class="s">&#39;FluxUnit&#39;</span><span class="p">,</span> <span class="s">&#39;FluxSource&#39;</span><span class="p">],</span>
+    <span class="s">&#39;maiaprocessing&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;GaintrimEnable&#39;</span><span class="p">,</span> <span class="s">&#39;LineariseEnable&#39;</span><span class="p">,</span> <span class="s">&#39;PhotonEnable&#39;</span><span class="p">,</span>
+                       <span class="s">&#39;PileupRejectEnable&#39;</span><span class="p">,</span> <span class="s">&#39;PixelEnable&#39;</span><span class="p">,</span>
+                       <span class="s">&#39;ThrottleEnable&#39;</span><span class="p">],</span>
+    <span class="s">&#39;maiainterlock&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;BiasPeltierInterlock&#39;</span><span class="p">,</span> <span class="s">&#39;BiasPeltierInterlockUptime&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;Pressure&#39;</span><span class="p">],</span>
     <span class="s">&#39;pilatus100k&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;DelayTime&#39;</span><span class="p">,</span> <span class="s">&#39;ExposurePeriod&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span> <span class="s">&#39;FileDir&#39;</span><span class="p">,</span>
         <span class="s">&#39;FilePostfix&#39;</span><span class="p">,</span> <span class="s">&#39;FilePrefix&#39;</span><span class="p">,</span> <span class="s">&#39;FileStartNum&#39;</span><span class="p">,</span> <span class="s">&#39;LastImageTaken&#39;</span><span class="p">,</span>

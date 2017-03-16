@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscollect &mdash; NXSTools 2.22.1 documentation</title>
+    <title>nxstools.nxscollect &mdash; NXSTools 2.25.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.22.1',
+        VERSION:     '2.25.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.22.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.25.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -209,6 +209,8 @@
 <span class="kn">import</span> <span class="nn">fabio</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">.filenamegenerator</span> <span class="kn">import</span> <span class="n">FilenameGenerator</span>
 <span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
@@ -369,6 +371,39 @@
             <span class="k">print</span><span class="p">(</span><span class="s">&quot;Cannot open any of </span><span class="si">%s</span><span class="s"> files&quot;</span> <span class="o">%</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">filelist</span><span class="p">)))</span>
         <span class="k">return</span> <span class="bp">None</span>
 
+    <span class="k">def</span> <span class="nf">_loadrawimage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; loads image from file</span>
+
+<span class="sd">        :param filename: image file name</span>
+<span class="sd">        :type filename: :obj:`str`</span>
+<span class="sd">        :param dtype: field data type</span>
+<span class="sd">        :type dtype: :obj:`str`</span>
+<span class="sd">        :param shape: field shape</span>
+<span class="sd">        :type shape: :obj:`list` &lt;:obj:`int` &gt;</span>
+<span class="sd">        :returns: (image data, image data type, image shape)</span>
+<span class="sd">        :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` &lt;:obj:`int`&gt;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">idata</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="n">fl</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
+            <span class="n">idata</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">shape</span><span class="p">:</span>
+                <span class="n">idata</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">idata</span><span class="o">.</span><span class="n">shape</span>
+            <span class="k">if</span> <span class="n">idata</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">idata</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot open a file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__skipmissing</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot open a file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;Cannot open a file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+
     <span class="k">def</span> <span class="nf">_loadimage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; loads image from file</span>
 
@@ -387,6 +422,8 @@
                 <span class="n">dtype</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
                 <span class="n">shape</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
                 <span class="k">return</span> <span class="n">idata</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot open a file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__skipmissing</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot open a file </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
@@ -477,7 +514,7 @@
             <span class="k">return</span> <span class="n">field</span>
 
     <span class="k">def</span> <span class="nf">_collectimages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">fieldname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                       <span class="n">fieldcompression</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                       <span class="n">fieldcompression</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; collects images</span>
 
 <span class="sd">        :param files: a list of file strings</span>
@@ -491,6 +528,10 @@
 <span class="sd">        :type fieldattrs: :obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;</span>
 <span class="sd">        :param fieldcompression: field compression rate</span>
 <span class="sd">        :type fieldcompression: :obj:`int`</span>
+<span class="sd">        :param dtype: field data type</span>
+<span class="sd">        :type dtype: :obj:`str`</span>
+<span class="sd">        :param shape: field shape</span>
+<span class="sd">        :type shape: :obj:`list` &lt;:obj:`int` &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span> <span class="ow">or</span> <span class="s">&quot;data&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
@@ -505,7 +546,10 @@
                 <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_findfile</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.h5&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">dtype</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loadrawimage</span><span class="p">(</span>
+                        <span class="n">fname</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.h5&quot;</span><span class="p">):</span>
                     <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loadimage</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loadh5data</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
@@ -542,6 +586,8 @@
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">)):</span>
                         <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
                     <span class="n">fieldname</span> <span class="o">=</span> <span class="s">&quot;data&quot;</span>
+                    <span class="n">fielddtype</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="n">fieldshape</span> <span class="o">=</span> <span class="bp">None</span>
                     <span class="n">fieldattrs</span> <span class="o">=</span> <span class="p">{}</span>
                     <span class="n">fieldcompression</span> <span class="o">=</span> <span class="bp">None</span>
                     <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">inputfiles</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
@@ -549,6 +595,10 @@
                             <span class="n">fieldname</span> <span class="o">=</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
                         <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;fieldcompression&quot;</span><span class="p">:</span>
                             <span class="n">fieldcompression</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;fielddtype&quot;</span><span class="p">:</span>
+                            <span class="n">fielddtype</span> <span class="o">=</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+                        <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&quot;fieldshape&quot;</span><span class="p">:</span>
+                            <span class="n">fieldshape</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
                         <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;fieldattr_&quot;</span><span class="p">):</span>
                             <span class="n">atname</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span>
                             <span class="k">if</span> <span class="n">atname</span><span class="p">:</span>
@@ -562,7 +612,7 @@
                         <span class="n">fieldcompression</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__compression</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_collectimages</span><span class="p">(</span>
                         <span class="n">files</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="p">,</span>
-                        <span class="n">fieldcompression</span><span class="p">)</span>
+                        <span class="n">fieldcompression</span><span class="p">,</span> <span class="n">fielddtype</span><span class="p">,</span> <span class="n">fieldshape</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">names</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -608,7 +658,7 @@
     <span class="sd">&quot;&quot;&quot; Execute runner&quot;&quot;&quot;</span>
 
     <span class="c">#: (:obj:`str`) command description</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;execute the collection process (a new version of -x)&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;execute the collection process&quot;</span>
     <span class="c">#: (:obj:`str`) command epilog</span>
     <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
@@ -667,7 +717,7 @@
 
     <span class="c">#: (:obj:`str`) command description</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;execute the process in the test mode &quot;</span> \
-                  <span class="o">+</span> <span class="s">&quot;without changing any files (a new version of -t)&quot;</span>
+                  <span class="o">+</span> <span class="s">&quot;without changing any files&quot;</span>
     <span class="c">#: (:obj:`str`) command epilog</span>
     <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \

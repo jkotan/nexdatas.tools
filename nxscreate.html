@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.22.1 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.25.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.22.1',
+        VERSION:     '2.25.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.22.1 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.25.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -573,8 +573,9 @@ and its set of datasources.</p>
 </div>
 <ul class="simple">
 <li>without &#8216;-c &lt;component&gt;&#8217;: show a list of possible components</li>
-<li>without &#8216;-d &lt;dircetory&gt;:  components are created in Configuration Server database</li>
-<li>with -d &lt;directory&gt;: components are created on the local filesystem</li>
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
 <li>default &lt;inputFile&gt; is &#8216;/online_dir/online.xml&#8217;</li>
 <li>default &lt;server&gt; is taken from Tango DB</li>
 </ul>
@@ -603,12 +604,13 @@ and its set of datasources.</p>
 <kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>overwrite existing component</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store datasources in Configuration Server database</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>output directory where datasources will be stored. If
-it is not set components are stored in Configuration
-Server database</td></tr>
+<tr><td>&nbsp;</td><td>output datasource directory</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
 </tr>
@@ -629,7 +631,8 @@ Server database</td></tr>
 <div class="section" id="id9">
 <h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp
-nxscreate onlinecp -c pilatus
+nxscreate onlinecp -c lambda
+nxscreate onlinecp -c pilatus -b
 nxscreate onlinecp -c lambda -d /home/user/xmldir/
 </pre></div>
 </div>
@@ -647,8 +650,9 @@ and its set of datasources.</p>
 <ul class="simple">
 <li>without &#8216;-t &lt;type&gt;&#8217;: show a list of possible component types</li>
 <li>with &#8216;-t &lt;type&gt;  and without -c &lt;component&gt;: show a list of component variables for the given component type</li>
-<li>without &#8216;-d &lt;dircetory&gt;:  components are created in Configuration Server database</li>
-<li>with -d &lt;directory&gt;: components are created on the local filesystem</li>
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
+<li>default &lt;directory&gt; is &#8216;.&#8217;</li>
 <li>[name1 value1 [name2 value2] ...] sequence  defines component variable values</li>
 </ul>
 <dl class="docutils">
@@ -684,11 +688,16 @@ and its set of datasources.</p>
 </tr>
 <tr><td>&nbsp;</td><td>overwrite existing component</td></tr>
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>set the component as mandatory</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store datasources in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
-<tr><td>&nbsp;</td><td>output directory where datasources will be stored. If
-it is not set components are stored in Configuration
-Server database</td></tr>
+<tr><td>&nbsp;</td><td>output datasource directory</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></td>
 </tr>
@@ -705,8 +714,9 @@ Server database</td></tr>
 <div class="section" id="id11">
 <h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate stdcomp
-nxscreate stdcomp -t slit
-nxscreate stdcomp -t slit -c front_slit1 xgap slt1x ygap slt1y
+nxscreate stdcomp -t source
+nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
+nxscreate stdcomp -t default -c default -b -m
 </pre></div>
 </div>
 </div>
