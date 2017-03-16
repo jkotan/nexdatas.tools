@@ -1,3 +1,7 @@
+2017-03-16 Jan Kotanski <jankotan@gmail.com>
+	* add raw image collection
+	* tagged as v2.25.0
+
 2017-03-10 Jan Kotanski <jankotan@gmail.com>
 	* fix for maia
 	* improve eigerdectris component for h5py
