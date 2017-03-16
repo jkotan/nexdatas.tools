@@ -145,11 +145,13 @@ class Device(object):
             except Exception:
                 pass
 
-    def findAttribute(self, tangohost):
+    def findAttribute(self, tangohost, clientlike=False):
         """ sets attribute and datasource group of online.xml device
 
         :param tangohost: tango host
         :type tangohost: :obj:`str`
+        :param clientlike: tango motors to be client like
+        :type clientlike: :obj:`bool`
         """
         mhost = self.sardanahostname or tangohost
         self.group = None
@@ -157,8 +159,12 @@ class Device(object):
         # if module.lower() in motorModules:
         if self.module in motorModules:
             self.attribute = 'Position'
+            if clientlike:
+                self.group = '__CLIENT__'
         elif self.dtype == 'stepping_motor':
             self.attribute = 'Position'
+            if clientlike:
+                self.group = '__CLIENT__'
         elif PYTANGO and self.module in moduleAttributes:
             try:
                 dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
@@ -830,7 +836,7 @@ class OnlineDSCreator(Creator):
                               % (dv.name, dv.module, dv.dtype))
                     device = device.nextSibling
                     continue
-                dv.findAttribute(tangohost)
+                dv.findAttribute(tangohost, self.options.clientlike)
                 if dv.attribute:
                     dv.setSardanaName(self.options.lower)
                     self._printAction(dv, dscps)

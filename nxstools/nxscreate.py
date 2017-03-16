@@ -322,6 +322,7 @@ class OnlineDS(Runner):
         + " `onlineds` overwrites existing datasources\n\n" \
         + " examples:\n" \
         + "       nxscreate onlineds -b  \n" \
+        + "       nxscreate onlineds -b -c \n" \
         + "       nxscreate onlineds -d /home/user/xmldir \n" \
         + "       nxscreate onlineds \n"
 
@@ -333,6 +334,10 @@ class OnlineDS(Runner):
                             default=False, dest="database",
                             help="store components in"
                             " Configuration Server database")
+        parser.add_argument("-c", "--clientlike", action="store_true",
+                            default=False, dest="clientlike",
+                            help="set motor tango datasources to "
+                            "be __CLIENT__ like")
         parser.add_argument("-d", "--directory",
                             help="output directory where"
                             " datasources will be saved",
