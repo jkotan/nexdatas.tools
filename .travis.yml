@@ -32,3 +32,5 @@ before_install:
 install:
   - python setup.py -q install
 
+scripts:
+  - python setup.py test

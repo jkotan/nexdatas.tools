@@ -20,7 +20,7 @@
 """ setup.py for command-line tools """
 
 import os
-from distutils.core import setup
+from distutils.core import setup, Command
 
 
 def read(fname):
@@ -30,6 +30,28 @@ def read(fname):
     :type fname: :obj:`str`
     """
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+class TestCommand(Command):
+    """ test command class
+    """
+
+    #: user options
+    user_options = []
+
+    #: initializes options
+    def initialize_options(self):
+        pass
+
+    #: finalizes options
+    def finalize_options(self):
+        pass
+
+    #: runs command
+    def run(self):
+        import sys
+        import subprocess
+        errno = subprocess.call([sys.executable, 'test/runtest.py'])
+        raise SystemExit(errno)
 
 PKG = "nxstools"
 IPKG = __import__(PKG)
@@ -68,7 +90,7 @@ SETUPDATA = dict(
         'nxsetup',
         'nxsfileinfo',
     ],
-    cmdclass={'build_sphinx': BuildDoc},
+    cmdclass={'test': TestCommand, 'build_sphinx': BuildDoc},
     command_options={
         'build_sphinx': {
             'project': ('setup.py', name),
