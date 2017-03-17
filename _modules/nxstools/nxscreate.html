@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate &mdash; NXSTools 2.25.0 documentation</title>
+    <title>nxstools.nxscreate &mdash; NXSTools 2.26.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.25.0',
+        VERSION:     '2.26.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.25.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.26.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.26</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -503,6 +503,7 @@
         <span class="o">+</span> <span class="s">&quot; `onlineds` overwrites existing datasources</span><span class="se">\n\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -b -c </span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds -d /home/user/xmldir </span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate onlineds </span><span class="se">\n</span><span class="s">&quot;</span>
 
@@ -514,6 +515,10 @@
                             <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in&quot;</span>
                             <span class="s">&quot; Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="s">&quot;--clientlike&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;clientlike&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;set motor tango datasources to &quot;</span>
+                            <span class="s">&quot;be __CLIENT__ like&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where&quot;</span>
                             <span class="s">&quot; datasources will be saved&quot;</span><span class="p">,</span>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.25.0 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.26.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.25.0',
+        VERSION:     '2.26.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.25.0 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.26.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.25</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.26</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -526,6 +526,10 @@ nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy Ex
 <kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
 <td>store components in Configuration Server database</td></tr>
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">-c</span>, <span class="option">--clientlike</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>set motor tango datasources to be __CLIENT__ like</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>output directory where datasources will be saved</td></tr>
@@ -556,6 +560,7 @@ nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy Ex
 <div class="section" id="id7">
 <h3>Example<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds -b
+nxscreate onlineds -b -c
 nxscreate onlineds -d /home/user/xmldir
 nxscreate onlineds
 </pre></div>
