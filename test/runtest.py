@@ -20,6 +20,9 @@
 # the unittest runner
 #
 
+import os
+import sys
+
 try:
     import PyTango
     ## if module PyTango avalable
@@ -153,8 +156,10 @@ def main():
     ## test runner
     runner = unittest.TextTestRunner()
     ## test result
-    result = runner.run(suite)
+    result = runner.run(suite).wasSuccessful()
+    sys.exit(result)
 
+         
  #   if ts:
  #       ts.tearDown()
 
