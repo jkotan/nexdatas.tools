@@ -43,14 +43,14 @@ if "__root__" in commonblock.keys():
 else:
     root = commonblock["__nxroot__"]
     import pni.io.nx.h5 as nxw
-en = root.open("entry$var.serialno")
+en = root.open("$(__entryname__)$var.serialno")
 dt = en.open("data")
 ins = en.open("instrument")
 det = ins.open("$(name)")
 col = det.open("collection")
 for nbf in range(1, nbfiles+1):
     nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-    nxw.link("/entry$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "data_%06i" % nbf)
+    nxw.link("/$(__entryname__)$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "data_%06i" % nbf)
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages

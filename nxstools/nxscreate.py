@@ -500,6 +500,8 @@ class OnlineCP(Runner):
                             dest="external", default="")
         parser.add_argument("-p", "--xml-package", dest="xmlpackage",
                             help="xml template package")
+        parser.add_argument("-y", "--entryname", dest="entryname",
+                            help="entry group name (prefix)", default="scan")
 
     def postauto(self):
         """ creates parser
@@ -615,6 +617,8 @@ class StdComp(Runner):
         parser.add_argument("-x", "--file-prefix",
                             help="file prefix, i.e. counter",
                             dest="file", default="")
+        parser.add_argument("-y", "--entryname", dest="entryname",
+                            help="entry group name (prefix)", default="scan")
         parser.add_argument('args', metavar='key value',
                             type=str, nargs='*',
                             help='pairs of (key value) for template variables')
@@ -682,16 +686,16 @@ class Comp(Runner):
         + "            <type> is NX_FLOAT\n" \
         + "            <chunk> is SCALAR\n" \
         + "            <nexuspath> is " \
-        + "'/entry$var.serialno:NXentry/instrument/collection/\n" \
+        + "'/scan$var.serialno:NXentry/instrument/collection/\n" \
         + " examples:\n" \
         + "       nxscreate comp counter \n" \
         + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
-        + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
+        + "       nxscreate comp -n '/scan$var.serialno:NXentry/instrument/" \
         + "sis3302:NXdetector/collection:NXcollection/' " \
         + "-v sis3302_1_roi -f1 -l4 "\
         + " -g STEP -t NX_FLOAT64 -k -b -m \n"\
-        + "       nxscreate comp -n '/entry$var.serialno:NXentry/instrument/" \
+        + "       nxscreate comp -n '/scan$var.serialno:NXentry/instrument/" \
         + "eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64" \
         + " -i -b -c SPECTRUM\n" \
         + "\n"
@@ -774,6 +778,10 @@ class Comp(Runner):
             "-m", "--minimal_device", action="store_true",
             default=False, dest="minimal",
             help="device name without first '0'")
+
+        parser.add_argument(
+            "-y", "--entryname", dest="entryname",
+            help="entry gourp name (prefix)", default="scan")
 
         parser.add_argument(
             'args', metavar='component_name',

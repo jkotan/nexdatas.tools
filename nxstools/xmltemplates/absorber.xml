@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <group type="NXentry" name="entry$var.serialno">
+  <group type="NXentry" name="$(__entryname__)$var.serialno">
     <group type="NXinstrument" name="instrument">
       <group type="NXattenuator" name="$(name)">
         <field type="NX_CHAR" name="type">

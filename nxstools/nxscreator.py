@@ -449,7 +449,7 @@ class Creator(object):
         :param dsname: datasource name
         :type dsname: :obj:`str`
         """
-        defpath = '/entry$var.serialno:NXentry/instrument' \
+        defpath = '/scan$var.serialno:NXentry/instrument' \
                   + '/collection/%s' % (dsname or name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
         cls.__createTree(df, nexuspath or defpath, dsname or name, nexusType,
@@ -516,13 +516,13 @@ class ComponentCreator(Creator):
                 first = int(self.options.first)
             except:
                 raise WrongParameterError(
-                    "CollCompCreator Invalid --first parameter\n")
+                    "ComponentCreator Invalid --first parameter\n")
 
             try:
                 last = int(self.options.last)
             except:
                 raise WrongParameterError(
-                    "CollCompCreator Invalid --last parameter\n")
+                    "ComponentCreator Invalid --last parameter\n")
             aargs = generateDeviceNames(self.options.device, first, last,
                                         self.options.minimal)
             if self.options.datasource:
@@ -1308,6 +1308,8 @@ class OnlineCPCreator(CPCreator):
                                     xmlcontent = content_file.read()
                                 xml = xmlcontent.replace("$(name)", cpname)\
                                     .replace("$(device)", dv.tdevice)\
+                                    .replace("$(__entryname__)",
+                                             (self.options.entryname or "scan"))\
                                     .replace("$(hostname)", dv.hostname)
                                 mdv = copy.copy(dv)
                                 mdv.name = newname
@@ -1407,7 +1409,9 @@ class StandardCPCreator(CPCreator):
                         self.xmltemplatepath, xmlfile), "r"
             ) as content_file:
                 xmlcontent = content_file.read()
-                xml = xmlcontent.replace("$(name)", cpname)
+                xml = xmlcontent.replace("$(name)", cpname).replace(
+                    "$(__entryname__)", (self.options.entryname or "scan"))
+
                 missing = []
                 for var, desc in self.xmlpackage.standardComponentVariables[
                         module].items():

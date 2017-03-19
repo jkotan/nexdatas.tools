@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <group type="NXentry" name="entry$var.serialno">
+  <group type="NXentry" name="$(__entryname__)$var.serialno">
     <group type="NXsample" name="$(sname)">
       <field type="NX_FLOAT64" name="h">
       <strategy mode="INIT"/>$datasources.$(h)</field>

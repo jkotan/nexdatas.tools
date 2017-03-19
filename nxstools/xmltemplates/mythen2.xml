@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <group type="NXentry" name="entry$var.serialno">
+  <group type="NXentry" name="$(__entryname__)$var.serialno">
     <group type="NXinstrument" name="instrument">
       <group type="NXdetector" name="$(name)">
         <field units="eV" type="NX_FLOAT64" name="threshold_energy">
@@ -64,7 +64,7 @@
       </group>
     </group>
     <group type="NXdata" name="data">
-      <link target="entry$var.serialno:NXentry/NXinstrument/mythen:NXdetector/data" name="mythen"/>
+      <link target="$(__entryname__)$var.serialno:NXentry/NXinstrument/mythen:NXdetector/data" name="mythen"/>
     </group>
   </group>
 </definition>
