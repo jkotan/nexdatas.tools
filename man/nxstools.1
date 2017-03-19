@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "March 17, 2017" "2.26" "NXSTools"
+.TH "NXSTOOLS" "1" "March 19, 2017" "2.27" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -717,6 +717,9 @@ external configuration server
 .TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
+.TP
+.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
+entry group name (prefix)
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -802,6 +805,9 @@ external configuration server
 .TP
 .BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
+.TP
+.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
+entry group name (prefix)
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -2362,7 +2368,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = " * with \-b: components are created (without datasources) in Configuration Server database\en * without \-b: components are created (without datasources) on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en            <strategy> is step\en            <type> is NX_FLOAT\en            <chunk> is SCALAR\en            <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/\en examples:\en       nxscreate comp counter \en       nxscreate comp \-f1 \-l \-v exp_c01 \-b \en       nxscreate comp lambda \-d /home/user/xmldir/ \en       nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m \en       nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM\en\en"
+.B epilog = " * with \-b: components are created (without datasources) in Configuration Server database\en * without \-b: components are created (without datasources) on the local filesystem in \-d <directory> \en * default: <directory> is \(aq.\(aq \en            <server> is taken from Tango DB\en            <strategy> is step\en            <type> is NX_FLOAT\en            <chunk> is SCALAR\en            <nexuspath> is \(aq/scan$var.serialno:NXentry/instrument/collection/\en examples:\en       nxscreate comp counter \en       nxscreate comp \-f1 \-l \-v exp_c01 \-b \en       nxscreate comp lambda \-d /home/user/xmldir/ \en       nxscreate comp \-n \(aq/scan$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m \en       nxscreate comp \-n \(aq/scan$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM\en\en"
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5289,7 +5295,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f61ff10ac50>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7facdab9f710>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
