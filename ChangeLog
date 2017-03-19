@@ -1,3 +1,9 @@
+2017-03-XX Jan Kotanski <jankotan@gmail.com>
+	* change default entryname to scan
+	* add $(__entryname__) variable
+	* add -y --entryname option to nxscreate stdcomp/onlinecp
+	* tagged as v2.27.0
+
 2017-03-17 Jan Kotanski <jankotan@gmail.com>
 	* add clientlike option into onlineds
 	* tagged as v2.26.0
