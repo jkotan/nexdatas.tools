@@ -333,7 +333,7 @@ class Collector(object):
             return field
 
     def _collectimages(self, files, node, fieldname=None, fieldattrs=None,
-                       fieldcompression=None, dtype=None, shape=None):
+                       fieldcompression=None, datatype=None, shape=None):
         """ collects images
 
         :param files: a list of file strings
@@ -347,14 +347,15 @@ class Collector(object):
         :type fieldattrs: :obj:`dict` <:obj:`str`, :obj:`str`>
         :param fieldcompression: field compression rate
         :type fieldcompression: :obj:`int`
-        :param dtype: field data type
-        :type dtype: :obj:`str`
+        :param datatype: field data type
+        :type datatype: :obj:`str`
         :param shape: field shape
         :type shape: :obj:`list` <:obj:`int` >
         """
         fieldname = fieldname or "data"
         field = None
         ind = 0
+
         for filestr in files:
             if self.__break:
                 break
@@ -365,9 +366,9 @@ class Collector(object):
                 fname = self._findfile(fname, node.name)
                 if not fname:
                     continue
-                if dtype:
+                if datatype:
                     data, dtype, shape = self._loadrawimage(
-                        fname, dtype, shape)
+                        fname, datatype, shape)
                 elif not fname.endswith(".h5"):
                     data, dtype, shape = self._loadimage(fname)
                 else:

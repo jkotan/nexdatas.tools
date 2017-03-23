@@ -1,3 +1,7 @@
+2017-03-23 Jan Kotanski <jankotan@gmail.com>
+	* fix for nxscollect
+	* tagged as v2.27.1
+
 2017-03-19 Jan Kotanski <jankotan@gmail.com>
 	* change default entryname to scan
 	* add $(__entryname__) variable
