@@ -167,7 +167,10 @@ class Device(object):
                 self.group = '__CLIENT__'
         elif PYTANGO and self.module in moduleAttributes:
             try:
-                dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
+                try:
+                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.sardananame)))
+                except:
+                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
 
                 sarattr = moduleAttributes[self.module][0]
