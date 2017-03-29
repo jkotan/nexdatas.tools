@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscollect &mdash; NXSTools 2.26.0 documentation</title>
+    <title>nxstools.nxscollect &mdash; NXSTools 2.27.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.26.0',
+        VERSION:     '2.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.26.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.27.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.26</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.27</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -514,7 +514,7 @@
             <span class="k">return</span> <span class="n">field</span>
 
     <span class="k">def</span> <span class="nf">_collectimages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">fieldname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                       <span class="n">fieldcompression</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                       <span class="n">fieldcompression</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; collects images</span>
 
 <span class="sd">        :param files: a list of file strings</span>
@@ -528,14 +528,15 @@
 <span class="sd">        :type fieldattrs: :obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;</span>
 <span class="sd">        :param fieldcompression: field compression rate</span>
 <span class="sd">        :type fieldcompression: :obj:`int`</span>
-<span class="sd">        :param dtype: field data type</span>
-<span class="sd">        :type dtype: :obj:`str`</span>
+<span class="sd">        :param datatype: field data type</span>
+<span class="sd">        :type datatype: :obj:`str`</span>
 <span class="sd">        :param shape: field shape</span>
 <span class="sd">        :type shape: :obj:`list` &lt;:obj:`int` &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fieldname</span> <span class="o">=</span> <span class="n">fieldname</span> <span class="ow">or</span> <span class="s">&quot;data&quot;</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="k">for</span> <span class="n">filestr</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__break</span><span class="p">:</span>
                 <span class="k">break</span>
@@ -546,9 +547,9 @@
                 <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_findfile</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="k">if</span> <span class="n">dtype</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">datatype</span><span class="p">:</span>
                     <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loadrawimage</span><span class="p">(</span>
-                        <span class="n">fname</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+                        <span class="n">fname</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="ow">not</span> <span class="n">fname</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.h5&quot;</span><span class="p">):</span>
                     <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loadimage</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>

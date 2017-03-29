@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate &mdash; NXSTools 2.26.0 documentation</title>
+    <title>nxstools.nxscreate &mdash; NXSTools 2.27.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.26.0',
+        VERSION:     '2.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.26.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.27.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.26</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.27</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -681,6 +681,8 @@
                             <span class="n">dest</span><span class="o">=</span><span class="s">&quot;external&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;xmlpackage&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s">&quot;xml template package&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;--entryname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;entryname&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;entry group name (prefix)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;scan&quot;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="OnlineCP.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.OnlineCP.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates parser</span>
@@ -796,6 +798,8 @@
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
                             <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;--entryname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;entryname&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;entry group name (prefix)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;scan&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;key value&#39;</span><span class="p">,</span>
                             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s">&#39;pairs of (key value) for template variables&#39;</span><span class="p">)</span>
@@ -863,16 +867,16 @@
         <span class="o">+</span> <span class="s">&quot;            &lt;type&gt; is NX_FLOAT</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;            &lt;chunk&gt; is SCALAR</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;            &lt;nexuspath&gt; is &quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;&#39;/entry$var.serialno:NXentry/instrument/collection/</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;&#39;/scan$var.serialno:NXentry/instrument/collection/</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate comp counter </span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate comp -f1 -l -v exp_c01 -b </span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;       nxscreate comp lambda -d /home/user/xmldir/ </span><span class="se">\n</span><span class="s">&quot;</span> \
-        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/scan$var.serialno:NXentry/instrument/&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;sis3302:NXdetector/collection:NXcollection/&#39; &quot;</span> \
         <span class="o">+</span> <span class="s">&quot;-v sis3302_1_roi -f1 -l4 &quot;</span>\
         <span class="o">+</span> <span class="s">&quot; -g STEP -t NX_FLOAT64 -k -b -m </span><span class="se">\n</span><span class="s">&quot;</span>\
-        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate comp -n &#39;/scan$var.serialno:NXentry/instrument/&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;eh1_mca01:NXdetector/data&#39; eh1_mca01 -g STEP -t NX_FLOAT64&quot;</span> \
         <span class="o">+</span> <span class="s">&quot; -i -b -c SPECTRUM</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
@@ -955,6 +959,10 @@
             <span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--minimal_device&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;minimal&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s">&quot;device name without first &#39;0&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;--entryname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;entryname&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;entry gourp name (prefix)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;scan&quot;</span><span class="p">)</span>
 
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;component_name&#39;</span><span class="p">,</span>

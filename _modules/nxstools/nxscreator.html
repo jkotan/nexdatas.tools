@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.26.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.27.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.26.0',
+        VERSION:     '2.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.26.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.27.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.26</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.27</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -630,7 +630,7 @@
 <span class="sd">        :param dsname: datasource name</span>
 <span class="sd">        :type dsname: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">defpath</span> <span class="o">=</span> <span class="s">&#39;/entry$var.serialno:NXentry/instrument&#39;</span> \
+        <span class="n">defpath</span> <span class="o">=</span> <span class="s">&#39;/scan$var.serialno:NXentry/instrument&#39;</span> \
                   <span class="o">+</span> <span class="s">&#39;/collection/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dsname</span> <span class="ow">or</span> <span class="n">name</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">fileprefix</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="n">cls</span><span class="o">.</span><span class="n">__createTree</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">nexuspath</span> <span class="ow">or</span> <span class="n">defpath</span><span class="p">,</span> <span class="n">dsname</span> <span class="ow">or</span> <span class="n">name</span><span class="p">,</span> <span class="n">nexusType</span><span class="p">,</span>
@@ -697,13 +697,13 @@
                 <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">first</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
-                    <span class="s">&quot;CollCompCreator Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                    <span class="s">&quot;ComponentCreator Invalid --first parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">last</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">WrongParameterError</span><span class="p">(</span>
-                    <span class="s">&quot;CollCompCreator Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+                    <span class="s">&quot;ComponentCreator Invalid --last parameter</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="n">aargs</span> <span class="o">=</span> <span class="n">generateDeviceNames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">minimal</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span><span class="p">:</span>
@@ -1489,6 +1489,8 @@
                                     <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                                 <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span>\
                                     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(device)&quot;</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span>\
+                                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(__entryname__)&quot;</span><span class="p">,</span>
+                                             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span>\
                                     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(hostname)&quot;</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)</span>
                                 <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                                 <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">newname</span>
@@ -1588,7 +1590,9 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">xmltemplatepath</span><span class="p">,</span> <span class="n">xmlfile</span><span class="p">),</span> <span class="s">&quot;r&quot;</span>
             <span class="p">)</span> <span class="k">as</span> <span class="n">content_file</span><span class="p">:</span>
                 <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span>
+                <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="s">&quot;$(__entryname__)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span>
+
                 <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="p">[</span>
                         <span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

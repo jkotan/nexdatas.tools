@@ -258,6 +258,8 @@ Options:
                         external configuration server
   -p XMLPACKAGE, --xml-package=XMLPACKAGE
                         xml template package
+  -y ENTRYNAME, --entryname ENTRYNAME
+                        entry group name (prefix)
 
 Example
 """""""
@@ -310,6 +312,8 @@ Options:
                         external configuration server
   -x FILE, --file-prefix=FILE
                         file prefix, i.e. counter
+  -y ENTRYNAME, --entryname ENTRYNAME
+                        entry group name (prefix)
 
 			
 Example
