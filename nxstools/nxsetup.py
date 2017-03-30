@@ -339,6 +339,21 @@ class SetUp(object):
                                     except:
                                         counter += 1
                                         time.sleep(0.2)
+                                counter = 0
+                                problems = True
+                                while problems and counter < 100:
+                                    try:
+                                        sys.stdout.write('.')
+                                        sys.stdout.flush()
+                                        rsvs = adminproxy.RunningServers
+                                        if svl in rsvs:
+                                            problems = False
+                                        else:    
+                                            time.sleep(0.2)
+                                    except:
+                                        time.sleep(0.2)
+                                    finally:    
+                                        counter += 1
                                 print(" ")
                                 if problems:
                                     print("%s was not restarted" % svl)

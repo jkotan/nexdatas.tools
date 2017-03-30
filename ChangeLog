@@ -1,3 +1,7 @@
+2017-03-30 Jan Kotanski <jankotan@gmail.com>
+	* wait for server starting
+	* tagged as v2.27.3
+
 2017-03-28 Jan Kotanski <jankotan@gmail.com>
 	* fix for nxscreator sardananame
 	* tagged as v2.27.2
