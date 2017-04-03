@@ -45,7 +45,7 @@ nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 .UNINDENT
 .UNINDENT
 .sp
-The following commands are available: set, restart, start, move\-prop, change\-prop, add\-recorder\-path
+The following commands are available: set, restart, start, stop, move\-prop, change\-prop, add\-recorder\-path
 .SH NXSETUP SET
 .INDENT 0.0
 .INDENT 3.5
@@ -128,6 +128,28 @@ optional arguments:
 
  examples:
        nxsetup start Pool/haso228 \-l 2
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSETUP STOP
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+usage: nxsetup stop [\-h] [server_name [server_name ...]]
+
+stop tango server
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  \-h, \-\-help            show this help message and exit
+
+ examples:
+       nxsetup stop Pool/haso228
 .ft P
 .fi
 .UNINDENT
