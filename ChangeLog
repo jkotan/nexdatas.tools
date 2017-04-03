@@ -1,3 +1,7 @@
+2017-04-03 Jan Kotanski <jankotan@gmail.com>
+	* add nxsetup stop server
+	* tagged as v2.28.0
+
 2017-03-30 Jan Kotanski <jankotan@gmail.com>
 	* wait for server starting
 	* tagged as v2.27.3

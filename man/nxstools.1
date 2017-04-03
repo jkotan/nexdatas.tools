@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "March 23, 2017" "2.27" "NXSTools"
+.TH "NXSTOOLS" "1" "April 03, 2017" "2.28" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -3403,6 +3403,21 @@ restarts server
 .UNINDENT
 .INDENT 7.0
 .TP
+.B stopServer(name, host=None)
+restarts server
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBname\fP (\fI\%str\fP) \-\- server name
+.IP \(bu 2
+\fBhost\fP (\fI\%str\fP) \-\- server host name
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B writer_name = None
 (\fI\%str\fP) NeXus writer device name
 .UNINDENT
@@ -3433,6 +3448,45 @@ creates parser
 .INDENT 7.0
 .TP
 .B epilog = \(aq examples:\en       nxsetup start Pool/haso228 \-l 2\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsetup.Stop(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Stop runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqstop tango server\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsetup stop Pool/haso228 \en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5295,7 +5349,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f82c43f70d0>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fdacb283190>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

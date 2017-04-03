@@ -348,15 +348,72 @@ class SetUp(object):
                                         rsvs = adminproxy.RunningServers
                                         if svl in rsvs:
                                             problems = False
-                                        else:    
+                                        else:
                                             time.sleep(0.2)
                                     except:
                                         time.sleep(0.2)
-                                    finally:    
+                                    finally:
                                         counter += 1
                                 print(" ")
                                 if problems:
                                     print("%s was not restarted" % svl)
+                                    print("Warning: Process with the server"
+                                          "instance could be suspended")
+
+    def stopServer(self, name, host=None):
+        """ restarts server
+
+        :param name: server name
+        :type name: :obj:`str`
+        :param host: server host name
+        :type host: :obj:`str`
+        """
+        if name:
+            if not host:
+                host = socket.gethostname()
+            admin = self.db.get_device_exported(
+                'tango/admin/' + host).value_string
+            if admin:
+                servers = None
+                started = None
+                try:
+                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    servers = adminproxy.read_attribute('Servers')
+                    started = adminproxy.command_inout(
+                        "DevGetRunningServers", True)
+                except:
+                    pass
+                if servers and hasattr(servers, "value") \
+                        and servers.value:
+                    for vl in servers.value:
+                        svl = vl.split('\t')[0]
+                        if started and svl in started:
+                            if '/' in name:
+                                cname = svl
+                            else:
+                                cname = svl.split('/')[0]
+                            if cname == name:
+                                if started and svl in started:
+                                    adminproxy.DevStop(svl)
+                                    sys.stdout.write("Stopping: %s" % svl)
+                                problems = True
+                                counter = 0
+                                while problems and counter < 100:
+                                    try:
+                                        sys.stdout.write('.')
+                                        sys.stdout.flush()
+                                        rsvs = adminproxy.RunningServers
+                                        if svl not in rsvs:
+                                            problems = False
+                                        else:
+                                            time.sleep(0.2)
+                                    except:
+                                        time.sleep(0.2)
+                                    finally:
+                                        counter += 1
+                                print(" ")
+                                if problems:
+                                    print("%s was not stopped" % svl)
                                     print("Warning: Process with the server"
                                           "instance could be suspended")
 
@@ -943,6 +1000,39 @@ class Restart(Runner):
             setUp.restartServer(
                 server, level=(options.level if options.level > -1 else None))
 
+class Stop(Runner):
+    """ Stop runner"""
+
+    #: (:obj:`str`) command description
+    description = "stop tango server"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsetup stop Pool/haso228 \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            'args', metavar='server_name',
+            type=str, nargs='*',
+            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args or []
+        setUp = SetUp()
+        servers = args if args else [
+            "NXSConfigServer", "NXSRecSelector", "NXSDataWriter"]
+        for server in servers:
+            setUp.stopServer(server)
+
 
 def _supportoldcommands():
     """ replace the old command names to the new ones
@@ -997,6 +1087,7 @@ def main():
         ('set', Set),
         ('restart', Restart),
         ('start', Start),
+        ('stop', Stop),
         ('move-prop', MoveProp),
         ('change-prop', ChangeProp),
         ('add-recorder-path', AddRecorderPath),
