@@ -15,7 +15,7 @@ Synopsis
 	  nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 
 
-The following commands are available: set, restart, start, move-prop, change-prop, add-recorder-path
+The following commands are available: set, restart, start, stop, move-prop, change-prop, add-recorder-path
 
 
 nxsetup set
@@ -52,7 +52,7 @@ nxsetup set
 	   nxsetup set
 	   nxsetup set -b p09 -m haso228 -u p09user -d nxsconfig NXSConfigServer
 
-	  
+
 nxsetup restart
 ---------------
 
@@ -73,6 +73,7 @@ nxsetup restart
      examples:
 	   nxsetup restart Pool/haso228 -l 2
 
+
 nxsetup start
 -------------
 
@@ -92,6 +93,24 @@ nxsetup start
 
      examples:
 	   nxsetup start Pool/haso228 -l 2
+
+nxsetup stop
+------------
+
+.. code:: bash
+
+    usage: nxsetup stop [-h] [server_name [server_name ...]]
+
+    stop tango server
+
+    positional arguments:
+      server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+    optional arguments:
+      -h, --help            show this help message and exit
+
+     examples:
+	   nxsetup stop Pool/haso228
 
 
 nxsetup move-prop
@@ -116,13 +135,13 @@ nxsetup move-prop
 
      examples:
 	   nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
-	  
+
 
 nxsetup change-prop
 -------------------
 
 .. code:: bash
-	  
+
     usage: nxsetup change-prop [-h] [-n NEWNAME] [-w PROPVALUE]
 			       [server_name [server_name ...]]
 

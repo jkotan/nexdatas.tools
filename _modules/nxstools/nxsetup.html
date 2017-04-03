@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsetup &mdash; NXSTools 2.27.1 documentation</title>
+    <title>nxstools.nxsetup &mdash; NXSTools 2.28.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.27.1',
+        VERSION:     '2.28.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.27.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.28.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.27</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.28</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -110,6 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-set">nxsetup set</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-restart">nxsetup restart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-start">nxsetup start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-stop">nxsetup stop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-move-prop">nxsetup move-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-change-prop">nxsetup change-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
@@ -520,9 +521,81 @@
                                     <span class="k">except</span><span class="p">:</span>
                                         <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
                                         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+                                <span class="n">problems</span> <span class="o">=</span> <span class="bp">True</span>
+                                <span class="k">while</span> <span class="n">problems</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+                                    <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                                        <span class="n">rsvs</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">RunningServers</span>
+                                        <span class="k">if</span> <span class="n">svl</span> <span class="ow">in</span> <span class="n">rsvs</span><span class="p">:</span>
+                                            <span class="n">problems</span> <span class="o">=</span> <span class="bp">False</span>
+                                        <span class="k">else</span><span class="p">:</span>
+                                            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                    <span class="k">except</span><span class="p">:</span>
+                                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                    <span class="k">finally</span><span class="p">:</span>
+                                        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
                                 <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
                                 <span class="k">if</span> <span class="n">problems</span><span class="p">:</span>
                                     <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> was not restarted&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
+                                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: Process with the server&quot;</span>
+                                          <span class="s">&quot;instance could be suspended&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SetUp.stopServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.stopServer">[docs]</a>    <span class="k">def</span> <span class="nf">stopServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; restarts server</span>
+
+<span class="sd">        :param name: server name</span>
+<span class="sd">        :type name: :obj:`str`</span>
+<span class="sd">        :param host: server host name</span>
+<span class="sd">        :type host: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
+                <span class="n">host</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+            <span class="n">admin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_exported</span><span class="p">(</span>
+                <span class="s">&#39;tango/admin/&#39;</span> <span class="o">+</span> <span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+            <span class="k">if</span> <span class="n">admin</span><span class="p">:</span>
+                <span class="n">servers</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">started</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">servers</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">read_attribute</span><span class="p">(</span><span class="s">&#39;Servers&#39;</span><span class="p">)</span>
+                    <span class="n">started</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">command_inout</span><span class="p">(</span>
+                        <span class="s">&quot;DevGetRunningServers&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">if</span> <span class="n">servers</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">servers</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">)</span> \
+                        <span class="ow">and</span> <span class="n">servers</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">vl</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="n">svl</span> <span class="o">=</span> <span class="n">vl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">started</span> <span class="ow">and</span> <span class="n">svl</span> <span class="ow">in</span> <span class="n">started</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="s">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+                                <span class="n">cname</span> <span class="o">=</span> <span class="n">svl</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">cname</span> <span class="o">=</span> <span class="n">svl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">cname</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">started</span> <span class="ow">and</span> <span class="n">svl</span> <span class="ow">in</span> <span class="n">started</span><span class="p">:</span>
+                                    <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevStop</span><span class="p">(</span><span class="n">svl</span><span class="p">)</span>
+                                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Stopping: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
+                                <span class="n">problems</span> <span class="o">=</span> <span class="bp">True</span>
+                                <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+                                <span class="k">while</span> <span class="n">problems</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+                                    <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                                        <span class="n">rsvs</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">RunningServers</span>
+                                        <span class="k">if</span> <span class="n">svl</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rsvs</span><span class="p">:</span>
+                                            <span class="n">problems</span> <span class="o">=</span> <span class="bp">False</span>
+                                        <span class="k">else</span><span class="p">:</span>
+                                            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                    <span class="k">except</span><span class="p">:</span>
+                                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                    <span class="k">finally</span><span class="p">:</span>
+                                        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                                <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">problems</span><span class="p">:</span>
+                                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> was not stopped&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
                                     <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: Process with the server&quot;</span>
                                           <span class="s">&quot;instance could be suspended&quot;</span><span class="p">)</span>
 </div>
@@ -1108,6 +1181,39 @@
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
             <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span>
                 <span class="n">server</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">))</span>
+</div></div>
+<div class="viewcode-block" id="Stop"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop">[docs]</a><span class="k">class</span> <span class="nc">Stop</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Stop runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;stop tango server&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxsetup stop Pool/haso228 </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="Stop.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;server_name&#39;</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;server names, e.g.: NXSRecSelector NXSDataWriter/TDW1&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Stop.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.Stop.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">stopServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
 
 </div></div>
 <span class="k">def</span> <span class="nf">_supportoldcommands</span><span class="p">():</span>
@@ -1163,6 +1269,7 @@
         <span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="n">Set</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&#39;restart&#39;</span><span class="p">,</span> <span class="n">Restart</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&#39;start&#39;</span><span class="p">,</span> <span class="n">Start</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;stop&#39;</span><span class="p">,</span> <span class="n">Stop</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&#39;move-prop&#39;</span><span class="p">,</span> <span class="n">MoveProp</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&#39;change-prop&#39;</span><span class="p">,</span> <span class="n">ChangeProp</span><span class="p">),</span>
         <span class="p">(</span><span class="s">&#39;add-recorder-path&#39;</span><span class="p">,</span> <span class="n">AddRecorderPath</span><span class="p">),</span>

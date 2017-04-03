@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsetup &mdash; NXSTools 2.27.1 documentation</title>
+    <title>nxsetup &mdash; NXSTools 2.28.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.27.1',
+        VERSION:     '2.28.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.27.1 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.28.0 documentation" href="index.html" />
     <link rel="next" title="nxstools package" href="nxstools.html" />
     <link rel="prev" title="nxsfileinfo" href="nxsfileinfo.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.27</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.28</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -111,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-set">nxsetup set</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsetup-stop">nxsetup stop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
@@ -154,6 +155,7 @@
 <li><a class="reference internal" href="#nxsetup-set">nxsetup set</a></li>
 <li><a class="reference internal" href="#nxsetup-restart">nxsetup restart</a></li>
 <li><a class="reference internal" href="#nxsetup-start">nxsetup start</a></li>
+<li><a class="reference internal" href="#nxsetup-stop">nxsetup stop</a></li>
 <li><a class="reference internal" href="#nxsetup-move-prop">nxsetup move-prop</a></li>
 <li><a class="reference internal" href="#nxsetup-change-prop">nxsetup change-prop</a></li>
 <li><a class="reference internal" href="#nxsetup-add-recorder-path">nxsetup add-recorder-path</a></li>
@@ -211,7 +213,7 @@
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate  &lt;command&gt; [ &lt;options&gt;]  [&lt;arg1&gt; [&lt;arg2&gt;  ...]]
 </pre></div>
 </div>
-<p>The following commands are available: set, restart, start, move-prop, change-prop, add-recorder-path</p>
+<p>The following commands are available: set, restart, start, stop, move-prop, change-prop, add-recorder-path</p>
 </div>
 <div class="section" id="nxsetup-set">
 <h2>nxsetup set<a class="headerlink" href="#nxsetup-set" title="Permalink to this headline">¶</a></h2>
@@ -281,6 +283,23 @@ optional arguments:
 
  examples:
        nxsetup start Pool/haso228 -l 2
+</pre></div>
+</div>
+</div>
+<div class="section" id="nxsetup-stop">
+<h2>nxsetup stop<a class="headerlink" href="#nxsetup-stop" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>usage: nxsetup stop [-h] [server_name [server_name ...]]
+
+stop tango server
+
+positional arguments:
+  server_name           server names, e.g.: NXSRecSelector NXSDataWriter/TDW1
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+ examples:
+       nxsetup stop Pool/haso228
 </pre></div>
 </div>
 </div>
