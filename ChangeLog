@@ -1,3 +1,7 @@
+2017-04-05 Jan Kotanski <jankotan@gmail.com>
+	* add slit closed position and offset calibration
+	* tagged as v2.29.0
+
 2017-04-03 Jan Kotanski <jankotan@gmail.com>
 	* add nxsetup stop server
 	* tagged as v2.28.0

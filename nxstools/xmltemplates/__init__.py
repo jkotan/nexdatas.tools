@@ -474,6 +474,30 @@ standardComponentVariables = {
             'default': None,
             'doc': "top blade position (datasource)"
         },
+        'leftclosed': {
+            'default': None,
+            'doc': "left blade closed position (datasource)"
+        },
+        'rightclosed': {
+            'default': None,
+            'doc': "right blade closed position (datasource)"
+        },
+        'bottomclosed': {
+            'default': None,
+            'doc': "bottom blade closed position (datasource)"
+        },
+        'topclosed': {
+            'default': None,
+            'doc': "top blade closed position (datasource)"
+        },
+        'xoffsetcalibration': {
+            'default': None,
+            'doc': "horizontal offset calibration (datasource)"
+        },
+        'yoffsetcalibration': {
+            'default': None,
+            'doc': "vertiacal offset calibration (datasource)"
+        },
         'distance': {
             'default': None,
             'doc': "distance for the sample in m, e.g. 0 (string)"

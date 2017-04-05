@@ -16,6 +16,18 @@
             <strategy mode="INIT"/>$datasources.$(xoffset)</field>
           <field units="mm" type="NX_FLOAT" name="y_offset">
             <strategy mode="INIT"/>$datasources.$(yoffset)</field>
+          <field units="mm" type="NX_FLOAT" name="x_offset_calibration">
+            <strategy mode="INIT"/>$datasources.$(xoffsetcalibration)</field>
+          <field units="mm" type="NX_FLOAT" name="y_offset_calibration">
+            <strategy mode="INIT"/>$datasources.$(yoffsetcalibration)</field>
+          <field units="mm" type="NX_FLOAT" name="x_right_closed">
+            <strategy mode="INIT"/>$datasources.$(rightclosed)</field>
+          <field units="mm" type="NX_FLOAT" name="x_left_closed">
+            <strategy mode="INIT"/>$datasources.$(leftclosed)</field>
+          <field units="mm" type="NX_FLOAT" name="y_top_closed">
+            <strategy mode="INIT"/>$datasources.$(topclosed)</field>
+          <field units="mm" type="NX_FLOAT" name="y_bottom_closed">
+            <strategy mode="INIT"/>$datasources.$(bottomclosed)</field>
         </group>
         <field units="mm" type="NX_FLOAT" name="x_gap">
           <strategy mode="INIT"/>$datasources.$(xgap)</field>
