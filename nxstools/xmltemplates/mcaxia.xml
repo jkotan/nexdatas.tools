@@ -3,7 +3,7 @@
   <group type="NXentry" name="$(__entryname__)$var.serialno">
     <group type="NXinstrument" name="instrument">
       <group type="NXdetector" name="$(name)">
-        <field type="NX_FLOAT64" name="data">$datasources.$(name)_value<strategy mode="STEP"/>
+        <field type="NX_FLOAT64" name="data">$datasources.$(name)<strategy mode="STEP"/>
           <dimensions rank="1"/>
         </field>
         <group type="NXcollection" name="collection">

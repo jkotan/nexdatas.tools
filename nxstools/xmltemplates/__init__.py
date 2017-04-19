@@ -1003,7 +1003,7 @@ moduleMultiAttributes = {
     'mca_xia': [
     ],
     'mca_xia@pool': [
-        'CountsRoI', 'RoIEnd', 'RoIStart', 'Value',
+        'CountsRoI', 'RoIEnd', 'RoIStart',
     ],
     'pco': [
         'DelayTime', 'ExposureTime', 'NbFrames', 'TriggerMode',

@@ -1,3 +1,7 @@
+2017-04-19 Jan Kotanski <jankotan@gmail.com>
+	* fix for mcaxia
+	* tagged as v2.29.1
+
 2017-04-05 Jan Kotanski <jankotan@gmail.com>
 	* add slit closed position and offset calibration
 	* tagged as v2.29.0
