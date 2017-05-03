@@ -1001,6 +1001,7 @@ moduleTemplateFiles = {
 #:     important attributes of modules
 moduleMultiAttributes = {
     'mca_xia': [
+        'ICR', 'OCR',
     ],
     'mca_xia@pool': [
         'CountsRoI', 'RoIEnd', 'RoIStart',

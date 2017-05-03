@@ -13,6 +13,10 @@
           </field>
           <field type="NX_FLOAT64" name="roiend">$datasources.$(name)_roiend<strategy mode="INIT"/>
           </field>
+          <field type="NX_FLOAT64" name="icr">$datasources.$(name)_icr<strategy mode="STEP"/>
+          </field>
+          <field type="NX_FLOAT64" name="ocr">$datasources.$(name)_ocr<strategy mode="STEP"/>
+          </field>
         </group>
       </group>
     </group>
