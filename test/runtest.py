@@ -72,28 +72,36 @@ try:
     args = {}
     args["db"] = 'tango'
     args["host"] = 'localhost'
-    args["read_default_file"] = '/etc/my.cnf'
+    args["read_default_file"] = '/etc/mysql/my.cnf'
     ## inscance of MySQLdb
     mydb = MySQLdb.connect(**args)
     mydb.close()
     DB_AVAILABLE.append("MYSQL")
-except:
+except Exception as e1:
     try:
         import MySQLdb
         from os.path import expanduser
         home = expanduser("~")
         ## connection arguments to MYSQL DB
+        cnffile = '%s/.my.cnf' % home
+#        if not os.path.isfile(cnffile):
+#        text_file = open(cnffile, "w")
+#        text_file.write("""[client]
+#user=root
+#host=localhost
+#""")
+#        text_file.close()
+        print "cnffile", cnffile    
         args2 = {'host': u'localhost', 'db': u'tango',
-                'read_default_file': u'%s/.my.cnf' % home, 'use_unicode': True}
+                'read_default_file': '%s/.my.cnf' % home, 'use_unicode': True}
         ## inscance of MySQLdb
         mydb = MySQLdb.connect(**args2)
         mydb.close()
         DB_AVAILABLE.append("MYSQL")
-
-    except ImportError, e:
-        print "MYSQL not available: %s" % e
-    except Exception, e:
-        print "MYSQL not available: %s" % e
+    except ImportError, e2:
+        print "MYSQL not available: %s %s" % (e1, e2)
+    except Exception, e2:
+        print "MYSQL not available: %s %s" % (e1, e2)
     except:
         print "MYSQL not available"
 
@@ -137,6 +145,7 @@ except Exception,e:
 except:
     print "ORACLE not available"
 
+db = PyTango.Database()    
 
 ## main function
 def main():
