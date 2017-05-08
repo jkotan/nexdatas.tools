@@ -62,7 +62,7 @@ if not PNI_AVAILABLE and not H5PY_AVAILABLE:
 #if PNI_AVAILABLE and H5PY_AVAILABLE:
 
 
-    
+
 ## list of available databases
 DB_AVAILABLE = []
 
@@ -91,7 +91,7 @@ except Exception as e1:
 #host=localhost
 #""")
 #        text_file.close()
-        print "cnffile", cnffile    
+        print "cnffile", cnffile
         args2 = {'host': u'localhost', 'db': u'tango',
                 'read_default_file': '%s/.my.cnf' % home, 'use_unicode': True}
         ## inscance of MySQLdb
@@ -145,7 +145,7 @@ except Exception,e:
 except:
     print "ORACLE not available"
 
-db = PyTango.Database()    
+db = PyTango.Database()
 
 ## main function
 def main():
@@ -168,7 +168,7 @@ def main():
     result = runner.run(suite).wasSuccessful()
     sys.exit(not result)
 
-         
+
  #   if ts:
  #       ts.tearDown()
 
