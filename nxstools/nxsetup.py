@@ -849,6 +849,8 @@ class MoveProp(Runner):
         + " examples:\n" \
         + "       nxsetup move-prop -n DefaultPreselectedComponents" \
         + " -o DefaultAutomaticComponents NXSRecSelector\n" \
+        + "       nxsetup move-prop -t -n DefaultPreselectedComponents " \
+        + " -o DefaultAutomaticComponents NXSRecSelector\n" \
         + "\n"
 
     def create(self):
@@ -861,6 +863,10 @@ class MoveProp(Runner):
         parser.add_argument(
             "-o", "--oldname", action="store",
             dest="oldname", help="old property name")
+        parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
@@ -882,7 +888,8 @@ class MoveProp(Runner):
         for server in servers:
             if setUp.changePropertyName(
                     server, options.oldname, options.newname):
-                setUp.restartServer(server)
+                if not options.postpone:
+                    setUp.restartServer(server)
 
 
 class ChangeProp(Runner):
@@ -895,6 +902,9 @@ class ChangeProp(Runner):
         + " examples:\n" \
         + "       nxsetup change-prop -n DefaultPreselectedComponents -w " \
         + "\"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
+        + "       nxsetup change-prop -n DefaultPreselectedComponents -t -w " \
+        + "\"[\\\"phoibos_scan_command\\\",\\\"phoibos_scan_comment\\\"]\" " \
+        + "NXSRecSelector/r228\n" \
         + "\n"
 
     def create(self):
@@ -907,6 +917,10 @@ class ChangeProp(Runner):
         parser.add_argument(
             "-w", "--propvalue", action="store",
             dest="propvalue", help="new property value")
+        parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
@@ -928,7 +942,8 @@ class ChangeProp(Runner):
         for server in servers:
             if setUp.changePropertyValue(
                     server, options.newname, options.propvalue):
-                setUp.restartServer(server)
+                if not options.postpone:
+                    setUp.restartServer(server)
 
 
 class AddRecorderPath(Runner):
@@ -941,7 +956,18 @@ class AddRecorderPath(Runner):
         + " examples:\n" \
         + "       nxsetup add-recorder-path "\
         + "/usr/share/pyshared/sardananxsrecorder\n" \
+        + "       nxsetup add-recorder-path -t "\
+        + "/usr/share/pyshared/sardananxsrecorder\n" \
         + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
 
     def postauto(self):
         """ creates parser
@@ -960,7 +986,8 @@ class AddRecorderPath(Runner):
         """
         setUp = SetUp()
         if setUp.changeRecorderPath(options.recpath[0]):
-            setUp.restartServer("MacroServer")
+            if not options.postpone:
+                setUp.restartServer("MacroServer")
 
 
 class Restart(Runner):

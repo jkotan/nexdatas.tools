@@ -132,9 +132,11 @@ nxsetup move-prop
 			    (new) property name
       -o OLDNAME, --oldname OLDNAME
 			    old property name
-
+      -t, --postpone        do not restart the server
+    
      examples:
 	   nxsetup move-prop -n DefaultPreselectedComponents -o DefaultAutomaticComponents NXSRecSelector
+           nxsetup move-prop -t -n DefaultPreselectedComponents  -o DefaultAutomaticComponents NXSRecSelector
 
 
 nxsetup change-prop
@@ -156,9 +158,12 @@ nxsetup change-prop
 			    (new) property name
       -w PROPVALUE, --propvalue PROPVALUE
 			    new property value
+      -t, --postpone        do not restart the server
+    
 
      examples:
 	   nxsetup change-prop -n DefaultPreselectedComponents -w "[\"pinhole1\",\"slit2\"]" NXSRecSelector/r228
+           nxsetup change-prop -n DefaultPreselectedComponents -t -w "[\"phoibos_scan_command\",\"phoibos_scan_comment\"]" NXSRecSelector/r228
 
 
 nxsetup add-recorder-path
@@ -175,6 +180,7 @@ nxsetup add-recorder-path
 
     optional arguments:
       -h, --help     show this help message and exit
-
+      -t, --postpone  do not restart the server
      examples:
 	   nxsetup add-recorder-path /usr/share/pyshared/sardananxsrecorder
+	   nxsetup add-recorder-path -t /usr/share/pyshared/sardananxsrecorder

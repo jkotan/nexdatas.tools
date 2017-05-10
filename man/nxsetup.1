@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSETUP" "1" "April 05, 2017" "2.29" "NXSTools"
+.TH "NXSETUP" "1" "May 10, 2017" "2.31" "NXSTools"
 .SH NAME
 nxsetup \- set NeXDaTaS Tango Server environment up
 .
@@ -174,9 +174,11 @@ optional arguments:
                         (new) property name
   \-o OLDNAME, \-\-oldname OLDNAME
                         old property name
+  \-t, \-\-postpone        do not restart the server
 
  examples:
        nxsetup move\-prop \-n DefaultPreselectedComponents \-o DefaultAutomaticComponents NXSRecSelector
+       nxsetup move\-prop \-t \-n DefaultPreselectedComponents  \-o DefaultAutomaticComponents NXSRecSelector
 .ft P
 .fi
 .UNINDENT
@@ -201,9 +203,12 @@ optional arguments:
                         (new) property name
   \-w PROPVALUE, \-\-propvalue PROPVALUE
                         new property value
+  \-t, \-\-postpone        do not restart the server
+
 
  examples:
        nxsetup change\-prop \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
+       nxsetup change\-prop \-n DefaultPreselectedComponents \-t \-w "[\e"phoibos_scan_command\e",\e"phoibos_scan_comment\e"]" NXSRecSelector/r228
 .ft P
 .fi
 .UNINDENT
@@ -223,9 +228,10 @@ positional arguments:
 
 optional arguments:
   \-h, \-\-help     show this help message and exit
-
+  \-t, \-\-postpone  do not restart the server
  examples:
        nxsetup add\-recorder\-path /usr/share/pyshared/sardananxsrecorder
+       nxsetup add\-recorder\-path \-t /usr/share/pyshared/sardananxsrecorder
 .ft P
 .fi
 .UNINDENT
