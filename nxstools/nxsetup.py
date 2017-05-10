@@ -862,6 +862,10 @@ class MoveProp(Runner):
             "-o", "--oldname", action="store",
             dest="oldname", help="old property name")
         parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -908,6 +912,10 @@ class ChangeProp(Runner):
             "-w", "--propvalue", action="store",
             dest="propvalue", help="new property value")
         parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
+        parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
             help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
@@ -948,6 +956,10 @@ class AddRecorderPath(Runner):
         """
         parser = self._parser
         parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
+        parser.add_argument(
             'recpath', metavar='recorder_path',
             type=str, nargs=1,
             help='sardana recorder path')
@@ -960,7 +972,8 @@ class AddRecorderPath(Runner):
         """
         setUp = SetUp()
         if setUp.changeRecorderPath(options.recpath[0]):
-            setUp.restartServer("MacroServer")
+            if not options.postpone:
+                setUp.restartServer("MacroServer")
 
 
 class Restart(Runner):
