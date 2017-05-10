@@ -10,7 +10,7 @@
         <field type="NX_CHAR" name="layout">area<strategy mode="INIT"/>
         </field>
         <field type="NX_CHAR" name="description">$(name)</field>
-        <field units="keV" type="NX_FLOAT32" name="threshold_energy">
+        <field units="eV" type="NX_FLOAT32" name="threshold_energy">
           <strategy mode="FINAL"/>$datasources.$(name)_energythreshold</field>
         <group type="NXcollection" name="collection">
           <field type="NX_INT16" name="trigger_mode">

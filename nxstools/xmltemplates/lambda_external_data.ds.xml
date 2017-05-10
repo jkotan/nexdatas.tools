@@ -6,7 +6,22 @@ if "$var.filename":
     ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
 else:
     ds.result = ""
-ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
+fpf = ds.$(name)_framesperfile
+fn = ds.$(name)_framenumbers
+spf = 0
+cfid = 0
+if fpf != fn:
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+            spf = root.stepsperfile
+            cfid = root.currentfileid
+if spf > 0 and cfid > 0:
+    ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "_part%05d." % (cfid - 1) + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"
+else:
+    ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
  $datasources.$(name)_savefilename
+ $datasources.$(name)_framesperfile
+ $datasources.$(name)_framenumbers
  $datasources.$(name)_filepostfix</datasource>
 </definition>

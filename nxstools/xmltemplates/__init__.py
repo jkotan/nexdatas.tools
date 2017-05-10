@@ -1088,7 +1088,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData'
+        'LiveLastImageData', 'FramesPerFile'
     ],
     'lambda2m': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
