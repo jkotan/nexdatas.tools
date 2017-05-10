@@ -15,8 +15,8 @@ if "__root__" in commonblock.keys():
     root = commonblock["__root__"]
     if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
         spf = root.stepsperfile
-        if spf > 0:
-            cfid = root.currentfileid
+        cfid = root.currentfileid
+        if spf > 0 and cfid > 0:
             nbframes = ds.$(name)_nbframes
             filelastnumber = min(filestartnum + cfid * nbframes * spf - 1, filelastnumber)
             filestartnum = filestartnum + (cfid - 1) * nbframes * spf
