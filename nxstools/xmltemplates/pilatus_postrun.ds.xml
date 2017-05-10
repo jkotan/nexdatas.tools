@@ -14,11 +14,12 @@ filelastnumber = ds.$(name)_filestartnum - 1
 if "__root__" in commonblock.keys():
     root = commonblock["__root__"]
     if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
-        cfid = root.currentfileid
         spf = root.stepsperfile
-        nbframes = ds.$(name)_nbframes
-        filelastnumber = min(filestartnum + cfid * nbframes * spf - 1, filelastnumber)
-        filestartnum = filestartnum + (cfid - 1) * nbframes * spf
+        if spf > 0:
+            cfid = root.currentfileid
+            nbframes = ds.$(name)_nbframes
+            filelastnumber = min(filestartnum + cfid * nbframes * spf - 1, filelastnumber)
+            filestartnum = filestartnum + (cfid - 1) * nbframes * spf
 result += str(filestartnum) + ":" +  str(filelastnumber)
 ds.result = result
 </result>
