@@ -3,12 +3,21 @@
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
 fsn = commonblock["MYFileStartNumber"] if "MYFileStartNumber" in commonblock.keys() else 1
+lsn = ds.$(name)_fileindex-1
 unixdir = (ds.$(name)_filedir).replace("\\","/")
 if len(unixdir)> 1 and unixdir[1] == ":":
     unixdir = "/data" + unixdir[2:]
 if unixdir and unixdir[-1] == "/":
- unixdir = unixdir[:-1]
-ds.result = "" + unixdir + "/" + ds.$(name)_fileprefix + "_%d.raw:" + str(fsn) + ":" +  str(ds.$(name)_fileindex-1)
+    unixdir = unixdir[:-1]
+if "__root__" in commonblock.keys():
+    root = commonblock["__root__"]
+    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+        spf = root.stepsperfile
+        cfid = root.currentfileid
+        if spf > 0 and cfid > 0:
+            lsn = min(fsn + cfid * spf - 1, lsn)
+            fsn = fsn + (cfid - 1) * spf 
+ds.result = "" + unixdir + "/" + ds.$(name)_fileprefix + "_%d.raw:" + str(fsn) + ":" +  str(lsn)
 </result>
  $datasources.$(name)_fileindex
  $datasources.$(name)_filedir
