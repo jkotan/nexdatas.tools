@@ -34,8 +34,13 @@ tmode = ds.$(name)_triggermode
 totnbimages = sum(commonblock["$(name)_stepindex"])
 nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile
 ds.result = tmode.lower()
+spf = 0
+cfid = 0
 if "__root__" in commonblock.keys():
     root = commonblock["__root__"]
+    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+        spf = root.stepsperfile
+        cfid = root.currentfileid
     if root.h5object.__class__.__name__ == "nxgroup":
         import nxswriter.PNIWriter as nxw
     else:
@@ -49,8 +54,14 @@ ins = en.open("instrument")
 det = ins.open("$(name)")
 col = det.open("collection")
 for nbf in range(1, nbfiles+1):
-    nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-    nxw.link("/$(__entryname__)$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "data_%06i" % nbf)
+    if spf > 0  and cfid > 0:
+        if cfid == nbf:
+            nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), det, "data")
+            nxw.link("/$(__entryname__)$var.serialno/instrument/$(name)/data", dt, "$(name)")
+        nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
+    else:
+        nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
+        nxw.link("/$(__entryname__)$var.serialno/instrument/$(name)/collection/data_%06i" % nbf, dt, "$(name)_%06i" % nbf)
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages

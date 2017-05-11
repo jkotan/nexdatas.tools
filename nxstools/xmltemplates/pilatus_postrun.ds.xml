@@ -7,14 +7,25 @@ if len(unixdir)> 1 and unixdir[1] == ":":
     unixdir = "/data" + unixdir[2:]
 if unixdir and unixdir[-1] == "/":
     unixdir = unixdir[:-1]
-filestartnum = str(commonblock["$(name)_filestartnum"]-1)
+filestartnum = commonblock["$(name)_filestartnum"] - 1
 result = "" + unixdir + "/" + ds.$(name)_fileprefix + "%05d"
 result += ds.$(name)_filepostfix + ":"
-result += filestartnum + ":" +  str(ds.$(name)_filestartnum-1)
+filelastnumber = ds.$(name)_filestartnum - 1
+if "__root__" in commonblock.keys():
+    root = commonblock["__root__"]
+    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+        spf = root.stepsperfile
+        cfid = root.currentfileid
+        if spf > 0 and cfid > 0:
+            nbframes = ds.$(name)_nbframes
+            filelastnumber = min(filestartnum + cfid * nbframes * spf - 1, filelastnumber)
+            filestartnum = filestartnum + (cfid - 1) * nbframes * spf
+result += str(filestartnum) + ":" +  str(filelastnumber)
 ds.result = result
 </result>
  $datasources.$(name)_filestartnum
  $datasources.$(name)_filedir
+ $datasources.$(name)_nbframes
  $datasources.$(name)_filepostfix
  $datasources.$(name)_fileprefix</datasource>
 </definition>

@@ -974,6 +974,10 @@ class AddRecorderPath(Runner):
         """
         parser = self._parser
         parser.add_argument(
+            "-t", "--postpone", action="store_true",
+            default=False, dest="postpone",
+            help="do not restart the server")
+        parser.add_argument(
             'recpath', metavar='recorder_path',
             type=str, nargs=1,
             help='sardana recorder path')

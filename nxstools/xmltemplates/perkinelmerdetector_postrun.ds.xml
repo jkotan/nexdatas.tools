@@ -3,14 +3,23 @@
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
 unixdir  = str(ds.$(name)_outputdirectory).replace("\\","/")
-startfileindex = str(commonblock["$(name)_fileindex"] - 1)
+startfileindex = commonblock["$(name)_fileindex"] - 1
+lastfileindex = ds.$(name)_fileindex - 1
 if len(unixdir)> 1 and unixdir[1] == ":":
     unixdir = "/data" + unixdir[2:]
 if unixdir and unixdir[-1] == "/":
     unixdir = unixdir[:-1]
 ds.result = "" + unixdir + "/" + ds.$(name)_filepattern + "-%05d."
 ds.result +=  str(ds.$(name)_filename.split(".")[-1])
-ds.result += ":" + startfileindex + ":" +  str(ds.$(name)_fileindex - 1)
+if "__root__" in commonblock.keys():
+    root = commonblock["__root__"]
+    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+        spf = root.stepsperfile
+        cfid = root.currentfileid
+        if spf > 0 and cfid > 0:
+            lastfileindex = min(startfileindex + cfid * spf - 1, lastfileindex)
+            startfileindex = startfileindex + (cfid - 1) * spf
+ds.result += ":" + str(startfileindex) + ":" +  str(lastfileindex)
 </result>
  $datasources.$(name)_outputdirectory
  $datasources.$(name)_filepattern
