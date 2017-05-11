@@ -1,3 +1,7 @@
+2017-05-11 Jan Kotanski <jankotan@gmail.com>
+	* add split options into components
+	* tagged as v2.32.0
+
 2017-05-10 Jan Kotanski <jankotan@gmail.com>
 	* add postpone option to change-prop move-prop and add-recorder-path
 	* tagged as v2.31.0
