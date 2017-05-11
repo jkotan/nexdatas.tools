@@ -16,7 +16,7 @@ if "__root__" in commonblock.keys():
         cfid = root.currentfileid
         if spf > 0 and cfid > 0:
             lsn = min(fsn + cfid * spf - 1, lsn)
-            fsn = fsn + (cfid - 1) * spf 
+            fsn = fsn + (cfid - 1) * spf
 ds.result = "" + unixdir + "/" + ds.$(name)_fileprefix + "_%d.raw:" + str(fsn) + ":" +  str(lsn)
 </result>
  $datasources.$(name)_fileindex
