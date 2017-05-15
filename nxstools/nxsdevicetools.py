@@ -91,6 +91,8 @@ moduleAttributes = {
     'mythenroi': ['Value', None],
     'mca8715roi': ['Value', None],
     'sis3302roi': ['Value', None],
+    'sis3302': ['Value', None],
+    'sis3302multiscan': ['Value', None],
     'sis3610': ['Value', 'Value'],
     'sis3820': ['Value', 'Counts'],
     'tangoattributectctrl': ['Value', None],

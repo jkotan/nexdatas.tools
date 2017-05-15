@@ -1,3 +1,7 @@
+2017-05-15 Jan Kotanski <jankotan@gmail.com>
+	* add sis3302 and sis3302multiscan modules
+	* tagged as v2.33.0
+
 2017-05-11 Jan Kotanski <jankotan@gmail.com>
 	* fix -t option in nxsetup
 	* tagged as v2.32.1
