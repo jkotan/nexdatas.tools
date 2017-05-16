@@ -118,7 +118,7 @@ twoDModules = [
 #: (:obj:`list` <:obj:`str`>) modules of motors
 motorModules = [
     'absbox', 'motor_tango', 'kohzu', 'smchydra', 'lom', 'oms58', 'e6c',
-    'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2'
+    'omsmaxv', 'spk', 'pie710', 'pie712', 'e6c_p09_eh2', 'smaract'
     #
     #    'analyzerep01', 'tth', 'atto300',  'phaseretarder',
     #    'hexa',
