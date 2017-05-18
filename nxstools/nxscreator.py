@@ -1091,7 +1091,7 @@ class CompareOnlineDS(object):
                             l2[i2] = False
                             break
                         else:
-                            ndiff["%s:%s" % (l1, l2)] = res
+                            ndiff["%s:%s" % (i1, i2)] = res
             if True in l1 and True not in l2:
                 addd1[str(name)] = []
                 for i1, dv in enumerate(dct1[name]):
@@ -1111,7 +1111,7 @@ class CompareOnlineDS(object):
                 for i1, dv1 in enumerate(dct1[name]):
                     for i2, dv2 in enumerate(dct2[name]):
                         if l1[i1] and l2[i2]:
-                            diff[str(name)].append(ndiff["%s:%s" % (l1, l2)])
+                            diff[str(name)].append(ndiff["%s:%s" % (i1, i2)])
 
         if self._printouts:
             import pprint
