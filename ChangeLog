@@ -1,3 +1,7 @@
+2017-05-23 Jan Kotanski <jankotan@gmail.com>
+	* find default server
+	* tagged as v2.35.0
+
 2017-05-18 Jan Kotanski <jankotan@gmail.com>
 	* fix for nxscreate compate  with duplicated devices
 	* tagged as v2.34.1

@@ -445,14 +445,20 @@ def checkServer(name='NXSConfigServer'):
             + "    Please specify the server from the other host. \n\n")
         sys.stderr.flush()
         return ""
+    print servers
     if len(servers) > 1:
-        sys.stderr.write(
-            "Error: More than on %s " % name
-            + "on the current host running. \n\n"
-            + "    Please specify the server:"
-            + "\n        %s\n\n" % "\n        ".join(servers))
-        sys.stderr.flush()
-        return ""
+        thost = os.getenv('TANGO_HOST')
+        if thost:
+            lhost = thost.split(":")[0]
+            servers = [sr for sr in servers if sr.endswith("/%s" % lhost)]
+        if len(servers) > 1:
+            sys.stderr.write(
+                "Error: More than on %s " % name
+                + "on the current host running. \n\n"
+                + "    Please specify the server:"
+                + "\n        %s\n\n" % "\n        ".join(servers))
+            sys.stderr.flush()
+            return ""
     return servers[0]
 
 
