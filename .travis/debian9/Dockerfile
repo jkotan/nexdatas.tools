@@ -4,7 +4,6 @@ MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 RUN apt-get -qq update && apt-get -qq install -y software-properties-common curl apt-transport-https gnupg2 ca-certificates
 RUN add-apt-repository "deb http://ftp.de.debian.org/debian stretch main" -y
-RUN curl http://ftp.de.debian.org/debian/dists/stretch/Release.gpg | apt-key add -
 RUN apt-get -qq update && apt-get -qq install -y coreutils gnupg2 procps apt-utils
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian stretch main" -y
 RUN curl http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
