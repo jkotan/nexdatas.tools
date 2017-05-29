@@ -29,6 +29,10 @@ Commands:
           show datasources with given names
    get [-s <config_server>]  [-m] component_name1 component_name2 ...
           get merged configuration of components
+   delete [-s <config_server>] [-f] component_name1 component_name2 ...
+          delete components with given names
+   delete -d [-s <config_server>] [-f] dsource_name1 dsource_name2 ...
+          delete datasources with given names
    sources [-s <config_server>] [-m] component_name1 component_name2 ...
           get a list of component datasources
    components [-s <config_server>] component_name1 component_name2 ...
@@ -60,6 +64,7 @@ Options:
   -m, --mandatory       make use mandatory components as well
   -p, --private         make use private components, i.e. starting with '__'
   -n, --no-newlines     split result with space characters
+  -f, --force           do not ask
 
 Example
 -------

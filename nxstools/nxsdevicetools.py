@@ -445,7 +445,6 @@ def checkServer(name='NXSConfigServer'):
             + "    Please specify the server from the other host. \n\n")
         sys.stderr.flush()
         return ""
-    print servers
     if len(servers) > 1:
         thost = os.getenv('TANGO_HOST')
         if thost:

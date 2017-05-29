@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCONFIG" "1" "May 23, 2017" "2.35" "NXSTools"
+.TH "NXSCONFIG" "1" "May 29, 2017" "2.36" "NXSTools"
 .SH NAME
 nxsconfig \- read NeXus Configuration Server settings
 .
@@ -68,6 +68,12 @@ show datasources with given names
 .B get [\-s <config_server>]  [\-m] component_name1 component_name2 ...
 get merged configuration of components
 .TP
+.B delete [\-s <config_server>] [\-f] component_name1 component_name2 ...
+delete components with given names
+.TP
+.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 ...
+delete datasources with given names
+.TP
 .B sources [\-s <config_server>] [\-m] component_name1 component_name2 ...
 get a list of component datasources
 .TP
@@ -122,6 +128,9 @@ make use private components, i.e. starting with \(aq__\(aq
 .TP
 .B \-n\fP,\fB  \-\-no\-newlines
 split result with space characters
+.TP
+.B \-f\fP,\fB  \-\-force
+do not ask
 .UNINDENT
 .UNINDENT
 .SH EXAMPLE

@@ -252,6 +252,55 @@ class ConfigServer(object):
                 return self._cnfServer.Components(args)
         return []
 
+    def deleteCmd(self, ds, args, ask=True):
+        """ delete the DB items
+
+        :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
+        :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
+        :param mandatory: flag set True for mandatory components
+        :type mandatory: :obj:`bool`
+        :returns: list of XML items
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        valid = {"yes": True, "y": True, "ye": True,
+                 "no": False, "n": False}
+        default = "y"
+        if ds:
+            dsrc = self._cnfServer.AvailableDataSources()
+        else:
+            dsrc = self._cnfServer.AvailableComponents()
+        for ar in args:
+            if ar not in dsrc:
+                sys.stderr.write("Error: %s '%s' not stored in "
+                                 "the configuration server\n" % (
+                                     "DataSource" if ds else "Component", ar))
+                sys.stderr.flush()
+                return []
+        for ar in args:
+            choice = default
+            if ask:
+                sys.stdout.write("Remove %s '%s'? [Y/n] \n" % (
+                                     "DataSource" if ds else "Component", ar))
+                sys.stdout.flush()
+                choice = raw_input().lower()
+                while True:
+                    if choice == '':
+                        choice = default
+                        break
+                    elif choice in valid:
+                        break
+                    else:
+                        sys.stdout.write("Please respond with 'yes' or 'no' "
+                                         "(or 'y' or 'n').\n")
+            if valid[choice]:
+                if ds:
+                    self._cnfServer.DeleteDataSource(ar)
+                else:
+                    self._cnfServer.DeleteComponent(ar)
+        return []
+
     def getCmd(self, args):
         """ provides final configuration
 
@@ -660,6 +709,46 @@ class Show(Runner):
         cnfserver = ConfigServer(options.server, options.nonewlines)
         string = cnfserver.char.join(cnfserver.showCmd(
             options.datasources, options.args, options.mandatory))
+        return string
+
+class Delete(Runner):
+    """ Show runner"""
+
+    #: (:obj:`str`) command description
+    description = "delete components (or datasources) with given names"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig delete pilatus1a\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-f", "--force", action="store_true",
+                            default=False, dest="force",
+                            help="do not ask")
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components or datasources')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, False)
+        string = cnfserver.char.join(cnfserver.deleteCmd(
+            options.datasources, options.args, not options.force))
         return string
 
 
@@ -1143,6 +1232,7 @@ def main():
     parser.cmdrunners = [('list', List),
                          ('show', Show),
                          ('get', Get),
+                         ('delete', Delete),
                          ('variables', Variables),
                          ('sources', Sources),
                          ('record', Record),

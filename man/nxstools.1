@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "May 23, 2017" "2.35" "NXSTools"
+.TH "NXSTOOLS" "1" "May 29, 2017" "2.36" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -239,6 +239,12 @@ show datasources with given names
 .B get [\-s <config_server>]  [\-m] component_name1 component_name2 ...
 get merged configuration of components
 .TP
+.B delete [\-s <config_server>] [\-f] component_name1 component_name2 ...
+delete components with given names
+.TP
+.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 ...
+delete datasources with given names
+.TP
 .B sources [\-s <config_server>] [\-m] component_name1 component_name2 ...
 get a list of component datasources
 .TP
@@ -293,6 +299,9 @@ make use private components, i.e. starting with \(aq__\(aq
 .TP
 .B \-n\fP,\fB  \-\-no\-newlines
 split result with space characters
+.TP
+.B \-f\fP,\fB  \-\-force
+do not ask
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1580,6 +1589,29 @@ JSON with variables
 .UNINDENT
 .INDENT 7.0
 .TP
+.B deleteCmd(ds, args, ask=True)
+delete the DB items
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fBlist\fP <\fI\%str\fP>) \-\- list of item names
+.IP \(bu 2
+\fBmandatory\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+.UNINDENT
+.TP
+.B Returns
+list of XML items
+.TP
+.B Return type
+\fBlist\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B describeCmd(ds, args, md, pr)
 provides description of configuration elements
 .INDENT 7.0
@@ -1811,6 +1843,51 @@ creates parser
 .INDENT 7.0
 .TP
 .B epilog = \(aq examples:\en       nxsconfig data \en       nxsconfig data \e\(aq{"sample_name":"H2O"}\e\(aq\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Delete(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+Show runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqdelete components (or datasources) with given names\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig delete pilatus1a\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5382,7 +5459,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f09935592d0>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f30d0511110>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0
