@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsconfig &mdash; NXSTools 2.28.0 documentation</title>
+    <title>nxsconfig &mdash; NXSTools 2.36.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.28.0',
+        VERSION:     '2.36.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.28.0 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.36.0 documentation" href="index.html" />
     <link rel="next" title="nxscreate" href="nxscreate.html" />
     <link rel="prev" title="nxcollect" href="nxscollect.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.28</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -224,6 +224,10 @@ perform the process of component merging.</p>
 <dd>show datasources with given names</dd>
 <dt>get [-s &lt;config_server&gt;]  [-m] component_name1 component_name2 ...</dt>
 <dd>get merged configuration of components</dd>
+<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 ...</dt>
+<dd>delete components with given names</dd>
+<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 ...</dt>
+<dd>delete datasources with given names</dd>
 <dt>sources [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
 <dd>get a list of component datasources</dd>
 <dt>components [-s &lt;config_server&gt;] component_name1 component_name2 ...</dt>
@@ -275,6 +279,9 @@ perform the process of component merging.</p>
 <kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>split result with space characters</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-f</span>, <span class="option">--force</span></kbd></td>
+<td>do not ask</td></tr>
 </tbody>
 </table>
 </dd>
