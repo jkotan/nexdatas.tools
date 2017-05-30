@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "May 29, 2017" "2.36" "NXSTools"
+.TH "NXSCREATE" "1" "May 30, 2017" "2.37" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -338,8 +338,8 @@ show this help message and exit
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.B \-c\fP,\fB  \-\-clientlike
-set motor tango datasources to be __CLIENT__ like
+.B \-t\fP,\fB  \-\-noclientlike
+set motor tango datasources to be non __CLIENT__ like
 .TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
@@ -367,7 +367,7 @@ xml template package
 .nf
 .ft C
 nxscreate onlineds \-b
-nxscreate onlineds \-b \-c
+nxscreate onlineds \-b \-t
 nxscreate onlineds \-d /home/user/xmldir
 nxscreate onlineds
 .ft P

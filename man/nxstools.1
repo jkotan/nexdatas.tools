@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "May 29, 2017" "2.36" "NXSTools"
+.TH "NXSTOOLS" "1" "May 30, 2017" "2.37" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -626,8 +626,8 @@ show this help message and exit
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.B \-c\fP,\fB  \-\-clientlike
-set motor tango datasources to be __CLIENT__ like
+.B \-t\fP,\fB  \-\-noclientlike
+set motor tango datasources to be non __CLIENT__ like
 .TP
 .BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
@@ -655,7 +655,7 @@ xml template package
 .nf
 .ft C
 nxscreate onlineds \-b
-nxscreate onlineds \-b \-c
+nxscreate onlineds \-b \-t
 nxscreate onlineds \-d /home/user/xmldir
 nxscreate onlineds
 .ft P
@@ -2639,7 +2639,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = " * with \-b: datasources are created in Configuration Server database\en * with \-d <directory>: datasources are created on the local filesystem\en * without \-b or \-d <directory>: run in the test mode\en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en\en \(gaonlineds\(ga overwrites existing datasources\en\en examples:\en       nxscreate onlineds \-b  \en       nxscreate onlineds \-b \-c \en       nxscreate onlineds \-d /home/user/xmldir \en       nxscreate onlineds \en"
+.B epilog = " * with \-b: datasources are created in Configuration Server database\en * with \-d <directory>: datasources are created on the local filesystem\en * without \-b or \-d <directory>: run in the test mode\en * default: <inputFile> is \(aq/online_dir/online.xml\(aq \en            <server> is taken from Tango DB\en\en \(gaonlineds\(ga overwrites existing datasources\en\en examples:\en       nxscreate onlineds \-b  \en       nxscreate onlineds \-b \-t \en       nxscreate onlineds \-d /home/user/xmldir \en       nxscreate onlineds \en"
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -5459,7 +5459,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f30d0511110>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fe170f09190>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

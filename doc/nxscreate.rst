@@ -195,7 +195,7 @@ Synopsis
 Options:
   -h, --help            show this help message and exit
   -b, --database        store components in Configuration Server database
-  -c, --clientlike      set motor tango datasources to be __CLIENT__ like
+  -t, --noclientlike    set motor tango datasources to be non __CLIENT__ like
   -d DIRECTORY, --directory=DIRECTORY
                         output directory where datasources will be saved
   -n, --nolower         do not change aliases into lower case
@@ -214,7 +214,7 @@ Example
 .. code:: bash
 
 	   nxscreate onlineds -b
-	   nxscreate onlineds -b -c
+	   nxscreate onlineds -b -t
 	   nxscreate onlineds -d /home/user/xmldir
 	   nxscreate onlineds
 
