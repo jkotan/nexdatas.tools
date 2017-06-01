@@ -1117,7 +1117,7 @@ class CompareOnlineDS(object):
             import pprint
             print("Additional devices in file1 {name: sardananame} :\n")
             pprint.pprint(addd1)
-            print("\nAdditional devices in file2 {names: sardananame} :\n")
+            print("\nAdditional devices in file2 {name: sardananame} :\n")
             pprint.pprint(addd2)
             print("\nDiffrences in the common part:\n")
             pprint.pprint(diff)
