@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_filestartnum_cb">
+    <result name="result">
+if "$(name)_saving_next_number" not in commonblock:
+    commonblock["$(name)_saving_next_number"] = ds.$(name)_saving_next_number - ds.$(name)_acq_nb_frames + 1
+ds.result = ds.$(name)_saving_next_number - ds.$(name)_acq_nb_frames</result>
+  $datasources.$(name)_saving_next_number
+  $datasources.$(name)_acq_nb_frames</datasource>
+</definition>

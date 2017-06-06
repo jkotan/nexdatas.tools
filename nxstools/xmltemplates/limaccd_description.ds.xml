@@ -1,0 +1,11 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_description">
+    <result name="result">
+if "$(name)_saving_next_number" in commonblock:
+    commonblock.pop("$(name)_saving_next_number")
+ds.result = str(ds.$(name)_camera_type) + " (" + str(ds.$(name)_camera_model) + ")" </result>
+  $datasources.$(name)_camera_type
+  $datasources.$(name)_camera_model
+  </datasource>
+</definition>

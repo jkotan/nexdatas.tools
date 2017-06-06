@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_postrun">
+    <result name="result">
+unixdir = (ds.$(name)_saving_directory).replace("\\","/")
+if len(unixdir)> 1 and unixdir[1] == ":":
+    unixdir = "/data" + unixdir[2:]
+if unixdir and unixdir[-1] == "/":
+    unixdir = unixdir[:-1]
+filestartnum = commonblock["$(name)_saving_next_number"] - 1
+result = "" + unixdir + "/" + ds.$(name)_saving_prefix + ds.$(name)_saving_format
+result += ds.$(name)_saving_suffix + ":"
+filelastnumber = ds.$(name)_saving_next_number - 1
+if "__root__" in commonblock.keys():
+    root = commonblock["__root__"]
+    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
+        spf = root.stepsperfile
+        cfid = root.currentfileid
+        if spf > 0 and cfid > 0:
+            nbframes = ds.$(name)_acq_nb_frames
+            filelastnumber = min(filestartnum + cfid * nbframes * spf - 1, filelastnumber)
+            filestartnum = filestartnum + (cfid - 1) * nbframes * spf
+result += str(filestartnum) + ":" +  str(filelastnumber)
+ds.result = result
+</result>
+ $datasources.$(name)_saving_next_number
+ $datasources.$(name)_saving_directory
+ $datasources.$(name)_saving_suffix
+ $datasources.$(name)_acq_nb_frames
+ $datasources.$(name)_saving_format
+ $datasources.$(name)_saving_prefix</datasource>
+</definition>
