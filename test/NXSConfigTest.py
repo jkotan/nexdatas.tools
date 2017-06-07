@@ -56,9 +56,9 @@ class XMLConfiguratorTest(unittest.TestCase):
 
         self.helperror = "Error: too few arguments\n"
 
-        self.helpinfo = """usage: NXSConfigTest.py [-h]
-                        {list,show,get,delete,variables,sources,record,merge,components,data,describe,info,geometry,servers}
-                        ...
+        self.helpinfo = """usage: nxsconfig [-h]
+                 {list,show,get,delete,variables,sources,record,merge,components,data,describe,info,geometry,servers}
+                 ...
 
 Command-line tool for reading NeXus configuration from NXSConfigServer
 
@@ -243,18 +243,52 @@ For more help:
     def test_default(self):
         fun = sys._getframe().f_code.co_name
         print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+        old_argv = sys.argv
+        sys.argv = ['nxsconfig'] 
         with self.assertRaises(SystemExit):
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            result = nxsconfig.main()
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
+            nxsconfig.main()
+            
+        sys.argv = old_argv
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
         self.assertEqual(self.helpinfo, vl)
         self.assertEqual(self.helperror, er)
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_help(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        helps = ['-h', '--help']
+        for hl in helps:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = ['nxsconfig', hl] 
+            with self.assertRaises(SystemExit):
+                nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+    #        print vl
+    #        print len(vl), vl[-2], ord(vl[-1])
+    #        print len(self.helpinfo), ord(self.helpinfo[-2]), ord(self.helpinfo[-1])
+            self.assertEqual(self.helpinfo[0:-1], vl)
+            self.assertEqual('', er)
+
         
     ## comp_available test
     # \brief It tests XMLConfigurator
