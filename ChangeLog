@@ -1,3 +1,7 @@
+2017-06-07 Jan Kotanski <jankotan@gmail.com>
+	* add limaccd into onlinecp
+	* tagged as v2.38.0
+
 2017-05-30 Jan Kotanski <jankotan@gmail.com>
 	* make clientlike option in onlineds be default
 	* tagged as v2.37.0
