@@ -168,7 +168,8 @@ class Device(object):
         elif PYTANGO and self.module in moduleAttributes:
             try:
                 try:
-                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.sardananame)))
+                    dp = PyTango.DeviceProxy(
+                        str("%s/%s" % (mhost, self.sardananame)))
                 except:
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
