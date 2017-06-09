@@ -1,3 +1,7 @@
+2017-06-XX Jan Kotanski <jankotan@gmail.com>
+	* take attribute name from fourth term of device name in findAttribute
+	* tagged as v2.39.0
+
 2017-06-07 Jan Kotanski <jankotan@gmail.com>
 	* add limaccd into onlinecp
 	* tagged as v2.38.0
