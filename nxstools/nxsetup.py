@@ -1027,6 +1027,7 @@ class Restart(Runner):
             setUp.restartServer(
                 server, level=(options.level if options.level > -1 else None))
 
+
 class Stop(Runner):
     """ Stop runner"""
 

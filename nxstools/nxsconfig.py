@@ -282,7 +282,7 @@ class ConfigServer(object):
             choice = default
             if ask:
                 sys.stdout.write("Remove %s '%s'? [Y/n] \n" % (
-                                     "DataSource" if ds else "Component", ar))
+                    "DataSource" if ds else "Component", ar))
                 sys.stdout.flush()
                 choice = raw_input().lower()
                 while True:
@@ -710,6 +710,7 @@ class Show(Runner):
         string = cnfserver.char.join(cnfserver.showCmd(
             options.datasources, options.args, options.mandatory))
         return string
+
 
 class Delete(Runner):
     """ Show runner"""

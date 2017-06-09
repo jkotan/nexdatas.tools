@@ -84,16 +84,9 @@ except Exception as e1:
         home = expanduser("~")
         ## connection arguments to MYSQL DB
         cnffile = '%s/.my.cnf' % home
-#        if not os.path.isfile(cnffile):
-#        text_file = open(cnffile, "w")
-#        text_file.write("""[client]
-#user=root
-#host=localhost
-#""")
-#        text_file.close()
-        print "cnffile", cnffile
         args2 = {'host': u'localhost', 'db': u'tango',
-                'read_default_file': '%s/.my.cnf' % home, 'use_unicode': True}
+                'read_default_file': '%s/.my.cnf' % home,
+                 'use_unicode': True}
         ## inscance of MySQLdb
         mydb = MySQLdb.connect(**args2)
         mydb.close()
@@ -147,6 +140,11 @@ except:
 
 db = PyTango.Database()
 
+
+if PYTANGO_AVAILABLE:
+    if "MYSQL" in DB_AVAILABLE:
+        import NXSConfigTest
+
 ## main function
 def main():
 
@@ -161,6 +159,12 @@ def main():
 #                    unittest.defaultTestLoader.loadTestsFromModule(DBFieldTagAsynchH5PYTest) )
 
 
+
+    if PYTANGO_AVAILABLE:
+        if "MYSQL" in DB_AVAILABLE:
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSConfigTest))
 
     ## test runner
     runner = unittest.TextTestRunner()

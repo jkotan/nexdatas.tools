@@ -156,19 +156,20 @@ class Device(object):
         mhost = self.sardanahostname or tangohost
         self.group = None
         self.attribute = None
-        # if module.lower() in motorModules:
-        if self.module in motorModules:
-            self.attribute = 'Position'
-            if clientlike:
-                self.group = '__CLIENT__'
-        elif self.dtype == 'stepping_motor':
-            self.attribute = 'Position'
+        spdevice = self.tdevice.split("/")
+        if len(spdevice) > 3:
+            self.attribute = spdevice[3]
+            self.tdevice = "/".join(spdevice[0:3])
+        if self.module in motorModules or self.dtype == 'stepping_motor':
+            if self.attribute is None:
+                self.attribute = 'Position'
             if clientlike:
                 self.group = '__CLIENT__'
         elif PYTANGO and self.module in moduleAttributes:
             try:
                 try:
-                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.sardananame)))
+                    dp = PyTango.DeviceProxy(
+                        str("%s/%s" % (mhost, self.sardananame)))
                 except:
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
@@ -181,13 +182,13 @@ class Device(object):
                 self.host = mhost.split(":")[0]
                 if len(mhost.split(":")) > 1:
                     self.port = mhost.split(":")[1]
-
                 self.tdevice = mdevice
                 self.attribute = sarattr
                 self.group = '__CLIENT__'
             except Exception:
                 if moduleAttributes[self.module][1]:
-                    self.attribute = moduleAttributes[self.module][1]
+                    if self.attribute is None:
+                        self.attribute = moduleAttributes[self.module][1]
                     self.group = '__CLIENT__'
 
     def setSardanaName(self, tolower):
@@ -762,22 +763,26 @@ class OnlineDSCreator(Creator):
                     dv.tdevice, self.options.directory,
                     self.options.file, dv.name))
             elif self.options.database:
-                print("CREATING %s %s/%s %s" % (
+                print("CREATING %s %s/%s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
                     dv.hostname,
-                    dv.tdevice + " " * (
-                        60 - len(dv.tdevice) - len(dv.hostname)),
+                    dv.tdevice,
+                    dv.attribute + " " * (
+                        70 - len(dv.tdevice) - len(dv.attribute)
+                        - len(dv.hostname)),
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
             else:
-                print("TEST %s %s %s %s/%s %s" % (
+                print("TEST %s %s %s %s/%s/%s %s" % (
                     dv.name + ":" + " " * (34 - len(dv.name)),
                     dv.dtype + ":" + " " * (20 - len(dv.dtype)),
                     dv.module + ":" + " " * (24 - len(dv.module)),
                     dv.hostname,
-                    dv.tdevice + " " * (
-                        60 - len(dv.tdevice) - len(dv.hostname)),
+                    dv.tdevice,
+                    dv.attribute + " " * (
+                        70 - len(dv.tdevice) - len(dv.attribute)
+                        - len(dv.hostname)),
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
