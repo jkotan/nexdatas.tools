@@ -157,9 +157,10 @@ class Device(object):
         self.group = None
         self.attribute = None
         spdevice = self.tdevice.split("/")
-        if len(spdevice) > 3:
+        if mhost and len(spdevice) > 3:
             self.attribute = spdevice[3]
             self.tdevice = "/".join(spdevice[0:3])
+            self.hostname = mhost
         if self.module in motorModules or self.dtype == 'stepping_motor':
             if self.attribute is None:
                 self.attribute = 'Position'
@@ -764,25 +765,25 @@ class OnlineDSCreator(Creator):
                     self.options.file, dv.name))
             elif self.options.database:
                 print("CREATING %s %s/%s/%s %s" % (
-                    dv.name + ":" + " " * (34 - len(dv.name)),
+                    str(dv.name) + ":" + " " * (34 - len(dv.name or "")),
                     dv.hostname,
                     dv.tdevice,
-                    dv.attribute + " " * (
-                        70 - len(dv.tdevice) - len(dv.attribute)
-                        - len(dv.hostname)),
+                    str(dv.attribute) + " " * (
+                        70 - len(dv.tdevice or "") - len(dv.attribute or "")
+                        - len(dv.hostname or "")),
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
             else:
                 print("TEST %s %s %s %s/%s/%s %s" % (
-                    dv.name + ":" + " " * (34 - len(dv.name)),
-                    dv.dtype + ":" + " " * (20 - len(dv.dtype)),
-                    dv.module + ":" + " " * (24 - len(dv.module)),
+                    str(dv.name) + ":" + " " * (34 - len(dv.name or "")),
+                    str(dv.dtype) + ":" + " " * (20 - len(dv.dtype or "")),
+                    str(dv.module) + ":" + " " * (24 - len(dv.module or "")),
                     dv.hostname,
                     dv.tdevice,
-                    dv.attribute + " " * (
-                        70 - len(dv.tdevice) - len(dv.attribute)
-                        - len(dv.hostname)),
+                    str(dv.attribute) + " " * (
+                        70 - len(dv.tdevice or "") - len(dv.attribute or "")
+                        - len(dv.hostname or "")),
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
                     else ""))
@@ -873,6 +874,7 @@ class OnlineDSCreator(Creator):
                         self.datasources[dsname] = xml
                         mdv = copy.copy(dv)
                         mdv.name = dsname
+                        mdv.attribute = at
                         self._printAction(mdv, dscps)
                 elif not dv.attribute:
                     if self._printouts:
@@ -1156,9 +1158,9 @@ class OnlineCPCreator(CPCreator):
             if hasattr(self.options, "database") and \
                self.options.database:
                 print("CREATING %s %s/%s %s" % (
-                    dv.name + ":" + " " * (34 - len(dv.name)),
+                    str(dv.name) + ":" + " " * (34 - len(dv.name)),
                     dv.hostname,
-                    dv.tdevice + " " * (
+                    str(dv.tdevice) + " " * (
                         60 - len(dv.tdevice) - len(dv.hostname)),
                     ",".join(dscps[dv.name])
                     if (dscps and dv.name in dscps and dscps[dv.name])
@@ -1283,6 +1285,7 @@ class OnlineCPCreator(CPCreator):
                                 self.datasources[dsname] = xml
                                 mdv = copy.copy(dv)
                                 mdv.name = dsname
+                                mdv.attribute = at
                                 self._printAction(mdv)
                         smodule = "%s@pool" % module.lower()
                         if smodule in self.xmlpackage.moduleMultiAttributes:
@@ -1302,6 +1305,7 @@ class OnlineCPCreator(CPCreator):
                                 self.datasources[dsname] = xml
                                 mdv = copy.copy(dv)
                                 mdv.name = dsname
+                                mdv.attribute = at
                                 self._printAction(mdv)
                         if module.lower() \
                            in self.xmlpackage.moduleTemplateFiles:
