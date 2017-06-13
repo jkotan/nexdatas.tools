@@ -1,3 +1,8 @@
+2017-06-13 Jan Kotanski <jankotan@gmail.com>
+	* extend undulator component
+	* fix limaccds pixelsize
+	* tagged as v2.40.0
+
 2017-06-09 Jan Kotanski <jankotan@gmail.com>
 	* fix printAction in nxscreator
 	* tagged as v2.39.1

@@ -549,6 +549,36 @@ standardComponentVariables = {
             'doc': "separation between opposing pairs of magnetic pole"
             " (datasource)"
         },
+        'shift': {
+            'default': None,
+            'doc': "undulator shift"
+            " (datasource)"
+        },
+        'speed': {
+            'default': None,
+            'doc': "undulator speed"
+            " (datasource)"
+        },
+        'gapunits': {
+            'default': 'mm',
+            'doc': "gap units"
+            " (string)"
+        },
+        'taperunits': {
+            'default': 'mm',
+            'doc': "gap units"
+            " (string)"
+        },
+        'shiftunits': {
+            'default': 'mm',
+            'doc': "shift units"
+            " (string)"
+        },
+        'speedunits': {
+            'default': '',
+            'doc': "speed units"
+            " (string)"
+        },
         'taper': {
             'default': None,
             'doc': "gap difference between upstream and downstream ends"
