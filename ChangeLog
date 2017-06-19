@@ -1,3 +1,7 @@
+2017-06-19 Jan Kotanski <jankotan@gmail.com>
+	* add dash line before scan name in nxsfileinfo
+	* tagged as v2.40.1
+
 2017-06-13 Jan Kotanski <jankotan@gmail.com>
 	* extend undulator component
 	* fix limaccds pixelsize

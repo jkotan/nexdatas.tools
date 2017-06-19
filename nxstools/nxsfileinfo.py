@@ -92,6 +92,7 @@ class General(Runner):
         except:
             pass
         if at and at[...] == 'NXentry':
+            description.append(None)
             description.append({key: "Scan entry:", value: entry.name})
             description.append(None)
             try:
