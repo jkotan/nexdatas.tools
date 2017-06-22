@@ -650,6 +650,10 @@ standardComponentVariables = {
         },
     },
     'default': {
+        'control': {
+            'default': None,
+            'doc': "group name of the monitor (string)"
+        },
         'shortname': {
             'default': "P09",
             'doc': "beamline short name (string)"
