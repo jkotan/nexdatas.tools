@@ -28,7 +28,7 @@ The beamtime ID at DESY is an 8 digit number.R</doc>
         <strategy mode="STEP"/>1</field>
     </group>
     <group type="NXinstrument" name="instrument">
-      <group type="NXsource" name="source">
+      <group type="NXsource" name="$(srcname)">
         <doc>generic description of the $(sourcename) storage ring</doc>
         <field short_name="PETRAIII" type="NX_CHAR" name="name">
           <strategy mode="INIT"/>$(sourcename)</field>

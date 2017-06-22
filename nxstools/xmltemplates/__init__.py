@@ -518,6 +518,10 @@ standardComponentVariables = {
         },
     },
     'source': {
+        'srcname': {
+            'default': 'source',
+            'doc': "source group name (string)"
+        },
         'beamcurrent': {
             'default': None,
             'doc': "ring beam current (datasource)"
@@ -677,6 +681,10 @@ standardComponentVariables = {
         '__configdevice__': {
             'default': "nxs/configserver/localhost",
             'doc': "configuration server device name (string)"
+        },
+        'srcname': {
+            'default': 'source',
+            'doc': "source group name (string)"
         },
     },
     'dcm': {
