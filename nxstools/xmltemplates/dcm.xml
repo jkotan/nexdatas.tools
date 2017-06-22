@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
+    <group type="NXinstrument" name="$(__insname__)">
       <group type="NXmonochromator" name="$(name)">
         <group type="NXcrystal" name="crystal1">
           <field type="NX_CHAR" name="usage">$(usage)<strategy mode="INIT"/>

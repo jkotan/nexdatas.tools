@@ -181,7 +181,7 @@ class General(Runner):
                 pn = entry.open("program_name")
                 pname = pn.read()
                 attr = pn.attributes
-                names = [at.name for at in attr]
+                names = [att.name for att in attr]
                 if "scan_command" in names:
                     scommand = attr["scan_command"][...]
                     pname = "%s (%s)" % (pname, scommand)

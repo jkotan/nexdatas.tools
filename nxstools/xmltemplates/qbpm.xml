@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
+    <group type="NXinstrument" name="$(__insname__)">
       <group type="NXbpm" name="$(name)">
 	<doc>Beam position monitor in optics hutch</doc>
 	<field type="NX_CHAR" name="mode">monitor</field>

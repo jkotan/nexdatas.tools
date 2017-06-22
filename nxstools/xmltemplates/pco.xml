@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
+    <group type="NXinstrument" name="$(__insname__)">
       <group type="NXdetector" name="$(name)">
         <field units="um" type="NX_FLOAT64" name="x_pixel_size">9</field>
         <field units="um" type="NX_FLOAT64" name="y_pixel_size">9</field>
@@ -58,7 +58,7 @@
       </group>
     </group>
     <group type="NXdata" name="data">
-      <link target="/$(__entryname__)$var.serialno:NXentry/NXinstrument/$(name):NXdetector/data" name="$(name)"/>
+      <link target="/$(__entryname__)$var.serialno:NXentry/$(__insname__)/$(name):NXdetector/data" name="$(name)"/>
     </group>
   </group>
 </definition>

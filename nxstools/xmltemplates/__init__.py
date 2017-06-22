@@ -511,6 +511,14 @@ standardComponentVariables = {
             'default': None,
             'doc': "the first transformation, e.g. distance (string)"
         },
+        'yoffdependson': {
+            'default': 'distance',
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'xoffdependson': {
+            'default': 'y_offset',
+            'doc': "the first transformation, e.g. distance (string)"
+        },
         'transformations': {
             'default': None,
             'doc': "transformations group name i.e. 'transformations'. "

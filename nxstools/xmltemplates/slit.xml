@@ -1,25 +1,9 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
+    <group type="NXinstrument" name="$(__insname__)">
       <group type="NXslit" name="$(name)">
         <group type="NXcollection" name="collection">
-          <field units="mm" type="NX_FLOAT" name="x_right">
-            <strategy mode="INIT"/>$datasources.$(right)</field>
-          <field units="mm" type="NX_FLOAT" name="y_top">
-            <strategy mode="INIT"/>$datasources.$(top)</field>
-          <field units="mm" type="NX_FLOAT" name="y_bottom">
-            <strategy mode="INIT"/>$datasources.$(bottom)</field>
-          <field units="mm" type="NX_FLOAT" name="x_left">
-            <strategy mode="INIT"/>$datasources.$(left)</field>
-          <field units="mm" type="NX_FLOAT" name="x_offset">
-            <strategy mode="INIT"/>$datasources.$(xoffset)</field>
-          <field units="mm" type="NX_FLOAT" name="y_offset">
-            <strategy mode="INIT"/>$datasources.$(yoffset)</field>
-          <field units="mm" type="NX_FLOAT" name="x_offset_calibration">
-            <strategy mode="INIT"/>$datasources.$(xoffsetcalibration)</field>
-          <field units="mm" type="NX_FLOAT" name="y_offset_calibration">
-            <strategy mode="INIT"/>$datasources.$(yoffsetcalibration)</field>
           <field units="mm" type="NX_FLOAT" name="x_right_closed">
             <strategy mode="INIT"/>$datasources.$(rightclosed)</field>
           <field units="mm" type="NX_FLOAT" name="x_left_closed">
@@ -33,7 +17,43 @@
           <strategy mode="INIT"/>$datasources.$(xgap)</field>
         <field units="mm" type="NX_FLOAT" name="y_gap">
           <strategy mode="INIT"/>$datasources.$(ygap)</field>
-        <group type="NXtransformations" name="$(transformations)">
+	<field units="mm" type="NX_FLOAT" name="x_right">
+	  <strategy mode="INIT"/>$datasources.$(right)</field>
+	<field units="mm" type="NX_FLOAT" name="y_top">
+	  <strategy mode="INIT"/>$datasources.$(top)</field>
+	<field units="mm" type="NX_FLOAT" name="y_bottom">
+	  <strategy mode="INIT"/>$datasources.$(bottom)</field>
+	<field units="mm" type="NX_FLOAT" name="x_left">
+	  <strategy mode="INIT"/>$datasources.$(left)</field>
+        <group type="NXtransformations" name="transformations">
+          <field dependson="$(xoffdependson)" units="mm" type="NX_FLOAT" name="x_offset">
+            <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <strategy mode="INIT"/>$datasources.$(xoffset)</field>
+          <field dependson="$(yoffdependson)" units="mm" type="NX_FLOAT" name="y_offset">
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <strategy mode="INIT"/>$datasources.$(yoffset)</field>
+          <field  dependson="y_offset_calibration" units="mm" type="NX_FLOAT" name="x_offset_calibration">
+            <attribute type="NX_FLOAT64" name="vector">1 0 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <strategy mode="INIT"/>$datasources.$(xoffsetcalibration)</field>
+          <field  dependson="$(yoffdependson)" units="mm" type="NX_FLOAT" name="y_offset_calibration">
+            <attribute type="NX_FLOAT64" name="vector">0 1 0<dimensions rank="1">
+                <dim value="3" index="1"/>
+              </dimensions>
+              <strategy mode="INIT"/>
+            </attribute>
+            <strategy mode="INIT"/>$datasources.$(yoffsetcalibration)</field>
           <field offset_units="m" units="m" type="NX_FLOAT64" name="distance" transformation_type="translation">$(distance)<strategy mode="INIT"/>
             <attribute type="NX_FLOAT64" name="vector">0 0 1<dimensions rank="1">
                 <dim value="3" index="1"/>
