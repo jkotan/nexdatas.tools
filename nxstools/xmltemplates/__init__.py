@@ -511,6 +511,14 @@ standardComponentVariables = {
             'default': None,
             'doc': "the first transformation, e.g. distance (string)"
         },
+        'yoffdependson': {
+            'default': 'distance',
+            'doc': "the first transformation, e.g. distance (string)"
+        },
+        'xoffdependson': {
+            'default': 'y_offset',
+            'doc': "the first transformation, e.g. distance (string)"
+        },
         'transformations': {
             'default': None,
             'doc': "transformations group name i.e. 'transformations'. "
@@ -518,6 +526,10 @@ standardComponentVariables = {
         },
     },
     'source': {
+        'srcname': {
+            'default': 'source',
+            'doc': "source group name (string)"
+        },
         'beamcurrent': {
             'default': None,
             'doc': "ring beam current (datasource)"
@@ -650,6 +662,10 @@ standardComponentVariables = {
         },
     },
     'default': {
+        'control': {
+            'default': None,
+            'doc': "group name of the monitor (string)"
+        },
         'shortname': {
             'default': "P09",
             'doc': "beamline short name (string)"
@@ -673,6 +689,10 @@ standardComponentVariables = {
         '__configdevice__': {
             'default': "nxs/configserver/localhost",
             'doc': "configuration server device name (string)"
+        },
+        'srcname': {
+            'default': 'source',
+            'doc': "source group name (string)"
         },
     },
     'dcm': {

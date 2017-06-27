@@ -506,6 +506,8 @@ class OnlineCP(Runner):
                             help="xml template package")
         parser.add_argument("-y", "--entryname", dest="entryname",
                             help="entry group name (prefix)", default="scan")
+        parser.add_argument("-i", "--insname", dest="insname",
+                            help="instrument group name", default="instrument")
 
     def postauto(self):
         """ creates parser
@@ -623,6 +625,8 @@ class StdComp(Runner):
                             dest="file", default="")
         parser.add_argument("-y", "--entryname", dest="entryname",
                             help="entry group name (prefix)", default="scan")
+        parser.add_argument("-i", "--insname", dest="insname",
+                            help="instrument group name", default="instrument")
         parser.add_argument('args', metavar='key value',
                             type=str, nargs='*',
                             help='pairs of (key value) for template variables')

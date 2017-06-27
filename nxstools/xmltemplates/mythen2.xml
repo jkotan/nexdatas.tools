@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
+    <group type="NXinstrument" name="$(__insname__)">
       <group type="NXdetector" name="$(name)">
         <field units="eV" type="NX_FLOAT64" name="threshold_energy">
         <strategy mode="FINAL"/>$datasources.$(name)_threshold</field>
@@ -64,7 +64,7 @@
       </group>
     </group>
     <group type="NXdata" name="data">
-      <link target="$(__entryname__)$var.serialno:NXentry/NXinstrument/mythen:NXdetector/data" name="$(name)"/>
+      <link target="$(__entryname__)$var.serialno:NXentry/$(__insname__)/mythen:NXdetector/data" name="$(name)"/>
     </group>
   </group>
 </definition>

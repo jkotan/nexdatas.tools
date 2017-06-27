@@ -1321,7 +1321,11 @@ class OnlineCPCreator(CPCreator):
                                 xml = xmlcontent.replace("$(name)", cpname)\
                                     .replace("$(device)", dv.tdevice)\
                                     .replace("$(__entryname__)",
-                                             (self.options.entryname or "scan"))\
+                                             (self.options.entryname
+                                              or "scan"))\
+                                    .replace("$(__insname__)",
+                                             (self.options.insname
+                                              or "instrument"))\
                                     .replace("$(hostname)", dv.hostname)
                                 mdv = copy.copy(dv)
                                 mdv.name = newname
@@ -1422,8 +1426,11 @@ class StandardCPCreator(CPCreator):
             ) as content_file:
                 xmlcontent = content_file.read()
                 xml = xmlcontent.replace("$(name)", cpname).replace(
-                    "$(__entryname__)", (self.options.entryname or "scan"))
-
+                    "$(__entryname__)",
+                    (self.options.entryname or "scan")).replace(
+                        "$(__insname__)",
+                        (self.options.insname
+                         or "instrument"))
                 missing = []
                 for var, desc in self.xmlpackage.standardComponentVariables[
                         module].items():

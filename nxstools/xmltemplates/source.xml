@@ -1,8 +1,8 @@
 <?xml version='1.0'?>
 <definition>
   <group type="NXentry" name="$(__entryname__)$var.serialno">
-    <group type="NXinstrument" name="instrument">
-      <group type="NXsource" name="source">
+    <group type="NXinstrument" name="$(__insname__)">
+      <group type="NXsource" name="$(srcname)">
         <doc>generic description of the storage ring</doc>
         <field units="mA" type="NX_FLOAT" name="current">
           <doc>storage ring current</doc>
