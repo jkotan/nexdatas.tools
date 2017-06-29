@@ -4,26 +4,26 @@
     <group type="NXinstrument" name="$(__insname__)">
       <group type="NXslit" name="$(name)">
         <group type="NXcollection" name="collection">
-          <field units="mm" type="NX_FLOAT" name="x_right_closed">
+          <field units="mm" type="NX_FLOAT" name="right_closed">
             <strategy mode="INIT"/>$datasources.$(rightclosed)</field>
-          <field units="mm" type="NX_FLOAT" name="x_left_closed">
+          <field units="mm" type="NX_FLOAT" name="left_closed">
             <strategy mode="INIT"/>$datasources.$(leftclosed)</field>
-          <field units="mm" type="NX_FLOAT" name="y_top_closed">
+          <field units="mm" type="NX_FLOAT" name="top_closed">
             <strategy mode="INIT"/>$datasources.$(topclosed)</field>
-          <field units="mm" type="NX_FLOAT" name="y_bottom_closed">
+          <field units="mm" type="NX_FLOAT" name="bottom_closed">
             <strategy mode="INIT"/>$datasources.$(bottomclosed)</field>
         </group>
         <field units="mm" type="NX_FLOAT" name="x_gap">
           <strategy mode="INIT"/>$datasources.$(xgap)</field>
         <field units="mm" type="NX_FLOAT" name="y_gap">
           <strategy mode="INIT"/>$datasources.$(ygap)</field>
-	<field units="mm" type="NX_FLOAT" name="x_right">
+	<field units="mm" type="NX_FLOAT" name="right">
 	  <strategy mode="INIT"/>$datasources.$(right)</field>
-	<field units="mm" type="NX_FLOAT" name="y_top">
+	<field units="mm" type="NX_FLOAT" name="top">
 	  <strategy mode="INIT"/>$datasources.$(top)</field>
-	<field units="mm" type="NX_FLOAT" name="y_bottom">
+	<field units="mm" type="NX_FLOAT" name="bottom">
 	  <strategy mode="INIT"/>$datasources.$(bottom)</field>
-	<field units="mm" type="NX_FLOAT" name="x_left">
+	<field units="mm" type="NX_FLOAT" name="left">
 	  <strategy mode="INIT"/>$datasources.$(left)</field>
         <group type="NXtransformations" name="transformations">
           <field dependson="$(xoffdependson)" units="mm" type="NX_FLOAT" name="x_offset">
