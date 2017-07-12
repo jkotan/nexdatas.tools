@@ -24,6 +24,7 @@ from xml.dom.minidom import parseString
 
 
 class ParserTools(object):
+
     """ configuration server adapter
     """
 
@@ -421,6 +422,7 @@ class ParserTools(object):
 
 
 class TableTools(object):
+
     """ configuration server adapter
     """
 

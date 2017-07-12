@@ -28,6 +28,7 @@ from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 
 
 class NexusServer(object):
+
     """ configuration server adapter
     """
 
@@ -88,6 +89,7 @@ class NexusServer(object):
 
 
 class OpenFile(Runner):
+
     """ OpenFile runner"""
 
     #: (:obj:`str`) command description
@@ -131,6 +133,7 @@ class OpenFile(Runner):
 
 
 class SetData(Runner):
+
     """ SetData runner"""
 
     #: (:obj:`str`) command description
@@ -169,6 +172,7 @@ class SetData(Runner):
 
 
 class OpenEntry(Runner):
+
     """ OpenEntry runner"""
 
     #: (:obj:`str`) command description
@@ -206,6 +210,7 @@ class OpenEntry(Runner):
 
 
 class Record(Runner):
+
     """ Record runner"""
 
     #: (:obj:`str`) command description
@@ -241,6 +246,7 @@ class Record(Runner):
 
 
 class CloseEntry(Runner):
+
     """ CloseEntry runner"""
 
     #: (:obj:`str`) command description
@@ -273,6 +279,7 @@ class CloseEntry(Runner):
 
 
 class CloseFile(Runner):
+
     """ CloseFile runner"""
 
     #: (:obj:`str`) command description
@@ -305,6 +312,7 @@ class CloseFile(Runner):
 
 
 class Servers(Runner):
+
     """ Servers runner"""
 
     #: (:obj:`str`) command description

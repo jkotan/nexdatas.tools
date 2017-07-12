@@ -1,3 +1,7 @@
+2017-06-XX Jan Kotanski <jankotan@gmail.com>
+	* add h5py support
+	* tagged as v2.43.0
+
 2017-06-29 Jan Kotanski <jankotan@gmail.com>
 	* update slit fields
 	* tagged as v2.42.0

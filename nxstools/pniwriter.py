@@ -73,6 +73,20 @@ def link(target, parent, name):
     return el
 
 
+def get_links(parent):
+    """ get links
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns: list of link objects
+    :returns: link object
+    :rtype: :obj: `list` <:class:`PNILink`>
+    """
+    lks = nx.get_links(parent.h5object)
+    links = [PNILink(e, parent) for e in lks]
+    return links
+
+
 def deflate_filter():
     """ create deflate filter
 
@@ -276,6 +290,14 @@ class PNIGroup(filewriter.FTGroup):
         :rtype: :obj:`bool`
         """
         return self._h5object.exists(name)
+
+    def names(self):
+        """ read the child names
+
+        :returns: pni object
+        :rtype: :obj:`list` <`str`>
+        """
+        return self._h5object.names()
 
     class PNIGroupIter(object):
 

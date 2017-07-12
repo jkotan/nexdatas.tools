@@ -44,6 +44,7 @@ except:
 
 
 class TangoDS(Runner):
+
     """ tangods runner"""
 
     #: (:obj:`str`) command description
@@ -185,6 +186,7 @@ class TangoDS(Runner):
 
 
 class DeviceDS(Runner):
+
     """ deviceds runner"""
     #: (:obj:`str`) command description
     description = "create datasources for all device attributes"
@@ -306,6 +308,7 @@ class DeviceDS(Runner):
 
 
 class OnlineDS(Runner):
+
     """ onlineds runner"""
 
     #: (:obj:`str`) command description
@@ -407,6 +410,7 @@ class OnlineDS(Runner):
 
 
 class Compare(Runner):
+
     """ compare runner"""
 
     #: (:obj:`str`) command description
@@ -455,6 +459,7 @@ class Compare(Runner):
 
 
 class OnlineCP(Runner):
+
     """ onlinecp runner"""
     #: (:obj:`str`) command description
     description = "create component from online.xml file"
@@ -562,6 +567,7 @@ class OnlineCP(Runner):
 
 
 class StdComp(Runner):
+
     """  stdcomp runner"""
 
     #: (:obj:`str`) command description
@@ -679,6 +685,7 @@ class StdComp(Runner):
 
 
 class Comp(Runner):
+
     """ comp runner"""
     #: (:obj:`str`) command description
     description = "create simple components"
@@ -833,6 +840,7 @@ class Comp(Runner):
 
 
 class ClientDS(Runner):
+
     """ clientds runner"""
     #: (:obj:`str`) command description
     description = "create client datasources"

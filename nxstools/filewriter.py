@@ -24,9 +24,10 @@ import time
 import pytz
 import datetime
 import threading
+import numpy
 
 
-#: (:mod:`PNIWriter` or :mod:`H5PYWriter`) default writer module
+#: (:mod:`pniwriter` or :mod:`h5pywriter`) default writer module
 writer = None
 
 #: (:class:`threading.Lock`) writer module
@@ -106,6 +107,31 @@ def link(target, parent, name):
         with writerlock:
             wr = writer
     return wr.link(target, parent, name)
+
+
+def get_links(parent):
+    """ get links
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns: list of link objects
+    :rtype: :obj: `list` <:class:`FTLink`>
+    """
+    node = parent
+    wr = None
+    while node:
+        if hasattr(node, "writer"):
+            wr = node.writer
+            break
+        else:
+            if hasattr(node, "parent"):
+                node = node.parent
+            else:
+                break
+    if not wr:
+        with writerlock:
+            wr = writer
+    return wr.get_links(parent)
 
 
 def deflate_filter(parent=None):
@@ -227,6 +253,20 @@ class FTObject(object):
         :rtype: :obj:`bool`
         """
         return True
+
+
+def first(array):
+    """  get first element if the only
+
+    :param array: numpy array
+    :type array: :class:`numpy.ndarray`
+    :returns: first element of the array
+    :type array: :obj:`any`
+    """
+    if isinstance(array, numpy.ndarray) and len(array) == 1:
+        return array[0]
+    else:
+        return array
 
 
 class FTFile(FTObject):
@@ -375,6 +415,13 @@ class FTGroup(FTObject):
         :type name: :obj:`str`
         :returns: existing flag
         :rtype: :obj:`bool`
+        """
+
+    def names(self):
+        """ read the child names
+
+        :returns: pni object
+        :rtype: :obj:`list` <`str`>
         """
 
     def reopen(self):

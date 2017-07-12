@@ -26,10 +26,12 @@ from xml.dom.minidom import Document
 
 
 class NTag(object):
+
     """ tag wrapper
     """
 
-    ##
+    #
+
     def __init__(self, parent, tagName, nameAttr="", typeAttr=""):
         """ constructor
 
@@ -84,6 +86,7 @@ class NTag(object):
 
 
 class NAttr(NTag):
+
     """ Attribute tag wrapper
     """
 
@@ -121,6 +124,7 @@ class NAttr(NTag):
 
 
 class NGroup(NTag):
+
     """ Group tag wrapper
     """
 
@@ -169,6 +173,7 @@ class NGroup(NTag):
 
 
 class NLink(NTag):
+
     """ Link tag wrapper
     """
 
@@ -198,6 +203,7 @@ class NLink(NTag):
 
 
 class NDimensions(NTag):
+
     """ Dimensions tag wrapper
     """
 
@@ -227,6 +233,7 @@ class NDimensions(NTag):
 
 
 class NDim(NTag):
+
     """ Dim tag wrapper
     """
 
@@ -246,6 +253,7 @@ class NDim(NTag):
 
 
 class NField(NTag):
+
     """ Field tag wrapper
     """
 
@@ -341,6 +349,7 @@ class NField(NTag):
 
 
 class NDSource(NTag):
+
     """ Source tag wrapper
     """
 
@@ -475,6 +484,7 @@ class NDSource(NTag):
 
 
 class NDeviceGroup(NGroup):
+
     """ Tango device tag creator
     """
 
@@ -670,6 +680,7 @@ class NDeviceGroup(NGroup):
 
 
 class XMLFile(object):
+
     """ XML file object
     """
 

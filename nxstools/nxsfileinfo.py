@@ -25,18 +25,24 @@ import argparse
 from .nxsparser import TableTools
 from .nxsfileparser import NXSFileParser
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
+from . import filewriter
 
 
-#: (:obj:`bool`) True if pni.io.nx.h5 available
-PNIIO = False
+WRITERS = {}
 try:
-    import pni.io.nx.h5 as nx
-    PNIIO = True
+    from . import pniwriter
+    WRITERS["pni"] = pniwriter
+except:
+    pass
+try:
+    from . import h5pywriter
+    WRITERS["h5py"] = h5pywriter
 except:
     pass
 
 
 class General(Runner):
+
     """ General runner"""
 
     #: (:obj:`str`) command description
@@ -46,6 +52,19 @@ class General(Runner):
         + " examples:\n" \
         + "       nxsfileinfo general /user/data/myfile.nxs\n" \
         + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader")
+        self._parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -61,8 +80,20 @@ class General(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
+        if options.pni:
+            writer = "pni"
+        elif options.h5py:
+            writer = "h5py"
+        else:
+            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
+                             % writer)
+            self._parser.print_help()
+            sys.exit(255)
+        wrmodule = WRITERS[writer.lower()]
         try:
-            fl = nx.open_file(options.args[0])
+            fl = filewriter.open_file(options.args[0], writer=wrmodule)
         except:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
@@ -93,37 +124,42 @@ class General(Runner):
             pass
         if at and at[...] == 'NXentry':
             description.append(None)
+            value = filewriter.first(value)
             description.append({key: "Scan entry:", value: entry.name})
             description.append(None)
             try:
+                vl = filewriter.first(entry.open("title")[...])
                 description.append(
-                    {key: "Title:", value: entry.open("title")[...]})
+                    {key: "Title:", value: vl})
             except:
                 sys.stderr.write("nxsfileinfo: title cannot be found\n")
             try:
+                vl = filewriter.first(entry.open("experiment_identifier")[...])
                 description.append(
                     {key: "Experiment identifier:",
-                     value: entry.open("experiment_identifier")[...]})
+                     value: vl})
             except:
                 sys.stderr.write(
                     "nxsfileinfo: experiment identifier cannot be found\n")
             for ins in entry:
-                if isinstance(ins, nx._nxh5.nxgroup):
+                if isinstance(ins, filewriter.FTGroup):
                     iat = ins.attributes["NX_class"]
                     if iat and iat[...] == 'NXinstrument':
                         try:
+                            vl = filewriter.first(ins.open("name")[...])
                             description.append({
                                 key: "Instrument name:",
-                                value: ins.open("name")[...]})
+                                value: vl})
                         except:
                             sys.stderr.write(
                                 "nxsfileinfo: instrument name cannot "
                                 "be found\n")
                         try:
+                            vl = filewriter.first(
+                                ins.open("name").attributes["short_name"][...])
                             description.append({
                                 key: "Instrument short name:",
-                                value:
-                                ins.open("name").attributes["short_name"][...]
+                                value: vl
                             })
                         except:
                             sys.stderr.write(
@@ -131,59 +167,67 @@ class General(Runner):
                                 " be found\n")
 
                         for sr in ins:
-                            if isinstance(sr, nx._nxh5.nxgroup):
+                            if isinstance(sr, filewriter.FTGroup):
                                 sat = sr.attributes["NX_class"]
                                 if sat and sat[...] == 'NXsource':
                                     try:
+                                        vl = filewriter.first(
+                                            sr.open("name")[...])
                                         description.append({
                                             key: "Source name:",
-                                            value: sr.open("name")[...]})
+                                            value: vl})
                                     except:
                                         sys.stderr.write(
                                             "nxsfileinfo: source name"
                                             " cannot be found\n")
                                     try:
+                                        vl = filewriter.first(
+                                            sr.open("name").attributes[
+                                                "short_name"][...])
                                         description.append({
                                             key: "Source short name:",
-                                            value: sr.open("name").attributes[
-                                                "short_name"][...]})
+                                            value: vl})
                                     except:
                                         sys.stderr.write(
                                             "nxsfileinfo: source short name"
                                             " cannot be found\n")
                     elif iat and iat[...] == 'NXsample':
                         try:
+                            vl = filewriter.first(ins.open("name")[...])
                             description.append({
                                 key: "Sample name:",
-                                value: ins.open("name")[...]})
+                                value: vl})
                         except:
                             sys.stderr.write(
                                 "nxsfileinfo: sample name cannot be found\n")
                         try:
+                            vl = filewriter.first(
+                                ins.open("chemical_formula")[...])
                             description.append({
                                 key: "Sample formula:",
-                                value: ins.open("chemical_formula")[...]})
+                                value: vl})
                         except:
                             sys.stderr.write(
                                 "nxsfileinfo: sample formula cannot"
                                 " be found\n")
             try:
-                description.append({key: "Start time:",
-                                    value: entry.open("start_time")[...]})
+                vl = filewriter.first(entry.open("start_time")[...])
+                description.append({key: "Start time:", value: vl})
             except:
                 sys.stderr.write("nxsfileinfo: start time cannot be found\n")
             try:
+                vl = filewriter.first(entry.open("end_time")[...])
                 description.append({key: "End time:",
-                                    value: entry.open("end_time")[...]})
+                                    value: vl})
             except:
                 sys.stderr.write("nxsfileinfo: end time cannot be found\n")
             if "program_name" in entry.names():
                 pn = entry.open("program_name")
-                pname = pn.read()
+                pname = filewriter.first(pn.read())
                 attr = pn.attributes
                 names = [att.name for att in attr]
                 if "scan_command" in names:
-                    scommand = attr["scan_command"][...]
+                    scommand = filewriter.first(attr["scan_command"][...])
                     pname = "%s (%s)" % (pname, scommand)
                 description.append({key: "Program:", value: pname})
 
@@ -199,8 +243,8 @@ class General(Runner):
         attr = root.attributes
 
         names = [at.name for at in attr]
-        fname = (attr["file_name"][...]
-                 if "file_name" in names else " ") or " "
+        fname = filewriter.first((attr["file_name"][...]
+                                  if "file_name" in names else " ") or " ")
         headers = ["File name:", fname]
 
         for en in root:
@@ -217,6 +261,7 @@ class General(Runner):
 
 
 class Field(Runner):
+
     """ Field runner"""
 
     #: (:obj:`str`) command description
@@ -262,6 +307,14 @@ class Field(Runner):
             "-s", "--source", action="store_true",
             default=False, dest="source",
             help="show datasource parameters")
+        self._parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader")
+        self._parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -277,8 +330,20 @@ class Field(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
+        if options.pni:
+            writer = "pni"
+        elif options.h5py:
+            writer = "h5py"
+        else:
+            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
+                             % writer)
+            self._parser.print_help()
+            sys.exit(255)
+        wrmodule = WRITERS[writer.lower()]
         try:
-            fl = nx.open_file(options.args[0])
+            fl = filewriter.open_file(options.args[0], writer=wrmodule)
         except:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])

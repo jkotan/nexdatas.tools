@@ -19,7 +19,7 @@
 
 """ NeXus main metadata viewer """
 
-import pni.io.nx.h5 as nx
+from . import filewriter
 import fnmatch
 from xml.dom.minidom import parseString
 
@@ -77,6 +77,7 @@ def getdssource(xmlstring):
 
 
 class NXSFileParser(object):
+
     """ Metadata parser for NeXus files
     """
 
@@ -137,7 +138,7 @@ class NXSFileParser(object):
         :type path: :obj:`str`
         """
         desc = {}
-        path = node.path
+        path = filewriter.first(node.path)
         desc["full_path"] = str(path)
         desc["nexus_path"] = str(self.getpath(path))
         if hasattr(node, "dtype"):
@@ -150,13 +151,13 @@ class NXSFileParser(object):
 
             for key, vl in self.attrdesc.items():
                 if vl[0] in anames:
-                    desc[key] = vl[1](attrs[vl[0]][...])
+                    desc[key] = vl[1](filewriter.first(attrs[vl[0]][...]))
         if node.name in self.valuestostore and node.is_valid:
             desc["value"] = node[...]
 
         self.description.append(desc)
         if tgpath:
-            fname = self.__root.filename
+            fname = self.__root.parent.name
             if "%s:/%s" % (fname, desc["nexus_path"]) != tgpath:
                 ldesc = dict(desc)
                 if tgpath.startswith(fname):
@@ -178,16 +179,18 @@ class NXSFileParser(object):
         """
         self.__addnode(node, tgpath)
         names = []
-        if isinstance(node, nx._nxh5.nxgroup):
+        if isinstance(node, filewriter.FTGroup):
             names = [
                 (ch.name,
                  str(ch.target_path) if hasattr(ch, "target_path") else None)
-                for ch in nx.get_links(node)]
+                for ch in filewriter.get_links(node)]
         for nm in names:
             try:
                 ch = node.open(nm[0])
                 self.__parsenode(ch, nm[1])
-            except:
+#            except:
+#                pass
+            finally:
                 pass
 
     def __filter(self):

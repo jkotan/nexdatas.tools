@@ -42,16 +42,19 @@ except:
 
 
 class CPExistsException(Exception):
+
     """ Component already exists exception
     """
 
 
 class DSExistsException(Exception):
+
     """ DataSource already exists exception
     """
 
 
 class Device(object):
+
     """ device from online.xml
     """
     __slots__ = [
@@ -204,6 +207,7 @@ class Device(object):
 
 
 class Creator(object):
+
     """ configuration server adapter
     """
 
@@ -503,12 +507,14 @@ class Creator(object):
 
 
 class WrongParameterError(Exception):
+
     """ wrong parameter exception
     """
     pass
 
 
 class ComponentCreator(Creator):
+
     """ component creator
     """
 
@@ -579,6 +585,7 @@ class ComponentCreator(Creator):
 
 
 class TangoDSCreator(Creator):
+
     """ tango datasource creator
     """
 
@@ -632,6 +639,7 @@ class TangoDSCreator(Creator):
 
 
 class ClientDSCreator(Creator):
+
     """ client datasource creator
     """
 
@@ -687,6 +695,7 @@ class ClientDSCreator(Creator):
 
 
 class DeviceDSCreator(Creator):
+
     """ device datasource creator
     """
 
@@ -726,6 +735,7 @@ class DeviceDSCreator(Creator):
 
 
 class OnlineDSCreator(Creator):
+
     """ datasource creator of all online.xml simple devices
     """
 
@@ -886,6 +896,7 @@ class OnlineDSCreator(Creator):
 
 
 class CPCreator(Creator):
+
     """ component creator of all online.xml complex devices
     """
 
@@ -981,6 +992,7 @@ class CPCreator(Creator):
 
 
 class CompareOnlineDS(object):
+
     """ comparing tool for online.xml files
     """
 
@@ -1131,6 +1143,7 @@ class CompareOnlineDS(object):
 
 
 class OnlineCPCreator(CPCreator):
+
     """ component creator of online components
     """
 
@@ -1339,6 +1352,7 @@ class OnlineCPCreator(CPCreator):
 
 
 class StandardCPCreator(CPCreator):
+
     """ component creator of standard templates
     """
 

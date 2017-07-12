@@ -45,9 +45,11 @@ except:
 
 
 class Collector(object):
+
     """ Collector merge images of external file-formats
     into the master NeXus file
     """
+
     def __init__(self, nexusfilename, compression=2,
                  skipmissing=False, storeold=False, testmode=False):
         """ The constructor creates the collector object
@@ -475,6 +477,7 @@ class Collector(object):
 
 
 class Execute(Runner):
+
     """ Execute runner"""
 
     #: (:obj:`str`) command description
@@ -533,6 +536,7 @@ class Execute(Runner):
 
 
 class Test(Execute):
+
     """ Test runner"""
 
     #: (:obj:`str`) command description

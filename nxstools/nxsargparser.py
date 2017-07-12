@@ -25,6 +25,7 @@ import argcomplete
 
 
 class Runner(object):
+
     """ abstract runner"""
 
     #: (:obj:`str`) command description
@@ -57,11 +58,13 @@ class Runner(object):
 
 
 class ErrorException(Exception):
+
     """ error parser exception """
     pass
 
 
 class NXSArgParser(argparse.ArgumentParser):
+
     """ Argument parser with error exception
     """
 

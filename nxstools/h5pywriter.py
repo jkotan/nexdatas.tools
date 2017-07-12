@@ -93,6 +93,21 @@ def link(target, parent, name):
         parent.h5object.get(name, getlink=True), parent).setname(name)
 
 
+def get_links(parent):
+    """ get links
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns: list of link objects
+    :returns: link object
+    :rtype: :obj: `list` <:class:`PNILink`>
+    """
+
+    return [H5PYLink(
+        parent.h5object.get(name, getlink=True), parent).setname(name)
+        for name in parent.names()]
+
+
 def deflate_filter():
     """ create deflate filter
 
@@ -219,7 +234,7 @@ class H5PYGroup(filewriter.FTGroup):
                     self.path = tparent.path + "/" + self.name
             if ":" not in self.name:
                 if "NX_class" in h5object.attrs:
-                    clss = h5object.attrs["NX_class"]
+                    clss = filewriter.first(h5object.attrs["NX_class"])
                 else:
                     clss = ""
                 if clss:
@@ -380,6 +395,14 @@ class H5PYGroup(filewriter.FTGroup):
         :rtype: :obj:`bool`
         """
         return name in self._h5object.keys()
+
+    def names(self):
+        """ read the child names
+
+        :returns: pni object
+        :rtype: :obj:`list` <`str`>
+        """
+        return self._h5object.keys()
 
     @property
     def is_valid(self):

@@ -147,6 +147,7 @@ knownHosts = {
 
 
 class SetUp(object):
+
     """ setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers
     """
 
@@ -675,6 +676,7 @@ class SetUp(object):
 
 
 class Set(Runner):
+
     """ set runner"""
 
     #: (:obj:`str`) command description
@@ -800,6 +802,7 @@ class Set(Runner):
 
 
 class Start(Runner):
+
     """ start runner"""
 
     #: (:obj:`str`) command description
@@ -840,6 +843,7 @@ class Start(Runner):
 
 
 class MoveProp(Runner):
+
     """ move-prop runner"""
 
     #: (:obj:`str`) command description
@@ -893,6 +897,7 @@ class MoveProp(Runner):
 
 
 class ChangeProp(Runner):
+
     """ change-prop runner"""
 
     #: (:obj:`str`) command description
@@ -947,6 +952,7 @@ class ChangeProp(Runner):
 
 
 class AddRecorderPath(Runner):
+
     """ add-recorder-path runner"""
 
     #: (:obj:`str`) command description
@@ -991,6 +997,7 @@ class AddRecorderPath(Runner):
 
 
 class Restart(Runner):
+
     """ restart runner"""
 
     #: (:obj:`str`) command description
@@ -1029,6 +1036,7 @@ class Restart(Runner):
 
 
 class Stop(Runner):
+
     """ Stop runner"""
 
     #: (:obj:`str`) command description
