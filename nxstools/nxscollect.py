@@ -32,14 +32,19 @@ import numpy
 import json
 
 from .filenamegenerator import FilenameGenerator
-from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
+from .nxsargparser import (Runner, NXSArgParser, ErrorException)
+from . import filewriter
 
 
-#: (:obj:`bool`) True if pni.io.nx.h5 available
-PNIIO = False
+WRITERS = {}
 try:
-    from pni.io.nx.h5 import open_file, deflate_filter
-    PNIIO = True
+    from . import pniwriter
+    WRITERS["pni"] = pniwriter
+except:
+    pass
+try:
+    from . import h5pywriter
+    WRITERS["h5py"] = h5pywriter
 except:
     pass
 
@@ -51,7 +56,8 @@ class Collector(object):
     """
 
     def __init__(self, nexusfilename, compression=2,
-                 skipmissing=False, storeold=False, testmode=False):
+                 skipmissing=False, storeold=False, testmode=False,
+                 writer=None):
         """ The constructor creates the collector object
 
         :param nexusfilename: the nexus file name
@@ -75,7 +81,9 @@ class Collector(object):
         self.__nxsfile = None
         self.__break = False
         self.__fullfilename = None
-
+        self.__wrmodule = None
+        if writer and writer.lower() in WRITERS.keys():
+            self.__wrmodule = WRITERS[writer.lower()]
         self.__siginfo = dict(
             (signal.__dict__[sname], sname)
             for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
@@ -264,7 +272,8 @@ class Collector(object):
         try:
             dtype = None
             shape = None
-            nxsfile = open_file(filename, readonly=True)
+            nxsfile = filewriter.open_file(
+                filename, readonly=True, writer=self.__wrmodule)
             root = nxsfile.root()
             image = root.open("data")
             idata = image.read()
@@ -323,14 +332,14 @@ class Collector(object):
             if not self.__testmode:
                 cfilter = None
                 if fieldcompression:
-                    cfilter = deflate_filter()
+                    cfilter = filewriter.deflate_filter(node)
                     cfilter.rate = fieldcompression
                     field = node.create_field(
                         fieldname,
                         dtype,
                         shape=[0, shape[0], shape[1]],
                         chunk=[1, shape[0], shape[1]],
-                        filter=cfilter)
+                        dfilter=cfilter)
             self._addattr(field, fieldattrs)
             return field
 
@@ -458,8 +467,9 @@ class Collector(object):
         """
         self._createtmpfile()
         try:
-            self.__nxsfile = open_file(
-                self.__tempfilename, readonly=self.__testmode)
+            self.__nxsfile = filewriter.open_file(
+                self.__tempfilename, readonly=self.__testmode,
+                writer=self.__wrmodule)
             root = self.__nxsfile.root()
             try:
                 self.__fullfilename = root.attributes['file_name'][...]
@@ -505,6 +515,14 @@ class Execute(Runner):
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader")
+        parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
 
     def postauto(self):
         """ creates parser
@@ -527,11 +545,23 @@ class Execute(Runner):
             print ""
             sys.exit(0)
 
+        if options.pni:
+            writer = "pni"
+        elif options.h5py:
+            writer = "h5py"
+        else:
+            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
+                             % writer)
+            parser.print_help()
+            sys.exit(255)
+
         # configuration server
         for nxsfile in nexusfiles:
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
-                not options.replaceold, False)
+                not options.replaceold, False, writer=writer)
             collector.collect()
 
 
@@ -561,11 +591,23 @@ class Test(Execute):
             print ""
             sys.exit(0)
 
+        if options.pni:
+            writer = "pni"
+        elif options.h5py:
+            writer = "h5py"
+        else:
+            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
+                             % writer)
+            parser.print_help()
+            sys.exit(255)
+
         # configuration server
         for nxsfile in nexusfiles:
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
-                not options.replaceold, True)
+                not options.replaceold, True, writer=writer)
             collector.collect()
 
 
@@ -612,8 +654,8 @@ def main():
         print("")
         sys.exit(255)
 
-    if not PNIIO:
-        sys.stderr.write("nxsfileinfo: No pni.io.nx.h5 installed\n")
+    if not WRITERS:
+        sys.stderr.write("nxsfileinfo: Neither pni nor h5py installed\n")
         parser.print_help()
         sys.exit(255)
 
