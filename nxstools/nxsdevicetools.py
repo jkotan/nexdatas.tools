@@ -39,6 +39,7 @@ moduleMultiAttributes = {}
 
 
 class PackageHandler(object):
+
     """ xml templates package loader
     """
 

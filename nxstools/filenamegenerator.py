@@ -21,6 +21,7 @@
 
 
 class FilenameGenerator(object):
+
     """Generate image file names
 
     (c) Copyright 2015 Eugen Wintersberger <eugen.wintersberger@gmail.com>
@@ -49,6 +50,7 @@ class FilenameGenerator(object):
     :param stop_index: file stop index
     :type stop_index: :obj:`int`
     """
+
     def __init__(self, fname_template, start_index=0, stop_index=None):
 
         #: (:obj:`int`) file start index

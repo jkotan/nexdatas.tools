@@ -140,6 +140,15 @@ except:
 
 db = PyTango.Database()
 
+if PNI_AVAILABLE:
+    import FileWriterTest
+    import PNIWriterTest
+if H5PY_AVAILABLE:
+    import H5PYWriterTest
+    import FileWriterH5PYTest
+if PNI_AVAILABLE and H5PY_AVAILABLE:
+    import FileWriterPNIH5PYTest
+
 
 if PYTANGO_AVAILABLE:
     if "MYSQL" in DB_AVAILABLE:
@@ -155,8 +164,19 @@ def main():
     ## test suit
     suite = unittest.TestSuite()
 
-#                suite.addTests(
-#                    unittest.defaultTestLoader.loadTestsFromModule(DBFieldTagAsynchH5PYTest) )
+    if PNI_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(FileWriterTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(PNIWriterTest))
+    if H5PY_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(FileWriterH5PYTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(H5PYWriterTest))
+    if PNI_AVAILABLE and H5PY_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(FileWriterPNIH5PYTest))
 
 
 

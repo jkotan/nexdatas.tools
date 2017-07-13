@@ -28,8 +28,10 @@ from .nxsdevicetools import (checkServer, listServers, openServer)
 
 
 class ConfigServer(object):
+
     """ configuration server adapter
     """
+
     def __init__(self, device, nonewline=False):
         """ constructor
 
@@ -619,6 +621,7 @@ class ConfigServer(object):
 
 
 class List(Runner):
+
     """ List runner"""
 
     #: (:obj:`str`) command description
@@ -665,6 +668,7 @@ class List(Runner):
 
 
 class Show(Runner):
+
     """ Show runner"""
 
     #: (:obj:`str`) command description
@@ -713,6 +717,7 @@ class Show(Runner):
 
 
 class Delete(Runner):
+
     """ Show runner"""
 
     #: (:obj:`str`) command description
@@ -754,6 +759,7 @@ class Delete(Runner):
 
 
 class Get(Runner):
+
     """ Get runner"""
 
     #: (:obj:`str`) command description
@@ -791,6 +797,7 @@ class Get(Runner):
 
 
 class Merge(Runner):
+
     """ Merge runner"""
 
     #: (:obj:`str`) command description
@@ -828,6 +835,7 @@ class Merge(Runner):
 
 
 class Sources(Runner):
+
     """ Sources runner"""
 
     #: (:obj:`str`) command description
@@ -869,6 +877,7 @@ class Sources(Runner):
 
 
 class Components(Runner):
+
     """ Components runner"""
 
     #: (:obj:`str`) command description
@@ -907,6 +916,7 @@ class Components(Runner):
 
 
 class Variables(Runner):
+
     """ Variables runner"""
 
     #: (:obj:`str`) command description
@@ -948,6 +958,7 @@ class Variables(Runner):
 
 
 class Data(Runner):
+
     """ Data runner"""
 
     #: (:obj:`str`) command description
@@ -987,6 +998,7 @@ class Data(Runner):
 
 
 class Record(Runner):
+
     """ Record runner"""
 
     #: (:obj:`str`) command description
@@ -1030,6 +1042,7 @@ class Record(Runner):
 
 
 class Servers(Runner):
+
     """ Servers runner"""
 
     #: (:obj:`str`) command description
@@ -1065,6 +1078,7 @@ class Servers(Runner):
 
 
 class Describe(Runner):
+
     """ Describe runner"""
 
     #: (:obj:`str`) command description
@@ -1115,6 +1129,7 @@ class Describe(Runner):
 
 
 class Info(Runner):
+
     """ List runner"""
 
     #: (:obj:`str`) command description
@@ -1165,6 +1180,7 @@ class Info(Runner):
 
 
 class Geometry(Runner):
+
     """ List runner"""
 
     #: (:obj:`str`) command description
