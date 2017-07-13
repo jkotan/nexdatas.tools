@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "June 29, 2017" "2.42" "NXSTools"
+.TH "NXSTOOLS" "1" "July 13, 2017" "2.43" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -187,6 +187,12 @@ skip missing files
 .B \-r\fP,\fB  \-\-replace_nexus_file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
+.TP
+.B \-\-pni
+use pni module as a nexus reader/writer
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1086,6 +1092,12 @@ nxsfileinfo general <nexus_file_name>
 .TP
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
+.TP
+.B \-\-pni
+use pni module as a nexus reader
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1135,6 +1147,12 @@ show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/de
 .TP
 .B \-s\fP,\fB  \-\-source
 show datasource parameters
+.TP
+.B \-\-pni
+use pni module as a nexus reader
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1363,7 +1381,7 @@ Command\-line tool to merge images of external file\-formats
 into the master NeXus file
 .INDENT 0.0
 .TP
-.B class nxstools.nxscollect.Collector(nexusfilename, compression=2, skipmissing=False, storeold=False, testmode=False)
+.B class nxstools.nxscollect.Collector(nexusfilename, compression=2, skipmissing=False, storeold=False, testmode=False, writer=None)
 Bases: \fI\%object\fP
 .sp
 Collector merge images of external file\-formats
@@ -1438,11 +1456,6 @@ the main program function
 \fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
 .UNINDENT
 .UNINDENT
-.UNINDENT
-.INDENT 0.0
-.TP
-.B nxstools.nxscollect.PNIIO = True
-(\fI\%bool\fP) True if pni.io.nx.h5 available
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -4222,6 +4235,11 @@ parser creator
 .UNINDENT
 .INDENT 7.0
 .TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
 .B description = \(aqshow general information for the nexus file\(aq
 (\fI\%str\fP) command description
 .UNINDENT
@@ -4278,11 +4296,6 @@ show general informations
 \fBroot\fP (class:\fIpni.io.nx.h5.nxroot\fP) \-\- nexus file root
 .UNINDENT
 .UNINDENT
-.UNINDENT
-.INDENT 0.0
-.TP
-.B nxstools.nxsfileinfo.PNIIO = True
-(\fI\%bool\fP) True if pni.io.nx.h5 available
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -5459,7 +5472,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f750404be90>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f746f82bb90>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

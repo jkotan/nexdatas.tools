@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "June 29, 2017" "2.42" "NXSTools"
+.TH "NXSCOLLECT" "1" "July 13, 2017" "2.43" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -64,6 +64,12 @@ skip missing files
 .B \-r\fP,\fB  \-\-replace_nexus_file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
+.TP
+.B \-\-pni
+use pni module as a nexus reader/writer
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
 .SH EXAMPLE

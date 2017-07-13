@@ -32,6 +32,8 @@ Synopsis
 
 Options:
   -h, --help            show this help message and exit
+  --pni                 use pni module as a nexus reader
+  --h5py                use h5py module as a nexus reader
 
 Example
 """""""
@@ -62,6 +64,8 @@ Options:
        field names which value should be stored (separated by commas without spaces). Default: depends_on
    -g, --geometry        show fields with geometry full_path filters, i.e. *:NXtransformations/*,*/depends_on. It works only when -f is not defined
    -s, --source          show datasource parameters
+   --pni                 use pni module as a nexus reader
+   --h5py                use h5py module as a nexus reader
 
 Example
 """""""
