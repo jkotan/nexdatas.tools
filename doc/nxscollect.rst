@@ -26,6 +26,8 @@ Options:
   -r, --replace_nexus_file
                         if it is set the old file is not copied into a file
                         with .__nxscollect__old__* extension
+  --pni                 use pni module as a nexus reader/writer
+  --h5py                use h5py module as a nexus reader/writer
 
 
 Example

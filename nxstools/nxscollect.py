@@ -518,11 +518,11 @@ class Execute(Runner):
         parser.add_argument(
             "--pni", action="store_true",
             default=False, dest="pni",
-            help="use pni module as a nexus reader")
+            help="use pni module as a nexus reader/writer")
         parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
-            help="use h5py module as a nexus reader")
+            help="use h5py module as a nexus reader/writer")
 
     def postauto(self):
         """ creates parser

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "June 29, 2017" "2.42" "NXSTools"
+.TH "NXSFILEINFO" "1" "July 13, 2017" "2.43" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -67,6 +67,12 @@ nxsfileinfo general <nexus_file_name>
 .TP
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
+.TP
+.B \-\-pni
+use pni module as a nexus reader
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -116,6 +122,12 @@ show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/de
 .TP
 .B \-s\fP,\fB  \-\-source
 show datasource parameters
+.TP
+.B \-\-pni
+use pni module as a nexus reader
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader
 .UNINDENT
 .UNINDENT
 .SS Example
