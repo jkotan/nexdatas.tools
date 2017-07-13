@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscollect &mdash; NXSTools 2.36.0 documentation</title>
+    <title>nxstools.nxscollect &mdash; NXSTools 2.43.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.36.0',
+        VERSION:     '2.43.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.36.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -214,24 +214,32 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">.filenamegenerator</span> <span class="kn">import</span> <span class="n">FilenameGenerator</span>
-<span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">filewriter</span>
 
 
-<span class="c">#: (:obj:`bool`) True if pni.io.nx.h5 available</span>
-<span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">WRITERS</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">import</span> <span class="n">open_file</span><span class="p">,</span> <span class="n">deflate_filter</span>
-    <span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pniwriter</span>
+    <span class="n">WRITERS</span><span class="p">[</span><span class="s">&quot;pni&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pniwriter</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">h5pywriter</span>
+    <span class="n">WRITERS</span><span class="p">[</span><span class="s">&quot;h5py&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5pywriter</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="Collector"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Collector">[docs]</a><span class="k">class</span> <span class="nc">Collector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Collector merge images of external file-formats</span>
 <span class="sd">    into the master NeXus file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nexusfilename</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                 <span class="n">skipmissing</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">storeold</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">testmode</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+                 <span class="n">skipmissing</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">storeold</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">testmode</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">writer</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The constructor creates the collector object</span>
 
 <span class="sd">        :param nexusfilename: the nexus file name</span>
@@ -255,7 +263,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__nxsfile</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__break</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__fullfilename</span> <span class="o">=</span> <span class="bp">None</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">__wrmodule</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">writer</span> <span class="ow">and</span> <span class="n">writer</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__wrmodule</span> <span class="o">=</span> <span class="n">WRITERS</span><span class="p">[</span><span class="n">writer</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__siginfo</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">sname</span><span class="p">],</span> <span class="n">sname</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">sname</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;SIGINT&#39;</span><span class="p">,</span> <span class="s">&#39;SIGHUP&#39;</span><span class="p">,</span> <span class="s">&#39;SIGALRM&#39;</span><span class="p">,</span> <span class="s">&#39;SIGTERM&#39;</span><span class="p">))</span>
@@ -444,7 +454,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="bp">None</span>
-            <span class="n">nxsfile</span> <span class="o">=</span> <span class="n">open_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">nxsfile</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span>
+                <span class="n">filename</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__wrmodule</span><span class="p">)</span>
             <span class="n">root</span> <span class="o">=</span> <span class="n">nxsfile</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
             <span class="n">image</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">)</span>
             <span class="n">idata</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -503,14 +514,14 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__testmode</span><span class="p">:</span>
                 <span class="n">cfilter</span> <span class="o">=</span> <span class="bp">None</span>
                 <span class="k">if</span> <span class="n">fieldcompression</span><span class="p">:</span>
-                    <span class="n">cfilter</span> <span class="o">=</span> <span class="n">deflate_filter</span><span class="p">()</span>
+                    <span class="n">cfilter</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">deflate_filter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                     <span class="n">cfilter</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">fieldcompression</span>
                     <span class="n">field</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span>
                         <span class="n">fieldname</span><span class="p">,</span>
                         <span class="n">dtype</span><span class="p">,</span>
                         <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                         <span class="n">chunk</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                        <span class="nb">filter</span><span class="o">=</span><span class="n">cfilter</span><span class="p">)</span>
+                        <span class="n">dfilter</span><span class="o">=</span><span class="n">cfilter</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_addattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">field</span>
 
@@ -638,8 +649,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_createtmpfile</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__nxsfile</span> <span class="o">=</span> <span class="n">open_file</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__tempfilename</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__testmode</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__nxsfile</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__tempfilename</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__testmode</span><span class="p">,</span>
+                <span class="n">writer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__wrmodule</span><span class="p">)</span>
             <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__nxsfile</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__fullfilename</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;file_name&#39;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
@@ -657,6 +669,7 @@
 
 </div></div>
 <div class="viewcode-block" id="Execute"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Execute">[docs]</a><span class="k">class</span> <span class="nc">Execute</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Execute runner&quot;&quot;&quot;</span>
 
     <span class="c">#: (:obj:`str`) command description</span>
@@ -684,6 +697,14 @@
             <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;replaceold&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s">&quot;if it is set the old file is not copied into &quot;</span>
             <span class="s">&quot;a file with .__nxscollect__old__* extension&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--pni&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;pni&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use pni module as a nexus reader/writer&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--h5py&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;h5py&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use h5py module as a nexus reader/writer&quot;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Execute.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Execute.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates parser</span>
@@ -706,15 +727,28 @@
             <span class="k">print</span> <span class="s">&quot;&quot;</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">pni</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span> <span class="k">if</span> <span class="s">&quot;pni&quot;</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">pni</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">)</span> <span class="ow">or</span> <span class="n">writer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxscollect: Writer &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
+                             <span class="o">%</span> <span class="n">writer</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
         <span class="c"># configuration server</span>
         <span class="k">for</span> <span class="n">nxsfile</span> <span class="ow">in</span> <span class="n">nexusfiles</span><span class="p">:</span>
             <span class="n">collector</span> <span class="o">=</span> <span class="n">Collector</span><span class="p">(</span>
                 <span class="n">nxsfile</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">skipmissing</span><span class="p">,</span>
-                <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">replaceold</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">replaceold</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
             <span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
 </div></div>
 <div class="viewcode-block" id="Test"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Test">[docs]</a><span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="n">Execute</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Test runner&quot;&quot;&quot;</span>
 
     <span class="c">#: (:obj:`str`) command description</span>
@@ -739,11 +773,23 @@
             <span class="k">print</span> <span class="s">&quot;&quot;</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">pni</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span> <span class="k">if</span> <span class="s">&quot;pni&quot;</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">pni</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">)</span> <span class="ow">or</span> <span class="n">writer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxscollect: Writer &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
+                             <span class="o">%</span> <span class="n">writer</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
         <span class="c"># configuration server</span>
         <span class="k">for</span> <span class="n">nxsfile</span> <span class="ow">in</span> <span class="n">nexusfiles</span><span class="p">:</span>
             <span class="n">collector</span> <span class="o">=</span> <span class="n">Collector</span><span class="p">(</span>
                 <span class="n">nxsfile</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">compression</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">skipmissing</span><span class="p">,</span>
-                <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">replaceold</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">replaceold</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
             <span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
 </div></div>
@@ -790,8 +836,8 @@
         <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">PNIIO</span><span class="p">:</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: No pni.io.nx.h5 installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">WRITERS</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: Neither pni nor h5py installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 

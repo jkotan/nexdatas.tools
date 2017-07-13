@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsxml &mdash; NXSTools 2.36.0 documentation</title>
+    <title>nxstools.nxsxml &mdash; NXSTools 2.43.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.36.0',
+        VERSION:     '2.43.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.36.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -208,10 +208,12 @@
 
 
 <div class="viewcode-block" id="NTag"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NTag">[docs]</a><span class="k">class</span> <span class="nc">NTag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c">##</span>
+    <span class="c">#</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
@@ -266,6 +268,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NAttr">[docs]</a><span class="k">class</span> <span class="nc">NAttr</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Attribute tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -303,6 +306,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NGroup"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NGroup">[docs]</a><span class="k">class</span> <span class="nc">NGroup</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Group tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -351,6 +355,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NLink"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NLink">[docs]</a><span class="k">class</span> <span class="nc">NLink</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Link tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -380,6 +385,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NDimensions"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDimensions">[docs]</a><span class="k">class</span> <span class="nc">NDimensions</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Dimensions tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -409,6 +415,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NDim"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDim">[docs]</a><span class="k">class</span> <span class="nc">NDim</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Dim tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -428,6 +435,7 @@
 
 </div>
 <div class="viewcode-block" id="NField"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField">[docs]</a><span class="k">class</span> <span class="nc">NField</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Field tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -523,6 +531,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NDSource"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource">[docs]</a><span class="k">class</span> <span class="nc">NDSource</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Source tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -657,6 +666,7 @@
 
 </div></div>
 <div class="viewcode-block" id="NDeviceGroup"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDeviceGroup">[docs]</a><span class="k">class</span> <span class="nc">NDeviceGroup</span><span class="p">(</span><span class="n">NGroup</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Tango device tag creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -852,6 +862,7 @@
 
 </div>
 <div class="viewcode-block" id="XMLFile"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.XMLFile">[docs]</a><span class="k">class</span> <span class="nc">XMLFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; XML file object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

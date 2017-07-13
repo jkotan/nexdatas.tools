@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsfileinfo &mdash; NXSTools 2.36.0 documentation</title>
+    <title>nxstools.nxsfileinfo &mdash; NXSTools 2.43.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.36.0',
+        VERSION:     '2.43.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.36.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -207,18 +207,24 @@
 <span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">TableTools</span>
 <span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="kn">import</span> <span class="n">NXSFileParser</span>
 <span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">filewriter</span>
 
 
-<span class="c">#: (:obj:`bool`) True if pni.io.nx.h5 available</span>
-<span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">WRITERS</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">pni.io.nx.h5</span> <span class="kn">as</span> <span class="nn">nx</span>
-    <span class="n">PNIIO</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">pniwriter</span>
+    <span class="n">WRITERS</span><span class="p">[</span><span class="s">&quot;pni&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pniwriter</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">h5pywriter</span>
+    <span class="n">WRITERS</span><span class="p">[</span><span class="s">&quot;h5py&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5pywriter</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="General"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.General">[docs]</a><span class="k">class</span> <span class="nc">General</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; General runner&quot;&quot;&quot;</span>
 
     <span class="c">#: (:obj:`str`) command description</span>
@@ -229,6 +235,19 @@
         <span class="o">+</span> <span class="s">&quot;       nxsfileinfo general /user/data/myfile.nxs</span><span class="se">\n</span><span class="s">&quot;</span> \
         <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
 
+<div class="viewcode-block" id="General.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.General.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--pni&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;pni&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use pni module as a nexus reader&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--h5py&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;h5py&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use h5py module as a nexus reader&quot;</span><span class="p">)</span>
+</div>
 <div class="viewcode-block" id="General.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.General.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -243,8 +262,20 @@
 <span class="sd">        :returns: output information</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">pni</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span> <span class="k">if</span> <span class="s">&quot;pni&quot;</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">pni</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">)</span> <span class="ow">or</span> <span class="n">writer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: Writer &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
+                             <span class="o">%</span> <span class="n">writer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+        <span class="n">wrmodule</span> <span class="o">=</span> <span class="n">WRITERS</span><span class="p">[</span><span class="n">writer</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fl</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">fl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">writer</span><span class="o">=</span><span class="n">wrmodule</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: File &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
                              <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -274,37 +305,43 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">if</span> <span class="n">at</span> <span class="ow">and</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;NXentry&#39;</span><span class="p">:</span>
+            <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Scan entry:&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                 <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Title:&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                    <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Title:&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: title cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;experiment_identifier&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                 <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Experiment identifier:&quot;</span><span class="p">,</span>
-                     <span class="n">value</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;experiment_identifier&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                     <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                     <span class="s">&quot;nxsfileinfo: experiment identifier cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">ins</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">_nxh5</span><span class="o">.</span><span class="n">nxgroup</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">FTGroup</span><span class="p">):</span>
                     <span class="n">iat</span> <span class="o">=</span> <span class="n">ins</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&quot;NX_class&quot;</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">iat</span> <span class="ow">and</span> <span class="n">iat</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;NXinstrument&#39;</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
+                            <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                 <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Instrument name:&quot;</span><span class="p">,</span>
-                                <span class="n">value</span><span class="p">:</span> <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                                <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
                         <span class="k">except</span><span class="p">:</span>
                             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                                 <span class="s">&quot;nxsfileinfo: instrument name cannot &quot;</span>
                                 <span class="s">&quot;be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
                         <span class="k">try</span><span class="p">:</span>
+                            <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span>
+                                <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&quot;short_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">])</span>
                             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                 <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Instrument short name:&quot;</span><span class="p">,</span>
-                                <span class="n">value</span><span class="p">:</span>
-                                <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&quot;short_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+                                <span class="n">value</span><span class="p">:</span> <span class="n">vl</span>
                             <span class="p">})</span>
                         <span class="k">except</span><span class="p">:</span>
                             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
@@ -312,59 +349,67 @@
                                 <span class="s">&quot; be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
 
                         <span class="k">for</span> <span class="n">sr</span> <span class="ow">in</span> <span class="n">ins</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">_nxh5</span><span class="o">.</span><span class="n">nxgroup</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">FTGroup</span><span class="p">):</span>
                                 <span class="n">sat</span> <span class="o">=</span> <span class="n">sr</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&quot;NX_class&quot;</span><span class="p">]</span>
                                 <span class="k">if</span> <span class="n">sat</span> <span class="ow">and</span> <span class="n">sat</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;NXsource&#39;</span><span class="p">:</span>
                                     <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span>
+                                            <span class="n">sr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                                         <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                             <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Source name:&quot;</span><span class="p">,</span>
-                                            <span class="n">value</span><span class="p">:</span> <span class="n">sr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                                            <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
                                     <span class="k">except</span><span class="p">:</span>
                                         <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                                             <span class="s">&quot;nxsfileinfo: source name&quot;</span>
                                             <span class="s">&quot; cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
                                     <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span>
+                                            <span class="n">sr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span>
+                                                <span class="s">&quot;short_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">])</span>
                                         <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                             <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Source short name:&quot;</span><span class="p">,</span>
-                                            <span class="n">value</span><span class="p">:</span> <span class="n">sr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span>
-                                                <span class="s">&quot;short_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">]})</span>
+                                            <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
                                     <span class="k">except</span><span class="p">:</span>
                                         <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                                             <span class="s">&quot;nxsfileinfo: source short name&quot;</span>
                                             <span class="s">&quot; cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">iat</span> <span class="ow">and</span> <span class="n">iat</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;NXsample&#39;</span><span class="p">:</span>
                         <span class="k">try</span><span class="p">:</span>
+                            <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                 <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Sample name:&quot;</span><span class="p">,</span>
-                                <span class="n">value</span><span class="p">:</span> <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                                <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
                         <span class="k">except</span><span class="p">:</span>
                             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                                 <span class="s">&quot;nxsfileinfo: sample name cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
                         <span class="k">try</span><span class="p">:</span>
+                            <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span>
+                                <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;chemical_formula&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                             <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                                 <span class="n">key</span><span class="p">:</span> <span class="s">&quot;Sample formula:&quot;</span><span class="p">,</span>
-                                <span class="n">value</span><span class="p">:</span> <span class="n">ins</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;chemical_formula&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                                <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
                         <span class="k">except</span><span class="p">:</span>
                             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
                                 <span class="s">&quot;nxsfileinfo: sample formula cannot&quot;</span>
                                 <span class="s">&quot; be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Start time:&quot;</span><span class="p">,</span>
-                                    <span class="n">value</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;start_time&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;start_time&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
+                <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Start time:&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: start time cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;end_time&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">])</span>
                 <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;End time:&quot;</span><span class="p">,</span>
-                                    <span class="n">value</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;end_time&quot;</span><span class="p">)[</span><span class="o">...</span><span class="p">]})</span>
+                                    <span class="n">value</span><span class="p">:</span> <span class="n">vl</span><span class="p">})</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: end time cannot be found</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="s">&quot;program_name&quot;</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
                 <span class="n">pn</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;program_name&quot;</span><span class="p">)</span>
-                <span class="n">pname</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">pname</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">pn</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
                 <span class="n">attr</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">attributes</span>
-                <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">]</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">att</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">]</span>
                 <span class="k">if</span> <span class="s">&quot;scan_command&quot;</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-                    <span class="n">scommand</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s">&quot;scan_command&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+                    <span class="n">scommand</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s">&quot;scan_command&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">])</span>
                     <span class="n">pname</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pname</span><span class="p">,</span> <span class="n">scommand</span><span class="p">)</span>
                 <span class="n">description</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s">&quot;Program:&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">pname</span><span class="p">})</span>
 </div>
@@ -380,8 +425,8 @@
         <span class="n">attr</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attributes</span>
 
         <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">]</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s">&quot;file_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
-                 <span class="k">if</span> <span class="s">&quot;file_name&quot;</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">else</span> <span class="s">&quot; &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&quot; &quot;</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">((</span><span class="n">attr</span><span class="p">[</span><span class="s">&quot;file_name&quot;</span><span class="p">][</span><span class="o">...</span><span class="p">]</span>
+                                  <span class="k">if</span> <span class="s">&quot;file_name&quot;</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">else</span> <span class="s">&quot; &quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&quot; &quot;</span><span class="p">)</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;File name:&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">en</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
@@ -398,6 +443,7 @@
 
 </div></div>
 <div class="viewcode-block" id="Field"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.Field">[docs]</a><span class="k">class</span> <span class="nc">Field</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Field runner&quot;&quot;&quot;</span>
 
     <span class="c">#: (:obj:`str`) command description</span>
@@ -443,6 +489,14 @@
             <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--source&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;source&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s">&quot;show datasource parameters&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--pni&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;pni&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use pni module as a nexus reader&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s">&quot;--h5py&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;h5py&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;use h5py module as a nexus reader&quot;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Field.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.Field.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
@@ -458,8 +512,20 @@
 <span class="sd">        :returns: output information</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">pni</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="s">&quot;pni&quot;</span> <span class="k">if</span> <span class="s">&quot;pni&quot;</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">else</span> <span class="s">&quot;h5py&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">pni</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">h5py</span><span class="p">)</span> <span class="ow">or</span> <span class="n">writer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">WRITERS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: Writer &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
+                             <span class="o">%</span> <span class="n">writer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+        <span class="n">wrmodule</span> <span class="o">=</span> <span class="n">WRITERS</span><span class="p">[</span><span class="n">writer</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fl</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">fl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">writer</span><span class="o">=</span><span class="n">wrmodule</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;nxsfileinfo: File &#39;</span><span class="si">%s</span><span class="s">&#39; cannot be opened</span><span class="se">\n</span><span class="s">&quot;</span>
                              <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>

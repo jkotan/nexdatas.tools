@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.36.0 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.43.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.36.0',
+        VERSION:     '2.43.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.36.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -224,16 +224,19 @@
 
 
 <div class="viewcode-block" id="CPExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPExistsException">[docs]</a><span class="k">class</span> <span class="nc">CPExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; Component already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 </div>
 <div class="viewcode-block" id="DSExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DSExistsException">[docs]</a><span class="k">class</span> <span class="nc">DSExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; DataSource already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 </div>
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; device from online.xml</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">__slots__</span> <span class="o">=</span> <span class="p">[</span>
@@ -338,19 +341,21 @@
         <span class="n">mhost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="ow">or</span> <span class="n">tangohost</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="c"># if module.lower() in motorModules:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">motorModules</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
-            <span class="k">if</span> <span class="n">clientlike</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">&#39;stepping_motor&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
+        <span class="n">spdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mhost</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">spdevice</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">spdevice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spdevice</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">mhost</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">motorModules</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s">&#39;stepping_motor&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="s">&#39;Position&#39;</span>
             <span class="k">if</span> <span class="n">clientlike</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
         <span class="k">elif</span> <span class="n">PYTANGO</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="ow">in</span> <span class="n">moduleAttributes</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mhost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)))</span>
+                    <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mhost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)))</span>
                 <span class="k">except</span><span class="p">:</span>
                     <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mhost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
                 <span class="n">mdevice</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dp</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
@@ -363,13 +368,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">mhost</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-
                 <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="n">mdevice</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">sarattr</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">moduleAttributes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&#39;__CLIENT__&#39;</span>
 </div>
 <div class="viewcode-block" id="Device.setSardanaName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.setSardanaName">[docs]</a>    <span class="k">def</span> <span class="nf">setSardanaName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolower</span><span class="p">):</span>
@@ -384,6 +389,7 @@
 
 </div></div>
 <div class="viewcode-block" id="Creator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Creator">[docs]</a><span class="k">class</span> <span class="nc">Creator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -683,12 +689,14 @@
 
 </div>
 <div class="viewcode-block" id="WrongParameterError"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.WrongParameterError">[docs]</a><span class="k">class</span> <span class="nc">WrongParameterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; wrong parameter exception</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span>
 
 </div>
 <div class="viewcode-block" id="ComponentCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ComponentCreator">[docs]</a><span class="k">class</span> <span class="nc">ComponentCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; component creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -759,6 +767,7 @@
 
 </div></div>
 <div class="viewcode-block" id="TangoDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.TangoDSCreator">[docs]</a><span class="k">class</span> <span class="nc">TangoDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; tango datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -812,6 +821,7 @@
 
 </div></div>
 <div class="viewcode-block" id="ClientDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.ClientDSCreator">[docs]</a><span class="k">class</span> <span class="nc">ClientDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; client datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -867,6 +877,7 @@
 
 </div></div>
 <div class="viewcode-block" id="DeviceDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.DeviceDSCreator">[docs]</a><span class="k">class</span> <span class="nc">DeviceDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; device datasource creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -906,6 +917,7 @@
 
 </div></div>
 <div class="viewcode-block" id="OnlineDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; datasource creator of all online.xml simple devices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -944,22 +956,26 @@
                     <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
                     <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
-                        <span class="mi">60</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">70</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
                     <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
                     <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">24</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">)),</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">24</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
                     <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
-                        <span class="mi">60</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">70</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
                     <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
                     <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
@@ -1050,6 +1066,7 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
                         <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                         <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                        <span class="n">mdv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">at</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">,</span> <span class="n">dscps</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="ow">not</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
@@ -1061,6 +1078,7 @@
 
 </div></div>
 <div class="viewcode-block" id="CPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPCreator">[docs]</a><span class="k">class</span> <span class="nc">CPCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; component creator of all online.xml complex devices</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1156,6 +1174,7 @@
 
 </div></div>
 <div class="viewcode-block" id="CompareOnlineDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS">[docs]</a><span class="k">class</span> <span class="nc">CompareOnlineDS</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; comparing tool for online.xml files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1299,13 +1318,14 @@
             <span class="kn">import</span> <span class="nn">pprint</span>
             <span class="k">print</span><span class="p">(</span><span class="s">&quot;Additional devices in file1 {name: sardananame} :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd1</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Additional devices in file2 {names: sardananame} :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Additional devices in file2 {name: sardananame} :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd2</span><span class="p">)</span>
             <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Diffrences in the common part:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="OnlineCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; component creator of online components</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1333,9 +1353,9 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="s">&quot;database&quot;</span><span class="p">)</span> <span class="ow">and</span> \
                <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
                 <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span>
                     <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
                         <span class="mi">60</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)),</span>
                     <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
@@ -1460,6 +1480,7 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
                                 <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                                 <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                                <span class="n">mdv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">at</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">)</span>
                         <span class="n">smodule</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">@pool&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                         <span class="k">if</span> <span class="n">smodule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleMultiAttributes</span><span class="p">:</span>
@@ -1479,6 +1500,7 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
                                 <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                                 <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                                <span class="n">mdv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">at</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> \
                            <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleTemplateFiles</span><span class="p">:</span>
@@ -1494,7 +1516,11 @@
                                 <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span>\
                                     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(device)&quot;</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">)</span>\
                                     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(__entryname__)&quot;</span><span class="p">,</span>
-                                             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span>\
+                                             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span>
+                                              <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span>\
+                                    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(__insname__)&quot;</span><span class="p">,</span>
+                                             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">insname</span>
+                                              <span class="ow">or</span> <span class="s">&quot;instrument&quot;</span><span class="p">))</span>\
                                     <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(hostname)&quot;</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">)</span>
                                 <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                                 <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">newname</span>
@@ -1508,6 +1534,7 @@
 
 </div></div>
 <div class="viewcode-block" id="StandardCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator">[docs]</a><span class="k">class</span> <span class="nc">StandardCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot; component creator of standard templates</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1595,8 +1622,11 @@
             <span class="p">)</span> <span class="k">as</span> <span class="n">content_file</span><span class="p">:</span>
                 <span class="n">xmlcontent</span> <span class="o">=</span> <span class="n">content_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="n">xml</span> <span class="o">=</span> <span class="n">xmlcontent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;$(name)&quot;</span><span class="p">,</span> <span class="n">cpname</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-                    <span class="s">&quot;$(__entryname__)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span>
-
+                    <span class="s">&quot;$(__entryname__)&quot;</span><span class="p">,</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s">&quot;scan&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                        <span class="s">&quot;$(__insname__)&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">insname</span>
+                         <span class="ow">or</span> <span class="s">&quot;instrument&quot;</span><span class="p">))</span>
                 <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="p">[</span>
                         <span class="n">module</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

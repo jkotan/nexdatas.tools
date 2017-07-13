@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.36.0 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.43.1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.36.0',
+        VERSION:     '2.43.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.36.0 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.36</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -693,6 +693,14 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation, e.g. distance (string)&quot;</span>
         <span class="p">},</span>
+        <span class="s">&#39;yoffdependson&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;distance&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation, e.g. distance (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;xoffdependson&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;y_offset&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;the first transformation, e.g. distance (string)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;transformations&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;transformations group name i.e. &#39;transformations&#39;. &quot;</span>
@@ -700,6 +708,10 @@
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;srcname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;source&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;source group name (string)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;beamcurrent&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;ring beam current (datasource)&quot;</span>
@@ -730,6 +742,36 @@
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;separation between opposing pairs of magnetic pole&quot;</span>
             <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;shift&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;undulator shift&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;speed&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;undulator speed&quot;</span>
+            <span class="s">&quot; (datasource)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;gapunits&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;mm&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;gap units&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;taperunits&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;mm&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;gap units&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;shiftunits&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;mm&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;shift units&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;speedunits&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;speed units&quot;</span>
+            <span class="s">&quot; (string)&quot;</span>
         <span class="p">},</span>
         <span class="s">&#39;taper&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -802,6 +844,10 @@
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;control&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;group name of the monitor (string)&quot;</span>
+        <span class="p">},</span>
         <span class="s">&#39;shortname&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;P09&quot;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;beamline short name (string)&quot;</span>
@@ -825,6 +871,10 @@
         <span class="s">&#39;__configdevice__&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;nxs/configserver/localhost&quot;</span><span class="p">,</span>
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;configuration server device name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;srcname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;source&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;source group name (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s">&#39;dcm&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -1130,6 +1180,18 @@
                 <span class="s">&#39;pilatus_postrun.ds.xml&#39;</span><span class="p">,</span>
                 <span class="s">&#39;pilatus_description.ds.xml&#39;</span><span class="p">,</span>
                 <span class="s">&#39;pilatus_filestartnum_cb.ds.xml&#39;</span><span class="p">],</span>
+    <span class="s">&#39;limaccd&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;limaccd.xml&#39;</span><span class="p">,</span>
+                <span class="s">&#39;limaccd_postrun.ds.xml&#39;</span><span class="p">,</span>
+                <span class="s">&#39;limaccd_xpixelsize.ds.xml&#39;</span><span class="p">,</span>
+                <span class="s">&#39;limaccd_ypixelsize.ds.xml&#39;</span><span class="p">,</span>
+                <span class="s">&#39;limaccd_description.ds.xml&#39;</span><span class="p">,</span>
+                <span class="s">&#39;limaccd_filestartnum_cb.ds.xml&#39;</span><span class="p">],</span>
+    <span class="s">&#39;limaccds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;limaccd.xml&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;limaccd_postrun.ds.xml&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;limaccd_xpixelsize.ds.xml&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;limaccd_ypixelsize.ds.xml&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;limaccd_description.ds.xml&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;limaccd_filestartnum_cb.ds.xml&#39;</span><span class="p">],</span>
     <span class="s">&#39;pco&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;pco.xml&#39;</span><span class="p">,</span>
             <span class="s">&#39;pco_postrun.ds.xml&#39;</span><span class="p">,</span>
             <span class="s">&#39;pco_description.ds.xml&#39;</span><span class="p">,</span>
@@ -1187,6 +1249,56 @@
     <span class="p">],</span>
     <span class="s">&#39;mca_xia@pool&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;CountsRoI&#39;</span><span class="p">,</span> <span class="s">&#39;RoIEnd&#39;</span><span class="p">,</span> <span class="s">&#39;RoIStart&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;limaccd&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;camera_type&#39;</span><span class="p">,</span> <span class="s">&#39;camera_pixelsize&#39;</span><span class="p">,</span> <span class="s">&#39;camera_model&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acq_mode&#39;</span><span class="p">,</span> <span class="s">&#39;acq_nb_frames&#39;</span><span class="p">,</span> <span class="s">&#39;acq_trigger_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;last_image_saved&#39;</span><span class="p">,</span>
+        <span class="s">&#39;latency_time&#39;</span><span class="p">,</span> <span class="s">&#39;acq_expo_time&#39;</span><span class="p">,</span> <span class="s">&#39;acc_max_expo_time&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acc_expo_time&#39;</span><span class="p">,</span> <span class="s">&#39;acq_nb_frames&#39;</span><span class="p">,</span> <span class="s">&#39;acc_time_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acc_dead_time&#39;</span><span class="p">,</span> <span class="s">&#39;acc_live_time&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_directory&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_prefix&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_suffix&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_next_number&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_format&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_frame_per_file&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_type&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_width&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_height&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_sizes&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_roi&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_bin&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_flip&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_rotation&#39;</span><span class="p">,</span>
+        <span class="s">&#39;shutter_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;shutter_open_time&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;limaccds&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;camera_type&#39;</span><span class="p">,</span> <span class="s">&#39;camera_pixelsize&#39;</span><span class="p">,</span> <span class="s">&#39;camera_model&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acq_mode&#39;</span><span class="p">,</span> <span class="s">&#39;acq_nb_frames&#39;</span><span class="p">,</span> <span class="s">&#39;acq_trigger_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;last_image_saved&#39;</span><span class="p">,</span>
+        <span class="s">&#39;latency_time&#39;</span><span class="p">,</span> <span class="s">&#39;acq_expo_time&#39;</span><span class="p">,</span> <span class="s">&#39;acc_max_expo_time&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acc_expo_time&#39;</span><span class="p">,</span> <span class="s">&#39;acq_nb_frames&#39;</span><span class="p">,</span> <span class="s">&#39;acc_time_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acc_dead_time&#39;</span><span class="p">,</span> <span class="s">&#39;acc_live_time&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_directory&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_prefix&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_suffix&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_next_number&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_format&#39;</span><span class="p">,</span>
+        <span class="s">&#39;saving_frame_per_file&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_type&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_width&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_height&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_sizes&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_roi&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_bin&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_flip&#39;</span><span class="p">,</span>
+        <span class="s">&#39;image_rotation&#39;</span><span class="p">,</span>
+        <span class="s">&#39;shutter_mode&#39;</span><span class="p">,</span>
+        <span class="s">&#39;shutter_open_time&#39;</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="s">&#39;pco&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;DelayTime&#39;</span><span class="p">,</span> <span class="s">&#39;ExposureTime&#39;</span><span class="p">,</span> <span class="s">&#39;NbFrames&#39;</span><span class="p">,</span> <span class="s">&#39;TriggerMode&#39;</span><span class="p">,</span>
