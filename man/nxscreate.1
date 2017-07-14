@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "July 13, 2017" "2.43" "NXSTools"
+.TH "NXSCREATE" "1" "July 14, 2017" "2.44" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -370,6 +370,82 @@ nxscreate onlineds \-b
 nxscreate onlineds \-b \-t
 nxscreate onlineds \-d /home/user/xmldir
 nxscreate onlineds
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE POOLDS
+.sp
+It creates a set of motor datasources from a sardana pool device channels.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds [options] [channel [channel]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: datasources are created on the local filesystem
+.IP \(bu 2
+without \-b or \-d <directory>: run in the test mode
+.IP \(bu 2
+default <channel> is \(aqALL\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <pool> is taken from Tango DB
+.UNINDENT
+.sp
+\fIpoolds\fP overwrites existing datasources
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-t\fP,\fB  \-\-noclientlike
+set motor tango datasources to be non __CLIENT__ like
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be saved
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-p \ POOL\fP,\fB \ \-\-pool\fB= POOL
+sardana pool device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate poolds \-b
+nxscreate poolds \-b \-t
+nxscreate poolds \-d \-s p09/pool/haso228
+nxscreate poolds \-b Motor CTExpChannel
+nxscreate poolds \-b mot01 mot03
+nxscreate poolds
 .ft P
 .fi
 .UNINDENT
