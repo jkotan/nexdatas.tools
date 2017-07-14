@@ -21,6 +21,7 @@
 
 import copy
 import os.path
+import json
 
 from xml.dom.minidom import parse, parseString
 from nxstools.nxsdevicetools import (
@@ -107,10 +108,14 @@ class Device(object):
     def tolower(self):
         """ converts `name`, `module`, `tdevice`, `hostname` into lower case
         """
-        self.name = self.name.lower()
-        self.module = self.module.lower()
-        self.tdevice = self.tdevice.lower()
-        self.hostname = self.hostname.lower()
+        if self.name:
+            self.name = self.name.lower()
+        if self.module:
+            self.module = self.module.lower()
+        if self.tdevice:
+            self.tdevice = self.tdevice.lower()
+        if self.hostname:
+            self.hostname = self.hostname.lower()
 
     def splitHostPort(self):
         """ spilts host name from port
@@ -732,6 +737,150 @@ class DeviceDSCreator(Creator):
                 self.options.port,
                 self.options.datasource
                 if not self.options.nogroup else None)
+
+
+class PoolDSCreator(Creator):
+
+    """ datasource creator of all sardana pool acquisition channels
+    """
+
+    def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options: command options
+        :type options: :class:`optparse.Values`
+        :param args: command arguments
+        :type args: :obj:`list` <:obj:`str` >
+        :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
+        """
+        Creator.__init__(self, options, args, printouts)
+        #: (:obj:`dict` <:obj:`str`, :obj:`str` >) datasource xml dictionary
+        self.datasources = {}
+
+    def _printAction(self, dv, dscps=None):
+        """ prints out information about the performed action
+
+        :param dv: online device object
+        :type dv: :class:`Device`
+        :param dscps: datasource components
+        :type dscps: :obj:`dict` <:obj:`str`, :obj:`list` < :obj:`str` > >
+        """
+        if self._printouts:
+            if hasattr(self.options, "directory") and \
+               self.options.directory:
+                print("CREATING %s: %s/%s%s.ds.xml" % (
+                    dv.tdevice, self.options.directory,
+                    self.options.file, dv.name))
+            elif self.options.database:
+                print("CREATING %s %s/%s/%s %s" % (
+                    str(dv.name) + ":" + " " * (34 - len(dv.name or "")),
+                    dv.hostname,
+                    dv.tdevice,
+                    str(dv.attribute) + " " * (
+                        70 - len(dv.tdevice or "") - len(dv.attribute or "")
+                        - len(dv.hostname or "")),
+                    ",".join(dscps[dv.name])
+                    if (dscps and dv.name in dscps and dscps[dv.name])
+                    else ""))
+            else:
+                print("TEST %s %s/%s/%s %s" % (
+                    str(dv.name) + ":" + " " * (34 - len(dv.name or "")),
+                    dv.hostname,
+                    dv.tdevice,
+                    str(dv.attribute) + " " * (
+                        70 - len(dv.tdevice or "") - len(dv.attribute or "")
+                        - len(dv.hostname or "")),
+                    ",".join(dscps[dv.name])
+                    if (dscps and dv.name in dscps and dscps[dv.name])
+                    else ""))
+
+    def create(self):
+        """ creates datasources of all online.xml simple devices
+        """
+        self.createXMLs()
+        server = self.options.server
+        if not hasattr(self.options, "directory") or \
+           not self.options.directory:
+            if self.options.database:
+                for dsname, dsxml in self.datasources.items():
+                    storeDataSource(dsname, dsxml, server)
+        else:
+            for dsname, dsxml in self.datasources.items():
+                myfile = open("%s/%s%s.ds.xml" % (
+                    self.options.directory,
+                    self.options.file, dsname), "w")
+                myfile.write(dsxml)
+                myfile.close()
+
+    def __createDevice(self, name, source, clientlike=True):
+        """  create Device from name source and chtype
+
+        :param name: alias device name
+        :type name: :obj:`str`
+        :param source: device source string
+        :type source: :obj:`str`
+        :param clientlike: device to be client like
+        :type clientlike: :obj:`bool`
+        :returns: device object
+        :rtype: :obj:`Device`
+        """
+        dv = Device()
+        if name and source:
+            slst = source.split('/')
+            if not slst[0] or ":" not in slst[0] or len(slst) < 2:
+                return dv
+            hplst = slst[0].split(":")
+            if len(hplst) != 2:
+                return dv
+            dv.host, dv.port = hplst[0], hplst[1]
+            dv.hostname = slst[0]
+            dv.attribute = slst[-1]
+            dv.name = name
+            dv.tdevice = "/".join(slst[1:-1])
+            if clientlike:
+                dv.group = "__CLIENT__"
+        return dv
+
+    def createXMLs(self):
+        """ creates datasource xmls of all online.xml simple devices
+        """
+        self.datasources = {}
+        plname = self.options.pool
+        motors = ['Motor', 'PseudoMotor']
+        expchnls = ['CTExpChannel', 'ZeroDExpChannel',
+                    'OneDExpChannel', 'TwoDExpChannel',
+                    'PseudoCounter']
+        if 'ALL' in self.args or not self.args:
+            args = list(motors)
+            args.extend(expchnls)
+        else:
+            args = list(self.args)
+        try:
+            plproxy = openServer(plname)
+            chlist = plproxy.ExpChannelList
+            motorlist = plproxy.MotorList
+        except:
+            raise Exception("Cannot connect to %s" % plname)
+        for ellist in [chlist, motorlist]:
+            for els in ellist:
+                elprop = json.loads(els) or {}
+                if 'name' in elprop.keys() \
+                   and 'source' in elprop.keys() \
+                   and 'type' in elprop.keys():
+                    if elprop['name'] in args or elprop['type'] in args:
+                        dv = self.__createDevice(
+                            elprop['name'], elprop['source'],
+                            self.options.clientlike)
+                        if self.options.lower:
+                            dv.tolower()
+                        if dv.tdevice and dv.attribute and dv.host and dv.port:
+                            self._printAction(dv)
+                            xml = self._createTangoDataSource(
+                                dv.name, None, None, None,
+                                dv.tdevice, dv.attribute, dv.host,
+                                dv.port, dv.group)
+                            self.datasources[dv.name] = xml
 
 
 class OnlineDSCreator(Creator):
