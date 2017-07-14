@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "July 13, 2017" "2.43" "NXSTools"
+.TH "NXSTOOLS" "1" "July 14, 2017" "2.44" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -664,6 +664,82 @@ nxscreate onlineds \-b
 nxscreate onlineds \-b \-t
 nxscreate onlineds \-d /home/user/xmldir
 nxscreate onlineds
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS nxscreate poolds
+.sp
+It creates a set of motor datasources from a sardana pool device channels.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate onlineds [options] [channel [channel]]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+with \-d <directory>: datasources are created on the local filesystem
+.IP \(bu 2
+without \-b or \-d <directory>: run in the test mode
+.IP \(bu 2
+default <channel> is \(aqALL\(aq
+.IP \(bu 2
+default <server> is taken from Tango DB
+.IP \(bu 2
+default <pool> is taken from Tango DB
+.UNINDENT
+.sp
+\fIpoolds\fP overwrites existing datasources
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.B \-t\fP,\fB  \-\-noclientlike
+set motor tango datasources to be non __CLIENT__ like
+.TP
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+output directory where datasources will be saved
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+configuration server device name
+.TP
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+file prefix, i.e. counter
+.TP
+.BI \-p \ POOL\fP,\fB \ \-\-pool\fB= POOL
+sardana pool device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate poolds \-b
+nxscreate poolds \-b \-t
+nxscreate poolds \-d \-s p09/pool/haso228
+nxscreate poolds \-b Motor CTExpChannel
+nxscreate poolds \-b mot01 mot03
+nxscreate poolds
 .ft P
 .fi
 .UNINDENT
@@ -2678,6 +2754,50 @@ the main program function
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxscreate.PoolDS(parser)
+Bases: \fBnxstools.nxsargparser.Runner\fP
+.sp
+poolds runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqcreate datasources from sardana pool device\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = " * with \-b: datasources are created in Configuration Server database\en * with \-d <directory>: datasources are created on the local filesystem\en * without \-b or \-d <directory>: run in the test mode\en * default: <channel> is \(aqALL\(aq \en            <server> is taken from Tango DB\en\en            <pool> is taken from Tango DB\en\en \(gapoolds\(ga overwrites existing datasources\en\en examples:\en       nxscreate poolds \-b  \en       nxscreate poolds \-b \-t \en       nxscreate poolds \-d \-p p09/pool/haso228 \en       nxscreate poolds \-b Motor CTExpChannel \en       nxscreate poolds \-b mot01 mot03 \en       nxscreate poolds \en"
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B postauto()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B class nxstools.nxscreate.StdComp(parser)
 Bases: \fBnxstools.nxsargparser.Runner\fP
 .sp
@@ -4066,6 +4186,42 @@ creates datasource xmls of all online.xml simple devices
 .TP
 .B nxstools.nxscreator.PYTANGO = True
 (\fI\%bool\fP) True if PyTango available
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscreator.PoolDSCreator(options, args, printouts=True)
+Bases: \fBnxstools.nxscreator.Creator\fP
+.sp
+datasource creator of all sardana pool acquisition channels
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+.IP \(bu 2
+\fBargs\fP (\fBlist\fP <\fI\%str\fP >) \-\- command arguments
+.IP \(bu 2
+\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates datasources of all online.xml simple devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B createXMLs()
+creates datasource xmls of all online.xml simple devices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B datasources = None
+(\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) datasource xml dictionary
+.UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -5472,7 +5628,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f746f82bb90>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f24020ef490>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

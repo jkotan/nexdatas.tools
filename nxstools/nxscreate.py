@@ -31,7 +31,7 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxscreator import (
     TangoDSCreator, ClientDSCreator, WrongParameterError,
     DeviceDSCreator, OnlineDSCreator, OnlineCPCreator, CPExistsException,
-    StandardCPCreator, ComponentCreator, CompareOnlineDS)
+    StandardCPCreator, ComponentCreator, CompareOnlineDS, PoolDSCreator)
 
 
 #: (:obj:`bool`) True if PyTango available
@@ -406,6 +406,109 @@ class OnlineDS(Runner):
             print("TEST MODE: %s" % options.server)
 
         creator = OnlineDSCreator(options, args)
+        creator.create()
+
+
+class PoolDS(Runner):
+
+    """ poolds runner"""
+
+    #: (:obj:`str`) command description
+    description = "create datasources from sardana pool device"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " * with -b: datasources are created" \
+        + " in Configuration Server database\n" \
+        + " * with -d <directory>: datasources are created" \
+        + " on the local filesystem\n" \
+        + " * without -b or -d <directory>: run in the test mode\n" \
+        + " * default: <channel> is 'ALL' \n" \
+        + "            <server> is taken from Tango DB\n\n" \
+        + "            <pool> is taken from Tango DB\n\n" \
+        + " `poolds` overwrites existing datasources\n\n" \
+        + " examples:\n" \
+        + "       nxscreate poolds -b  \n" \
+        + "       nxscreate poolds -b -t \n" \
+        + "       nxscreate poolds -d -p p09/pool/haso228 \n" \
+        + "       nxscreate poolds -b Motor CTExpChannel \n" \
+        + "       nxscreate poolds -b mot01 mot03 \n" \
+        + "       nxscreate poolds \n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument("-b", "--database", action="store_true",
+                            default=False, dest="database",
+                            help="store components in"
+                            " Configuration Server database")
+        parser.add_argument("-t", "--noclientlike", action="store_false",
+                            default=True, dest="clientlike",
+                            help="set motor tango datasources to "
+                            "be no __CLIENT__ like, i.e. pure tango-like")
+        parser.add_argument("-d", "--directory",
+                            help="output directory where"
+                            " datasources will be saved",
+                            dest="directory", default="")
+        parser.add_argument("-n", "--nolower", action="store_false",
+                            default=True, dest="lower",
+                            help="do not change aliases into lower case")
+        parser.add_argument("-r", "--server", dest="server",
+                            help="configuration server device name")
+        parser.add_argument("-x", "--file-prefix",
+                            help="file prefix, i.e. counter",
+                            dest="file", default="")
+        parser.add_argument("-p", "--pool",
+                            help="sardana pool device name",
+                            dest="pool", default="")
+
+    def postauto(self):
+        """ creates parser
+        """
+        self._parser.add_argument('args', metavar='channel',
+                                  type=str, nargs='*',
+                                  help='sardana pool channel types '
+                                  'or name of aliases, '
+                                  'e.g. Motor CTExpChannel ZeroDExpChannel '
+                                  'OneDExpChannel TwoDExpChannel '
+                                  ' PseudoMotor PseudoCounter ALL')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+
+        parser = self._parser
+        if not PYTANGO:
+            sys.stderr.write("No PyTango installed\n")
+            parser.print_help()
+            sys.exit(255)
+
+        if not options.server:
+            options.server = checkServer()
+            if not options.server:
+                parser.print_help()
+                print("")
+                sys.exit(0)
+        if not options.pool:
+            options.pool = checkServer("Pool")
+            if not options.pool:
+                parser.print_help()
+                print("")
+                sys.exit(0)
+        args = options.args
+
+        print("INPUT: %s" % args)
+        if options.directory:
+            print("OUTPUT DIR: %s" % options.directory)
+        elif options.database:
+            print("SERVER: %s" % options.server)
+        else:
+            print("TEST MODE: %s" % options.server)
+
+        creator = PoolDSCreator(options, args)
         creator.create()
 
 
@@ -956,7 +1059,8 @@ def main():
                          ('tangods', TangoDS),
                          ('deviceds', DeviceDS),
                          ('onlineds', OnlineDS),
-                         ('onlinecp', OnlineCP),
+                         ('onlineds', OnlineDS),
+                         ('poolds', PoolDS),
                          ('stdcomp', StdComp),
                          ('comp', Comp),
                          ('compare', Compare)]
