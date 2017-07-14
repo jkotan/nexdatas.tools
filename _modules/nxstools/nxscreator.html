@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreator &mdash; NXSTools 2.43.1 documentation</title>
+    <title>nxstools.nxscreator &mdash; NXSTools 2.44.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.43.1',
+        VERSION:     '2.44.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.44.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.44</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -85,6 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-tangods">nxscreate tangods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-poolds">nxscreate poolds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
@@ -203,6 +204,7 @@
 
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">parseString</span>
 <span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span>
@@ -289,10 +291,14 @@
 <div class="viewcode-block" id="Device.tolower"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.tolower">[docs]</a>    <span class="k">def</span> <span class="nf">tolower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; converts `name`, `module`, `tdevice`, `hostname` into lower case</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdevice</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hostname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="Device.splitHostPort"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device.splitHostPort">[docs]</a>    <span class="k">def</span> <span class="nf">splitHostPort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; spilts host name from port</span>
@@ -914,6 +920,150 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">datasource</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">nogroup</span> <span class="k">else</span> <span class="bp">None</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="PoolDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator">[docs]</a><span class="k">class</span> <span class="nc">PoolDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; datasource creator of all sardana pool acquisition channels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+
+<span class="sd">        :param options: command options</span>
+<span class="sd">        :type options: :class:`optparse.Values`</span>
+<span class="sd">        :param args: command arguments</span>
+<span class="sd">        :type args: :obj:`list` &lt;:obj:`str` &gt;</span>
+<span class="sd">        :param printouts: if printout is enable</span>
+<span class="sd">        :type printouts: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Creator</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">printouts</span><span class="p">)</span>
+        <span class="c">#: (:obj:`dict` &lt;:obj:`str`, :obj:`str` &gt;) datasource xml dictionary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_printAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">dscps</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; prints out information about the performed action</span>
+
+<span class="sd">        :param dv: online device object</span>
+<span class="sd">        :type dv: :class:`Device`</span>
+<span class="sd">        :param dscps: datasource components</span>
+<span class="sd">        :type dscps: :obj:`dict` &lt;:obj:`str`, :obj:`list` &lt; :obj:`str` &gt; &gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">and</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;CREATING </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">70</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">34</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">*</span> <span class="p">(</span>
+                        <span class="mi">70</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+                        <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)),</span>
+                    <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">dscps</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">dscps</span> <span class="ow">and</span> <span class="n">dscps</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+                    <span class="k">else</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="PoolDSCreator.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates datasources of all online.xml simple devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="s">&quot;directory&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s%s</span><span class="s">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
+                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__createDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">clientlike</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;  create Device from name source and chtype</span>
+
+<span class="sd">        :param name: alias device name</span>
+<span class="sd">        :type name: :obj:`str`</span>
+<span class="sd">        :param source: device source string</span>
+<span class="sd">        :type source: :obj:`str`</span>
+<span class="sd">        :param clientlike: device to be client like</span>
+<span class="sd">        :type clientlike: :obj:`bool`</span>
+<span class="sd">        :returns: device object</span>
+<span class="sd">        :rtype: :obj:`Device`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">source</span><span class="p">:</span>
+            <span class="n">slst</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">slst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="s">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">slst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">slst</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dv</span>
+            <span class="n">hplst</span> <span class="o">=</span> <span class="n">slst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hplst</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dv</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">hplst</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">hplst</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">slst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">slst</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">slst</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">clientlike</span><span class="p">:</span>
+                <span class="n">dv</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&quot;__CLIENT__&quot;</span>
+        <span class="k">return</span> <span class="n">dv</span>
+
+<div class="viewcode-block" id="PoolDSCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.PoolDSCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">plname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pool</span>
+        <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Motor&#39;</span><span class="p">,</span> <span class="s">&#39;PseudoMotor&#39;</span><span class="p">]</span>
+        <span class="n">expchnls</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;CTExpChannel&#39;</span><span class="p">,</span> <span class="s">&#39;ZeroDExpChannel&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;OneDExpChannel&#39;</span><span class="p">,</span> <span class="s">&#39;TwoDExpChannel&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;PseudoCounter&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">&#39;ALL&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">motors</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">expchnls</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plproxy</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">plname</span><span class="p">)</span>
+            <span class="n">chlist</span> <span class="o">=</span> <span class="n">plproxy</span><span class="o">.</span><span class="n">ExpChannelList</span>
+            <span class="n">motorlist</span> <span class="o">=</span> <span class="n">plproxy</span><span class="o">.</span><span class="n">MotorList</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Cannot connect to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">plname</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ellist</span> <span class="ow">in</span> <span class="p">[</span><span class="n">chlist</span><span class="p">,</span> <span class="n">motorlist</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">els</span> <span class="ow">in</span> <span class="n">ellist</span><span class="p">:</span>
+                <span class="n">elprop</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">els</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">elprop</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> \
+                   <span class="ow">and</span> <span class="s">&#39;source&#39;</span> <span class="ow">in</span> <span class="n">elprop</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> \
+                   <span class="ow">and</span> <span class="s">&#39;type&#39;</span> <span class="ow">in</span> <span class="n">elprop</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">elprop</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">or</span> <span class="n">elprop</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                        <span class="n">dv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__createDevice</span><span class="p">(</span>
+                            <span class="n">elprop</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">elprop</span><span class="p">[</span><span class="s">&#39;source&#39;</span><span class="p">],</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">clientlike</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
+                            <span class="n">dv</span><span class="o">.</span><span class="n">tolower</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">host</span> <span class="ow">and</span> <span class="n">dv</span><span class="o">.</span><span class="n">port</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                            <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
 
 </div></div>
 <div class="viewcode-block" id="OnlineDSCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator">[docs]</a><span class="k">class</span> <span class="nc">OnlineDSCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>

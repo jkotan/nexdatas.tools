@@ -219,6 +219,54 @@ Example
 	   nxscreate onlineds
 
 
+nxscreate poolds
+----------------
+
+It creates a set of motor datasources from a sardana pool device channels.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  nxscreate onlineds [options] [channel [channel]]
+
+- with -b: datasources are created in Configuration Server database
+- with -d <directory>: datasources are created on the local filesystem
+- without -b or -d <directory>: run in the test mode
+- default <channel> is 'ALL'
+- default <server> is taken from Tango DB
+- default <pool> is taken from Tango DB
+
+`poolds` overwrites existing datasources
+
+Options:
+  -h, --help            show this help message and exit
+  -b, --database        store components in Configuration Server database
+  -t, --noclientlike    set motor tango datasources to be non __CLIENT__ like
+  -d DIRECTORY, --directory=DIRECTORY
+                        output directory where datasources will be saved
+  -n, --nolower         do not change aliases into lower case
+  -r SERVER, --server=SERVER
+                        configuration server device name
+  -x FILE, --file-prefix=FILE
+                        file prefix, i.e. counter
+  -p POOL, --pool=POOL
+                        sardana pool device name
+
+Example
+"""""""
+
+.. code:: bash
+
+           nxscreate poolds -b  
+           nxscreate poolds -b -t 
+           nxscreate poolds -d -s p09/pool/haso228 
+           nxscreate poolds -b Motor CTExpChannel 
+           nxscreate poolds -b mot01 mot03 
+           nxscreate poolds
+
+
 nxscreate onlinecp
 ------------------
 

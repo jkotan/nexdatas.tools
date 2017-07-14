@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxscreate &mdash; NXSTools 2.43.1 documentation</title>
+    <title>nxstools.nxscreate &mdash; NXSTools 2.44.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.43.1',
+        VERSION:     '2.44.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.43.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.44.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.44</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -85,6 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-tangods">nxscreate tangods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-poolds">nxscreate poolds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
@@ -213,7 +214,7 @@
 <span class="kn">from</span> <span class="nn">nxstools.nxscreator</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">TangoDSCreator</span><span class="p">,</span> <span class="n">ClientDSCreator</span><span class="p">,</span> <span class="n">WrongParameterError</span><span class="p">,</span>
     <span class="n">DeviceDSCreator</span><span class="p">,</span> <span class="n">OnlineDSCreator</span><span class="p">,</span> <span class="n">OnlineCPCreator</span><span class="p">,</span> <span class="n">CPExistsException</span><span class="p">,</span>
-    <span class="n">StandardCPCreator</span><span class="p">,</span> <span class="n">ComponentCreator</span><span class="p">,</span> <span class="n">CompareOnlineDS</span><span class="p">)</span>
+    <span class="n">StandardCPCreator</span><span class="p">,</span> <span class="n">ComponentCreator</span><span class="p">,</span> <span class="n">CompareOnlineDS</span><span class="p">,</span> <span class="n">PoolDSCreator</span><span class="p">)</span>
 
 
 <span class="c">#: (:obj:`bool`) True if PyTango available</span>
@@ -588,6 +589,109 @@
             <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST MODE: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
 
         <span class="n">creator</span> <span class="o">=</span> <span class="n">OnlineDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="PoolDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS">[docs]</a><span class="k">class</span> <span class="nc">PoolDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; poolds runner&quot;&quot;&quot;</span>
+
+    <span class="c">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;create datasources from sardana pool device&quot;</span>
+    <span class="c">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -b: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * with -d &lt;directory&gt;: datasources are created&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; on the local filesystem</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * without -b or -d &lt;directory&gt;: run in the test mode</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; * default: &lt;channel&gt; is &#39;ALL&#39; </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;server&gt; is taken from Tango DB</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;            &lt;pool&gt; is taken from Tango DB</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; `poolds` overwrites existing datasources</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot; examples:</span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds -b  </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds -b -t </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds -d -p p09/pool/haso228 </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds -b Motor CTExpChannel </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds -b mot01 mot03 </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="o">+</span> <span class="s">&quot;       nxscreate poolds </span><span class="se">\n</span><span class="s">&quot;</span>
+
+<div class="viewcode-block" id="PoolDS.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;store components in&quot;</span>
+                            <span class="s">&quot; Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;--noclientlike&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;clientlike&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;set motor tango datasources to &quot;</span>
+                            <span class="s">&quot;be no __CLIENT__ like, i.e. pure tango-like&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;output directory where&quot;</span>
+                            <span class="s">&quot; datasources will be saved&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;directory&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;configuration server device name&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--pool&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s">&quot;sardana pool device name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s">&quot;pool&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PoolDS.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;channel&#39;</span><span class="p">,</span>
+                                  <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;*&#39;</span><span class="p">,</span>
+                                  <span class="n">help</span><span class="o">=</span><span class="s">&#39;sardana pool channel types &#39;</span>
+                                  <span class="s">&#39;or name of aliases, &#39;</span>
+                                  <span class="s">&#39;e.g. Motor CTExpChannel ZeroDExpChannel &#39;</span>
+                                  <span class="s">&#39;OneDExpChannel TwoDExpChannel &#39;</span>
+                                  <span class="s">&#39; PseudoMotor PseudoCounter ALL&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PoolDS.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.PoolDS.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;No PyTango installed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">pool</span><span class="p">:</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">(</span><span class="s">&quot;Pool&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">pool</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;INPUT: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;OUTPUT DIR: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;SERVER: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;TEST MODE: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">PoolDSCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
         <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
 </div></div>
@@ -1138,7 +1242,8 @@
                          <span class="p">(</span><span class="s">&#39;tangods&#39;</span><span class="p">,</span> <span class="n">TangoDS</span><span class="p">),</span>
                          <span class="p">(</span><span class="s">&#39;deviceds&#39;</span><span class="p">,</span> <span class="n">DeviceDS</span><span class="p">),</span>
                          <span class="p">(</span><span class="s">&#39;onlineds&#39;</span><span class="p">,</span> <span class="n">OnlineDS</span><span class="p">),</span>
-                         <span class="p">(</span><span class="s">&#39;onlinecp&#39;</span><span class="p">,</span> <span class="n">OnlineCP</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;onlineds&#39;</span><span class="p">,</span> <span class="n">OnlineDS</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s">&#39;poolds&#39;</span><span class="p">,</span> <span class="n">PoolDS</span><span class="p">),</span>
                          <span class="p">(</span><span class="s">&#39;stdcomp&#39;</span><span class="p">,</span> <span class="n">StdComp</span><span class="p">),</span>
                          <span class="p">(</span><span class="s">&#39;comp&#39;</span><span class="p">,</span> <span class="n">Comp</span><span class="p">),</span>
                          <span class="p">(</span><span class="s">&#39;compare&#39;</span><span class="p">,</span> <span class="n">Compare</span><span class="p">)]</span>

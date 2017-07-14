@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.43.1 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.44.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.43.1',
+        VERSION:     '2.44.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.43.1 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.44.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.43</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.44</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -86,6 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-tangods">nxscreate tangods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-deviceds">nxscreate deviceds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-onlineds">nxscreate onlineds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxscreate-poolds">nxscreate poolds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a></li>
@@ -172,24 +173,29 @@
 <li><a class="reference internal" href="#id7">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nxscreate-onlinecp">nxscreate onlinecp</a><ul>
+<li><a class="reference internal" href="#nxscreate-poolds">nxscreate poolds</a><ul>
 <li><a class="reference internal" href="#id8">Synopsis</a></li>
 <li><a class="reference internal" href="#id9">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nxscreate-stdcomp">nxscreate stdcomp</a><ul>
+<li><a class="reference internal" href="#nxscreate-onlinecp">nxscreate onlinecp</a><ul>
 <li><a class="reference internal" href="#id10">Synopsis</a></li>
 <li><a class="reference internal" href="#id11">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a><ul>
+<li><a class="reference internal" href="#nxscreate-stdcomp">nxscreate stdcomp</a><ul>
 <li><a class="reference internal" href="#id12">Synopsis</a></li>
 <li><a class="reference internal" href="#id13">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nxscreate-compare">nxscreate compare</a><ul>
+<li><a class="reference internal" href="#nxscreate-comp">nxscreate comp</a><ul>
 <li><a class="reference internal" href="#id14">Synopsis</a></li>
 <li><a class="reference internal" href="#id15">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nxscreate-compare">nxscreate compare</a><ul>
+<li><a class="reference internal" href="#id16">Synopsis</a></li>
+<li><a class="reference internal" href="#id17">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -568,12 +574,81 @@ nxscreate onlineds
 </div>
 </div>
 </div>
+<div class="section" id="nxscreate-poolds">
+<h2>nxscreate poolds<a class="headerlink" href="#nxscreate-poolds" title="Permalink to this headline">¶</a></h2>
+<p>It creates a set of motor datasources from a sardana pool device channels.</p>
+<div class="section" id="id8">
+<h3>Synopsis<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds [options] [channel [channel]]
+</pre></div>
+</div>
+<ul class="simple">
+<li>with -b: datasources are created in Configuration Server database</li>
+<li>with -d &lt;directory&gt;: datasources are created on the local filesystem</li>
+<li>without -b or -d &lt;directory&gt;: run in the test mode</li>
+<li>default &lt;channel&gt; is &#8216;ALL&#8217;</li>
+<li>default &lt;server&gt; is taken from Tango DB</li>
+<li>default &lt;pool&gt; is taken from Tango DB</li>
+</ul>
+<p><cite>poolds</cite> overwrites existing datasources</p>
+<dl class="docutils">
+<dt>Options:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
+<td>store components in Configuration Server database</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-t</span>, <span class="option">--noclientlike</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>set motor tango datasources to be non __CLIENT__ like</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>output directory where datasources will be saved</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
+<td>do not change aliases into lower case</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>configuration server device name</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>file prefix, i.e. counter</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>POOL</var></span>, <span class="option">--pool=<var>POOL</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>sardana pool device name</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</div>
+<div class="section" id="id9">
+<h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate poolds -b
+nxscreate poolds -b -t
+nxscreate poolds -d -s p09/pool/haso228
+nxscreate poolds -b Motor CTExpChannel
+nxscreate poolds -b mot01 mot03
+nxscreate poolds
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="nxscreate-onlinecp">
 <h2>nxscreate onlinecp<a class="headerlink" href="#nxscreate-onlinecp" title="Permalink to this headline">¶</a></h2>
 <p>It creates a detector component from the online.xml file
 and its set of datasources.</p>
-<div class="section" id="id8">
-<h3>Synopsis<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>Synopsis<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp [options] inputFile
 </pre></div>
 </div>
@@ -638,8 +713,8 @@ and its set of datasources.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id9">
-<h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp
 nxscreate onlinecp -c lambda
 nxscreate onlinecp -c pilatus -b
@@ -652,8 +727,8 @@ nxscreate onlinecp -c lambda -d /home/user/xmldir/
 <h2>nxscreate stdcomp<a class="headerlink" href="#nxscreate-stdcomp" title="Permalink to this headline">¶</a></h2>
 <p>It creates a standard component from the xml template files
 and its set of datasources.</p>
-<div class="section" id="id10">
-<h3>Synopsis<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>Synopsis<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
 </pre></div>
 </div>
@@ -725,8 +800,8 @@ and its set of datasources.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id11">
-<h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id13">
+<h3>Example<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate stdcomp
 nxscreate stdcomp -t source
 nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
@@ -738,8 +813,8 @@ nxscreate stdcomp -t default -c default -b -m
 <div class="section" id="nxscreate-comp">
 <h2>nxscreate comp<a class="headerlink" href="#nxscreate-comp" title="Permalink to this headline">¶</a></h2>
 <p>It creates a set of simple components.</p>
-<div class="section" id="id12">
-<h3>Synopsis<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp [options] [name1] [name2] ...
 </pre></div>
 </div>
@@ -829,8 +904,8 @@ nxscreate stdcomp -t default -c default -b -m
 </dd>
 </dl>
 </div>
-<div class="section" id="id13">
-<h3>Example<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp counter
 nxscreate comp -f1 -l3 -v exp_c -b
 nxscreate comp lambda -d /home/user/xmldir/
@@ -843,8 +918,8 @@ nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetect
 <div class="section" id="nxscreate-compare">
 <h2>nxscreate compare<a class="headerlink" href="#nxscreate-compare" title="Permalink to this headline">¶</a></h2>
 <p>It compares two online.xml files</p>
-<div class="section" id="id14">
-<h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>Synopsis<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate compare [-h] [-n] online_file [online_file]
 </pre></div>
 </div>
@@ -870,8 +945,8 @@ nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetect
 </dd>
 </dl>
 </div>
-<div class="section" id="id15">
-<h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id17">
+<h3>Example<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds /online_dir/online.xml online.xml
 nxscreate compare online.xml
 </pre></div>
