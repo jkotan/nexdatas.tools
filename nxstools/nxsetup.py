@@ -905,11 +905,13 @@ class ChangeProp(Runner):
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxsetup change-prop -n DefaultPreselectedComponents -w " \
-        + "\"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
-        + "       nxsetup change-prop -n DefaultPreselectedComponents -t -w " \
+        + "       nxsetup change-prop -n ClientRecordKeys -t -w " \
         + "\"[\\\"phoibos_scan_command\\\",\\\"phoibos_scan_comment\\\"]\" " \
         + "NXSRecSelector/r228\n" \
+        + "       nxsetup change-prop -n DefaultPreselectedComponents -w " \
+        + "\"[\\\"pinhole1\\\",\\\"slit2\\\"]\" NXSRecSelector/r228\n" \
+        + "       nxsetup change-prop -n StartDsPath -w " \
+        + "\"[\\\"/usr/bin\\\",\\\"/usr/lib/tango\\\"]\" Starter\n" \
         + "\n"
 
     def create(self):
