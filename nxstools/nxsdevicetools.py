@@ -442,8 +442,7 @@ def checkServer(name='NXSConfigServer'):
     servers = getServers(name)
     if not servers:
         sys.stderr.write(
-            "Error: No required server on current host running. \n\n"
-            + "    Please specify the server from the other host. \n\n")
+            "Info: NeXus hasn't been setup yet. \n\n")
         sys.stderr.flush()
         return ""
     if len(servers) > 1:
@@ -453,7 +452,7 @@ def checkServer(name='NXSConfigServer'):
             servers = [sr for sr in servers if sr.endswith("/%s" % lhost)]
         if len(servers) > 1:
             sys.stderr.write(
-                "Error: More than on %s " % name
+                "Info: More than on %s " % name
                 + "on the current host running. \n\n"
                 + "    Please specify the server:"
                 + "\n        %s\n\n" % "\n        ".join(servers))
