@@ -1,4 +1,8 @@
 2017-07-21 Jan Kotanski <jankotan@gmail.com>
+	* skip help message on info
+	* tagged as v2.44.2
+
+2017-07-21 Jan Kotanski <jankotan@gmail.com>
 	* change error message on not installed nexus to info
 	* tagged as v2.44.1
 
