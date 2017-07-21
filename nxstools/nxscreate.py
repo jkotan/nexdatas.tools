@@ -152,21 +152,18 @@ class TangoDS(Runner):
         if (options.database and not options.server) or \
            (not options.host and not options.server):
             if not PYTANGO:
-                print >> sys.stderr, "nxscreate: No PyTango installed\n"
-                parser.print_help()
+                print >> sys.stderr, "Info: No PyTango installed\n"
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print ""
                 sys.exit(0)
 
         if not options.host:
             if not PYTANGO:
                 print >> sys.stderr, \
-                    "nxscreate: No Tango Host or PyTango installed\n"
-                parser.print_help()
+                    "Info: No Tango Host or PyTango installed\n"
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
@@ -266,21 +263,18 @@ class DeviceDS(Runner):
         if (options.database and not options.server) or \
            (not options.host and not options.server):
             if not PYTANGO:
-                print >> sys.stderr, "nxscreate: No PyTango installed\n"
-                parser.print_help()
+                print >> sys.stderr, "Info: No PyTango installed\n"
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print ""
                 sys.exit(0)
 
         if not options.host:
             if not PYTANGO:
                 print >> sys.stderr, \
-                    "nxscreate: No Tango Host or PyTango installed\n"
-                parser.print_help()
+                    "Info: No Tango Host or PyTango installed\n"
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
@@ -379,14 +373,12 @@ class OnlineDS(Runner):
 
         parser = self._parser
         if not PYTANGO:
-            sys.stderr.write("No PyTango installed\n")
-            parser.print_help()
+            sys.stderr.write("Info: No PyTango installed\n")
             sys.exit(255)
 
         if not options.server:
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print("")
                 sys.exit(0)
         args = [options.args] if options.args else []
@@ -480,22 +472,18 @@ class PoolDS(Runner):
         :type options: :class:`argparse.Namespace`
         """
 
-        parser = self._parser
         if not PYTANGO:
-            sys.stderr.write("No PyTango installed\n")
-            parser.print_help()
+            sys.stderr.write("Info: No PyTango installed\n")
             sys.exit(255)
 
         if not options.server:
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print("")
                 sys.exit(0)
         if not options.pool:
             options.pool = checkServer("Pool")
             if not options.pool:
-                parser.print_help()
                 print("")
                 sys.exit(0)
         args = options.args
@@ -633,14 +621,12 @@ class OnlineCP(Runner):
 
         parser = self._parser
         if not PYTANGO:
-            sys.stderr.write("nxscreate: No PyTango installed\n")
-            parser.print_help()
+            sys.stderr.write("Info: No PyTango installed\n")
             sys.exit(255)
 
         if not options.server:
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print("")
                 sys.exit(0)
 
@@ -748,7 +734,7 @@ class StdComp(Runner):
         """
         parser = self._parser
         if not PYTANGO:
-            sys.stderr.write("nxscreate: No PyTango installed\n")
+            sys.stderr.write("Info: No PyTango installed\n")
             parser.print_help()
             sys.exit(255)
 
@@ -759,7 +745,6 @@ class StdComp(Runner):
             if not options.server:
                 options.server = checkServer()
                 if not options.server:
-                    parser.print_help()
                     print("")
                     sys.exit(0)
 
@@ -918,13 +903,11 @@ class Comp(Runner):
         parser = self._parser
         if options.database and not options.server:
             if not PYTANGO:
-                sys.stderr.write("CollCompCreator No PyTango installed\n")
-                parser.print_help()
+                sys.stderr.write("Info: No PyTango installed\n")
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print("")
                 sys.exit(0)
 
@@ -1021,13 +1004,11 @@ class ClientDS(Runner):
         parser = self._parser
         if options.database and not options.server:
             if not PYTANGO:
-                sys.stderr.write("No PyTango installed\n")
-                parser.print_help()
+                sys.stderr.write("Info: No PyTango installed\n")
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                parser.print_help()
                 print("")
                 sys.exit(0)
 
