@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.44.1 documentation</title>
+    <title>nxscreate &mdash; NXSTools 2.45.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.44.1',
+        VERSION:     '2.45.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.44.1 documentation" href="index.html" />
+    <link rel="top" title="NXSTools 2.45.0 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.44</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -826,7 +826,7 @@ nxscreate stdcomp -t default -c default -b -m
 <li>default &lt;strategy&gt; is step</li>
 <li>default &lt;type&gt; is NX_FLOAT</li>
 <li>default &lt;chunk&gt; is SCALAR</li>
-<li>default &lt;nexuspath&gt; is &#8216;/entry$var.serialno:NXentry/instrument/collection/</li>
+<li>default &lt;nexuspath&gt; is &#8220;/$var.entryname#&#8217;scan&#8217;$var.serialno:NXentry/instrument/collection/&#8221;</li>
 </ul>
 <dl class="docutils">
 <dt>Options:</dt>
@@ -909,8 +909,8 @@ nxscreate stdcomp -t default -c default -b -m
 <div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp counter
 nxscreate comp -f1 -l3 -v exp_c -b
 nxscreate comp lambda -d /home/user/xmldir/
-nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
-nxscreate comp -n &#39;/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&#39; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
+nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&quot; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
 </pre></div>
 </div>
 </div>

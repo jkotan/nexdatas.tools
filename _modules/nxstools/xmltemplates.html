@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.xmltemplates &mdash; NXSTools 2.44.1 documentation</title>
+    <title>nxstools.xmltemplates &mdash; NXSTools 2.45.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.44.1',
+        VERSION:     '2.45.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -29,7 +29,7 @@
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.44.1 documentation" href="../../index.html" />
+    <link rel="top" title="NXSTools 2.45.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -50,7 +50,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.44</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -878,6 +878,42 @@
             <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;source group name (string)&quot;</span>
         <span class="p">},</span>
     <span class="p">},</span>
+    <span class="s">&#39;defaultinstrument&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;control&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;group name of the monitor (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;shortname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;P09&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;beamline short name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;longname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;P09 Resonant Scattering and Diffraction beamline&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;beamline long name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;sourcename&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;PETRA III&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;source name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;__tangohost__&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;tango host (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;__tangoport__&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;10000&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;tango port (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;__configdevice__&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&quot;nxs/configserver/localhost&quot;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;configuration server device name (string)&quot;</span>
+        <span class="p">},</span>
+        <span class="s">&#39;srcname&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;source&#39;</span><span class="p">,</span>
+            <span class="s">&#39;doc&#39;</span><span class="p">:</span> <span class="s">&quot;source group name (string)&quot;</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">&#39;defaultsample&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">},</span>
     <span class="s">&#39;dcm&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">&#39;usage&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="s">&#39;Bragg&#39;</span><span class="p">,</span>
@@ -1089,8 +1125,24 @@
     <span class="p">],</span>
     <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">[</span>
         <span class="s">&#39;default.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;defaultsample.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;defaultinstrument.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;sample_name.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;chemical_formula.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;beamtime_id.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;start_time.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;end_time.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;nexdatas_version.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;nexdatas_configuration.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;title.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;defaultsample&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;defaultsample.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;sample_name.ds.xml&#39;</span><span class="p">,</span>
+        <span class="s">&#39;chemical_formula.ds.xml&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s">&#39;defaultinstrument&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;defaultinstrument.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;beamtime_id.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;start_time.ds.xml&#39;</span><span class="p">,</span>
         <span class="s">&#39;end_time.ds.xml&#39;</span><span class="p">,</span>
