@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "July 21, 2017" "2.44" "NXSTools"
+.TH "NXSCREATE" "1" "August 02, 2017" "2.45" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -651,7 +651,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is \(aq/entry$var.serialno:NXentry/instrument/collection/
+default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -719,8 +719,8 @@ device name without first \(aq0\(aq
 nxscreate comp counter
 nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
-nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
-nxscreate comp \-n \(aq/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(aq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
 .ft P
 .fi
 .UNINDENT

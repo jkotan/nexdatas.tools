@@ -1,3 +1,9 @@
+2017-08-02 Jan Kotanski <jankotan@gmail.com>
+	* fix for onlineds
+	* add $var.entryname
+	* split 'default' component into 'defaultsample' and 'defaultinstrument'
+	* tagged as v2.45.0
+
 2017-07-21 Jan Kotanski <jankotan@gmail.com>
 	* skip help message on info
 	* tagged as v2.44.2

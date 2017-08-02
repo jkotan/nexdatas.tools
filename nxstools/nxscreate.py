@@ -789,17 +789,20 @@ class Comp(Runner):
         + "            <type> is NX_FLOAT\n" \
         + "            <chunk> is SCALAR\n" \
         + "            <nexuspath> is " \
-        + "'/scan$var.serialno:NXentry/instrument/collection/\n" \
+        + "\"/\$var.entryname#'scan'\$var.serialno:NXentry" \
+        + "/instrument/collection/\"\n" \
         + " examples:\n" \
         + "       nxscreate comp counter \n" \
         + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
-        + "       nxscreate comp -n '/scan$var.serialno:NXentry/instrument/" \
-        + "sis3302:NXdetector/collection:NXcollection/' " \
-        + "-v sis3302_1_roi -f1 -l4 "\
-        + " -g STEP -t NX_FLOAT64 -k -b -m \n"\
-        + "       nxscreate comp -n '/scan$var.serialno:NXentry/instrument/" \
-        + "eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64" \
+        + "       nxscreate comp -n " \
+        + "\"/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/" \
+        + "sis3302:NXdetector/collection:NXcollection/\" " \
+        + "-v sis3302_1_roi -f1 -l4 " \
+        + " -g STEP -t NX_FLOAT64 -k -b -m \n" \
+        + "       nxscreate comp -n " \
+        + "\"/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/" \
+        + "eh1_mca01:NXdetector/data\" eh1_mca01 -g STEP -t NX_FLOAT64" \
         + " -i -b -c SPECTRUM\n" \
         + "\n"
 
@@ -1039,7 +1042,7 @@ def main():
     parser.cmdrunners = [('clientds', ClientDS),
                          ('tangods', TangoDS),
                          ('deviceds', DeviceDS),
-                         ('onlineds', OnlineDS),
+                         ('onlinecp', OnlineCP),
                          ('onlineds', OnlineDS),
                          ('poolds', PoolDS),
                          ('stdcomp', StdComp),
