@@ -1042,7 +1042,7 @@ def main():
     parser.cmdrunners = [('clientds', ClientDS),
                          ('tangods', TangoDS),
                          ('deviceds', DeviceDS),
-                         ('onlineds', OnlineDS),
+                         ('onlinecp', OnlineCP),
                          ('onlineds', OnlineDS),
                          ('poolds', PoolDS),
                          ('stdcomp', StdComp),
