@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <group type="NXentry" name="$(__entryname__)$var.serialno">
+  <group type="NXentry" name="$var.entryname#'$(__entryname__)'$var.serialno">
     <group type="NXinstrument" name="$(__insname__)">
       <group type="NXpinhole" name="$(name)">
         <field type="NX_CHAR" name="depends_on">transformations/y<strategy mode="INIT"/>

@@ -394,7 +394,7 @@ Synopsis
 - default <strategy> is step
 - default <type> is NX_FLOAT
 - default <chunk> is SCALAR
-- default <nexuspath> is '/entry$var.serialno:NXentry/instrument/collection/
+- default <nexuspath> is "/\$var.entryname#'scan'$var.serialno:NXentry/instrument/collection/"
 
 Options:
   -h, --help            show this help message and exit
@@ -433,8 +433,8 @@ Example
 	  nxscreate comp counter
 	  nxscreate comp -f1 -l3 -v exp_c -b
 	  nxscreate comp lambda -d /home/user/xmldir/
-	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
-	  nxscreate comp -n '/entry$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data' eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+	  nxscreate comp -n "/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
+	  nxscreate comp -n "/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
 
 
 nxscreate compare

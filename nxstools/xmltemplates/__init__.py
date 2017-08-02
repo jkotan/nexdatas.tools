@@ -695,6 +695,42 @@ standardComponentVariables = {
             'doc': "source group name (string)"
         },
     },
+    'defaultinstrument': {
+        'control': {
+            'default': None,
+            'doc': "group name of the monitor (string)"
+        },
+        'shortname': {
+            'default': "P09",
+            'doc': "beamline short name (string)"
+        },
+        'longname': {
+            'default': "P09 Resonant Scattering and Diffraction beamline",
+            'doc': "beamline long name (string)"
+        },
+        'sourcename': {
+            'default': "PETRA III",
+            'doc': "source name (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
+        '__configdevice__': {
+            'default': "nxs/configserver/localhost",
+            'doc': "configuration server device name (string)"
+        },
+        'srcname': {
+            'default': 'source',
+            'doc': "source group name (string)"
+        },
+    },
+    'defaultsample': {
+    },
     'dcm': {
         'usage': {
             'default': 'Bragg',
@@ -906,8 +942,24 @@ standardComponentTemplateFiles = {
     ],
     'default': [
         'default.xml',
+        'defaultsample.xml',
+        'defaultinstrument.xml',
         'sample_name.ds.xml',
         'chemical_formula.ds.xml',
+        'beamtime_id.ds.xml',
+        'start_time.ds.xml',
+        'end_time.ds.xml',
+        'nexdatas_version.ds.xml',
+        'nexdatas_configuration.ds.xml',
+        'title.ds.xml',
+    ],
+    'defaultsample': [
+        'defaultsample.xml',
+        'sample_name.ds.xml',
+        'chemical_formula.ds.xml',
+    ],
+    'defaultinstrument': [
+        'defaultinstrument.xml',
         'beamtime_id.ds.xml',
         'start_time.ds.xml',
         'end_time.ds.xml',

@@ -463,8 +463,8 @@ class Creator(object):
         :param dsname: datasource name
         :type dsname: :obj:`str`
         """
-        defpath = '/scan$var.serialno:NXentry/instrument' \
-                  + '/collection/%s' % (dsname or name)
+        defpath = "/$var.entryname#'scan'$var.serialno:NXentry/instrument" \
+                  + "/collection/%s" % (dsname or name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
         cls.__createTree(df, nexuspath or defpath, dsname or name, nexusType,
                          strategy, units, links, chunk)

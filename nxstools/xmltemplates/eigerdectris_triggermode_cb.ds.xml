@@ -48,7 +48,7 @@ if "__root__" in commonblock.keys():
 else:
     root = commonblock["__nxroot__"]
     import pni.io.nx.h5 as nxw
-en = root.open("$(__entryname__)$var.serialno")
+en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
 dt = en.open("data")
 ins = en.open("instrument")
 det = ins.open("$(name)")
@@ -57,11 +57,11 @@ for nbf in range(1, nbfiles+1):
     if spf > 0  and cfid > 0:
         if cfid == nbf:
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), det, "data")
-            nxw.link("/$(__entryname__)$var.serialno/$(__insname__)/$(name)/data", dt, "$(name)")
+            nxw.link("/$var.entryname#'$(__entryname__)'$var.serialno/$(__insname__)/$(name)/data", dt, "$(name)")
         nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
     else:
         nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-        nxw.link("/$(__entryname__)$var.serialno/$(__insname__)/$(name)/collection/data_%06i" % nbf, dt, "$(name)_%06i" % nbf)
+        nxw.link("/$var.entryname#'$(__entryname__)'$var.serialno/$(__insname__)/$(name)/collection/data_%06i" % nbf, dt, "$(name)_%06i" % nbf)
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
