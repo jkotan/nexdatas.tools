@@ -978,7 +978,8 @@ class OnlineDSCreator(Creator):
         if self._printouts and not hasattr(self.options, "directory") or \
            not self.options.directory:
             try:
-                dscps = getDataSourceComponents(self.options.server)
+                dscps = getDataSourceComponents(
+                    self.options.server, self.options.verbose)
             except Exception:
                 dscps = {}
 

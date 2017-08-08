@@ -284,11 +284,13 @@ def getServerTangoHost(server):
     return "%s:%s" % (host, port)
 
 
-def getDataSourceComponents(server):
+def getDataSourceComponents(server, verbose=False):
     """ gets datasource components
 
     :param server: configuration server
     :type server: :obj:`str`
+    :param verbose: additional printouts
+    :type verbose: :obj:`bool`
     :returns: dictionary with datasource components
     :rtype: :obj:`dict` <:obj:`str`, :obj:`list` <:obj:`str`>>
     """
@@ -296,9 +298,9 @@ def getDataSourceComponents(server):
     proxy = openServer(server)
     proxy.Open()
     acps = proxy.availableComponents()
+    errcps = []
     for cp in acps:
         try:
-
             depcps = proxy.dependentComponents([cp])
             for dcp in depcps:
                 dss = proxy.componentDataSources(dcp)
@@ -308,10 +310,18 @@ def getDataSourceComponents(server):
                     if cp not in dscps[ds]:
                         dscps[ds].append(cp)
         except Exception as e:
-            sys.stderr.write(str(e))
-            sys.stderr.write(
-                "Error: Internal error of the %s component\n" % cp)
-            sys.stderr.flush()
+            errcps.append(cp)
+            if verbose:
+                sys.stderr.write(str(e))
+                sys.stderr.write(
+                    "Error: Internal error of the %s component\n" % cp)
+                sys.stderr.flush()
+    if not verbose and errcps:
+        sys.stderr.write(
+            "Info: Inconsistent components is the NeXus database - %s\n"
+            % ", ".join(errcps))
+        sys.stderr.flush()
+
     return dscps
 
 
