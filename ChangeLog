@@ -1,4 +1,8 @@
 2017-08-08 Jan Kotanski <jankotan@gmail.com>
+	* fix for printout
+	* tagged as v2.46.1
+
+2017-08-08 Jan Kotanski <jankotan@gmail.com>
 	* add verbose option into nxscreate onlineds
 	* tagged as v2.46.0
 
