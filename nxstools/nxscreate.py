@@ -356,6 +356,9 @@ class OnlineDS(Runner):
                             default=False, dest="oldclientlike",
                             help="set motor tango datasources to "
                             "be __CLIENT__ like (deprecated)")
+        parser.add_argument("--verbose", action="store_true",
+                            default=False, dest="verbose",
+                            help="printout verbose mode")
 
     def postauto(self):
         """ creates parser

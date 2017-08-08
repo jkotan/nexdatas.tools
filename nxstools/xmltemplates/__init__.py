@@ -1017,6 +1017,9 @@ standardComponentTemplateFiles = {
     'beamstop': [
         'beamstop.xml',
     ],
+    'samplehkl': [
+        'samplehkl.xml'
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -1295,7 +1298,13 @@ moduleMultiAttributes = {
         'RateCorrectionEnabled', 'FlatFieldEnabled', 'Temperature',
         'AutoSummationEnabled', 'Humidity', 'PhotonEnergy', 'Wavelength',
     ],
-    'samplehkl': [
-        'samplehkl.xml'
+    'tangovimba': [
+        'Width', 'WidthMax', 'TriggerSource', 'PixelFormat', 'OffsetY',
+        'OffsetX', 'HeightMax', 'Height', 'GainRaw', 'ExposureTimeAbs',
+        'AcquisitionFrameRateAbs', 'AcquisitionFrameRateLimit',
+        'StreamBytesPerSecond',
+        'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
+        'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
+        'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
     ],
 }
