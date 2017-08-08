@@ -318,9 +318,10 @@ def getDataSourceComponents(server, verbose=False):
                 sys.stderr.flush()
     if not verbose and errcps:
         sys.stderr.write(
-            "Info: Inconsistent components is the NeXus database - %s\n" % ", ".join(errcps))
+            "Info: Inconsistent components is the NeXus database - %s\n"
+            % ", ".join(errcps))
         sys.stderr.flush()
-        
+
     return dscps
 
 
