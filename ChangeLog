@@ -1,7 +1,15 @@
 2017-08-30 Jan Kotanski <jankotan@gmail.com>
+	* add printout when created server already exists
+	* tagged as v2.47.1
+
+2017-08-30 Jan Kotanski <jankotan@gmail.com>
 	* add support for datasource creating of sardana device attribute in onlineds
 	* fix for tdevice with multiattribute
 	* tagged as v2.47.0
+
+2017-08-08 Jan Kotanski <jankotan@gmail.com>
+        * fix for printout
+        * tagged as v2.46.1
 
 2017-08-08 Jan Kotanski <jankotan@gmail.com>
 	* add verbose option into nxscreate onlineds

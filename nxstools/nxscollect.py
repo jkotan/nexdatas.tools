@@ -99,7 +99,7 @@ class Collector(object):
         """
         if sig in self.__siginfo.keys():
             self.__break = True
-            print ("terminated by %s" % self.__siginfo[sig])
+            print("terminated by %s" % self.__siginfo[sig])
 
     def _createtmpfile(self):
         """ creates temporary file
@@ -660,6 +660,7 @@ def main():
         sys.exit(255)
 
     runners[options.subparser].run(options)
+
 
 if __name__ == "__main__":
     main()

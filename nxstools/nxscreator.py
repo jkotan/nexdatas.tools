@@ -1720,5 +1720,6 @@ class StandardCPCreator(CPCreator):
                 child = child.nextSibling
         return text
 
+
 if __name__ == "__main__":
     pass

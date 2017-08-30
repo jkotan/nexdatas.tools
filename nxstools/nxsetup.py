@@ -492,7 +492,7 @@ class SetUp(object):
                 time.sleep(0.01)
                 dp.ping()
                 found = True
-                print("%s is working" % device)
+                print(" %s is working" % device)
             except:
                 found = False
             cnt += 1
@@ -535,6 +535,12 @@ class SetUp(object):
             self.db.add_device(di)
             self.db.put_device_property(self.writer_name,
                                         {'NumberOfThreads': 100})
+
+        elif self.writer_name not in \
+             self.db.get_device_class_list(server_name).value_string:
+            print("\ncreateDataWriter: %s already exists. "
+                  "To change its device name please remove it." % server_name)
+            return False
 
         hostname = socket.gethostname()
 
@@ -582,6 +588,11 @@ class SetUp(object):
             self.db.put_device_property(
                 self.cserver_name, {'VersionLabel': '%s@%s' % (
                     beamline.upper(), masterHost.upper())})
+        elif self.cserver_name not in \
+             self.db.get_device_class_list(server_name).value_string:
+            print("\ncreateConfigServer: %s already exists. "
+                  "To change its device name please remove it." % server_name)
+            return False
 
         hostname = self.db.get_db_host().split(".")[0]
 
@@ -660,6 +671,12 @@ class SetUp(object):
             di._class = class_name
             di.server = server_name
             self.db.add_device(di)
+
+        elif device_name not in \
+             self.db.get_device_class_list(server_name).value_string:
+            print("\ncreateSelector: %s already exists. "
+                  "To change its device name please remove it." % server_name)
+            return False
 
         hostname = socket.gethostname()
 
@@ -1142,6 +1159,7 @@ def main():
         sys.exit(255)
 
     runners[options.subparser].run(options)
+
 
 if __name__ == "__main__":
     main()

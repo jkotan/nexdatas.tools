@@ -77,6 +77,7 @@ class PackageHandler(object):
             self.package.moduleMultiAttributes
         self.packagepath = os.path.dirname(self.package.__file__)
 
+
 #: (:class:`PackageHandler`) xml template package handler
 xmlPackageHandler = PackageHandler()
 

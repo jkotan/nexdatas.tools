@@ -511,7 +511,8 @@ class Compare(Runner):
     description = "compare two online.xml files"
     #: (:obj:`str`) command epilog
     epilog = "" \
-        + " * default: second file <online_file> is '/online_dir/online.xml' \n" \
+        + " * default: second file <online_file> is " \
+        + "'/online_dir/online.xml' \n" \
         + "            if only file is given\n\n" \
         + " examples:\n" \
         + "       nxscreate onlineds /online_dir/online.xml online.xml \n" \
@@ -1063,6 +1064,7 @@ def main():
         sys.exit(255)
 
     runners[options.subparser].run(options)
+
 
 if __name__ == "__main__":
     main()
