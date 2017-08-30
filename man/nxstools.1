@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "August 08, 2017" "2.46" "NXSTools"
+.TH "NXSTOOLS" "1" "August 30, 2017" "2.47" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -652,6 +652,9 @@ external configuration server
 .TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
+.TP
+.B \-\-verbose
+printout verbose mode
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -4018,7 +4021,7 @@ sets sardana device name and sardana host/port of online.xml device
 .INDENT 7.0
 .TP
 .B port
-(\fI\%str\fP) tango port
+(\fI\%str\fP) port
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4067,8 +4070,18 @@ spilts host name from port
 .UNINDENT
 .INDENT 7.0
 .TP
+.B thost
+(\fI\%str\fP) tango host without port
+.UNINDENT
+.INDENT 7.0
+.TP
 .B tolower()
 converts \fIname\fP, \fImodule\fP, \fItdevice\fP, \fIhostname\fP into lower case
+.UNINDENT
+.INDENT 7.0
+.TP
+.B tport
+(\fI\%str\fP) tango port
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5634,7 +5647,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f2684e1c2d0>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f50b1b92b50>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

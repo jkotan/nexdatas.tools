@@ -61,7 +61,8 @@ class Device(object):
     __slots__ = [
         'name', 'dtype', 'module', 'tdevice', 'sdevice',
         'hostname', 'sardananame', 'sardanahostname',
-        'host', 'port', 'shost', 'sport', 'group', 'attribute']
+        'host', 'port', 'shost', 'sport', 'thost', 'tport',
+        'group', 'attribute']
 
     def __init__(self):
         #: (:obj:`str`) device name
@@ -82,8 +83,12 @@ class Device(object):
         self.sardanahostname = None
         #: (:obj:`str`) host without port
         self.host = None
-        #: (:obj:`str`) tango port
+        #: (:obj:`str`) port
         self.port = None
+        #: (:obj:`str`) tango host without port
+        self.thost = None
+        #: (:obj:`str`) tango port
+        self.tport = None
         #: (:obj:`str`) sardana host without port
         self.shost = None
         #: (:obj:`str`) sardana tango port
@@ -124,6 +129,8 @@ class Device(object):
             self.host = self.hostname.split(":")[0]
             self.port = self.hostname.split(":")[1] \
                 if len(self.hostname.split(":")) > 1 else None
+            self.thost = self.host
+            self.tport = self.port
         else:
             self.host = None
             self.port = None
@@ -189,9 +196,12 @@ class Device(object):
                     raise Exception("Missing attribute: Value")
                 self.hostname = mhost
                 self.host = mhost.split(":")[0]
+                self.shost = self.host
                 if len(mhost.split(":")) > 1:
                     self.port = mhost.split(":")[1]
-                self.tdevice = mdevice
+                    self.sport = self.port
+                if mdevice:
+                    self.sdevice = mdevice
                 self.attribute = sarattr
                 self.group = '__CLIENT__'
             except Exception:
@@ -509,6 +519,31 @@ class Creator(object):
         return cls._getText(
             parent.getElementsByTagName(childname)[0]) \
             if len(parent.getElementsByTagName(childname)) else None
+
+    def _getModuleName(self, device):
+        """ provides module name
+
+        :param device: device name
+        :type device: :obj:`str`
+        :returns: module name
+        :rtype: :obj:`str`
+        """
+        if device.module.lower() in \
+           self.xmlpackage.moduleMultiAttributes.keys():
+            return device.module.lower()
+        elif len(device.tdevice.split('/')) == 3:
+            try:
+                classname = findClassName(device.hostname, device.tdevice)
+                if classname.lower() \
+                   in self.xmlpackage.moduleMultiAttributes.keys():
+                    return classname.lower()
+            except:
+                pass
+            if device.module.lower() == 'module_tango' \
+               and len(device.tdevice.split('/')) == 3 \
+               and device.tdevice.split('/')[1] \
+               in self.xmlpackage.moduleMultiAttributes.keys():
+                return device.tdevice.split('/')[1].lower()
 
 
 class WrongParameterError(Exception):
@@ -1006,37 +1041,61 @@ class OnlineDSCreator(Creator):
                     device = device.nextSibling
                     continue
                 dv.findAttribute(tangohost, self.options.clientlike)
+                created = False
                 if dv.attribute:
                     dv.setSardanaName(self.options.lower)
-                    self._printAction(dv, dscps)
+                    mdv = copy.copy(dv)
+                    mdv.tdevice = dv.sdevice or dv.tdevice
+                    self._printAction(mdv, dscps)
                     xml = self._createTangoDataSource(
-                        dv.name, None, None, None,
-                        dv.tdevice, dv.attribute, dv.host, dv.port, dv.group)
-                    self.datasources[dv.name] = xml
-                if (dv.module in
-                    self.xmlpackage.moduleMultiAttributes.keys()) or (
-                        dv.module == 'module_tango'
-                        and len(dv.tdevice.split('/')) == 3
-                        and dv.tdevice.split('/')[1]
-                        in self.xmlpackage.moduleMultiAttributes.keys()):
-                    if dv.module == 'module_tango':
-                        module = dv.tdevice.split('/')[1]
-                    else:
-                        module = dv.module
+                        mdv.name, None, None, None,
+                        mdv.tdevice, mdv.attribute, mdv.host,
+                        mdv.port, mdv.group)
+                    self.datasources[mdv.name] = xml
+                    created = True
+                module = self._getModuleName(dv)
+                smodule = "%s@pool" % module.lower() if module else None
+                if module and module.lower() in \
+                   self.xmlpackage.moduleMultiAttributes.keys():
                     multattr = self.xmlpackage.moduleMultiAttributes[
                         module.lower()]
                     for at in multattr:
                         dsname = "%s_%s" % (dv.name.lower(), at.lower())
                         xml = self._createTangoDataSource(
                             dsname, None, None, None,
-                            dv.tdevice, at, dv.host, dv.port,
+                            dv.tdevice, at, dv.thost, dv.tport,
                             "%s_" % (dv.name.lower()))
                         self.datasources[dsname] = xml
                         mdv = copy.copy(dv)
                         mdv.name = dsname
+                        mdv.hostname = "%s:%s" % (dv.thost, dv.tport)
                         mdv.attribute = at
                         self._printAction(mdv, dscps)
-                elif not dv.attribute:
+                    created = True
+                if smodule in \
+                   self.xmlpackage.moduleMultiAttributes.keys():
+                    smultattr = self.xmlpackage.moduleMultiAttributes[
+                        smodule]
+                    if smultattr and not dv.sdevice:
+                        raise Exception(
+                            "Device %s cannot be found" % dv.name)
+                    for at in smultattr:
+                        dsname = "%s_%s" % (
+                            dv.name.lower(), at.lower())
+                        xml = self._createTangoDataSource(
+                            dsname, None, None, None,
+                            dv.sdevice, at, dv.shost, dv.sport,
+                            "%s_" % (dv.name.lower()))
+                        #   "__CLIENT__")
+                        self.datasources[dsname] = xml
+                        mdv = copy.copy(dv)
+                        mdv.name = dsname
+                        mdv.tdevice = dv.sdevice
+                        mdv.hostname = "%s:%s" % (dv.shost, dv.sport)
+                        mdv.attribute = at
+                        self._printAction(mdv, dscps)
+                    created = True
+                if not created:
                     if self._printouts:
                         print(
                             "SKIPPING %s:    module '%s' of '%s' "
@@ -1333,31 +1392,6 @@ class OnlineCPCreator(CPCreator):
                     dv.tdevice, self.options.directory, self.options.file,
                     dv.name))
 
-    def _getModuleName(self, device):
-        """ provides module name
-
-        :param device: device name
-        :type device: :obj:`str`
-        :returns: module name
-        :rtype: :obj:`str`
-        """
-        if device.module.lower() in \
-           self.xmlpackage.moduleMultiAttributes.keys():
-            return device.module.lower()
-        elif len(device.tdevice.split('/')) == 3:
-            try:
-                classname = findClassName(device.hostname, device.tdevice)
-                if classname.lower() \
-                   in self.xmlpackage.moduleMultiAttributes.keys():
-                    return classname.lower()
-            except:
-                pass
-            if device.module.lower() == 'module_tango' \
-               and len(device.tdevice.split('/')) == 3 \
-               and device.tdevice.split('/')[1] \
-               in self.xmlpackage.moduleMultiAttributes.keys():
-                return device.tdevice.split('/')[1].lower()
-
     def listcomponents(self):
         """ provides a list of components with xml templates
 
@@ -1432,10 +1466,8 @@ class OnlineCPCreator(CPCreator):
                         continue
                     module = self._getModuleName(dv)
                     if module:
-                        multattr = []
-                        smultattr = []
                         if module.lower() in \
-                           self.xmlpackage.moduleMultiAttributes:
+                           self.xmlpackage.moduleMultiAttributes.keys():
                             multattr = self.xmlpackage.moduleMultiAttributes[
                                 module.lower()]
                             for at in multattr:
@@ -1451,7 +1483,8 @@ class OnlineCPCreator(CPCreator):
                                 mdv.attribute = at
                                 self._printAction(mdv)
                         smodule = "%s@pool" % module.lower()
-                        if smodule in self.xmlpackage.moduleMultiAttributes:
+                        if smodule in \
+                           self.xmlpackage.moduleMultiAttributes.keys():
                             smultattr = self.xmlpackage.moduleMultiAttributes[
                                 smodule]
                             if smultattr and not dv.sdevice:
@@ -1468,6 +1501,8 @@ class OnlineCPCreator(CPCreator):
                                 self.datasources[dsname] = xml
                                 mdv = copy.copy(dv)
                                 mdv.name = dsname
+                                mdv.tdevice = dv.sdevice
+                                mdv.hostname = "%s:%s" % (dv.shost, dv.sport)
                                 mdv.attribute = at
                                 self._printAction(mdv)
                         if module.lower() \
