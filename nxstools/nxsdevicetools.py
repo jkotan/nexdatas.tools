@@ -86,6 +86,7 @@ xmlPackageHandler = PackageHandler()
 #  'module': [<sardana_pool_attr>, <original_tango_attr>]
 moduleAttributes = {
     'counter_tango': ['Value', 'Counts'],
+    'v260': ['Value', 'Counts'],
     'dgg2': ['Value', 'SampleTime'],
     'mca_8701': ['Value', 'Data'],
     'mca_sis3302new': ['Value', 'Data'],
@@ -96,10 +97,13 @@ moduleAttributes = {
     'sis3302': ['Value', None],
     'sis3302multiscan': ['Value', None],
     'sis3610': ['Value', 'Value'],
+    'vdot32in': ['Value', 'Value'],
     'sis3820': ['Value', 'Counts'],
     'tangoattributectctrl': ['Value', None],
     'tip551': ['Value', 'Voltage'],
+    'tip850dac': ['Value', 'Voltage'],
     'tip830': ['Value', 'Counts'],
+    'tip850adc': ['Value', 'Value'],
     'vfcadc': ['Value', 'Counts'],
     'xmcd': ['Value', None],
 }
