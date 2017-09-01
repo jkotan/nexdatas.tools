@@ -1,3 +1,8 @@
+2017-09-01 Jan Kotanski <jankotan@gmail.com>
+	* add hasep23eh and hasep24eh1  to nxsetup
+	* add support for v260, tip850adcm and vdot32in
+	* tagged as v2.48.0
+
 2017-08-31 Jan Kotanski <jankotan@gmail.com>
 	* add haso228w to nxsetup
 	* tagged as v2.47.2
