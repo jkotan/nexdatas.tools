@@ -123,6 +123,8 @@ knownHosts = {
                    'user': 'p211user', 'dbname': 'nxsconfig'},
     'hasep23dev': {'beamline': 'p23', 'masterHost': 'hasep23dev',
                    'user': 'p23user', 'dbname': 'nxsconfig'},
+    'hasep23eh': {'beamline': 'p23', 'masterHost': 'hasep23eh',
+                   'user': 'p23user', 'dbname': 'nxsconfig'},
     'hasep24': {'beamline': 'p24', 'masterHost': 'hasep24',
                 'user': 'p24user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
