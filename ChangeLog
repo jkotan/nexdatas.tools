@@ -1,3 +1,7 @@
+2017-09-05 Jan Kotanski <jankotan@gmail.com>
+	* add pointdet template component
+	* tagged as v2.49.0
+
 2017-09-01 Jan Kotanski <jankotan@gmail.com>
 	* add hasep23eh and hasep24eh1  to nxsetup
 	* add support for v260, tip850adcm and vdot32in

@@ -116,6 +116,16 @@ standardComponentVariables = {
             'doc': "throttle enable status for maia (datasource)"
         },
     },
+    'pointdet': {
+        'data': {
+            'default': None,
+            'doc': "diode data (datasource)"
+        },
+        'detname': {
+            'default': 'detector',
+            'doc': "detector group name (string)"
+        },
+    },
     'maiaflux': {
         'detname': {
             'default': "maia",
@@ -1306,5 +1316,8 @@ moduleMultiAttributes = {
         'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
         'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
+    ],
+    'pointdet': [
+        'pointdet.xml',
     ],
 }
