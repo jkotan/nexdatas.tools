@@ -362,7 +362,7 @@ def getClassName(devicename):
         db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into %s" % devicename
+            "Info: Cannot connect into %s" % devicename
             + "on host: \n    %s \n " % os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
