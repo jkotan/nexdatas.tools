@@ -233,7 +233,7 @@ def openServer(device):
 
     if found:
         sys.stderr.write(
-            "Error: Cannot connect into the server: %s\n" % device)
+            "Error: Cannot connect to the server: %s\n" % device)
         sys.stderr.flush()
         sys.exit(0)
 
@@ -362,8 +362,8 @@ def getClassName(devicename):
         db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Info: Cannot connect into %s" % devicename
-            + "on host: \n    %s \n " % os.environ['TANGO_HOST'])
+            "Info: Cannot connect to %s" % devicename
+            + " on host %s\n" % os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
 
@@ -383,8 +383,8 @@ def getServers(name='NXSConfigServer'):
         db = PyTango.Database()
     except:
         sys.stderr.write(
-            "Error: Cannot connect into %s" % name
-            + "on host: \n    %s \n " % os.environ['TANGO_HOST'])
+            "Error: Cannot connect to %s" % name
+            + " on host %s\n" % os.environ['TANGO_HOST'])
         sys.stderr.flush()
         return ""
 
