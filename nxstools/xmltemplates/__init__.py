@@ -1089,6 +1089,8 @@ moduleTemplateFiles = {
                 'pco_filestartnum_cb.ds.xml'],
     'lambda': ['lambda.xml',
                'lambda_external_data.ds.xml'],
+    'tangovimba': ['tangovimba.xml',
+               'tangovimba_external_data.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_external_data.ds.xml',
                  'lambda2m_m2_external_data.ds.xml',
