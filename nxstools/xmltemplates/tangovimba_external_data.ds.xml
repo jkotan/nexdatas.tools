@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_external_data">
+    <result name="result">
+if "$var.filename":
+    ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
+else:
+    ds.result = ""
+ds.result += "$(name)/" + str(ds.$(name)_fileprefix) + "%06i" % int(ds.$(name)_filestartnum) + str(ds.$(name)_filepostfix) + "://entry/$(__insname__)/detector"</result>
+ $datasources.$(name)_filedir
+ $datasources.$(name)_fileprefix
+ $datasources.$(name)_filepostfix
+ $datasources.$(name)_filestartnum
+ $datasources.$(name)_filesaving</datasource>
+</definition>
