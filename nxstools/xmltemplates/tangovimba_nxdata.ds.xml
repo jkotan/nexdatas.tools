@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <datasource type="PYEVAL" name="$(name)_external_data">
+  <datasource type="PYEVAL" name="$(name)_nxdata">
     <result name="result">
 ds.result = ""
 if ds.$(name)_filestartnum and ds.$(name)_fileprefix  and ds.$(name)_filepostfix:
@@ -9,12 +9,7 @@ if ds.$(name)_filestartnum and ds.$(name)_fileprefix  and ds.$(name)_filepostfix
         postfix = "." + postfix
     if postfix in [".nxs", ".nx"]:
         prefix = str(ds.$(name)_fileprefix)
-        if not prefix.endswith("_"):
-            prefix = prefix + "_"
-        if "$var.filename":
-            ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
-    
-        ds.result += "$(name)/" + prefix + "%06i" % int(ds.$(name)_filestartnum) + postfix + "://entry/$(__insname__)/detector"</result>
+        ds.result = "$var.entryname#'$(__entryname__)'$var.serialno:NXentry/$(__insname__)/$(name)_external:NXdetector/data"</result>
  $datasources.$(name)_filedir
  $datasources.$(name)_fileprefix
  $datasources.$(name)_filepostfix

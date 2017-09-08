@@ -2,7 +2,7 @@
 <definition>
   <group type="NXentry" name="$var.entryname#'$(__entryname__)'$var.serialno">
     <group type="NXinstrument" name="$(__insname__)">
-      <group type="NXdetector" name="$(name)_extra">
+      <group type="NXdetector" name="$(name)">
         <field type="NX_CHAR" name="layout">area<strategy mode="INIT"/>
         </field>
         <field type="NX_CHAR" name="description">$(name)</field>
@@ -19,11 +19,12 @@
             <strategy mode="FINAL"/>$datasources.$(name)_filepostfix</field>
         </group>
       </group>
-      <link name="$(name)">$datasources.$(name)_external_data<strategy mode="FINAL"/>
+      <link name="$(name)_external">$datasources.$(name)_external_data<strategy mode="FINAL"/>
       </link>
     </group>
     <group type="NXdata" name="data">
-      <link target="$var.entryname#'$(__entryname__)'$var.serialno:NXentry/$(__insname__)/$(name):NXdetector/data" name="$(name)"/>
+      <link name="$(name)">$datasources.$(name)_nxdata<strategy mode="FINAL"/>
+      </link>
     </group>
   </group>
 </definition>
