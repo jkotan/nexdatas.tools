@@ -837,6 +837,293 @@ For more help:
 
         el.close()
 
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_show_comp_av(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>\n</definition>"
+        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2}
+        
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig show %s -s %s',
+            'nxsconfig show %s --server %s',
+            'nxsconfig show %s -s %s',
+            'nxsconfig show %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), cmps[nm])
+                self.assertEqual(er, "")
+
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+                
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er,
+                "Error: Component '%s' not stored in the configuration server"
+                             % name3)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl.replace(">\n<", "><").replace("> <", "><"),
+                             ("%s\n%s" % (cmps[name], cmps[name2])).replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            self.assertEqual(er, "")
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er,
+                "Error: Component '%s' not stored in the configuration server"
+                             % name3)
+
+            
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_show_datasources_av(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><datasource type='TANGO' name='testds1'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><datasource type='CLIENT' name'testds1'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2}
+        
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeDataSource(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableDataSources()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.datasources([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig show %s -d -s %s',
+            'nxsconfig show %s -d --server %s',
+            'nxsconfig show %s -d -s %s',
+            'nxsconfig show %s -d --server %s',
+            'nxsconfig show %s --datasources -s %s',
+            'nxsconfig show %s --datasources --server %s',
+            'nxsconfig show %s --datasources -s %s',
+            'nxsconfig show %s --datasources --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl, cmps[nm])
+                self.assertEqual(er, "")
+
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+                
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er,
+                "Error: DataSource '%s' not stored in the configuration server"
+                             % name3)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl.replace(">\n<", "><").replace("> <", "><"),
+                             ("%s\n%s" % (cmps[name], cmps[name2])).replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            self.assertEqual(er, "")
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er,
+                "Error: DataSource '%s' not stored in the configuration server"
+                             % name3)
+
+            
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteDataSource(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    #########################################################
 
     ##  component test
     # \brief It tests default settings

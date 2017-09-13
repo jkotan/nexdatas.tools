@@ -689,16 +689,16 @@ class Show(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
-        parser.add_argument("-m", "--mandatory", action="store_true",
-                            default=False, dest="mandatory",
-                            help="make use mandatory components")
-        parser.add_argument("-p", "--private", action="store_true",
-                            default=False, dest="private",
-                            help="make use private components,"
-                            " i.e. starting with '__'")
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
+#        parser.add_argument("-m", "--mandatory", action="store_true",
+#                            default=False, dest="mandatory",
+#                            help="make use mandatory components")
+#        parser.add_argument("-p", "--private", action="store_true",
+#                            default=False, dest="private",
+#                            help="make use private components,"
+#                            " i.e. starting with '__'")
+#        parser.add_argument("-n", "--no-newlines", action="store_true",
+#                            default=False, dest="nonewlines",
+#                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components or datasources')
 
@@ -710,9 +710,9 @@ class Show(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.showCmd(
-            options.datasources, options.args, options.mandatory))
+            options.datasources, options.args, False))
         return string
 
 
