@@ -47,7 +47,7 @@ IS64BIT = (struct.calcsize("P") == 8)
 
 
 ## test fixture
-class XMLConfiguratorTest(unittest.TestCase):
+class NXSConfigTest(unittest.TestCase):
 
     ## constructor
     # \param methodName name of the test method
@@ -122,6 +122,69 @@ For more help:
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
+
+    # opens config server
+    # \param args connection arguments
+    # \returns NXSConfigServer instance
+    def openConfig(self, args):
+
+        found = False
+        cnt = 0
+        while not found and cnt < 1000:
+            try:
+                print "\b.",
+                xmlc = PyTango.DeviceProxy(
+                    self._sv.new_device_info_writer.name)
+                time.sleep(0.01)
+                if xmlc.state() == PyTango.DevState.ON:
+                    found = True
+                found = True
+            except Exception, e:
+                print self._sv.new_device_info_writer.name, e
+                found = False
+            except:
+                found = False
+
+            cnt += 1
+
+        if not found:
+            raise Exception(
+                "Cannot connect to %s"
+                % self._sv.new_device_info_writer.name)
+
+        if xmlc.state() == PyTango.DevState.ON:
+            xmlc.JSONSettings = args
+            xmlc.Open()
+        version = xmlc.version
+        vv = version.split('.')
+        self.revision = long(vv[-1])
+        self.version = ".".join(vv[0:3])
+        self.label = ".".join(vv[3:-1])
+
+
+        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
+        return xmlc
+
+    # closes opens config server
+    # \param xmlc XMLConfigurator instance
+    def closeConfig(self, xmlc):
+        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
+
+        xmlc.Close()
+        self.assertEqual(xmlc.state(), PyTango.DevState.ON)
+
+    # sets xmlconfiguration
+    # \param xmlc configuration instance
+    # \param xml xml configuration string
+    def setXML(self, xmlc, xml):
+        xmlc.XMLString = xml
+
+    # gets xmlconfiguration
+    # \param xmlc configuration instance
+    # \returns xml configuration string
+    def getXML(self, xmlc):
+        return xmlc.XMLString
+
         
     ## test starter
     # \brief Common set up
@@ -171,44 +234,6 @@ For more help:
             error = True
         self.assertEqual(error, True)
 
-    ## opens configurator
-    # \param args connection arguments
-    # \returns XMLConfigurator instance
-    def openConfig(self, args):
-        xmlc = XMLConfigurator()
-        self.assertEqual(xmlc.jsonsettings, "{}")
-        self.assertEqual(xmlc.xmlstring, "")
-        self.assertEqual(xmlc.selection, "{}")
-        xmlc.jsonsettings = args
-        print args
-        xmlc.open()
-
-        version = xmlc.version
-        vv = version.split('.')
-        self.revision = long(vv[-1])
-        self.version = ".".join(vv[0:3])
-        self.label = ".".join(vv[3:-1])
-
-        self.assertEqual(self.version, nxsconfigserver.__version__)
-        self.assertEqual(self.label, xmlc.versionLabel)
-        return xmlc
-
-    ## closes configurator
-    # \param xmlc XMLConfigurator instance
-    def closeConfig(self, xmlc):
-        xmlc.close()
-
-    ## sets xmlconfiguration
-    # \param xmlc configuration instance
-    # \param xml xml configuration string
-    def setXML(self, xmlc, xml):
-        xmlc.xmlstring = xml
-
-    ## gets xmlconfiguration
-    # \param xmlc configuration instance
-    # \returns xml configuration string
-    def getXML(self, xmlc):
-        return xmlc.xmlstring
 
     ## sets selection configuration
     # \param selectionc configuration instance
@@ -292,7 +317,7 @@ For more help:
         
     ## comp_available test
     # \brief It tests XMLConfigurator
-    def ttest_comp_available(self):
+    def test_list_comp_available(self):
         fun = sys._getframe().f_code.co_name
         print "Run: %s.%s() " % (self.__class__.__name__, fun)
 
@@ -301,17 +326,22 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
-              "</definition>"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
         while name in avc:
             name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
 #        print avc
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
-        self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
         avc2 = el.availableComponents()
-#        print avc2
+        # print avc2
         self.assertTrue(isinstance(avc2, list))
         for cp in avc:
             self.assertTrue(cp in avc2)
@@ -320,7 +350,58 @@ For more help:
         cpx = el.components([name])
         self.assertEqual(cpx[0], xml)
 
+        commands = [
+            ('nxsconfig list -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+            
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in avc2)
+
+            for cp in avc2:
+                if not cp.startswith("__"):
+                    self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)        
+        
         self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
         self.__cmps.pop()
 
         avc3 = el.availableComponents()
@@ -329,8 +410,433 @@ For more help:
             self.assertTrue(cp in avc3)
         self.assertTrue(name not in avc3)
 
-        self.assertEqual(long(el.version.split('.')[-1]), self.revision+2)
         el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_list_comp_available_private(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "__mcs_test_component__"
+        name2 = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1__'
+        while name2 in avc:
+            name2 = name2 + '_2'
+#        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            ('nxsconfig list -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+            
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in avc2)
+
+            for cp in avc2:
+                if not cp.startswith("__"):
+                    self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)        
+        
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        avc3 = el.availableComponents()
+        self.assertTrue(isinstance(avc3, list))
+        for cp in avc:
+            self.assertTrue(cp in avc3)
+        self.assertTrue(name not in avc3)
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_list_comp_available_private2(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "__mcs_test_component__"
+        name2 = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1__'
+        while name2 in avc:
+            name2 = name2 + '_2'
+#        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            ('nxsconfig list -p -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -p --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --private --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+            
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in avc2)
+
+            for cp in avc2:
+                if cp.startswith("__"):
+                    self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)        
+        
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        avc3 = el.availableComponents()
+        self.assertTrue(isinstance(avc3, list))
+        for cp in avc:
+            self.assertTrue(cp in avc3)
+        self.assertTrue(name not in avc3)
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_list_comp_available_mandatory(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_1'    
+        while name2 in avc:
+            name2 = name2 + '_2'
+#        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        self.assertEqual(el.setMandatoryComponents([name]), None)
+        man2 = el.mandatoryComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            ('nxsconfig list -m -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -m --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --mandatory --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+            
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in man2)
+
+            for cp in man2:
+                self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)        
+        
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_list_datasources_available(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        xml = "<?xml version='1.0'?><definition><datasource type='TANGO' name='testds1'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><datasource type='CLIENT' name'testds1'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+#        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeDataSource(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableDataSources()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.datasources([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            ('nxsconfig list -d -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -d --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --datasources --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+            
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in avc2)
+
+            for cp in avc2:
+                self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)        
+        
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteDataSource(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
 
     ##  component test
     # \brief It tests default settings
