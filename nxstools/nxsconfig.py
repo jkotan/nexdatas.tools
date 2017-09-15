@@ -25,6 +25,15 @@ import argparse
 from .nxsparser import ParserTools, TableTools
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
+#: (:obj:`bool`) True if PyTango available
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
 
 
 class ConfigServer(object):
@@ -1291,7 +1300,35 @@ def main():
         parg.extend([p.strip() for p in pipe])
         options.args[:] = parg
 
-    result = runners[options.subparser].run(options)
+    try:    
+        result = runners[options.subparser].run(options)
+
+#    except PyTango.DevFailed as
+    except Exception as e:
+        if PYTANGO and isinstance(e, PyTango.DevFailed):
+            if str((e.args[0]).desc).startswith(
+                    "NonregisteredDBRecordError: The datasource "):
+                mydss = str((e.args[0]).desc)[43:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Datasource %s not stored in Configuration Server\n"
+                    % mydss[0])
+            elif str((e.args[0]).desc).startswith(
+                    "NonregisteredDBRecordError: Component "):
+                mydss = str((e.args[0]).desc)[38:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Component %s not stored in Configuration Server\n"
+                    % mydss[0])   
+            else:    
+                sys.stderr.write("Error: %s\n" % str(e))
+            sys.exit(255)
+        else:
+            sys.stderr.write("Error: %s\n" % str(e))
+            sys.exit(255)
+#        raise
     if result and str(result).strip():
         print(result)
 
