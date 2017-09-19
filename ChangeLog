@@ -1,6 +1,7 @@
-2017-09-XX Jan Kotanski <jankotan@gmail.com>
+2017-09-19 Jan Kotanski <jankotan@gmail.com>
 	* remove wrong nxsconfig show options: -m -p
-	* add nxsconfig list|show tests
+	* update error handling
+	* add nxsconfig list|show|get tests
 	* tagged as v2.51.0
 
 2017-09-08 Jan Kotanski <jankotan@gmail.com>
