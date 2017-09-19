@@ -93,7 +93,7 @@ For more help:
   nxsconfig <sub-command> -h
 
 """
-        
+
         try:
             # random seed
             self.seed  = long(binascii.hexlify(os.urandom(16)), 16)
@@ -185,7 +185,7 @@ For more help:
     def getXML(self, xmlc):
         return xmlc.XMLString
 
-        
+
     ## test starter
     # \brief Common set up
     def setUp(self):
@@ -213,7 +213,7 @@ For more help:
             el.setMandatoryComponents(self.__man)
             el.close()
         self._sv.tearDown()
-        
+
     def openConf(self):
         try:
             el = self.openConfig(self.__args)
@@ -274,10 +274,10 @@ For more help:
         sys.stdout = mystdout = StringIO()
         sys.stderr = mystderr = StringIO()
         old_argv = sys.argv
-        sys.argv = ['nxsconfig'] 
+        sys.argv = ['nxsconfig']
         with self.assertRaises(SystemExit):
             nxsconfig.main()
-            
+
         sys.argv = old_argv
         sys.stdout = old_stdout
         sys.stderr = old_stderr
@@ -299,7 +299,7 @@ For more help:
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
-            sys.argv = ['nxsconfig', hl] 
+            sys.argv = ['nxsconfig', hl]
             with self.assertRaises(SystemExit):
                 nxsconfig.main()
 
@@ -314,7 +314,7 @@ For more help:
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 
-        
+
     ## comp_available test
     # \brief It tests XMLConfigurator
     def test_list_comp_available(self):
@@ -388,7 +388,7 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.split('\n')
-            
+
             for cp in avc3:
                 if cp:
                     self.assertTrue(cp in avc2)
@@ -397,8 +397,8 @@ For more help:
                 if not cp.startswith("__"):
                     self.assertTrue(cp in avc3)
 
-            self.assertEqual('', er)        
-        
+            self.assertEqual('', er)
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -485,7 +485,7 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.split('\n')
-            
+
             for cp in avc3:
                 if cp:
                     self.assertTrue(cp in avc2)
@@ -494,8 +494,8 @@ For more help:
                 if not cp.startswith("__"):
                     self.assertTrue(cp in avc3)
 
-            self.assertEqual('', er)        
-        
+            self.assertEqual('', er)
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -598,7 +598,7 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.split('\n')
-            
+
             for cp in avc3:
                 if cp:
                     self.assertTrue(cp in avc2)
@@ -607,8 +607,8 @@ For more help:
                 if cp.startswith("__"):
                     self.assertTrue(cp in avc3)
 
-            self.assertEqual('', er)        
-        
+            self.assertEqual('', er)
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -638,7 +638,7 @@ For more help:
         xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_1'    
+        name2 = name + '_1'
         while name2 in avc:
             name2 = name2 + '_2'
 #        print avc
@@ -714,7 +714,7 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.split('\n')
-            
+
             for cp in avc3:
                 if cp:
                     self.assertTrue(cp in man2)
@@ -722,8 +722,8 @@ For more help:
             for cp in man2:
                 self.assertTrue(cp in avc3)
 
-            self.assertEqual('', er)        
-        
+            self.assertEqual('', er)
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -819,7 +819,7 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.split('\n')
-            
+
             for cp in avc3:
                 if cp:
                     self.assertTrue(cp in avc2)
@@ -827,8 +827,8 @@ For more help:
             for cp in avc2:
                 self.assertTrue(cp in avc3)
 
-            self.assertEqual('', er)        
-        
+            self.assertEqual('', er)
+
         self.assertEqual(el.deleteDataSource(name), None)
         self.__ds.pop(-2)
         self.assertEqual(el.deleteDataSource(name2), None)
@@ -860,7 +860,7 @@ For more help:
             name3 = name3 + '_3'
 #        print avc
         cmps =  {name: xml, name2: xml2}
-        
+
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
@@ -913,7 +913,7 @@ For more help:
             old_argv = sys.argv
             sys.argv = cmd
             nxsconfig.main()
-                
+
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
@@ -969,7 +969,7 @@ For more help:
                 "Error: Component '%s' not stored in the configuration server"
                              % name3)
 
-            
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -983,7 +983,7 @@ For more help:
     def test_show_datasources_av(self):
         fun = sys._getframe().f_code.co_name
         print "Run: %s.%s() " % (self.__class__.__name__, fun)
-        
+
         el = self.openConf()
         avc = el.availableDataSources()
 
@@ -1001,7 +1001,7 @@ For more help:
             name3 = name3 + '_3'
 #        print avc
         cmps =  {name: xml, name2: xml2}
-        
+
         self.setXML(el, xml)
         self.assertEqual(el.storeDataSource(name), None)
         self.__ds.append(name)
@@ -1058,7 +1058,7 @@ For more help:
             old_argv = sys.argv
             sys.argv = cmd
             nxsconfig.main()
-                
+
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
@@ -1114,7 +1114,7 @@ For more help:
                 "Error: DataSource '%s' not stored in the configuration server"
                              % name3)
 
-            
+
         self.assertEqual(el.deleteDataSource(name), None)
         self.__ds.pop(-2)
         self.assertEqual(el.deleteDataSource(name2), None)
@@ -1148,7 +1148,7 @@ For more help:
             name3 = name3 + '_3'
 #        print avc
         cmps =  {name: xml, name2: xml2}
-        
+
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
@@ -1202,7 +1202,7 @@ For more help:
             old_argv = sys.argv
             sys.argv = cmd
             nxsconfig.main()
-                
+
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
@@ -1258,7 +1258,242 @@ For more help:
                 "Error: Component '%s' not stored in the configuration server"
                              % name3)
 
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_get_comp_incompnodes_groups(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry' name='test'/>\n</definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2' name='test'/>$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2}
+
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+        ]
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            with self.assertRaises(SystemExit):
+                nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+            self.assertEqual(vl.strip(), "")
             
+            self.assertTrue(er.startswith('Error: "Incompatible element attributes'))
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_get_comp_incompnodes_fields(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?>\n<definition><field type='NXentry' name='test'/>\n</definition>"
+        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2' name='test'/>$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2}
+
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+        ]
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            with self.assertRaises(SystemExit):
+                nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+            self.assertEqual(vl.strip(), "")
+            
+            self.assertTrue(er.startswith('Error: "Incompatible element attributes'))
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_get_comp_incompnodes_tags(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?>\n<field type='NXentry' name='test'>\n"
+        xml2 = "<?xml version='1.0'?><field type='NXentry' name='test2'>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2}
+
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+        ]
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            with self.assertRaises(SystemExit):
+                nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+#            el.createConfiguration(man + [name, name2])
+#            cpxml = el.xmlstring
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+            self.assertEqual(vl.strip(), "")
+            self.assertEqual(str(er)[:40], "Error from XML parser: no element found: "[:40])
+            
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -1284,7 +1519,7 @@ For more help:
         dsname2 = "mcs_test_datasource2"
         while dsname in avds:
             dsname = dsname + '_1'
-            
+
         while dsname2 in avds:
             dsname2 = dsname2 + '_2'
 
@@ -1345,7 +1580,7 @@ For more help:
                     "Error: Datasource %s not stored in Configuration Server\n" % dss[nm])
 
 
-            
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -1367,7 +1602,7 @@ For more help:
         dsname2 = "mcs_test_subcp2"
         while dsname in avc:
             dsname = dsname + '_1'
-            
+
         while dsname2 in avc:
             dsname2 = dsname2 + '_2'
 
@@ -1428,7 +1663,7 @@ For more help:
                     "Error: Component %s not stored in Configuration Server\n" % dss[nm])
 
 
-            
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -1436,6 +1671,7 @@ For more help:
 
 
         el.close()
+
     ## comp_available test
     # \brief It tests XMLConfigurator
     def test_get_comp_ds(self):
@@ -1453,7 +1689,7 @@ For more help:
         dsname2 = "mcs_test_datasource2"
         while dsname in avds:
             dsname = dsname + '_1'
-            
+
         while dsname2 in avds:
             dsname2 = dsname2 + '_2'
 
@@ -1480,10 +1716,10 @@ For more help:
         self.__cmps.append(name2)
         self.setXML(el, dsxml)
         self.assertEqual(el.storeDataSource(dsname), None)
-        self.__ds.append(name)
+        self.__ds.append(dsname)
         self.setXML(el, dsxml2)
         self.assertEqual(el.storeDataSource(dsname2), None)
-        self.__ds.append(name2)
+        self.__ds.append(dsname2)
         avc2 = el.availableComponents()
         # print avc2
         self.assertTrue(isinstance(avc2, list))
@@ -1522,7 +1758,7 @@ For more help:
                 self.assertEqual(er.strip(), "")
 
 
-            
+
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
         self.assertEqual(el.deleteComponent(name2), None)
@@ -1548,13 +1784,13 @@ For more help:
         dsname2 = "mcs_test_subcp2"
         while dsname in avc:
             dsname = dsname + '_1'
-            
+
         while dsname2 in avc:
             dsname2 = dsname2 + '_2'
 
         xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>$components.%s\n</definition>" % dsname
         xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>$components.%s</definition>" % dsname2
-        dsxml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/><field name='test'/>\n</definition>" 
+        dsxml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/><field name='test'/>\n</definition>"
         dsxml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/><field name='test3'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -1617,7 +1853,7 @@ For more help:
                 self.assertEqual(er,"")
 
 
-            
+
         self.assertEqual(el.deleteComponent(dsname2), None)
         self.__cmps.pop()
         self.assertEqual(el.deleteComponent(dsname), None)
@@ -1629,6 +1865,199 @@ For more help:
 
 
         el.close()
+        
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_get_comp_wrongxml(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?>\n<group type='NXentry'/>\n</definition>"
+        xml2 = "<?xml version='1.0'?><definition<field type='NXentry2'/></definition>"
+        xml3 = "<?xml version='1.0'?><definition<field type='NXentry2/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2, name3: xml3}
+
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        self.setXML(el, xml3)
+        self.assertEqual(el.storeComponent(name3), None)
+        self.__cmps.append(name3)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+                self.assertEqual(vl.strip(), "")
+                self.assertTrue(str(er).startswith("Error from XML parser: not well-formed (invalid token):"))
+
+
+
+        self.assertEqual(el.deleteComponent(name3), None)
+        self.__cmps.pop()
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
+
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_get_comp_wrongdsxml(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        avds = el.availableDataSources()
+        man = el.mandatoryComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dsname = "mcs_test_datasource"
+        dsname2 = "mcs_test_datasource2"
+        dsname3 = "mcs_test_datasource3"
+        while dsname in avds:
+            dsname = dsname + '_1'
+
+        while dsname2 in avds:
+            dsname2 = dsname2 + '_2'
+        while dsname3 in avds:
+            dsname3 = dsname3 + '_3'
+
+        xml = "<?xml version='1.0'?>\n<definition><attribute type='NXentry'>$datasources.%s\n</attribute></definition>" % dsname
+        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'>$datasources.%s</field></definition>" % dsname2
+        xml3 = "<?xml version='1.0'?><definition><field type='NXentry2'>$datasources.%s</field></definition>" % dsname3
+        dsxml = "<?xml version='1.0'?><definition><datasource name=%s' type='TANGO'></datasource></definition>" % dsname
+        dsxml2 = "<?xml version='1.0'?><definition><datasource name='%s' type='CLIENT'></definition>" % dsname2
+        dsxml3 = "<?xml version='1.0'><datasource name='%s' type='CLIENT'></datasource>" % dsname3
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps =  {name: xml, name2: xml2, name3: xml3}
+        dss = {name: dsname, name2: dsname2}
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        self.setXML(el, xml3)
+        self.assertEqual(el.storeComponent(name3), None)
+        self.__cmps.append(name3)
+        self.setXML(el, dsxml)
+        self.assertEqual(el.storeDataSource(dsname), None)
+        self.__ds.append(dsname)
+        self.setXML(el, dsxml2)
+        self.assertEqual(el.storeDataSource(dsname2), None)
+        self.__ds.append(dsname2)
+        self.setXML(el, dsxml3)
+        self.assertEqual(el.storeDataSource(dsname3), None)
+        self.__ds.append(dsname3)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+            'nxsconfig get %s -s %s',
+            'nxsconfig get %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+                self.assertEqual(vl.strip(), "")
+                self.assertTrue(str(er).startswith("Error from XML parser:"))
+
+
+
+        self.assertEqual(el.deleteComponent(name3), None)
+        self.__cmps.pop()
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
+        self.assertEqual(el.deleteDataSource(dsname3), None)
+        self.__ds.pop()
+        self.assertEqual(el.deleteDataSource(dsname2), None)
+        self.__ds.pop()
+        self.assertEqual(el.deleteDataSource(dsname), None)
+        self.__ds.pop()
 
     #########################################################
 
@@ -10820,8 +11249,8 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         gxml = self.getXML(el)
         print gxml.replace("?>\n<", "?><")
         self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
-                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4"><datasource name="%s" type="CLIENT"><record name="r4"/></datasource></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field3"/><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1"><datasource name="%s" type="CLIENT"><record name="r1"/></datasource><strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[2], dsname[0], dsname[0])) 
-            
+                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4"><datasource name="%s" type="CLIENT"><record name="r4"/></datasource></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field3"/><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1"><datasource name="%s" type="CLIENT"><record name="r1"/></datasource><strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[2], dsname[0], dsname[0]))
+
         self.assertEqual(long(el.version.split('.')[-1]), revision + 7)
         el.setMandatoryComponents(man)
         el.close()
@@ -10898,7 +11327,7 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         print gxml.replace("?>\n<", "?><")
         try:
             self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
-                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4"><datasource name="%s" type="CLIENT"><record name="r4"/></datasource></field><field name="field1"><datasource name="%s" type="CLIENT"><record name="r1"/></datasource><strategy mode="INIT"/></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0])) 
+                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4"><datasource name="%s" type="CLIENT"><record name="r4"/></datasource></field><field name="field1"><datasource name="%s" type="CLIENT"><record name="r1"/></datasource><strategy mode="INIT"/></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0]))
         except:
             self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
                              '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4"><datasource name="%s" type="CLIENT"><record name="r4"/></datasource></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1"><datasource name="%s" type="CLIENT"><record name="r1"/></datasource><strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0]))
@@ -10906,8 +11335,8 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         el.setMandatoryComponents(man)
         el.close()
 
-        
-        
+
+
     ## creatConf test
     # \brief It tests XMLConfigurator
     def ttest_merge_mixed_switch_none(self):
@@ -11443,8 +11872,8 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         gxml = el.merge(css)
         print gxml.replace("?>\n<", "?><")
         self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
-                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4">$datasources.%s</field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field3"/><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1">$datasources.%s<strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[2], dsname[0], dsname[0])) 
-            
+                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4">$datasources.%s</field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field3"/><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1">$datasources.%s<strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[2], dsname[0], dsname[0]))
+
         self.assertEqual(long(el.version.split('.')[-1]), revision + 7)
         el.setMandatoryComponents(man)
         el.close()
@@ -11520,7 +11949,7 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         print gxml.replace("?>\n<", "?><")
         try:
             self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
-                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4">$datasources.%s</field><field name="field1">$datasources.%s<strategy mode="INIT"/></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0])) 
+                        '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4">$datasources.%s</field><field name="field1">$datasources.%s<strategy mode="INIT"/></field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0]))
         except:
             self.assertEqual(gxml.replace("?>\n<", "?><").replace(" \n ","").replace(">    <","><").replace(">   <","><").replace(">  <","><").replace("> <","><"),
                              '<?xml version="1.0" ?><definition><group name="entry" type="NXentry"><field name="field3"><datasource name="%s" type="CLIENT"><record name="r3"/></datasource><strategy mode="FINAL"/></field><field name="field4">$datasources.%s</field><group name="data" type="NXdata"><link name="%s" target="/entry:NXentry/field1"/></group><field name="field1">$datasources.%s<strategy mode="INIT"/></field></group></definition>'  % ( dsname[2], dsname[3], dsname[0], dsname[0]))
@@ -11528,8 +11957,8 @@ ds.result = nxsconfigserver.__version__</result></datasource>"""
         el.setMandatoryComponents(man)
         el.close()
 
-        
-        
+
+
 
 if __name__ == '__main__':
     unittest.main()

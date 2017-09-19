@@ -1270,7 +1270,6 @@ def main():
                          ('geometry', Geometry),
                          ('servers', Servers)]
     runners = parser.createSubParsers()
-
     try:
         options = parser.parse_args()
     except ErrorException as e:
@@ -1298,7 +1297,8 @@ def main():
         parg = options.args or []
     if pipe:
         parg.extend([p.strip() for p in pipe])
-        options.args[:] = parg
+        if hasattr(options, "args"):
+            options.args[:] = parg
 
     try:    
         result = runners[options.subparser].run(options)
@@ -1321,7 +1321,13 @@ def main():
                     mydss = ["UKNOWN"]
                 sys.stderr.write(
                     "Error: Component %s not stored in Configuration Server\n"
-                    % mydss[0])   
+                    % mydss[0])
+            elif str((e.args[0]).desc).startswith(
+                    'IncompatibleNodeError: '):
+                sys.stderr.write("Error:%s\n" % (e.args[0]).desc[22:])
+            elif str((e.args[0]).desc).startswith(
+                    'ExpatError: '):
+                sys.stderr.write("Error from XML parser: %s\n" % (e.args[0]).desc[12:])
             else:    
                 sys.stderr.write("Error: %s\n" % str(e))
             sys.exit(255)
