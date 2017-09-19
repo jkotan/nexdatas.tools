@@ -15,9 +15,8 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-#
+# \package mcs nexdatas
+# \file __init__.py
+# package constructor
 
-"""  NXS tools release version"""
-
-#: (:obj:`str`) package version
-__version__ = "2.51.0"
+""" Tests for Implementation of  NexDaTaS Tools"""

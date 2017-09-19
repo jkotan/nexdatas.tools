@@ -25,6 +25,15 @@ import argparse
 from .nxsparser import ParserTools, TableTools
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
+#: (:obj:`bool`) True if PyTango available
+
+PYTANGO = False
+try:
+    import PyTango
+    PYTANGO = True
+except:
+    pass
+
 
 
 class ConfigServer(object):
@@ -689,16 +698,16 @@ class Show(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
-        parser.add_argument("-m", "--mandatory", action="store_true",
-                            default=False, dest="mandatory",
-                            help="make use mandatory components")
-        parser.add_argument("-p", "--private", action="store_true",
-                            default=False, dest="private",
-                            help="make use private components,"
-                            " i.e. starting with '__'")
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
+#        parser.add_argument("-m", "--mandatory", action="store_true",
+#                            default=False, dest="mandatory",
+#                            help="make use mandatory components")
+#        parser.add_argument("-p", "--private", action="store_true",
+#                            default=False, dest="private",
+#                            help="make use private components,"
+#                            " i.e. starting with '__'")
+#        parser.add_argument("-n", "--no-newlines", action="store_true",
+#                            default=False, dest="nonewlines",
+#                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components or datasources')
 
@@ -710,9 +719,9 @@ class Show(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.showCmd(
-            options.datasources, options.args, options.mandatory))
+            options.datasources, options.args, False))
         return string
 
 
@@ -1261,7 +1270,6 @@ def main():
                          ('geometry', Geometry),
                          ('servers', Servers)]
     runners = parser.createSubParsers()
-
     try:
         options = parser.parse_args()
     except ErrorException as e:
@@ -1289,9 +1297,44 @@ def main():
         parg = options.args or []
     if pipe:
         parg.extend([p.strip() for p in pipe])
-        options.args[:] = parg
+        if hasattr(options, "args"):
+            options.args[:] = parg
 
-    result = runners[options.subparser].run(options)
+    try:    
+        result = runners[options.subparser].run(options)
+
+#    except PyTango.DevFailed as
+    except Exception as e:
+        if PYTANGO and isinstance(e, PyTango.DevFailed):
+            if str((e.args[0]).desc).startswith(
+                    "NonregisteredDBRecordError: The datasource "):
+                mydss = str((e.args[0]).desc)[43:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Datasource %s not stored in Configuration Server\n"
+                    % mydss[0])
+            elif str((e.args[0]).desc).startswith(
+                    "NonregisteredDBRecordError: Component "):
+                mydss = str((e.args[0]).desc)[38:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Component %s not stored in Configuration Server\n"
+                    % mydss[0])
+            elif str((e.args[0]).desc).startswith(
+                    'IncompatibleNodeError: '):
+                sys.stderr.write("Error:%s\n" % (e.args[0]).desc[22:])
+            elif str((e.args[0]).desc).startswith(
+                    'ExpatError: '):
+                sys.stderr.write("Error from XML parser: %s\n" % (e.args[0]).desc[12:])
+            else:    
+                sys.stderr.write("Error: %s\n" % str(e))
+            sys.exit(255)
+        else:
+            sys.stderr.write("Error: %s\n" % str(e))
+            sys.exit(255)
+#        raise
     if result and str(result).strip():
         print(result)
 
