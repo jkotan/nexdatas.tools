@@ -27,6 +27,7 @@ import random
 import struct
 import binascii
 import time
+import threading
 import json
 import PyTango
 import ServerSetUp
@@ -35,6 +36,14 @@ from nxstools import nxsconfig
 import sys
 from cStringIO import StringIO
 
+class mytty(object):
+    def __init__(self, underlying):
+#        underlying.encoding = 'cp437'
+        self.__underlying = underlying
+    def __getattr__(self, name):
+        return getattr(self.__underlying, name)
+    def isatty(self):
+        return True
 
 ## if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
@@ -45,6 +54,11 @@ IS64BIT = (struct.calcsize("P") == 8)
 #                                     IncompatibleNodeError)
 # import nxsconfigserver
 
+def myinput(w, text):
+    myio = os.fdopen(w, 'w')
+    myio.write(text)
+
+    #myio.close()
 
 ## test fixture
 class NXSConfigTest(unittest.TestCase):
@@ -409,6 +423,267 @@ For more help:
         for cp in avc:
             self.assertTrue(cp in avc3)
         self.assertTrue(name not in avc3)
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_comp(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+
+        commands = [
+            ('nxsconfig delete -f  -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -f  --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            self.setXML(el, xml2)
+            self.assertEqual(el.storeComponent(name2), None)
+            self.__cmps.append(name2)
+            avc2 = el.availableComponents()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+            avc3 = el.availableComponents()
+            self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
+
+        el.close()
+
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_comp_noforce_pipe(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+
+        commands = [
+            ('nxsconfig delete -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n','Y\n','y\n'',N\n','n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeComponent(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableComponents()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                sys.stdin = mystdin = StringIO()
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove Component ')
+                self.assertEqual(
+                    er,
+                    "Error: EOF when reading a line. "
+                    "Consider to use the --force option \n")
+                avc3 = el.availableComponents()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_comp_noforce(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+
+        commands = [
+            ('nxsconfig delete -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n','Y\n','y\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeComponent(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableComponents()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove Component ')
+                self.assertEqual('', er)
+                avc3 = el.availableComponents()
+                self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
+
+        el.close()
+
+ 
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_comp_noforce_no(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+
+        commands = [
+            ('nxsconfig delete -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['N\n','n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeComponent(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableComponents()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove Component ')
+                self.assertEqual('', er)
+                avc3 = el.availableComponents()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop()
 
         el.close()
 
@@ -1333,7 +1608,7 @@ For more help:
             vl = mystdout.getvalue().strip()
             er = mystderr.getvalue()
             self.assertEqual(vl.strip(), "")
-            
+
             self.assertTrue(er.startswith('Error: "Incompatible element attributes'))
 
 
@@ -1411,7 +1686,7 @@ For more help:
             vl = mystdout.getvalue().strip()
             er = mystderr.getvalue()
             self.assertEqual(vl.strip(), "")
-            
+
             self.assertTrue(er.startswith('Error: "Incompatible element attributes'))
 
 
@@ -1492,7 +1767,7 @@ For more help:
             er = mystderr.getvalue()
             self.assertEqual(vl.strip(), "")
             self.assertEqual(str(er)[:40], "Error from XML parser: no element found: "[:40])
-            
+
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
@@ -1865,7 +2140,7 @@ For more help:
 
 
         el.close()
-        
+
     ## comp_available test
     # \brief It tests XMLConfigurator
     def test_get_comp_wrongxml(self):
