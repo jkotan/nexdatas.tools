@@ -128,11 +128,11 @@ knownHosts = {
     'hasep23dev': {'beamline': 'p23', 'masterHost': 'hasep23dev',
                    'user': 'p23user', 'dbname': 'nxsconfig'},
     'hasep23eh': {'beamline': 'p23', 'masterHost': 'hasep23eh',
-                   'user': 'p23user', 'dbname': 'nxsconfig'},
+                  'user': 'p23user', 'dbname': 'nxsconfig'},
     'hasep24': {'beamline': 'p24', 'masterHost': 'hasep24',
                 'user': 'p24user', 'dbname': 'nxsconfig'},
     'hasep24eh1': {'beamline': 'p24', 'masterHost': 'hasep24eh1',
-                'user': 'p24user', 'dbname': 'nxsconfig'},
+                   'user': 'p24user', 'dbname': 'nxsconfig'},
     'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
     'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
@@ -547,7 +547,7 @@ class SetUp(object):
                                         {'NumberOfThreads': 100})
 
         elif self.writer_name not in \
-             self.db.get_device_class_list(server_name).value_string:
+           self.db.get_device_class_list(server_name).value_string:
             print("\ncreateDataWriter: %s already exists. "
                   "To change its device name please remove it." % server_name)
             return False

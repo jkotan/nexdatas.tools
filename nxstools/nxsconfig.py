@@ -35,7 +35,6 @@ except:
     pass
 
 
-
 class ConfigServer(object):
 
     """ configuration server adapter
@@ -1298,16 +1297,17 @@ def main():
         if hasattr(options, "args"):
             options.args[:] = parg
 
-    try:    
+    try:
         result = runners[options.subparser].run(options)
 
 #    except PyTango.DevFailed as
     except Exception as e:
         if isinstance(e, EOFError) \
            and str(e).startswith("EOF when reading a line"):
-            sys.stderr.write("Error: %s. Consider to use the --force option \n" % str(e))
+            sys.stderr.write("Error: %s. Consider to use the "
+                             "--force option \n" % str(e))
             sys.exit(255)
-            
+
         if PYTANGO and isinstance(e, PyTango.DevFailed):
             if str((e.args[0]).desc).startswith(
                     "NonregisteredDBRecordError: The datasource "):
@@ -1330,8 +1330,9 @@ def main():
                 sys.stderr.write("Error:%s\n" % (e.args[0]).desc[22:])
             elif str((e.args[0]).desc).startswith(
                     'ExpatError: '):
-                sys.stderr.write("Error from XML parser: %s\n" % (e.args[0]).desc[12:])
-            else:    
+                sys.stderr.write("Error from XML parser: %s\n"
+                                 % (e.args[0]).desc[12:])
+            else:
                 sys.stderr.write("Error: %s\n" % str(e))
             sys.exit(255)
         else:
