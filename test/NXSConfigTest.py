@@ -486,6 +486,68 @@ For more help:
 
     ## comp_available test
     # \brief It tests XMLConfigurator
+    def test_delete_ds(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -f -d -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -f -d --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -f --datasource -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -f --datasource --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            self.setXML(el, xml2)
+            self.assertEqual(el.storeDataSource(name2), None)
+            self.__ds.append(name2)
+            avc2 = el.availableDataSources()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+            avc3 = el.availableDataSources()
+            self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop()
+
+        el.close()
+
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print "Run: %s.%s() " % (self.__class__.__name__, fun)
@@ -549,6 +611,78 @@ For more help:
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop()
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_ds_noforce_pipe(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -d -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -d --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n','Y\n','y\n'',N\n','n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeDataSource(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableDataSources()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                sys.stdin = mystdin = StringIO()
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove DataSource')
+                self.assertEqual(
+                    er,
+                    "Error: EOF when reading a line. "
+                    "Consider to use the --force option \n")
+                avc3 = el.availableDataSources()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop()
 
         el.close()
 
@@ -619,6 +753,77 @@ For more help:
 
         el.close()
 
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_ds_noforce(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -d -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -d --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n','Y\n','y\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeDataSource(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableDataSources()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove DataSource')
+                self.assertEqual('', er)
+                avc3 = el.availableDataSources()
+                self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop()
+
+        el.close()
+
  
     ## comp_available test
     # \brief It tests XMLConfigurator
@@ -684,6 +889,77 @@ For more help:
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop()
+
+        el.close()
+
+    ## comp_available test
+    # \brief It tests XMLConfigurator
+    def test_delete_ds_noforce_no(self):
+        fun = sys._getframe().f_code.co_name
+        print "Run: %s.%s() " % (self.__class__.__name__, fun)
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0'?><definition><group type='NXentry'/></definition>"
+        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/></definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -d -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -d --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --datasource --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['N\n','n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, xml2)
+                self.assertEqual(el.storeDataSource(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableDataSources()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:17], 'Remove DataSource')
+                self.assertEqual('', er)
+                avc3 = el.availableDataSources()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop()
 
         el.close()
 
