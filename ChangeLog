@@ -1,3 +1,8 @@
+2017-09-26 Jan Kotanski <jankotan@gmail.com>
+	* make lambda links optional
+	* add nxsconfig delete tests
+	* tagged as v2.52.0
+
 2017-09-19 Jan Kotanski <jankotan@gmail.com>
 	* remove wrong nxsconfig show options: -m -p
 	* update error handling
