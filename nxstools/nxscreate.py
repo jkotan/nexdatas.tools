@@ -828,6 +828,10 @@ class Comp(Runner):
             default=False, dest="overwrite",
             help="overwrite existing components")
         parser.add_argument(
+            "-a", "--can-fail", action="store_true",
+            default=False, dest="canfail",
+            help="can fail strategy flag")
+        parser.add_argument(
             "-d", "--directory",
             help="output component directory",
             dest="directory", default=".")

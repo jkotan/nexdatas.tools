@@ -394,7 +394,7 @@ class Creator(object):
 
     @classmethod
     def __createTree(cls, df, nexuspath, name, nexusType,
-                     strategy, units, link, chunk):
+                     strategy, units, link, chunk, canfail=None):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -413,6 +413,8 @@ class Creator(object):
         :type links: :obj:`bool`
         :param chunk: chunk size, e.g. `SCALAR`, `SPECTRUM` or `IMAGE`
         :type chunk: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
         """
 
         pathlist = cls.__patheval(nexuspath)
@@ -426,7 +428,7 @@ class Creator(object):
         if pathlist:
             fname = pathlist[-1][0] or name
             field = NField(parent, fname, nexusType)
-            field.setStrategy(strategy)
+            field.setStrategy(strategy, canfail=canfail)
             if units.strip():
                 field.setUnits(units.strip())
             field.setText("$datasources.%s" % name)
@@ -447,7 +449,7 @@ class Creator(object):
     @classmethod
     def _createComponent(cls, name, directory, fileprefix, nexuspath,
                          strategy, nexusType, units, links, server, chunk,
-                         dsname):
+                         dsname, canfail=None):
         """ creates component file
 
         :param name: component name
@@ -472,12 +474,14 @@ class Creator(object):
         :rtype: :obj:`str`
         :param dsname: datasource name
         :type dsname: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
         """
         defpath = "/$var.entryname#'scan'$var.serialno:NXentry/instrument" \
                   + "/collection/%s" % (dsname or name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
         cls.__createTree(df, nexuspath or defpath, dsname or name, nexusType,
-                         strategy, units, links, chunk)
+                         strategy, units, links, chunk, canfail)
 
         xml = df.prettyPrint()
         if server:
@@ -621,7 +625,9 @@ class ComponentCreator(Creator):
                 int(self.options.fieldlinks) + 2 * int(
                     self.options.sourcelinks),
                 self.options.server if self.options.database else None,
-                self.options.chunk, dsname)
+                self.options.chunk, dsname,
+                self.options.canfail
+            )
 
 
 class TangoDSCreator(Creator):

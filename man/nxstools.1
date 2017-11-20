@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "September 26, 2017" "2.52" "NXSTools"
+.TH "NXSTOOLS" "1" "November 20, 2017" "2.53" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -4833,7 +4833,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None)
+.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, canfail=None)
 sets the attribute strategy
 .INDENT 7.0
 .TP
@@ -4846,6 +4846,8 @@ sets the attribute strategy
 e.g. with different subentries
 .IP \(bu 2
 \fBvalue\fP (\fI\%str\fP) \-\- label for postrun mode
+.IP \(bu 2
+\fBcanfail\fP (\fI\%bool\fP) \-\- can fail strategy flag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5100,7 +5102,7 @@ adds doc tag content
 .UNINDENT
 .INDENT 7.0
 .TP
-.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, grows=None, compression=False, rate=None, shuffle=None)
+.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, grows=None, compression=False, rate=None, shuffle=None, canfail=None)
 sets the field strategy
 .INDENT 7.0
 .TP
@@ -5121,6 +5123,8 @@ e.g. with different subentries
 \fBrate\fP (\fI\%str\fP) \-\- compression rate
 .IP \(bu 2
 \fBshuffle\fP (\fI\%str\fP) \-\- flag if compression shuffle
+.IP \(bu 2
+\fBcanfail\fP (\fI\%bool\fP) \-\- can fail strategy flag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5652,7 +5656,7 @@ stores datasources in Configuration Server
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7f33c0cabd10>
+.B nxstools.nxsdevicetools.xmlPackageHandler = <nxstools.nxsdevicetools.PackageHandler object at 0x7fa4caf49d10>
 (\fBPackageHandler\fP) xml template package handler
 .UNINDENT
 .INDENT 0.0

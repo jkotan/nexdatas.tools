@@ -102,7 +102,7 @@ class NAttr(NTag):
         """
         NTag.__init__(self, parent, "attribute", nameAttr, typeAttr)
 
-    def setStrategy(self, mode="STEP", trigger=None, value=None):
+    def setStrategy(self, mode="STEP", trigger=None, value=None, canfail=None):
         """ sets the attribute strategy
 
         :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
@@ -112,6 +112,8 @@ class NAttr(NTag):
         :type trigger: :obj:`str`
         :param value: label for postrun mode
         :type value: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
         """
         #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
@@ -119,6 +121,8 @@ class NAttr(NTag):
             strategy.addTagAttr("mode", mode)
         if trigger:
             strategy.addTagAttr("trigger", trigger)
+        if canfail:
+            strategy.addTagAttr("canfail", "true")
         if value:
             strategy.setText(value)
 
@@ -277,7 +281,7 @@ class NField(NTag):
 
     def setStrategy(self, mode="STEP", trigger=None, value=None,
                     grows=None, compression=False, rate=None,
-                    shuffle=None):
+                    shuffle=None, canfail=None):
         """ sets the field strategy
 
         :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
@@ -295,6 +299,8 @@ class NField(NTag):
         :type rate: :obj:`str`
         :param shuffle: flag if compression shuffle
         :type shuffle: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
         """
         #: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN
         strategy = NTag(self, "strategy")
@@ -306,6 +312,8 @@ class NField(NTag):
             strategy.addTagAttr("trigger", trigger)
         if value:
             strategy.setText(value)
+        if canfail:
+            strategy.addTagAttr("canfail", "true")
         if compression:
             strategy.addTagAttr("compression", "true")
             if rate is not None:
