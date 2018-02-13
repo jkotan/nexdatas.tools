@@ -1,3 +1,7 @@
+2018-02-13 Jan Kotanski <jankotan@gmail.com>
+	* add scan_id into the default component
+	* tagged as v2.54.0
+
 2017-11-20 Jan Kotanski <jankotan@gmail.com>
 	* add --can-fail to nxscreate comp
 	* tagged as v2.53.0

@@ -32,7 +32,7 @@ The beamtime ID at DESY is an 8 digit number.R</doc>
       <field short_name="$(shortname)" type="NX_CHAR" name="name">$(longname)<strategy mode="INIT"/>
       </field>
     </group>
-    <field scan_command="$var.scan_title" type="NX_CHAR" name="program_name">NexDaTaS<attribute type="NX_CHAR" name="version">
+    <field scan_command="$var.scan_title" scan_id="$var.scan_id" type="NX_CHAR" name="program_name">NexDaTaS<attribute type="NX_CHAR" name="version">
         <strategy mode="INIT"/>$datasources.nexdatas_version</attribute>
       <attribute type="NX_CHAR" name="configuration">
         <strategy mode="INIT"/>$datasources.nexdatas_configuration</attribute>
