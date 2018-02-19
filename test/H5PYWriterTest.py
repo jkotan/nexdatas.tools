@@ -290,7 +290,7 @@ class h5pywriterTest(unittest.TestCase):
         self.myAssertRaise(
             Exception, fl.reopen, True, True)
 
-        if SWMR:
+        if SWMR and hasattr(fl._h5object, "swmr_mode"):
             fl.reopen(False, True)
         else:
             self.myAssertRaise(
