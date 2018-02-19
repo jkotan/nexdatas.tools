@@ -1,3 +1,7 @@
+2018-02-XX Jan Kotanski <jankotan@gmail.com>
+	* add reopen() to filewrite objects
+	* tagged as v2.55.0
+
 2018-02-13 Jan Kotanski <jankotan@gmail.com>
 	* add scan_id into the default component
 	* tagged as v2.54.0
