@@ -32,6 +32,13 @@ import h5py
 import nxstools.filewriter as filewriter
 import nxstools.h5pywriter as h5pywriter
 
+H5PYMAJOR, H5PYMINOR, H5PYPATCH= h5py.__version__.split(".", 2)
+
+if int(H5PYMAJOR) > 1 or (int(H5PYMAJOR) == 1  and int(H5PYMINOR) > 4):
+    SWMR = True
+else:
+    SWMR = False
+    
 
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
@@ -279,15 +286,16 @@ class h5pywriterTest(unittest.TestCase):
         self.assertEqual(fl.h5object.mode in ["r"], True)
 
         fl.close()
-
+        
         self.myAssertRaise(
             Exception, fl.reopen, True, True)
 
-        #        self.myAssertRaise(
-        #            Exception, fl.reopen, False, True)
-        # SWMR supproted
-        fl.reopen(False, True)
-
+        if SWMR:
+            fl.reopen(False, True)
+        else:
+            self.myAssertRaise(
+                Exception, fl.reopen, False, True)
+            
         fl = h5pywriter.open_file(self._fname, readonly=True)
         f = fl.root()
         self.assertEqual(1, len(f.attributes))
