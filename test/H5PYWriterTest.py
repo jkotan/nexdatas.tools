@@ -282,9 +282,11 @@ class h5pywriterTest(unittest.TestCase):
 
         self.myAssertRaise(
             Exception, fl.reopen, True, True)
-        self.myAssertRaise(
-            Exception, fl.reopen, False, True)
 
+        #        self.myAssertRaise(
+        #            Exception, fl.reopen, False, True)
+        # SWMR supproted
+        fl.reopen(False, True)
 
         fl = h5pywriter.open_file(self._fname, readonly=True)
         f = fl.root()
