@@ -1,4 +1,5 @@
-2018-02-XX Jan Kotanski <jankotan@gmail.com>
+2018-03-15 Jan Kotanski <jankotan@gmail.com>
+	* add support for sources with tango://
 	* add reopen() to filewrite objects
 	* tagged as v2.55.0
 
