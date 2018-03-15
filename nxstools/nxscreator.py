@@ -868,6 +868,8 @@ class PoolDSCreator(Creator):
         """
         dv = Device()
         if name and source:
+            if source.startswith("tango://"):
+                source = source[8:]
             slst = source.split('/')
             if not slst[0] or ":" not in slst[0] or len(slst) < 2:
                 return dv
