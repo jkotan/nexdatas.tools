@@ -1,3 +1,7 @@
+2018-03-05 Jan Kotanski <jankotan@gmail.com>
+	* add links to orc and irc in mcaxia
+	* tagged as v2.56.0
+
 2018-03-15 Jan Kotanski <jankotan@gmail.com>
 	* add support for sources with tango://
 	* add reopen() to filewrite objects
