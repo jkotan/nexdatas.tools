@@ -93,7 +93,9 @@ class General(Runner):
             sys.exit(255)
         wrmodule = WRITERS[writer.lower()]
         try:
-            fl = filewriter.open_file(options.args[0], writer=wrmodule)
+            fl = filewriter.open_file(
+                options.args[0], readonly=True,
+                writer=wrmodule)
         except:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
@@ -343,7 +345,9 @@ class Field(Runner):
             sys.exit(255)
         wrmodule = WRITERS[writer.lower()]
         try:
-            fl = filewriter.open_file(options.args[0], writer=wrmodule)
+            fl = filewriter.open_file(
+                options.args[0], readonly=True,
+                writer=wrmodule)
         except:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])

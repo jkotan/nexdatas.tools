@@ -705,6 +705,16 @@ standardComponentVariables = {
             'doc': "source group name (string)"
         },
     },
+    'datasignal': {
+        'signal': {
+            'default': 'signal_name',
+            'doc': "data signal field name (string)"
+        },
+        'axes': {
+            'default': None,
+            'doc': "data axes field name(s) (string)"
+        },
+    },
     'defaultinstrument': {
         'control': {
             'default': None,
@@ -967,6 +977,12 @@ standardComponentTemplateFiles = {
         'defaultsample.xml',
         'sample_name.ds.xml',
         'chemical_formula.ds.xml',
+    ],
+    'datasignal': [
+        'datasignal.xml',
+#        'signal_name.ds.xml',
+        'signalname.ds.xml',
+        'signal_axes.ds.xml',
     ],
     'defaultinstrument': [
         'defaultinstrument.xml',
