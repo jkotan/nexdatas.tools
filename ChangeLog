@@ -1,4 +1,9 @@
-2018-03-05 Jan Kotanski <jankotan@gmail.com>
+2018-04-11 Jan Kotanski <jankotan@gmail.com>
+	* add datasignal
+	* run nxsfileinfo in readonly mode
+	* tagged as v2.57.0
+
+2018-04-05 Jan Kotanski <jankotan@gmail.com>
 	* add links to orc and irc in mcaxia
 	* tagged as v2.56.0
 
