@@ -546,8 +546,8 @@ class SetUp(object):
             self.db.put_device_property(self.writer_name,
                                         {'NumberOfThreads': 100})
 
-        elif self.writer_name not in \
-           self.db.get_device_class_list(server_name).value_string:
+        elif (self.writer_name not in
+              self.db.get_device_class_list(server_name).value_string):
             print("\ncreateDataWriter: %s already exists. "
                   "To change its device name please remove it." % server_name)
             return False
@@ -598,8 +598,8 @@ class SetUp(object):
             self.db.put_device_property(
                 self.cserver_name, {'VersionLabel': '%s@%s' % (
                     beamline.upper(), masterHost.upper())})
-        elif self.cserver_name not in \
-             self.db.get_device_class_list(server_name).value_string:
+        elif (self.cserver_name not in
+              self.db.get_device_class_list(server_name).value_string):
             print("\ncreateConfigServer: %s already exists. "
                   "To change its device name please remove it." % server_name)
             return False
@@ -682,8 +682,8 @@ class SetUp(object):
             di.server = server_name
             self.db.add_device(di)
 
-        elif device_name not in \
-             self.db.get_device_class_list(server_name).value_string:
+        elif (device_name not in
+              self.db.get_device_class_list(server_name).value_string):
             print("\ncreateSelector: %s already exists. "
                   "To change its device name please remove it." % server_name)
             return False

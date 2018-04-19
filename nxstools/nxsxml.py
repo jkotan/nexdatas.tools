@@ -168,7 +168,7 @@ class NGroup(NTag):
         :param attrValue: content of the attribute tag
         :type attrValue: :obj:`str`
         """
-        print attrName, attrType, attrValue
+        print("%s %s %s" % (attrName, attrType, attrValue))
         at = NAttr(self, attrName, attrType)
         self._gAttr[attrName] = at
         if attrValue != "":
@@ -620,7 +620,7 @@ class NDeviceGroup(NGroup):
 
             print(at)
             cf = self._proxy.attribute_query(at)
-            print "QUERY"
+            print("QUERY")
             print(cf)
             print(cf.name)
             print(cf.data_format)

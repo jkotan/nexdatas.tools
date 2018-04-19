@@ -152,26 +152,26 @@ class TangoDS(Runner):
         if (options.database and not options.server) or \
            (not options.host and not options.server):
             if not PYTANGO:
-                print >> sys.stderr, "Info: No PyTango installed\n"
+                sys.stderr.write("Info: No PyTango installed\n")
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                print ""
+                print("")
                 sys.exit(0)
 
         if not options.host:
             if not PYTANGO:
-                print >> sys.stderr, \
-                    "Info: No Tango Host or PyTango installed\n"
+                sys.stderr.write(
+                    "Info: No Tango Host or PyTango installed\n")
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
 
         if options.database:
-            print "CONFIG SERVER:", options.server
+            print("CONFIG SERVER: %s" % str(options.server))
         else:
-            print "OUTPUT DIRECTORY:", options.directory
+            print("OUTPUT DIRECTORY: %s" % str(options.directory))
 
         creator = TangoDSCreator(options, [])
         try:
@@ -263,12 +263,12 @@ class DeviceDS(Runner):
         if (options.database and not options.server) or \
            (not options.host and not options.server):
             if not PYTANGO:
-                print >> sys.stderr, "Info: No PyTango installed\n"
+                sys.stderr.write("Info: No PyTango installed\n")
                 sys.exit(255)
 
             options.server = checkServer()
             if not options.server:
-                print ""
+                print("")
                 sys.exit(0)
 
         if not options.host:

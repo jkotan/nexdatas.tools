@@ -353,7 +353,7 @@ class Creator(object):
         """
         dname = name if not dsname else dsname
         df = XMLFile("%s/%s%s.ds.xml" % (directory, fileprefix, dname))
-        print "%s/%s%s.ds.xml" % (directory, fileprefix, dname)
+        print("%s/%s%s.ds.xml" % (directory, fileprefix, dname))
         sr = NDSource(df)
         sr.initClient(dname, name)
         xml = df.prettyPrint()
@@ -668,10 +668,10 @@ class TangoDSCreator(Creator):
 
         for i in range(len(dvargs)):
             if not self.options.database:
-                print "CREATING %s: %s%s.ds.xml" % (
-                    dvargs[i], self.options.file, dsargs[i])
+                print("CREATING %s: %s%s.ds.xml" % (
+                    dvargs[i], self.options.file, dsargs[i]))
             else:
-                print "STORING %s: %s" % (dvargs[i], dsargs[i])
+                print("STORING %s: %s" % (dvargs[i], dsargs[i]))
             self._createTangoDataSource(
                 dsargs[i], self.options.directory, self.options.file,
                 self.options.server if self.options.database else None,

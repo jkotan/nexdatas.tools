@@ -303,7 +303,7 @@ class Collector(object):
             if not self.__testmode:
                 node.attributes.create(
                     name, dtype, shape, overwrite=True)[...] = value
-            print " + add attribute: %s = %s" % (name, value)
+            print(" + add attribute: %s = %s" % (name, value))
 
     def _getfield(self, node, fieldname, dtype, shape, fieldattrs,
                   fieldcompression):
@@ -394,7 +394,7 @@ class Collector(object):
                         if not self.__testmode:
                             field.grow(0, 1)
                             field[-1, ...] = data
-                        print " * append %s " % (fname)
+                        print(" * append %s " % (fname))
                     ind += 1
                     if not self.__testmode:
                         self.__nxsfile.flush()
@@ -437,8 +437,8 @@ class Collector(object):
                                     at[...], at.dtype, at.shape
                                 )
 
-                    print "populate: %s/%s with %s" % (
-                        parent.parent.path, fieldname, files)
+                    print("populate: %s/%s with %s" % (
+                        parent.parent.path, fieldname, files))
                     if fieldcompression is None:
                         fieldcompression = self.__compression
                     self._collectimages(
@@ -482,7 +482,7 @@ class Collector(object):
                 self._storeoldfile()
             shutil.move(self.__tempfilename, self.__nexusfilename)
         except Exception as e:
-            print str(e)
+            print(str(e))
             os.remove(self.__tempfilename)
 
 
@@ -542,7 +542,7 @@ class Execute(Runner):
         nexusfiles = options.args
         if not nexusfiles or not nexusfiles[0]:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
         if options.pni:
@@ -588,7 +588,7 @@ class Test(Execute):
         nexusfiles = options.args
         if not nexusfiles or not nexusfiles[0]:
             parser.print_help()
-            print ""
+            print("")
             sys.exit(0)
 
         if options.pni:

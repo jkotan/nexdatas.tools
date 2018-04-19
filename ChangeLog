@@ -1,4 +1,8 @@
 2018-04-11 Jan Kotanski <jankotan@gmail.com>
+	* shows attribute datasources  in nxsconfig info/geometry
+	* tagged as v2.58.0
+
+2018-04-11 Jan Kotanski <jankotan@gmail.com>
 	* add datasignal
 	* run nxsfileinfo in readonly mode
 	* tagged as v2.57.0

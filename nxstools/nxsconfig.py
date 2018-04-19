@@ -448,6 +448,7 @@ class ConfigServer(object):
 
             for i, xmls in enumerate(cpxmls):
                 parameters = ParserTools.parseFields(xmls)
+                parameters.extend(ParserTools.parseAttributes(xmls))
                 parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
                 if dargs[i] in deps:
@@ -500,6 +501,7 @@ class ConfigServer(object):
         xmls = str(self._cnfServer.XMLString).strip()
         if xmls:
             description.extend(ParserTools.parseFields(xmls))
+            description.extend(ParserTools.parseAttributes(xmls))
             description.extend(ParserTools.parseLinks(xmls))
         if not description:
             sys.stderr.write(

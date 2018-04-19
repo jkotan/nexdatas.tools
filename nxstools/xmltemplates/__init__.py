@@ -707,7 +707,7 @@ standardComponentVariables = {
     },
     'datasignal': {
         'signal': {
-            'default': 'signal_name',
+            'default': 'signalname',
             'doc': "data signal field name (string)"
         },
         'axes': {
@@ -980,7 +980,7 @@ standardComponentTemplateFiles = {
     ],
     'datasignal': [
         'datasignal.xml',
-#        'signal_name.ds.xml',
+        'signal_name.ds.xml',
         'signalname.ds.xml',
         'signal_axes.ds.xml',
     ],

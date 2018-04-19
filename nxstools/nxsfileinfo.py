@@ -245,8 +245,9 @@ class General(Runner):
         attr = root.attributes
 
         names = [at.name for at in attr]
-        fname = filewriter.first((attr["file_name"][...]
-                                  if "file_name" in names else " ") or " ")
+        fname = filewriter.first(
+            (attr["file_name"][...]
+             if "file_name" in names else " ") or " ")
         headers = ["File name:", fname]
 
         for en in root:
@@ -257,9 +258,9 @@ class General(Runner):
         description[:] = ttools.generateList()
 
         if len(description) > 4:
-            print "=" * len(description[4])
+            print("=" * len(description[4]))
         print("\n".join(description).strip())
-        print "=" * len(description[4])
+        print("=" * len(description[4]))
 
 
 class Field(Runner):

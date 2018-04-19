@@ -192,10 +192,21 @@ class ParserTools(object):
         :rtype: :obj:`str`
         """
         name = cls.__getAttr(node, "name")
+        start = True
         while node.parentNode:
             node = node.parentNode
             if node.nodeName != "group":
                 return name
+            elif node.nodeName != "attribute":
+                gname = cls.__getAttr(node, "name")
+                if not gname:
+                    gname = cls.__getAttr(node, "type")
+                    if len(gname) > 2:
+                        gname = gname[2:]
+                if start:
+                    name = gname + "@" + name
+                else:
+                    name = gname + "/" + name
             else:
                 gname = cls.__getAttr(node, "name")
                 if not gname:
@@ -203,6 +214,7 @@ class ParserTools(object):
                     if len(gname) > 2:
                         gname = gname[2:]
                 name = gname + "/" + name
+            start = False
         return name
 
     @classmethod
@@ -300,6 +312,70 @@ class ParserTools(object):
         :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "field"
+        indom = parseString(xmlc)
+        nodes = indom.getElementsByTagName(tagname)
+        taglist = []
+        for nd in nodes:
+            if nd.nodeName == tagname:
+
+                nxtype = cls.__getAttr(nd, "type")
+                units = cls.__getAttr(nd, "units")
+                value = cls._getPureText(nd) or None
+                trtype = cls.__getAttr(nd, "transformation_type", True)
+                trvector = cls.__getAttr(nd, "vector", True)
+                troffset = cls.__getAttr(nd, "offset", True)
+                trdependson = cls.__getAttr(nd, "depends_on", True)
+                nxpath = cls.__getPath(nd)
+                dnodes = cls.__getChildrenByTagName(nd, "dimensions")
+                shape = cls.__getShape(dnodes[0]) if dnodes else None
+                stnodes = cls.__getChildrenByTagName(nd, "strategy")
+                strategy = cls.__getAttr(stnodes[0], "mode") \
+                    if stnodes else None
+
+                sfdinfo = {
+                    "strategy": strategy,
+                    "nexus_path": nxpath,
+                }
+                fdinfo = {
+                    "nexus_type": nxtype,
+                    "units": units,
+                    "shape": shape,
+                    "trans_type": trtype,
+                    "trans_vector": trvector,
+                    "trans_offset": troffset,
+                    "depends_on": trdependson,
+                    "value": value
+                }
+                fdinfo.update(sfdinfo)
+                dss = cls.__getDataSources(nd, direct=True)
+                if dss:
+                    for ds in dss:
+                        ds.update(fdinfo)
+                        taglist.append(ds)
+                        nddss = cls.__getChildrenByTagName(nd, "datasource")
+                        for ndds in nddss:
+                            sdss = cls.__getDataSources(ndds, direct=True)
+                            if sdss:
+                                for sds in sdss:
+                                    sds.update(sfdinfo)
+                                    sds["source_name"] \
+                                        = "\\" + sds["source_name"]
+                                    taglist.append(sds)
+                else:
+                    taglist.append(fdinfo)
+
+        return taglist
+
+    @classmethod
+    def parseAttributes(cls, xmlc):
+        """ provides datasources and its records from xml string
+
+        :param xmlc: xml string
+        :type xmlc: :obj:`str`
+        :returns: list of datasource descriptions
+        :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
+        """
+        tagname = "attribute"
         indom = parseString(xmlc)
         nodes = indom.getElementsByTagName(tagname)
         taglist = []

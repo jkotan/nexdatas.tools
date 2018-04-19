@@ -10,4 +10,7 @@
 	  </attribute>
     </group>
   </group>
+  <doc>
+    signalname datasource depends on $var.detector
+  </doc>
 </definition>
