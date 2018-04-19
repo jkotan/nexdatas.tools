@@ -1,4 +1,8 @@
-2018-04-11 Jan Kotanski <jankotan@gmail.com>
+2018-04-19 Jan Kotanski <jankotan@gmail.com>
+	* fix nxsconfig geometry paths
+	* tagged as v2.58.1
+
+2018-04-19 Jan Kotanski <jankotan@gmail.com>
 	* shows attribute datasources  in nxsconfig info/geometry
 	* tagged as v2.58.0
 

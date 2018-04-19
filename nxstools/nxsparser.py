@@ -192,29 +192,27 @@ class ParserTools(object):
         :rtype: :obj:`str`
         """
         name = cls.__getAttr(node, "name")
-        start = True
+        attr = False
         while node.parentNode:
+            onode = node
             node = node.parentNode
+            if onode.nodeName == "attribute":
+                attr = True
+            else:
+                attr = False
             if node.nodeName != "group":
                 return name
-            elif node.nodeName != "attribute":
-                gname = cls.__getAttr(node, "name")
-                if not gname:
-                    gname = cls.__getAttr(node, "type")
-                    if len(gname) > 2:
-                        gname = gname[2:]
-                if start:
-                    name = gname + "@" + name
-                else:
-                    name = gname + "/" + name
             else:
                 gname = cls.__getAttr(node, "name")
                 if not gname:
                     gname = cls.__getAttr(node, "type")
                     if len(gname) > 2:
                         gname = gname[2:]
-                name = gname + "/" + name
-            start = False
+                if attr:
+                    name = gname + "@" + name
+                else:
+                    name = gname + "/" + name
+                attr = False
         return name
 
     @classmethod
