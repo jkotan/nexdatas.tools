@@ -1,3 +1,7 @@
+2018-05-18 Jan Kotanski <jankotan@gmail.com>
+	* fix h5pywriter
+	* tagged as v2.58.2
+
 2018-04-19 Jan Kotanski <jankotan@gmail.com>
 	* fix nxsconfig geometry paths
 	* tagged as v2.58.1
