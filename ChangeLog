@@ -1,3 +1,7 @@
+2018-09-04 Jan Kotanski <jankotan@gmail.com>
+	* improve beamtimeid template for (h5cpp writer)
+	* tagged as v2.58.3
+
 2018-05-18 Jan Kotanski <jankotan@gmail.com>
 	* fix h5pywriter
 	* tagged as v2.58.2

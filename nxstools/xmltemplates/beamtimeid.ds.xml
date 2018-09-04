@@ -12,9 +12,13 @@ curext = "$(currentpostfix)"
 comprefix = "$(commissionprefix)"
 comext = "$(commissionpostfix)"
 
-ds.result = None      
+ds.result = None
 root = commonblock["__nxroot__"]
-fpath = root.filename
+if hasattr(root, "filename"):
+    fpath = root.filename
+else:
+    root = commonblock["__root__"]
+    fpath = root.parent.name
 if fpath.startswith(curpath):
     try: 
         if os.path.isdir(curpath):
