@@ -1,3 +1,7 @@
+2018-09-24 Jan Kotanski <jankotan@gmail.com>
+	* add vfcfactor and keithley_gain in maiaflux
+	* tagged as v2.59.0
+
 2018-09-04 Jan Kotanski <jankotan@gmail.com>
 	* improve beamtimeid template for (h5cpp writer)
 	* tagged as v2.58.3

@@ -151,6 +151,14 @@ standardComponentVariables = {
             'default': None,
             'doc': "flux coefficient  for maia (datasource)"
         },
+        'vfcfactor': {
+            'default': None,
+            'doc': "vfc conversion factor (datasource)"
+        },
+        'keithleydevice': {
+            'default': "keithley",
+            'doc': "keithley device name (string)"
+        },
     },
     'maiadimension': {
         'detname': {
