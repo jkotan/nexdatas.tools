@@ -50,6 +50,14 @@ except ImportError, e:
     H5PY_AVAILABLE = False
     print "h5py is not available: %s" % e
 
+try:
+    from pninexus import h5cpp
+    ## if module pni avalable
+    H5CPP_AVAILABLE = True
+except ImportError, e:
+    H5CPP_AVAILABLE = False
+    print "h5py is not available: %s" % e
+
 
 import os
 import unittest
@@ -146,8 +154,13 @@ if PNI_AVAILABLE:
 if H5PY_AVAILABLE:
     import H5PYWriterTest
     import FileWriterH5PYTest
+if H5CPP_AVAILABLE:
+    import H5CppWriterTest
+    import FileWriterH5CppTest
 if PNI_AVAILABLE and H5PY_AVAILABLE:
     import FileWriterPNIH5PYTest
+# if PNI_AVAILABLE and H5CPP_AVAILABLE:
+#     import FileWriterPNIH5CppTest
 
 
 if PYTANGO_AVAILABLE:
@@ -174,6 +187,11 @@ def main():
             unittest.defaultTestLoader.loadTestsFromModule(FileWriterH5PYTest))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(H5PYWriterTest))
+    if H5CPP_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(FileWriterH5CppTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(H5CppWriterTest))
     if PNI_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(FileWriterPNIH5PYTest))

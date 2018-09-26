@@ -40,6 +40,12 @@ try:
 except:
     pass
 
+try:
+    from . import h5cppwriter
+    WRITERS["h5cpp"] = h5cppwriter
+except:
+    pass
+
 
 class General(Runner):
 
@@ -65,6 +71,10 @@ class General(Runner):
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -84,8 +94,14 @@ class General(Runner):
             writer = "pni"
         elif options.h5py:
             writer = "h5py"
+        elif options.h5cpp:
+            writer = "h5cpp"
+        elif "pni" in WRITERS.keys():
+            writer = "pni"
+        elif "h5py" in WRITERS.keys():
+            writer = "h5py"
         else:
-            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+            writer = "h5cpp"
         if (options.pni and options.h5py) or writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
@@ -318,6 +334,10 @@ class Field(Runner):
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -337,8 +357,14 @@ class Field(Runner):
             writer = "pni"
         elif options.h5py:
             writer = "h5py"
+        elif options.h5cpp:
+            writer = "h5cpp"
+        elif "pni" in WRITERS.keys():
+            writer = "pni"
+        elif "h5py" in WRITERS.keys():
+            writer = "h5py"
         else:
-            writer = "pni" if "pni" in WRITERS.keys() else "h5py"
+            writer = "h5cpp"
         if (options.pni and options.h5py) or writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
