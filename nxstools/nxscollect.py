@@ -36,6 +36,13 @@ from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 
 
+if sys.version_info > (3,):
+    unicode = str
+    long = int
+else:
+    bytes = str
+
+
 WRITERS = {}
 try:
     from . import pniwriter

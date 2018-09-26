@@ -29,6 +29,13 @@ from . import filewriter
 # from .Types import nptype
 
 
+if sys.version_info > (3,):
+    unicode = str
+    long = int
+else:
+    bytes = str
+
+
 def nptype(dtype):
     """ converts to numpy types
 
@@ -40,13 +47,6 @@ def nptype(dtype):
     if str(dtype) in ['string', b'string']:
         return 'str'
     return dtype
-
-
-if sys.version_info > (3,):
-    unicode = str
-    long = int
-else:
-    bytes = str
 
 
 def _tostr(text):

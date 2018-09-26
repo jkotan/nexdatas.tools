@@ -34,6 +34,9 @@ try:
 except:
     pass
 
+if sys.version_info > (3,):
+    raw_input = input
+
 
 class ConfigServer(object):
 
