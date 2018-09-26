@@ -1,4 +1,8 @@
 2018-09-24 Jan Kotanski <jankotan@gmail.com>
+	* change vfc_factor from FINAL to INIT
+	* tagged as v2.59.1
+
+2018-09-24 Jan Kotanski <jankotan@gmail.com>
 	* add vfcfactor and keithley_gain in maiaflux
 	* tagged as v2.59.0
 
