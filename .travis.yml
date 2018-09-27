@@ -5,7 +5,7 @@ group: deprecated-2017Q2
 
 env:
   - TEST="flake8"
-  - OS_TYPE=debian8TEST="testsuit"
+  - OS_TYPE=debian8 TEST="testsuit"
   - OS_TYPE=debian9 TEST="testsuit"
   - OS_TYPE=ubuntu16.04 TEST="testsuit"
 
