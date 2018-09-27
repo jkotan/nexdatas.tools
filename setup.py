@@ -59,7 +59,7 @@ class TestCommand(Command):
         errno = subprocess.call([sys.executable, 'test/runtest.py'])
         raise SystemExit(errno)
 
-    
+
 release = IPKG.__version__
 version = ".".join(release.split(".")[:2])
 name = "NXSTools"
