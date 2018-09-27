@@ -15,11 +15,10 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package test nexdatas
-## \file ServerSetUp.py
+# \package test nexdatas
+# \file ServerSetUp.py
 # class with server settings
 #
-import unittest
 import os
 import sys
 import subprocess
@@ -28,13 +27,13 @@ import PyTango
 import time
 
 
-## test fixture
+# test fixture
 class ServerSetUp(object):
 
-    ## constructor
+    # constructor
     # \brief defines server parameters
     def __init__(self):
-        ## information about tango writer
+        # information about tango writer
         self.new_device_info_writer = PyTango.DbDevInfo()
         self.new_device_info_writer._class = "NXSConfigServer"
         self.new_device_info_writer.server = "NXSConfigServer/MCSTEST"
@@ -42,57 +41,56 @@ class ServerSetUp(object):
 
         self._psub = None
 
-
-
-    ## test starter
+    # test starter
     # \brief Common set up of Tango Server
     def setUp(self):
-        print "tearing down ..."
+        print("tearing down ...")
         db = PyTango.Database()
         db.add_device(self.new_device_info_writer)
-        db.add_server(self.new_device_info_writer.server, self.new_device_info_writer)
-        
+        db.add_server(
+            self.new_device_info_writer.server,
+            self.new_device_info_writer)
+
         if os.path.isfile("../NXSConfigServer"):
             self._psub = subprocess.call(
-                "cd ..; ./NXSConfigServer MCSTEST &",stdout =  None, 
-                stderr =  None,  shell= True)
+                "cd ..; ./NXSConfigServer MCSTEST &", stdout=None,
+                stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
-                "NXSConfigServer MCSTEST &",stdout =  None, 
-                stderr = None , shell= True)
-        print "waiting for server",
-        
+                "NXSConfigServer MCSTEST &", stdout=None,
+                stderr=None, shell=True)
+        sys.stdout.write("waiting for server.")
+
         found = False
         cnt = 0
         while not found and cnt < 1000:
             try:
-                print "\b.",
+                sys.stdout.write(".")
                 dp = PyTango.DeviceProxy(self.new_device_info_writer.name)
                 time.sleep(0.01)
                 if dp.state() == PyTango.DevState.ON:
                     found = True
-                found = True    
-            except:    
+                found = True
+            except:
                 found = False
-            cnt +=1
-        print ""
+            cnt += 1
+        print("")
 
-    ## test closer
+    # test closer
     # \brief Common tear down oif Tango Server
-    def tearDown(self): 
-        print "tearing down ..."
+    def tearDown(self):
+        print("tearing down ...")
         db = PyTango.Database()
         db.delete_server(self.new_device_info_writer.server)
-        
-        output = ""
+
         pipe = subprocess.Popen(
-            "ps -ef | grep 'NXSConfigServer MCSTEST'", stdout=subprocess.PIPE , shell= True).stdout
+            "ps -ef | grep 'NXSConfigServer MCSTEST'",
+            stdout=subprocess.PIPE, shell=True).stdout
 
         res = pipe.read().split("\n")
         for r in res:
             sr = r.split()
-            if len(sr)>2:
-                 subprocess.call("kill -9 %s" % sr[1],stderr=subprocess.PIPE , shell= True)
-
-        
-
+            if len(sr) > 2:
+                subprocess.call(
+                    "kill -9 %s" % sr[1],
+                    stderr=subprocess.PIPE, shell=True)

@@ -477,8 +477,10 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            # vl =
+            mystdout.getvalue()
+            # er =
+            mystderr.getvalue()
             avc3 = el.availableComponents()
             self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
@@ -537,8 +539,10 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            # vl =
+            mystdout.getvalue()
+            # er =
+            mystderr.getvalue()
             avc3 = el.availableDataSources()
             self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
@@ -587,7 +591,8 @@ For more help:
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
                 r, w = os.pipe()
-                sys.stdin = mystdin = StringIO()
+                # mystdin =
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -658,7 +663,8 @@ For more help:
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
                 r, w = os.pipe()
-                sys.stdin = mystdin = StringIO()
+                # mystdin =
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -1175,7 +1181,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -1465,9 +1472,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: Component '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
@@ -1509,9 +1517,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: Component '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
@@ -1608,9 +1617,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: DataSource '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
@@ -1652,9 +1662,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: DataSource '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         self.assertEqual(el.deleteDataSource(name), None)
         self.__ds.pop(-2)
@@ -1750,9 +1761,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: Component '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
@@ -1794,9 +1806,10 @@ For more help:
             er = mystderr.getvalue().strip()
 
             self.assertEqual(vl, "")
-            self.assertEqual(er,
+            self.assertEqual(
+                er,
                 "Error: Component '%s' not stored in the configuration server"
-                             % name3)
+                % name3)
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
@@ -1813,7 +1826,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -1827,8 +1841,8 @@ For more help:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
-        cmps = {name: xml, name2: xml2}
+        #        print avc
+        # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -1889,7 +1903,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -1904,7 +1919,7 @@ For more help:
         while name3 in avc:
             name3 = name3 + '_3'
 #        print avc
-        cmps = {name: xml, name2: xml2}
+        # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -1965,7 +1980,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -1979,8 +1995,8 @@ For more help:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
-        cmps = {name: xml, name2: xml2}
+        #        print avc
+        # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -2043,7 +2059,8 @@ For more help:
         el = self.openConf()
         avc = el.availableComponents()
         avds = el.availableDataSources()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -2125,7 +2142,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -2236,7 +2254,7 @@ For more help:
             name3 = name3 + '_3'
 #        print avc
         cmps = {name: xml, name2: xml2}
-        dss = {name: dsname, name2: dsname2}
+        # dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
@@ -2317,8 +2335,8 @@ For more help:
 
         xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>$components.%s\n</definition>" % dsname
         xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>$components.%s</definition>" % dsname2
-        dsxml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/><field name='test'/>\n</definition>"
-        dsxml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/><field name='test3'/></definition>"
+        # dsxml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/><field name='test'/>\n</definition>"
+        # dsxml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/><field name='test3'/></definition>"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -2398,7 +2416,8 @@ For more help:
 
         el = self.openConf()
         avc = el.availableComponents()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -2479,7 +2498,8 @@ For more help:
         el = self.openConf()
         avc = el.availableComponents()
         avds = el.availableDataSources()
-        man = el.mandatoryComponents()
+        # man =
+        el.mandatoryComponents()
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
@@ -2510,7 +2530,7 @@ For more help:
             name3 = name3 + '_3'
 #        print avc
         cmps = {name: xml, name2: xml2, name3: xml3}
-        dss = {name: dsname, name2: dsname2}
+        # dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
