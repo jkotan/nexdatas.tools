@@ -204,7 +204,7 @@ def main():
     da = NGroup(en, "data", "NXdata")
     # link
     ln = NLink(da, "polar_angle",
-              "/NXentry/NXinstrument/NXdetector/polar_angle")
+               "/NXentry/NXinstrument/NXdetector/polar_angle")
     ln.addDoc("Link to polar angle in /NXentry/NXinstrument/NXdetector")
     ln = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/data")
     ln.addDoc("Link to data in /NXentry/NXinstrument/NXdetector")
