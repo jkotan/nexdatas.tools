@@ -39,7 +39,7 @@ PYTANGO = False
 try:
     __import__("PyTango")
     PYTANGO = True
-except:
+except Exception:
     pass
 
 

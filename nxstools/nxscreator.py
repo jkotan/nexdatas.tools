@@ -38,7 +38,7 @@ PYTANGO = False
 try:
     import PyTango
     PYTANGO = True
-except:
+except Exception:
     pass
 
 
@@ -186,7 +186,7 @@ class Device(object):
                 try:
                     dp = PyTango.DeviceProxy(
                         str("%s/%s" % (mhost, self.sardananame)))
-                except:
+                except Exception:
                     dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
 
@@ -260,7 +260,7 @@ class Creator(object):
             proxy = openServer(server)
             proxy.Open()
             acps = proxy.availableComponents()
-        except:
+        except Exception:
             raise Exception("Cannot connect to %s" % server)
         cps = []
         for name in names:
@@ -285,7 +285,7 @@ class Creator(object):
             proxy = openServer(server)
             proxy.Open()
             adss = proxy.availableDataSources()
-        except:
+        except Exception:
             raise Exception("Cannot connect to %s" % server)
         dss = []
         for name in names:
@@ -541,7 +541,7 @@ class Creator(object):
                 if classname.lower() \
                    in self.xmlpackage.moduleMultiAttributes.keys():
                     return classname.lower()
-            except:
+            except Exception:
                 pass
             if device.module.lower() == 'module_tango' \
                and len(device.tdevice.split('/')) == 3 \
@@ -569,13 +569,13 @@ class ComponentCreator(Creator):
         if self.options.device.strip():
             try:
                 first = int(self.options.first)
-            except:
+            except Exception:
                 raise WrongParameterError(
                     "ComponentCreator Invalid --first parameter\n")
 
             try:
                 last = int(self.options.last)
-            except:
+            except Exception:
                 raise WrongParameterError(
                     "ComponentCreator Invalid --last parameter\n")
             aargs = generateDeviceNames(self.options.device, first, last,
@@ -645,13 +645,13 @@ class TangoDSCreator(Creator):
                 last = int(self.options.last)
                 try:
                     first = int(self.options.first)
-                except:
+                except Exception:
                     first = 1
                 dvargs = generateDeviceNames(
                     self.options.device, first, last)
                 dsargs = generateDeviceNames(
                     self.options.datasource, first, last)
-            except:
+            except Exception:
                 dvargs = [str(self.options.device)]
                 dsargs = [str(self.options.datasource)]
 
@@ -697,12 +697,12 @@ class ClientDSCreator(Creator):
         if self.options.device.strip():
             try:
                 first = int(self.options.first)
-            except:
+            except Exception:
                 raise WrongParameterError(
                     "ClientDSCreator: Invalid --first parameter\n")
             try:
                 last = int(self.options.last)
-            except:
+            except Exception:
                 raise WrongParameterError(
                     "ClientDSCreator: Invalid --last parameter\n")
 
@@ -903,7 +903,7 @@ class PoolDSCreator(Creator):
             plproxy = openServer(plname)
             chlist = plproxy.ExpChannelList
             motorlist = plproxy.MotorList
-        except:
+        except Exception:
             raise Exception("Cannot connect to %s" % plname)
         for ellist in [chlist, motorlist]:
             for els in ellist:
@@ -1041,7 +1041,7 @@ class OnlineDSCreator(Creator):
                     dv.tolower()
                 try:
                     dv.splitHostPort()
-                except:
+                except Exception:
                     if self._printouts:
                         print("ERROR %s: host for module %s of %s "
                               "type not defined"
@@ -1465,7 +1465,7 @@ class OnlineCPCreator(CPCreator):
                     dv.findDevice(tangohost)
                     try:
                         dv.splitHostPort()
-                    except:
+                    except Exception:
                         if self._printouts:
                             print("ERROR %s: host for module %s of %s "
                                   "type not defined"

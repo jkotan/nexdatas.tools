@@ -73,12 +73,12 @@ def main():
     #    NXdata
     da = NGroup(en, "data", "NXdata")
     # link
-    l = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/mca")
-    l.addDoc("Link to mca in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "counter1", "/NXentry/NXinstrument/NXdetector/counter1")
-    l.addDoc("Link to counter1 in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "counter2", "/NXentry/NXinstrument/NXdetector/counter2")
-    l.addDoc("Link to counter2 in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/mca")
+    ln.addDoc("Link to mca in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "counter1", "/NXentry/NXinstrument/NXdetector/counter1")
+    ln.addDoc("Link to counter1 in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "counter2", "/NXentry/NXinstrument/NXdetector/counter2")
+    ln.addDoc("Link to counter2 in /NXentry/NXinstrument/NXdetector")
 
     df.dump()
 

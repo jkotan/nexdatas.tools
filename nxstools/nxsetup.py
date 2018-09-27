@@ -167,7 +167,7 @@ class SetUp(object):
         try:
             #: (:class:`PyTango.Database`) tango database server
             self.db = PyTango.Database()
-        except:
+        except Exception:
             print("Can't connect to tango database on %s" %
                   os.getenv('TANGO_HOST'))
             sys.exit(255)
@@ -316,7 +316,7 @@ class SetUp(object):
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
-                except:
+                except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
                         and servers.value:
@@ -347,7 +347,7 @@ class SetUp(object):
                                         sys.stdout.flush()
                                         adminproxy.DevStart(svl)
                                         problems = False
-                                    except:
+                                    except Exception:
                                         counter += 1
                                         time.sleep(0.2)
                                 counter = 0
@@ -361,7 +361,7 @@ class SetUp(object):
                                             problems = False
                                         else:
                                             time.sleep(0.2)
-                                    except:
+                                    except Exception:
                                         time.sleep(0.2)
                                     finally:
                                         counter += 1
@@ -392,7 +392,7 @@ class SetUp(object):
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
-                except:
+                except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
                         and servers.value:
@@ -418,7 +418,7 @@ class SetUp(object):
                                             problems = False
                                         else:
                                             time.sleep(0.2)
-                                    except:
+                                    except Exception:
                                         time.sleep(0.2)
                                     finally:
                                         counter += 1
@@ -503,7 +503,7 @@ class SetUp(object):
                 dp.ping()
                 found = True
                 print(" %s is working" % device)
-            except:
+            except Exception:
                 found = False
             cnt += 1
         return found
@@ -616,20 +616,20 @@ class SetUp(object):
             dp.JSONSettings = jsonsettings
         try:
             dp.Open()
-        except:
+        except Exception:
             try:
                 jsettings = json.loads(jsonsettings)
                 jsettings['read_default_file'] = \
                     '/var/lib/nxsconfigserver/.my.cnf'
                 dp.JSONSettings = str(json.dumps(jsettings))
                 dp.Open()
-            except:
+            except Exception:
                 try:
                     jsettings['read_default_file'] = \
                         '/var/lib/nxsconfigserver/.my.cnf'
                     dp.JSONSettings = str(json.dumps(jsettings))
                     dp.Open()
-                except:
+                except Exception:
                     print("createConfigServer: "
                           "%s cannot connect the"
                           " database with JSONSettings: \n%s " % (

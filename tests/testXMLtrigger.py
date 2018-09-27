@@ -203,11 +203,11 @@ def main():
     #  NXdata
     da = NGroup(en, "data", "NXdata")
     # link
-    l = NLink(da, "polar_angle",
+    ln = NLink(da, "polar_angle",
               "/NXentry/NXinstrument/NXdetector/polar_angle")
-    l.addDoc("Link to polar angle in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/data")
-    l.addDoc("Link to data in /NXentry/NXinstrument/NXdetector")
+    ln.addDoc("Link to polar angle in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/data")
+    ln.addDoc("Link to data in /NXentry/NXinstrument/NXdetector")
 
     df.dump()
 

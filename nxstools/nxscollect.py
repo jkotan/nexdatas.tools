@@ -47,12 +47,12 @@ WRITERS = {}
 try:
     from . import pniwriter
     WRITERS["pni"] = pniwriter
-except:
+except Exception:
     pass
 try:
     from . import h5pywriter
     WRITERS["h5py"] = h5pywriter
-except:
+except Exception:
     pass
 
 
@@ -481,7 +481,7 @@ class Collector(object):
             try:
                 self.__fullfilename = root.attributes['file_name'][...]
                 # print self.__fullfilename
-            except:
+            except Exception:
                 pass
             self._inspect(root)
             self.__nxsfile.close()

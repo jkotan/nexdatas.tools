@@ -34,7 +34,7 @@ except ImportError as e:
 try:
     try:
         __import__("pni.io.nx.h5")
-    except:
+    except Exception:
         __import__("pni.nx.h5")
     # if module pni avalable
     PNI_AVAILABLE = True
@@ -104,7 +104,7 @@ except Exception as e1:
         print("MYSQL not available: %s %s" % (e1, e2))
     except Exception as e2:
         print("MYSQL not available: %s %s" % (e1, e2))
-    except:
+    except Exception:
         print("MYSQL not available")
 
 
@@ -121,7 +121,7 @@ except ImportError as e:
     print("PGSQL not available: %s" % e)
 except Exception as e:
     print("PGSQL not available: %s" % e)
-except:
+except Exception:
     print("PGSQL not available")
 
 
@@ -148,7 +148,7 @@ except ImportError as e:
     print("ORACLE not available: %s" % e)
 except Exception as e:
     print("ORACLE not available: %s" % e)
-except:
+except Exception:
     print("ORACLE not available")
 
 db = PyTango.Database()
