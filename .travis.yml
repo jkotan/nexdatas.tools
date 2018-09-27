@@ -28,7 +28,7 @@ before_script:
   - if [ $TEST == "testsuit" ]; then .travis/install.sh ${OS_TYPE}; fi
 
 script:
-  - if [ $TEST == "testsuit" ]; then .travis/run.sh ${PYTHON}; fi
+  - if [ $TEST == "testsuit" ]; then .travis/run.sh; fi
   - if [ $TEST == "flake8" ]; then flake8; fi
 
 
