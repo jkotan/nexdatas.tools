@@ -5,18 +5,18 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxsconfig &mdash; NXSTools 2.45.0 documentation</title>
+    <title>nxsconfig &#8212; NXSTools 2.59.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.45.0',
+        VERSION:     '2.59.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,9 +27,11 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.45.0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="NXSTools 2.59.2 documentation" href="index.html" />
     <link rel="next" title="nxscreate" href="nxscreate.html" />
     <link rel="prev" title="nxcollect" href="nxscollect.html" />
 <meta charset='utf-8'>
@@ -38,7 +40,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -51,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.59</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -73,7 +75,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxscollect.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">nxsconfig</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">nxsconfig</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
@@ -209,7 +211,7 @@ perform the process of component merging.</p>
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig &lt;command&gt; [-s &lt;config_server&gt;]  [-d] [-m] [-n] [&lt;name1&gt;] [&lt;name2&gt;] [&lt;name3&gt;] ...
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxsconfig</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">config_server</span><span class="o">&gt;</span><span class="p">]</span>  <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name1</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name2</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name3</span><span class="o">&gt;</span><span class="p">]</span> <span class="o">...</span>
 </pre></div>
 </div>
 <dl class="docutils">
@@ -219,7 +221,7 @@ perform the process of component merging.</p>
 <dd>list names of available components</dd>
 <dt>list -d [-s &lt;config_server&gt;]</dt>
 <dd>list names of available datasources</dd>
-<dt>show [-s &lt;config_server&gt;] [-m] component_name1 component_name2 ...</dt>
+<dt>show [-s &lt;config_server&gt;] component_name1 component_name2 ...</dt>
 <dd>show components with given names</dd>
 <dt>show -d [-s &lt;config_server&gt;] dsource_name1 dsource_name2 ...</dt>
 <dd>show datasources with given names</dd>
@@ -290,9 +292,9 @@ perform the process of component merging.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxsconfig list -s p02/xmlconfigserver/exp.01 -d
-nxsconfig info
-nxsconfig geometry
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxsconfig</span> <span class="nb">list</span> <span class="o">-</span><span class="n">s</span> <span class="n">p02</span><span class="o">/</span><span class="n">xmlconfigserver</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span><span class="mi">01</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">nxsconfig</span> <span class="n">info</span>
+<span class="n">nxsconfig</span> <span class="n">geometry</span>
 </pre></div>
 </div>
 </div>
@@ -310,10 +312,10 @@ nxsconfig geometry
       
     </p>
     <p>
-        &copy; Copyright 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+        &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.<br/>
     </p>
   </div>
 </footer>

@@ -5,18 +5,18 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsxml &mdash; NXSTools 2.45.0 documentation</title>
+    <title>nxstools.nxsxml &#8212; NXSTools 2.59.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.45.0',
+        VERSION:     '2.59.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,9 +27,11 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.45.0 documentation" href="../../index.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="NXSTools 2.59.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -37,7 +39,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -50,7 +52,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.59</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -181,31 +183,31 @@
     <div class="col-md-12 content">
       
   <h1>Source code for nxstools.nxsxml</h1><div class="highlight"><pre>
-<span class="c">#!/usr/bin/env python</span>
-<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
-<span class="c">#</span>
-<span class="c">#    Copyright (C) 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
-<span class="c">#</span>
-<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
-<span class="c">#    it under the terms of the GNU General Public License as published by</span>
-<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c">#    (at your option) any later version.</span>
-<span class="c">#</span>
-<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
-<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c">#    GNU General Public License for more details.</span>
-<span class="c">#</span>
-<span class="c">#    You should have received a copy of the GNU General Public License</span>
-<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-<span class="c">#</span>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c1">#</span>
+<span class="c1">#    Copyright (C) 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c1">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c1">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">#    (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c1">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#    GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#    You should have received a copy of the GNU General Public License</span>
+<span class="c1">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
 
 <span class="sd">&quot;&quot;&quot;  Creator of XML configuration files &quot;&quot;&quot;</span>
 
 
 <span class="kn">import</span> <span class="nn">PyTango</span>
 
-<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="k">import</span> <span class="n">Document</span>
 
 
 <div class="viewcode-block" id="NTag"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NTag">[docs]</a><span class="k">class</span> <span class="nc">NTag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -213,9 +215,9 @@
     <span class="sd">&quot;&quot;&quot; tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c">#</span>
+    <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -228,16 +230,16 @@
 <span class="sd">        :type typeAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c">#: (:class:`xml.dom.minidom.Node`) XML minidom root</span>
+        <span class="c1">#: (:class:`xml.dom.minidom.Node`) XML minidom root</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">root</span>
-        <span class="c">#: (:class:`xml.dom.minidom.Element`) tag element from minidom</span>
+        <span class="c1">#: (:class:`xml.dom.minidom.Element`) tag element from minidom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">createElement</span><span class="p">(</span><span class="n">tagName</span><span class="p">)</span>
         <span class="n">parent</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">nameAttr</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">typeAttr</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nameAttr</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">typeAttr</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
 
 <div class="viewcode-block" id="NTag.addTagAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NTag.addTagAttr">[docs]</a>    <span class="k">def</span> <span class="nf">addTagAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; adds tag attribute</span>
@@ -247,8 +249,8 @@
 <span class="sd">        :param value: attribute value</span>
 <span class="sd">        :type value: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NTag.setText"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NTag.setText">[docs]</a>    <span class="k">def</span> <span class="nf">setText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets tag content</span>
 
@@ -256,8 +258,8 @@
 <span class="sd">        :type text: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ptext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">createTextNode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ptext</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ptext</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NTag.addText"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NTag.addText">[docs]</a>    <span class="k">def</span> <span class="nf">addText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; adds tag content</span>
 
@@ -265,15 +267,15 @@
 <span class="sd">        :type text: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ptext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">createTextNode</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ptext</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ptext</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NAttr">[docs]</a><span class="k">class</span> <span class="nc">NAttr</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Attribute tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -283,9 +285,9 @@
 <span class="sd">        :param typeAttr: type attribute</span>
 <span class="sd">        :type typeAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
 
-<div class="viewcode-block" id="NAttr.setStrategy"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NAttr.setStrategy">[docs]</a>    <span class="k">def</span> <span class="nf">setStrategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;STEP&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NAttr.setStrategy"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NAttr.setStrategy">[docs]</a>    <span class="k">def</span> <span class="nf">setStrategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;STEP&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets the attribute strategy</span>
 
 <span class="sd">        :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
@@ -295,23 +297,27 @@
 <span class="sd">        :type trigger: :obj:`str`</span>
 <span class="sd">        :param value: label for postrun mode</span>
 <span class="sd">        :type value: :obj:`str`</span>
+<span class="sd">        :param canfail: can fail strategy flag</span>
+<span class="sd">        :type canfail: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c">#: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
-        <span class="n">strategy</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;strategy&quot;</span><span class="p">)</span>
+        <span class="c1">#: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">strategy</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">trigger</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;trigger&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;trigger&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">canfail</span><span class="p">:</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;canfail&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NGroup"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NGroup">[docs]</a><span class="k">class</span> <span class="nc">NGroup</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Group tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -321,11 +327,11 @@
 <span class="sd">        :param typeAttr: type attribute</span>
 <span class="sd">        :type typeAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
-        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt; ) list of doc tag contents</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
+        <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt; ) list of doc tag contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c">#: (:obj:`dict` &lt;:obj:`str` , :obj:`str`&gt; )</span>
-        <span class="c">#:    container with attribute tag wrappers</span>
+        <span class="c1">#: (:obj:`dict` &lt;:obj:`str` , :obj:`str`&gt; )</span>
+        <span class="c1">#:    container with attribute tag wrappers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gAttr</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="NGroup.addDoc"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NGroup.addDoc">[docs]</a>    <span class="k">def</span> <span class="nf">addDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
@@ -334,10 +340,10 @@
 <span class="sd">        :param doc: doc tag content</span>
 <span class="sd">        :type doc: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;doc&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="NGroup.addAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NGroup.addAttr">[docs]</a>    <span class="k">def</span> <span class="nf">addAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NGroup.addAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NGroup.addAttr">[docs]</a>    <span class="k">def</span> <span class="nf">addAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;adds attribute: tag</span>
 
 <span class="sd">        :param attrName: name attribute</span>
@@ -347,14 +353,14 @@
 <span class="sd">        :param attrValue: content of the attribute tag</span>
 <span class="sd">        :type attrValue: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">print</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span><span class="p">))</span>
         <span class="n">at</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gAttr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span>
-        <span class="k">if</span> <span class="n">attrValue</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">attrValue</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="n">at</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">attrValue</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gAttr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gAttr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NLink"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NLink">[docs]</a><span class="k">class</span> <span class="nc">NLink</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Link tag wrapper</span>
@@ -370,9 +376,9 @@
 <span class="sd">        :param gTarget: target attribute</span>
 <span class="sd">        :type gTarget: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;link&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;target&quot;</span><span class="p">,</span> <span class="n">gTarget</span><span class="p">)</span>
-        <span class="c">#: list of doc tag contents</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="n">gTarget</span><span class="p">)</span>
+        <span class="c1">#: list of doc tag contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="NLink.addDoc"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NLink.addDoc">[docs]</a>    <span class="k">def</span> <span class="nf">addDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
@@ -381,10 +387,10 @@
 <span class="sd">        :param doc: doc tag content</span>
 <span class="sd">        :type doc: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;doc&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NDimensions"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDimensions">[docs]</a><span class="k">class</span> <span class="nc">NDimensions</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Dimensions tag wrapper</span>
@@ -398,10 +404,10 @@
 <span class="sd">        :param rankAttr: rank attribute</span>
 <span class="sd">        :type rankAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;dimensions&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;rank&quot;</span><span class="p">,</span> <span class="n">rankAttr</span><span class="p">)</span>
-        <span class="c">#: (:obj:`dict` &lt;:obj:`str`, :class:`NDim`&gt;)</span>
-        <span class="c">#:    container with dim tag wrapper</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;dimensions&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="n">rankAttr</span><span class="p">)</span>
+        <span class="c1">#: (:obj:`dict` &lt;:obj:`str`, :class:`NDim`&gt;)</span>
+        <span class="c1">#:    container with dim tag wrapper</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="NDimensions.dim"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDimensions.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">):</span>
@@ -412,9 +418,9 @@
 <span class="sd">        :param valueAttr: value attribute</span>
 <span class="sd">        :type valueAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">indexAttr</span><span class="p">]</span> <span class="o">=</span> <span class="n">NDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="n">indexAttr</span><span class="p">]</span> <span class="o">=</span> <span class="n">NDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NDim"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDim">[docs]</a><span class="k">class</span> <span class="nc">NDim</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Dim tag wrapper</span>
@@ -430,17 +436,17 @@
 <span class="sd">        :param valueAttr: value attribute</span>
 <span class="sd">        :type valueAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;dim&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;index&quot;</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">)</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="NField"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField">[docs]</a><span class="k">class</span> <span class="nc">NField</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Field tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -450,17 +456,17 @@
 <span class="sd">        :param typeAttr: type attribute</span>
 <span class="sd">        :type typeAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;field&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
 
-        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt; ) list of doc tag contents</span>
+        <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt; ) list of doc tag contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c">#: (:obj:`dict` &lt;:obj:`str` , :obj:`str`&gt; )</span>
-        <span class="c">#:    container with attribute tag wrappers</span>
+        <span class="c1">#: (:obj:`dict` &lt;:obj:`str` , :obj:`str`&gt; )</span>
+        <span class="c1">#:    container with attribute tag wrappers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="NField.setStrategy"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.setStrategy">[docs]</a>    <span class="k">def</span> <span class="nf">setStrategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;STEP&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                    <span class="n">grows</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                    <span class="n">shuffle</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NField.setStrategy"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.setStrategy">[docs]</a>    <span class="k">def</span> <span class="nf">setStrategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;STEP&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">grows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">shuffle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets the field strategy</span>
 
 <span class="sd">        :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
@@ -478,44 +484,48 @@
 <span class="sd">        :type rate: :obj:`str`</span>
 <span class="sd">        :param shuffle: flag if compression shuffle</span>
 <span class="sd">        :type shuffle: :obj:`str`</span>
+<span class="sd">        :param canfail: can fail strategy flag</span>
+<span class="sd">        :type canfail: :obj:`bool`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c">#: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
-        <span class="n">strategy</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;strategy&quot;</span><span class="p">)</span>
+        <span class="c1">#: strategy of data writing, i.e. INIT, STEP, FINAL, POSTRUN</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">strategy</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">grows</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;grows&quot;</span><span class="p">,</span> <span class="n">grows</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;grows&quot;</span><span class="p">,</span> <span class="n">grows</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">trigger</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;trigger&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="p">)</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;trigger&quot;</span><span class="p">,</span> <span class="n">trigger</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
             <span class="n">strategy</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">canfail</span><span class="p">:</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;canfail&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">compression</span><span class="p">:</span>
-            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;compression&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;rate&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">shuffle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;rate&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">shuffle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">strategy</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span>
-                    <span class="s">&quot;shuffle&quot;</span><span class="p">,</span>
-                    <span class="s">&quot;true&quot;</span> <span class="k">if</span> <span class="n">shuffle</span> <span class="k">else</span> <span class="s">&quot;false&quot;</span><span class="p">)</span>
-</div>
+                    <span class="s2">&quot;shuffle&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">shuffle</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NField.setUnits"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.setUnits">[docs]</a>    <span class="k">def</span> <span class="nf">setUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unitsAttr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets the field unit</span>
 
 <span class="sd">        :param unitsAttr: the field unit</span>
 <span class="sd">        :type unitsAttr: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;units&quot;</span><span class="p">,</span> <span class="n">unitsAttr</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="n">unitsAttr</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NField.addDoc"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.addDoc">[docs]</a>    <span class="k">def</span> <span class="nf">addDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; adds doc tag content</span>
 
 <span class="sd">        :param doc: doc tag content</span>
 <span class="sd">        :type doc: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;doc&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="NField.addAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.addAttr">[docs]</a>    <span class="k">def</span> <span class="nf">addAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NField.addAttr"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NField.addAttr">[docs]</a>    <span class="k">def</span> <span class="nf">addAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">,</span> <span class="n">attrValue</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; adds attribute tag</span>
 
 <span class="sd">        :param attrName: name attribute</span>
@@ -526,11 +536,11 @@
 <span class="sd">        :type attrValue: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span> <span class="o">=</span> <span class="n">NAttr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrName</span><span class="p">,</span> <span class="n">attrType</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">attrValue</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">attrValue</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">attrValue</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attr</span><span class="p">[</span><span class="n">attrName</span><span class="p">]</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NDSource"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource">[docs]</a><span class="k">class</span> <span class="nc">NDSource</span><span class="p">(</span><span class="n">NTag</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Source tag wrapper</span>
@@ -542,14 +552,14 @@
 <span class="sd">        :param parent: parent tag element</span>
 <span class="sd">        :type parent: :class:`NTag`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NTag</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s">&quot;datasource&quot;</span><span class="p">)</span>
+        <span class="n">NTag</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;datasource&quot;</span><span class="p">)</span>
 
-        <span class="c">#: list of doc tag contents</span>
+        <span class="c1">#: list of doc tag contents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="NDSource.initDBase"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.initDBase">[docs]</a>    <span class="k">def</span> <span class="nf">initDBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dbtype</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">dbname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">mycnf</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">passwd</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dsn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NDSource.initDBase"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.initDBase">[docs]</a>    <span class="k">def</span> <span class="nf">initDBase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dbtype</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">dbname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">mycnf</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">passwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dsn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets parameters of DataBase</span>
 
 <span class="sd">        :param name: name of datasource</span>
@@ -577,35 +587,35 @@
 <span class="sd">        :param port: port number</span>
 <span class="sd">        :type port: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;DB&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;database&quot;</span><span class="p">)</span>
-        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;dbtype&quot;</span><span class="p">,</span> <span class="n">dbtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;DB&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">)</span>
+        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;dbtype&quot;</span><span class="p">,</span> <span class="n">dbtype</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">host</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">port</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;port&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dbname</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">dbname</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">dbname</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">passwd</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;passwd&quot;</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;passwd&quot;</span><span class="p">,</span> <span class="n">passwd</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mycnf</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;mycnf&quot;</span><span class="p">,</span> <span class="n">mycnf</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;mycnf&quot;</span><span class="p">,</span> <span class="n">mycnf</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mode</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;mode&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dsn</span><span class="p">:</span>
             <span class="n">da</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">dsn</span><span class="p">)</span>
 
-        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;query&quot;</span><span class="p">)</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rank</span><span class="p">:</span>
-            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;format&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
-        <span class="n">da</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="NDSource.initTango"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.initTango">[docs]</a>    <span class="k">def</span> <span class="nf">initTango</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">memberType</span><span class="p">,</span> <span class="n">recordName</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="n">rank</span><span class="p">)</span>
+        <span class="n">da</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NDSource.initTango"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.initTango">[docs]</a>    <span class="k">def</span> <span class="nf">initTango</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">memberType</span><span class="p">,</span> <span class="n">recordName</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets paramters for Tango device</span>
 
 <span class="sd">        :param name: name of datasource</span>
@@ -624,25 +634,25 @@
 <span class="sd">        :param encoding: encoding of DevEncoded data</span>
 <span class="sd">        :type encoding: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;TANGO&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">dv</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;device&quot;</span><span class="p">)</span>
-        <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;TANGO&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">dv</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">)</span>
+        <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">memberType</span><span class="p">:</span>
-            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;member&quot;</span><span class="p">,</span> <span class="n">memberType</span><span class="p">)</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;member&quot;</span><span class="p">,</span> <span class="n">memberType</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">host</span><span class="p">:</span>
-            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;hostname&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">port</span><span class="p">:</span>
-            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;port&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
-            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;encoding&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
-            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
+            <span class="n">dv</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
 
-        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;record&quot;</span><span class="p">)</span>
-        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">recordName</span><span class="p">)</span>
-</div>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;record&quot;</span><span class="p">)</span>
+        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">recordName</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NDSource.initClient"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.initClient">[docs]</a>    <span class="k">def</span> <span class="nf">initClient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">recordName</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; sets paramters for Client data</span>
 
@@ -651,90 +661,90 @@
 <span class="sd">        :param recordName: name of the data object</span>
 <span class="sd">        :type recordName: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;CLIENT&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;record&quot;</span><span class="p">)</span>
-        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">recordName</span><span class="p">)</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;CLIENT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">da</span> <span class="o">=</span> <span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;record&quot;</span><span class="p">)</span>
+        <span class="n">da</span><span class="o">.</span><span class="n">addTagAttr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">recordName</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NDSource.addDoc"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDSource.addDoc">[docs]</a>    <span class="k">def</span> <span class="nf">addDoc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; adds doc tag content</span>
 
 <span class="sd">        :param doc: doc tag content</span>
 <span class="sd">        :type doc: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;doc&quot;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NTag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">addText</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="NDeviceGroup"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.NDeviceGroup">[docs]</a><span class="k">class</span> <span class="nc">NDeviceGroup</span><span class="p">(</span><span class="n">NGroup</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Tango device tag creator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c">#: (:obj:`list` &lt; :obj:`str`&gt;) Tango types</span>
-    <span class="n">tTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;DevVoid&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevBoolean&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevShort&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevLong&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevFloat&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevDouble&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevUShort&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevULong&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevString&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarCharArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarShortArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarLongArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarFloatArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarDoubleArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarUShortArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarULongArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarStringArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarLongStringArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarDoubleStringArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevState&quot;</span><span class="p">,</span>
-              <span class="s">&quot;ConstDevString&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarBooleanArray&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevUChar&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevLong64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevULong64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarLong64Array&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevVarULong64Array&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevInt&quot;</span><span class="p">,</span>
-              <span class="s">&quot;DevEncoded&quot;</span><span class="p">]</span>
+    <span class="c1">#: (:obj:`list` &lt; :obj:`str`&gt;) Tango types</span>
+    <span class="n">tTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;DevVoid&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevBoolean&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevShort&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevLong&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevFloat&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevDouble&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevUShort&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevULong&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevString&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarCharArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarShortArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarLongArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarFloatArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarDoubleArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarUShortArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarULongArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarStringArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarLongStringArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarDoubleStringArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevState&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;ConstDevString&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarBooleanArray&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevUChar&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevLong64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevULong64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarLong64Array&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevVarULong64Array&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevInt&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;DevEncoded&quot;</span><span class="p">]</span>
 
-    <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt;) NeXuS types corresponding to the Tango types</span>
-    <span class="n">nTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_BOOLEAN&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_FLOAT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_FLOAT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_FLOAT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_FLOAT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_BOOLEAN&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_UINT64&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_INT32&quot;</span><span class="p">,</span>
-              <span class="s">&quot;NX_CHAR&quot;</span><span class="p">]</span>
+    <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;) NeXuS types corresponding to the Tango types</span>
+    <span class="n">nTypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_BOOLEAN&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_FLOAT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_FLOAT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_FLOAT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_FLOAT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_BOOLEAN&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_UINT64&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">deviceName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span>
-                 <span class="n">commands</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blackAttrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">deviceName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                 <span class="n">commands</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blackAttrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -750,14 +760,14 @@
 <span class="sd">        :param blackAttrs: list of excluded attributes</span>
 <span class="sd">        :type blackAttrs: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">NGroup</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
-        <span class="c">#: (:class:`PyTango.DeviceProxy`) device proxy</span>
+        <span class="n">NGroup</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
+        <span class="c1">#: (:class:`PyTango.DeviceProxy`) device proxy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">deviceName</span><span class="p">)</span>
-        <span class="c">#: (:obj:`dict` &lt;:obj:`str`, :class:`NTag`&gt;) fields of the device</span>
+        <span class="c1">#: (:obj:`dict` &lt;:obj:`str`, :class:`NTag`&gt;) fields of the device</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c">#: (:obj:`list` &lt;:obj:`str`&gt;) blacklist for Attributes</span>
+        <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;) blacklist for Attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_blackAttrs</span> <span class="o">=</span> <span class="n">blackAttrs</span> <span class="k">if</span> <span class="n">blackAttrs</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="c">#: (:obj:`str`) the device name</span>
+        <span class="c1">#: (:obj:`str`) the device name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span> <span class="o">=</span> <span class="n">deviceName</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fetchProperties</span><span class="p">()</span>
@@ -770,18 +780,18 @@
 
 <span class="sd">        :brief: It collects the device properties</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">get_property_list</span><span class="p">(</span><span class="s">&#39;*&#39;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;PROPERIES </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">get_property_list</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PROPERIES </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">prop</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">prop</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span><span class="n">pr</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
                          <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">pr</span><span class="p">)[</span><span class="n">pr</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
             <span class="k">if</span> <span class="n">pr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">pr</span><span class="p">]</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="s">&quot;NX_CHAR&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">pr</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">pr</span><span class="p">]</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">pr</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;STEP&quot;</span><span class="p">)</span>
                 <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">pr</span><span class="p">])</span>
                 <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="s">&quot;property&quot;</span><span class="p">,</span>
-                    <span class="n">pr</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="s2">&quot;property&quot;</span><span class="p">,</span>
+                    <span class="n">pr</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_fetchAttributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; fetches Attributes</span>
@@ -789,52 +799,52 @@
 <span class="sd">        :brief: collects the device attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c">#: device attirbutes</span>
+        <span class="c1">#: device attirbutes</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">get_attribute_list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
 
-            <span class="k">print</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
             <span class="n">cf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">attribute_query</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
-            <span class="k">print</span> <span class="s">&quot;QUERY&quot;</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">standard_unit</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">display_unit</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tTypes</span><span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">])</span>
-            <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nTypes</span><span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">])</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;QUERY&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">standard_unit</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">display_unit</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tTypes</span><span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nTypes</span><span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">at</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="ow">and</span> <span class="n">at</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blackAttrs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nTypes</span><span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">data_type</span><span class="p">])</span>
-                <span class="n">encoding</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;SPECTRUM&quot;</span><span class="p">:</span>
+                <span class="n">encoding</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;SPECTRUM&quot;</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">read_attribute</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
-                    <span class="n">d</span> <span class="o">=</span> <span class="n">NDimensions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">],</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
-                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_x</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;DevEncoded&#39;</span><span class="p">:</span>
-                        <span class="n">encoding</span> <span class="o">=</span> <span class="s">&#39;VDEO&#39;</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;IMAGE&quot;</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">NDimensions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">],</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_x</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;DevEncoded&#39;</span><span class="p">:</span>
+                        <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;VDEO&#39;</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">data_format</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;IMAGE&quot;</span><span class="p">:</span>
                     <span class="n">da</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">read_attribute</span><span class="p">(</span><span class="n">at</span><span class="p">)</span>
-                    <span class="n">d</span> <span class="o">=</span> <span class="n">NDimensions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">],</span> <span class="s">&quot;2&quot;</span><span class="p">)</span>
-                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_x</span><span class="p">))</span>
-                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s">&quot;2&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_y</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;DevEncoded&#39;</span><span class="p">:</span>
-                        <span class="n">encoding</span> <span class="o">=</span> <span class="s">&#39;VDEO&#39;</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">NDimensions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">],</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_x</span><span class="p">))</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">dim_y</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">da</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;DevEncoded&#39;</span><span class="p">:</span>
+                        <span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;VDEO&#39;</span>
 
-                <span class="k">if</span> <span class="n">cf</span><span class="o">.</span><span class="n">unit</span> <span class="o">!=</span> <span class="s">&#39;No unit&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cf</span><span class="o">.</span><span class="n">unit</span> <span class="o">!=</span> <span class="s1">&#39;No unit&#39;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">cf</span><span class="o">.</span><span class="n">description</span> <span class="o">!=</span> <span class="s">&#39;No description&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cf</span><span class="o">.</span><span class="n">description</span> <span class="o">!=</span> <span class="s1">&#39;No description&#39;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">addDoc</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span><span class="s">&#39;URL&#39;</span><span class="p">,</span> <span class="s">&quot;NX_CHAR&quot;</span><span class="p">,</span> <span class="s">&quot;tango://&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span><span class="s1">&#39;URL&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span> <span class="s2">&quot;tango://&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;STEP&quot;</span><span class="p">)</span>
                 <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">at</span><span class="p">])</span>
-                <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="s">&quot;attribute&quot;</span><span class="p">,</span>
-                             <span class="n">at</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">,</span>
+                <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span>
+                             <span class="n">at</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">,</span>
                              <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_fetchCommands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -842,26 +852,26 @@
 
 <span class="sd">        :brief: It collects results of the device commands</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c">#: list of the device commands</span>
+        <span class="c1">#: list of the device commands</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span><span class="o">.</span><span class="n">command_list_query</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;COMMANDS </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;COMMANDS </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">cmd</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">in_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;DevVoid&quot;</span> \
-                    <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;DevVoid&quot;</span> \
-                    <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tTypes</span> \
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">in_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;DevVoid&quot;</span> \
+                    <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;DevVoid&quot;</span> \
+                    <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tTypes</span> \
                     <span class="ow">and</span> <span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">]</span> <span class="o">=</span> \
                     <span class="n">NField</span><span class="p">(</span>
                         <span class="bp">self</span><span class="p">,</span> <span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nTypes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tTypes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s">&quot;STEP&quot;</span><span class="p">)</span>
+                            <span class="nb">str</span><span class="p">(</span><span class="n">cd</span><span class="o">.</span><span class="n">out_type</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">]</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;STEP&quot;</span><span class="p">)</span>
                 <span class="n">sr</span> <span class="o">=</span> <span class="n">NDSource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">])</span>
                 <span class="n">sr</span><span class="o">.</span><span class="n">initTango</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deviceName</span><span class="p">,</span>
-                             <span class="s">&quot;command&quot;</span><span class="p">,</span> <span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">,</span>
-                             <span class="n">host</span><span class="o">=</span><span class="s">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s">&quot;10000&quot;</span><span class="p">)</span>
+                             <span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="n">cd</span><span class="o">.</span><span class="n">cmd_name</span><span class="p">,</span>
+                             <span class="n">host</span><span class="o">=</span><span class="s2">&quot;haso228k.desy.de&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s2">&quot;10000&quot;</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="XMLFile"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.XMLFile">[docs]</a><span class="k">class</span> <span class="nc">XMLFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; XML file object</span>
@@ -873,53 +883,53 @@
 <span class="sd">        :param fname: XML file name</span>
 <span class="sd">        :type fname: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c">#: (:obj:`str`) XML file name</span>
+        <span class="c1">#: (:obj:`str`) XML file name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fname</span> <span class="o">=</span> <span class="n">fname</span>
-        <span class="c">#: (:class:`xml.dom.minidom.Document`) XML root instance</span>
+        <span class="c1">#: (:class:`xml.dom.minidom.Document`) XML root instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Document</span><span class="p">()</span>
-        <span class="c">#: (:class:`xml.dom.minidom.Element`) XML definition element</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">createElement</span><span class="p">(</span><span class="s">&quot;definition&quot;</span><span class="p">)</span>
+        <span class="c1">#: (:class:`xml.dom.minidom.Element`) XML definition element</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">createElement</span><span class="p">(</span><span class="s2">&quot;definition&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">appendChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="p">)</span>
 
-<div class="viewcode-block" id="XMLFile.prettyPrint"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.XMLFile.prettyPrint">[docs]</a>    <span class="k">def</span> <span class="nf">prettyPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etNode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="XMLFile.prettyPrint"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.XMLFile.prettyPrint">[docs]</a>    <span class="k">def</span> <span class="nf">prettyPrint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">etNode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;prints pretty XML making use of minidom</span>
 
 <span class="sd">        :param etNode: node</span>
 <span class="sd">        :type etNode: :class:`xml.dom.minidom`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">etNode</span> <span class="k">if</span> <span class="n">etNode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span>
-        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">toprettyxml</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="s">&quot;  &quot;</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">toprettyxml</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="XMLFile.dump"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.XMLFile.dump">[docs]</a>    <span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; dumps XML structure into the XML file</span>
 
 <span class="sd">        :brief: It opens XML file, calls prettyPrint and closes the XML file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
         <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">))</span>
-        <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; the main function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c">#: handler to XML file</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s">&quot;test.xml&quot;</span><span class="p">)</span>
-    <span class="c">#: entry</span>
-    <span class="n">en</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s">&quot;entry1&quot;</span><span class="p">,</span> <span class="s">&quot;NXentry&quot;</span><span class="p">)</span>
-    <span class="c">#: instrument</span>
-    <span class="n">ins</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="s">&quot;instrument&quot;</span><span class="p">,</span> <span class="s">&quot;NXinstrument&quot;</span><span class="p">)</span>
-    <span class="c">#:    NXsource</span>
-    <span class="n">src</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="s">&quot;source&quot;</span><span class="p">,</span> <span class="s">&quot;NXsource&quot;</span><span class="p">)</span>
-    <span class="c">#: field</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s">&quot;distance&quot;</span><span class="p">,</span> <span class="s">&quot;NX_FLOAT&quot;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="s">&quot;m&quot;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;100.&quot;</span><span class="p">)</span>
+    <span class="c1">#: handler to XML file</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s2">&quot;test.xml&quot;</span><span class="p">)</span>
+    <span class="c1">#: entry</span>
+    <span class="n">en</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;entry1&quot;</span><span class="p">,</span> <span class="s2">&quot;NXentry&quot;</span><span class="p">)</span>
+    <span class="c1">#: instrument</span>
+    <span class="n">ins</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="s2">&quot;instrument&quot;</span><span class="p">,</span> <span class="s2">&quot;NXinstrument&quot;</span><span class="p">)</span>
+    <span class="c1">#:    NXsource</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">ins</span><span class="p">,</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;NXsource&quot;</span><span class="p">)</span>
+    <span class="c1">#: field</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="s2">&quot;NX_FLOAT&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">setUnits</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;100.&quot;</span><span class="p">)</span>
 
-    <span class="n">df</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span></div>
 
-</div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 
@@ -934,10 +944,10 @@
       
     </p>
     <p>
-        &copy; Copyright 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+        &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.<br/>
     </p>
   </div>
 </footer>

@@ -5,18 +5,18 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxscreate &mdash; NXSTools 2.45.0 documentation</title>
+    <title>nxscreate &#8212; NXSTools 2.59.2 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2.45.0',
+        VERSION:     '2.59.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,9 +27,11 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.45.0 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="NXSTools 2.59.2 documentation" href="index.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
     <link rel="prev" title="nxsconfig" href="nxsconfig.html" />
 <meta charset='utf-8'>
@@ -38,7 +40,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -51,7 +53,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.59</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -79,7 +81,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsconfig.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">nxscreate</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">nxscreate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxscreate-clientds">nxscreate clientds</a></li>
@@ -249,7 +251,7 @@
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate  &lt;command&gt; [ &lt;options&gt;]  [&lt;arg1&gt; [&lt;arg2&gt;  ...]]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span>  <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="p">[</span> <span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span><span class="p">]</span>  <span class="p">[</span><span class="o">&lt;</span><span class="n">arg1</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">arg2</span><span class="o">&gt;</span>  <span class="o">...</span><span class="p">]]</span>
 </pre></div>
 </div>
 <p>The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.</p>
@@ -259,7 +261,7 @@
 <p>It creates a set of CLIENT datasources.</p>
 <div class="section" id="id1">
 <h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate clientds [options] [name1] [name2]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">clientds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span><span class="p">]</span> <span class="p">[</span><span class="n">name2</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -323,10 +325,10 @@
 </div>
 <div class="section" id="example">
 <h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate clientds starttime -b
-nxscreate clientds title -d /home/user/xmldir
-nxscreate clientds -v exp_c -f1 -l4 -b
-nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">clientds</span> <span class="n">starttime</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="n">title</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span>
+<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="o">-</span><span class="n">v</span> <span class="n">exp_c</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l4</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="o">-</span><span class="n">v</span> <span class="n">hasppXX</span><span class="p">:</span><span class="mi">10000</span><span class="o">/</span><span class="n">expchan</span><span class="o">/</span><span class="n">vfcadc_exp</span><span class="o">/</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l8</span>  <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_vfc</span>
 </pre></div>
 </div>
 </div>
@@ -336,7 +338,7 @@ nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vf
 <p>It creates a set of TANGO datasources.</p>
 <div class="section" id="id2">
 <h3>Synopsis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods [options]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">tangods</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -419,12 +421,12 @@ datasource names)</td></tr>
 </div>
 <div class="section" id="id3">
 <h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot
-nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
-nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
-nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
-nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t 10000 \
-                  -a BeamCurrent -b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l2</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span>
+<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l32</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p02</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">eh1a</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l32</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p01</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">oh1</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l8</span>  <span class="o">-</span><span class="n">v</span> <span class="n">pXX</span><span class="o">/</span><span class="n">slt</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">slt_exp_</span> <span class="o">-</span><span class="n">u</span> <span class="n">hasppXX</span><span class="o">.</span><span class="n">desy</span><span class="o">.</span><span class="n">de</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">v</span> <span class="n">petra</span><span class="o">/</span><span class="nb">globals</span><span class="o">/</span><span class="n">keyword</span> <span class="o">-</span><span class="n">s</span> <span class="n">source_current</span> <span class="o">-</span><span class="n">u</span> <span class="n">haso228</span> <span class="o">-</span><span class="n">t</span> <span class="mi">10000</span> \
+                  <span class="o">-</span><span class="n">a</span> <span class="n">BeamCurrent</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">r</span> <span class="n">p09</span><span class="o">/</span><span class="n">nxsconfigserver</span><span class="o">/</span><span class="n">haso228</span> <span class="o">-</span><span class="n">o</span> <span class="o">-</span><span class="n">g</span> <span class="n">__CLIENT__</span>
 </pre></div>
 </div>
 </div>
@@ -434,7 +436,7 @@ nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t 10000
 <p>It creates a set of TANGO datasources for all device attributes.</p>
 <div class="section" id="id4">
 <h3>Synopsis<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate deviceds [options] [dv_attr1 [dv_attr2 [dv_attr3 ...]]]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">deviceds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">dv_attr1</span> <span class="p">[</span><span class="n">dv_attr2</span> <span class="p">[</span><span class="n">dv_attr3</span> <span class="o">...</span><span class="p">]]]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -497,9 +499,9 @@ prefix</td></tr>
 </div>
 <div class="section" id="id5">
 <h3>Example<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate deviceds  -v p09/pilatus/haso228k
-nxscreate deviceds  -v p09/lambda2m/haso228k  -s haslambda -b
-nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy ExposureTime
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">pilatus</span><span class="o">/</span><span class="n">haso228k</span>
+<span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">lambda2m</span><span class="o">/</span><span class="n">haso228k</span>  <span class="o">-</span><span class="n">s</span> <span class="n">haslambda</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">pilatus300k</span><span class="o">/</span><span class="n">haso228k</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">o</span> <span class="n">pilatus300k_</span> <span class="n">RoI</span> <span class="n">Energy</span> <span class="n">ExposureTime</span>
 </pre></div>
 </div>
 </div>
@@ -509,7 +511,7 @@ nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy Ex
 <p>It creates a set of motor datasources from an online xml file.</p>
 <div class="section" id="id6">
 <h3>Synopsis<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds [options] inputFile
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">inputFile</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -559,6 +561,9 @@ nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy Ex
 <kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></td>
 </tr>
 <tr><td>&nbsp;</td><td>xml template package</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">--verbose</span></kbd></td>
+<td>printout verbose mode</td></tr>
 </tbody>
 </table>
 </dd>
@@ -566,10 +571,10 @@ nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy Ex
 </div>
 <div class="section" id="id7">
 <h3>Example<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds -b
-nxscreate onlineds -b -t
-nxscreate onlineds -d /home/user/xmldir
-nxscreate onlineds
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">t</span>
+<span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span>
+<span class="n">nxscreate</span> <span class="n">onlineds</span>
 </pre></div>
 </div>
 </div>
@@ -579,7 +584,7 @@ nxscreate onlineds
 <p>It creates a set of motor datasources from a sardana pool device channels.</p>
 <div class="section" id="id8">
 <h3>Synopsis<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds [options] [channel [channel]]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">channel</span> <span class="p">[</span><span class="n">channel</span><span class="p">]]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -633,12 +638,12 @@ nxscreate onlineds
 </div>
 <div class="section" id="id9">
 <h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate poolds -b
-nxscreate poolds -b -t
-nxscreate poolds -d -s p09/pool/haso228
-nxscreate poolds -b Motor CTExpChannel
-nxscreate poolds -b mot01 mot03
-nxscreate poolds
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">t</span>
+<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">s</span> <span class="n">p09</span><span class="o">/</span><span class="n">pool</span><span class="o">/</span><span class="n">haso228</span>
+<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="n">Motor</span> <span class="n">CTExpChannel</span>
+<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="n">mot01</span> <span class="n">mot03</span>
+<span class="n">nxscreate</span> <span class="n">poolds</span>
 </pre></div>
 </div>
 </div>
@@ -649,7 +654,7 @@ nxscreate poolds
 and its set of datasources.</p>
 <div class="section" id="id10">
 <h3>Synopsis<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp [options] inputFile
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">inputFile</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -715,10 +720,10 @@ and its set of datasources.</p>
 </div>
 <div class="section" id="id11">
 <h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlinecp
-nxscreate onlinecp -c lambda
-nxscreate onlinecp -c pilatus -b
-nxscreate onlinecp -c lambda -d /home/user/xmldir/
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlinecp</span>
+<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="k">lambda</span>
+<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="n">pilatus</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span><span class="o">/</span>
 </pre></div>
 </div>
 </div>
@@ -729,7 +734,7 @@ nxscreate onlinecp -c lambda -d /home/user/xmldir/
 and its set of datasources.</p>
 <div class="section" id="id12">
 <h3>Synopsis<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span> <span class="n">value1</span> <span class="p">[</span><span class="n">name2</span> <span class="n">value2</span><span class="p">]</span> <span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -802,10 +807,10 @@ and its set of datasources.</p>
 </div>
 <div class="section" id="id13">
 <h3>Example<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate stdcomp
-nxscreate stdcomp -t source
-nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
-nxscreate stdcomp -t default -c default -b -m
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">stdcomp</span>
+<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">source</span>
+<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">slit</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">b</span> <span class="n">front_slit1</span> <span class="n">xgap</span> <span class="n">slt1x</span> <span class="n">ygap</span> <span class="n">slt1y</span>
+<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">default</span> <span class="o">-</span><span class="n">c</span> <span class="n">default</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">m</span>
 </pre></div>
 </div>
 </div>
@@ -815,7 +820,7 @@ nxscreate stdcomp -t default -c default -b -m
 <p>It creates a set of simple components.</p>
 <div class="section" id="id14">
 <h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp [options] [name1] [name2] ...
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">comp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span><span class="p">]</span> <span class="p">[</span><span class="n">name2</span><span class="p">]</span> <span class="o">...</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -906,11 +911,11 @@ nxscreate stdcomp -t default -c default -b -m
 </div>
 <div class="section" id="id15">
 <h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate comp counter
-nxscreate comp -f1 -l3 -v exp_c -b
-nxscreate comp lambda -d /home/user/xmldir/
-nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
-nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&quot; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">comp</span> <span class="n">counter</span>
+<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l3</span> <span class="o">-</span><span class="n">v</span> <span class="n">exp_c</span> <span class="o">-</span><span class="n">b</span>
+<span class="n">nxscreate</span> <span class="n">comp</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span><span class="o">/</span>
+<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m</span>
+<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&quot;</span> <span class="n">eh1_mca01</span> <span class="o">-</span><span class="n">g</span> <span class="n">STEP</span> <span class="o">-</span><span class="n">t</span> <span class="n">NX_FLOAT64</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">c</span> <span class="n">SPECTRUM</span>
 </pre></div>
 </div>
 </div>
@@ -920,7 +925,7 @@ nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/in
 <p>It compares two online.xml files</p>
 <div class="section" id="id16">
 <h3>Synopsis<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate compare [-h] [-n] online_file [online_file]
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">compare</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="n">online_file</span> <span class="p">[</span><span class="n">online_file</span><span class="p">]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -947,8 +952,8 @@ nxscreate comp -n &quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/in
 </div>
 <div class="section" id="id17">
 <h3>Example<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-python"><div class="highlight"><pre>nxscreate onlineds /online_dir/online.xml online.xml
-nxscreate compare online.xml
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">/</span><span class="n">online_dir</span><span class="o">/</span><span class="n">online</span><span class="o">.</span><span class="n">xml</span> <span class="n">online</span><span class="o">.</span><span class="n">xml</span>
+<span class="n">nxscreate</span> <span class="n">compare</span> <span class="n">online</span><span class="o">.</span><span class="n">xml</span>
 </pre></div>
 </div>
 </div>
@@ -967,10 +972,10 @@ nxscreate compare online.xml
       
     </p>
     <p>
-        &copy; Copyright 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+        &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.<br/>
     </p>
   </div>
 </footer>

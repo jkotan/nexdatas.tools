@@ -207,7 +207,8 @@ Options:
                         external configuration server
   -p XMLPACKAGE, --xml-package=XMLPACKAGE
                         xml template package
-
+  --verbose             printout verbose mode
+			
 Example
 """""""
 

@@ -5,18 +5,18 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>nxstools.nxsargparser &mdash; NXSTools 2.45.0 documentation</title>
+    <title>nxstools.nxsargparser &#8212; NXSTools 2.59.2 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '2.45.0',
+        VERSION:     '2.59.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -27,9 +27,11 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="NXSTools 2.45.0 documentation" href="../../index.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="NXSTools 2.59.2 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -37,7 +39,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -50,7 +52,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.45</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.59</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -181,24 +183,24 @@
     <div class="col-md-12 content">
       
   <h1>Source code for nxstools.nxsargparser</h1><div class="highlight"><pre>
-<span class="c">#!/usr/bin/env python</span>
-<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
-<span class="c">#</span>
-<span class="c">#    Copyright (C) 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
-<span class="c">#</span>
-<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
-<span class="c">#    it under the terms of the GNU General Public License as published by</span>
-<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
-<span class="c">#    (at your option) any later version.</span>
-<span class="c">#</span>
-<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
-<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="c">#    GNU General Public License for more details.</span>
-<span class="c">#</span>
-<span class="c">#    You should have received a copy of the GNU General Public License</span>
-<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
-<span class="c">#</span>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c1">#</span>
+<span class="c1">#    Copyright (C) 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c1">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c1">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1">#    (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c1">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#    GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#    You should have received a copy of the GNU General Public License</span>
+<span class="c1">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
 
 <span class="sd">&quot;&quot;&quot; NeXus tool argumen parser</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -211,11 +213,11 @@
 
     <span class="sd">&quot;&quot;&quot; abstract runner&quot;&quot;&quot;</span>
 
-    <span class="c">#: (:obj:`str`) command description</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;abstract runner&quot;</span>
+    <span class="c1">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;abstract runner&quot;</span>
 
-    <span class="c">#: (:obj:`str`) command epilog</span>
-    <span class="n">epilog</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="c1">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator</span>
@@ -223,29 +225,29 @@
 <span class="sd">        :param parser: option parser</span>
 <span class="sd">        :type parser: :class:`NXSFileInfoArgParser`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c">#: (:class:`NXSFileInfoArgParser`) option parser</span>
+        <span class="c1">#: (:class:`NXSFileInfoArgParser`) option parser</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="n">parser</span>
 
 <div class="viewcode-block" id="Runner.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; parser creator &quot;&quot;&quot;</span>
-</div>
+        <span class="sd">&quot;&quot;&quot; parser creator &quot;&quot;&quot;</span></div>
+
 <div class="viewcode-block" id="Runner.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
-</div>
+        <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span></div>
+
 <div class="viewcode-block" id="Runner.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.Runner.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; run commandthe main program function</span>
 
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
 
-</div></div>
+
 <div class="viewcode-block" id="ErrorException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.ErrorException">[docs]</a><span class="k">class</span> <span class="nc">ErrorException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; error parser exception &quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="k">pass</span></div>
 
-</div>
+
 <div class="viewcode-block" id="NXSArgParser"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser">[docs]</a><span class="k">class</span> <span class="nc">NXSArgParser</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; Argument parser with error exception</span>
@@ -258,10 +260,10 @@
 <span class="sd">                       parameter dictionary</span>
 <span class="sd">        :type kwargs: :obj: `dict` &lt;:obj:`str`, `any`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subparsers</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c">#: (:obj:`dict` &lt;:obj:`str`, :class:`Runner`&gt;) \</span>
-        <span class="c">#    nxsfileinfo sub-command classes</span>
+        <span class="c1">#: (:obj:`dict` &lt;:obj:`str`, :class:`Runner`&gt;) \</span>
+        <span class="c1">#    nxsfileinfo sub-command classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cmdrunners</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="NXSArgParser.error"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
@@ -270,8 +272,8 @@
 <span class="sd">        :param message: error message</span>
 <span class="sd">        :type message: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="n">ErrorException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-</div>
+        <span class="k">raise</span> <span class="n">ErrorException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="NXSArgParser.createSubParsers"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsargparser.NXSArgParser.createSubParsers">[docs]</a>    <span class="k">def</span> <span class="nf">createSubParsers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates command-line parameters parser</span>
 
@@ -281,11 +283,11 @@
 
         <span class="n">pars</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">subparsers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
-            <span class="n">help</span><span class="o">=</span><span class="s">&#39;sub-command help&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;subparser&quot;</span><span class="p">)</span>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;sub-command help&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;subparser&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">klass</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdrunners</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">subparsers</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-                <span class="n">cmd</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">klass</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="n">cmd</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">klass</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
                 <span class="n">description</span><span class="o">=</span><span class="n">klass</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
                 <span class="n">epilog</span><span class="o">=</span><span class="n">klass</span><span class="o">.</span><span class="n">epilog</span><span class="p">,</span>
                 <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span>
@@ -312,10 +314,10 @@
       
     </p>
     <p>
-        &copy; Copyright 2012-2017 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+        &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.9.<br/>
     </p>
   </div>
 </footer>
