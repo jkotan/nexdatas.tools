@@ -1,3 +1,8 @@
+2018-10-09 Jan Kotanski <jankotan@gmail.com>
+	* adopt is_bool for pninexus 1.2.10
+	* fixes for SWMR with h5cpp
+	* tagged as v2.59.2
+
 2018-09-24 Jan Kotanski <jankotan@gmail.com>
 	* change vfc_factor from FINAL to INIT
 	* tagged as v2.59.1
