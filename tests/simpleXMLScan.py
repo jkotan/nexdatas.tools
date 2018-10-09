@@ -15,21 +15,23 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
-## \package ndtstools tools for ndts
-## \file simpleXMLScan.py
+# \package ndtstools tools for ndts
+# \file simpleXMLScan.py
 # test of XML file creator
 
-from nxstools.nxsxml import *
+from nxstools.nxsxml import (
+    NLink, XMLFile, NGroup, NDSource, NField, NDimensions)
 
-## the main function
+
+# the main function
 def main():
     df = XMLFile("scan.xml")
-    
+
     en = NGroup(df, "entry1", "NXentry")
 
-    ## instrument
+    # instrument
     ins = NGroup(en, "instrument", "NXinstrument")
-#    NXsource    
+#    NXsource
     dt = NGroup(ins, "detector", "NXdetector")
     f = NField(dt, "counter1", "NX_FLOAT")
     f.setUnits("m")
@@ -37,16 +39,14 @@ def main():
     f.setStrategy("STEP")
     sr = NDSource(f)
 
-    sr.initClient("exp_c01","exp_c01");
-
+    sr.initClient("exp_c01", "exp_c01")
 
     f = NField(dt, "counter2", "NX_FLOAT")
     f.setUnits("s")
 #    f.setText("0.2")
     f.setStrategy("STEP")
     sr = NDSource(f)
-    sr.initClient("exp_c02","exp_c02");
-    
+    sr.initClient("exp_c02", "exp_c02")
 
     f = NField(dt, "mca", "NX_FLOAT")
     f.setUnits("")
@@ -54,23 +54,20 @@ def main():
     d.dim("1", "2048")
     f.setStrategy("STEP")
     sr = NDSource(f)
-    sr.initTango("p09/mca/exp.02","p09/mca/exp.02", "attribute", "Data")
-#    sr.initClient("p09/mca/exp.02","p09/mca/exp.02")
+    sr.initTango("p09/mca/exp.02", "p09/mca/exp.02", "attribute", "Data")
+    #    sr.initClient("p09/mca/exp.02","p09/mca/exp.02")
 
-        ##    NXdata
+    #    NXdata
     da = NGroup(en, "data", "NXdata")
-    ## link
-    l = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/mca")
-    l.addDoc("Link to mca in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "counter1", "/NXentry/NXinstrument/NXdetector/counter1")
-    l.addDoc("Link to counter1 in /NXentry/NXinstrument/NXdetector")
-    l = NLink(da, "counter2", "/NXentry/NXinstrument/NXdetector/counter2")
-    l.addDoc("Link to counter2 in /NXentry/NXinstrument/NXdetector")
-
-
+    # link
+    ln = NLink(da, "data", "/NXentry/NXinstrument/NXdetector/mca")
+    ln.addDoc("Link to mca in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "counter1", "/NXentry/NXinstrument/NXdetector/counter1")
+    ln.addDoc("Link to counter1 in /NXentry/NXinstrument/NXdetector")
+    ln = NLink(da, "counter2", "/NXentry/NXinstrument/NXdetector/counter2")
+    ln.addDoc("Link to counter2 in /NXentry/NXinstrument/NXdetector")
 
     df.dump()
-
 
 
 if __name__ == "__main__":

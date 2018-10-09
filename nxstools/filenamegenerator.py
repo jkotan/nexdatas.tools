@@ -19,6 +19,15 @@
 
 """ Filename generator """
 
+import sys
+
+
+if sys.version_info > (3,):
+    unicode = str
+    long = int
+else:
+    bytes = str
+
 
 class FilenameGenerator(object):
 

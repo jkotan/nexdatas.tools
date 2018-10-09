@@ -32,18 +32,18 @@ WRITERS = {}
 try:
     from . import pniwriter
     WRITERS["pni"] = pniwriter
-except:
+except Exception:
     pass
 try:
     from . import h5pywriter
     WRITERS["h5py"] = h5pywriter
-except:
+except Exception:
     pass
 
 try:
     from . import h5cppwriter
     WRITERS["h5cpp"] = h5cppwriter
-except:
+except Exception:
     pass
 
 
@@ -112,7 +112,7 @@ class General(Runner):
             fl = filewriter.open_file(
                 options.args[0], readonly=True,
                 writer=wrmodule)
-        except:
+        except Exception:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
             self._parser.print_help()
@@ -138,7 +138,7 @@ class General(Runner):
         at = None
         try:
             at = entry.attributes["NX_class"]
-        except:
+        except Exception:
             pass
         if at and at[...] == 'NXentry':
             description.append(None)
@@ -149,14 +149,14 @@ class General(Runner):
                 vl = filewriter.first(entry.open("title")[...])
                 description.append(
                     {key: "Title:", value: vl})
-            except:
+            except Exception:
                 sys.stderr.write("nxsfileinfo: title cannot be found\n")
             try:
                 vl = filewriter.first(entry.open("experiment_identifier")[...])
                 description.append(
                     {key: "Experiment identifier:",
                      value: vl})
-            except:
+            except Exception:
                 sys.stderr.write(
                     "nxsfileinfo: experiment identifier cannot be found\n")
             for ins in entry:
@@ -168,7 +168,7 @@ class General(Runner):
                             description.append({
                                 key: "Instrument name:",
                                 value: vl})
-                        except:
+                        except Exception:
                             sys.stderr.write(
                                 "nxsfileinfo: instrument name cannot "
                                 "be found\n")
@@ -179,7 +179,7 @@ class General(Runner):
                                 key: "Instrument short name:",
                                 value: vl
                             })
-                        except:
+                        except Exception:
                             sys.stderr.write(
                                 "nxsfileinfo: instrument short name cannot"
                                 " be found\n")
@@ -194,7 +194,7 @@ class General(Runner):
                                         description.append({
                                             key: "Source name:",
                                             value: vl})
-                                    except:
+                                    except Exception:
                                         sys.stderr.write(
                                             "nxsfileinfo: source name"
                                             " cannot be found\n")
@@ -205,7 +205,7 @@ class General(Runner):
                                         description.append({
                                             key: "Source short name:",
                                             value: vl})
-                                    except:
+                                    except Exception:
                                         sys.stderr.write(
                                             "nxsfileinfo: source short name"
                                             " cannot be found\n")
@@ -215,7 +215,7 @@ class General(Runner):
                             description.append({
                                 key: "Sample name:",
                                 value: vl})
-                        except:
+                        except Exception:
                             sys.stderr.write(
                                 "nxsfileinfo: sample name cannot be found\n")
                         try:
@@ -224,20 +224,20 @@ class General(Runner):
                             description.append({
                                 key: "Sample formula:",
                                 value: vl})
-                        except:
+                        except Exception:
                             sys.stderr.write(
                                 "nxsfileinfo: sample formula cannot"
                                 " be found\n")
             try:
                 vl = filewriter.first(entry.open("start_time")[...])
                 description.append({key: "Start time:", value: vl})
-            except:
+            except Exception:
                 sys.stderr.write("nxsfileinfo: start time cannot be found\n")
             try:
                 vl = filewriter.first(entry.open("end_time")[...])
                 description.append({key: "End time:",
                                     value: vl})
-            except:
+            except Exception:
                 sys.stderr.write("nxsfileinfo: end time cannot be found\n")
             if "program_name" in entry.names():
                 pn = entry.open("program_name")
@@ -375,7 +375,7 @@ class Field(Runner):
             fl = filewriter.open_file(
                 options.args[0], readonly=True,
                 writer=wrmodule)
-        except:
+        except Exception:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
             self._parser.print_help()

@@ -21,6 +21,11 @@
 
 import os
 from distutils.core import setup, Command
+from sphinx.setup_command import BuildDoc
+
+
+PKG = "nxstools"
+IPKG = __import__(PKG)
 
 
 def read(fname):
@@ -30,6 +35,7 @@ def read(fname):
     :type fname: :obj:`str`
     """
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 class TestCommand(Command):
     """ test command class
@@ -52,11 +58,6 @@ class TestCommand(Command):
         import subprocess
         errno = subprocess.call([sys.executable, 'test/runtest.py'])
         raise SystemExit(errno)
-
-PKG = "nxstools"
-IPKG = __import__(PKG)
-
-from sphinx.setup_command import BuildDoc
 
 
 release = IPKG.__version__

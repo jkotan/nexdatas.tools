@@ -159,7 +159,7 @@ PYTANGO = False
 try:
     import PyTango
     PYTANGO = True
-except:
+except Exception:
     pass
 
 
@@ -360,7 +360,7 @@ def getClassName(devicename):
    """
     try:
         db = PyTango.Database()
-    except:
+    except Exception:
         sys.stderr.write(
             "Info: Cannot connect to %s" % devicename
             + " on host %s\n" % os.environ['TANGO_HOST'])
@@ -381,7 +381,7 @@ def getServers(name='NXSConfigServer'):
 
     try:
         db = PyTango.Database()
-    except:
+    except Exception:
         sys.stderr.write(
             "Error: Cannot connect to %s" % name
             + " on host %s\n" % os.environ['TANGO_HOST'])

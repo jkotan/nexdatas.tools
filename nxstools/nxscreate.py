@@ -37,9 +37,9 @@ from nxstools.nxscreator import (
 #: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
-    import PyTango
+    __import__("PyTango")
     PYTANGO = True
-except:
+except Exception:
     pass
 
 

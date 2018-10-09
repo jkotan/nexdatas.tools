@@ -31,8 +31,11 @@ PYTANGO = False
 try:
     import PyTango
     PYTANGO = True
-except:
+except Exception:
     pass
+
+if sys.version_info > (3,):
+    raw_input = input
 
 
 class ConfigServer(object):
@@ -216,7 +219,7 @@ class ConfigServer(object):
                     rec = ParserTools.parseRecord(xml)
                     if rec:
                         records.append(rec)
-                except:
+                except Exception:
                     sys.stderr.write(
                         "Error: Datasource '%s' cannot be parsed\n" % xml)
                     sys.stderr.write(str(sys.exc_info()[0]) + ": "
@@ -433,13 +436,13 @@ class ConfigServer(object):
         if dargs:
             try:
                 cpxmls = self._cnfServer.instantiatedComponents(dargs)
-            except:
+            except Exception:
                 cpxmls = []
                 for ar in dargs:
                     try:
                         cpxmls.extend(
                             self._cnfServer.instantiatedComponents([ar]))
-                    except:
+                    except Exception:
                         cpxmls.extend(self._cnfServer.Components([ar]))
                         sys.stderr.write(
                             "Error: Component '%s' cannot be instantiated\n"

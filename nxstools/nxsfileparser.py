@@ -188,7 +188,7 @@ class NXSFileParser(object):
             try:
                 ch = node.open(nm[0])
                 self.__parsenode(ch, nm[1])
-#            except:
+#            except Exception:
 #                pass
             finally:
                 pass
