@@ -28,10 +28,20 @@ import binascii
 import time
 import threading
 import PyTango
-import ServerSetUp
 import json
 from nxstools import nxsconfig
-from cStringIO import StringIO
+
+
+try:
+    import ServerSetUp
+except ImportError:
+    from . import ServerSetUp
+    
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 if sys.version_info > (3,):
