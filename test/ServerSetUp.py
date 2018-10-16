@@ -53,7 +53,9 @@ class ServerSetUp(object):
 
         if os.path.isfile("export PYTHONPATH= ; python ../NXSConfigServer"):
             self._psub = subprocess.call(
-                "export PYTHONPATH= ;cd ..; python ./NXSConfigServer MCSTEST &", stdout=None,
+                "export PYTHONPATH= ;cd ..; "
+                "python ./NXSConfigServer MCSTEST &",
+                stdout=None,
                 stderr=None, shell=True)
         else:
             self._psub = subprocess.call(

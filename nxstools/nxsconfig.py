@@ -1283,7 +1283,7 @@ def main():
 
     if options.subparser != 'servers':
 
-        if not hasattr(options, "server") or  not options.server:
+        if not hasattr(options, "server") or not options.server:
             options.server = checkServer()
 
         if not options.server:
