@@ -1290,7 +1290,6 @@ def main():
         sys.exit(255)
 
     if options.subparser != 'servers':
-        print(dir(options))
         if not options.server:
             options.server = checkServer()
 
