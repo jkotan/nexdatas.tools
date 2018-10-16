@@ -1130,7 +1130,7 @@ def main():
 
     _supportoldcommands()
 
-    epilog = 'For more help:\n  nxscreate <sub-command> -h'
+    epilog = 'For more help:\n  nxsetup <sub-command> -h'
     if _hostname in knownHosts.keys():
         local_user = None
         if os.path.isfile('/home/etc/local_user'):
