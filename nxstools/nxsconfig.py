@@ -1281,12 +1281,21 @@ def main():
         print("")
         sys.exit(255)
 
-    if options.subparser != 'servers':
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
 
-        if not hasattr(options, "server") or not options.server:
+    if options.subparser != 'servers':
+        print(dir(options))
+        if not options.server:
             options.server = checkServer()
 
         if not options.server:
+            print(list(parser.subparsers.keys()))
             parser.subparsers[options.subparser].print_help()
             print("")
             sys.exit(255)

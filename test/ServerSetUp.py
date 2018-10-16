@@ -51,7 +51,7 @@ class ServerSetUp(object):
             self.new_device_info_writer.server,
             self.new_device_info_writer)
 
-        if os.path.isfile("export PYTHONPATH= ; python ../NXSConfigServer"):
+        if os.path.isfile("../NXSConfigServer"):
             self._psub = subprocess.call(
                 "export PYTHONPATH= ;cd ..; "
                 "python ./NXSConfigServer MCSTEST &",

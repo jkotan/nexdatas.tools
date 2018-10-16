@@ -1067,6 +1067,14 @@ def main():
         print("")
         sys.exit(255)
 
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
     runners[options.subparser].run(options)
 
 

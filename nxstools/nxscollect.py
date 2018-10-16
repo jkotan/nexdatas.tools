@@ -661,6 +661,14 @@ def main():
         print("")
         sys.exit(255)
 
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
     if not WRITERS:
         sys.stderr.write("nxsfileinfo: Neither pni nor h5py installed\n")
         parser.print_help()

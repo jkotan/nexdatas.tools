@@ -416,7 +416,7 @@ class H5PYGroup(filewriter.FTGroup):
         :returns: group size
         :rtype: :obj:`int`
         """
-        return len(self._h5object.keys())
+        return len(list(self._h5object.keys()))
 
     def exists(self, name):
         """ if child exists
@@ -859,7 +859,7 @@ class H5PYAttributeManager(filewriter.FTAttributeManager):
         :returns: number of attributes
         :rtype: :obj:`int`
         """
-        return len(self._h5object.keys())
+        return len(list(self._h5object.keys()))
 
     class H5PYAttrIter(object):
 
