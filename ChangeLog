@@ -1,4 +1,8 @@
 2018-10-17 Jan Kotanski <jankotan@gmail.com>
+	* fix for h5cpp with nxscollect
+	* tagged as v2.60.1
+
+2018-10-17 Jan Kotanski <jankotan@gmail.com>
 	* add support python3
 	* tagged as v2.60.0
 
