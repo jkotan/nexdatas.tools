@@ -341,7 +341,7 @@ class Collector(object):
         """
         field = None
         if fieldname in node.names():
-            return node[fieldname]
+            return node.open(fieldname)
         else:
             if not self.__testmode:
                 cfilter = None
