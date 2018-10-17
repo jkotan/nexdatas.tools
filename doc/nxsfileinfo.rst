@@ -34,6 +34,7 @@ Options:
   -h, --help            show this help message and exit
   --pni                 use pni module as a nexus reader
   --h5py                use h5py module as a nexus reader
+  --h5cpp               use h5cpp module as a nexus reader
 
 Example
 """""""

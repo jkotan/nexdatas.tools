@@ -28,6 +28,7 @@ Options:
                         with .__nxscollect__old__* extension
   --pni                 use pni module as a nexus reader/writer
   --h5py                use h5py module as a nexus reader/writer
+  --h5cpp               use h5cpp module as a nexus reader/writer
 
 
 Example
