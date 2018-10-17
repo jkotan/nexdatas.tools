@@ -273,8 +273,7 @@ class DeviceDS(Runner):
 
         if not options.host:
             if not PYTANGO:
-                print >> sys.stderr, \
-                    "Info: No Tango Host or PyTango installed\n"
+                sys.stderr.write("Info: No Tango Host or PyTango installed\n")
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
@@ -1062,6 +1061,14 @@ def main():
         options = parser.parse_args()
     except ErrorException as e:
         sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")

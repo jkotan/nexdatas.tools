@@ -90,19 +90,20 @@ class General(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        if options.pni:
-            writer = "pni"
+        if options.h5cpp:
+            writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.h5cpp:
-            writer = "h5cpp"
-        elif "pni" in WRITERS.keys():
+        elif options.pni:
             writer = "pni"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
         elif "h5py" in WRITERS.keys():
             writer = "h5py"
         else:
-            writer = "h5cpp"
-        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            writer = "pni"
+        if (options.pni and options.h5py and options.h5cpp) or \
+           writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
             self._parser.print_help()
@@ -353,18 +354,18 @@ class Field(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        if options.pni:
-            writer = "pni"
+        if options.h5cpp:
+            writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.h5cpp:
-            writer = "h5cpp"
-        elif "pni" in WRITERS.keys():
+        elif options.pni:
             writer = "pni"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
         elif "h5py" in WRITERS.keys():
             writer = "h5py"
         else:
-            writer = "h5cpp"
+            writer = "pni"
         if (options.pni and options.h5py) or writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
@@ -443,7 +444,6 @@ def main():
                   + " from Nexus Files"
 
     epilog = 'For more help:\n  nxsfileinfo <sub-command> -h'
-    epilog = 'For more help:\n  nxsconfig <sub-command> -h'
     parser = NXSArgParser(
         description=description, epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -455,6 +455,14 @@ def main():
         options = parser.parse_args()
     except ErrorException as e:
         sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")

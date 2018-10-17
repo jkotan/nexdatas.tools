@@ -28,10 +28,20 @@ import binascii
 import time
 import threading
 import PyTango
-import ServerSetUp
 import json
 from nxstools import nxsconfig
-from cStringIO import StringIO
+
+
+try:
+    import ServerSetUp
+except ImportError:
+    from . import ServerSetUp
+
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 if sys.version_info > (3,):
@@ -329,10 +339,6 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
-    #        print vl
-    #        print len(vl), vl[-2], ord(vl[-1])
-    #        print len(self.helpinfo), ord(self.helpinfo[-2]),
-    #                 ord(self.helpinfo[-1])
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 

@@ -1569,7 +1569,7 @@ class StandardCPCreator(CPCreator):
         :returns: list of standard component types
         :rtype: :obj:`list` <:obj:`str`>
         """
-        return self.xmlpackage.standardComponentVariables.keys()
+        return list(self.xmlpackage.standardComponentVariables.keys())
 
     def listcomponentvariables(self):
         """ provides a list of standard component types
@@ -1583,7 +1583,7 @@ class StandardCPCreator(CPCreator):
             raise Exception(
                 "Component type %s not in %s" %
                 (self.options.cptype,
-                 self.xmlpackage.standardComponentVariables.keys()))
+                 list(self.xmlpackage.standardComponentVariables.keys())))
         return self.xmlpackage.standardComponentVariables[
             self.options.cptype]
 
@@ -1617,7 +1617,9 @@ class StandardCPCreator(CPCreator):
         if module not in self.xmlpackage.standardComponentVariables.keys():
             raise Exception(
                 "Component type %s not in %s" %
-                (module, self.xmlpackage.standardComponentVariables.keys()))
+                (module,
+                 list(self.xmlpackage.standardComponentVariables.keys()))
+            )
 
         xmlfiles = []
         if module in self.xmlpackage.standardComponentTemplateFiles:

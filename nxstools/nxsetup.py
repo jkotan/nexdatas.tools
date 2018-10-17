@@ -1130,7 +1130,7 @@ def main():
 
     _supportoldcommands()
 
-    epilog = 'For more help:\n  nxscreate <sub-command> -h'
+    epilog = 'For more help:\n  nxsetup <sub-command> -h'
     if _hostname in knownHosts.keys():
         local_user = None
         if os.path.isfile('/home/etc/local_user'):
@@ -1163,6 +1163,14 @@ def main():
         options = parser.parse_args()
     except ErrorException as e:
         sys.stderr.write("Error: %s\n" % str(e))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
+    if options.subparser is None:
+        sys.stderr.write(
+            "Error: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")
