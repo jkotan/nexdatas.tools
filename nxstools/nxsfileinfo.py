@@ -102,7 +102,8 @@ class General(Runner):
             writer = "h5py"
         else:
             writer = "pni"
-        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+        if (options.pni and options.h5py and options.h5cpp) or \
+           writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
             self._parser.print_help()
