@@ -339,10 +339,6 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
-    #        print vl
-    #        print len(vl), vl[-2], ord(vl[-1])
-    #        print len(self.helpinfo), ord(self.helpinfo[-2]),
-    #                 ord(self.helpinfo[-1])
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 

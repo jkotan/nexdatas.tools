@@ -273,8 +273,7 @@ class DeviceDS(Runner):
 
         if not options.host:
             if not PYTANGO:
-                print >> sys.stderr, \
-                    "Info: No Tango Host or PyTango installed\n"
+                sys.stderr.write("Info: No Tango Host or PyTango installed\n")
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
