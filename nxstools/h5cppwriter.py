@@ -100,8 +100,9 @@ def _slice2selection(t, shape):
         block = []
         count = []
         stride = []
+        it = -1
         for tit, tel in enumerate(t):
-            it = tit
+            it += 1
             if isinstance(tel, (int, long)):
                 if tel < 0:
                     offset.append(shape[it] + tel)
