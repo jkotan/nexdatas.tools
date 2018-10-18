@@ -68,7 +68,7 @@ glicense = "GNU GENERAL PUBLIC LICENSE, version 3",
 
 #: metadata for distutils
 SETUPDATA = dict(
-    name="nexdatas.tools",
+    name="nxstools",
     version=IPKG.__version__,
     author=author,
     author_email="jankotan@gmail.com, eugen.wintersberger@gmail.com, "

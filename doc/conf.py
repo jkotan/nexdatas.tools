@@ -434,6 +434,7 @@ intersphinx_mapping = {
     'https://nexdatas.github.io/configserver/':None,
     'https://nexdatas.github.io/writer/':None,
     'http://docs.python.org/2.7/': None,
+    'http://docs.python.org/3.5/': None,
     'http://docs.scipy.org/doc/scipy/reference': None,
     'http://docs.scipy.org/doc/numpy': None,
     'http://pytango.readthedocs.io/en/stable/': None,

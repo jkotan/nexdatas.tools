@@ -41,13 +41,13 @@ Download the latest NXS Tools version from
 Extract sources and run
 
 .. code-block:: console
-	  
+
 	  $ python setup.py install
 
 Debian packages
 """""""""""""""
 
-Debian Jessie (and Wheezy) packages can be found in the HDRI repository.
+Debian `stretch`, `jessie` (and `wheezy`)  or Ubuntu `bionic` (and `xenial`) packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
@@ -61,22 +61,45 @@ and then download the corresponding source list
 .. code-block:: console
 
 	  $ cd /etc/apt/sources.list.d
-	  $ wget http://repos.pni-hdri.de/jessie-pni-hdri.list
+	  $ wget http://repos.pni-hdri.de/stretch-pni-hdri.list
 
-Finally,
+For releases (>= 2.61.0) to insall python2 scripts
+
+.. code-block:: console
+
+	  $ apt-get update
+	  $ apt-get install nxstools
+
+and for python3 scripts
+
+.. code-block:: console
+
+	  $ apt-get update
+	  $ apt-get install nxstools3
+
+
+For older releases
 
 .. code-block:: console
 
 	  $ apt-get update
 	  $ apt-get install python-nxstools
 
-To instal other NexDaTaS packages	  
+and
 
 .. code-block:: console
-	  
+
+	  $ apt-get install python3-nxstools
+
+if exists.
+
+To instal other NexDaTaS packages
+
+.. code-block:: console
+
 	  $ apt-get install python-nxswriter nxsconfigserver-db python-nxsconfigserver nxsconfigtool
 
-and 
+and
 
 .. code-block:: console
 

@@ -1,3 +1,7 @@
+2018-10-18 Jan Kotanski <jankotan@gmail.com>
+	* split the package
+	* tagged as v2.61.0
+
 2018-10-17 Jan Kotanski <jankotan@gmail.com>
 	* fix for h5cpp with nxscollect
 	* tagged as v2.60.1
