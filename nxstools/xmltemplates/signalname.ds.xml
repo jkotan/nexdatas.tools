@@ -24,6 +24,13 @@ try:
                 ds.result = str(ch)
                 break
     if not ds.result:
+        for name in names:
+            fld = nxdata.open(name)
+            if isinstance(fld, filewriter.FTField) and \
+               len(fld.shape) == 1 and fld.shape[0] > 1:
+                ds.result = str(fld.name)
+
+    if not ds.result:
         ds.result = str(names[0])
 except Exception as e:
     ds.result = str(e)</result>
