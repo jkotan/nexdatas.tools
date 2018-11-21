@@ -57,6 +57,9 @@ try:
 except ImportError as e:
     H5CPP_AVAILABLE = False
     print("h5cpp is not available: %s" % e)
+except SystemError as e:
+    H5CPP_AVAILABLE = False
+    print("h5cpp is not available: %s" % e)
 
 
 import unittest
