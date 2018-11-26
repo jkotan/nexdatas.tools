@@ -42,9 +42,11 @@ if "__root__" in commonblock.keys():
         spf = root.stepsperfile
         cfid = root.currentfileid
     if root.h5object.__class__.__name__ == "nxgroup":
-        import nxswriter.PNIWriter as nxw
+        import nxstools.pniwriter as nxw
+    elif root.h5object.__class__.__name__ == "File":
+        import nxstools.h5pywriter as nxw
     else:
-        import nxswriter.H5PYWriter as nxw
+        import nxstools.h5cppwriter as nxw
 else:
     root = commonblock["__nxroot__"]
     import pni.io.nx.h5 as nxw
