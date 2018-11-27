@@ -1,3 +1,7 @@
+2018-11-27 Jan Kotanski <jankotan@gmail.com>
+	* fix eiger template
+	* tagged as v2.61.2
+
 2018-10-18 Jan Kotanski <jankotan@gmail.com>
 	* fix for h5cpp with nxscollect
 	* tagged as v2.61.1
