@@ -37,7 +37,7 @@ class NXSCollectPNITest(NXSCollectTest.NXSCollectTest):
         NXSCollectTest.NXSCollectTest.__init__(self, methodName)
         self.writer = "pni"
         self.flags = "--pni"
-        
+
 
 if __name__ == '__main__':
     unittest.main()

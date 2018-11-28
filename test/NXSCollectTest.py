@@ -507,7 +507,8 @@ For more help:
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                # er =
+                mystderr.getvalue()
 
                 # self.assertEqual('', er)
                 self.assertTrue(vl)

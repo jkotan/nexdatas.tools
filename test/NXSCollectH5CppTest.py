@@ -37,7 +37,7 @@ class NXSCollectH5CppTest(NXSCollectTest.NXSCollectTest):
         NXSCollectTest.NXSCollectTest.__init__(self, methodName)
         self.writer = "h5cpp"
         self.flags = "--h5cpp"
-        
+
 
 if __name__ == '__main__':
     unittest.main()
