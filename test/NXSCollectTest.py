@@ -138,8 +138,14 @@ For more help:
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        # from os.path import expanduser
-        # home = expanduser("~")
+        if "h5cpp" in WRITERS.keys():
+            self.writer = "h5cpp"
+        elif "h5py" in WRITERS.keys():
+            self.writer = "h5py"
+        else:
+            self.writer = "pni"
+
+        self.flags = ""
 
     # test starter
     # \brief Common set up
@@ -233,31 +239,18 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            # ('nxscollect execute %s' % filename).split(),
-            # ('nxscollect -x %s' % filename).split(),
-            # ('nxscollect test %s' % filename).split(),
-            # ('nxscollect -t %s' % filename).split(),
-            # ('nxscollect execute %s -s' % filename).split(),
-            # ('nxscollect -x %s -s' % filename).split(),
-            # ('nxscollect test %s -s' % filename).split(),
-            # ('nxscollect -t %s -s' % filename).split(),
-            ('nxscollect execute %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect test %s -r' % filename).split(),
-            ('nxscollect -t %s -r' % filename).split(),
-            ('nxscollect execute %s -s -r' % filename).split(),
-            ('nxscollect -x %s -s -r' % filename).split(),
-            ('nxscollect test %s -s -r' % filename).split(),
-            ('nxscollect -t %s -s -r' % filename).split(),
+            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect execute %s -s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         try:
@@ -293,31 +286,26 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect test %s' % filename).split(),
-            ('nxscollect -t %s' % filename).split(),
-            ('nxscollect execute -s %s' % filename).split(),
-            ('nxscollect -x %s -s' % filename).split(),
-            ('nxscollect test %s -s' % filename).split(),
-            ('nxscollect -t %s -s' % filename).split(),
-            ('nxscollect execute %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect test %s -r' % filename).split(),
-            ('nxscollect -t %s -r' % filename).split(),
-            ('nxscollect execute -s %s -r' % filename).split(),
-            ('nxscollect -x %s -s -r' % filename).split(),
-            ('nxscollect test %s -s -r' % filename).split(),
-            ('nxscollect -t %s -s -r' % filename).split(),
+            ('nxscollect execute %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute -s %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect execute -s %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         nxsfile = filewriter.create_file(
@@ -351,31 +339,26 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect test %s' % filename).split(),
-            ('nxscollect -t %s' % filename).split(),
-            ('nxscollect execute %s -s ' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect test %s -s ' % filename).split(),
-            ('nxscollect -t %s -s' % filename).split(),
-            ('nxscollect execute %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect test %s -r' % filename).split(),
-            ('nxscollect -t %s -r' % filename).split(),
-            ('nxscollect execute %s -s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect test %s -s -r' % filename).split(),
-            ('nxscollect -t %s -s -r' % filename).split(),
+            ('nxscollect execute %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute %s -s  %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -s  %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect execute %s -s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         try:
@@ -420,23 +403,18 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect test %s' % filename).split(),
-            ('nxscollect -t %s' % filename).split(),
-            ('nxscollect execute -r %s' % filename).split(),
-            ('nxscollect -x -r %s' % filename).split(),
-            ('nxscollect test -r %s' % filename).split(),
-            ('nxscollect -t -r %s' % filename).split(),
+            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute -r %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x -r %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test -r %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t -r %s %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         try:
@@ -483,23 +461,18 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect execute  %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect execute  %s -s' % filename).split(),
-            ('nxscollect -x %s -s' % filename).split(),
-            ('nxscollect execute  %s -r -s' % filename).split(),
-            ('nxscollect -x %s -r -s' % filename).split(),
+            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         try:
@@ -545,7 +518,7 @@ For more help:
                     "populate: /entry12345:NXentry/instrument:NXinstrument/"
                     "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
                 for i in range(1, 6):
-                    
+
                     self.assertTrue(svl[i].startswith(' * append '))
                     self.assertTrue(
                         svl[i].endswith('test1_%05d.tif ' % (i - 1)))
@@ -584,23 +557,18 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect execute  %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect execute  %s -s' % filename).split(),
-            ('nxscollect -x %s -s' % filename).split(),
-            ('nxscollect execute  %s -r -s' % filename).split(),
-            ('nxscollect -x %s -r -s' % filename).split(),
+            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         dircreated = False
@@ -700,23 +668,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            # ('nxscollect execute  %s' % filename).split(),
-            # ('nxscollect -x %s' % filename).split(),
-            # ('nxscollect execute  %s -r' % filename).split(),
-            # ('nxscollect -x %s -r' % filename).split(),
-            ('nxscollect execute  %s -s' % filename).split(),
-            ('nxscollect -x %s -s' % filename).split(),
-            ('nxscollect execute  %s -r -s' % filename).split(),
-            ('nxscollect -x %s -r -s' % filename).split(),
+            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         dircreated = False
@@ -823,19 +782,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s -s' % filename).split(),
-            ('nxscollect -x %s -s' % filename).split(),
-            ('nxscollect execute  %s -r -s' % filename).split(),
-            ('nxscollect -x %s -r -s' % filename).split(),
+            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         dircreated = False
@@ -965,23 +919,13 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s' % filename).split(),
-            ('nxscollect -x %s' % filename).split(),
-            ('nxscollect execute  %s -r' % filename).split(),
-            ('nxscollect -x %s -r' % filename).split(),
-            # ('nxscollect execute  %s -s' % filename).split(),
-            # ('nxscollect -x %s -s' % filename).split(),
-            # ('nxscollect execute  %s -r -s' % filename).split(),
-            # ('nxscollect -x %s -r -s' % filename).split(),
+            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
         ]
 
-        if "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        wrmodule = WRITERS[writer]
+        wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
 
         dircreated = False
