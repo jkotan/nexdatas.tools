@@ -159,12 +159,15 @@ db = PyTango.Database()
 if PNI_AVAILABLE:
     import FileWriterTest
     import PNIWriterTest
+    import NXSCollectPNITest
 if H5PY_AVAILABLE:
     import H5PYWriterTest
     import FileWriterH5PYTest
+    import NXSCollectH5PYTest
 if H5CPP_AVAILABLE:
     import H5CppWriterTest
     import FileWriterH5CppTest
+    import NXSCollectH5CppTest
 if PNI_AVAILABLE and H5PY_AVAILABLE:
     import FileWriterPNIH5PYTest
 # if PNI_AVAILABLE and H5CPP_AVAILABLE:
@@ -190,17 +193,27 @@ def main():
             unittest.defaultTestLoader.loadTestsFromModule(FileWriterTest))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(PNIWriterTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCollectPNITest))
+
     if H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(FileWriterH5PYTest))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(H5PYWriterTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCollectH5PYTest))
     if H5CPP_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 FileWriterH5CppTest))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(H5CppWriterTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCollectH5CppTest))
     if PNI_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
