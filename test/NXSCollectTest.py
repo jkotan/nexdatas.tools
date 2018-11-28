@@ -545,11 +545,10 @@ For more help:
                     "populate: /entry12345:NXentry/instrument:NXinstrument/"
                     "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
                 for i in range(1, 6):
-                    self.assertEqual(
-                        svl[i],
-                        ' * append /home/jkotan/ndts/nexdatas.tools/'
-                        'test1_%05d.tif ' % (i - 1)
-                    )
+                    
+                    self.assertTrue(svl[i].startswith(' * append '))
+                    self.assertTrue(
+                        svl[i].endswith('test1_%05d.tif ' % (i - 1)))
 
                 if '-r' not in cmd:
                     os.remove("%s.__nxscollect_old__" % filename)
