@@ -521,7 +521,7 @@ For more help:
                 postrun = col.create_field("postrun", "string")
                 postrun.write("test1_%05d.tif:0:5")
                 nxsfile.close()
-            
+
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 sys.stdout = mystdout = StringIO()
@@ -535,7 +535,6 @@ For more help:
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
-
 
                 self.assertEqual('', er)
                 self.assertTrue(vl)
@@ -551,9 +550,9 @@ For more help:
                         ' * append /home/jkotan/ndts/nexdatas.tools/'
                         'test1_%05d.tif ' % (i - 1)
                     )
-                
+
                 if '-r' not in cmd:
-                     os.remove("%s.__nxscollect_old__" % filename)
+                    os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
                 rt = nxsfile.root()
                 entry = rt.open("entry12345")
@@ -565,7 +564,7 @@ For more help:
                 for i in range(6):
                     fbuffer = fabio.open('./test1_%05d.tif' % i)
                     fimage = fbuffer.data[...]
-                    image = buffer[i,:,:]
+                    image = buffer[i, :, :]
                     self.assertTrue((image == fimage).all())
                 nxsfile.close()
                 os.remove(filename)
@@ -610,7 +609,7 @@ For more help:
             if not os.path.exists("./testcollect/pilatus300k"):
                 os.makedirs("./testcollect/pilatus300k")
                 dircreated = True
-                
+
             shutil.copy2('test/files/test_file0.tif',
                          './testcollect/pilatus300k/test1_00000.tif')
             shutil.copy2('test/files/test_file1.tif',
@@ -635,7 +634,7 @@ For more help:
                 postrun = col.create_field("postrun", "string")
                 postrun.write("test1_%05d.tif:0:5")
                 nxsfile.close()
-            
+
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 sys.stdout = mystdout = StringIO()
@@ -649,7 +648,6 @@ For more help:
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
-
 
                 self.assertEqual('', er)
                 self.assertTrue(vl)
@@ -665,9 +663,9 @@ For more help:
                         ' * append /home/jkotan/ndts/nexdatas.tools/'
                         'test1_%05d.tif ' % (i - 1)
                     )
-                
+
                 if '-r' not in cmd:
-                     os.remove("%s.__nxscollect_old__" % filename)
+                    os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
                 rt = nxsfile.root()
                 entry = rt.open("entry12345")
@@ -680,7 +678,7 @@ For more help:
                     fbuffer = fabio.open(
                         './testcollect/pilatus300k/test1_%05d.tif' % i)
                     fimage = fbuffer.data[...]
-                    image = buffer[i,:,:]
+                    image = buffer[i, :, :]
                     self.assertTrue((image == fimage).all())
                 nxsfile.close()
                 os.remove(filename)
@@ -727,7 +725,7 @@ For more help:
             if not os.path.exists("./testcollect/pilatus300k"):
                 os.makedirs("./testcollect/pilatus300k")
                 dircreated = True
-                
+
             shutil.copy2('test/files/test_file0.tif',
                          './testcollect/pilatus300k/test1_00000.tif')
             shutil.copy2('test/files/test_file1.tif',
@@ -752,7 +750,7 @@ For more help:
                 postrun = col.create_field("postrun", "string")
                 postrun.write("test1_%05d.tif:0:5")
                 nxsfile.close()
-            
+
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 sys.stdout = mystdout = StringIO()
@@ -767,7 +765,6 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
-
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
@@ -777,7 +774,7 @@ For more help:
                     "populate: /entry12345:NXentry/instrument:NXinstrument/"
                     "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
                 for i in range(1, 6):
-                    if i not in [3, 5]: 
+                    if i not in [3, 5]:
                         self.assertEqual(
                             svl[i],
                             ' * append testcollect/pilatus300k/'
@@ -786,9 +783,9 @@ For more help:
                     else:
                         self.assertTrue(
                             svl[i].startswith("Cannot open any of "))
-                
+
                 if '-r' not in cmd:
-                     os.remove("%s.__nxscollect_old__" % filename)
+                    os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
                 rt = nxsfile.root()
                 entry = rt.open("entry12345")
@@ -799,11 +796,11 @@ For more help:
                 self.assertEqual(buffer.shape, (4, 195, 487))
                 ii = 0
                 for i in range(6):
-                    if i not in [2, 4]: 
+                    if i not in [2, 4]:
                         fbuffer = fabio.open(
                             './testcollect/pilatus300k/test1_%05d.tif' % i)
                         fimage = fbuffer.data[...]
-                        image = buffer[ii,:,:]
+                        image = buffer[ii, :, :]
                         self.assertTrue((image == fimage).all())
                         ii += 1
                 nxsfile.close()
@@ -847,7 +844,7 @@ For more help:
             if not os.path.exists("./testcollect/pilatus300k"):
                 os.makedirs("./testcollect/pilatus300k")
                 dircreated = True
-                
+
             for cmd in commands:
                 nxsfile = filewriter.create_file(
                     filename, overwrite=True)
@@ -868,7 +865,6 @@ For more help:
                 shutil.copy2('test/files/test_file2.tif',
                              './testcollect/pilatus300k/test1_00002.tif')
 
-                
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 sys.stdout = mystdout = StringIO()
@@ -883,14 +879,13 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
-
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
                 self.assertEqual(len(svl), 8)
-                
+
                 if '-r' not in cmd:
-                     os.remove("%s.__nxscollect_old__" % filename)
+                    os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
                 rt = nxsfile.root()
                 entry = rt.open("entry12345")
@@ -904,7 +899,7 @@ For more help:
                     fbuffer = fabio.open(
                         './testcollect/pilatus300k/test1_%05d.tif' % i)
                     fimage = fbuffer.data[...]
-                    image = buffer[ii,:,:]
+                    image = buffer[ii, :, :]
                     self.assertTrue((image == fimage).all())
                     ii += 1
                 nxsfile.close()
@@ -912,7 +907,7 @@ For more help:
                 shutil.copy2('test/files/test_file3.tif',
                              './testcollect/pilatus300k/test1_00003.tif')
                 shutil.copy2('test/files/test_file4.tif',
-                              './testcollect/pilatus300k/test1_00004.tif')
+                             './testcollect/pilatus300k/test1_00004.tif')
 
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
@@ -928,13 +923,12 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
-
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
-                
+
                 if '-r' not in cmd:
-                     os.remove("%s.__nxscollect_old__" % filename)
+                    os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
                 rt = nxsfile.root()
                 entry = rt.open("entry12345")
@@ -948,18 +942,18 @@ For more help:
                     fbuffer = fabio.open(
                         './testcollect/pilatus300k/test1_%05d.tif' % i)
                     fimage = fbuffer.data[...]
-                    image = buffer[ii,:,:]
+                    image = buffer[ii, :, :]
                     self.assertTrue((image == fimage).all())
                     ii += 1
                 nxsfile.close()
-                
+
                 os.remove('./testcollect/pilatus300k/test1_00000.tif')
                 os.remove('./testcollect/pilatus300k/test1_00001.tif')
                 os.remove('./testcollect/pilatus300k/test1_00002.tif')
                 os.remove('./testcollect/pilatus300k/test1_00003.tif')
                 os.remove('./testcollect/pilatus300k/test1_00004.tif')
                 os.remove(filename)
-                
+
         finally:
             if dircreated:
                 shutil.rmtree("./testcollect")
@@ -996,13 +990,13 @@ For more help:
             if not os.path.exists("./testcollect/pilatus300k"):
                 os.makedirs("./testcollect/pilatus300k")
                 dircreated = True
-                
+
             shutil.copy2('test/files/test_file0.tif',
                          './testcollect/pilatus300k/test1_00000.tif')
             shutil.copy2('test/files/test_file1.tif',
                          './testcollect/pilatus300k/test1_00001.tif')
             shutil.copy2('test/files/test_file2.tif',
-                          './testcollect/pilatus300k/test1_00002.tif')
+                         './testcollect/pilatus300k/test1_00002.tif')
             for cmd in commands:
                 nxsfile = filewriter.create_file(
                     filename, overwrite=True)
@@ -1015,7 +1009,7 @@ For more help:
                 postrun = col.create_field("postrun", "string")
                 postrun.write("test1_%05d.tif:0:5")
                 nxsfile.close()
-            
+
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 sys.stdout = mystdout = StringIO()
@@ -1030,7 +1024,6 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
-
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
@@ -1040,7 +1033,7 @@ For more help:
                     "populate: /entry12345:NXentry/instrument:NXinstrument/"
                     "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
                 for i in range(1, 5):
-                    if i not in [4]: 
+                    if i not in [4]:
                         self.assertEqual(
                             svl[i],
                             ' * append testcollect/pilatus300k/'
@@ -1049,7 +1042,7 @@ For more help:
                     else:
                         self.assertTrue(
                             svl[i].startswith("Cannot open any of "))
-                
+
                 # if '-r' not in cmd:
                 #      os.remove("%s.__nxscollect_old__" % filename)
                 nxsfile = filewriter.open_file(filename, readonly=True)
@@ -1067,7 +1060,6 @@ For more help:
             os.remove('./testcollect/pilatus300k/test1_00002.tif')
             if dircreated:
                 shutil.rmtree("./testcollect")
-
 
 
 if __name__ == '__main__':
