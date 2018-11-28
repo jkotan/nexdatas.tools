@@ -552,7 +552,7 @@ class Execute(Runner):
 
     def run(self, options):
         """ the main program function
-
+<
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """

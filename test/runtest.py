@@ -170,6 +170,9 @@ if PNI_AVAILABLE and H5PY_AVAILABLE:
 # if PNI_AVAILABLE and H5CPP_AVAILABLE:
 #     import FileWriterPNIH5CppTest
 
+if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
+    import NXSCollectTest
+
 
 if PYTANGO_AVAILABLE:
     if "MYSQL" in DB_AVAILABLE:
@@ -202,6 +205,11 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 FileWriterPNIH5PYTest))
+
+    if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCollectTest))
 
     if PYTANGO_AVAILABLE:
         if "MYSQL" in DB_AVAILABLE:
