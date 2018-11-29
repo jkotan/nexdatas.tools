@@ -552,7 +552,7 @@ For more help:
             os.remove('./test1_00004.tif')
             os.remove('./test1_00005.tif')
 
-    def test_execute_file_withpostrun_tif_pilatus300k(self):
+    def test_execute_file_withpostrun_tif_pilatus300k_comp(self):
         """ test nxsconfig execute file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
@@ -569,6 +569,16 @@ For more help:
             ('nxscollect execute  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -c4 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s -c6 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s -c8 %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1103,7 +1113,7 @@ For more help:
             os.remove('./test1_00004.cbf')
             os.remove('./test1_00005.cbf')
 
-    def test_execute_file_withpostrun_cbf_pilatus300k(self):
+    def test_execute_file_withpostrun_cbf_pilatus300k_comp(self):
         """ test nxsconfig execute file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
@@ -1120,6 +1130,16 @@ For more help:
             ('nxscollect execute  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -c4 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s -c6 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -s -c8 %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
