@@ -77,7 +77,7 @@ def create_file(filename, overwrite=False, **pars):
     :returns: file object
     :rtype: :class:`H5PYFile`
     """
-    fl = h5py.File(filename, "a" if overwrite else "w-", **pars)
+    fl = h5py.File(filename, "w" if overwrite else "w-", **pars)
     fl.attrs["file_time"] = unicode(H5PYFile.currenttime())
     fl.attrs["HDF5_version"] = u""
     fl.attrs["NX_class"] = u"NXroot"
