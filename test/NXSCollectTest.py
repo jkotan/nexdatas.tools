@@ -572,9 +572,11 @@ For more help:
             ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -c4 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -c4 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s -c6 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s -c6 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
@@ -1133,9 +1135,11 @@ For more help:
             ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -c4 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -r -c4 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s -c6 %s' % (filename, self.flags)).split(),
+            ('nxscollect execute  %s -s -c6 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
