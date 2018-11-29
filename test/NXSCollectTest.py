@@ -239,6 +239,7 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
+
         commands = [
             ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
@@ -396,7 +397,7 @@ For more help:
         finally:
             os.remove(filename)
 
-    def test_execute_file_withpostrun_nofile(self):
+    def test_execute_test_file_withpostrun_nofile(self):
         """ test nxsconfig execute file with data field
         """
         fun = sys._getframe().f_code.co_name
@@ -1787,6 +1788,1167 @@ For more help:
                         fimage = attrs[k][0][i]
                         image = buffer[i, :, :]
                         self.assertTrue((image == fimage).all())
+                    nxsfile.close()
+                    os.remove(filename)
+
+            finally:
+                pass
+                for i in range(6):
+                    os.remove("h5test1_%05d.h5" % i)
+
+    def test_test_file_withpostrun_tif(self):
+        """ test nxsconfig test file with a tif postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            shutil.copy2('test/files/test_file0.tif', './test1_00000.tif')
+            shutil.copy2('test/files/test_file1.tif', './test1_00001.tif')
+            shutil.copy2('test/files/test_file2.tif', './test1_00002.tif')
+            shutil.copy2('test/files/test_file3.tif', './test1_00003.tif')
+            shutil.copy2('test/files/test_file4.tif', './test1_00004.tif')
+            shutil.copy2('test/files/test_file5.tif', './test1_00005.tif')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.tif:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                # er =
+                mystderr.getvalue()
+
+                # self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 2)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./test1_00000.tif')
+            os.remove('./test1_00001.tif')
+            os.remove('./test1_00002.tif')
+            os.remove('./test1_00003.tif')
+            os.remove('./test1_00004.tif')
+            os.remove('./test1_00005.tif')
+
+    def test_test_file_withpostrun_tif_pilatus300k(self):
+        """ test nxsconfig test file with a tif postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file0.tif',
+                         './testcollect/pilatus300k/test1_00000.tif')
+            shutil.copy2('test/files/test_file1.tif',
+                         './testcollect/pilatus300k/test1_00001.tif')
+            shutil.copy2('test/files/test_file2.tif',
+                         './testcollect/pilatus300k/test1_00002.tif')
+            shutil.copy2('test/files/test_file3.tif',
+                         './testcollect/pilatus300k/test1_00003.tif')
+            shutil.copy2('test/files/test_file4.tif',
+                         './testcollect/pilatus300k/test1_00004.tif')
+            shutil.copy2('test/files/test_file5.tif',
+                         './testcollect/pilatus300k/test1_00005.tif')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.tif:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 2)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.tif')
+            os.remove('./testcollect/pilatus300k/test1_00001.tif')
+            os.remove('./testcollect/pilatus300k/test1_00002.tif')
+            os.remove('./testcollect/pilatus300k/test1_00003.tif')
+            os.remove('./testcollect/pilatus300k/test1_00004.tif')
+            os.remove('./testcollect/pilatus300k/test1_00005.tif')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_tif_pilatus300k_skip(self):
+        """ test nxsconfig test file with a tif postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file0.tif',
+                         './testcollect/pilatus300k/test1_00000.tif')
+            shutil.copy2('test/files/test_file1.tif',
+                         './testcollect/pilatus300k/test1_00001.tif')
+            # shutil.copy2('test/files/test_file2.tif',
+            #              './testcollect/pilatus300k/test1_00002.tif')
+            shutil.copy2('test/files/test_file3.tif',
+                         './testcollect/pilatus300k/test1_00003.tif')
+            # shutil.copy2('test/files/test_file4.tif',
+            #              './testcollect/pilatus300k/test1_00004.tif')
+            shutil.copy2('test/files/test_file5.tif',
+                         './testcollect/pilatus300k/test1_00005.tif')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.tif:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 4)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.tif')
+            os.remove('./testcollect/pilatus300k/test1_00001.tif')
+            # os.remove('./testcollect/pilatus300k/test1_00002.tif')
+            os.remove('./testcollect/pilatus300k/test1_00003.tif')
+            # os.remove('./testcollect/pilatus300k/test1_00004.tif')
+            os.remove('./testcollect/pilatus300k/test1_00005.tif')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_tif_pilatus300k_wait(self):
+        """ test nxsconfig test file with a tif postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.tif:0:5")
+                nxsfile.close()
+
+                shutil.copy2('test/files/test_file0.tif',
+                             './testcollect/pilatus300k/test1_00000.tif')
+                shutil.copy2('test/files/test_file1.tif',
+                             './testcollect/pilatus300k/test1_00001.tif')
+                shutil.copy2('test/files/test_file2.tif',
+                             './testcollect/pilatus300k/test1_00002.tif')
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+
+                shutil.copy2('test/files/test_file3.tif',
+                             './testcollect/pilatus300k/test1_00003.tif')
+                shutil.copy2('test/files/test_file4.tif',
+                             './testcollect/pilatus300k/test1_00004.tif')
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+
+                os.remove('./testcollect/pilatus300k/test1_00000.tif')
+                os.remove('./testcollect/pilatus300k/test1_00001.tif')
+                os.remove('./testcollect/pilatus300k/test1_00002.tif')
+                os.remove('./testcollect/pilatus300k/test1_00003.tif')
+                os.remove('./testcollect/pilatus300k/test1_00004.tif')
+                os.remove(filename)
+
+        finally:
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_tif_pilatus300k_missing(self):
+        """ test nxsconfig test file with a tif postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file0.tif',
+                         './testcollect/pilatus300k/test1_00000.tif')
+            shutil.copy2('test/files/test_file1.tif',
+                         './testcollect/pilatus300k/test1_00001.tif')
+            shutil.copy2('test/files/test_file2.tif',
+                         './testcollect/pilatus300k/test1_00002.tif')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.tif:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 3)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.tif:0:5']")
+
+                # if '-r' not in cmd:
+                #      os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.tif')
+            os.remove('./testcollect/pilatus300k/test1_00001.tif')
+            os.remove('./testcollect/pilatus300k/test1_00002.tif')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_cbf(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            shutil.copy2('test/files/test_file.cbf', './test1_00000.cbf')
+            shutil.copy2('test/files/test_file.cbf', './test1_00001.cbf')
+            shutil.copy2('test/files/test_file.cbf', './test1_00002.cbf')
+            shutil.copy2('test/files/test_file.cbf', './test1_00003.cbf')
+            shutil.copy2('test/files/test_file.cbf', './test1_00004.cbf')
+            shutil.copy2('test/files/test_file.cbf', './test1_00005.cbf')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.cbf:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 2)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.cbf:0:5']")
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./test1_00000.cbf')
+            os.remove('./test1_00001.cbf')
+            os.remove('./test1_00002.cbf')
+            os.remove('./test1_00003.cbf')
+            os.remove('./test1_00004.cbf')
+            os.remove('./test1_00005.cbf')
+
+    def test_test_file_withpostrun_cbf_pilatus300k(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00000.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00001.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00002.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00003.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00004.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00005.cbf')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.cbf:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 2)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.cbf:0:5']")
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00001.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00002.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00003.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00004.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00005.cbf')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_cbf_pilatus300k_skip(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00000.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00001.cbf')
+            # shutil.copy2('test/files/test_file.cbf',
+            #              './testcollect/pilatus300k/test1_00002.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00003.cbf')
+            # shutil.copy2('test/files/test_file.cbf',
+            #              './testcollect/pilatus300k/test1_00004.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00005.cbf')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.cbf:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 4)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.cbf:0:5']")
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00001.cbf')
+            # os.remove('./testcollect/pilatus300k/test1_00002.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00003.cbf')
+            # os.remove('./testcollect/pilatus300k/test1_00004.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00005.cbf')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_cbf_pilatus300k_wait(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.cbf:0:5")
+                nxsfile.close()
+
+                shutil.copy2('test/files/test_file.cbf',
+                             './testcollect/pilatus300k/test1_00000.cbf')
+                shutil.copy2('test/files/test_file.cbf',
+                             './testcollect/pilatus300k/test1_00001.cbf')
+                shutil.copy2('test/files/test_file.cbf',
+                             './testcollect/pilatus300k/test1_00002.cbf')
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 5)
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+
+                shutil.copy2('test/files/test_file.cbf',
+                             './testcollect/pilatus300k/test1_00003.cbf')
+                shutil.copy2('test/files/test_file.cbf',
+                             './testcollect/pilatus300k/test1_00004.cbf')
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+
+                os.remove('./testcollect/pilatus300k/test1_00000.cbf')
+                os.remove('./testcollect/pilatus300k/test1_00001.cbf')
+                os.remove('./testcollect/pilatus300k/test1_00002.cbf')
+                os.remove('./testcollect/pilatus300k/test1_00003.cbf')
+                os.remove('./testcollect/pilatus300k/test1_00004.cbf')
+                os.remove(filename)
+
+        finally:
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_cbf_pilatus300k_missing(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        dircreated = False
+        try:
+            if not os.path.exists("./testcollect/pilatus300k"):
+                os.makedirs("./testcollect/pilatus300k")
+                dircreated = True
+
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00000.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00001.cbf')
+            shutil.copy2('test/files/test_file.cbf',
+                         './testcollect/pilatus300k/test1_00002.cbf')
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                col = det.create_group("collection", "NXcollection")
+                postrun = col.create_field("postrun", "string")
+                postrun.write("test1_%05d.cbf:0:5")
+                nxsfile.close()
+
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                self.assertEqual(len(svl), 3)
+                self.assertTrue(
+                    svl[0],
+                    "populate: /entry12345:NXentry/instrument:NXinstrument/"
+                    "pilatus300k:NXdetector/data with ['test1_%05d.cbf:0:5']")
+                # if '-r' not in cmd:
+                #      os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                self.assertTrue('data' not in det.names())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove('./testcollect/pilatus300k/test1_00000.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00001.cbf')
+            os.remove('./testcollect/pilatus300k/test1_00002.cbf')
+            if dircreated:
+                shutil.rmtree("./testcollect")
+
+    def test_test_file_withpostrun_raw(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int": [-123, "NX_INT", "int64", (1,)],
+            "int8": [12, "NX_INT8", "int8", (1,)],
+            "int16": [-123, "NX_INT16", "int16", (1,)],
+            "int32": [12345, "NX_INT32", "int32", (1,)],
+            "int64": [-12345, "NX_INT64", "int64", (1,)],
+            "uint": [123, "NX_UINT", "uint64", (1,)],
+            "uint8": [12, "NX_UINT8", "uint8", (1,)],
+            "uint16": [123, "NX_UINT16", "uint16", (1,)],
+            "uint32": [12345, "NX_UINT32", "uint32", (1,)],
+            "uint64": [12345, "NX_UINT64", "uint64", (1,)],
+            "float": [-12.345, "NX_FLOAT", "float64", (1,), 1.e-14],
+            "number": [-12.345e+2, "NX_NUMBER", "float64", (1,), 1.e-14],
+            "float32": [-12.345e-1, "NX_FLOAT32", "float32", (1,), 1.e-5],
+            "float64": [-12.345, "NX_FLOAT64", "float64", (1,), 1.e-14],
+        }
+
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        for k in attrs.keys():
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+
+            attrs[k][0] = np.array(
+                [[[attrs[k][0] * self.__rnd.randint(0, 3)
+                   for c in range(mlen[1])]
+                  for i in range(mlen[0])]
+                 for _ in range(6)],
+                dtype=attrs[k][2]
+                )
+            try:
+                for i in range(6):
+                    with open("rawtest1_%05d.dat" % i, "w") as fl:
+                        attrs[k][0][i].tofile(fl)
+                for cmd in commands:
+                    nxsfile = filewriter.create_file(
+                        filename, overwrite=True)
+                    rt = nxsfile.root()
+                    entry = rt.create_group("entry12345", "NXentry")
+                    ins = entry.create_group("instrument", "NXinstrument")
+                    det = ins.create_group("pilatus300k", "NXdetector")
+                    entry.create_group("data", "NXdata")
+                    col = det.create_group("collection", "NXcollection")
+                    postrun = col.create_field("postrun", "string")
+                    postrun.write("rawtest1_%05d.dat:0:5")
+                    atts = postrun.attributes
+                    atts.create("fielddtype", "string").write(attrs[k][2])
+                    atts.create("fieldshape", "string").write(
+                        json.dumps(attrs[k][0].shape[1:]))
+                    nxsfile.close()
+
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxscollect.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    svl = vl.split("\n")
+                    self.assertEqual(len(svl), 2)
+                    self.assertTrue(
+                        svl[0],
+                        "populate: /entry12345:NXentry/"
+                        "instrument:NXinstrument/pilatus300k:NXdetector"
+                        "/data with ['test1_%05d.cbf:0:5']")
+
+                    if '-r' not in cmd:
+                        os.remove("%s.__nxscollect_old__" % filename)
+                    nxsfile = filewriter.open_file(filename, readonly=True)
+                    rt = nxsfile.root()
+                    entry = rt.open("entry12345")
+                    ins = entry.open("instrument")
+                    det = ins.open("pilatus300k")
+                    self.assertTrue('data' not in det.names())
+                    nxsfile.close()
+                    os.remove(filename)
+
+            finally:
+                for i in range(6):
+                    os.remove("rawtest1_%05d.dat" % i)
+
+    def test_test_file_withpostrun_h5(self):
+        """ test nxsconfig test file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int": [-123, "NX_INT", "int64", (1,)],
+            "int8": [12, "NX_INT8", "int8", (1,)],
+            "int16": [-123, "NX_INT16", "int16", (1,)],
+            "int32": [12345, "NX_INT32", "int32", (1,)],
+            "int64": [-12345, "NX_INT64", "int64", (1,)],
+            "uint": [123, "NX_UINT", "uint64", (1,)],
+            "uint8": [12, "NX_UINT8", "uint8", (1,)],
+            "uint16": [123, "NX_UINT16", "uint16", (1,)],
+            "uint32": [12345, "NX_UINT32", "uint32", (1,)],
+            "uint64": [12345, "NX_UINT64", "uint64", (1,)],
+            "float": [-12.345, "NX_FLOAT", "float64", (1,), 1.e-14],
+            "number": [-12.345e+2, "NX_NUMBER", "float64", (1,), 1.e-14],
+            "float32": [-12.345e-1, "NX_FLOAT32", "float32", (1,), 1.e-5],
+            "float64": [-12.345, "NX_FLOAT64", "float64", (1,), 1.e-14],
+        }
+
+        commands = [
+            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect test  %s -r -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        for k in attrs.keys():
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+
+            attrs[k][0] = np.array(
+                [[[attrs[k][0] * self.__rnd.randint(0, 3)
+                   for c in range(mlen[1])]
+                  for i in range(mlen[0])]
+                 for _ in range(6)],
+                dtype=attrs[k][2]
+                )
+            try:
+                for i in range(6):
+                    fl = filewriter.create_file("h5test1_%05d.h5" % i, )
+                    rt = fl.root()
+                    shp = attrs[k][0][i].shape
+                    data = rt.create_field("data", attrs[k][2], shp, shp)
+                    data.write(attrs[k][0][i])
+                    data.close()
+                    fl.close()
+                for cmd in commands:
+                    nxsfile = filewriter.create_file(
+                        filename, overwrite=True)
+                    rt = nxsfile.root()
+                    entry = rt.create_group("entry12345", "NXentry")
+                    ins = entry.create_group("instrument", "NXinstrument")
+                    det = ins.create_group("pilatus300k", "NXdetector")
+                    entry.create_group("data", "NXdata")
+                    col = det.create_group("collection", "NXcollection")
+                    postrun = col.create_field("postrun", "string")
+                    postrun.write("h5test1_%05d.h5:0:5")
+                    nxsfile.close()
+
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxscollect.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    svl = vl.split("\n")
+                    self.assertEqual(len(svl), 2)
+                    self.assertTrue(
+                        svl[0],
+                        "populate: /entry12345:NXentry/"
+                        "instrument:NXinstrument/pilatus300k:NXdetector"
+                        "/data with ['test1_%05d.cbf:0:5']")
+
+                    if '-r' not in cmd:
+                        os.remove("%s.__nxscollect_old__" % filename)
+                    nxsfile = filewriter.open_file(filename, readonly=True)
+                    rt = nxsfile.root()
+                    entry = rt.open("entry12345")
+                    ins = entry.open("instrument")
+                    det = ins.open("pilatus300k")
+                    self.assertTrue('data' not in det.names())
                     nxsfile.close()
                     os.remove(filename)
 
