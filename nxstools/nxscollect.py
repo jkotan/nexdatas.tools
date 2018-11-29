@@ -235,11 +235,12 @@ class Collector(object):
                 idata = idata.reshape(shape)
             dtype = idata.dtype.__str__()
             shape = idata.shape
-            if idata:
+            if idata is not None:
                 return idata, dtype, shape
             else:
                 raise Exception("Cannot open a file %s" % filename)
-        except Exception:
+        except Exception as e:
+            print(str(e))
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
             else:
@@ -291,14 +292,14 @@ class Collector(object):
             root = nxsfile.root()
             image = root.open("data")
             idata = image.read()
-            nxsfile.close()
-            if image:
+            if image is not None:
                 idata = image[...]
                 dtype = image.dtype
                 shape = image.shape
             nxsfile.close()
             return idata, dtype, shape
-        except Exception:
+        except Exception as e:
+            print(str(e))
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
             else:
