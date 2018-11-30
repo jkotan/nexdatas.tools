@@ -144,7 +144,7 @@ class NXSFileParser(object):
         if hasattr(node, "dtype"):
             desc["dtype"] = str(node.dtype)
         if hasattr(node, "shape"):
-            desc["shape"] = list(node.shape or [])
+            desc["shape"] = [int(n) for n in (node.shape or [])]
         if hasattr(node, "attributes"):
             attrs = node.attributes
             anames = [at.name for at in attrs]
