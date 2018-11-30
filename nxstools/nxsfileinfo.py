@@ -124,28 +124,31 @@ class General(Runner):
         fl.close()
 
     @classmethod
-    def parseentry(cls, entry, description, keyvalue):
+    def parseentry(cls, entry, description):
         """ parse entry of nexus file
 
         :param entry: nexus entry node
         :type entry: :class:`pni.io.nx.h5.nxgroup`
         :param description: dict description list
         :type description: :obj:`list` <:obj:`dict` <:obj:`str`, `any` > >
-        :param keyvalue: (key, value) name pair of table headers
-        :type keyvalue: [:obj:`str`, :obj:`str`]
+        :return: (key, value) name pair of table headers
+        :rtype: [:obj:`str`, :obj:`str`]
 
         """
-        key, value = keyvalue
+        key = "A"
+        value = "B"
         at = None
         try:
             at = entry.attributes["NX_class"]
         except Exception:
             pass
         if at and at[...] == 'NXentry':
-            description.append(None)
-            value = filewriter.first(value)
-            description.append({key: "Scan entry:", value: entry.name})
-            description.append(None)
+            # description.append(None)
+            # value = filewriter.first(value)
+            key = "Scan entry:"
+            value = entry.name
+            # description.append({key: "Scan entry:", value: entry.name})
+            # description.append(None)
             try:
                 vl = filewriter.first(entry.open("title")[...])
                 description.append(
@@ -249,6 +252,7 @@ class General(Runner):
                     scommand = filewriter.first(attr["scan_command"][...])
                     pname = "%s (%s)" % (pname, scommand)
                 description.append({key: "Program:", value: pname})
+        return [key, value]
 
     def show(self, root):
         """ show general informations
@@ -265,19 +269,19 @@ class General(Runner):
         fname = filewriter.first(
             (attr["file_name"][...]
              if "file_name" in names else " ") or " ")
-        headers = ["File name:", fname]
+        title = "File name: %s" % fname
 
+        print("")
         for en in root:
-            self.parseentry(en, description, headers)
-        ttools = TableTools(description)
-        ttools.title = ""
-        ttools.headers = headers
-        description[:] = ttools.generateList()
-
-        if len(description) > 4:
-            print("=" * len(description[4]))
-        print("\n".join(description).strip())
-        print("=" * len(description[4]))
+            description = []
+            headers = self.parseentry(en, description)
+            ttools = TableTools(description)
+            ttools.title = title
+            ttools.headers = headers
+            rstdescription = ttools.generateList()
+            title = ""
+            print("\n".join(rstdescription).strip())
+            print("")
 
 
 class Field(Runner):
@@ -430,7 +434,7 @@ class Field(Runner):
 
         description = []
         ttools = TableTools(nxsparser.description, toshow)
-        ttools.title = "    file: '%s'" % options.args[0]
+        ttools.title = "File name: '%s'" % options.args[0]
         ttools.headers = headers
         description.extend(ttools.generateList())
         print("\n".join(description))
