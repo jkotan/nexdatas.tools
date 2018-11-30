@@ -598,21 +598,30 @@ class TableTools(object):
         lst = [""]
         if self.title is not None:
             lst.append(self.title)
+            lst.append("-" * len(self.title))
             lst.append("")
-        line = ""
+
         headers = [hd for hd in self.headers if hd in self.__hdsizes.keys()]
+        line = ""
+        for hd in headers:
+            line += "=" * (self.__hdsizes[hd] - 1) + " "
+        lst.append(line)
+
+        line = ""
         for hd in headers:
             line += hd + " " * (self.__hdsizes[hd] - len(hd))
         lst.append(line)
+
         line = ""
         for hd in headers:
-            line += "-" * (self.__hdsizes[hd] - 1) + " "
+            line += "=" * (self.__hdsizes[hd] - 1) + " "
         lst.append(line)
+
         for desc in self.__description:
             line = ""
             if desc is None:
                 for hd in headers:
-                    line += "-" * (self.__hdsizes[hd] - 1) + " "
+                    line += "=" * (self.__hdsizes[hd] - 1) + " "
                 lst.append(line.rstrip())
                 continue
             line = ""
@@ -627,5 +636,12 @@ class TableTools(object):
                 line += vl + " " * (self.__hdsizes[hd] - len(vl))
 
             lst.append(line.rstrip())
+
+        line = ""
+        for hd in headers:
+            line += "=" * (self.__hdsizes[hd] - 1) + " "
+        lst.append(line)
+
         lst.append("")
+
         return lst

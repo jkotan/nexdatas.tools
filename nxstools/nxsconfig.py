@@ -364,7 +364,7 @@ class ConfigServer(object):
             for i, xmls in enumerate(dsxmls):
                 parameters = ParserTools.parseDataSources(xmls)
                 ttools = TableTools(parameters)
-                ttools.title = "    DataSource: '%s'" % args[i]
+                ttools.title = "DataSource: '%s'" % args[i]
                 ttools.headers = headers
                 description.extend(ttools.generateList())
         else:
@@ -455,10 +455,10 @@ class ConfigServer(object):
                 parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
                 if dargs[i] in deps:
-                    ttools.title = "    Component: '%s' %s" % (
+                    ttools.title = "Component: '%s' %s" % (
                         dargs[i], deps[dargs[i]])
                 else:
-                    ttools.title = "    Component: '%s'" % dargs[i]
+                    ttools.title = "Component: '%s'" % dargs[i]
                 if headers:
                     ttools.headers = headers
                 description.extend(ttools.generateList())
