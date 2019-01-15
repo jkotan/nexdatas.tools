@@ -339,6 +339,7 @@ class SetUp(object):
                                     sys.stdout.write("Restarting: %s" % svl)
                                 else:
                                     sys.stdout.write("Starting: %s" % svl)
+                                sys.stdout.flush()
                                 problems = True
                                 counter = 0
                                 while problems and counter < 100:
@@ -407,6 +408,7 @@ class SetUp(object):
                                 if started and svl in started:
                                     adminproxy.DevStop(svl)
                                     sys.stdout.write("Stopping: %s" % svl)
+                                    sys.stdout.flush()
                                 problems = True
                                 counter = 0
                                 while problems and counter < 100:
@@ -464,6 +466,7 @@ class SetUp(object):
         if len(server) == 0:
             sys.stderr.write('Server ' + new.split('/')[0]
                              + ' not defined in database\n')
+            sys.stderr.flush()
             return False
 
         adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
@@ -492,12 +495,14 @@ class SetUp(object):
         adminproxy.UpdateServersInfo()
 
         sys.stdout.write("waiting for server")
+        sys.stdout.flush()
 
         found = False
         cnt = 0
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
+                sys.stdout.flush()
                 dp = PyTango.DeviceProxy(device)
                 time.sleep(0.01)
                 dp.ping()
