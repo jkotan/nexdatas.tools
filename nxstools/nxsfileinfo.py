@@ -106,6 +106,7 @@ class General(Runner):
            writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
+            sys.stderr.flush()
             self._parser.print_help()
             sys.exit(255)
         wrmodule = WRITERS[writer.lower()]
@@ -116,6 +117,7 @@ class General(Runner):
         except Exception:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
+            sys.stderr.flush()
             self._parser.print_help()
             sys.exit(255)
 
@@ -155,6 +157,7 @@ class General(Runner):
                     {key: "Title:", value: vl})
             except Exception:
                 sys.stderr.write("nxsfileinfo: title cannot be found\n")
+                sys.stderr.flush()
             try:
                 vl = filewriter.first(entry.open("experiment_identifier")[...])
                 description.append(
@@ -163,6 +166,7 @@ class General(Runner):
             except Exception:
                 sys.stderr.write(
                     "nxsfileinfo: experiment identifier cannot be found\n")
+                sys.stderr.flush()
             for ins in entry:
                 if isinstance(ins, filewriter.FTGroup):
                     iat = ins.attributes["NX_class"]
@@ -176,6 +180,7 @@ class General(Runner):
                             sys.stderr.write(
                                 "nxsfileinfo: instrument name cannot "
                                 "be found\n")
+                            sys.stderr.flush()
                         try:
                             vl = filewriter.first(
                                 ins.open("name").attributes["short_name"][...])
@@ -187,6 +192,7 @@ class General(Runner):
                             sys.stderr.write(
                                 "nxsfileinfo: instrument short name cannot"
                                 " be found\n")
+                            sys.stderr.flush()
 
                         for sr in ins:
                             if isinstance(sr, filewriter.FTGroup):
@@ -202,6 +208,7 @@ class General(Runner):
                                         sys.stderr.write(
                                             "nxsfileinfo: source name"
                                             " cannot be found\n")
+                                        sys.stderr.flush()
                                     try:
                                         vl = filewriter.first(
                                             sr.open("name").attributes[
@@ -213,6 +220,7 @@ class General(Runner):
                                         sys.stderr.write(
                                             "nxsfileinfo: source short name"
                                             " cannot be found\n")
+                                        sys.stderr.flush()
                     elif iat and iat[...] == 'NXsample':
                         try:
                             vl = filewriter.first(ins.open("name")[...])
@@ -222,6 +230,7 @@ class General(Runner):
                         except Exception:
                             sys.stderr.write(
                                 "nxsfileinfo: sample name cannot be found\n")
+                            sys.stderr.flush()
                         try:
                             vl = filewriter.first(
                                 ins.open("chemical_formula")[...])
@@ -232,17 +241,20 @@ class General(Runner):
                             sys.stderr.write(
                                 "nxsfileinfo: sample formula cannot"
                                 " be found\n")
+                            sys.stderr.flush()
             try:
                 vl = filewriter.first(entry.open("start_time")[...])
                 description.append({key: "Start time:", value: vl})
             except Exception:
                 sys.stderr.write("nxsfileinfo: start time cannot be found\n")
+                sys.stderr.flush()
             try:
                 vl = filewriter.first(entry.open("end_time")[...])
                 description.append({key: "End time:",
                                     value: vl})
             except Exception:
                 sys.stderr.write("nxsfileinfo: end time cannot be found\n")
+                sys.stderr.flush()
             if "program_name" in entry.names():
                 pn = entry.open("program_name")
                 pname = filewriter.first(pn.read())
@@ -373,6 +385,7 @@ class Field(Runner):
         if (options.pni and options.h5py) or writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
+            sys.stderr.flush()
             self._parser.print_help()
             sys.exit(255)
         wrmodule = WRITERS[writer.lower()]
@@ -383,6 +396,7 @@ class Field(Runner):
         except Exception:
             sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                              % options.args[0])
+            sys.stderr.flush()
             self._parser.print_help()
             sys.exit(255)
 
@@ -466,7 +480,7 @@ def main():
 
     if options.subparser is None:
         sys.stderr.write(
-            "Error: %s\n" % str("too few arguments"))
+            "Err<or: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")

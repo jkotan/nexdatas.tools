@@ -580,6 +580,7 @@ class Execute(Runner):
            writer not in WRITERS.keys():
             sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
                              % writer)
+            sys.stderr.flush()
             parser.print_help()
             sys.exit(255)
 
@@ -697,6 +698,7 @@ def main():
 
     if not WRITERS:
         sys.stderr.write("nxsfileinfo: Neither h5cpp/pni nor h5py installed\n")
+        sys.stderr.flush()
         parser.print_help()
         sys.exit(255)
 

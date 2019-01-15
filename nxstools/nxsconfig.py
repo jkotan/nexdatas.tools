@@ -305,6 +305,7 @@ class ConfigServer(object):
                     else:
                         sys.stdout.write("Please respond with 'yes' or 'no' "
                                          "(or 'y' or 'n').\n")
+                        sys.stdout.flush()
             if valid[choice]:
                 if ds:
                     self._cnfServer.DeleteDataSource(ar)
@@ -1319,6 +1320,7 @@ def main():
            and str(e).startswith("EOF when reading a line"):
             sys.stderr.write("Error: %s. Consider to use the "
                              "--force option \n" % str(e))
+            sys.stderr.flush()
             sys.exit(255)
 
         if PYTANGO and isinstance(e, PyTango.DevFailed):
@@ -1330,6 +1332,7 @@ def main():
                 sys.stderr.write(
                     "Error: Datasource %s not stored in Configuration Server\n"
                     % mydss[0])
+                sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
                     "NonregisteredDBRecordError: Component "):
                 mydss = str((e.args[0]).desc)[38:].split()
@@ -1338,18 +1341,23 @@ def main():
                 sys.stderr.write(
                     "Error: Component %s not stored in Configuration Server\n"
                     % mydss[0])
+                sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
                     'IncompatibleNodeError: '):
                 sys.stderr.write("Error:%s\n" % (e.args[0]).desc[22:])
+                sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
                     'ExpatError: '):
                 sys.stderr.write("Error from XML parser: %s\n"
                                  % (e.args[0]).desc[12:])
+                sys.stderr.flush()
             else:
                 sys.stderr.write("Error: %s\n" % str(e))
+                sys.stderr.flush()
             sys.exit(255)
         else:
             sys.stderr.write("Error: %s\n" % str(e))
+            sys.stderr.flush()
             sys.exit(255)
 #        raise
     if result and str(result).strip():

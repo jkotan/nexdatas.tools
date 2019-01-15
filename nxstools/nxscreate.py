@@ -153,6 +153,7 @@ class TangoDS(Runner):
            (not options.host and not options.server):
             if not PYTANGO:
                 sys.stderr.write("Info: No PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
 
             options.server = checkServer()
@@ -164,6 +165,7 @@ class TangoDS(Runner):
             if not PYTANGO:
                 sys.stderr.write(
                     "Info: No Tango Host or PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
@@ -178,6 +180,7 @@ class TangoDS(Runner):
             creator.create()
         except WrongParameterError as e:
             sys.stderr.write(str(e))
+            sys.stderr.flush()
             parser.print_help()
             sys.exit(255)
 
@@ -264,6 +267,7 @@ class DeviceDS(Runner):
            (not options.host and not options.server):
             if not PYTANGO:
                 sys.stderr.write("Info: No PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
 
             options.server = checkServer()
@@ -274,6 +278,7 @@ class DeviceDS(Runner):
         if not options.host:
             if not PYTANGO:
                 sys.stderr.write("Info: No Tango Host or PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
             hostport = getServerTangoHost(options.server)
             options.host, options.port = hostport.split(":")
@@ -292,6 +297,7 @@ class DeviceDS(Runner):
         else:
             if not PYTANGO:
                 sys.stderr.write("CollCompCreator No PyTango installed\n")
+                sys.stderr.flush()
                 parser.print_help()
                 sys.exit(255)
             aargs = getAttributes(options.device, options.host, options.port)
@@ -376,6 +382,7 @@ class OnlineDS(Runner):
         parser = self._parser
         if not PYTANGO:
             sys.stderr.write("Info: No PyTango installed\n")
+            sys.stderr.flush()
             sys.exit(255)
 
         if not options.server:
@@ -476,6 +483,7 @@ class PoolDS(Runner):
 
         if not PYTANGO:
             sys.stderr.write("Info: No PyTango installed\n")
+            sys.stderr.flush()
             sys.exit(255)
 
         if not options.server:
@@ -625,6 +633,7 @@ class OnlineCP(Runner):
         parser = self._parser
         if not PYTANGO:
             sys.stderr.write("Info: No PyTango installed\n")
+            sys.stderr.flush()
             sys.exit(255)
 
         if not options.server:
@@ -914,6 +923,7 @@ class Comp(Runner):
         if options.database and not options.server:
             if not PYTANGO:
                 sys.stderr.write("Info: No PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
 
             options.server = checkServer()
@@ -931,6 +941,7 @@ class Comp(Runner):
             creator.create()
         except WrongParameterError as e:
             sys.stderr.write(str(e))
+            sys.stderr.flush()
             parser.print_help()
             sys.exit(255)
 
@@ -1015,6 +1026,7 @@ class ClientDS(Runner):
         if options.database and not options.server:
             if not PYTANGO:
                 sys.stderr.write("Info: No PyTango installed\n")
+                sys.stderr.flush()
                 sys.exit(255)
 
             options.server = checkServer()
@@ -1032,6 +1044,7 @@ class ClientDS(Runner):
             creator.create()
         except WrongParameterError as e:
             sys.stderr.write(str(e))
+            sys.stderr.flush()
             parser.print_help()
             sys.exit(255)
 
