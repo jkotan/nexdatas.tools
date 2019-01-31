@@ -20,14 +20,15 @@
 # unittests for field Tags running Tango Server
 #
 import unittest
-import os
+# import os
 import sys
-import random
-import struct
-import binascii
+# import random
+# import struct
+# import binascii
 import time
 # import threading
 import PyTango
+from os.path import expanduser
 # import json
 # from nxstools import nxscreate
 
@@ -47,37 +48,6 @@ if sys.version_info > (3,):
     long = int
 
 
-class mytty(object):
-
-    def __init__(self, underlying):
-        #        underlying.encoding = 'cp437'
-        self.__underlying = underlying
-
-    def __getattr__(self, name):
-        return getattr(self.__underlying, name)
-
-    def isatty(self):
-        return True
-
-
-# if 64-bit machione
-IS64BIT = (struct.calcsize("P") == 8)
-
-# from nxsconfigserver.XMLConfigurator  import XMLConfigurator
-# from nxsconfigserver.Merger import Merger
-# from nxsconfigserver.Errors import (
-# NonregisteredDBRecordError, UndefinedTagError,
-#                                    IncompatibleNodeError)
-# import nxsconfigserver
-
-
-def myinput(w, text):
-    myio = os.fdopen(w, 'w')
-    myio.write(text)
-
-    # myio.close()
-
-
 # test fixture
 class NXSCreateClientDSDBTest(
         NXSCreateClientDSFSTest.NXSCreateClientDSFSTest):
@@ -88,24 +58,9 @@ class NXSCreateClientDSDBTest(
         NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.__init__(
             self, methodName)
 
-        try:
-            # random seed
-            self.seed = long(binascii.hexlify(os.urandom(16)), 16)
-        except NotImplementedError:
-            import time
-            # random seed
-            self.seed = long(time.time() * 256)  # use fractional seconds
-
-        self.__rnd = random.Random(self.seed)
-
-        self._bint = "int64" if IS64BIT else "int32"
-        self._buint = "uint64" if IS64BIT else "uint32"
-        self._bfloat = "float64" if IS64BIT else "float32"
-
         self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
-        from os.path import expanduser
         home = expanduser("~")
         self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \

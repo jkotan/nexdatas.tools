@@ -43,35 +43,8 @@ if sys.version_info > (3,):
     long = int
 
 
-class mytty(object):
-
-    def __init__(self, underlying):
-        #        underlying.encoding = 'cp437'
-        self.__underlying = underlying
-
-    def __getattr__(self, name):
-        return getattr(self.__underlying, name)
-
-    def isatty(self):
-        return True
-
-
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
-
-# from nxsconfigserver.XMLConfigurator  import XMLConfigurator
-# from nxsconfigserver.Merger import Merger
-# from nxsconfigserver.Errors import (
-# NonregisteredDBRecordError, UndefinedTagError,
-#                                    IncompatibleNodeError)
-# import nxsconfigserver
-
-
-def myinput(w, text):
-    myio = os.fdopen(w, 'w')
-    myio.write(text)
-
-    # myio.close()
 
 
 # test fixture
@@ -119,7 +92,7 @@ For more help:
             # random seed
             self.seed = long(time.time() * 256)  # use fractional seconds
 
-        self.__rnd = random.Random(self.seed)
+        self._rnd = random.Random(self.seed)
 
         self._bint = "int64" if IS64BIT else "int32"
         self._buint = "uint64" if IS64BIT else "uint32"
@@ -237,6 +210,23 @@ For more help:
     def deletecp(self, name):
         os.remove("%s/%s.xml" % (self.directory, name))
 
+    def runtest(self, argv):
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+
+        old_argv = sys.argv
+        sys.argv = argv
+        nxscreate.main()
+        sys.argv = old_argv
+
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+        vl = mystdout.getvalue()
+        er = mystderr.getvalue()
+        return vl, er
+
     # Exception tester
     # \param exception expected exception
     # \param method called method
@@ -262,7 +252,7 @@ For more help:
     def getSelection(self, selectionc):
         return selectionc.selection
 
-    def test_clientds_fs(self):
+    def test_clientds_simple(self):
         """ test nxsccreate clientds file system
         """
         fun = sys._getframe().f_code.co_name
@@ -319,22 +309,9 @@ For more help:
         try:
             for arg in args:
                 if not self.dsexists(arg[1]):
-                    print(arg[1])
                     totest.append(arg[1])
-                    old_stdout = sys.stdout
-                    old_stderr = sys.stderr
-                    sys.stdout = mystdout = StringIO()
-                    sys.stderr = mystderr = StringIO()
 
-                    old_argv = sys.argv
-                    sys.argv = arg[0]
-                    nxscreate.main()
-                    sys.argv = old_argv
-
-                    sys.stdout = old_stdout
-                    sys.stderr = old_stderr
-                    vl = mystdout.getvalue()
-                    er = mystderr.getvalue()
+                    vl, er = self.runtest(arg[0])
 
                     self.assertEqual('', er)
                     self.assertTrue(vl)

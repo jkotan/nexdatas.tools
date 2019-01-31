@@ -43,19 +43,6 @@ if sys.version_info > (3,):
     long = int
 
 
-class mytty(object):
-
-    def __init__(self, underlying):
-        #        underlying.encoding = 'cp437'
-        self.__underlying = underlying
-
-    def __getattr__(self, name):
-        return getattr(self.__underlying, name)
-
-    def isatty(self):
-        return True
-
-
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
 
