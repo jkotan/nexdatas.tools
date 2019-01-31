@@ -65,6 +65,8 @@ except SystemError as e:
 import unittest
 
 import NXSToolsTest
+import NXSCreateClientDSFSTest
+import NXSCreateTest
 
 if not PNI_AVAILABLE and not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
     raise Exception("Please install h5py, h5cpp or pni")
@@ -180,6 +182,7 @@ if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
 if PYTANGO_AVAILABLE:
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
+        import NXSCreateClientDSDBTest
 
 
 # main function
@@ -229,6 +232,15 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSConfigTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateClientDSFSTest))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateTest))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSDBTest))
 
     # test runner
     runner = unittest.TextTestRunner()
