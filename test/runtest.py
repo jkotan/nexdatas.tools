@@ -234,13 +234,13 @@ def main():
                     NXSConfigTest))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateClientDSFSTest))
+                    NXSCreateClientDSDBTest))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFSTest))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateTest))
-    suite.addTests(
-        unittest.defaultTestLoader.loadTestsFromModule(
-            NXSCreateClientDSDBTest))
 
     # test runner
     runner = unittest.TextTestRunner()
