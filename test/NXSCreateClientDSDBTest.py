@@ -121,15 +121,14 @@ class NXSCreateClientDSDBTest(
     # test starter
     # \brief Common set up
     def setUp(self):
-        print("\nsetting up...")
+        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.setUp(self)
         self._sv.setUp()
         self.openConf()
-        print("SEED = %s" % self.seed)
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
-        print("tearing down ...")
+        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.tearDown(self)
         self.closeConfig()
         self._sv.tearDown()
 

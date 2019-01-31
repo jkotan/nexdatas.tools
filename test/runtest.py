@@ -66,6 +66,8 @@ import unittest
 
 import NXSToolsTest
 import NXSCreateClientDSFSTest
+import NXSCreateClientDSFS2Test
+import NXSCreateClientDSFS3Test
 import NXSCreateTest
 
 if not PNI_AVAILABLE and not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
@@ -242,6 +244,12 @@ def main():
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFS2Test))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFS3Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateTest))
