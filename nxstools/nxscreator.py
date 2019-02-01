@@ -269,6 +269,28 @@ class Creator(object):
         return cps
 
     @classmethod
+    def _componentFilesExist(cls, names, fileprefix, directory):
+        """ checks if the components files exist
+
+        :param names: component names
+        :type names: :obj:`list` < :obj:`str` >
+        :param fileprefix: file name prefix
+        :type fileprefix: :obj:`str`
+        :param directory: file directory
+        :type directory: :obj:`str`
+        :param lower: checks lower case name
+        :type lower: :obj:`bool`
+        :returns: a subset of available components
+        :rtype:  :obj:`list` < :obj:`str` >
+        """
+        cps = []
+        for name in names:
+            fname = "%s/%s%s.xml" % (directory, fileprefix, name)
+            if os.path.exists(fname):
+                cps.append(fname)
+        return cps
+
+    @classmethod
     def _areDataSourcesAvailable(cls, names, server, lower=False):
         """ checks if the datasources are available
 
@@ -291,6 +313,28 @@ class Creator(object):
         for name in names:
             if name in adss or (lower and name.lower() in adss):
                 dss.append(name)
+        return dss
+
+    @classmethod
+    def _dataSourceFilesExist(cls, names, fileprefix, directory):
+        """ checks if the datasources files exist
+
+        :param names: datasource names
+        :type names: :obj:`list` < :obj:`str` >
+        :param fileprefix: file name prefix
+        :type fileprefix: :obj:`str`
+        :param directory: file directory
+        :type directory: :obj:`str`
+        :param lower: checks lower case name
+        :type lower: :obj:`bool`
+        :returns: a subset of available datasources
+        :rtype:  :obj:`list` < :obj:`str` >
+        """
+        dss = []
+        for name in names:
+            fname = "%s/%s%s.ds.xml" % (directory, fileprefix, name)
+            if os.path.exists(fname):
+                dss.append(fname)
         return dss
 
     @classmethod
@@ -606,6 +650,12 @@ class ComponentCreator(Creator):
                 if existing:
                     raise CPExistsException(
                         "Components '%s' already exist." % existing)
+        elif not self.options.overwrite:
+            existing = self._componentFilesExist(
+                self.args, self.options.file, self.options.directory)
+            if existing:
+                raise DSExistsException(
+                    "Component files '%s' already exist." % existing)
 
         for i, name in enumerate(self.args):
             dsname = dsargs[i] if dsargs is not None else None
@@ -665,6 +715,12 @@ class TangoDSCreator(Creator):
                 if existing:
                     raise DSExistsException(
                         "DataSources '%s' already exist." % existing)
+        elif not self.options.overwrite:
+            existing = self._dataSourceFilesExist(
+                dsargs, self.options.file, self.options.directory)
+            if existing:
+                raise DSExistsException(
+                    "DataSource files '%s' already exist." % existing)
 
         for i in range(len(dvargs)):
             if not self.options.database:
@@ -726,6 +782,12 @@ class ClientDSCreator(Creator):
                 if existing:
                     raise DSExistsException(
                         "DataSources '%s' already exist." % existing)
+        elif not self.options.overwrite:
+            existing = self._dataSourceFilesExist(
+                dsargs, self.options.file, self.options.directory)
+            if existing:
+                raise DSExistsException(
+                    "DataSource files '%s' already exist." % existing)
 
         for i in range(len(self.args)):
             if not self.options.database:
@@ -760,6 +822,16 @@ class DeviceDSCreator(Creator):
                 if existing:
                     raise DSExistsException(
                         "DataSources '%s' already exist." % existing)
+        elif not self.options.overwrite:
+            dsargs = [
+                "%s%s" % (self.options.datasource.lower(), at.lower())
+                for at in self.args
+            ]
+            existing = self._dataSourceFilesExist(
+                dsargs, self.options.file, self.options.directory)
+            if existing:
+                raise DSExistsException(
+                    "DataSource files '%s' already exist." % existing)
 
         for at in self.args:
             dsname = "%s%s" % (self.options.datasource.lower(), at.lower())
@@ -1152,6 +1224,12 @@ class CPCreator(Creator):
                         [cpname], server, self.options.lower):
                     raise CPExistsException(
                         "Component '%s' already exists." % cpname)
+        elif not self.options.overwrite:
+            existing = self._componentFilesExist(
+                [cpname], self.options.file, self.options.directory)
+            if existing:
+                raise DSExistsException(
+                    "Component files '%s' already exist." % existing)
 
         self.createXMLs()
         server = self.options.server
