@@ -24,7 +24,7 @@ import os
 import sys
 
 try:
-    import PyTango
+    __import__("PyTango")
     # if module PyTango avalable
     PYTANGO_AVAILABLE = True
 except ImportError as e:
@@ -158,7 +158,7 @@ except Exception as e:
 except Exception:
     print("ORACLE not available")
 
-db = PyTango.Database()
+# db = PyTango.Database()
 
 if PNI_AVAILABLE:
     import FileWriterTest
@@ -182,6 +182,7 @@ if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
 
 
 if PYTANGO_AVAILABLE:
+    import NXSCreateTangoDSFSTest
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
@@ -231,6 +232,9 @@ def main():
                 NXSCollectTest))
 
     if PYTANGO_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFSTest))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
