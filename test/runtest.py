@@ -183,10 +183,14 @@ if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
 
 if PYTANGO_AVAILABLE:
     import NXSCreateTangoDSFSTest
+    import NXSCreateTangoDSFS2Test
+    import NXSCreateTangoDSFS3Test
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
         import NXSCreateClientDSDB2Test
+        import NXSCreateTangoDSDBTest
+        import NXSCreateTangoDSDB2Test
 
 
 # main function
@@ -235,6 +239,12 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateTangoDSFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFS3Test))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
@@ -245,6 +255,12 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateClientDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDB2Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))
