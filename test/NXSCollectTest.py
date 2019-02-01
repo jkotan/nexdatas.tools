@@ -155,7 +155,7 @@ For more help:
         try:
             error = False
             method(*args, **kwargs)
-        except Exception:
+        except exception:
             error = True
         self.assertEqual(error, True)
 
