@@ -320,9 +320,298 @@ For more help:
 
                     self.deleteds(arg[1])
         finally:
-            for arg in totest:
-                if self.dsexists(arg[1]):
-                    self.deleteds(arg[1])
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_clientds_first_last(self):
+        """ test nxsccreate clientds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate clientds -v test_exp_c  -l3 %s'
+                 % self.flags).split(),
+                ['test_exp_c01',
+                 'test_exp_c02',
+                 'test_exp_c03'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_c01" type="CLIENT">
+    <record name="test_exp_c01"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_c02" type="CLIENT">
+    <record name="test_exp_c02"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_c03" type="CLIENT">
+    <record name="test_exp_c03"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+            [
+                ('nxscreate clientds -v test_exp_mot  -f2 -l3 %s'
+                 % self.flags).split(),
+                ['test_exp_mot02',
+                 'test_exp_mot03'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_mot02" type="CLIENT">
+    <record name="test_exp_mot02"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_mot03" type="CLIENT">
+    <record name="test_exp_mot03"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+            [
+                ('nxscreate clientds --device test_exp_vfc'
+                 ' --first 2 --last 3 %s' % self.flags).split(),
+                ['test_exp_vfc02',
+                 'test_exp_vfc03'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_vfc02" type="CLIENT">
+    <record name="test_exp_vfc02"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_vfc03" type="CLIENT">
+    <record name="test_exp_vfc03"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_clientds_minimal(self):
+        """ test nxsccreate clientds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate clientds -v test_exp_cc  -m -f3 -l5 %s'
+                 % self.flags).split(),
+                ['test_exp_cc3',
+                 'test_exp_cc4',
+                 'test_exp_cc5'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_cc3" type="CLIENT">
+    <record name="test_exp_cc3"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_cc4" type="CLIENT">
+    <record name="test_exp_cc4"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_cc5" type="CLIENT">
+    <record name="test_exp_cc5"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+            [
+                ('nxscreate clientds -v test_exp_dd '
+                 '--minimal-device --first 3 --last 4 %s'
+                 % self.flags).split(),
+                ['test_exp_dd3',
+                 'test_exp_dd4'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_dd3" type="CLIENT">
+    <record name="test_exp_dd3"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_dd4" type="CLIENT">
+    <record name="test_exp_dd4"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_clientds_source_prefix(self):
+        """ test nxsccreate clientds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate clientds -v testcounter -s test_exp_vc  -f3 -l5 %s'
+                 % self.flags).split(),
+                ['test_exp_vc03',
+                 'test_exp_vc04',
+                 'test_exp_vc05'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_vc03" type="CLIENT">
+    <record name="testcounter03"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_vc04" type="CLIENT">
+    <record name="testcounter04"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_vc05" type="CLIENT">
+    <record name="testcounter05"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+            [
+                ('nxscreate clientds --device testdec '
+                 '--datasource-prefix test_exp_d '
+                 '--first 3 --last 4 %s'
+                 % self.flags).split(),
+                ['test_exp_d03',
+                 'test_exp_d04'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_d03" type="CLIENT">
+    <record name="testdec03"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="test_exp_d04" type="CLIENT">
+    <record name="testdec04"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
 
 
 if __name__ == '__main__':

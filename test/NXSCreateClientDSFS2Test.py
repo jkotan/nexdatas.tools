@@ -66,6 +66,97 @@ class NXSCreateClientDSFS2Test(
             shutil.rmtree(self.directory)
             self._dircreated = False
 
+    def test_clientds_file_prefix(self):
+        """ test nxsccreate clientds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate clientds -x test_ -v exp_vc  -f3 -l5 %s'
+                 % self.flags).split(),
+                ['test_exp_vc03',
+                 'test_exp_vc04',
+                 'test_exp_vc05'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="exp_vc03" type="CLIENT">
+    <record name="exp_vc03"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="exp_vc04" type="CLIENT">
+    <record name="exp_vc04"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="exp_vc05" type="CLIENT">
+    <record name="exp_vc05"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+            [
+                ('nxscreate clientds --device dd '
+                 '--file-prefix test_exp_ '
+                 '--first 3 --last 4 %s'
+                 % self.flags).split(),
+                ['test_exp_dd03',
+                 'test_exp_dd04'],
+                [
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="dd03" type="CLIENT">
+    <record name="dd03"/>
+  </datasource>
+</definition>
+""",
+                    """<?xml version="1.0" ?>
+<definition>
+  <datasource name="dd04" type="CLIENT">
+    <record name="dd04"/>
+  </datasource>
+</definition>
+""",
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            pass
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -897,7 +897,7 @@ class Comp(Runner):
             "i.e. SCALAR, SPECTRUM, IMAGE")
 
         parser.add_argument(
-            "-m", "--minimal_device", action="store_true",
+            "-m", "--minimal-device", action="store_true",
             default=False, dest="minimal",
             help="device name without first '0'")
 
@@ -1004,7 +1004,7 @@ class ClientDS(Runner):
                             default=False, dest="database",
                             help="store datasources in "
                             "Configuration Server database")
-        parser.add_argument("-m", "--minimal_device", action="store_true",
+        parser.add_argument("-m", "--minimal-device", action="store_true",
                             default=False, dest="minimal",
                             help="device name without first '0'")
 
