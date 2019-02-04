@@ -302,7 +302,11 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(arg[0])
 
-                    self.assertEqual('', er)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
                     self.assertTrue(vl)
 
                     for i, ds in enumerate(arg[1]):
@@ -431,7 +435,11 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(arg[0])
 
-                    self.assertEqual('', er)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
                     self.assertTrue(vl)
 
                     for i, ds in enumerate(arg[1]):

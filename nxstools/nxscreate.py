@@ -155,9 +155,8 @@ class TangoDS(Runner):
                 sys.stderr.write("Info: No PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-
             options.server = checkServer()
-            if not options.server:
+            if options.database and not options.server:
                 print("")
                 sys.exit(0)
 
