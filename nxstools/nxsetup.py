@@ -53,7 +53,7 @@ knownHosts = {
     'hastodt': {'beamline': 'p09', 'masterHost': 'hastodt',
                 'user': 'kracht', 'dbname': 'nxsconfig'},
     'haso228jk': {'beamline': 'p09', 'masterHost': 'haso228jk',
-                 'user': 'jkotan', 'dbname': 'nxsconfig'},
+                  'user': 'jkotan', 'dbname': 'nxsconfig'},
     'haso224w': {'beamline': 'p02', 'masterHost': 'haso224w',
                  'user': 'wharmby', 'dbname': 'nxsconfig'},
     'haso213p': {'beamline': 'p22', 'masterHost': 'haso213p',
