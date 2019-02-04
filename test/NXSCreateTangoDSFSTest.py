@@ -74,6 +74,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
         # home = expanduser("~")
         db = PyTango.Database()
         self.host = db.get_db_host().split(".")[0]
+        self.port = db.get_db_port()
         self.directory = "."
         self.flags = ""
 
@@ -207,7 +208,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot01" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="10000"/>\n'
+                    'name="test/motor/01" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -215,7 +216,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="10000"/>\n'
+                    'name="test/motor/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -223,7 +224,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="10000"/>\n'
+                    'name="test/motor/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n'
@@ -240,7 +241,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot01" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="10000"/>\n'
+                    ' name="test/motor/01" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -248,7 +249,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="10000"/>\n'
+                    ' name="test/motor/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -256,7 +257,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="10000"/>\n'
+                    ' name="test/motor/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -272,7 +273,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="test_exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="10000"/>\n'
+                    ' name="test/vm/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -280,7 +281,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="test_exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="10000"/>\n'
+                    ' name="test/vm/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -306,7 +307,8 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
 
                     for i, ds in enumerate(arg[1]):
                         xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] % self.host, xml)
+                        self.assertEqual(
+                            arg[2][i] % (self.host, self.port), xml)
 
                     for ds in arg[1]:
                         self.deleteds(ds)
@@ -333,7 +335,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot01" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="10000"/>\n'
+                    'name="test/motor/01" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -341,7 +343,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="10000"/>\n'
+                    'name="test/motor/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -349,7 +351,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="10000"/>\n'
+                    'name="test/motor/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n'
@@ -367,7 +369,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot01" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="10000"/>\n'
+                    ' name="test/motor/01" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -375,7 +377,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="10000"/>\n'
+                    ' name="test/motor/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -383,7 +385,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="my_exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="10000"/>\n'
+                    ' name="test/motor/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -400,7 +402,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="test_exp_mot02" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="10000"/>\n'
+                    ' name="test/vm/02" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -408,7 +410,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     '<definition>\n'
                     '  <datasource name="test_exp_mot03" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="10000"/>\n'
+                    ' name="test/vm/03" port="%s"/>\n'
                     '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -434,7 +436,8 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
 
                     for i, ds in enumerate(arg[1]):
                         xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] % self.host, xml)
+                        self.assertEqual(
+                            arg[2][i] % (self.host, self.port), xml)
 
                     for ds in arg[1]:
                         self.deleteds(ds)
