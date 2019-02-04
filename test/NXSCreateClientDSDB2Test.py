@@ -15,9 +15,37 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+# \package test nexdatas
+# \file XMLConfiguratorTest.py
+# unittests for field Tags running Tango Server
 #
+import unittest
+import sys
 
-"""  NXS tools release version"""
 
-#: (:obj:`str`) package version
-__version__ = "2.61.6"
+try:
+    import NXSCreateClientDSDBTest
+except Exception:
+    from . import NXSCreateClientDSDBTest
+
+
+if sys.version_info > (3,):
+    unicode = str
+    long = int
+
+
+# test fixture
+class NXSCreateClientDSDB2Test(
+        NXSCreateClientDSDBTest.NXSCreateClientDSDBTest):
+
+    # constructor
+    # \param methodName name of the test method
+    def __init__(self, methodName):
+        NXSCreateClientDSDBTest.NXSCreateClientDSDBTest.__init__(
+            self, methodName)
+
+        self.flags = " -b"
+
+
+if __name__ == '__main__':
+    unittest.main()

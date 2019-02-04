@@ -65,19 +65,6 @@ except Exception:
     pass
 
 
-class mytty(object):
-
-    def __init__(self, underlying):
-        #        underlying.encoding = 'cp437'
-        self.__underlying = underlying
-
-    def __getattr__(self, name):
-        return getattr(self.__underlying, name)
-
-    def isatty(self):
-        return True
-
-
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
 
@@ -168,7 +155,7 @@ For more help:
         try:
             error = False
             method(*args, **kwargs)
-        except Exception:
+        except exception:
             error = True
         self.assertEqual(error, True)
 

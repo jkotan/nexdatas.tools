@@ -37,7 +37,7 @@ from nxstools.nxscreator import (
 #: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
-    __import__("PyTango")
+    import PyTango
     PYTANGO = True
 except Exception:
     pass
@@ -155,9 +155,8 @@ class TangoDS(Runner):
                 sys.stderr.write("Info: No PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-
             options.server = checkServer()
-            if not options.server:
+            if options.database and not options.server:
                 print("")
                 sys.exit(0)
 
@@ -167,8 +166,13 @@ class TangoDS(Runner):
                     "Info: No Tango Host or PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-            hostport = getServerTangoHost(options.server)
-            options.host, options.port = hostport.split(":")
+            if options.server:
+                hostport = getServerTangoHost(options.server)
+                options.host, options.port = hostport.split(":")
+            else:
+                db = PyTango.Database()
+                options.host = db.get_db_host().split(".")[0]
+                options.port = db.get_db_port()
 
         if options.database:
             print("CONFIG SERVER: %s" % str(options.server))
@@ -897,7 +901,7 @@ class Comp(Runner):
             "i.e. SCALAR, SPECTRUM, IMAGE")
 
         parser.add_argument(
-            "-m", "--minimal_device", action="store_true",
+            "-m", "--minimal-device", action="store_true",
             default=False, dest="minimal",
             help="device name without first '0'")
 
@@ -1004,7 +1008,7 @@ class ClientDS(Runner):
                             default=False, dest="database",
                             help="store datasources in "
                             "Configuration Server database")
-        parser.add_argument("-m", "--minimal_device", action="store_true",
+        parser.add_argument("-m", "--minimal-device", action="store_true",
                             default=False, dest="minimal",
                             help="device name without first '0'")
 

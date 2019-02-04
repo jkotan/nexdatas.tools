@@ -24,7 +24,7 @@ import os
 import sys
 
 try:
-    import PyTango
+    __import__("PyTango")
     # if module PyTango avalable
     PYTANGO_AVAILABLE = True
 except ImportError as e:
@@ -65,6 +65,10 @@ except SystemError as e:
 import unittest
 
 import NXSToolsTest
+import NXSCreateClientDSFSTest
+import NXSCreateClientDSFS2Test
+import NXSCreateClientDSFS3Test
+import NXSCreateTest
 
 if not PNI_AVAILABLE and not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
     raise Exception("Please install h5py, h5cpp or pni")
@@ -154,7 +158,7 @@ except Exception as e:
 except Exception:
     print("ORACLE not available")
 
-db = PyTango.Database()
+# db = PyTango.Database()
 
 if PNI_AVAILABLE:
     import FileWriterTest
@@ -178,8 +182,15 @@ if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
 
 
 if PYTANGO_AVAILABLE:
+    import NXSCreateTangoDSFSTest
+    import NXSCreateTangoDSFS2Test
+    import NXSCreateTangoDSFS3Test
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
+        import NXSCreateClientDSDBTest
+        import NXSCreateClientDSDB2Test
+        import NXSCreateTangoDSDBTest
+        import NXSCreateTangoDSDB2Test
 
 
 # main function
@@ -225,10 +236,43 @@ def main():
                 NXSCollectTest))
 
     if PYTANGO_AVAILABLE:
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateTangoDSFS3Test))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSConfigTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateClientDSDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateClientDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDB2Test))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFSTest))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFS2Test))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateClientDSFS3Test))
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateTest))
 
     # test runner
     runner = unittest.TextTestRunner()
