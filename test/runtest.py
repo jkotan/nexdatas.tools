@@ -185,12 +185,17 @@ if PYTANGO_AVAILABLE:
     import NXSCreateTangoDSFSTest
     import NXSCreateTangoDSFS2Test
     import NXSCreateTangoDSFS3Test
+    import NXSCreateDeviceDSFSTest
+    import NXSCreateDeviceDSFS2Test
+    import NXSCreateDeviceDSFS3Test
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
         import NXSCreateClientDSDB2Test
         import NXSCreateTangoDSDBTest
         import NXSCreateTangoDSDB2Test
+        import NXSCreateDeviceDSDBTest
+        import NXSCreateDeviceDSDB2Test
 
 
 # main function
@@ -245,6 +250,15 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateTangoDSFS3Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateDeviceDSFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateDeviceDSFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateDeviceDSFS3Test))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
@@ -261,6 +275,12 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateTangoDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateDeviceDSDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateDeviceDSDB2Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))
