@@ -1,5 +1,6 @@
 2019-02-XX Jan Kotanski <jankotan@gmail.com>
 	* fix for nxscreate -o file
+	* improve finding tango host tangods and deviceds
 	* tagged as v2.61.6
 
 2019-01-15 Jan Kotanski <jankotan@gmail.com>
