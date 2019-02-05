@@ -642,7 +642,6 @@ class ComponentCreator(Creator):
         if dsargs is not None and len(self.args) != len(dsargs):
             raise WrongParameterError(
                 "component names cannot be match into datasource namse")
-
         if self.options.database:
             if not self.options.overwrite:
                 existing = self._areComponentsAvailable(
