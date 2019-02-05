@@ -26,8 +26,9 @@ import random
 import struct
 import binascii
 import time
+# import time
 # import threading
-import PyTango
+# import PyTango
 # import json
 from nxstools import nxscreate
 
@@ -88,7 +89,6 @@ For more help:
             # random seed
             self.seed = long(binascii.hexlify(os.urandom(16)), 16)
         except NotImplementedError:
-            import time
             # random seed
             self.seed = long(time.time() * 256)  # use fractional seconds
 
@@ -98,62 +98,10 @@ For more help:
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
-                      '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
-
         # home = expanduser("~")
 
         self.directory = "."
         self.flags = ""
-
-    # opens config server
-    # \param args connection arguments
-    # \returns NXSConfigServer instance
-    def openConfig(self, args):
-
-        found = False
-        cnt = 0
-        while not found and cnt < 1000:
-            try:
-                sys.stdout.write(".")
-                xmlc = PyTango.DeviceProxy(
-                    self._sv.new_device_info_writer.name)
-                time.sleep(0.01)
-                if xmlc.state() == PyTango.DevState.ON:
-                    found = True
-                found = True
-            except Exception as e:
-                print("%s %s" % (self._sv.new_device_info_writer.name, e))
-                found = False
-            except Exception:
-                found = False
-
-            cnt += 1
-
-        if not found:
-            raise Exception(
-                "Cannot connect to %s"
-                % self._sv.new_device_info_writer.name)
-
-        if xmlc.state() == PyTango.DevState.ON:
-            xmlc.JSONSettings = args
-            xmlc.Open()
-        version = xmlc.version
-        vv = version.split('.')
-        self.revision = long(vv[-1])
-        self.version = ".".join(vv[0:3])
-        self.label = ".".join(vv[3:-1])
-
-        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
-        return xmlc
-
-    # closes opens config server
-    # \param xmlc XMLConfigurator instance
-    def closeConfig(self, xmlc):
-        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
-
-        xmlc.Close()
-        self.assertEqual(xmlc.state(), PyTango.DevState.ON)
 
     # sets xmlconfiguration
     # \param xmlc configuration instance
@@ -177,14 +125,6 @@ For more help:
     # \brief Common tear down
     def tearDown(self):
         print("tearing down ...")
-
-    def openConf(self):
-        pass
-        try:
-            el = self.openConfig(self.__args)
-        except Exception:
-            el = self.openConfig(self.__args2)
-        return el
 
     def dsexists(self, name):
         return os.path.isfile("%s/%s.ds.xml" % (self.directory, name))
