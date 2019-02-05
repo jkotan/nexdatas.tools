@@ -66,7 +66,7 @@ class NXSCreateTangoDSFS2Test(
             shutil.rmtree(self.directory)
             self._dircreated = False
 
-    def ttest_tangods_file_prefix(self):
+    def test_tangods_file_prefix(self):
         """ test nxsccreate tangods file system
         """
         fun = sys._getframe().f_code.co_name
@@ -74,57 +74,63 @@ class NXSCreateTangoDSFS2Test(
 
         args = [
             [
-                ('nxscreate tangods -x test_ -v exp_vc  -f3 -l5 %s'
+                ('nxscreate tangods --device test/motor/ -x my_ '
+                 '--datasource-prefix exp_mot -a Data  --last 3 %s'
                  % self.flags).split(),
-                ['test_exp_vc03',
-                 'test_exp_vc04',
-                 'test_exp_vc05'],
+                ['my_exp_mot01',
+                 'my_exp_mot02',
+                 'my_exp_mot03'],
                 [
-                    """<?xml version="1.0" ?>
-<definition>
-  <datasource name="exp_vc03" type="TANGO">
-    <record name="exp_vc03"/>
-  </datasource>
-</definition>
-""",
-                    """<?xml version="1.0" ?>
-<definition>
-  <datasource name="exp_vc04" type="TANGO">
-    <record name="exp_vc04"/>
-  </datasource>
-</definition>
-""",
-                    """<?xml version="1.0" ?>
-<definition>
-  <datasource name="exp_vc05" type="TANGO">
-    <record name="exp_vc05"/>
-  </datasource>
-</definition>
-""",
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="exp_mot01" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute"'
+                    ' name="test/motor/01" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="exp_mot02" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute"'
+                    ' name="test/motor/02" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="exp_mot03" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute"'
+                    ' name="test/motor/03" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
                 ],
             ],
             [
-                ('nxscreate tangods --device dd '
-                 '--file-prefix test_exp_ '
-                 '--first 3 --last 4 %s'
+                ('nxscreate tangods --device test/vm/ --file-prefix test_exp_ '
+                 ' --datasource-prefix mot -a Voltage '
+                 '--first 2 --last 3 %s'
                  % self.flags).split(),
-                ['test_exp_dd03',
-                 'test_exp_dd04'],
+                ['test_exp_mot02',
+                 'test_exp_mot03'],
                 [
-                    """<?xml version="1.0" ?>
-<definition>
-  <datasource name="dd03" type="TANGO">
-    <record name="dd03"/>
-  </datasource>
-</definition>
-""",
-                    """<?xml version="1.0" ?>
-<definition>
-  <datasource name="dd04" type="TANGO">
-    <record name="dd04"/>
-  </datasource>
-</definition>
-""",
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="mot02" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute"'
+                    ' name="test/vm/02" port="%s"/>\n'
+                    '    <record name="Voltage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="mot03" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute"'
+                    ' name="test/vm/03" port="%s"/>\n'
+                    '    <record name="Voltage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
                 ],
             ],
         ]
@@ -142,17 +148,21 @@ class NXSCreateTangoDSFS2Test(
 
                     vl, er = self.runtest(arg[0])
 
-                    self.assertEqual('', er)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
                     self.assertTrue(vl)
 
                     for i, ds in enumerate(arg[1]):
                         xml = self.getds(ds)
-                        self.assertEqual(arg[2][i], xml)
+                        self.assertEqual(
+                            arg[2][i] % (self.host, self.port), xml)
 
                     for ds in arg[1]:
                         self.deleteds(ds)
         finally:
-            pass
             for ds in totest:
                 if self.dsexists(ds):
                     self.deleteds(ds)
