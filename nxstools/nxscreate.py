@@ -275,7 +275,7 @@ class DeviceDS(Runner):
                 sys.exit(255)
 
             options.server = checkServer()
-            if not options.server:
+            if options.database and not options.server:
                 print("")
                 sys.exit(0)
 
@@ -284,8 +284,13 @@ class DeviceDS(Runner):
                 sys.stderr.write("Info: No Tango Host or PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-            hostport = getServerTangoHost(options.server)
-            options.host, options.port = hostport.split(":")
+            if options.server:
+                hostport = getServerTangoHost(options.server)
+                options.host, options.port = hostport.split(":")
+            else:
+                db = PyTango.Database()
+                options.host = db.get_db_host().split(".")[0]
+                options.port = db.get_db_port()
 
         if options.database:
             print("CONFIG SERVER: %s" % options.server)
