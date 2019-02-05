@@ -196,6 +196,7 @@ if PYTANGO_AVAILABLE:
         import NXSCreateTangoDSDB2Test
         import NXSCreateDeviceDSDBTest
         import NXSCreateDeviceDSDB2Test
+        import NXSCreateDeviceDSFS4Test
 
 
 # main function
@@ -281,6 +282,9 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateDeviceDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateDeviceDSFS4Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))

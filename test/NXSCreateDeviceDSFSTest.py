@@ -328,7 +328,7 @@ class NXSCreateDeviceDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def ttest_deviceds_first_last_fn(self):
+    def test_deviceds_overwrite_false(self):
         """ test nxsccreate deviceds file system
         """
         fun = sys._getframe().f_code.co_name
@@ -336,93 +336,336 @@ class NXSCreateDeviceDSFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate deviceds --device test/motor/  --last 3 %s'
+                ('nxscreate deviceds -v test/pe/1  -s testpe_  '
+                 'Data FilePrefix FileDir  %s'
                  % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
+                ['testpe_fileprefix',
+                 'testpe_filedir',
+                 'testpe_data'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="testpe_fileprefix" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FilePrefix"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="testpe_filedir" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FileDir"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
+                    '  <datasource name="testpe_data" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate deviceds -v tst/pe/1  -s testpe_  '
+                 'Data FilePrefix FileDir  %s'
+                 % self.flags).split(),
+            ],
+            [
+                ('nxscreate deviceds -v test/lambda/1  LastImage FileName '
+                 '--datasource-prefix test_lmb_  %s'
+                 % self.flags).split(),
+                ['test_lmb_lastimage',
+                 'test_lmb_filename'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_lastimage" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="LastImage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_filename" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="FileName"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate deviceds -v test/lmbd/1  LastImage FileName '
+                 '--datasource-prefix test_lmb_  %s'
+                 % self.flags).split(),
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    vl, er = self.runtestexcept(arg[3], Exception)
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i] %
+                                         (self.host, self.port), xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_deviceds_overwrite_true(self):
+        """ test nxsccreate deviceds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate deviceds -v tst/pe/1  -s test2pe_  '
+                 'Data FilePrefix FileDir  %s'
+                 % self.flags).split(),
+                ['test2pe_fileprefix',
+                 'test2pe_filedir',
+                 'test2pe_data'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test2pe_fileprefix" type="TANGO">\n'
+                    '    <device group="test2pe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FilePrefix"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test2pe_filedir" type="TANGO">\n'
+                    '    <device group="test2pe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FileDir"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test2pe_data" type="TANGO">\n'
+                    '    <device group="test2pe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate deviceds -v test/pe/1  -s test2pe_  -o '
+                 'Data FilePrefix FileDir  %s'
+                 % self.flags).split(),
+            ],
+            [
+                ('nxscreate deviceds -v test/lmbd/1  LastImage FileName '
+                 '--datasource-prefix test_lmb_  %s'
+                 % self.flags).split(),
+                ['test_lmb_lastimage',
+                 'test_lmb_filename'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_lastimage" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="LastImage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_filename" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="FileName"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate deviceds -v test/lambda/1  LastImage FileName '
+                 '--overwrite --datasource-prefix test_lmb_  %s'
+                 % self.flags).split(),
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    vl, er = self.runtest(arg[3])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][i] %
+                                         (self.host, self.port), xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_deviceds_nogroup(self):
+        """ test nxsccreate deviceds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate deviceds -v test/pilatus/01 -n '
+                 'TData TCounts TFileName  %s' % self.flags).split(),
+                ['tdata',
+                 'tcounts',
+                 'tfilename'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tdata" type="TANGO">\n'
                     '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TData"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tcounts" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute" '
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TCounts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tfilename" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute" '
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TFileName"/>\n'
                     '  </datasource>\n'
                     '</definition>\n'
                 ],
             ],
             [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot  --last 3 %s'
+                ('nxscreate deviceds -v test/pe/1  -s testpe_ -n '
+                 'Data FilePrefix FileDir  %s'
                  % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
+                ['testpe_fileprefix',
+                 'testpe_filedir',
+                 'testpe_data'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="testpe_fileprefix" type="TANGO">\n'
+                    '    <device hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FilePrefix"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="testpe_filedir" type="TANGO">\n'
+                    '    <device hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FileDir"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="testpe_data" type="TANGO">\n'
+                    '    <device hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
             ],
             [
-                ('nxscreate deviceds --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot --first 2 --last 3 %s'
+                ('nxscreate deviceds -v test/lambda/1  LastImage FileName '
+                 '--no-group --datasource-prefix test_lmb_  %s'
                  % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
+                ['test_lmb_lastimage',
+                 'test_lmb_filename'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="test_lmb_lastimage" type="TANGO">\n'
+                    '    <device hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="LastImage"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
+                    '  <datasource name="test_lmb_filename" type="TANGO">\n'
+                    '    <device hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="FileName"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -461,7 +704,7 @@ class NXSCreateDeviceDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def ttest_deviceds_first_last_attribute(self):
+    def test_deviceds_host_port(self):
         """ test nxsccreate deviceds file system
         """
         fun = sys._getframe().f_code.co_name
@@ -469,204 +712,70 @@ class NXSCreateDeviceDSFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--attribute Counts --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
+                ('nxscreate deviceds -v test/pilatus/01 -u haos1234 -t 20000 '
+                 'TData TCounts TFileName  %s' % self.flags).split(),
+                ['tdata',
+                 'tcounts',
+                 'tfilename'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
+                    '  <datasource name="tdata" type="TANGO">\n'
+                    '    <device hostname="haos1234" member="attribute" '
+                    'name="test/pilatus/01" port="20000"/>\n'
+                    '    <record name="TData"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
+                    '  <datasource name="tcounts" type="TANGO">\n'
+                    '    <device hostname="haos1234" member="attribute" '
+                    'name="test/pilatus/01" port="20000"/>\n'
+                    '    <record name="TCounts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
+                    '  <datasource name="tfilename" type="TANGO">\n'
+                    '    <device hostname="haos1234" member="attribute" '
+                    'name="test/pilatus/01" port="20000"/>\n'
+                    '    <record name="TFileName"/>\n'
                     '  </datasource>\n'
                     '</definition>\n'
                 ],
             ],
             [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
+                ('nxscreate deviceds -v test/pe/1  -s testpe_ --host myhst '
+                 ' --port 12345 Data FilePrefix FileDir  %s'
                  % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
+                ['testpe_fileprefix',
+                 'testpe_filedir',
+                 'testpe_data'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
+                    '  <datasource name="testpe_fileprefix" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="myhst" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="12345"/>\n'
+                    '    <record name="FilePrefix"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
+                    '  <datasource name="testpe_filedir" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="myhst" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="12345"/>\n'
+                    '    <record name="FileDir"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate deviceds --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot -a Voltage '
-                 '--first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_deviceds_first_last_command(self):
-        """ test nxsccreate deviceds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--attribute Counts -e command --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--elementtype command '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/03" port="%s"/>\n'
+                    '  <datasource name="testpe_data" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="myhst" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="12345"/>\n'
                     '    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -697,117 +806,7 @@ class NXSCreateDeviceDSFSTest(unittest.TestCase):
                     for i, ds in enumerate(arg[1]):
                         xml = self.getds(ds)
                         self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_deviceds_first_last_property(self):
-        """ test nxsccreate deviceds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--attribute Counts -e property --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate deviceds --device test/motor/ '
-                 '--elementtype property '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
+                            arg[2][i], xml)
 
                     for ds in arg[1]:
                         self.deleteds(ds)

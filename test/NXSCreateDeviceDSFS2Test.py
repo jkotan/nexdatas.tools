@@ -66,6 +66,144 @@ class NXSCreateDeviceDSFS2Test(
             shutil.rmtree(self.directory)
             self._dircreated = False
 
+    def test_deviceds_file_prefix(self):
+        """ test nxsccreate deviceds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate deviceds -v test/pilatus/01 -x tst_ '
+                 'TData TCounts TFileName  %s' % self.flags).split(),
+                ['tst_tdata',
+                 'tst_tcounts',
+                 'tst_tfilename'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tdata" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute" '
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TData"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tcounts" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute" '
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TCounts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="tfilename" type="TANGO">\n'
+                    '    <device hostname="%s" member="attribute" '
+                    'name="test/pilatus/01" port="%s"/>\n'
+                    '    <record name="TFileName"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n'
+                ],
+            ],
+            [
+                ('nxscreate deviceds -v test/pe/1 -x t2_ -s testpe_  '
+                 'Data FilePrefix FileDir  %s'
+                 % self.flags).split(),
+                ['t2_testpe_fileprefix',
+                 't2_testpe_filedir',
+                 't2_testpe_data'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testpe_fileprefix" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FilePrefix"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testpe_filedir" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="FileDir"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testpe_data" type="TANGO">\n'
+                    '    <device group="testpe_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/pe/1" port="%s"/>\n'
+                    '    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate deviceds -v test/lambda/1  LastImage FileName '
+                 '--datasource-prefix test_lmb_  %s --file-prefix my_'
+                 % self.flags).split(),
+                ['my_test_lmb_lastimage',
+                 'my_test_lmb_filename'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_lastimage" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="LastImage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="test_lmb_filename" type="TANGO">\n'
+                    '    <device group="test_lmb_" hostname="%s" '
+                    'member="attribute"'
+                    ' name="test/lambda/1" port="%s"/>\n'
+                    '    <record name="FileName"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            arg[2][i] % (self.host, self.port), xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
     def ttest_deviceds_file_prefix(self):
         """ test nxsccreate deviceds file system
         """

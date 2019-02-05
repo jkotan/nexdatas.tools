@@ -167,6 +167,119 @@ class NXSCreateDeviceDSDBTest(
     def deletecp(self, name):
         self._proxy.deleteComponents(name)
 
+    def test_deviceds_allattributes(self):
+        """ test nxsccreate deviceds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        device = self._proxy.name()
+        args = [
+            [
+                ('nxscreate deviceds -v %s -s testcs_ '
+                 '%s' % (device, self.flags)).split(),
+                ['testcs_jsonsettings',
+                 'testcs_selection',
+                 'testcs_xmlstring',
+                 'testcs_variables',
+                 'testcs_linkdatasources',
+                 'testcs_version',
+                 'testcs_stepdatasources'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_jsonsettings" '
+                    'type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="JSONSettings"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_selection" type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="Selection"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_xmlstring" type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="XMLString"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_variables" type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="Variables"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_linkdatasources" '
+                    'type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="LinkDataSources"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_version" type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="Version"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_stepdatasources" '
+                    'type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="STEPDataSources"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            arg[2][i] % (self.host, device, self.port), xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
 
 if __name__ == '__main__':
     unittest.main()
