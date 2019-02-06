@@ -290,7 +290,7 @@ class NXSCreateCompFSTest(unittest.TestCase):
                 if self.cpexists(cp):
                     self.deletecp(cp)
 
-    def ttest_comp_first_last(self):
+    def test_comp_first_last(self):
         """ test nxsccreate comp file system
         """
         fun = sys._getframe().f_code.co_name
@@ -298,92 +298,134 @@ class NXSCreateCompFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate comp -v test/motor/  -l3 %s'
+                ('nxscreate comp -v test_exp_mot  -l 3 %s'
                  % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp -v test/motor/  -s my_exp_mot  -l3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate comp -v test/vm/  -s test_exp_mot -f2 -l3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
+                ['test_exp_mot01',
+                 'test_exp_mot02',
                  'test_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s'
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm '
+                 ' -s  test_exp_mot -f 2 -l 3 %s'
+                 % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
                 ],
             ],
@@ -393,12 +435,12 @@ class NXSCreateCompFSTest(unittest.TestCase):
         try:
             for arg in args:
                 skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
+                for cp in arg[1]:
+                    if self.cpexists(cp):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
+                    for cp in arg[1]:
+                        totest.append(cp)
 
                     vl, er = self.runtest(arg[0])
 
@@ -409,617 +451,19 @@ class NXSCreateCompFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_fn(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/  --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot --first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_attribute(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot -a Voltage '
-                 '--first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_command(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts -e command --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--elementtype command '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_property(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts -e property --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--elementtype property '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_host_port(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts -u haso0000 -t 12345 --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/01" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/02" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/03" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--host myhost --port 20000 '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/01" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/02" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/03" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
                         self.assertEqual(
                             arg[2][i], xml)
 
-                    for ds in arg[1]:
-                        self.deleteds(ds)
+                    for cp in arg[1]:
+                        self.deletecp(cp)
         finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
 
-    def ttest_comp_first_last_overwrite_false(self):
+    def test_comp_first_last_fn(self):
         """ test nxsccreate comp file system
         """
         fun = sys._getframe().f_code.co_name
@@ -1027,78 +471,136 @@ class NXSCreateCompFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts --last 3 %s'
+                ('nxscreate comp --device-prefix test_exp_mot  --last 3 %s'
                  % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
+                ['test_exp_mot01',
+                 'test_exp_mot02',
+                 'test_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
                 ],
-                ('nxscreate comp --device test/motor/ --attribute Counts'
-                 ' --last 3 %s'
-                 % self.flags).split(),
             ],
             [
-                ('nxscreate comp --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
+                ('nxscreate comp --device-prefix testmotor '
+                 '--datasource-prefix  my_exp_mot  --last 3 %s'
                  % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
                 ],
-                ('nxscreate comp --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
+            ],
+            [
+                ('nxscreate comp --device-prefix testvm '
+                 ' --datasource-prefix  test_exp_mot --first 2 --last 3 %s'
                  % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
             ],
         ]
 
@@ -1106,12 +608,141 @@ class NXSCreateCompFSTest(unittest.TestCase):
         try:
             for arg in args:
                 skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
+                for cp in arg[1]:
+                    if self.cpexists(cp):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_overwrite_false(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s'
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate comp -v testmotor '
+                 '-s  myexpmot  -l 3 %s'
+                 % self.flags).split(),
+            ],
+            [
+                ('nxscreate comp -v testvm '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+                ('nxscreate comp -v testvm '
+                 ' -s  tstexpmot -f 2 -l 3 %s' % self.flags).split(),
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
 
                     vl, er = self.runtest(arg[0])
 
@@ -1130,19 +761,19 @@ class NXSCreateCompFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] %
-                                         (self.host, self.port), xml)
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
 
-                    for ds in arg[1]:
-                        self.deleteds(ds)
+                    for cp in arg[1]:
+                        self.deletecp(cp)
         finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
 
-    def ttest_comp_first_last_overwrite_true(self):
+    def test_comp_first_last_overwrite_true(self):
         """ test nxsccreate comp file system
         """
         fun = sys._getframe().f_code.co_name
@@ -1150,78 +781,92 @@ class NXSCreateCompFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate comp --device test2/mtr/ --attribute Count '
-                 '--last 3 %s'
+                ('nxscreate comp -v testmotor '
+                 '-s  myexpmot  -l 3 %s'
                  % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
                 ],
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts -o '
-                 '--last 3 %s' % self.flags).split(),
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s --overwrite '
+                 % self.flags).split(),
             ],
             [
-                ('nxscreate comp --device tst/motor/ '
-                 '--datasource-prefix  myexp_mot -a DT  --last 3 %s'
-                 % self.flags).split(),
-                ['myexp_mot01',
-                 'myexp_mot02',
-                 'myexp_mot03'],
+                ('nxscreate comp -v testvm '
+                 ' -s  tstexpmot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
                     '</definition>\n',
                 ],
-                ('nxscreate comp --device test/motor/ --overwrite '
-                 '--datasource-prefix  myexp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
+                ('nxscreate comp -v testvm -o '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
             ],
         ]
 
@@ -1229,12 +874,12 @@ class NXSCreateCompFSTest(unittest.TestCase):
         try:
             for arg in args:
                 skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
+                for cp in arg[1]:
+                    if self.cpexists(cp):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
+                    for cp in arg[1]:
+                        totest.append(cp)
 
                     vl, er = self.runtest(arg[0])
 
@@ -1253,160 +898,17 @@ class NXSCreateCompFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] %
-                                         (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_comp_first_last_group(self):
-        """ test nxsccreate comp file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate comp --device test/motor/ '
-                 '--attribute Counts --group __CLIENT__ --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/motor/  -g __CLIENT__ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate comp --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot -a Voltage '
-                 ' --group __CLIENT__ --first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
                         self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
+                            arg[2][i], xml)
 
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
+                    for cp in arg[1]:
+                        self.deletecp(cp)
         finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
 
 
 if __name__ == '__main__':
