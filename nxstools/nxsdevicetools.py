@@ -280,9 +280,14 @@ def getServerTangoHost(server):
     :returns: tango host
     :rtype: :obj:`str`
     """
-    proxy = openServer(server)
-    host = proxy.get_db_host()
-    port = proxy.get_db_port()
+    if server:
+        proxy = openServer(server)
+        host = proxy.get_db_host()
+        port = proxy.get_db_port()
+    else:
+        db = PyTango.Database()
+        host = db.get_db_host().split(".")[0]
+        port = db.get_db_port()
     shost = str(host).split(".")
     if len(shost) > 0:
         host = shost[0]

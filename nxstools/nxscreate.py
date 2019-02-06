@@ -37,7 +37,7 @@ from nxstools.nxscreator import (
 #: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
-    import PyTango
+    __import__("PyTango")
     PYTANGO = True
 except Exception:
     pass
@@ -157,7 +157,7 @@ class TangoDS(Runner):
                 sys.exit(255)
             options.server = checkServer()
             if options.database and not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
 
         if not options.host:
@@ -166,13 +166,8 @@ class TangoDS(Runner):
                     "Info: No Tango Host or PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-            if options.server:
-                hostport = getServerTangoHost(options.server)
-                options.host, options.port = hostport.split(":")
-            else:
-                db = PyTango.Database()
-                options.host = db.get_db_host().split(".")[0]
-                options.port = db.get_db_port()
+            hostport = getServerTangoHost(options.server)
+            options.host, options.port = hostport.split(":")
 
         if options.database:
             print("CONFIG SERVER: %s" % str(options.server))
@@ -276,7 +271,7 @@ class DeviceDS(Runner):
 
             options.server = checkServer()
             if options.database and not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
 
         if not options.host:
@@ -284,13 +279,8 @@ class DeviceDS(Runner):
                 sys.stderr.write("Info: No Tango Host or PyTango installed\n")
                 sys.stderr.flush()
                 sys.exit(255)
-            if options.server:
-                hostport = getServerTangoHost(options.server)
-                options.host, options.port = hostport.split(":")
-            else:
-                db = PyTango.Database()
-                options.host = db.get_db_host().split(".")[0]
-                options.port = db.get_db_port()
+            hostport = getServerTangoHost(options.server)
+            options.host, options.port = hostport.split(":")
 
         if options.database:
             print("CONFIG SERVER: %s" % options.server)
@@ -397,7 +387,7 @@ class OnlineDS(Runner):
         if not options.server:
             options.server = checkServer()
             if not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
         args = [options.args] if options.args else []
         if not len(args) and os.path.isfile('/online_dir/online.xml'):
@@ -490,20 +480,21 @@ class PoolDS(Runner):
         :type options: :class:`argparse.Namespace`
         """
 
+        parser = self._parser
         if not PYTANGO:
             sys.stderr.write("Info: No PyTango installed\n")
             sys.stderr.flush()
             sys.exit(255)
-
         if not options.server:
             options.server = checkServer()
-            if not options.server:
-                print("")
+            if options.database and not options.server:
+                parser.print_help()
                 sys.exit(0)
+
         if not options.pool:
             options.pool = checkServer("Pool")
             if not options.pool:
-                print("")
+                parser.print_help()
                 sys.exit(0)
         args = options.args
 
@@ -648,7 +639,7 @@ class OnlineCP(Runner):
         if not options.server:
             options.server = checkServer()
             if not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
 
         args = [options.args] if options.args else []
@@ -766,7 +757,7 @@ class StdComp(Runner):
             if not options.server:
                 options.server = checkServer()
                 if not options.server:
-                    print("")
+                    parser.print_help()
                     sys.exit(0)
 
             if options.database:
@@ -937,7 +928,7 @@ class Comp(Runner):
 
             options.server = checkServer()
             if not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
 
         if options.database:
@@ -1040,7 +1031,7 @@ class ClientDS(Runner):
 
             options.server = checkServer()
             if not options.server:
-                print("")
+                parser.print_help()
                 sys.exit(0)
 
         if options.database:

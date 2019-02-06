@@ -1085,6 +1085,8 @@ class OnlineDSCreator(Creator):
         self.datasources = {}
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
+        print(tangohost)
+
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
