@@ -33,9 +33,9 @@ from os.path import expanduser
 # from nxstools import nxscreate
 
 try:
-    import NXSCreateClientDSFSTest
+    import NXSCreateCompFSTest
 except Exception:
-    from . import NXSCreateClientDSFSTest
+    from . import NXSCreateCompFSTest
 
 try:
     import ServerSetUp
@@ -49,13 +49,13 @@ if sys.version_info > (3,):
 
 
 # test fixture
-class NXSCreateClientDSDBTest(
-        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest):
+class NXSCreateCompDBTest(
+        NXSCreateCompFSTest.NXSCreateCompFSTest):
 
     # constructor
     # \param methodName name of the test method
     def __init__(self, methodName):
-        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.__init__(
+        NXSCreateCompFSTest.NXSCreateCompFSTest.__init__(
             self, methodName)
 
         self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
@@ -121,14 +121,14 @@ class NXSCreateClientDSDBTest(
     # test starter
     # \brief Common set up
     def setUp(self):
-        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.setUp(self)
+        NXSCreateCompFSTest.NXSCreateCompFSTest.setUp(self)
         self._sv.setUp()
         self.openConf()
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
-        NXSCreateClientDSFSTest.NXSCreateClientDSFSTest.tearDown(self)
+        NXSCreateCompFSTest.NXSCreateCompFSTest.tearDown(self)
         self.closeConfig()
         self._sv.tearDown()
 
