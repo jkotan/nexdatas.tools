@@ -902,10 +902,6 @@ class Comp(Runner):
             help="device name without first '0'")
 
         parser.add_argument(
-            "-y", "--entryname", dest="entryname",
-            help="entry gourp name (prefix)", default="scan")
-
-        parser.add_argument(
             'args', metavar='component_name',
             type=str, nargs='*',
             help='component names to be created')

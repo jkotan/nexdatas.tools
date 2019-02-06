@@ -1173,6 +1173,1311 @@ class NXSCreateCompFSTest(unittest.TestCase):
                 if self.cpexists(cp):
                     self.deletecp(cp)
 
+    def test_comp_first_last_strategy(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -g INIT '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="INIT"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="INIT"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="INIT"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -g STEP '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -g FINAL '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="FINAL"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="FINAL"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="FINAL"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --strategy POSTRUN '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="POSTRUN"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="POSTRUN"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_units_type(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -u mm -t NX_INT '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01"'
+                    ' type="NX_INT" units="mm">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02"'
+                    ' type="NX_INT" units="mm">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03"'
+                    ' type="NX_INT" units="mm">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --units A --type NX_FLOAT64 '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02"'
+                    ' type="NX_FLOAT64" units="A">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03"'
+                    ' type="NX_FLOAT64" units="A">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_minimal(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -m '
+                 % self.flags).split(),
+                ['testmotor1',
+                 'testmotor2',
+                 'testmotor3'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot1" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot1\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot2" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot2\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot3" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot3\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --minimal '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm2',
+                 'testvm3'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot2" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot2\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot3" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot3\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_links(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-n /$var.entryname#\'scan\'$var.serialno:NXentry/'
+                 'instrument/collection/mydata '
+                 ' -s  my_exp_mot  -l 3 %s -k '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="mydata" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="mydata" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n    <group name="data" type="NXdata">\n'
+                    '      <link name="mydata" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --links '
+                 '-n /$var.entryname#\'scan\'$var.serialno:NXentry/'
+                 'instrument/collection/dt '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="dt" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="dt" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/dt"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="dt" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="dt" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/dt"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_source_links(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-n /$var.entryname#\'scan\'$var.serialno:NXentry/'
+                 'instrument/collection/mydata '
+                 ' -s  my_exp_mot  -l 3 %s -i '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot01" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="mydata" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/mydata"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --source-links '
+                 '-n /$var.entryname#\'scan\'$var.serialno:NXentry/'
+                 'instrument/collection/dt '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="dt" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/dt"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="dt" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/dt"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_source_links_nofield(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -i '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot01" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot01"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot02"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot03"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --source-links '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/test_exp_mot02"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/test_exp_mot03"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_links_nofield(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -k '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot01" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot01"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot02"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n    <group name="data" type="NXdata">\n'
+                    '      <link name="my_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/my_exp_mot03"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --links '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot02" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/test_exp_mot02"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '    <group name="data" type="NXdata">\n'
+                    '      <link name="test_exp_mot03" '
+                    'target="/$var.entryname#\'scan\'$var.serialno:NXentry/'
+                    'instrument/collection/test_exp_mot03"/>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_comp_first_last_chunk(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -c SCALAR '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -c SPECTRUM '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '          <dimensions rank="1"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '          <dimensions rank="1"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '          <dimensions rank="1"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testmotor '
+                 '-s  my_exp_mot  -l 3 %s -c IMAGE '
+                 % self.flags).split(),
+                ['testmotor01',
+                 'testmotor02',
+                 'testmotor03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot01" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot01\n'
+                    '          <dimensions rank="2"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot02\n'
+                    '          <dimensions rank="2"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="my_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.my_exp_mot03\n'
+                    '          <dimensions rank="2"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate comp -v testvm --chunk SPECTRUM '
+                 ' -s  test_exp_mot -f 2 -l 3 %s' % self.flags).split(),
+                ['testvm02',
+                 'testvm03'],
+                [
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot02" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot02\n'
+                    '          <dimensions rank="1"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n<definition>\n'
+                    '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                    ' type="NXentry">\n'
+                    '    <group name="instrument" type="NXinstrument">\n'
+                    '      <group name="collection" type="NXcollection">\n'
+                    '        <field name="test_exp_mot03" type="NX_FLOAT">\n'
+                    '          <strategy mode="STEP"/>\n'
+                    '          $datasources.test_exp_mot03\n'
+                    '          <dimensions rank="1"/>\n'
+                    '        </field>\n'
+                    '      </group>\n'
+                    '    </group>\n'
+                    '  </group>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1]:
+                    if self.cpexists(cp):
+                        skip = True
+                if not skip:
+                    for cp in arg[1]:
+                        totest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, cp in enumerate(arg[1]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for cp in arg[1]:
+                        self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
 
 if __name__ == '__main__':
     unittest.main()
