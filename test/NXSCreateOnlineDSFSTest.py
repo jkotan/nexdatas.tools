@@ -1036,6 +1036,308 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
+    def test_onlineds_attributes(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+    <name>my_test_counter_tango</name>
+    <type>type_tango</type>
+    <module>counter_tango</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_v260</name>
+    <type>type_tango</type>
+    <module>v260</module>
+    <device>mytest/v260/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+
+<device>
+    <name>my_test_dgg2</name>
+    <type>type_tango</type>
+    <module>dgg2</module>
+    <device>mytest/dgg2/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_mca_8701</name>
+    <type>type_tango</type>
+    <module>mca_8701</module>
+    <device>mytest/mca_8701/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_mca_sis3302new</name>
+    <type>type_tango</type>
+    <module>mca_sis3302new</module>
+    <device>mytest/mca_sis3302new/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_mca_sis3302</name>
+    <type>type_tango</type>
+    <module>mca_sis3302</module>
+    <device>mytest/mca_sis3302/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_sis3610</name>
+    <type>type_tango</type>
+    <module>sis3610</module>
+    <device>mytest/sis3610/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_vdot32in</name>
+    <type>type_tango</type>
+    <module>vdot32in</module>
+    <device>mytest/vdot32in/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_sis3820</name>
+    <type>type_tango</type>
+    <module>sis3820</module>
+    <device>mytest/sis3820/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_tip551</name>
+    <type>type_tango</type>
+    <module>tip551</module>
+    <device>mytest/tip551/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_tip850dac</name>
+    <type>type_tango</type>
+    <module>tip850dac</module>
+    <device>mytest/tip850dac/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_tip830</name>
+    <type>type_tango</type>
+    <module>tip830</module>
+    <device>mytest/tip830/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_tip850adc</name>
+    <type>type_tango</type>
+    <module>tip850adc</module>
+    <device>mytest/tip850adc/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_vfcadc</name>
+    <type>type_tango</type>
+    <module>vfcadc</module>
+    <device>mytest/vfcadc/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+
+</hw>
+"""
+
+        args = [
+            [
+                ('nxscreate onlineds %s %s'
+                 % (fname, self.flags)).split(),
+                [
+                    'my_test_counter_tango',
+                    'my_test_v260',
+                    'my_test_dgg2',
+                    'my_test_mca_8701',
+                    'my_test_mca_sis3302new',
+                    'my_test_mca_sis3302',
+                    'my_test_sis3610',
+                    'my_test_vdot32in',
+                    'my_test_sis3820',
+                    'my_test_tip551',
+                    'my_test_tip850dac',
+                    'my_test_tip830',
+                    'my_test_tip850adc',
+                    'my_test_vfcadc',
+                ],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_counter_tango" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/vcexecutor/ct"'
+                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_v260" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/v260/ct"'
+                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_dgg2" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/dgg2/ct"'
+                    ' port="10000"/>\n    <record name="SampleTime"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_mca_8701" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/mca_8701/ct"'
+                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_mca_sis3302new" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/mca_sis3302new/ct"'
+                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_mca_sis3302" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/mca_sis3302/ct"'
+                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_sis3610" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/sis3610/ct"'
+                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_vdot32in" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/vdot32in/ct"'
+                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_sis3820" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/sis3820/ct"'
+                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_tip551" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/tip551/ct"'
+                    ' port="10000"/>\n    <record name="Voltage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_tip850dac" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/tip850dac/ct"'
+                    ' port="10000"/>\n    <record name="Voltage"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_tip830" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/tip830/ct"'
+                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_tip850adc" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/tip850adc/ct"'
+                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_test_vfcadc" type="TANGO">\n'
+                    '    <device group="__CLIENT__" hostname="haso000"'
+                    ' member="attribute" name="mytest/vfcadc/ct"'
+                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertTrue(er.startswith(
+                            "Info"))
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            os.remove(fname)
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
 
 if __name__ == '__main__':
     unittest.main()
