@@ -1160,7 +1160,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
     <control>tango</control>
     <hostname>haso000:10000</hostname>
 </device>
-
 </hw>
 """
 
@@ -1187,7 +1186,8 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_counter_tango" type="TANGO">\n'
+                    '  <datasource name="my_test_counter_tango"'
+                    ' type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
                     ' member="attribute" name="mytest/vcexecutor/ct"'
                     ' port="10000"/>\n    <record name="Counts"/>\n'
@@ -1219,7 +1219,8 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     '</definition>\n',
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_mca_sis3302new" type="TANGO">\n'
+                    '  <datasource name="my_test_mca_sis3302new"'
+                    ' type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
                     ' member="attribute" name="mytest/mca_sis3302new/ct"'
                     ' port="10000"/>\n    <record name="Data"/>\n'
