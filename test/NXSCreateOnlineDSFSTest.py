@@ -819,7 +819,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
     <control>tango</control>
     <hostname>haso000:10000</hostname>
 </device>
-
 <device>
     <name>my_spk</name>
     <type>motor</type>
@@ -877,7 +876,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     'my_oms58',
                     'my_e6c',
                     'my_omsmaxv',
-
                     'my_spk',
                     'my_pie710',
                     'my_pie712',
@@ -901,6 +899,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_tango_motor" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -908,6 +907,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_kohzu" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -915,6 +915,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_smchydra" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -922,6 +923,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_lom" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -929,6 +931,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_oms58" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -936,6 +939,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_e6c" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -943,6 +947,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_omsmaxv" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -950,7 +955,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_spk" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -958,6 +963,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_pie710" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -965,6 +971,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_pie712" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -972,6 +979,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_e6c_p09_eh2" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
@@ -979,6 +987,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     ' port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
                     '<definition>\n'
                     '  <datasource name="my_smaract" type="TANGO">\n'
                     '    <device group="__CLIENT__" hostname="haso000"'
