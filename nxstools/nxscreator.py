@@ -1091,8 +1091,11 @@ class OnlineDSCreator(Creator):
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         dscps = {}
-        if self._printouts and not hasattr(self.options, "directory") or \
-           not self.options.directory:
+        if self.options.server and self._printouts and \
+           (
+               not hasattr(self.options, "directory") or
+               not self.options.directory
+           ):
             try:
                 dscps = getDataSourceComponents(
                     self.options.server, self.options.verbose)
@@ -1523,7 +1526,6 @@ class OnlineCPCreator(CPCreator):
         cpname = self.options.component
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
-
         while device:
             if device.nodeName == 'device':
                 name = self._getChildText(device, "name")
@@ -1675,8 +1677,11 @@ class StandardCPCreator(CPCreator):
         host, port = getServerTangoHost(server).split(":")
         self.__specialparams['__tangohost__'] = host
         self.__specialparams['__tangoport__'] = port
-        proxy = openServer(server)
-        self.__specialparams['__configdevice__'] = proxy.name()
+        if server:
+            proxy = openServer(server)
+            self.__specialparams['__configdevice__'] = proxy.name()
+        else:
+            self.__specialparams['__configdevice__'] = None
 
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
@@ -1725,8 +1730,12 @@ class StandardCPCreator(CPCreator):
                     if var in self.__params.keys():
                         xml = xml.replace("$(%s)" % var, self.__params[var])
                     elif var in self.__specialparams.keys():
-                        xml = xml.replace("$(%s)" % var,
-                                          self.__specialparams[var])
+                        if self.__specialparams[var] is not None:
+                            xml = xml.replace("$(%s)" % var,
+                                              self.__specialparams[var])
+                        else:
+                            raise Exception(
+                                "Parameter: %s cannot be found" % var)
                     elif desc["default"] is not None:
                         xml = xml.replace("$(%s)" % var, desc["default"])
                     else:

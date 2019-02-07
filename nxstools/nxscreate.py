@@ -386,7 +386,7 @@ class OnlineDS(Runner):
 
         if not options.server:
             options.server = checkServer()
-            if not options.server:
+            if not options.server and options.database:
                 parser.print_help()
                 sys.exit(0)
         args = [options.args] if options.args else []
@@ -638,7 +638,7 @@ class OnlineCP(Runner):
 
         if not options.server:
             options.server = checkServer()
-            if not options.server:
+            if not options.server and options.database:
                 parser.print_help()
                 sys.exit(0)
 
@@ -756,10 +756,9 @@ class StdComp(Runner):
         if options.component and options.cptype:
             if not options.server:
                 options.server = checkServer()
-                if not options.server:
+                if not options.server and options.database:
                     parser.print_help()
                     sys.exit(0)
-
             if options.database:
                 print("SERVER: %s" % options.server)
             else:
