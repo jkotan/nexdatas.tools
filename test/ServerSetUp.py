@@ -32,13 +32,15 @@ class ServerSetUp(object):
 
     # constructor
     # \brief defines server parameters
-    def __init__(self):
+    def __init__(self, instance="MCSTEST",
+                 dvname="testp09/testmcs/testr228"):
         # information about tango writer
         self.new_device_info_writer = PyTango.DbDevInfo()
         self.new_device_info_writer._class = "NXSConfigServer"
-        self.new_device_info_writer.server = "NXSConfigServer/MCSTEST"
-        self.new_device_info_writer.name = "testp09/testmcs/testr228"
-
+        self.new_device_info_writer.server = "NXSConfigServer/%s" % instance
+        self.new_device_info_writer.name = dvname
+        self.__instance = instance
+        self.__dvname = dvname
         self._psub = None
 
     # test starter
@@ -54,12 +56,13 @@ class ServerSetUp(object):
         if os.path.isfile("../NXSConfigServer"):
             self._psub = subprocess.call(
                 "export PYTHONPATH= ;cd ..; "
-                "python ./NXSConfigServer MCSTEST &",
+                "python ./NXSConfigServer %s &" % self.__instance,
                 stdout=None,
                 stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
-                "export PYTHONPATH= ;NXSConfigServer MCSTEST &", stdout=None,
+                "export PYTHONPATH= ;NXSConfigServer %s &" % self.__instance,
+                stdout=None,
                 stderr=None, shell=True)
         sys.stdout.write("waiting for server.")
 
@@ -87,7 +90,8 @@ class ServerSetUp(object):
 
         if sys.version_info > (3,):
             with subprocess.Popen(
-                    "ps -ef | grep 'NXSConfigServer MCSTEST' | grep -v grep",
+                    "ps -ef | grep 'NXSConfigServer %s' | grep -v grep"
+                    % self.__instance,
                     stdout=subprocess.PIPE, shell=True) as proc:
 
                 pipe = proc.stdout
@@ -101,7 +105,8 @@ class ServerSetUp(object):
                 pipe.close()
         else:
             pipe = subprocess.Popen(
-                "ps -ef | grep 'NXSConfigServer MCSTEST' | grep -v grep",
+                "ps -ef | grep 'NXSConfigServer %s' | grep -v grep"
+                % self.__instance,
                 stdout=subprocess.PIPE, shell=True).stdout
 
             res = str(pipe.read()).split("\n")
