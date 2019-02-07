@@ -56,7 +56,7 @@ class TestCommand(Command):
     def run(self):
         import sys
         import subprocess
-        errno = subprocess.call([sys.executable, 'test/runtest.py'])
+        errno = subprocess.call([sys.executable, 'test'])
         raise SystemExit(errno)
 
 

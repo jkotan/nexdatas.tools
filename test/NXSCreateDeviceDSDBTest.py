@@ -157,7 +157,7 @@ class NXSCreateDeviceDSDBTest(
     def getcp(self, name):
         avcp = self._proxy.availableComponents()
         self.assertTrue(name in avcp)
-        xmls = self._proxy.componens([name])
+        xmls = self._proxy.components([name])
         self.assertEqual(len(xmls), 1)
         return xmls[0]
 
@@ -165,7 +165,7 @@ class NXSCreateDeviceDSDBTest(
         self._proxy.deleteDataSource(name)
 
     def deletecp(self, name):
-        self._proxy.deleteComponents(name)
+        self._proxy.deleteComponent(name)
 
     def test_deviceds_allattributes(self):
         """ test nxsccreate deviceds file system

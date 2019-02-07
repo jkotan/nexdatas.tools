@@ -185,15 +185,25 @@ if PYTANGO_AVAILABLE:
     import NXSCreateTangoDSFSTest
     import NXSCreateTangoDSFS2Test
     import NXSCreateTangoDSFS3Test
+
     import NXSCreateDeviceDSFSTest
     import NXSCreateDeviceDSFS2Test
     import NXSCreateDeviceDSFS3Test
+
+    import NXSCreateCompFSTest
+    import NXSCreateCompFS2Test
+    import NXSCreateCompFS3Test
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
         import NXSCreateClientDSDB2Test
+
         import NXSCreateTangoDSDBTest
         import NXSCreateTangoDSDB2Test
+
+        import NXSCreateCompDBTest
+        import NXSCreateCompDB2Test
+
         import NXSCreateDeviceDSDBTest
         import NXSCreateDeviceDSDB2Test
         import NXSCreateDeviceDSFS4Test
@@ -251,6 +261,7 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateTangoDSFS3Test))
+
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateDeviceDSFSTest))
@@ -260,6 +271,16 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateDeviceDSFS3Test))
+
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateCompFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateCompFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateCompFS3Test))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
@@ -285,6 +306,12 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateDeviceDSFS4Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateCompDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateCompDB2Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))
