@@ -310,6 +310,159 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
+    def test_onlineds_stepping_motor_noclientlike(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>my_oh1_mot01</name>
+ <type>stepping_motor</type>
+ <module>oms58</module>
+ <device>p09/motor/oh1.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_oh1</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/oh1</rootdevicename>
+</device>
+<device>
+ <name>my_oh1_mot02</name>
+ <type>stepping_motor</type>
+ <module>oms58</module>
+ <device>p09/motor/oh1.02</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_oh1</controller>
+ <channel>2</channel>
+ <rootdevicename>p09/motor/oh1</rootdevicename>
+</device>
+<device>
+ <name>my_oh1_mot03</name>
+ <type>stepping_motor</type>
+ <module>oms58</module>
+ <device>p09/motor/oh1.03</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_oh1</controller>
+ <channel>3</channel>
+ <rootdevicename>p09/motor/oh1</rootdevicename>
+</device>
+</hw>
+"""
+
+        args = [
+            [
+                ('nxscreate onlineds -t %s %s'
+                 % (fname, self.flags)).split(),
+                ['my_oh1_mot01',
+                 'my_oh1_mot02',
+                 'my_oh1_mot03'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot01" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.01" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot02" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.02" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot03" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.03" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+            [
+                ('nxscreate onlineds --noclientlike %s %s'
+                 % (fname, self.flags)).split(),
+                ['my_oh1_mot01',
+                 'my_oh1_mot02',
+                 'my_oh1_mot03'],
+                [
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot01" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.01" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot02" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.02" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="my_oh1_mot03" type="TANGO">\n'
+                    '    <device hostname="haso000"'
+                    ' member="attribute" name="p09/motor/oh1.03" '
+                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                ],
+            ],
+        ]
+
+        totest = []
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertTrue(er.startswith(
+                            "Info"))
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            arg[2][i], xml)
+
+                    for ds in arg[1]:
+                        self.deleteds(ds)
+        finally:
+            os.remove(fname)
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
 
 if __name__ == '__main__':
     unittest.main()
