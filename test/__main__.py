@@ -202,15 +202,23 @@ if PYTANGO_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
         import NXSCreateClientDSDB2Test
+        import NXSCreateClientDSDBRTest
+        import NXSCreateClientDSDBR2Test
 
         import NXSCreateTangoDSDBTest
         import NXSCreateTangoDSDB2Test
+        import NXSCreateTangoDSDBRTest
+        import NXSCreateTangoDSDBR2Test
 
         import NXSCreateCompDBTest
         import NXSCreateCompDB2Test
+        import NXSCreateCompDBRTest
+        import NXSCreateCompDBR2Test
 
         import NXSCreateDeviceDSDBTest
         import NXSCreateDeviceDSDB2Test
+        import NXSCreateDeviceDSDBRTest
+        import NXSCreateDeviceDSDBR2Test
         import NXSCreateDeviceDSFS4Test
 
         import NXSCreateOnlineDSDBTest
@@ -305,6 +313,7 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSConfigTest))
+
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateClientDSDBTest))
@@ -313,10 +322,23 @@ def main():
                     NXSCreateClientDSDB2Test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateClientDSDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateClientDSDBR2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateTangoDSDBTest))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateTangoDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateTangoDSDBR2Test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
@@ -339,13 +361,26 @@ def main():
                     NXSCreateDeviceDSDB2Test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateDeviceDSDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateDeviceDSDBR2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateDeviceDSFS4Test))
+
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateCompDBTest))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateCompDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateCompDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateCompDBR2Test))
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateClientDSFSTest))
