@@ -27,7 +27,7 @@ import sys
 # import binascii
 # import time
 # import threading
-# import PyTango
+import PyTango
 from os.path import expanduser
 # import json
 # from nxstools import nxscreate
@@ -70,18 +70,36 @@ class NXSCreateOnlineDSDBRTest(
             instance="AMCSTEST2",
             dvname="aatestp09/testmcs2/testr228")
         self._proxy = None
-        self.flags = " --database --server testp09/testmcs/testr228 "
+        self._proxy2 = None
+        self.flags = " --database --server aatestp09/testmcs2/testr228 "
+
+    def openConf2(self):
+        try:
+            el = self.openConfig(self.__args, self._sv2)
+        except Exception:
+            el = self.openConfig(self.__args2, self._sv2)
+        self._proxy2 = el
+
+    # closes opens config server
+    # \param xmlc XMLConfigurator instance
+    def closeConfig2(self):
+        self.assertEqual(self._proxy2.state(), PyTango.DevState.OPEN)
+
+        self._proxy2.Close()
+        self.assertEqual(self._proxy2.state(), PyTango.DevState.ON)
 
     # test starter
     # \brief Common set up
     def setUp(self):
         self._sv2.setUp()
+        self.openConf2()
         NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest.setUp(self)
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
         NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest.tearDown(self)
+        self.closeConfig2()
         self._sv2.tearDown()
 
 

@@ -225,6 +225,8 @@ if PYTANGO_AVAILABLE:
         import NXSCreateOnlineDSDB2Test
         import NXSCreateOnlineDSDBRTest
         import NXSCreateOnlineDSDBR2Test
+        import NXSCreateOnlineDSDBETest
+        import NXSCreateOnlineDSDBE2Test
 
 
 # main function
@@ -352,6 +354,13 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateOnlineDSDBR2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineDSDBETest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineDSDBE2Test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(

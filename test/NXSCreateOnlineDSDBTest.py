@@ -72,21 +72,22 @@ class NXSCreateOnlineDSDBTest(
     # opens config server
     # \param args connection arguments
     # \returns NXSConfigServer instance
-    def openConfig(self, args):
-
+    def openConfig(self, args, sv=None):
+        if not sv:
+            sv = self._sv
         found = False
         cnt = 0
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
                 xmlc = PyTango.DeviceProxy(
-                    self._sv.new_device_info_writer.name)
+                    sv.new_device_info_writer.name)
                 time.sleep(0.01)
                 if xmlc.state() == PyTango.DevState.ON:
                     found = True
                 found = True
             except Exception as e:
-                print("%s %s" % (self._sv.new_device_info_writer.name, e))
+                print("%s %s" % (sv.new_device_info_writer.name, e))
                 found = False
             except Exception:
                 found = False
@@ -96,7 +97,7 @@ class NXSCreateOnlineDSDBTest(
         if not found:
             raise Exception(
                 "Cannot connect to %s"
-                % self._sv.new_device_info_writer.name)
+                % sv.new_device_info_writer.name)
 
         if xmlc.state() == PyTango.DevState.ON:
             xmlc.JSONSettings = args
