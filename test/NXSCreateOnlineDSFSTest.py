@@ -1504,7 +1504,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                             except Exception as e:
                                 print(e)
                                 tsv.dp.CreateAttribute(el)
-                                
+
                     skip = False
                     for el in attr:
                         if self.dsexists(
