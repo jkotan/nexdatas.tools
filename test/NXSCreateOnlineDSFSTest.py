@@ -30,11 +30,17 @@ import binascii
 import PyTango
 # import json
 from nxstools import nxscreate
+from nxstools import nxsdevicetools
 
 try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
+
+try:
+    import TestServerSetUp
+except ImportError:
+    from . import TestServerSetUp
 
 
 if sys.version_info > (3,):
@@ -1339,7 +1345,96 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def test_onlineds_attributes_nomudule(self):
+    def test_onlineds_attributes_alias(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = '<?xml version="1.0"?>\n' \
+              '<hw>\n' \
+              '<device>\n' \
+              '    <name>%s</name>\n' \
+              '    <type>type_tango</type>\n' \
+              '    <module>counter_tango</module>\n' \
+              '    <device>%s</device>\n' \
+              '    <control>tango</control>\n' \
+              '    <hostname>haso000:10000</hostname>\n' \
+              '</device>\n' \
+              '</hw>\n'
+
+        dsout = \
+            '<?xml version="1.0" ?>\n' \
+            '<definition>\n' \
+            '  <datasource name="%s"' \
+            ' type="TANGO">\n' \
+            '    <device group="__CLIENT__" hostname="%s"' \
+            ' member="attribute" name="%s"' \
+            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  </datasource>\n' \
+            '</definition>\n'
+
+        command = ('nxscreate onlineds %s %s'
+                   % (fname, self.flags)).split()
+
+        args = [
+            ['my_test_%s' % ky, "mytest/%s/00" % ky, vl[0]]
+            for ky, vl in nxsdevicetools.moduleAttributes.items()
+            if ky not in nxsdevicetools.moduleAttributes.keys()
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                ds = arg[0]
+                dv = arg[1]
+                attr = arg[2]
+                print("%s %s %s " % (ds, dv, attr))
+                if os.path.isfile(fname):
+                    raise Exception("Test file %s exists" % fname)
+                print(xml % (ds, dv))
+                with open(fname, "w") as fl:
+                    fl.write(xml % (ds, dv))
+                try:
+                    tsv = TestServerSetUp.TestServerSetUp(
+                        dv, "MYTESTS1",
+                        ds
+                    )
+                    tsv.setUp()
+                    skip = False
+                    if self.dsexists(ds):
+                        skip = True
+                    if not skip:
+                        totest.append(ds)
+
+                        vl, er = self.runtest(command)
+
+                        if er:
+                            self.assertTrue(er.startswith(
+                                "Info"))
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        dsxml = self.getds(ds)
+                        self.assertEqual(
+                            dsout % (ds, self.host, dv, self.port, attr),
+                            dsxml)
+
+                        self.deleteds(ds)
+                finally:
+                    os.remove(fname)
+                    if tsv:
+                        tsv.tearDown()
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_onlineds_attributes_nomodule(self):
         """ test nxsccreate onlineds file system
         """
         fun = sys._getframe().f_code.co_name
