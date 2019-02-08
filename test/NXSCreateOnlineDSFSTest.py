@@ -1497,13 +1497,13 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                         ds
                     )
                     tsv.setUp()
-                    for el in attr:
-                        if el not in [""]:
-                            try:
-                                tsv.dp.CreateAttribute(el)
-                            except Exception as e:
-                                print(e)
-                                tsv.dp.CreateAttribute(el)
+                    # for el in attr:
+                    #     if el not in [""]:
+                    #         try:
+                    #             tsv.dp.CreateAttribute(el)
+                    #         except Exception as e:
+                    #             print(e)
+                    #             tsv.dp.CreateAttribute(el)
 
                     skip = False
                     for el in attr:
