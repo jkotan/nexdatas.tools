@@ -1481,8 +1481,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 dv = arg[1]
                 attr = list(arg[2])
                 module = arg[3]
-                if module not in ["limaccd", "limaccds"]:
-                    continue
                 if ("%s@pool" % module) in \
                    nxsdevicetools.moduleMultiAttributes.keys():
                     attr.extend(
@@ -1662,9 +1660,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     self.assertTrue(vl)
                     for i, ds in enumerate(arg[1]):
                         self.assertTrue(
-                            vl.split("\n")[i + 3].startswith(
-                                "SKIPPING %s:    " % (ds)
-                            )
+                            "SKIPPING %s:    " % (ds) in vl
                         )
         finally:
             os.remove(fname)
