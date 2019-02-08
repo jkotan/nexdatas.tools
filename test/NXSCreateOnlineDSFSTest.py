@@ -1339,6 +1339,125 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
+    def test_onlineds_attributes_nomudule(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+    <name>my_test_mythenroi</name>
+    <type>type_tango</type>
+    <module>mythenroi</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_mca8715roi</name>
+    <type>type_tango</type>
+    <module>mca8715roi</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_sis3302roi</name>
+    <type>type_tango</type>
+    <module>sis3302roi</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_sis3302</name>
+    <type>type_tango</type>
+    <module>sis3302</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_sis3302multiscan</name>
+    <type>type_tango</type>
+    <module>sis3302multiscan</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_tangoattributectctrl</name>
+    <type>type_tango</type>
+    <module>tangoattributectctrl</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+<device>
+    <name>my_test_xmcd</name>
+    <type>type_tango</type>
+    <module>xmcd</module>
+    <device>mytest/vcexecutor/ct</device>
+    <control>tango</control>
+    <hostname>haso000:10000</hostname>
+</device>
+
+</hw>
+"""
+
+        args = [
+            [
+                ('nxscreate onlineds %s %s'
+                 % (fname, self.flags)).split(),
+                [
+                    'my_test_mythenroi',
+                    'my_test_mca8715roi',
+                    'my_test_sis3302roi',
+                    'my_test_sis3302',
+                    'my_test_sis3302multiscan',
+                    'my_test_tangoattributectctrl',
+                    'my_test_xmcd',
+                ],
+            ],
+        ]
+
+        totest = []
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+        try:
+            for arg in args:
+                skip = False
+                for ds in arg[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertTrue(er.startswith(
+                            "Info"))
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for i, ds in enumerate(arg[1]):
+                        self.assertTrue(
+                            vl.split("\n")[i + 3].startswith(
+                                "SKIPPING %s:    " % (ds)
+                            )
+                        )
+        finally:
+            os.remove(fname)
+
 
 if __name__ == '__main__':
     unittest.main()
