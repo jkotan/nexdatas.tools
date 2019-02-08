@@ -424,8 +424,11 @@ def _remoteCall(server, func, *args, **kwargs):
         os.environ['TANGO_HOST'] = lserver
 
     res = func(*args, **kwargs)
-    if lserver and localtango is not None:
-        os.environ['TANGO_HOST'] = localtango
+    if lserver:
+        if localtango is not None:
+            os.environ['TANGO_HOST'] = localtango
+        else:
+            os.environ.pop('TANGO_HOST')
     return res
 
 
