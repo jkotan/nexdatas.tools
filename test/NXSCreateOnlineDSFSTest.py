@@ -1434,6 +1434,122 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
+    def test_onlineds_attributes_multi(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = '<?xml version="1.0"?>\n' \
+              '<hw>\n' \
+              '<device>\n' \
+              '    <name>%s</name>\n' \
+              '    <type>type_tango</type>\n' \
+              '    <module>%s</module>\n' \
+              '    <device>%s</device>\n' \
+              '    <control>tango</control>\n' \
+              '    <hostname>%s:%s</hostname>\n' \
+              '</device>\n' \
+              '</hw>\n'
+
+        dsout = \
+            '<?xml version="1.0" ?>\n' \
+            '<definition>\n' \
+            '  <datasource name="%s"' \
+            ' type="TANGO">\n' \
+            '    <device group="%s" hostname="%s"' \
+            ' member="attribute" name="%s"' \
+            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  </datasource>\n' \
+            '</definition>\n'
+
+        command = ('nxscreate onlineds %s %s'
+                   % (fname, self.flags)).split()
+
+        args = [
+            ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
+            for ky, vl in nxsdevicetools.moduleMultiAttributes.items()
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                ds = arg[0]
+                dv = arg[1]
+                attr = list(arg[2])
+                module = arg[3]
+                if module not in ["limaccd", "limaccds"]:
+                    continue
+                if ("%s@pool" % module) in \
+                   nxsdevicetools.moduleMultiAttributes.keys():
+                    attr.extend(
+                        nxsdevicetools.moduleMultiAttributes[
+                            "%s@pool" % module])
+                    attr.append("")
+                if os.path.isfile(fname):
+                    raise Exception("Test file %s exists" % fname)
+                with open(fname, "w") as fl:
+                    fl.write(xml % (ds, module, dv, self.host, self.port))
+                try:
+                    tsv = TestServerSetUp.TestServerSetUp(
+                        dv, "MYTESTS1",
+                        ds
+                    )
+                    tsv.setUp()
+                    for el in attr:
+                        if el not in [""]:
+                            tsv.dp.CreateAttribute(el)
+                    skip = False
+                    for el in attr:
+                        if self.dsexists(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds):
+                            skip = True
+                    if not skip:
+                        for el in attr:
+                            totest.append(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+
+                        vl, er = self.runtest(command)
+
+                        if er:
+                            self.assertTrue(er.startswith(
+                                "Info"))
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        for el in attr:
+                            dsxml = self.getds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                            self.assertEqual(
+                                dsout % (
+                                    "%s_%s" % (ds, el.lower()) if el else ds,
+                                    "%s_" % (ds) if el else "__CLIENT__",
+                                    self.host, dv, self.port, el or "Value"),
+                                dsxml)
+
+                        for el in attr:
+                            self.deleteds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                finally:
+                    os.remove(fname)
+                    if tsv:
+                        tsv.tearDown()
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
     def test_onlineds_attributes_nomodule(self):
         """ test nxsccreate onlineds file system
         """
