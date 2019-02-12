@@ -1724,7 +1724,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
             for ky, vl in nxsextrasp00.moduleMultiAttributes.items()
         ]
-        print((nxsextrasp00.moduleMultiAttributes.keys()))
 
         totest = []
         try:
