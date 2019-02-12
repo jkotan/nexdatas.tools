@@ -1690,8 +1690,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
         fname = '%s/%s%s.xml' % (
             os.getcwd(), self.__class__.__name__, fun)
 
-        sys.path.append(os.getcwd())
-        
         xml = '<?xml version="1.0"?>\n' \
               '<hw>\n' \
               '<device>\n' \
@@ -1716,9 +1714,9 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             '</definition>\n'
 
         commands = [
-            ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
+            ('nxscreate onlineds -p nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
-            ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
+            ('nxscreate onlineds --xml-package nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
         ]
 
