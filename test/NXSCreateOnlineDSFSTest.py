@@ -1559,7 +1559,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-
     def test_onlineds_attributes_multi_xmltemplates(self):
         """ test nxsccreate onlineds file system
         """
@@ -1726,7 +1725,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             for ky, vl in nxsextrasp00.moduleMultiAttributes.items()
         ]
         print((nxsextrasp00.moduleMultiAttributes.keys()))
-        
+
         totest = []
         try:
             for ci, arg in enumerate(args):
