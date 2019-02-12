@@ -1714,9 +1714,9 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             '</definition>\n'
 
         commands = [
-            ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
+            ('nxscreate onlineds -p nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
-            ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
+            ('nxscreate onlineds --xml-package nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
         ]
 
@@ -1724,7 +1724,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
             for ky, vl in nxsextrasp00.moduleMultiAttributes.items()
         ]
-        print((nxsextrasp00.moduleMultiAttributes.keys()))
 
         totest = []
         try:
