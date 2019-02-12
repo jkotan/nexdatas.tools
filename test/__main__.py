@@ -198,6 +198,10 @@ if PYTANGO_AVAILABLE:
     import NXSCreateOnlineDSFS2Test
     import NXSCreateOnlineDSFS3Test
 
+    import NXSCreatePoolDSFSTest
+    import NXSCreatePoolDSFS2Test
+    import NXSCreatePoolDSFS3Test
+
     if "MYSQL" in DB_AVAILABLE:
         import NXSConfigTest
         import NXSCreateClientDSDBTest
@@ -227,6 +231,11 @@ if PYTANGO_AVAILABLE:
         import NXSCreateOnlineDSDBR2Test
         import NXSCreateOnlineDSDBETest
         import NXSCreateOnlineDSDBE2Test
+
+        import NXSCreatePoolDSDBTest
+        import NXSCreatePoolDSDB2Test
+        import NXSCreatePoolDSDBRTest
+        import NXSCreatePoolDSDBR2Test
 
 
 # main function
@@ -291,6 +300,16 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateOnlineDSFS3Test))
+
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreatePoolDSFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreatePoolDSFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreatePoolDSFS3Test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -361,6 +380,19 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateOnlineDSDBE2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreatePoolDSDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreatePoolDSDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreatePoolDSDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreatePoolDSDBR2Test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(

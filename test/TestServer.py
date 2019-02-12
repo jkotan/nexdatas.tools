@@ -199,6 +199,8 @@ class TestServer(PyTango.Device_4Impl):
         self.attr_Environment = ("pickle", pickle.dumps(env, protocol=2))
         self.ChangeValueType("ScalarDouble")
         self.attr_DoorList = ['test/door/1', 'test/door/2']
+        self.attr_MotorList = []
+        self.attr_ExpChannelList = []
 
     # -----------------------------------------------------------------
     #    Always excuted hook method
@@ -229,6 +231,52 @@ class TestServer(PyTango.Device_4Impl):
         #    Add your own code here
 
         self.attr_DoorList = attr.get_write_value()
+
+    #
+    # =================================================================
+    #
+    #    TestServer read/write attribute methods
+    #
+    # =================================================================
+    #
+    # -----------------------------------------------------------------
+    #    Read MotorList attribute
+    # -----------------------------------------------------------------
+    def read_MotorList(self, attr):
+        #    Add your own code here
+
+        attr.set_value(self.attr_MotorList)
+
+    # -----------------------------------------------------------------
+    #    Write MotorList attribute
+    # -----------------------------------------------------------------
+    def write_MotorList(self, attr):
+        #    Add your own code here
+
+        self.attr_MotorList = attr.get_write_value()
+
+    #
+    # =================================================================
+    #
+    #    TestServer read/write attribute methods
+    #
+    # =================================================================
+    #
+    # -----------------------------------------------------------------
+    #    Read ExpChannelList attribute
+    # -----------------------------------------------------------------
+    def read_ExpChannelList(self, attr):
+        #    Add your own code here
+
+        attr.set_value(self.attr_ExpChannelList)
+
+    # -----------------------------------------------------------------
+    #    Write ExpChannelList attribute
+    # -----------------------------------------------------------------
+    def write_ExpChannelList(self, attr):
+        #    Add your own code here
+
+        self.attr_ExpChannelList = attr.get_write_value()
 
     # -----------------------------------------------------------------
     #    Read Environment attribute
@@ -1318,7 +1366,23 @@ class TestServerClass(PyTango.DeviceClass):
               PyTango.READ_WRITE,
               256],
              {
-                 'description': "Environment attribute",
+                 'description': "door list attribute",
+            }],
+        'MotorList':
+            [[PyTango.DevString,
+              PyTango.SPECTRUM,
+              PyTango.READ_WRITE,
+              256],
+             {
+                 'description': "motor list attribute",
+            }],
+        'ExpChannelList':
+            [[PyTango.DevString,
+              PyTango.SPECTRUM,
+              PyTango.READ_WRITE,
+              256],
+             {
+                 'description': "experimental channel list attribute",
             }],
     }
 
