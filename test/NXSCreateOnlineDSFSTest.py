@@ -29,8 +29,14 @@ import binascii
 # import threading
 import PyTango
 # import json
+import nxstools
 from nxstools import nxscreate
 from nxstools import nxsdevicetools
+
+try:
+    import nxsextrasp00
+except ImportError:
+    from . import nxsextrasp00
 
 try:
     from cStringIO import StringIO
@@ -1471,7 +1477,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
 
         args = [
             ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
-            for ky, vl in nxsdevicetools.moduleMultiAttributes.items()
+            for ky, vl in nxstools.xmltemplates.moduleMultiAttributes.items()
         ]
 
         totest = []
@@ -1482,9 +1488,9 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                 attr = list(arg[2])
                 module = arg[3]
                 if ("%s@pool" % module) in \
-                   nxsdevicetools.moduleMultiAttributes.keys():
+                   nxstools.xmltemplates.moduleMultiAttributes.keys():
                     attr.extend(
-                        nxsdevicetools.moduleMultiAttributes[
+                        nxstools.xmltemplates.moduleMultiAttributes[
                             "%s@pool" % module])
                     attr.append("")
                 if os.path.isfile(fname):
@@ -1519,6 +1525,253 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                             )
 
                         vl, er = self.runtest(command)
+
+                        if er:
+                            self.assertTrue(er.startswith(
+                                "Info"))
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        for el in attr:
+                            dsxml = self.getds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                            self.assertEqual(
+                                dsout % (
+                                    "%s_%s" % (ds, el.lower()) if el else ds,
+                                    "%s_" % (ds) if el else "__CLIENT__",
+                                    self.host, dv, self.port, el or "Value"),
+                                dsxml)
+
+                        for el in attr:
+                            self.deleteds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                finally:
+                    os.remove(fname)
+                    if tsv:
+                        tsv.tearDown()
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+
+    def test_onlineds_attributes_multi_xmltemplates(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = '<?xml version="1.0"?>\n' \
+              '<hw>\n' \
+              '<device>\n' \
+              '    <name>%s</name>\n' \
+              '    <type>type_tango</type>\n' \
+              '    <module>%s</module>\n' \
+              '    <device>%s</device>\n' \
+              '    <control>tango</control>\n' \
+              '    <hostname>%s:%s</hostname>\n' \
+              '</device>\n' \
+              '</hw>\n'
+
+        dsout = \
+            '<?xml version="1.0" ?>\n' \
+            '<definition>\n' \
+            '  <datasource name="%s"' \
+            ' type="TANGO">\n' \
+            '    <device group="%s" hostname="%s"' \
+            ' member="attribute" name="%s"' \
+            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  </datasource>\n' \
+            '</definition>\n'
+
+        commands = [
+            ('nxscreate onlineds -p nxstools.xmltemplates %s %s'
+             % (fname, self.flags)).split(),
+            ('nxscreate onlineds --xml-package nxstools.xmltemplates %s %s'
+             % (fname, self.flags)).split(),
+        ]
+
+        args = [
+            ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
+            for ky, vl in nxstools.xmltemplates.moduleMultiAttributes.items()
+        ]
+
+        totest = []
+        try:
+            for ci, arg in enumerate(args):
+                ds = arg[0]
+                dv = arg[1]
+                attr = list(arg[2])
+                module = arg[3]
+                if ("%s@pool" % module) in \
+                   nxstools.xmltemplates.moduleMultiAttributes.keys():
+                    attr.extend(
+                        nxstools.xmltemplates.moduleMultiAttributes[
+                            "%s@pool" % module])
+                    attr.append("")
+                if os.path.isfile(fname):
+                    raise Exception("Test file %s exists" % fname)
+                with open(fname, "w") as fl:
+                    fl.write(xml % (ds, module, dv, self.host, self.port))
+                try:
+                    tsv = TestServerSetUp.TestServerSetUp(
+                        dv, "MYTESTS1",
+                        ds
+                    )
+                    tsv.setUp()
+                    # for el in attr:
+                    #     if el not in [""]:
+                    #         try:
+                    #             tsv.dp.CreateAttribute(el)
+                    #         except Exception as e:
+                    #             print(e)
+                    #             tsv.dp.CreateAttribute(el)
+
+                    skip = False
+                    for el in attr:
+                        if self.dsexists(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds):
+                            skip = True
+                    if not skip:
+                        for el in attr:
+                            totest.append(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+
+                        vl, er = self.runtest(commands[ci % 2])
+
+                        if er:
+                            self.assertTrue(er.startswith(
+                                "Info"))
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        for el in attr:
+                            dsxml = self.getds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                            self.assertEqual(
+                                dsout % (
+                                    "%s_%s" % (ds, el.lower()) if el else ds,
+                                    "%s_" % (ds) if el else "__CLIENT__",
+                                    self.host, dv, self.port, el or "Value"),
+                                dsxml)
+
+                        for el in attr:
+                            self.deleteds(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+                finally:
+                    os.remove(fname)
+                    if tsv:
+                        tsv.tearDown()
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_onlineds_attributes_multi_nxsextrasp00(self):
+        """ test nxsccreate onlineds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = '<?xml version="1.0"?>\n' \
+              '<hw>\n' \
+              '<device>\n' \
+              '    <name>%s</name>\n' \
+              '    <type>type_tango</type>\n' \
+              '    <module>%s</module>\n' \
+              '    <device>%s</device>\n' \
+              '    <control>tango</control>\n' \
+              '    <hostname>%s:%s</hostname>\n' \
+              '</device>\n' \
+              '</hw>\n'
+
+        dsout = \
+            '<?xml version="1.0" ?>\n' \
+            '<definition>\n' \
+            '  <datasource name="%s"' \
+            ' type="TANGO">\n' \
+            '    <device group="%s" hostname="%s"' \
+            ' member="attribute" name="%s"' \
+            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  </datasource>\n' \
+            '</definition>\n'
+
+        commands = [
+            ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
+             % (fname, self.flags)).split(),
+            ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
+             % (fname, self.flags)).split(),
+        ]
+
+        args = [
+            ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
+            for ky, vl in nxsextrasp00.moduleMultiAttributes.items()
+        ]
+        print((nxsextrasp00.moduleMultiAttributes.keys()))
+        
+        totest = []
+        try:
+            for ci, arg in enumerate(args):
+                ds = arg[0]
+                dv = arg[1]
+                attr = list(arg[2])
+                module = arg[3]
+                if ("%s@pool" % module) in \
+                   nxsextrasp00.moduleMultiAttributes.keys():
+                    attr.extend(
+                        nxsextrasp00.moduleMultiAttributes[
+                            "%s@pool" % module])
+                    attr.append("")
+                if os.path.isfile(fname):
+                    raise Exception("Test file %s exists" % fname)
+                with open(fname, "w") as fl:
+                    fl.write(xml % (ds, module, dv, self.host, self.port))
+                try:
+                    tsv = TestServerSetUp.TestServerSetUp(
+                        dv, "MYTESTS1",
+                        ds
+                    )
+                    tsv.setUp()
+                    # for el in attr:
+                    #     if el not in [""]:
+                    #         try:
+                    #             tsv.dp.CreateAttribute(el)
+                    #         except Exception as e:
+                    #             print(e)
+                    #             tsv.dp.CreateAttribute(el)
+
+                    skip = False
+                    for el in attr:
+                        if self.dsexists(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds):
+                            skip = True
+                    if not skip:
+                        for el in attr:
+                            totest.append(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds
+                            )
+
+                        vl, er = self.runtest(commands[ci % 2])
 
                         if er:
                             self.assertTrue(er.startswith(

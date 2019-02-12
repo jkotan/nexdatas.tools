@@ -1018,6 +1018,8 @@ class OnlineDSCreator(Creator):
         self.datasources = {}
         if options.xmlpackage:
             xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        else:
+            xmlPackageHandler.loadXMLTemplates('nxstools.xmltemplates')
         #: (:obj:`str`) xml template component package path
         self.xmltemplatepath = xmlPackageHandler.packagepath
         #: (:obj:`str`) xml template component package
@@ -1213,6 +1215,8 @@ class CPCreator(Creator):
         #: component xml dictionary
         if options.xmlpackage:
             xmlPackageHandler.loadXMLTemplates(options.xmlpackage)
+        else:
+            xmlPackageHandler.loadXMLTemplates('nxstools.xmltemplates')
         #: (:obj:`str`) xml template component package path
         self.xmltemplatepath = xmlPackageHandler.packagepath
         #: (:obj:`str`) xml template component package
