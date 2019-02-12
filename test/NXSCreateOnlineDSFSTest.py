@@ -1690,6 +1690,8 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
         fname = '%s/%s%s.xml' % (
             os.getcwd(), self.__class__.__name__, fun)
 
+        sys.path.append(os.getcwd())
+        
         xml = '<?xml version="1.0"?>\n' \
               '<hw>\n' \
               '<device>\n' \
