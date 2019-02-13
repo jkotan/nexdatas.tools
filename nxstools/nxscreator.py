@@ -973,10 +973,16 @@ class PoolDSCreator(Creator):
             args = list(self.args)
         try:
             plproxy = openServer(plname)
-            chlist = plproxy.ExpChannelList
-            motorlist = plproxy.MotorList
         except Exception:
             raise Exception("Cannot connect to %s" % plname)
+        try:
+            chlist = plproxy.ExpChannelList
+        except Exception:
+            chlist = []
+        try:
+            motorlist = plproxy.MotorList
+        except Exception:
+            motorlist = []
         for ellist in [chlist, motorlist]:
             for els in ellist:
                 elprop = json.loads(els) or {}
