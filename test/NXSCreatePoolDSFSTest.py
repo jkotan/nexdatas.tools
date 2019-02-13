@@ -254,7 +254,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def test_poolds_pdevice(self):
+    def test_poolds_pdevice_motors(self):
         """ test nxsccreate poolds file system
         """
         fun = sys._getframe().f_code.co_name
@@ -266,6 +266,12 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
             '"source" : "tango://haso.desy.de:10000/'
             'motor/omsvme58_exp/10/Position",'
             '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "test_exp_mot_02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/omsvme58_exp/20/Position",'
+            '"type": "Motor" '
             '}'
 
         ]
@@ -275,49 +281,215 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
             [
                 ('nxscreate poolds -p %s %s '
                  % (self._tsv.dp.name(), self.flags)).split(),
-                ['test_exp_mot_01'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot_01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso.desy.de" '
-                    'member="attribute" name="motor/omsvme58_exp/10" '
-                    'port="10000"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
                 ('nxscreate poolds --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
+            ],
+            [
+                'test_exp_mot_01',
+                'test_exp_mot_02',
+            ],
+            [
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="test_exp_mot_01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/omsvme58_exp/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="test_exp_mot_02" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/omsvme58_exp/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+            ],
+        ]
+
+        totest = []
+        try:
+            for cmd in args[0]:
+                skip = False
+                for ds in args[1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in args[1]:
+                        totest.append(ds)
+
+                    vl, er = self.runtest(cmd)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(args[1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(
+                            args[2][i], xml)
+
+                    for ds in args[1]:
+                        self.deleteds(ds)
+        finally:
+            for ds in totest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_poolds_pdevice_motors_channels(self):
+        """ test nxsccreate poolds file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        self._tsv.dp.MotorList = [
+            '{'
+            '"name": "tst_exp_mot01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/oms/10/Position",'
+            '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "tst_exp_mot02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'pmotor/oms/20/Position",'
+            '"type": "PseudoMotor" '
+            '}'
+
+        ]
+        self._tsv.dp.ExpChannelList = [
+            '{'
+            '"name": "tst_exp_c01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/counter/10/Counts",'
+            '"type": "CTExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_adc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/adc/10/Value",'
+            '"type": "ZeroDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_mca01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/mca/10/Value",'
+            '"type": "OneDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_det01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/det/10/Data",'
+            '"type": "TwoDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_pc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/pcounter/10/Counts",'
+            '"type": "PseudoCounter" '
+            '}',
+        ]
+        args = [
+            [
+                ('nxscreate poolds -p %s %s '
                  % (self._tsv.dp.name(), self.flags)).split(),
-                ['test_exp_mot_01'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot_01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso.desy.de" '
-                    'member="attribute" name="motor/omsvme58_exp/10" '
-                    'port="10000"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                ('nxscreate poolds --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
+            ],
+            [
+                'tst_exp_mot01',
+                'tst_exp_mot02',
+                'tst_exp_c01',
+                'tst_exp_adc01',
+                'tst_exp_mca01',
+                'tst_exp_det01',
+                'tst_exp_pc01',
+            ],
+            [
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/oms/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot02" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="pmotor/oms/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_c01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/counter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_adc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/adc/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mca01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/mca/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_det01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/det/10" '
+                'port="10000"/>\n'
+                '    <record name="Data"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_pc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/pcounter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
             ],
         ]
 
         totest = []
         try:
-            for arg in args:
+            for cmd in args[0]:
                 skip = False
-                for ds in arg[1]:
+                for ds in args[1]:
                     if self.dsexists(ds):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         totest.append(ds)
 
-                    vl, er = self.runtest(arg[0])
+                    vl, er = self.runtest(cmd)
                     if er:
                         self.assertEqual(
                             "Info: NeXus hasn't been setup yet. \n\n", er)
@@ -325,132 +497,167 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
+                    for i, ds in enumerate(args[1]):
                         xml = self.getds(ds)
                         self.assertEqual(
-                            arg[2][i], xml)
+                            args[2][i], xml)
 
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         self.deleteds(ds)
         finally:
             for ds in totest:
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def ttest_poolds_first_last_fn(self):
+    def test_poolds_pdevice_noclientlike(self):
         """ test nxsccreate poolds file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        self._tsv.dp.MotorList = [
+            '{'
+            '"name": "tst_exp_Mot01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/oms/10/Position",'
+            '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "tst_exp_mot02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'pmotor/oms/20/Position",'
+            '"type": "PseudoMotor" '
+            '}'
+
+        ]
+        self._tsv.dp.ExpChannelList = [
+            '{'
+            '"name": "tst_exp_C01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/counter/10/Counts",'
+            '"type": "CTExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_adc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/adc/10/Value",'
+            '"type": "ZeroDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_mca01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/mca/10/Value",'
+            '"type": "OneDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_det01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/det/10/Data",'
+            '"type": "TwoDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_pc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/pcounter/10/Counts",'
+            '"type": "PseudoCounter" '
+            '}',
+        ]
         args = [
             [
-                ('nxscreate poolds --device test/motor/  --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
+                ('nxscreate poolds -t -p %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split(),
+                ('nxscreate poolds --noclientlike --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
             ],
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                'tst_exp_mot01',
+                'tst_exp_mot02',
+                'tst_exp_c01',
+                'tst_exp_adc01',
+                'tst_exp_mca01',
+                'tst_exp_det01',
+                'tst_exp_pc01',
             ],
             [
-                ('nxscreate poolds --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot --first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="motor/oms/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot02" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="pmotor/oms/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_c01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="p00/counter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_adc01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="p00/adc/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mca01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="p00/mca/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_det01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="p00/det/10" '
+                'port="10000"/>\n'
+                '    <record name="Data"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_pc01" type="TANGO">\n'
+                '    <device hostname="haso.desy.de" '
+                'member="attribute" name="p00/pcounter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
             ],
         ]
 
         totest = []
         try:
-            for arg in args:
+            for cmd in args[0]:
                 skip = False
-                for ds in arg[1]:
+                for ds in args[1]:
                     if self.dsexists(ds):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         totest.append(ds)
 
-                    vl, er = self.runtest(arg[0])
-
+                    vl, er = self.runtest(cmd)
                     if er:
                         self.assertEqual(
                             "Info: NeXus hasn't been setup yet. \n\n", er)
@@ -458,134 +665,167 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
+                    for i, ds in enumerate(args[1]):
                         xml = self.getds(ds)
                         self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
+                            args[2][i], xml)
 
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         self.deleteds(ds)
         finally:
             for ds in totest:
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def ttest_poolds_first_last_attribute(self):
+    def test_poolds_pdevice_motors_nolower(self):
         """ test nxsccreate poolds file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        self._tsv.dp.MotorList = [
+            '{'
+            '"name": "tst_exp_mot01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/oms/10/Position",'
+            '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "tst_exp_Mot02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'pmotor/oms/20/Position",'
+            '"type": "PseudoMotor" '
+            '}'
+
+        ]
+        self._tsv.dp.ExpChannelList = [
+            '{'
+            '"name": "tst_Exp_c01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/counter/10/Counts",'
+            '"type": "CTExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_Exp_adc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/adc/10/Value",'
+            '"type": "ZeroDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_mca01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/mca/10/Value",'
+            '"type": "OneDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_det01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/det/10/Data",'
+            '"type": "TwoDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_pc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/pcounter/10/Counts",'
+            '"type": "PseudoCounter" '
+            '}',
+        ]
         args = [
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
+                ('nxscreate poolds -n -p %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split(),
+                ('nxscreate poolds --nolower --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
             ],
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                'tst_exp_mot01',
+                'tst_exp_Mot02',
+                'tst_Exp_c01',
+                'tst_Exp_adc01',
+                'tst_exp_mca01',
+                'tst_exp_det01',
+                'tst_exp_pc01',
             ],
             [
-                ('nxscreate poolds --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot -a Voltage '
-                 '--first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/oms/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_Mot02" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="pmotor/oms/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_Exp_c01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/counter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_Exp_adc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/adc/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mca01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/mca/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_det01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/det/10" '
+                'port="10000"/>\n'
+                '    <record name="Data"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_pc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/pcounter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
             ],
         ]
 
         totest = []
         try:
-            for arg in args:
+            for cmd in args[0]:
                 skip = False
-                for ds in arg[1]:
+                for ds in args[1]:
                     if self.dsexists(ds):
                         skip = True
                 if not skip:
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         totest.append(ds)
 
-                    vl, er = self.runtest(arg[0])
-
+                    vl, er = self.runtest(cmd)
                     if er:
                         self.assertEqual(
                             "Info: NeXus hasn't been setup yet. \n\n", er)
@@ -593,736 +833,380 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                         self.assertEqual('', er)
                     self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1]):
+                    for i, ds in enumerate(args[1]):
                         xml = self.getds(ds)
                         self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
+                            args[2][i], xml)
 
-                    for ds in arg[1]:
+                    for ds in args[1]:
                         self.deleteds(ds)
         finally:
             for ds in totest:
                 if self.dsexists(ds):
                     self.deleteds(ds)
 
-    def ttest_poolds_first_last_command(self):
+    def test_poolds_pdevice_motors_channels_types(self):
         """ test nxsccreate poolds file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        self._tsv.dp.MotorList = [
+            '{'
+            '"name": "tst_exp_mot01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/oms/10/Position",'
+            '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "tst_exp_mot02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'pmotor/oms/20/Position",'
+            '"type": "PseudoMotor" '
+            '}'
+
+        ]
+        self._tsv.dp.ExpChannelList = [
+            '{'
+            '"name": "tst_exp_c01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/counter/10/Counts",'
+            '"type": "CTExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_adc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/adc/10/Value",'
+            '"type": "ZeroDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_mca01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/mca/10/Value",'
+            '"type": "OneDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_det01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/det/10/Data",'
+            '"type": "TwoDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_pc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/pcounter/10/Counts",'
+            '"type": "PseudoCounter" '
+            '}',
+        ]
+
+        types = [
+            "Motor",
+            "PseudoMotor",
+            "CTExpChannel",
+            "ZeroDExpChannel",
+            "OneDExpChannel",
+            "TwoDExpChannel",
+            "PseudoCounter"
+        ]
         args = [
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts -e command --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
+                ('nxscreate poolds -p %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split(),
+                ('nxscreate poolds --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
             ],
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--elementtype command '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="command"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                'tst_exp_mot01',
+                'tst_exp_mot02',
+                'tst_exp_c01',
+                'tst_exp_adc01',
+                'tst_exp_mca01',
+                'tst_exp_det01',
+                'tst_exp_pc01',
+            ],
+            [
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/oms/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot02" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="pmotor/oms/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_c01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/counter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_adc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/adc/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mca01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/mca/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_det01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/det/10" '
+                'port="10000"/>\n'
+                '    <record name="Data"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_pc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/pcounter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
             ],
         ]
 
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
+        for tp in types:
+            totest = []
+            try:
+                for cmd in args[0]:
+                    skip = False
+                    for ds in args[1]:
+                        if self.dsexists(ds):
+                            skip = True
+                    if not skip:
+                        for i, ds in enumerate(args[1]):
+                            if tp == types[i]:
+                                totest.append(ds)
+
+                        ncmd = list(cmd)
+                        ncmd.append(tp)
+                        vl, er = self.runtest(ncmd)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        for i, ds in enumerate(args[1]):
+                            if tp == types[i]:
+                                xml = self.getds(ds)
+                                self.assertEqual(
+                                    args[2][i], xml)
+                            else:
+                                self.myAssertRaise(Exception, self.getds, ds)
+
+                        for i, ds in enumerate(args[1]):
+                            if tp == types[i]:
+                                self.deleteds(ds)
+            finally:
+                for ds in totest:
                     if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
                         self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
 
-    def ttest_poolds_first_last_property(self):
+    def test_poolds_pdevice_motors_channels_names(self):
         """ test nxsccreate poolds file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        args = [
-            [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts -e property --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate poolds --device test/motor/ '
-                 '--elementtype property '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="property"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
+        self._tsv.dp.MotorList = [
+            '{'
+            '"name": "tst_exp_mot01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'motor/oms/10/Position",'
+            '"type": "Motor" '
+            '}',
+            '{'
+            '"name": "tst_exp_mot02", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'pmotor/oms/20/Position",'
+            '"type": "PseudoMotor" '
+            '}'
+
         ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_poolds_first_last_host_port(self):
-        """ test nxsccreate poolds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._tsv.dp.ExpChannelList = [
+            '{'
+            '"name": "tst_exp_c01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/counter/10/Counts",'
+            '"type": "CTExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_adc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/adc/10/Value",'
+            '"type": "ZeroDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_mca01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/mca/10/Value",'
+            '"type": "OneDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_det01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/det/10/Data",'
+            '"type": "TwoDExpChannel" '
+            '}',
+            '{'
+            '"name": "tst_exp_pc01", '
+            '"source" : "tango://haso.desy.de:10000/'
+            'p00/pcounter/10/Counts",'
+            '"type": "PseudoCounter" '
+            '}',
+        ]
 
         args = [
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts -u haso0000 -t 12345 --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/01" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/02" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="haso0000" member="attribute" '
-                    'name="test/motor/03" port="12345"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
+                ('nxscreate poolds -p %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split(),
+                ('nxscreate poolds --pool %s %s '
+                 % (self._tsv.dp.name(), self.flags)).split()
             ],
             [
-                ('nxscreate poolds --device test/motor/ '
-                 '--host myhost --port 20000 '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/01" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/02" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="myhost" member="attribute"'
-                    ' name="test/motor/03" port="20000"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
+                'tst_exp_mot01',
+                'tst_exp_mot02',
+                'tst_exp_c01',
+                'tst_exp_adc01',
+                'tst_exp_mca01',
+                'tst_exp_det01',
+                'tst_exp_pc01',
+            ],
+            [
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="motor/oms/10" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mot02" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="pmotor/oms/20" '
+                'port="10000"/>\n'
+                '    <record name="Position"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_c01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/counter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_adc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/adc/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_mca01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/mca/10" '
+                'port="10000"/>\n'
+                '    <record name="Value"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_det01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/det/10" '
+                'port="10000"/>\n'
+                '    <record name="Data"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
+                '<?xml version="1.0" ?>\n'
+                '<definition>\n'
+                '  <datasource name="tst_exp_pc01" type="TANGO">\n'
+                '    <device group="__CLIENT__" hostname="haso.desy.de" '
+                'member="attribute" name="p00/pcounter/10" '
+                'port="10000"/>\n'
+                '    <record name="Counts"/>\n'
+                '  </datasource>\n'
+                '</definition>\n',
             ],
         ]
 
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
+        for nm in args[1]:
+            totest = []
+            try:
+                for cmd in args[0]:
+                    skip = False
+                    for ds in args[1]:
+                        if self.dsexists(ds):
+                            skip = True
+                    if not skip:
+                        for i, ds in enumerate(args[1]):
+                            if nm == args[1][i]:
+                                totest.append(ds)
+
+                        ncmd = list(cmd)
+                        ncmd.append(nm)
+                        vl, er = self.runtest(ncmd)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        for i, ds in enumerate(args[1]):
+                            if nm == args[1][i]:
+                                xml = self.getds(ds)
+                                self.assertEqual(
+                                    args[2][i], xml)
+                            else:
+                                self.myAssertRaise(Exception, self.getds, ds)
+
+                        for i, ds in enumerate(args[1]):
+                            if nm == args[1][i]:
+                                self.deleteds(ds)
+            finally:
+                for ds in totest:
                     if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i], xml)
-
-                    for ds in arg[1]:
                         self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_poolds_first_last_overwrite_false(self):
-        """ test nxsccreate poolds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-                ('nxscreate poolds --device test/motor/ --attribute Counts'
-                 ' --last 3 %s'
-                 % self.flags).split(),
-            ],
-            [
-                ('nxscreate poolds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-                ('nxscreate poolds --device test/motor/ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-                    vl, er = self.runtestexcept(arg[3], Exception)
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] %
-                                         (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_poolds_first_last_overwrite_true(self):
-        """ test nxsccreate poolds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate poolds --device test2/mtr/ --attribute Count '
-                 '--last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts -o '
-                 '--last 3 %s' % self.flags).split(),
-            ],
-            [
-                ('nxscreate poolds --device tst/motor/ '
-                 '--datasource-prefix  myexp_mot -a DT  --last 3 %s'
-                 % self.flags).split(),
-                ['myexp_mot01',
-                 'myexp_mot02',
-                 'myexp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="myexp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-                ('nxscreate poolds --device test/motor/ --overwrite '
-                 '--datasource-prefix  myexp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-                    vl, er = self.runtest(arg[3])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(arg[2][i] %
-                                         (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
-
-    def ttest_poolds_first_last_group(self):
-        """ test nxsccreate poolds file system
-        """
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        args = [
-            [
-                ('nxscreate poolds --device test/motor/ '
-                 '--attribute Counts --group __CLIENT__ --last 3 %s'
-                 % self.flags).split(),
-                ['exp_mot01',
-                 'exp_mot02',
-                 'exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute" '
-                    'name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Counts"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n'
-                ],
-            ],
-            [
-                ('nxscreate poolds --device test/motor/  -g __CLIENT__ '
-                 '--datasource-prefix  my_exp_mot -a Data  --last 3 %s'
-                 % self.flags).split(),
-                ['my_exp_mot01',
-                 'my_exp_mot02',
-                 'my_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
-                    '    <record name="Data"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-            [
-                ('nxscreate poolds --device test/vm/'
-                 ' --datasource-prefix  test_exp_mot -a Voltage '
-                 ' --group __CLIENT__ --first 2 --last 3 %s'
-                 % self.flags).split(),
-                ['test_exp_mot02',
-                 'test_exp_mot03'],
-                [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="test_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="%s" '
-                    'member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
-                    '    <record name="Voltage"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                ],
-            ],
-        ]
-
-        totest = []
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i] % (self.host, self.port), xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
 
 
 if __name__ == '__main__':
