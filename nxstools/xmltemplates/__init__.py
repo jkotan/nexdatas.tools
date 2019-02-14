@@ -957,8 +957,8 @@ standardComponentVariables = {
 #:     xml template files of modules
 standardComponentTemplateFiles = {
     'qbpm': [
-        'qbpm.xml',
         'qbpm_foil.ds.xml',
+        'qbpm.xml',
     ],
     'slit': ['slit.xml'],
     'source': ['source.xml'],
@@ -1038,9 +1038,9 @@ standardComponentTemplateFiles = {
         'common3_common.ds.xml',
     ],
     'absorber': [
-        'absorber.xml',
         'absorber_foil.ds.xml',
         'absorber_thickness.ds.xml',
+        'absorber.xml',
     ],
     'keithley': [
         'keithley.xml',

@@ -1774,6 +1774,15 @@ class StandardCPCreator(CPCreator):
                     xml = indom.toxml()
                     if self._printouts:
                         print("MISSING %s" % missing)
+                    errors = []
+                    for var in missing:
+                        if "s.$(%s)" % var in xml:
+                            errors.append(var)
+                    if errors:
+                        raise Exception(
+                            "Error: %s cannot be created without %s"
+                            % (var, errors))
+
                     for var in missing:
                         xml = xml.replace("$(%s)" % var, "")
                     lines = xml.split('\n')
