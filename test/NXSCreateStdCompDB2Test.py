@@ -44,7 +44,7 @@ class NXSCreateStdCompDB2Test(
         NXSCreateStdCompDBTest.NXSCreateStdCompDBTest.__init__(
             self, methodName)
 
-        self.flags = " -b"
+        self.flags = " -b -r testp09/testmcs/testr228"
 
 
 if __name__ == '__main__':

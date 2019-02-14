@@ -44,7 +44,7 @@ class NXSCreateOnlineDSDB2Test(
         NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest.__init__(
             self, methodName)
 
-        self.flags = " -b"
+        self.flags = " -b -r testp09/testmcs/testr228"
 
 
 if __name__ == '__main__':

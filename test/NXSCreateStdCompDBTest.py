@@ -67,7 +67,7 @@ class NXSCreateStdCompDBTest(
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
         self._proxy = None
-        self.flags = " --database"
+        self.flags = " --database --server testp09/testmcs/testr228"
 
     # opens config server
     # \param args connection arguments

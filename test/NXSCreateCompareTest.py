@@ -745,8 +745,8 @@ class NXSCreateCompareTest(unittest.TestCase):
             for cmd in commands:
                 vl, er = self.runtest(cmd)
                 lines = vl.split("\n\n")
-                print(vl)
-                print(er)
+                # print(vl)
+                # print(er)
                 self.assertEqual(len(lines), 7)
                 self.assertTrue(lines[0].startswith("Comparing:"))
                 self.assertTrue(
