@@ -199,6 +199,10 @@ if PYTANGO_AVAILABLE:
     import NXSCreateOnlineDSFS2Test
     import NXSCreateOnlineDSFS3Test
 
+    import NXSCreateStdCompFSTest
+    import NXSCreateStdCompFS2Test
+    import NXSCreateStdCompFS3Test
+
     import NXSCreatePoolDSFSTest
     import NXSCreatePoolDSFS2Test
     import NXSCreatePoolDSFS3Test
@@ -232,6 +236,13 @@ if PYTANGO_AVAILABLE:
         import NXSCreateOnlineDSDBR2Test
         import NXSCreateOnlineDSDBETest
         import NXSCreateOnlineDSDBE2Test
+
+        import NXSCreateStdCompDBTest
+        import NXSCreateStdCompDB2Test
+        import NXSCreateStdCompDBRTest
+        import NXSCreateStdCompDBR2Test
+        import NXSCreateStdCompDBETest
+        import NXSCreateStdCompDBE2Test
 
         import NXSCreatePoolDSDBTest
         import NXSCreatePoolDSDB2Test
@@ -301,6 +312,16 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateOnlineDSFS3Test))
+
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateStdCompFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateStdCompFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateStdCompFS3Test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -381,6 +402,26 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateOnlineDSDBE2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDBR2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDBETest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateStdCompDBE2Test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
