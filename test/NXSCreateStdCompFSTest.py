@@ -209,7 +209,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             for arg in args:
                 vl, er = self.runtest(arg[0])
 
-                self.assertEqual('', er)
+                if er:
+                    self.assertEqual(
+                        "Info: NeXus hasn't been setup yet. \n\n", er)
+                else:
+                    self.assertEqual('', er)
                 self.assertTrue(vl)
                 lines = vl.split("\n")
                 self.assertEqual(lines[-3], "POSSIBLE COMPONENT TYPES: ")
@@ -251,7 +255,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     cmd.append(tp)
                     vl, er = self.runtest(cmd)
 
-                    self.assertEqual('', er)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
                     self.assertTrue(vl)
 
                     lines = vl.split("\n")
@@ -336,7 +344,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         # print(tp)
                         vl, er, txt = self.runtestexcept(cmd, Exception)
 
-                        self.assertEqual('', er)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
                         self.assertTrue(vl)
                         # print(txt)
                         lines = vl.split("\n")
@@ -413,7 +425,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(arg[0])
 
-                    self.assertEqual('', er)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
                     self.assertTrue(vl)
                     xml = self.getcp(arg[1])
                     self.assertEqual(arg[2], xml)
