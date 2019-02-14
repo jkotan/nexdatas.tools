@@ -1093,7 +1093,6 @@ class OnlineDSCreator(Creator):
         self.datasources = {}
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
-        print(tangohost)
 
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
@@ -1149,7 +1148,6 @@ class OnlineDSCreator(Creator):
                 smodule = "%s@pool" % module.lower() if module else None
                 if module and module.lower() in \
                    self.xmlpackage.moduleMultiAttributes.keys():
-                    print("IN %s" % module)
                     multattr = self.xmlpackage.moduleMultiAttributes[
                         module.lower()]
                     for at in multattr:
