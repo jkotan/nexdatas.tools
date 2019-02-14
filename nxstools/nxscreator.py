@@ -576,7 +576,6 @@ class Creator(object):
         :returns: module name
         :rtype: :obj:`str`
         """
-        print(device.module.lower())
         if device.module.lower() in \
            self.xmlpackage.moduleMultiAttributes.keys():
             return device.module.lower()
@@ -1504,7 +1503,6 @@ class OnlineCPCreator(CPCreator):
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         cpnames = set()
-
         while device:
             if device.nodeName == 'device':
                 name = self._getChildText(device, "name")
