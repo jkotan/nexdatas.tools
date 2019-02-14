@@ -1376,18 +1376,18 @@ class CompareOnlineDS(object):
                 name = self._getChildText(device, "name")
                 if self.options.lower:
                     name = name.lower()
-                    dv = Device()
-                    dv.name = name
-                    dv.dtype = self._getChildText(device, "type")
-                    dv.module = self._getChildText(device, "module")
-                    dv.tdevice = self._getChildText(device, "device")
-                    dv.hostname = self._getChildText(device, "hostname")
-                    dv.sardananame = self._getChildText(device, "sardananame")
-                    dv.sardanahostname = self._getChildText(
-                        device, "sardanahostname")
-                    if name not in dct.keys():
-                        dct[name] = []
-                    dct[name].append(dv)
+                dv = Device()
+                dv.name = name
+                dv.dtype = self._getChildText(device, "type")
+                dv.module = self._getChildText(device, "module")
+                dv.tdevice = self._getChildText(device, "device")
+                dv.hostname = self._getChildText(device, "hostname")
+                dv.sardananame = self._getChildText(device, "sardananame")
+                dv.sardanahostname = self._getChildText(
+                    device, "sardanahostname")
+                if name not in dct.keys():
+                    dct[name] = []
+                dct[name].append(dv)
             device = device.nextSibling
         return dct
 
