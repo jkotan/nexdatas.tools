@@ -576,7 +576,6 @@ class Creator(object):
         :returns: module name
         :rtype: :obj:`str`
         """
-        print(device.module.lower())
         if device.module.lower() in \
            self.xmlpackage.moduleMultiAttributes.keys():
             return device.module.lower()
@@ -1094,7 +1093,6 @@ class OnlineDSCreator(Creator):
         self.datasources = {}
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
-        print(tangohost)
 
         indom = parse(self.args[0])
         hw = indom.getElementsByTagName("hw")
@@ -1150,7 +1148,6 @@ class OnlineDSCreator(Creator):
                 smodule = "%s@pool" % module.lower() if module else None
                 if module and module.lower() in \
                    self.xmlpackage.moduleMultiAttributes.keys():
-                    print("IN %s" % module)
                     multattr = self.xmlpackage.moduleMultiAttributes[
                         module.lower()]
                     for at in multattr:
@@ -1376,18 +1373,18 @@ class CompareOnlineDS(object):
                 name = self._getChildText(device, "name")
                 if self.options.lower:
                     name = name.lower()
-                    dv = Device()
-                    dv.name = name
-                    dv.dtype = self._getChildText(device, "type")
-                    dv.module = self._getChildText(device, "module")
-                    dv.tdevice = self._getChildText(device, "device")
-                    dv.hostname = self._getChildText(device, "hostname")
-                    dv.sardananame = self._getChildText(device, "sardananame")
-                    dv.sardanahostname = self._getChildText(
-                        device, "sardanahostname")
-                    if name not in dct.keys():
-                        dct[name] = []
-                    dct[name].append(dv)
+                dv = Device()
+                dv.name = name
+                dv.dtype = self._getChildText(device, "type")
+                dv.module = self._getChildText(device, "module")
+                dv.tdevice = self._getChildText(device, "device")
+                dv.hostname = self._getChildText(device, "hostname")
+                dv.sardananame = self._getChildText(device, "sardananame")
+                dv.sardanahostname = self._getChildText(
+                    device, "sardanahostname")
+                if name not in dct.keys():
+                    dct[name] = []
+                dct[name].append(dv)
             device = device.nextSibling
         return dct
 
@@ -1504,7 +1501,6 @@ class OnlineCPCreator(CPCreator):
         hw = indom.getElementsByTagName("hw")
         device = hw[0].firstChild
         cpnames = set()
-
         while device:
             if device.nodeName == 'device':
                 name = self._getChildText(device, "name")

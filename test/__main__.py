@@ -65,6 +65,7 @@ except SystemError as e:
 import unittest
 
 import NXSToolsTest
+import NXSCreateCompareTest
 import NXSCreateClientDSFSTest
 import NXSCreateClientDSFS2Test
 import NXSCreateClientDSFS3Test
@@ -434,6 +435,10 @@ def main():
     suite.addTests(
         unittest.defaultTestLoader.loadTestsFromModule(
             NXSCreateTest))
+
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromModule(
+            NXSCreateCompareTest))
 
     # test runner
     runner = unittest.TextTestRunner()
