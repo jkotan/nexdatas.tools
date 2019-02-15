@@ -181,17 +181,56 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             error = True
         self.assertEqual(error, True)
 
-    # sets selection configuration
-    # \param selectionc configuration instance
-    # \param selection selection configuration string
-    def setSelection(self, selectionc, selection):
-        selectionc.selection = selection
+    def checkxmls(self, args):
+        """ check xmls of components and datasources
+        """
 
-    # gets selectionconfiguration
-    # \param selectionc configuration instance
-    # \returns selection configuration string
-    def getSelection(self, selectionc):
-        return selectionc.selection
+        dstotest = []
+        cptotest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1][0]:
+                    if self.cpexists(cp):
+                        skip = True
+                for ds in arg[1][1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1][1]:
+                        dstotest.append(ds)
+                    for cp in arg[1][0]:
+                        cptotest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1][1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][1][i], xml)
+
+                    for i, ds in enumerate(arg[1][0]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(arg[2][0][i], xml)
+
+                    for ds in arg[1][1]:
+                        self.deleteds(ds)
+                    for cp in arg[1][0]:
+                        self.deletecp(cp)
+
+        finally:
+            for cp in cptotest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+            for ds in dstotest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
 
     def test_stdcomp_typelist(self):
         """ test nxsccreate stdcomp file system
@@ -371,74 +410,142 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
         args = [
             [
-                ('nxscreate stdcomp -t beamstop -c testbeamstop %s' %
+                ('nxscreate stdcomp -t beamstop -c testbeamstop1 %s' %
                  self.flags).split(),
-                'testbeamstop',
-                '<?xml version="1.0" ?><definition>\n'
-                '  <group name="$var.entryname#\'scan\'$var.serialno" '
-                'type="NXentry">\n'
-                '    <group name="instrument" type="NXinstrument">\n'
-                '      <group name="testbeamstop" type="NXbeam_stop">\n'
-                '\t<field name="description" type="NX_CHAR">\n'
-                '            <strategy mode="INIT"/>circular</field>\n'
-                '        <field name="depends_on" type="NX_CHAR">'
-                'transformations/y<strategy mode="INIT"/>\n'
-                '        </field>\n'
-                '        <group name="transformations" '
-                'type="NXtransformations">\n'
-                '        </group>\n'
-                '      </group>\n'
-                '    </group>\n'
-                '  </group>\n'
-                '</definition>'
+                [
+                    ['testbeamstop1'],
+                    []
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     'type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="testbeamstop1" type="NXbeam_stop">\n'
+                     '\t<field name="description" type="NX_CHAR">\n'
+                     '            <strategy mode="INIT"/>circular</field>\n'
+                     '        <field name="depends_on" type="NX_CHAR">'
+                     'transformations/y<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group name="transformations" '
+                     'type="NXtransformations">\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    [],
+                ],
             ],
             [
                 ('nxscreate stdcomp --type beamstop '
-                 '--component testbeamstop %s' %
+                 '--component testbeamstop2 %s' %
                  self.flags).split(),
-                'testbeamstop',
-                '<?xml version="1.0" ?><definition>\n'
-                '  <group name="$var.entryname#\'scan\'$var.serialno" '
-                'type="NXentry">\n'
-                '    <group name="instrument" type="NXinstrument">\n'
-                '      <group name="testbeamstop" type="NXbeam_stop">\n'
-                '\t<field name="description" type="NX_CHAR">\n'
-                '            <strategy mode="INIT"/>circular</field>\n'
-                '        <field name="depends_on" type="NX_CHAR">'
-                'transformations/y<strategy mode="INIT"/>\n'
-                '        </field>\n'
-                '        <group name="transformations" '
-                'type="NXtransformations">\n'
-                '        </group>\n'
-                '      </group>\n'
-                '    </group>\n'
-                '  </group>\n'
-                '</definition>'
+                [
+                    ['testbeamstop2'],
+                    []
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     'type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="testbeamstop2" type="NXbeam_stop">\n'
+                     '\t<field name="description" type="NX_CHAR">\n'
+                     '            <strategy mode="INIT"/>circular</field>\n'
+                     '        <field name="depends_on" type="NX_CHAR">'
+                     'transformations/y<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group name="transformations" '
+                     'type="NXtransformations">\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    [],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp -t beamstop -c testbeamstop3 '
+                 ' description linear '
+                 ' x mot01 '
+                 ' xsign -'
+                 ' y mot02 '
+                 ' z mot03 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['testbeamstop3'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXbeam_stop" name="testbeamstop3">\n'
+                     '\t<field type="NX_CHAR" name="description">\n'
+                     '            <strategy mode="INIT"/>linear</field>\n'
+                     '        <field type="NX_CHAR" name="depends_on">'
+                     'transformations/y<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXtransformations" '
+                     'name="transformations">\n'
+                     '          <field depends_on="x" units="mm" '
+                     'type="NX_FLOAT64" name="y">\n'
+                     '            <strategy mode="INIT"/>$datasources.mot02\n'
+                     '\t    '
+                     '<attribute type="NX_CHAR" name="transformation_type">'
+                     'translation<strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '            <attribute type="NX_FLOAT64" name="vector">'
+                     '0 1 0\n'
+                     '\t    <strategy mode="INIT"/>\n'
+                     '            <dimensions rank="1">\n'
+                     '\t      <dim value="3" index="1"/>\n'
+                     '            </dimensions>\n'
+                     '            </attribute>\n'
+                     '          </field>\n'
+                     '          <field depends_on="z" units="mm" '
+                     'type="NX_FLOAT64" name="x">\n'
+                     '            <strategy mode="INIT"/>$datasources.mot01\n'
+                     '\t    '
+                     '<attribute type="NX_CHAR" name="transformation_type">'
+                     'translation<strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '            <attribute type="NX_FLOAT64" name="vector">'
+                     '-1 0 0\n\t    <strategy mode="INIT"/>\n'
+                     '            <dimensions rank="1">\n'
+                     '\t      <dim value="3" index="1"/>\n'
+                     '            </dimensions>\n'
+                     '            </attribute>\n'
+                     '          </field>\n'
+                     '          '
+                     '<field units="mm" type="NX_FLOAT64" name="z">\n'
+                     '            <strategy mode="INIT"/>$datasources.mot03\n'
+                     '\t    '
+                     '<attribute type="NX_CHAR" name="transformation_type">'
+                     'translation<strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '            <attribute type="NX_FLOAT64" name="vector">'
+                     '0 0 1\n\t    <strategy mode="INIT"/>\n'
+                     '            <dimensions rank="1">\n'
+                     '\t      <dim value="3" index="1"/>\n'
+                     '            </dimensions>\n'
+                     '            </attribute>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    [],
+                ],
             ],
         ]
 
-        totest = []
-        try:
-            for arg in args:
-                if not self.cpexists(arg[1]):
-                    totest.append(arg[1])
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-                    xml = self.getcp(arg[1])
-                    self.assertEqual(arg[2], xml)
-
-                    self.deletecp(arg[1])
-        finally:
-            for cp in totest:
-                if self.cpexists(cp):
-                    self.deletecp(cp)
+        self.checkxmls(args)
 
 
 if __name__ == '__main__':

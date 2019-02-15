@@ -66,158 +66,73 @@ class NXSCreateStdCompFS2Test(
             shutil.rmtree(self.directory)
             self._dircreated = False
 
-    def ttest_stdcomp_stepping_motor_file_prefix(self):
+    def test_stdcomp_beamstop_fileprefix(self):
         """ test nxsccreate stdcomp file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        fname = '%s/%s%s.xml' % (
-            os.getcwd(), self.__class__.__name__, fun)
-
-        xml = """<?xml version="1.0"?>
-<hw>
-<device>
- <name>my_exp_mot01</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.01</device>
- <control>tango</control>
- <hostname>haso000:10000</hostname>
- <controller>oms58_exp</controller>
- <channel>1</channel>
- <rootdevicename>p09/motor/exp</rootdevicename>
-</device>
-<device>
- <name>my_exp_mot02</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.02</device>
- <control>tango</control>
- <hostname>haso000:10000</hostname>
- <controller>oms58_exp</controller>
- <channel>2</channel>
- <rootdevicename>p09/motor/exp</rootdevicename>
-</device>
-<device>
- <name>my_exp_mot03</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.03</device>
- <control>tango</control>
- <hostname>haso000:10000</hostname>
- <controller>oms58_exp</controller>
- <channel>3</channel>
- <rootdevicename>p09/motor/exp</rootdevicename>
-</device>
-</hw>
-"""
-
         args = [
             [
-                ('nxscreate stdcomp -x test_ %s %s '
-                 % (fname, self.flags)).split(),
-                ['test_my_exp_mot01',
-                 'test_my_exp_mot02',
-                 'test_my_exp_mot03'],
+                ('nxscreate stdcomp  -x test_ -t beamstop -c testbeamstop1 '
+                 '%s' % self.flags).split(),
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
+                    ['test_testbeamstop1'],
+                    []
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     'type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="testbeamstop1" type="NXbeam_stop">\n'
+                     '\t<field name="description" type="NX_CHAR">\n'
+                     '            <strategy mode="INIT"/>circular</field>\n'
+                     '        <field name="depends_on" type="NX_CHAR">'
+                     'transformations/y<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group name="transformations" '
+                     'type="NXtransformations">\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    [],
                 ],
             ],
             [
-                ('nxscreate stdcomp --file-prefix tst_ %s %s '
-                 % (fname, self.flags)).split(),
-                ['tst_my_exp_mot01',
-                 'tst_my_exp_mot02',
-                 'tst_my_exp_mot03'],
+                ('nxscreate stdcomp  --file-prefix test_ --type beamstop '
+                 '--component testbeamstop2 %s' %
+                 self.flags).split(),
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
+                    ['test_testbeamstop2'],
+                    []
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     'type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="testbeamstop2" type="NXbeam_stop">\n'
+                     '\t<field name="description" type="NX_CHAR">\n'
+                     '            <strategy mode="INIT"/>circular</field>\n'
+                     '        <field name="depends_on" type="NX_CHAR">'
+                     'transformations/y<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group name="transformations" '
+                     'type="NXtransformations">\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    [],
                 ],
             ],
         ]
 
-        totest = []
-        if os.path.isfile(fname):
-            raise Exception("Test file %s exists" % fname)
-        with open(fname, "w") as fl:
-            fl.write(xml)
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
-
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertTrue(er.startswith(
-                            "Info"))
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i], xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            os.remove(fname)
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
+        self.checkxmls(args)
 
 
 if __name__ == '__main__':
