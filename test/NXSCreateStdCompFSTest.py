@@ -153,7 +153,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        print(vl)
+        # print(vl)
         return vl, er
 
     def runtestexcept(self, argv, exception):
@@ -1027,7 +1027,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      'name="%s" port="%s"/>\n'
                      '  </datasource>\n'
                      '</definition>' %
-                     (self.host, "testp09/testmcs/testr228", self.port),
+                     (self.host, self.device, self.port),
                      '<?xml version="1.0" ?><definition>\n'
                      '  <datasource name="end_time" type="CLIENT">\n'
                      '    <record name="end_time"/>\n'
