@@ -35,7 +35,7 @@ if sys.version_info > (3,):
 
 
 # test fixture
-class NXSCreateStdCompDBETest(
+class NXSCreateStdCompDBE2Test(
         NXSCreateStdCompDBRTest.NXSCreateStdCompDBRTest):
 
     # constructor

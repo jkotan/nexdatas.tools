@@ -45,7 +45,7 @@ class NXSCreateStdCompDB2Test(
             self, methodName)
 
         self.flags = " -b -r testp09/testmcs/testr228 "
-
+        self.device = 'testp09/testmcs/testr228'
 
 if __name__ == '__main__':
     unittest.main()

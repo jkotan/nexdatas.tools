@@ -1814,7 +1814,7 @@ class StandardCPCreator(CPCreator):
                     self.options.cptype,
                     self.options.directory,
                     self.options.file,
-                    self.options.component,
+                    name,
                     self.__params))
 
     @classmethod

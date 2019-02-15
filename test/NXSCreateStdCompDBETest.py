@@ -46,6 +46,7 @@ class NXSCreateStdCompDBETest(
 
         self.flags = " -b -r testp09/testmcs/testr228 " \
                      "-e aatestp09/testmcs2/testr228 "
+        self.device = 'aatestp09/testmcs2/testr228'
 
 
 if __name__ == '__main__':

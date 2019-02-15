@@ -153,6 +153,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
+        print(vl)
         return vl, er
 
     def runtestexcept(self, argv, exception):
@@ -749,7 +750,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
         self.checkxmls(args)
 
-    def test_stdcomp_default(self):
+    def test_stdcomp_default_mandatory(self):
         """ test nxsccreate stdcomp file system
         """
         fun = sys._getframe().f_code.co_name
@@ -1051,6 +1052,137 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
         self.checkxmls(args, True)
 
+    def test_stdcomp_source_nolower(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        args = [
+            [
+                ('nxscreate stdcomp -t source -c Source '
+                 ' %s' % self.flags).split(),
+                [
+                    ['source'],
+                    []
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     'type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="source" type="NXsource">\n'
+                     '        <doc>generic description of the storage ring'
+                     '</doc>\n'
+                     '        <field name="mode" type="NX_CHAR">'
+                     'Multi Bunch<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    [],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp --type source --component Source '
+                 ' --nolower '
+                 ' beamcurrent bcurrent '
+                 ' bunchmode Single_Bunch '
+                 ' numberofbunches nob '
+                 ' sourceenergy senergy '
+                 ' %s' % self.flags).split(),
+                [
+                    ['Source'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXsource" name="source">\n'
+                     '        <doc>generic description of the storage ring'
+                     '</doc>\n'
+                     '        <field units="mA" type="NX_FLOAT" '
+                     'name="current">\n'
+                     '          <doc>storage ring current</doc>\n'
+                     '          <strategy mode="INIT" '
+                     'canfail="true"/>$datasources.bcurrent\n'
+                     '\t</field>\n'
+                     '        <field units="GeV" type="NX_FLOAT" '
+                     'name="energy">\n'
+                     '\t  <doc>beam energy</doc>\n'
+                     '          <strategy mode="INIT" canfail="true"/>'
+                     '$datasources.senergy\n'
+                     '\t</field>\n'
+                     '\t<field type="NX_INT64" name="number_of_bunches">\n'
+                     '          <strategy mode="INIT" canfail="true"/>'
+                     '$datasources.nob\n'
+                     '\t</field>\n'
+                     '        <field type="NX_CHAR" name="mode">Single_Bunch'
+                     '<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    [],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp -t source -c Source -n '
+                 ' beamcurrent bcurrent '
+                 ' bunchmode Single_Bunch '
+                 ' numberofbunches nob '
+                 ' sourceenergy senergy '
+                 ' %s' % self.flags).split(),
+                [
+                    ['Source'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXsource" name="source">\n'
+                     '        <doc>generic description of the storage ring'
+                     '</doc>\n'
+                     '        <field units="mA" type="NX_FLOAT" '
+                     'name="current">\n'
+                     '          <doc>storage ring current</doc>\n'
+                     '          <strategy mode="INIT" '
+                     'canfail="true"/>$datasources.bcurrent\n'
+                     '\t</field>\n'
+                     '        <field units="GeV" type="NX_FLOAT" '
+                     'name="energy">\n'
+                     '\t  <doc>beam energy</doc>\n'
+                     '          <strategy mode="INIT" canfail="true"/>'
+                     '$datasources.senergy\n'
+                     '\t</field>\n'
+                     '\t<field type="NX_INT64" name="number_of_bunches">\n'
+                     '          <strategy mode="INIT" canfail="true"/>'
+                     '$datasources.nob\n'
+                     '\t</field>\n'
+                     '        <field type="NX_CHAR" name="mode">Single_Bunch'
+                     '<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    [],
+                ],
+            ],
+        ]
+
+        self.checkxmls(args)
+
+        
 if __name__ == '__main__':
     unittest.main()
