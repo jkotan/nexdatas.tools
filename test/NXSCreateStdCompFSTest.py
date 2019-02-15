@@ -1183,6 +1183,6 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
         self.checkxmls(args)
 
-        
+
 if __name__ == '__main__':
     unittest.main()
