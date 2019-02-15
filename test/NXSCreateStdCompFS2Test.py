@@ -134,6 +134,192 @@ class NXSCreateStdCompFS2Test(
 
         self.checkxmls(args)
 
+    def test_stdcomp_absorber_file_prefix(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t absorber -c absorber1 -x tst_ '
+                 ' position mot01 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['tst_absorber1'],
+                    ['tst_absorber1_foil', 'tst_absorber1_thickness']
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry">\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="absorber1" type="NXattenuator">\n'
+                     '\t<group name="collection" type="NXcollection">\n'
+                     '          <field name="slidersin_position" '
+                     'type="NX_FLOAT64" units="">\n'
+                     '          <strategy mode="INIT"/>'
+                     '$datasources.mot01</field>\n'
+                     '\t</group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="absorber1_foil" type="PYEVAL">\n'
+                     '    <result name="result">\n'
+                     'import json\nfoillist = json.loads(\'[&quot;Ag&quot;, '
+                     '&quot;Ag&quot;, &quot;Ag&quot;, &quot;Ag&quot;, '
+                     '&quot;&quot;, &quot;Al&quot;, &quot;Al&quot;, '
+                     '&quot;Al&quot;, &quot;Al&quot;]\')\n'
+                     'position = int(float(ds.mot01) + 0.5)\n'
+                     'foil = []\nfor pos, mat in enumerate(foillist):\n'
+                     '     foil.append(mat if pos &amp; position '
+                     'else &quot;&quot;)\n'
+                     'ds.result = foil'
+                     '\n    </result>\n'
+                     ' $datasources.mot01</datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="absorber1_thickness"'
+                     ' type="PYEVAL">\n'
+                     '    <result name="result">\n'
+                     'import json\n'
+                     'thicknesslist = json.loads(\'['
+                     '0.5, 0.05, 0.025, 0.0125, 0, 0.1, 0.3, 0.5, 1.0]\')\n'
+                     'position = int(float(ds.mot01) + 0.5)\n'
+                     'thickness = []\n'
+                     'for pos, thick in enumerate(thicknesslist):\n'
+                     '     thickness.append(thick if pos &amp; position '
+                     'else 0.)\n'
+                     'ds.result = thickness\n'
+                     '    </result>\n'
+                     ' $datasources.mot01</datasource>\n'
+                     '</definition>'],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp --type absorber --component absorber1 '
+                 ' --file-prefix tst_ '
+                 ' position mot01 '
+                 ' y y '
+                 ' attenfactor afactor '
+                 ' foil myfoil '
+                 ' thickness tkns '
+                 ' foillist ["Ag","","Al"] '
+                 ' thicknesslist  [0.5,0,1.0] '
+                 ' distance 0.5 '
+                 ' distanceoffset [0,1,2] '
+                 ' dependstop distance '
+                 ' transformations transformations '
+                 ' %s' % self.flags).split(),
+                [
+                    ['tst_absorber1'],
+                    ['tst_absorber1_foil', 'tst_absorber1_thickness']
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXattenuator" name="absorber1">\n'
+                     '        <field type="NX_CHAR" name="type">\n'
+                     '          <strategy mode="INIT"/>$datasources.myfoil'
+                     '<dimensions rank="1"/>\n'
+                     '\t</field>\n'
+                     '        <field type="NX_CHAR" name="thickness">\n'
+                     '          <strategy mode="INIT"/>$datasources.tkns'
+                     '<dimensions rank="1"/>\n'
+                     '\t</field>\n'
+                     '        <field units="" type="NX_FLOAT" '
+                     'name="attenuator_transmission">\n'
+                     '          <strategy mode="INIT"/>$datasources.afactor'
+                     '</field>\n'
+                     '\t<group type="NXcollection" name="collection">\n'
+                     '          <field units="" type="NX_FLOAT64" '
+                     'name="slidersin_position">\n'
+                     '          <strategy mode="INIT"/>$datasources.mot01'
+                     '</field>\n'
+                     '\t</group>\n'
+                     '        <group type="NXtransformations" '
+                     'name="transformations">\n'
+                     '          <field depends_on="distance" units="mm" '
+                     'type="NX_FLOAT64" name="y">\n'
+                     '            <strategy mode="INIT"/>$datasources.y\n'
+                     '\t    '
+                     '<attribute type="NX_CHAR" name="transformation_type">'
+                     'translation<strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '            <attribute type="NX_FLOAT64" name="vector">'
+                     '0 1 0\n'
+                     '\t    <strategy mode="INIT"/>\n'
+                     '            <dimensions rank="1">\n'
+                     '\t      <dim value="3" index="1"/>\n'
+                     '            </dimensions>\n'
+                     '            </attribute>\n'
+                     '          </field>\n'
+                     '          <field offset_units="m" units="m" '
+                     'type="NX_FLOAT64" name="distance" '
+                     'transformation_type="translation">0.5'
+                     '<strategy mode="INIT"/>\n'
+                     '            <attribute type="NX_FLOAT64" name="vector">'
+                     '0 0 1<dimensions rank="1">\n'
+                     '                <dim value="3" index="1"/>\n'
+                     '              </dimensions>\n'
+                     '              <strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '            <attribute type="NX_FLOAT64" name="offset">'
+                     '[0,1,2]<dimensions rank="1">\n'
+                     '                <dim value="3" index="1"/>\n'
+                     '              </dimensions>\n'
+                     '              <strategy mode="INIT"/>\n'
+                     '            </attribute>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '        <field type="NX_CHAR" name="depends_on">'
+                     'transformations/distance<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="absorber1_foil">\n'
+                     '    <result name="result">\n'
+                     'import json\n'
+                     'foillist = json.loads(\'["Ag","","Al"]\')\n'
+                     'position = int(float(ds.mot01) + 0.5)\n'
+                     'foil = []\n'
+                     'for pos, mat in enumerate(foillist):\n'
+                     '     foil.append(mat if pos &amp; position else "")\n'
+                     'ds.result = foil\n'
+                     '    </result>\n'
+                     ' $datasources.mot01</datasource>\n'
+                     '</definition>\n',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL"'
+                     ' name="absorber1_thickness">\n'
+                     '    <result name="result">\n'
+                     'import json\n'
+                     'thicknesslist = json.loads(\'[0.5,0,1.0]\')\n'
+                     'position = int(float(ds.mot01) + 0.5)\n'
+                     'thickness = []\n'
+                     'for pos, thick in enumerate(thicknesslist):\n'
+                     '     thickness.append('
+                     'thick if pos &amp; position else 0.)\n'
+                     'ds.result = thickness\n'
+                     '    </result>\n'
+                     ' $datasources.mot01</datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+
+        self.checkxmls(args)
+
 
 if __name__ == '__main__':
     unittest.main()

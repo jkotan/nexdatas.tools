@@ -360,7 +360,7 @@ standardComponentVariables = {
         },
         'position': {
             'default': None,
-            'doc': "which sliders are in [bitarray] (datasource)"
+            'doc': "which sliders are in [bitarray] MANDATORY (datasource)"
         },
         'foil': {
             'default': None,
@@ -427,7 +427,7 @@ standardComponentVariables = {
         },
         'foilpos': {
             'default': None,
-            'doc': "foil position (datasource)"
+            'doc': "foil position MANDATORY (datasource)"
         },
         'x': {
             'default': None,
@@ -906,49 +906,54 @@ standardComponentVariables = {
     'collect2': {
         'first': {
             'default': None,
-            'doc': "name of the first component to collect (datasource)"
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
         },
         'second': {
             'default': None,
-            'doc': "name of the second component to collect (datasource)"
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
         }
     },
     'collect3': {
         'first': {
             'default': None,
-            'doc': "name of the first component to collect (datasource)"
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
         },
         'second': {
             'default': None,
-            'doc': "name of the second component to collect (datasource)"
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
         },
         'third': {
             'default': None,
-            'doc': "name of the third component to collect (datasource)"
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
         }
     },
     'common2': {
         'dds': {
             'default': None,
-            'doc': "default read datasource name (datasource)"
+            'doc': "default read datasource name MANDATORY (datasource)"
         },
         'ods': {
             'default': None,
-            'doc': "optional detasource name (datasource)"
+            'doc': "optional detasource name MANDATORY (datasource)"
         }
     },
     'common3': {
         'dds': {
             'default': None,
-            'doc': "default read datasource name (datasource)"
+            'doc': "default read datasource name MANDATORY (datasource)"
         },
         'ods1': {
             'default': None,
-            'doc': "fist optional detasource name (datasource)"
+            'doc': "fist optional detasource name MANDATORY (datasource)"
         },
         'ods2': {
             'default': None,
-            'doc': "second optional detasource name (datasource)"
+            'doc': "second optional detasource name MANDATORY (datasource)"
         }
     },
 }
