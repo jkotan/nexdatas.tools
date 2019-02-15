@@ -72,6 +72,7 @@ class NXSCreateStdCompDBRTest(
         self._proxy = None
         self._proxy2 = None
         self.flags = " --database --server aatestp09/testmcs2/testr228 "
+        self.device = 'aatestp09/testmcs2/testr228'
 
     def openConf2(self):
         try:

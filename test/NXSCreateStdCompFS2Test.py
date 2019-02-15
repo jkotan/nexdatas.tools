@@ -48,7 +48,7 @@ class NXSCreateStdCompFS2Test(
 
         self.directory = "my_test_nxs"
         self._dircreated = False
-        self.flags = " -d %s" % self.directory
+        self.flags = " -r testp09/testmcs/testr228  -d %s" % self.directory
 
     # test starter
     # \brief Common set up

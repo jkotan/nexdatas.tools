@@ -84,6 +84,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         self._sv = ServerSetUp.ServerSetUp()
         self.directory = "."
         self.flags = " -r testp09/testmcs/testr228 "
+        self.device = 'testp09/testmcs/testr228'
 
     # sets xmlconfiguration
     # \param xmlc configuration instance
@@ -879,7 +880,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      'name="%s" port="%s"/>\n'
                      '  </datasource>\n'
                      '</definition>' %
-                     (self.host, "testp09/testmcs/testr228", self.port),
+                     (self.host, self.device, self.port),
                      '<?xml version="1.0" ?><definition>\n'
                      '  <datasource name="end_time" type="CLIENT">\n'
                      '    <record name="end_time"/>\n'

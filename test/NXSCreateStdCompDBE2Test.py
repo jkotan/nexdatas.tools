@@ -46,6 +46,7 @@ class NXSCreateStdCompDBETest(
 
         self.flags = " --database --server testp09/testmcs/testr228 " \
                      "--external aatestp09/testmcs2/testr228 "
+        self.device = 'aatestp09/testmcs2/testr228'
 
 
 if __name__ == '__main__':

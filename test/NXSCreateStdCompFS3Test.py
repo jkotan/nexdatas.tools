@@ -44,7 +44,8 @@ class NXSCreateStdCompFS3Test(
         NXSCreateStdCompFS2Test.NXSCreateStdCompFS2Test.__init__(
             self, methodName)
 
-        self.flags = " --directory %s" % self.directory
+        self.flags = "  -r testp09/testmcs/testr228 " \
+                     " --directory %s" % self.directory
 
 
 if __name__ == '__main__':
