@@ -37,6 +37,11 @@ try:
 except ImportError:
     from io import StringIO
 
+try:
+    import ServerSetUp
+except ImportError:
+    from . import ServerSetUp
+
 
 if sys.version_info > (3,):
     unicode = str
@@ -76,8 +81,9 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         db = PyTango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
+        self._sv = ServerSetUp.ServerSetUp()
         self.directory = "."
-        self.flags = ""
+        self.flags = " -r testp09/testmcs/testr228 "
 
     # sets xmlconfiguration
     # \param xmlc configuration instance
@@ -96,17 +102,22 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
     def setUp(self):
         print("\nsetting up...")
         print("SEED = %s" % self.seed)
+        self._sv.setUp()
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
         print("tearing down ...")
+        self._sv.tearDown()
 
     def dsexists(self, name):
         return os.path.isfile("%s/%s.ds.xml" % (self.directory, name))
 
     def cpexists(self, name):
         return os.path.isfile("%s/%s.xml" % (self.directory, name))
+
+    def checkmandatory(self, name, mandat):
+        pass
 
     def getds(self, name):
         fl = open("%s/%s.ds.xml" % (self.directory, name), 'r')
@@ -181,7 +192,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             error = True
         self.assertEqual(error, True)
 
-    def checkxmls(self, args):
+    def checkxmls(self, args, mandatory=False):
         """ check xmls of components and datasources
         """
 
@@ -214,10 +225,10 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     for i, ds in enumerate(arg[1][1]):
                         xml = self.getds(ds)
                         self.assertEqual(arg[2][1][i], xml)
-
-                    for i, ds in enumerate(arg[1][0]):
+                    for i, cp in enumerate(arg[1][0]):
                         xml = self.getcp(cp)
                         self.assertEqual(arg[2][0][i], xml)
+                        self.checkmandatory(cp, mandatory)
 
                     for ds in arg[1][1]:
                         self.deleteds(ds)
@@ -625,6 +636,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp --type beamstop '
+                 ' --entryname myentry '
+                 ' --insname myinstrument '
                  '--component testbeamstop2 %s' %
                  self.flags).split(),
                 [
@@ -633,9 +646,9 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                 ],
                 [
                     ['<?xml version="1.0" ?><definition>\n'
-                     '  <group name="$var.entryname#\'scan\'$var.serialno" '
+                     '  <group name="$var.entryname#\'myentry\'$var.serialno" '
                      'type="NXentry">\n'
-                     '    <group name="instrument" type="NXinstrument">\n'
+                     '    <group name="myinstrument" type="NXinstrument">\n'
                      '      <group name="testbeamstop2" type="NXbeam_stop">\n'
                      '\t<field name="description" type="NX_CHAR">\n'
                      '            <strategy mode="INIT"/>circular</field>\n'
@@ -654,6 +667,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp -t beamstop -c testbeamstop3 '
+                 ' -y myentry '
+                 ' -i myinstrument '
                  ' description linear '
                  ' x mot01 '
                  ' xsign -'
@@ -668,8 +683,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     ['<?xml version=\'1.0\'?>\n'
                      '<definition>\n'
                      '  <group type="NXentry" '
-                     'name="$var.entryname#\'scan\'$var.serialno">\n'
-                     '    <group type="NXinstrument" name="instrument">\n'
+                     'name="$var.entryname#\'myentry\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="myinstrument">\n'
                      '      <group type="NXbeam_stop" name="testbeamstop3">\n'
                      '\t<field type="NX_CHAR" name="description">\n'
                      '            <strategy mode="INIT"/>linear</field>\n'
@@ -732,6 +747,308 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         ]
 
         self.checkxmls(args)
+
+    def test_stdcomp_default(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t default -c default -m '
+                 ' %s' % self.flags).split(),
+                [
+                    ['default', 'defaultinstrument', 'defaultsample'],
+                    ['title', 'start_time', 'sample_name',
+                     'nexdatas_version', 'nexdatas_configuration',
+                     'end_time', 'chemical_formula', 'beamtime_id']
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry"/>\n'
+                     '  $components.defaultinstrument\n'
+                     '  $components.defaultsample\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry">\n'
+                     '    <field name="experiment_identifier" '
+                     'type="NX_CHAR">\n'
+                     '      <doc>Beamtime ID. From this ID everything else '
+                     'can be derived from the DESY databases including the '
+                     'Proposal as well as the scientists performing '
+                     'the experiment, the local contact, and so on.\n'
+                     'The beamtime ID at DESY is an 8 digit number.R</doc>\n'
+                     '      <strategy mode="INIT"/>$datasources.beamtime_id'
+                     '</field>\n'
+                     '    <field name="start_time" type="NX_DATE_TIME">\n'
+                     '      <doc>time stamp when the experiment has started.'
+                     '</doc>\n'
+                     '      <strategy mode="INIT"/>$datasources.start_time'
+                     '</field>\n'
+                     '    <field name="end_time" type="NX_DATE_TIME">\n'
+                     '      <doc>'
+                     'end time - timestamp when the experiment stopped.'
+                     '</doc>\n'
+                     '      <strategy mode="FINAL"/>$datasources.end_time'
+                     '</field>\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="source" type="NXsource">\n'
+                     '        <doc>'
+                     'generic description of the PETRA III storage ring'
+                     '</doc>\n'
+                     '        <field name="name" short_name="PETRAIII"'
+                     ' type="NX_CHAR">\n'
+                     '          <strategy mode="INIT"/>PETRA III</field>\n'
+                     '        <field name="type" type="NX_CHAR">'
+                     'Synchrotron X-ray Source<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field name="probe" type="NX_CHAR">'
+                     'x-ray<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '      <field name="name" '
+                     'short_name="P09" type="NX_CHAR">'
+                     'P09 Resonant Scattering and Diffraction beamline'
+                     '<strategy mode="INIT"/>\n'
+                     '      </field>\n'
+                     '    </group>\n'
+                     '    <field name="program_name" '
+                     'scan_command="$var.scan_title" scan_id="$var.scan_id" '
+                     'type="NX_CHAR">NexDaTaS<attribute name="version" '
+                     'type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.nexdatas_version</attribute>\n'
+                     '      <attribute name="configuration" type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.nexdatas_configuration</attribute>\n'
+                     '    </field>\n'
+                     '    <field name="title" type="NX_CHAR">\n'
+                     '      <strategy mode="INIT"/>$datasources.title'
+                     '</field>\n'
+                     '  </group>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry">\n'
+                     '    <group name="sample" type="NXsample">\n'
+                     '      <field name="name" type="NX_CHAR">\n'
+                     '\t<strategy mode="INIT"/>$datasources.sample_name\n'
+                     '      </field>\n'
+                     '      <field name="chemical_formula" type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.chemical_formula\n'
+                     '      </field>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="title" type="CLIENT">\n'
+                     '    <record name="title"/>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="start_time" type="CLIENT">\n'
+                     '    <record name="start_time"/>\n'
+                     '    <doc>'
+                     'The start time is provided by the control client.'
+                     '</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="sample_name" type="CLIENT">\n'
+                     '    <record name="sample_name"/>\n'
+                     '    <doc>'
+                     'Data source providing the name of the sample.</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="nexdatas_version" type="PYEVAL">\n'
+                     '    <result name="result">\n'
+                     'from nxswriter import __version__\n'
+                     'ds.result = __version__</result>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource '
+                     'name="nexdatas_configuration" type="TANGO">\n'
+                     '    <record name="Version"/>\n'
+                     '    <device hostname="%s" member="attribute" '
+                     'name="%s" port="%s"/>\n'
+                     '  </datasource>\n'
+                     '</definition>' %
+                     (self.host, "testp09/testmcs/testr228", self.port),
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="end_time" type="CLIENT">\n'
+                     '    <record name="end_time"/>\n'
+                     '    <doc>'
+                     'The end time is provided by the client after '
+                     'the experiment is finished.</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="chemical_formula" type="CLIENT">\n'
+                     '    <record name="chemical_formula"/>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="beamtime_id" type="CLIENT">\n'
+                     '    <record name="beamtime_id"/>\n'
+                     '  </datasource>\n'
+                     '</definition>']
+                ],
+            ],
+            [
+                ('nxscreate stdcomp --type default --component default'
+                 ' --mandatory'
+                 ' %s' % self.flags).split(),
+                [
+                    ['default', 'defaultinstrument', 'defaultsample'],
+                    ['title', 'start_time', 'sample_name',
+                     'nexdatas_version', 'nexdatas_configuration',
+                     'end_time', 'chemical_formula', 'beamtime_id']
+                ],
+                [
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry"/>\n'
+                     '  $components.defaultinstrument\n'
+                     '  $components.defaultsample\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry">\n'
+                     '    <field name="experiment_identifier" '
+                     'type="NX_CHAR">\n'
+                     '      <doc>Beamtime ID. From this ID everything else '
+                     'can be derived from the DESY databases including the '
+                     'Proposal as well as the scientists performing '
+                     'the experiment, the local contact, and so on.\n'
+                     'The beamtime ID at DESY is an 8 digit number.R</doc>\n'
+                     '      <strategy mode="INIT"/>$datasources.beamtime_id'
+                     '</field>\n'
+                     '    <field name="start_time" type="NX_DATE_TIME">\n'
+                     '      <doc>time stamp when the experiment has started.'
+                     '</doc>\n'
+                     '      <strategy mode="INIT"/>$datasources.start_time'
+                     '</field>\n'
+                     '    <field name="end_time" type="NX_DATE_TIME">\n'
+                     '      <doc>'
+                     'end time - timestamp when the experiment stopped.'
+                     '</doc>\n'
+                     '      <strategy mode="FINAL"/>$datasources.end_time'
+                     '</field>\n'
+                     '    <group name="instrument" type="NXinstrument">\n'
+                     '      <group name="source" type="NXsource">\n'
+                     '        <doc>'
+                     'generic description of the PETRA III storage ring'
+                     '</doc>\n'
+                     '        <field name="name" short_name="PETRAIII"'
+                     ' type="NX_CHAR">\n'
+                     '          <strategy mode="INIT"/>PETRA III</field>\n'
+                     '        <field name="type" type="NX_CHAR">'
+                     'Synchrotron X-ray Source<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field name="probe" type="NX_CHAR">'
+                     'x-ray<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '      </group>\n'
+                     '      <field name="name" '
+                     'short_name="P09" type="NX_CHAR">'
+                     'P09 Resonant Scattering and Diffraction beamline'
+                     '<strategy mode="INIT"/>\n'
+                     '      </field>\n'
+                     '    </group>\n'
+                     '    <field name="program_name" '
+                     'scan_command="$var.scan_title" scan_id="$var.scan_id" '
+                     'type="NX_CHAR">NexDaTaS<attribute name="version" '
+                     'type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.nexdatas_version</attribute>\n'
+                     '      <attribute name="configuration" type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.nexdatas_configuration</attribute>\n'
+                     '    </field>\n'
+                     '    <field name="title" type="NX_CHAR">\n'
+                     '      <strategy mode="INIT"/>$datasources.title'
+                     '</field>\n'
+                     '  </group>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <group name="$var.entryname#\'scan\'$var.serialno"'
+                     ' type="NXentry">\n'
+                     '    <group name="sample" type="NXsample">\n'
+                     '      <field name="name" type="NX_CHAR">\n'
+                     '\t<strategy mode="INIT"/>$datasources.sample_name\n'
+                     '      </field>\n'
+                     '      <field name="chemical_formula" type="NX_CHAR">\n'
+                     '        <strategy mode="INIT"/>'
+                     '$datasources.chemical_formula\n'
+                     '      </field>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>'],
+                    ['<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="title" type="CLIENT">\n'
+                     '    <record name="title"/>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="start_time" type="CLIENT">\n'
+                     '    <record name="start_time"/>\n'
+                     '    <doc>'
+                     'The start time is provided by the control client.'
+                     '</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="sample_name" type="CLIENT">\n'
+                     '    <record name="sample_name"/>\n'
+                     '    <doc>'
+                     'Data source providing the name of the sample.</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="nexdatas_version" type="PYEVAL">\n'
+                     '    <result name="result">\n'
+                     'from nxswriter import __version__\n'
+                     'ds.result = __version__</result>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource '
+                     'name="nexdatas_configuration" type="TANGO">\n'
+                     '    <record name="Version"/>\n'
+                     '    <device hostname="%s" member="attribute" '
+                     'name="%s" port="%s"/>\n'
+                     '  </datasource>\n'
+                     '</definition>' %
+                     (self.host, "testp09/testmcs/testr228", self.port),
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="end_time" type="CLIENT">\n'
+                     '    <record name="end_time"/>\n'
+                     '    <doc>'
+                     'The end time is provided by the client after '
+                     'the experiment is finished.</doc>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="chemical_formula" type="CLIENT">\n'
+                     '    <record name="chemical_formula"/>\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version="1.0" ?><definition>\n'
+                     '  <datasource name="beamtime_id" type="CLIENT">\n'
+                     '    <record name="beamtime_id"/>\n'
+                     '  </datasource>\n'
+                     '</definition>']
+                ],
+            ],
+        ]
+
+        self.checkxmls(args, True)
 
 
 if __name__ == '__main__':

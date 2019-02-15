@@ -37,11 +37,6 @@ try:
 except Exception:
     from . import NXSCreateStdCompFSTest
 
-try:
-    import ServerSetUp
-except ImportError:
-    from . import ServerSetUp
-
 
 if sys.version_info > (3,):
     unicode = str
@@ -65,7 +60,6 @@ class NXSCreateStdCompDBTest(
         self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
-        self._sv = ServerSetUp.ServerSetUp()
         self._proxy = None
         self.flags = " --database --server testp09/testmcs/testr228"
 
@@ -123,15 +117,13 @@ class NXSCreateStdCompDBTest(
     # \brief Common set up
     def setUp(self):
         NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.setUp(self)
-        self._sv.setUp()
         self.openConf()
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
-        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.tearDown(self)
         self.closeConfig()
-        self._sv.tearDown()
+        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.tearDown(self)
 
     def openConf(self):
         try:
@@ -147,6 +139,14 @@ class NXSCreateStdCompDBTest(
     def cpexists(self, name):
         avds = self._proxy.availableComponents()
         return name in avds
+
+    def checkmandatory(self, name, mandat):
+        self._proxy.Open()
+        cps = self._proxy.mandatoryComponents()
+        if mandat:
+            self.assertTrue(name in cps)
+        else:
+            self.assertTrue(name not in cps)
 
     def getds(self, name):
         avds = self._proxy.availableDataSources()
