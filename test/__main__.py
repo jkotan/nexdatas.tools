@@ -199,6 +199,10 @@ if PYTANGO_AVAILABLE:
     import NXSCreateOnlineDSFS2Test
     import NXSCreateOnlineDSFS3Test
 
+    import NXSCreateOnlineCPFSTest
+    import NXSCreateOnlineCPFS2Test
+    import NXSCreateOnlineCPFS3Test
+
     import NXSCreatePoolDSFSTest
     import NXSCreatePoolDSFS2Test
     import NXSCreatePoolDSFS3Test
@@ -237,6 +241,11 @@ if PYTANGO_AVAILABLE:
         import NXSCreateOnlineDSDBETest
         import NXSCreateOnlineDSDBE2Test
 
+        import NXSCreateOnlineCPDBTest
+        import NXSCreateOnlineCPDB2Test
+        import NXSCreateOnlineCPDBRTest
+        import NXSCreateOnlineCPDBR2Test
+        
         import NXSCreateStdCompDBTest
         import NXSCreateStdCompDB2Test
         import NXSCreateStdCompDBRTest
@@ -315,6 +324,16 @@ def main():
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateOnlineCPFSTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateOnlineCPFS2Test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateOnlineCPFS3Test))
+
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreatePoolDSFSTest))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -382,6 +401,19 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateTangoDSDBR2Test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineCPDBTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineCPDB2Test))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineCPDBRTest))
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateOnlineCPDBR2Test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(

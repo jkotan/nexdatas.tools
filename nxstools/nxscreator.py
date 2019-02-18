@@ -1241,7 +1241,7 @@ class CPCreator(Creator):
             existing = self._componentFilesExist(
                 [cpname], self.options.file, self.options.directory)
             if existing:
-                raise DSExistsException(
+                raise CPExistsException(
                     "Component files '%s' already exist." % existing)
 
         self.createXMLs()
