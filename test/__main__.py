@@ -245,7 +245,7 @@ if PYTANGO_AVAILABLE:
         import NXSCreateOnlineCPDB2Test
         import NXSCreateOnlineCPDBRTest
         import NXSCreateOnlineCPDBR2Test
-        
+
         import NXSCreateStdCompDBTest
         import NXSCreateStdCompDB2Test
         import NXSCreateStdCompDBRTest

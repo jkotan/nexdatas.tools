@@ -31,22 +31,22 @@ import PyTango
 # import json
 import nxstools
 from nxstools import nxscreate
-from nxstools import nxsdevicetools
+# from nxstools import nxsdevicetools
 
-try:
-    import nxsextrasp00
-except ImportError:
-    from . import nxsextrasp00
+# try:
+#     import nxsextrasp00
+# except ImportError:
+#     from . import nxsextrasp00
 
 try:
     from cStringIO import StringIO
 except ImportError:
     from io import StringIO
 
-try:
-    import TestServerSetUp
-except ImportError:
-    from . import TestServerSetUp
+# try:
+#     import TestServerSetUp
+# except ImportError:
+#     from . import TestServerSetUp
 
 
 if sys.version_info > (3,):
