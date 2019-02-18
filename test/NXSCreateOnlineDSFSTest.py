@@ -190,18 +190,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             error = True
         self.assertEqual(error, True)
 
-    # sets selection configuration
-    # \param selectionc configuration instance
-    # \param selection selection configuration string
-    def setSelection(self, selectionc, selection):
-        selectionc.selection = selection
-
-    # gets selectionconfiguration
-    # \param selectionc configuration instance
-    # \returns selection configuration string
-    def getSelection(self, selectionc):
-        return selectionc.selection
-
     def test_onlineds_stepping_motor(self):
         """ test nxsccreate onlineds file system
         """

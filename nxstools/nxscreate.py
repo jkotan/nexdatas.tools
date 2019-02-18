@@ -663,6 +663,7 @@ class OnlineCP(Runner):
                 creator.create()
             except CPExistsException as e:
                 print(str(e))
+                sys.exit(255)
         else:
             lst = creator.listcomponents()
             print("\nPOSSIBLE COMPONENTS: \n   %s" % " ".join(list(lst)))
@@ -769,8 +770,10 @@ class StdComp(Runner):
                 creator.create()
             except CPExistsException as e:
                 print(str(e))
+                sys.exit(255)
             except DSExistsException as e:
                 print(str(e))
+                sys.exit(255)
         elif options.cptype:
             dct = creator.listcomponentvariables()
             print("\nCOMPONENT VARIABLES:")

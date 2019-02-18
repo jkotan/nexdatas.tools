@@ -413,8 +413,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")
                         self.assertEqual(lines[-1], "")
-                        self.assertTrue(lines[1].startswith("MISSING"))
                         # print(vl)
+                        self.assertTrue("MISSING" in vl)
                         if self.cpexists(cp):
                             self.deletecp(cp)
         finally:
@@ -1273,7 +1273,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         xml = self.getcp(cp)
                         self.assertEqual(arg[2][0][i], xml)
 
-                    vl, er = self.runtest(arg[3])
+                    vl, er, txt = self.runtestexcept(arg[3], SystemExit)
 
                     for i, ds in enumerate(arg[1][1]):
                         xml = self.getds(ds)

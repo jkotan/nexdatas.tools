@@ -1238,6 +1238,9 @@ class CPCreator(Creator):
                     raise CPExistsException(
                         "Component '%s' already exists." % cpname)
         elif not self.options.overwrite:
+            print(self.options.overwrite)
+            print(self.options.file)
+            print(cpname)
             existing = self._componentFilesExist(
                 [cpname], self.options.file, self.options.directory)
             if existing:

@@ -43,10 +43,10 @@ try:
 except ImportError:
     from io import StringIO
 
-# try:
-#     import TestServerSetUp
-# except ImportError:
-#     from . import TestServerSetUp
+try:
+    import TestServerSetUp
+except ImportError:
+    from . import TestServerSetUp
 
 
 if sys.version_info > (3,):
@@ -1528,6 +1528,472 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             fl.write(xml)
 
         self.checkxmls(args, fname)
+
+    def test_onlinecp_mcaxia_overwrite_false(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname1 = '%s/%s%s1.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml1 = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>mymcaxia</name>
+ <type>type_tango</type>
+ <module>mca_xia</module>
+ <device>p09/mcaxia/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        fname2 = '%s/%s%s2.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml2 = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>mymcaxia</name>
+ <type>type_tango</type>
+ <module>mca_xia</module>
+ <device>p09/mcaxia/e01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c mymcaxia '
+                     ' %s %s ' % (fname1,  self.flags)).split(),
+                    ('nxscreate onlinecp --component mymcaxia '
+                     ' %s %s ' % (fname1,  self.flags)).split(),
+                ],
+                [
+                    ['mymcaxia'],
+                    ['mymcaxia_countsroi',
+                     'mymcaxia_icr',
+                     'mymcaxia_ocr',
+                     'mymcaxia_roiend',
+                     'mymcaxia_roistart'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" name="$var.entryname#\'scan\''
+                     '$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="mymcaxia">\n'
+                     '        <field type="NX_FLOAT64" name="data">'
+                     '$datasources.mymcaxia<strategy mode="STEP"/>\n'
+                     '          <dimensions rank="1"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field type="NX_FLOAT64" name="countsroi">'
+                     '$datasources.mymcaxia_countsroi<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="roistart">'
+                     '$datasources.mymcaxia_roistart<strategy mode="INIT"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="roiend">'
+                     '$datasources.mymcaxia_roiend<strategy mode="INIT"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="icr">'
+                     '$datasources.mymcaxia_icr<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="ocr">'
+                     '$datasources.mymcaxia_ocr<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/data" name="mymcaxia"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/countsroi" '
+                     'name="mymcaxia_countsroi"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/icr" '
+                     'name="mymcaxia_icr"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/ocr" '
+                     'name="mymcaxia_ocr"/>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_countsroi" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CountsRoI"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_icr" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="haso000" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ICR"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_ocr" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="haso000" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="OCR"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_roiend" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="RoIEnd"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_roistart" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="RoIStart"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
+                ],
+                [
+                    ('nxscreate onlinecp -c mymcaxia '
+                     ' %s %s ' % (fname2,  self.flags)).split(),
+                    ('nxscreate onlinecp --component mymcaxia '
+                     ' %s %s ' % (fname2,  self.flags)).split(),
+                ],
+            ],
+        ]
+        if os.path.isfile(fname1):
+            raise Exception("Test file %s exists" % fname1)
+        if os.path.isfile(fname2):
+            raise Exception("Test file %s exists" % fname2)
+        with open(fname1, "w") as fl:
+            fl.write(xml1)
+        with open(fname2, "w") as fl:
+            fl.write(xml2)
+
+        dstotest = []
+        cptotest = []
+        try:
+            tsv = TestServerSetUp.TestServerSetUp(
+                'p09/mcaxia/exp.01', "MYTESTS1",
+                'mymcaxia'
+            )
+            tsv.setUp()
+            for arg in args:
+                skip = False
+                for cp in arg[1][0]:
+                    if self.cpexists(cp):
+                        skip = True
+                for ds in arg[1][1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1][1]:
+                        dstotest.append(ds)
+                    for cp in arg[1][0]:
+                        cptotest.append(cp)
+
+                    for ci, cmd in enumerate(arg[0]):
+                        vl, er = self.runtest(cmd)
+                        # print(vl)
+                        # print(er)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        for i, ds in enumerate(arg[1][1]):
+                            xml = self.getds(ds)
+                            self.assertEqual(arg[2][1][i], xml)
+                        for i, cp in enumerate(arg[1][0]):
+                            xml = self.getcp(cp)
+                            self.assertEqual(arg[2][0][i], xml)
+
+                        vl, er, etxt = self.runtestexcept(
+                            arg[3][ci], SystemExit)
+
+                        for i, ds in enumerate(arg[1][1]):
+                            xml = self.getds(ds)
+                            self.assertEqual(arg[2][1][i], xml)
+                        for i, cp in enumerate(arg[1][0]):
+                            xml = self.getcp(cp)
+                            self.assertEqual(arg[2][0][i], xml)
+                        for ds in arg[1][1]:
+                            self.deleteds(ds)
+                        for cp in arg[1][0]:
+                            self.deletecp(cp)
+
+        finally:
+            os.remove(fname2)
+            os.remove(fname1)
+            for cp in cptotest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+            for ds in dstotest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+            if tsv:
+                tsv.tearDown()
+
+    def test_onlinecp_mcaxia_overwrite_true(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname1 = '%s/%s%s1.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml1 = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>mymcaxia</name>
+ <type>type_tango</type>
+ <module>mca_xia</module>
+ <device>p09/mcaxia/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        fname2 = '%s/%s%s2.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml2 = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>mymcaxia</name>
+ <type>type_tango</type>
+ <module>mca_xia</module>
+ <device>p09/mcaxia/e01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c mymcaxia -o '
+                     ' %s %s ' % (fname2,  self.flags)).split(),
+                    ('nxscreate onlinecp --overwrite --component mymcaxia '
+                     ' %s %s ' % (fname2,  self.flags)).split(),
+                ],
+                [
+                    ['mymcaxia'],
+                    ['mymcaxia_countsroi',
+                     'mymcaxia_icr',
+                     'mymcaxia_ocr',
+                     'mymcaxia_roiend',
+                     'mymcaxia_roistart'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" name="$var.entryname#\'scan\''
+                     '$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="mymcaxia">\n'
+                     '        <field type="NX_FLOAT64" name="data">'
+                     '$datasources.mymcaxia<strategy mode="STEP"/>\n'
+                     '          <dimensions rank="1"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field type="NX_FLOAT64" name="countsroi">'
+                     '$datasources.mymcaxia_countsroi<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="roistart">'
+                     '$datasources.mymcaxia_roistart<strategy mode="INIT"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="roiend">'
+                     '$datasources.mymcaxia_roiend<strategy mode="INIT"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="icr">'
+                     '$datasources.mymcaxia_icr<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_FLOAT64" name="ocr">'
+                     '$datasources.mymcaxia_ocr<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/data" name="mymcaxia"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/countsroi" '
+                     'name="mymcaxia_countsroi"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/icr" '
+                     'name="mymcaxia_icr"/>\n'
+                     '      <link target="$var.entryname#\'scan\'$var.serialno'
+                     '/instrument/mymcaxia/collection/ocr" '
+                     'name="mymcaxia_ocr"/>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_countsroi" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CountsRoI"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_icr" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="haso000" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ICR"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_ocr" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="haso000" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="OCR"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_roiend" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="RoIEnd"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mymcaxia_roistart" type="TANGO">\n'
+                     '    <device group="mymcaxia_" hostname="jessie" '
+                     'member="attribute" name="p09/mcaxia/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="RoIStart"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
+                ],
+                [
+                    ('nxscreate onlinecp -c mymcaxia -o '
+                     ' %s %s ' % (fname1,  self.flags)).split(),
+                    ('nxscreate onlinecp --overwrite --component mymcaxia '
+                     ' %s %s ' % (fname1,  self.flags)).split(),
+                ],
+            ],
+        ]
+        if os.path.isfile(fname1):
+            raise Exception("Test file %s exists" % fname1)
+        if os.path.isfile(fname2):
+            raise Exception("Test file %s exists" % fname2)
+        with open(fname1, "w") as fl:
+            fl.write(xml1)
+        with open(fname2, "w") as fl:
+            fl.write(xml2)
+
+        dstotest = []
+        cptotest = []
+        try:
+            tsv = TestServerSetUp.TestServerSetUp(
+                'p09/mcaxia/exp.01', "MYTESTS1",
+                'mymcaxia'
+            )
+            tsv.setUp()
+            for arg in args:
+                skip = False
+                for cp in arg[1][0]:
+                    if self.cpexists(cp):
+                        skip = True
+                for ds in arg[1][1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1][1]:
+                        dstotest.append(ds)
+                    for cp in arg[1][0]:
+                        cptotest.append(cp)
+
+                    for ci, cmd in enumerate(arg[0]):
+                        vl, er = self.runtest(cmd)
+                        # print(vl)
+                        # print(er)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+
+                        vl, er = self.runtest(arg[3][ci])
+
+                        for i, ds in enumerate(arg[1][1]):
+                            xml = self.getds(ds)
+                            self.assertEqual(arg[2][1][i], xml)
+                        for i, cp in enumerate(arg[1][0]):
+                            xml = self.getcp(cp)
+                            self.assertEqual(arg[2][0][i], xml)
+                        for ds in arg[1][1]:
+                            self.deleteds(ds)
+                        for cp in arg[1][0]:
+                            self.deletecp(cp)
+
+        finally:
+            os.remove(fname2)
+            os.remove(fname1)
+            for cp in cptotest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+            for ds in dstotest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+            if tsv:
+                tsv.tearDown()
 
 
 if __name__ == '__main__':
