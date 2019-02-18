@@ -1059,6 +1059,9 @@ standardComponentTemplateFiles = {
     'samplehkl': [
         'samplehkl.xml'
     ],
+    'pointdet': [
+        'pointdet.xml',
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -1352,8 +1355,5 @@ moduleMultiAttributes = {
         'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
         'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
-    ],
-    'pointdet': [
-        'pointdet.xml',
     ],
 }
