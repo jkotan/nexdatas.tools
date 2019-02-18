@@ -48,7 +48,7 @@ class NXSCreateOnlineCPFS2Test(
 
         self.directory = "my_test_nxs"
         self._dircreated = False
-        self.flags = " -d %s" % self.directory
+        self.flags = " -d %s " % self.directory
 
     # test starter
     # \brief Common set up
@@ -66,8 +66,8 @@ class NXSCreateOnlineCPFS2Test(
             shutil.rmtree(self.directory)
             self._dircreated = False
 
-    def ttest_onlinecp_stepping_motor_file_prefix(self):
-        """ test nxsccreate onlinecp file system
+    def test_onlinecp_eigerdectris_fileprefix(self):
+        """ test nxsccreate stdcomp file system
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -78,146 +78,412 @@ class NXSCreateOnlineCPFS2Test(
         xml = """<?xml version="1.0"?>
 <hw>
 <device>
- <name>my_exp_mot01</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.01</device>
+ <name>myeigerdectris</name>
+ <type>type_tango</type>
+ <module>eigerdectris</module>
+ <device>p09/eigerdectris/exp.01</device>
  <control>tango</control>
  <hostname>haso000:10000</hostname>
  <controller>oms58_exp</controller>
  <channel>1</channel>
  <rootdevicename>p09/motor/exp</rootdevicename>
 </device>
-<device>
- <name>my_exp_mot02</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.02</device>
- <control>tango</control>
- <hostname>haso000:10000</hostname>
- <controller>oms58_exp</controller>
- <channel>2</channel>
- <rootdevicename>p09/motor/exp</rootdevicename>
-</device>
-<device>
- <name>my_exp_mot03</name>
- <type>stepping_motor</type>
- <module>oms58</module>
- <device>p09/motor/exp.03</device>
- <control>tango</control>
- <hostname>haso000:10000</hostname>
- <controller>oms58_exp</controller>
- <channel>3</channel>
- <rootdevicename>p09/motor/exp</rootdevicename>
-</device>
 </hw>
 """
-
         args = [
             [
-                ('nxscreate onlinecp -x test_ %s %s '
-                 % (fname, self.flags)).split(),
-                ['test_my_exp_mot01',
-                 'test_my_exp_mot02',
-                 'test_my_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
+                    ('nxscreate onlinecp -c myeigerdectris -x ts_ '
+                     ' %s %s ' % (fname, self.flags)).split(),
+                    ('nxscreate onlinecp --file-prefix ts_ '
+                     ' --component myeigerdectris '
+                     ' %s %s ' % (fname, self.flags)).split(),
                 ],
-            ],
-            [
-                ('nxscreate onlinecp --file-prefix tst_ %s %s '
-                 % (fname, self.flags)).split(),
-                ['tst_my_exp_mot01',
-                 'tst_my_exp_mot02',
-                 'tst_my_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
-                    '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
-                    '  </datasource>\n'
-                    '</definition>\n',
+                    ['ts_myeigerdectris'],
+                    ['ts_myeigerdectris_autosummationenabled',
+                     'ts_myeigerdectris_bitdepth',
+                     'ts_myeigerdectris_counttime',
+                     'ts_myeigerdectris_description_cb',
+                     'ts_myeigerdectris_description',
+                     'ts_myeigerdectris_energythreshold',
+                     'ts_myeigerdectris_flatfieldenabled',
+                     'ts_myeigerdectris_frametime',
+                     'ts_myeigerdectris_humidity',
+                     'ts_myeigerdectris_nbimages',
+                     'ts_myeigerdectris_nbtriggers',
+                     'ts_myeigerdectris_photonenergy',
+                     'ts_myeigerdectris_ratecorrectionenabled',
+                     'ts_myeigerdectris_readouttime',
+                     'ts_myeigerdectris_stepindex',
+                     'ts_myeigerdectris_temperature',
+                     'ts_myeigerdectris_triggermode_cb',
+                     'ts_myeigerdectris_triggermode',
+                     'ts_myeigerdectris_wavelength'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     ''
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="myeigerdectris">\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="x_pixel_size">75</field>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="y_pixel_size">75</field>\n'
+                     '        <field type="NX_CHAR" name="layout">area'
+                     '</field>\n'
+                     '        <field type="NX_CHAR" name="description">'
+                     '$datasources.myeigerdectris_description_cb'
+                     '<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field type="NX_INT" name="bit_depth_readout">'
+                     '$datasources.myeigerdectris_bitdepth<strategy '
+                     'mode="FINAL"/>\n'
+                     '        </field>\n'
+                     '        <field units="s" type="NX_FLOAT64" '
+                     'name="detector_readout_time">'
+                     '$datasources.myeigerdectris_readouttime'
+                     '<strategy mode="FINAL"/>\n'
+                     '        </field>\n'
+                     '        <field units="s" type="NX_FLOAT64" '
+                     'name="count_time">'
+                     '$datasources.myeigerdectris_counttime'
+                     '<strategy mode="STEP"/>\n'
+                     '        </field>\n'
+                     '        <field units="s" type="NX_FLOAT64" '
+                     'name="frame_time">$datasources.myeigerdectris_frametime'
+                     '<strategy mode="STEP"/>\n'
+                     '        </field>\n'
+                     '        <field units="eV" type="NX_FLOAT64" '
+                     'name="threshold_energy">'
+                     '$datasources.myeigerdectris_energythreshold'
+                     '<strategy mode="FINAL"/>\n'
+                     '        </field>\n'
+                     '        <field type="NX_BOOLEAN" '
+                     'name="flatfield_applied">'
+                     '$datasources.myeigerdectris_flatfieldenabled'
+                     '<strategy mode="FINAL"/>\n'
+                     '        </field>\n'
+                     '        <field type="NX_BOOLEAN" '
+                     'name="countrate_correction_applied">'
+                     '$datasources.myeigerdectris_ratecorrectionenabled'
+                     '<strategy mode="FINAL"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field type="NX_UINT64" name="nb_images">\n'
+                     '            <strategy mode="STEP"/>'
+                     '$datasources.myeigerdectris_nbimages</field>\n'
+                     '          <field type="NX_UINT64" name="nb_triggers">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.myeigerdectris_nbtriggers</field>\n'
+                     '          <field type="NX_CHAR" name="triggermode">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.myeigerdectris_triggermode_cb</field>\n'
+                     '          <field type="NX_UINT64" name="stepindex">\n'
+                     '            <strategy mode="STEP"/>'
+                     '$datasources.myeigerdectris_stepindex</field>\n'
+                     '          <field type="NX_BOOLEAN" '
+                     'name="auto_summation_applied">'
+                     '$datasources.myeigerdectris_autosummationenabled'
+                     '<strategy mode="FINAL"/>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_autosummationenabled"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="AutoSummationEnabled"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_bitdepth"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="BitDepth"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_counttime"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CountTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="myeigerdectris_description">\n'
+                     '    <result name="result">\n'
+                     'if "myeigerdectris_stepindex" in commonblock:\n'
+                     '    commonblock.pop("myeigerdectris_stepindex")\n'
+                     'ds.result = ds.myeigerdectris_description</result>\n'
+                     '  $datasources.myeigerdectris_description\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_description"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Description"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_energythreshold"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="EnergyThreshold"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_flatfieldenabled"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FlatFieldEnabled"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_frametime"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FrameTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_humidity"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Humidity"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_nbimages"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="NbImages"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_nbtriggers"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="NbTriggers"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_photonenergy"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="PhotonEnergy"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource '
+                     'name="myeigerdectris_ratecorrectionenabled"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="RateCorrectionEnabled"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_readouttime"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ReadoutTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="myeigerdectris_stepindex">\n'
+                     '    <result name="result">\n'
+                     'if "myeigerdectris_stepindex" not in commonblock:\n'
+                     '    commonblock["myeigerdectris_stepindex"] = '
+                     '[int(ds.myeigerdectris_nbimages)]\n'
+                     'else:\n'
+                     '    commonblock["myeigerdectris_stepindex"].append('
+                     'int(ds.myeigerdectris_nbimages))\n'
+                     'ds.result = len(commonblock['
+                     '"myeigerdectris_stepindex"])\n'
+                     '    </result>\n'
+                     '    $datasources.myeigerdectris_nbimages\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_temperature"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Temperature"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="myeigerdectris_triggermode_cb">\n'
+                     '    <result name="result">\n'
+                     'import PyTango\n'
+                     '\n'
+                     'hostname = "haso000:10000"\n'
+                     'device = "p09/eigerdectris/exp.01"\n'
+                     'host, port = hostname.split(":")\n'
+                     'port = int(10000)\n'
+                     'edb = PyTango.Database(host, port)\n'
+                     '\n'
+                     'sl = edb.get_server_list("EigerDectris/*")\n'
+                     'writer = None\n'
+                     'for ms in sl:\n'
+                     '    devserv = edb.get_device_class_list('
+                     'ms).value_string\n'
+                     '    if device in devserv:\n'
+                     '        dev = devserv[0::2]\n'
+                     '        serv = devserv[1::2]\n'
+                     '        for idx, ser in enumerate(serv):\n'
+                     '            if ser == \'EigerFilewriter\':\n'
+                     '                writer = dev[idx]\n'
+                     '                break\n'
+                     'wp = PyTango.DeviceProxy(\'%s/%s\' % ('
+                     'hostname, writer))\n'
+                     'filepattern = wp.FilenamePattern.split("/")[-1]\n'
+                     'imagesperfile = wp.ImagesPerFile\n'
+                     'if "$var.filename":\n'
+                     '    path = ("$var.filename").split("/")[-1].split('
+                     '".")[0] + "/"\n'
+                     'else:\n'
+                     '    path = ""\n'
+                     '#path += \'%s/%s_master.h5://entry\' % ('
+                     'myeigerdectris, filepattern)\n'
+                     'path += \'%s/%s_\' % ("myeigerdectris", filepattern)\n'
+                     'tmode = ds.myeigerdectris_triggermode\n'
+                     'totnbimages = sum(commonblock['
+                     '"myeigerdectris_stepindex"])\n'
+                     'nbfiles = (totnbimages + imagesperfile - 1) '
+                     '// imagesperfile\n'
+                     'ds.result = tmode.lower()\n'
+                     'spf = 0\n'
+                     'cfid = 0\n'
+                     'if "__root__" in commonblock.keys():\n'
+                     '    root = commonblock["__root__"]\n'
+                     '    if hasattr(root, "currentfileid") and hasattr('
+                     'root, "stepsperfile"):\n'
+                     '        spf = root.stepsperfile\n'
+                     '        cfid = root.currentfileid\n'
+                     '    if root.h5object.__class__.__name__ == "nxgroup":\n'
+                     '        import nxstools.pniwriter as nxw\n'
+                     '    elif root.h5object.__class__.__name__ == "File":\n'
+                     '        import nxstools.h5pywriter as nxw\n'
+                     '    else:\n'
+                     '        import nxstools.h5cppwriter as nxw\n'
+                     'else:\n'
+                     '    root = commonblock["__nxroot__"]\n'
+                     '    import pni.io.nx.h5 as nxw\n'
+                     'en = root.open("$var.entryname#\'scan\'$var.serialno")\n'
+                     'dt = en.open("data")\n'
+                     'ins = en.open("instrument")\n'
+                     'det = ins.open("myeigerdectris")\n'
+                     'col = det.open("collection")\n'
+                     'for nbf in range(1, nbfiles+1):\n'
+                     '    if spf > 0  and cfid > 0:\n'
+                     '        if cfid == nbf:\n'
+                     '            nxw.link('
+                     '"%sdata_%06i.h5://entry/data/data" % (path, nbf),'
+                     ' det, "data")\n'
+                     '            nxw.link('
+                     '"/$var.entryname#\'scan\'$var.serialno/instrument/'
+                     'myeigerdectris/data", dt, "myeigerdectris")\n'
+                     '        nxw.link("%sdata_%06i.h5://entry/data/data" % '
+                     '(path, nbf), col, "data_%06i" % nbf)\n'
+                     '    else:\n'
+                     '        nxw.link("%sdata_%06i.h5://entry/data/data" % '
+                     '(path, nbf), col, "data_%06i" % nbf)\n'
+                     '        nxw.link("/$var.entryname#\'scan\'$var.serialno/'
+                     'instrument/myeigerdectris/collection/data_%06i" % nbf, '
+                     'dt, "myeigerdectris_%06i" % nbf)\n'
+                     '    </result>\n'
+                     '    $datasources.myeigerdectris_triggermode\n'
+                     '    $datasources.myeigerdectris_nbimages\n'
+                     '    $datasources.myeigerdectris_nbtriggers\n'
+                     '    \n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_triggermode"'
+                     ' type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="TriggerMode"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="myeigerdectris_wavelength" '
+                     'type="TANGO">\n'
+                     '    <device group="myeigerdectris_" hostname="haso000" '
+                     'member="attribute" name="p09/eigerdectris/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Wavelength"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
                 ],
             ],
         ]
-
-        totest = []
         if os.path.isfile(fname):
             raise Exception("Test file %s exists" % fname)
         with open(fname, "w") as fl:
             fl.write(xml)
-        try:
-            for arg in args:
-                skip = False
-                for ds in arg[1]:
-                    if self.dsexists(ds):
-                        skip = True
-                if not skip:
-                    for ds in arg[1]:
-                        totest.append(ds)
 
-                    vl, er = self.runtest(arg[0])
-
-                    if er:
-                        self.assertTrue(er.startswith(
-                            "Info"))
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
-
-                    for i, ds in enumerate(arg[1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(
-                            arg[2][i], xml)
-
-                    for ds in arg[1]:
-                        self.deleteds(ds)
-        finally:
-            os.remove(fname)
-            for ds in totest:
-                if self.dsexists(ds):
-                    self.deleteds(ds)
+        self.checkxmls(args, fname)
 
 
 if __name__ == '__main__':

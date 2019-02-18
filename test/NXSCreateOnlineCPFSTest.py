@@ -215,26 +215,28 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     for cp in arg[1][0]:
                         cptotest.append(cp)
 
-                    vl, er = self.runtest(arg[0])
-                    # print(vl)
-                    if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
-                    else:
-                        self.assertEqual('', er)
-                    self.assertTrue(vl)
+                    for cmd in arg[0]:
+                        vl, er = self.runtest(cmd)
+                        # print(vl)
+                        # print(er)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
 
-                    for i, ds in enumerate(arg[1][1]):
-                        xml = self.getds(ds)
-                        self.assertEqual(arg[2][1][i], xml)
-                    for i, cp in enumerate(arg[1][0]):
-                        xml = self.getcp(cp)
-                        self.assertEqual(arg[2][0][i], xml)
+                        for i, ds in enumerate(arg[1][1]):
+                            xml = self.getds(ds)
+                            self.assertEqual(arg[2][1][i], xml)
+                        for i, cp in enumerate(arg[1][0]):
+                            xml = self.getcp(cp)
+                            self.assertEqual(arg[2][0][i], xml)
 
-                    for ds in arg[1][1]:
-                        self.deleteds(ds)
-                    for cp in arg[1][0]:
-                        self.deletecp(cp)
+                        for ds in arg[1][1]:
+                            self.deleteds(ds)
+                        for cp in arg[1][0]:
+                            self.deletecp(cp)
 
         finally:
             os.remove(fname)
@@ -306,11 +308,11 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             for arg in args:
                 vl, er = self.runtest(arg[0])
 
-                if er:
-                    self.assertTrue(er.startswith(
-                        "Info: NeXus hasn't been setup yet. \n\n"))
-                else:
-                    self.assertEqual('', er)
+                # if er:
+                #     self.assertTrue(er.startswith(
+                #         "Info: NeXus hasn't been setup yet. \n\n"))
+                # else:
+                #     self.assertEqual('', er)
                 self.assertTrue(vl)
                 lines = vl.split("\n")
                 self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
@@ -344,6 +346,31 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 
         command = ('nxscreate onlinecp %s %s'
                    % (fname, self.flags)).split()
+
+        [
+            'eigerdectris',         #
+            'pco4000',              #
+            'pilatus2m',            #
+            'pedetector',           #
+            'mythen2',              #
+            'perkinelmer',          #
+            'mca_xia',              #
+            'pco',                  #
+            'pilatus6m',            #
+            'marccd',               #
+            'pcoedge',              #
+            'pilatus100k',          #
+            'tangovimba',           #
+            'mythen',               #
+            'pilatus1m',            #
+            'pilatus',              # +
+            'pilatus300k',          #
+            'perkinelmerdetector',  #
+            'limaccd',              #
+            'lambda2m',             #
+            'limaccds',             #
+            'lambda'                #
+        ]
 
         args = [
             ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
@@ -470,8 +497,12 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 """
         args = [
             [
-                ('nxscreate onlinecp -c mypilatus '
-                 ' %s %s ' % (fname,  self.flags)).split(),
+                [
+                    ('nxscreate onlinecp -c mypilatus '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                    ('nxscreate onlinecp --component mypilatus '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                ],
                 [
                     ['mypilatus'],
                     [
