@@ -24,11 +24,57 @@
 #:     standard component template variables
 #:     and its [default value, doc string]
 standardComponentVariables = {
+    'collect4': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
+        },
+        'third': {
+            'default': None,
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
+        },
+        'fourth': {
+            'default': None,
+            'doc': "name of the fourth component to collect MANDATORY"
+            " (datasource)"
+        }
+    },
+    'common4': {
+        'dds': {
+            'default': None,
+            'doc': "default read datasource name MANDATORY (datasource)"
+        },
+        'ods1': {
+            'default': None,
+            'doc': "fist optional detasource name MANDATORY (datasource)"
+        },
+        'ods2': {
+            'default': None,
+            'doc': "second optional detasource name MANDATORY (datasource)"
+        },
+        'ods3': {
+            'default': None,
+            'doc': "third optional detasource name MANDATORY (datasource)"
+        }
+    },
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
 #:     xml template files of modules
 standardComponentTemplateFiles = {
+    'collect4': [
+        'collect4.xml',
+    ],
+    'common4': [
+        'common4_common.ds.xml',
+    ],
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)

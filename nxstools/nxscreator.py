@@ -653,7 +653,7 @@ class ComponentCreator(Creator):
             existing = self._componentFilesExist(
                 self.args, self.options.file, self.options.directory)
             if existing:
-                raise DSExistsException(
+                raise CPExistsException(
                     "Component files '%s' already exist." % existing)
 
         for i, name in enumerate(self.args):
@@ -1774,6 +1774,15 @@ class StandardCPCreator(CPCreator):
                     xml = indom.toxml()
                     if self._printouts:
                         print("MISSING %s" % missing)
+                    errors = []
+                    for var in missing:
+                        if "s.$(%s)" % var in xml:
+                            errors.append(var)
+                    if errors:
+                        raise Exception(
+                            "Error: %s cannot be created without %s"
+                            % (var, errors))
+
                     for var in missing:
                         xml = xml.replace("$(%s)" % var, "")
                     lines = xml.split('\n')
@@ -1805,7 +1814,7 @@ class StandardCPCreator(CPCreator):
                     self.options.cptype,
                     self.options.directory,
                     self.options.file,
-                    self.options.component,
+                    name,
                     self.__params))
 
     @classmethod

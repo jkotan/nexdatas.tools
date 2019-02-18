@@ -24,9 +24,9 @@ import sys
 
 
 try:
-    import NXSCreateOnlineDSDBTest
+    import NXSCreateStdCompFS2Test
 except Exception:
-    from . import NXSCreateOnlineDSDBTest
+    from . import NXSCreateStdCompFS2Test
 
 
 if sys.version_info > (3,):
@@ -35,16 +35,17 @@ if sys.version_info > (3,):
 
 
 # test fixture
-class NXSCreateOnlineDSDB2Test(
-        NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest):
+class NXSCreateStdCompFS3Test(
+        NXSCreateStdCompFS2Test.NXSCreateStdCompFS2Test):
 
     # constructor
     # \param methodName name of the test method
     def __init__(self, methodName):
-        NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest.__init__(
+        NXSCreateStdCompFS2Test.NXSCreateStdCompFS2Test.__init__(
             self, methodName)
 
-        self.flags = " -b -r testp09/testmcs/testr228"
+        self.flags = "  -r testp09/testmcs/testr228 " \
+                     " --directory %s" % self.directory
 
 
 if __name__ == '__main__':

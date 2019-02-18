@@ -24,9 +24,9 @@ import sys
 
 
 try:
-    import NXSCreateOnlineDSDBTest
+    import NXSCreateStdCompDBRTest
 except Exception:
-    from . import NXSCreateOnlineDSDBTest
+    from . import NXSCreateStdCompDBRTest
 
 
 if sys.version_info > (3,):
@@ -35,16 +35,18 @@ if sys.version_info > (3,):
 
 
 # test fixture
-class NXSCreateOnlineDSDB2Test(
-        NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest):
+class NXSCreateStdCompDBETest(
+        NXSCreateStdCompDBRTest.NXSCreateStdCompDBRTest):
 
     # constructor
     # \param methodName name of the test method
     def __init__(self, methodName):
-        NXSCreateOnlineDSDBTest.NXSCreateOnlineDSDBTest.__init__(
+        NXSCreateStdCompDBRTest.NXSCreateStdCompDBRTest.__init__(
             self, methodName)
 
-        self.flags = " -b -r testp09/testmcs/testr228"
+        self.flags = " -b -r testp09/testmcs/testr228 " \
+                     "-e aatestp09/testmcs2/testr228 "
+        self.device = 'aatestp09/testmcs2/testr228'
 
 
 if __name__ == '__main__':

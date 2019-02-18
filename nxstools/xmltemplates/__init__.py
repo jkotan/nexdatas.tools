@@ -360,7 +360,7 @@ standardComponentVariables = {
         },
         'position': {
             'default': None,
-            'doc': "which sliders are in [bitarray] (datasource)"
+            'doc': "which sliders are in [bitarray] MANDATORY (datasource)"
         },
         'foil': {
             'default': None,
@@ -427,7 +427,7 @@ standardComponentVariables = {
         },
         'foilpos': {
             'default': None,
-            'doc': "foil position (datasource)"
+            'doc': "foil position MANDATORY (datasource)"
         },
         'x': {
             'default': None,
@@ -906,49 +906,54 @@ standardComponentVariables = {
     'collect2': {
         'first': {
             'default': None,
-            'doc': "name of the first component to collect (datasource)"
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
         },
         'second': {
             'default': None,
-            'doc': "name of the second component to collect (datasource)"
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
         }
     },
     'collect3': {
         'first': {
             'default': None,
-            'doc': "name of the first component to collect (datasource)"
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
         },
         'second': {
             'default': None,
-            'doc': "name of the second component to collect (datasource)"
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
         },
         'third': {
             'default': None,
-            'doc': "name of the third component to collect (datasource)"
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
         }
     },
     'common2': {
         'dds': {
             'default': None,
-            'doc': "default read datasource name (datasource)"
+            'doc': "default read datasource name MANDATORY (datasource)"
         },
         'ods': {
             'default': None,
-            'doc': "optional detasource name (datasource)"
+            'doc': "optional detasource name MANDATORY (datasource)"
         }
     },
     'common3': {
         'dds': {
             'default': None,
-            'doc': "default read datasource name (datasource)"
+            'doc': "default read datasource name MANDATORY (datasource)"
         },
         'ods1': {
             'default': None,
-            'doc': "fist optional detasource name (datasource)"
+            'doc': "fist optional detasource name MANDATORY (datasource)"
         },
         'ods2': {
             'default': None,
-            'doc': "second optional detasource name (datasource)"
+            'doc': "second optional detasource name MANDATORY (datasource)"
         }
     },
 }
@@ -957,8 +962,8 @@ standardComponentVariables = {
 #:     xml template files of modules
 standardComponentTemplateFiles = {
     'qbpm': [
-        'qbpm.xml',
         'qbpm_foil.ds.xml',
+        'qbpm.xml',
     ],
     'slit': ['slit.xml'],
     'source': ['source.xml'],
@@ -1038,9 +1043,9 @@ standardComponentTemplateFiles = {
         'common3_common.ds.xml',
     ],
     'absorber': [
-        'absorber.xml',
         'absorber_foil.ds.xml',
         'absorber_thickness.ds.xml',
+        'absorber.xml',
     ],
     'keithley': [
         'keithley.xml',
@@ -1053,6 +1058,9 @@ standardComponentTemplateFiles = {
     ],
     'samplehkl': [
         'samplehkl.xml'
+    ],
+    'pointdet': [
+        'pointdet.xml',
     ],
 }
 
@@ -1347,8 +1355,5 @@ moduleMultiAttributes = {
         'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
         'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
-    ],
-    'pointdet': [
-        'pointdet.xml',
     ],
 }

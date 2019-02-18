@@ -33,14 +33,9 @@ from os.path import expanduser
 # from nxstools import nxscreate
 
 try:
-    import NXSCreatePoolDSFSTest
+    import NXSCreateStdCompFSTest
 except Exception:
-    from . import NXSCreatePoolDSFSTest
-
-try:
-    import ServerSetUp
-except ImportError:
-    from . import ServerSetUp
+    from . import NXSCreateStdCompFSTest
 
 
 if sys.version_info > (3,):
@@ -49,13 +44,13 @@ if sys.version_info > (3,):
 
 
 # test fixture
-class NXSCreatePoolDSDBTest(
-        NXSCreatePoolDSFSTest.NXSCreatePoolDSFSTest):
+class NXSCreateStdCompDBTest(
+        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest):
 
     # constructor
     # \param methodName name of the test method
     def __init__(self, methodName):
-        NXSCreatePoolDSFSTest.NXSCreatePoolDSFSTest.__init__(
+        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.__init__(
             self, methodName)
 
         self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
@@ -65,7 +60,6 @@ class NXSCreatePoolDSDBTest(
         self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
-        self._sv = ServerSetUp.ServerSetUp()
         self._proxy = None
         self.flags = " --database --server testp09/testmcs/testr228"
 
@@ -122,16 +116,14 @@ class NXSCreatePoolDSDBTest(
     # test starter
     # \brief Common set up
     def setUp(self):
-        NXSCreatePoolDSFSTest.NXSCreatePoolDSFSTest.setUp(self)
-        self._sv.setUp()
+        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.setUp(self)
         self.openConf()
 
     # test closer
     # \brief Common tear down
     def tearDown(self):
-        NXSCreatePoolDSFSTest.NXSCreatePoolDSFSTest.tearDown(self)
         self.closeConfig()
-        self._sv.tearDown()
+        NXSCreateStdCompFSTest.NXSCreateStdCompFSTest.tearDown(self)
 
     def openConf(self):
         try:
@@ -147,6 +139,14 @@ class NXSCreatePoolDSDBTest(
     def cpexists(self, name):
         avds = self._proxy.availableComponents()
         return name in avds
+
+    def checkmandatory(self, name, mandat):
+        self._proxy.Open()
+        cps = self._proxy.mandatoryComponents()
+        if mandat:
+            self.assertTrue(name in cps)
+        else:
+            self.assertTrue(name not in cps)
 
     def getds(self, name):
         avds = self._proxy.availableDataSources()
