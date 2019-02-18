@@ -1713,12 +1713,20 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             '  </datasource>\n' \
             '</definition>\n'
 
-        commands = [
-            ('nxscreate onlineds -p nxsextrasp00 %s %s'
-             % (fname, self.flags)).split(),
-            ('nxscreate onlineds --xml-package nxsextrasp00 %s %s'
-             % (fname, self.flags)).split(),
-        ]
+        if __name__ == 'test.NXSCreateOnlineDSFSTest':
+            commands = [
+                ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
+                 % (fname, self.flags)).split(),
+                ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
+                 % (fname, self.flags)).split(),
+            ]
+        else:
+            commands = [
+                ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
+                 % (fname, self.flags)).split(),
+                ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
+                 % (fname, self.flags)).split(),
+            ]
 
         args = [
             ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]

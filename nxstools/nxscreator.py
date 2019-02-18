@@ -1155,7 +1155,7 @@ class OnlineDSCreator(Creator):
                         xml = self._createTangoDataSource(
                             dsname, None, None, None,
                             dv.tdevice, at, dv.thost, dv.tport,
-                            "%s_" % (dv.name.lower()))
+                            "%s_" % (dv.name))
                         self.datasources[dsname] = xml
                         mdv = copy.copy(dv)
                         mdv.name = dsname
@@ -1172,11 +1172,11 @@ class OnlineDSCreator(Creator):
                             "Device %s cannot be found" % dv.name)
                     for at in smultattr:
                         dsname = "%s_%s" % (
-                            dv.name.lower(), at.lower())
+                            dv.name, at.lower())
                         xml = self._createTangoDataSource(
                             dsname, None, None, None,
                             dv.sdevice, at, dv.shost, dv.sport,
-                            "%s_" % (dv.name.lower()))
+                            "%s_" % (dv.name))
                         #   "__CLIENT__")
                         self.datasources[dsname] = xml
                         mdv = copy.copy(dv)
@@ -1569,7 +1569,7 @@ class OnlineCPCreator(CPCreator):
                                 module.lower()]
                             for at in multattr:
                                 dsname = "%s_%s" % (
-                                    dv.name.lower(), at.lower())
+                                    dv.name, at.lower())
                                 xml = self._createTangoDataSource(
                                     dsname, None, None, None,
                                     dv.tdevice, at, dv.host, dv.port,
@@ -1589,11 +1589,12 @@ class OnlineCPCreator(CPCreator):
                                     "Device %s cannot be found" % dv.name)
                             for at in smultattr:
                                 dsname = "%s_%s" % (
-                                    dv.name.lower(), at.lower())
+                                    dv.name,
+                                    at.lower())
                                 xml = self._createTangoDataSource(
                                     dsname, None, None, None,
                                     dv.sdevice, at, dv.shost, dv.sport,
-                                    "%s_" % (dv.name.lower()))
+                                    "%s_" % (dv.name))
                                 #   "__CLIENT__")
                                 self.datasources[dsname] = xml
                                 mdv = copy.copy(dv)

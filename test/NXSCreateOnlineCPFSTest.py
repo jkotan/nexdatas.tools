@@ -348,7 +348,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                    % (fname, self.flags)).split()
 
         [
-            'eigerdectris',         #
+            'eigerdectris',         # +
             'pco4000',              #
             'pilatus2m',            #
             'pedetector',           #
@@ -357,7 +357,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'mca_xia',              #
             'pco',                  #
             'pilatus6m',            #
-            'marccd',               #
+            'marccd',               # +
             'pcoedge',              #
             'pilatus100k',          #
             'tangovimba',           #
@@ -369,7 +369,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'limaccd',              #
             'lambda2m',             #
             'limaccds',             #
-            'lambda'                #
+            'lambda'                # +
         ]
 
         args = [
@@ -759,6 +759,765 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      ' $datasources.mypilatus_nbframes\n'
                      ' $datasources.mypilatus_filepostfix\n'
                      ' $datasources.mypilatus_fileprefix</datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+
+        self.checkxmls(args, fname)
+
+    def test_onlinecp_lambda_entry(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>Mylmbd</name>
+ <type>type_tango</type>
+ <module>lambda</module>
+ <device>p09/lambda/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c mylmbd '
+                     ' -y myentry '
+                     ' -i myinstrument '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                    ('nxscreate onlinecp --component mylmbd '
+                     ' --entryname myentry '
+                     ' --insname myinstrument '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                ],
+                [
+                    ['mylmbd'],
+                    ['mylmbd_compressionenabled',
+                     'mylmbd_compressionrate',
+                     'mylmbd_compressorshuffle',
+                     'mylmbd_configfilepath',
+                     'mylmbd_delaytime',
+                     'mylmbd_depth',
+                     'mylmbd_distortioncorrection',
+                     'mylmbd_energythreshold',
+                     'mylmbd_external_data',
+                     'mylmbd_filepostfix',
+                     'mylmbd_filepreext',
+                     'mylmbd_fileprefix',
+                     'mylmbd_filestartnum',
+                     'mylmbd_framenumbers',
+                     'mylmbd_framesperfile',
+                     'mylmbd_height',
+                     'mylmbd_latestimagenumber',
+                     'mylmbd_layout',
+                     'mylmbd_liveframeno',
+                     'mylmbd_livelastimagedata',
+                     'mylmbd_livemode',
+                     'mylmbd_nxdata',
+                     'mylmbd_operatingmode',
+                     'mylmbd_saveallimages',
+                     'mylmbd_savefilename',
+                     'mylmbd_savefilepath',
+                     'mylmbd_shuttertime',
+                     'mylmbd_shuttertimemax',
+                     'mylmbd_shuttertimemin',
+                     'mylmbd_threadno',
+                     'mylmbd_totallossframes',
+                     'mylmbd_triggermode',
+                     'mylmbd_width'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'myentry\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="myinstrument">\n'
+                     '      <group type="NXdetector" name="mylmbd">\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="x_pixel_size">55<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="y_pixel_size">55<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field type="NX_CHAR" name="layout">area'
+                     '<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <field type="NX_CHAR" name="description">'
+                     'mylmbd</field>\n'
+                     '        <field units="eV" type="NX_FLOAT32" '
+                     'name="threshold_energy">\n'
+                     '          <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_energythreshold</field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field type="NX_INT16" name="trigger_mode">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_triggermode</field>\n'
+                     '          <field units="ms" type="NX_FLOAT64" '
+                     'name="shutter_time">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_shuttertime</field>\n'
+                     '          <field units="ms" type="NX_FLOAT64" '
+                     'name="delay_time">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_delaytime</field>\n'
+                     '          <field type="NX_INT64" name="frame_numbers">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_framenumbers</field>\n'
+                     '          <field type="NX_BOOLEAN" '
+                     'name="save_all_images">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_saveallimages</field>\n'
+                     '          <field type="NX_INT64" '
+                     'name="lastest_image_number">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_latestimagenumber</field>\n'
+                     '          <field type="NX_INT64" '
+                     'name="total_loss_frames">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_totallossframes</field>\n'
+                     '          <field type="NX_UINT64" name="width">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_width</field>\n'
+                     '          <field type="NX_UINT64" name="height">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_height</field>\n'
+                     '          <field type="NX_UINT64" name="depth">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_depth</field>\n'
+                     '          <field type="NX_UINT16" '
+                     'name="distortion_correction">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_distortioncorrection</field>\n'
+                     '        </group>\n'
+                     '        <group type="NXcollection" '
+                     'name="collection_extra">\n'
+                     '          <field type="NX_INT64" name="thread_no">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_threadno</field>\n'
+                     '          <field type="NX_CHAR" '
+                     'name="config_file_path">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_configfilepath</field>\n'
+                     '          <field type="NX_CHAR" name="file_prefix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_fileprefix</field>\n'
+                     '          <field type="NX_CHAR" name="file_start_num">\n'
+                     '            <strategy mode="INIT"/>'
+                     '$datasources.mylmbd_filestartnum</field>\n'
+                     '          <field type="NX_CHAR" name="file_pre_ext">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_filepreext</field>\n'
+                     '          <field type="NX_CHAR" name="file_postfix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_filepostfix</field>\n'
+                     '          <field type="NX_CHAR" name="save_file_path">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_savefilepath</field>\n'
+                     '          <field type="NX_CHAR" name='
+                     '"frames_per_file">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_framesperfile</field>\n'
+                     '          <field type="NX_CHAR" name="save_file_name">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_savefilename</field>\n'
+                     '          <field type="NX_BOOLEAN" '
+                     'name="compressor_shuffle">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_compressorshuffle</field>\n'
+                     '          <field type="NX_UINT16" '
+                     'name="compressor_rate">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_compressionrate</field>\n'
+                     '          <field type="NX_BOOLEAN" '
+                     'name="compressor_enabled">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_compressionenabled</field>\n'
+                     '          <field type="NX_CHAR" name="layout">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_layout</field>\n'
+                     '          <field units="ms" type="NX_FLOAT64" '
+                     'name="shutter_time_max">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_shuttertimemax</field>\n'
+                     '          <field units="ms" type="NX_FLOAT64" '
+                     'name="shutter_time_min">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mylmbd_shuttertimemin</field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '      <link name="mylmbd_m1">'
+                     '$datasources.mylmbd_external_data<strategy '
+                     'mode="FINAL"/>\n'
+                     '      </link>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link name="mylmbd">'
+                     '$datasources.mylmbd_nxdata<strategy '
+                     'mode="FINAL"/></link>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_compressionenabled"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CompressionEnabled"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_compressionrate"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CompressionRate"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_compressorshuffle"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="CompressorShuffle"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_configfilepath"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ConfigFilePath"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_delaytime"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="DelayTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_depth"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Depth"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_distortioncorrection"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="DistortionCorrection"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_energythreshold"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="EnergyThreshold"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="mylmbd_external_data">\n'
+                     '    <result name="result">\n'
+                     'ds.result = ""\n'
+                     'if ds.mylmbd_saveallimages:\n'
+                     '    if "$var.filename":\n'
+                     '        ds.result = ("$var.filename").split('
+                     '"/")[-1].split(".")[0] + "/"\n'
+                     '    fpf = ds.mylmbd_framesperfile\n'
+                     '    fn = ds.mylmbd_framenumbers\n'
+                     '    spf = 0\n'
+                     '    cfid = 0\n'
+                     '    if fpf != fn:\n'
+                     '        if "__root__" in commonblock.keys():\n'
+                     '            root = commonblock["__root__"]\n'
+                     '            if hasattr(root, "currentfileid") '
+                     'and hasattr(root, "stepsperfile"):\n'
+                     '                spf = root.stepsperfile\n'
+                     '                cfid = root.currentfileid\n'
+                     '    if spf > 0 and cfid > 0:\n'
+                     '        ds.result += "mylmbd/" + str('
+                     'ds.mylmbd_savefilename) + "_part%05d." % (cfid - 1) '
+                     '+ str(ds.mylmbd_filepostfix) + '
+                     '"://entry/myinstrument/detector"\n'
+                     '    else:\n'
+                     '        ds.result += "mylmbd/" + str('
+                     'ds.mylmbd_savefilename) + "." + str('
+                     'ds.mylmbd_filepostfix) + "://entry/myinstrument/'
+                     'detector"</result>\n'
+                     ' $datasources.mylmbd_savefilename\n'
+                     ' $datasources.mylmbd_saveallimages\n'
+                     ' $datasources.mylmbd_framesperfile\n'
+                     ' $datasources.mylmbd_framenumbers\n'
+                     ' $datasources.mylmbd_filepostfix</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_filepostfix"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FilePostfix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_filepreext"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FilePreExt"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_fileprefix"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FilePrefix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_filestartnum"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FileStartNum"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_framenumbers"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FrameNumbers"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_framesperfile"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FramesPerFile"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_height"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Height"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_latestimagenumber"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="LatestImageNumber"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_layout"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Layout"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_liveframeno"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="LiveFrameNo"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_livelastimagedata"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="LiveLastImageData"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_livemode"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="LiveMode"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="mylmbd_nxdata">\n'
+                     '    <result name="result">\n'
+                     'ds.result = ""\n'
+                     'if ds.mylmbd_saveallimages:\n'
+                     '    ds.result += "$var.entryname#\'myentry\''
+                     '$var.serialno:NXentry/myinstrument/'
+                     'mylmbd_m1:NXdetector/data"</result>\n'
+                     ' $datasources.mylmbd_saveallimages</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_operatingmode"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="OperatingMode"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_saveallimages"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SaveAllImages"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_savefilename"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SaveFileName"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_savefilepath"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SaveFilePath"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_shuttertime"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ShutterTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_shuttertimemax"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ShutterTimeMax"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_shuttertimemin"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ShutterTimeMin"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_threadno"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ThreadNo"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_totallossframes"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="TotalLossFrames"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_triggermode"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="TriggerMode"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mylmbd_width"'
+                     ' type="TANGO">\n'
+                     '    <device group="mylmbd_" hostname="haso000"'
+                     ' member="attribute" name="p09/lambda/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Width"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+
+        self.checkxmls(args, fname)
+
+    def test_onlinecp_marccd(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>MyMarccd</name>
+ <type>type_tango</type>
+ <module>marccd</module>
+ <device>p09/marccd/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c MyMarccd -n '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                    ('nxscreate onlinecp --component MyMarccd '
+                     ' --nolower '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                ],
+                [
+                    ['MyMarccd'],
+                    ['MyMarccd_frameshift',
+                     'MyMarccd_postrun',
+                     'MyMarccd_savingdirectory',
+                     'MyMarccd_savingpostfix',
+                     'MyMarccd_savingprefix'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" name="$var.entryname#\'scan\''
+                     '$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="MyMarccd">\n'
+                     '        <field type="NX_CHAR" name="layout">area'
+                     '</field>\n'
+                     '        <field type="NX_CHAR" name="description">'
+                     'MyMarccd</field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field units="s" type="NX_FLOAT64" '
+                     'name="frame_shift">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_frameshift</field>\n'
+                     '          <field type="NX_CHAR" name="postrun">'
+                     '$datasources.MyMarccd_postrun<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_CHAR" name="file_dir">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingdirectory</field>\n'
+                     '          <field type="NX_CHAR" name="file_prefix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingprefix</field>\n'
+                     '          <field type="NX_CHAR" name="file_postfix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingpostfix</field>\n'
+                     '          <field type="NX_UINT" name="signal">1'
+                     '</field>\n'
+                     '        </group>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="x_pixel_size">80</field>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="y_pixel_size">80</field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link target="/$var.entryname#\'scan\''
+                     '$var.serialno:NXentry/instrument/MyMarccd:NXdetector/'
+                     'data" name="MyMarccd"/>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="MyMarccd_frameshift" type="TANGO">\n'
+                     '    <device group="mymarccd_" hostname="haso000" '
+                     'member="attribute" name="p09/marccd/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FrameShift"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="MyMarccd_postrun">\n'
+                     '    <result name="result">\n'
+                     'unixdir = str(ds.MyMarccd_savingdirectory).replace('
+                     '"\\\\","/")\n'
+                     'if len(unixdir)> 1 and unixdir[1] == ":":\n'
+                     '    unixdir = "/data" + unixdir[2:]\n'
+                     'if unixdir and unixdir[-1] == "/":\n'
+                     ' unixdir = unixdir[:-1]\n'
+                     'ds.result = "" + unixdir + "/" + str('
+                     'ds.MyMarccd_savingprefix) + "." + str('
+                     'ds.MyMarccd_savingpostfix) </result>\n'
+                     ' $datasources.MyMarccd_savingdirectory\n'
+                     ' $datasources.MyMarccd_savingpostfix\n'
+                     ' $datasources.MyMarccd_savingprefix</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="MyMarccd_savingdirectory" '
+                     'type="TANGO">\n'
+                     '    <device group="mymarccd_" hostname="haso000" '
+                     'member="attribute" name="p09/marccd/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SavingDirectory"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="MyMarccd_savingpostfix" '
+                     'type="TANGO">\n'
+                     '    <device group="mymarccd_" hostname="haso000" '
+                     'member="attribute" name="p09/marccd/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SavingPostfix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="MyMarccd_savingprefix" '
+                     'type="TANGO">\n'
+                     '    <device group="mymarccd_" hostname="haso000" '
+                     'member="attribute" name="p09/marccd/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="SavingPrefix"/>\n'
+                     '  </datasource>\n'
                      '</definition>\n'],
                 ],
             ],
