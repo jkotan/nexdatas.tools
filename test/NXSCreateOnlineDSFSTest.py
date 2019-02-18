@@ -1714,9 +1714,9 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
             '</definition>\n'
 
         commands = [
-            ('nxscreate onlineds -p nxsextrasp00 %s %s'
+            ('nxscreate onlineds -p test.nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
-            ('nxscreate onlineds --xml-package nxsextrasp00 %s %s'
+            ('nxscreate onlineds --xml-package test.nxsextrasp00 %s %s'
              % (fname, self.flags)).split(),
         ]
 

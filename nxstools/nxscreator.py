@@ -653,7 +653,7 @@ class ComponentCreator(Creator):
             existing = self._componentFilesExist(
                 self.args, self.options.file, self.options.directory)
             if existing:
-                raise DSExistsException(
+                raise CPExistsException(
                     "Component files '%s' already exist." % existing)
 
         for i, name in enumerate(self.args):

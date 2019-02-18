@@ -31,6 +31,7 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxscreator import (
     TangoDSCreator, ClientDSCreator, WrongParameterError,
     DeviceDSCreator, OnlineDSCreator, OnlineCPCreator, CPExistsException,
+    DSExistsException,
     StandardCPCreator, ComponentCreator, CompareOnlineDS, PoolDSCreator)
 
 
@@ -767,6 +768,8 @@ class StdComp(Runner):
             try:
                 creator.create()
             except CPExistsException as e:
+                print(str(e))
+            except DSExistsException as e:
                 print(str(e))
         elif options.cptype:
             dct = creator.listcomponentvariables()

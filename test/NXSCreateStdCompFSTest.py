@@ -32,6 +32,12 @@ import PyTango
 from nxstools import nxscreate
 from nxstools.xmltemplates import standardComponentVariables
 
+
+# try:
+#     import nxsextrasp00
+# except ImportError:
+#     from . import nxsextrasp00
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -347,31 +353,31 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         types = [
-            "absorber",
-            # "beamstop",
-            # "beamtimeid",
-            # "chcut",
-            "collect2",
-            "collect3",
-            "common2",
-            "common3",
-            # "datasignal",
-            # "dcm",
-            # "default",
-            # "defaultinstrument",
-            # "defaultsample",
-            # "empty",
-            # "keithley",
-            # "maia",
-            # "maiadimension",
-            # "maiaflux",
-            # "pinhole",
-            # "pointdet",
-            "qbpm",
-            # "samplehkl",
-            # "slit",
-            # "source",
-            # "undulator"
+            "absorber",             # +
+            # "beamstop",           # +
+            # "beamtimeid",         #
+            # "chcut",              #
+            "collect2",             # +
+            "collect3",             # +
+            "common2",              #
+            "common3",              #
+            # "datasignal",         #
+            # "dcm",                #
+            # "default",            # +
+            # "defaultinstrument",  # .
+            # "defaultsample",      # .
+            # "empty",              #
+            # "keithley",           #
+            # "maia",               #
+            # "maiadimension",      #
+            # "maiaflux",           #
+            # "pinhole",            #
+            # "pointdet",           #
+            "qbpm",                 #
+            # "samplehkl",          #
+            # "slit",               #
+            # "source",             # +
+            # "undulator"           #
         ]
 
         args = [
@@ -1182,6 +1188,431 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         ]
 
         self.checkxmls(args)
+
+    def test_stdcomp_collect2_overwrite_false(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t collect2 -c myslits '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+                ('nxscreate stdcomp -t collect2 -c myslits '
+                 ' first mslit1 '
+                 ' second mslit2 '
+                 ' %s' % self.flags).split(),
+                ('nxscreate stdcomp --type collect2 --component myslits '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+                ('nxscreate stdcomp -t collect2 -c myslits '
+                 ' first mslit1 '
+                 ' second mslit2 '
+                 ' %s' % self.flags).split(),
+            ],
+        ]
+
+        dstotest = []
+        cptotest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1][0]:
+                    if self.cpexists(cp):
+                        skip = True
+                for ds in arg[1][1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1][1]:
+                        dstotest.append(ds)
+                    for cp in arg[1][0]:
+                        cptotest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+                    # print(vl)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    for i, ds in enumerate(arg[1][1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][1][i], xml)
+                    for i, cp in enumerate(arg[1][0]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(arg[2][0][i], xml)
+
+                    vl, er = self.runtest(arg[3])
+
+                    for i, ds in enumerate(arg[1][1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][1][i], xml)
+                    for i, cp in enumerate(arg[1][0]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(arg[2][0][i], xml)
+
+                    for ds in arg[1][1]:
+                        self.deleteds(ds)
+                    for cp in arg[1][0]:
+                        self.deletecp(cp)
+
+        finally:
+            pass
+            for cp in cptotest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+            for ds in dstotest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_stdcomp_collect3_overwrite_true(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t collect3 -c myslits '
+                 ' first mslit1 '
+                 ' second mslit2 '
+                 ' third mslit3 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '  $components.slit3\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+                ('nxscreate stdcomp -t collect3 -c myslits -o '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' third slit3 '
+                 ' %s' % self.flags).split(),
+            ],
+            [
+                ('nxscreate stdcomp --type collect3 --component myslits '
+                 ' first mslit1 '
+                 ' second mslit2 '
+                 ' third mslit3 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '  $components.slit3\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+                ('nxscreate stdcomp --type collect3 --component myslits '
+                 ' --overwrite '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' third slit3 '
+                 ' %s' % self.flags).split(),
+            ],
+        ]
+
+        dstotest = []
+        cptotest = []
+        try:
+            for arg in args:
+                skip = False
+                for cp in arg[1][0]:
+                    if self.cpexists(cp):
+                        skip = True
+                for ds in arg[1][1]:
+                    if self.dsexists(ds):
+                        skip = True
+                if not skip:
+                    for ds in arg[1][1]:
+                        dstotest.append(ds)
+                    for cp in arg[1][0]:
+                        cptotest.append(cp)
+
+                    vl, er = self.runtest(arg[0])
+                    # print(vl)
+                    if er:
+                        self.assertEqual(
+                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                    else:
+                        self.assertEqual('', er)
+                    self.assertTrue(vl)
+
+                    vl, er = self.runtest(arg[3])
+
+                    for i, ds in enumerate(arg[1][1]):
+                        xml = self.getds(ds)
+                        self.assertEqual(arg[2][1][i], xml)
+                    for i, cp in enumerate(arg[1][0]):
+                        xml = self.getcp(cp)
+                        self.assertEqual(arg[2][0][i], xml)
+
+                    for ds in arg[1][1]:
+                        self.deleteds(ds)
+                    for cp in arg[1][0]:
+                        self.deletecp(cp)
+
+        finally:
+            pass
+            for cp in cptotest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+            for ds in dstotest:
+                if self.dsexists(ds):
+                    self.deleteds(ds)
+
+    def test_stdcomp_missing_parameters_package(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        types = [
+            "collect4",
+            "common4",
+        ]
+
+        args = [
+            ('nxscreate stdcomp %s -p test.nxsextrasp00 -c cptest -t '
+             % self.flags).split(),
+            ('nxscreate stdcomp %s --xml-package test.nxsextrasp00 '
+             ' --component cptest --type '
+             % self.flags).split(),
+        ]
+
+        totest = []
+        try:
+            for tp in types:
+                for arg in args:
+                    cp = "cptest"
+                    skip = False
+                    if self.cpexists(cp):
+                        skip = True
+                    if not skip:
+                        for cp in arg[1]:
+                            totest.append(cp)
+
+                        cmd = list(arg)
+                        cmd.append(tp)
+                        # print(tp)
+                        vl, er, txt = self.runtestexcept(cmd, Exception)
+
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        # self.assertTrue(vl)
+                        # print(txt)
+                        # print(vl)
+                        # print(er)
+                        lines = vl.split("\n")
+                        # self.assertEqual(lines[0], "OUTPUT DIR: .")
+                        self.assertEqual(lines[-1], "")
+                        self.assertTrue(lines[1].startswith("MISSING"))
+                        if self.cpexists(cp):
+                            self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_stdcomp_collect4(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t collect4 -c myslits '
+                 '-p test.nxsextrasp00 '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' third slit3 '
+                 ' fourth slit4 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '  $components.slit3\n'
+                     '  $components.slit4\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp --type collect4 --component myslits '
+                 ' --xml-package test.nxsextrasp00 '
+                 ' first slit1 '
+                 ' second slit2 '
+                 ' third slit3 '
+                 ' fourth slit4 '
+                 ' %s' % self.flags).split(),
+                [
+                    ['myslits'],
+                    []
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  $components.slit1\n'
+                     '  $components.slit2\n'
+                     '  $components.slit3\n'
+                     '  $components.slit4\n'
+                     '</definition>\n'],
+                    [''],
+                ],
+            ],
+        ]
+
+        self.checkxmls(args)
+
+    def test_stdcomp_common4(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp -t common4 -c myslit '
+                 '-p test.nxsextrasp00 '
+                 ' dds slit1 '
+                 ' ods1 slit2 '
+                 ' ods2 slit3 '
+                 ' ods3 slit4 '
+                 ' %s' % self.flags).split(),
+                [
+                    [],
+                    ['myslit_common']
+                ],
+                [
+                    [],
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="myslit_common">\n'
+                     '    <result name="result">\n'
+                     'ds.result = ds.slit1</result>\n'
+                     ' $datasources.slit1\n'
+                     ' $datasources.slit2\n'
+                     ' $datasources.slit3\n'
+                     ' $datasources.slit4</datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+            [
+                ('nxscreate stdcomp --type common4 --component myslit '
+                 ' --xml-package test.nxsextrasp00 '
+                 ' dds slit1 '
+                 ' ods1 slit2 '
+                 ' ods2 slit3 '
+                 ' ods3 slit4 '
+                 ' %s' % self.flags).split(),
+                [
+                    [],
+                    ['myslit_common']
+                ],
+                [
+                    [],
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="myslit_common">\n'
+                     '    <result name="result">\n'
+                     'ds.result = ds.slit1</result>\n'
+                     ' $datasources.slit1\n'
+                     ' $datasources.slit2\n'
+                     ' $datasources.slit3\n'
+                     ' $datasources.slit4</datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+
+        self.checkxmls(args)
+
+    def test_stdcomp_typelist_package(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate stdcomp '
+                 ' -p test.nxsextrasp00 '
+                 ' %s' % self.flags).split(),
+            ],
+        ]
+
+        try:
+            for arg in args:
+                vl, er = self.runtest(arg[0])
+
+                if er:
+                    self.assertEqual(
+                        "Info: NeXus hasn't been setup yet. \n\n", er)
+                else:
+                    self.assertEqual('', er)
+                self.assertTrue(vl)
+                lines = vl.split("\n")
+                self.assertEqual(lines[-3], "POSSIBLE COMPONENT TYPES: ")
+                self.assertEqual(
+                    lines[-2].split(),
+                    ["collect4", "common4"])
+                self.assertEqual(lines[-1], "")
+        finally:
+            pass
 
 
 if __name__ == '__main__':
