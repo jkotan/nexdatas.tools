@@ -1417,9 +1417,9 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         ]
 
         args = [
-            ('nxscreate stdcomp %s -p test.nxsextrasp00 -c cptest -t '
+            ('nxscreate stdcomp %s -p nxsextrasp00 -c cptest -t '
              % self.flags).split(),
-            ('nxscreate stdcomp %s --xml-package test.nxsextrasp00 '
+            ('nxscreate stdcomp %s --xml-package nxsextrasp00 '
              ' --component cptest --type '
              % self.flags).split(),
         ]
@@ -1470,7 +1470,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         args = [
             [
                 ('nxscreate stdcomp -t collect4 -c myslits '
-                 '-p test.nxsextrasp00 '
+                 '-p nxsextrasp00 '
                  ' first slit1 '
                  ' second slit2 '
                  ' third slit3 '
@@ -1493,7 +1493,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp --type collect4 --component myslits '
-                 ' --xml-package test.nxsextrasp00 '
+                 ' --xml-package nxsextrasp00 '
                  ' first slit1 '
                  ' second slit2 '
                  ' third slit3 '
@@ -1527,7 +1527,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         args = [
             [
                 ('nxscreate stdcomp -t common4 -c myslit '
-                 '-p test.nxsextrasp00 '
+                 '-p nxsextrasp00 '
                  ' dds slit1 '
                  ' ods1 slit2 '
                  ' ods2 slit3 '
@@ -1553,7 +1553,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp --type common4 --component myslit '
-                 ' --xml-package test.nxsextrasp00 '
+                 ' --xml-package nxsextrasp00 '
                  ' dds slit1 '
                  ' ods1 slit2 '
                  ' ods2 slit3 '
@@ -1590,7 +1590,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         args = [
             [
                 ('nxscreate stdcomp '
-                 ' -p test.nxsextrasp00 '
+                 ' -p nxsextrasp00 '
                  ' %s' % self.flags).split(),
             ],
         ]
