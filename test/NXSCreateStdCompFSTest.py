@@ -33,10 +33,10 @@ from nxstools import nxscreate
 from nxstools.xmltemplates import standardComponentVariables
 
 
-# try:
-#     import nxsextrasp00
-# except ImportError:
-#     from . import nxsextrasp00
+try:
+    import nxsextrasp00
+except ImportError:
+    from . import nxsextrasp00
 
 try:
     from cStringIO import StringIO
@@ -1610,6 +1610,9 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                 self.assertEqual(
                     lines[-2].split(),
                     ["collect4", "common4"])
+                self.assertEqual(
+                    lines[-2].split(),
+                    sorted(nxsextrasp00.standardComponentVariables.keys()))
                 self.assertEqual(lines[-1], "")
         finally:
             pass
