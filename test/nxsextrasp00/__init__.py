@@ -132,3 +132,20 @@ moduleMultiAttributes = {
         'RecorderMode',
     ],
 }
+
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     xml template files of modules
+moduleTemplateFiles = {
+    'mymca': [
+        'mymca.xml'
+    ],
+}
+
+
+#: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
+#:     important attributes of modules
+moduleMultiAttributes = {
+    'mymca': [
+        'Data', 'Mode',
+    ],
+}

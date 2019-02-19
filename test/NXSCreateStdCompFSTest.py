@@ -413,8 +413,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")
                         self.assertEqual(lines[-1], "")
-                        self.assertTrue(lines[1].startswith("MISSING"))
                         # print(vl)
+                        self.assertTrue("MISSING" in vl)
                         if self.cpexists(cp):
                             self.deletecp(cp)
         finally:
@@ -1273,7 +1273,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         xml = self.getcp(cp)
                         self.assertEqual(arg[2][0][i], xml)
 
-                    vl, er = self.runtest(arg[3])
+                    vl, er, txt = self.runtestexcept(arg[3], SystemExit)
 
                     for i, ds in enumerate(arg[1][1]):
                         xml = self.getds(ds)
@@ -1416,13 +1416,22 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             "common4",
         ]
 
-        args = [
-            ('nxscreate stdcomp %s -p nxsextrasp00 -c cptest -t '
-             % self.flags).split(),
-            ('nxscreate stdcomp %s --xml-package nxsextrasp00 '
-             ' --component cptest --type '
-             % self.flags).split(),
-        ]
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            args = [
+                ('nxscreate stdcomp %s -p test.nxsextrasp00 -c cptest -t '
+                 % self.flags).split(),
+                ('nxscreate stdcomp %s --xml-package test.nxsextrasp00 '
+                 ' --component cptest --type '
+                 % self.flags).split(),
+            ]
+        else:
+            args = [
+                ('nxscreate stdcomp %s -p nxsextrasp00 -c cptest -t '
+                 % self.flags).split(),
+                ('nxscreate stdcomp %s --xml-package nxsextrasp00 '
+                 ' --component cptest --type '
+                 % self.flags).split(),
+            ]
 
         totest = []
         try:
@@ -1441,19 +1450,10 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         # print(tp)
                         vl, er, txt = self.runtestexcept(cmd, Exception)
 
-                        if er:
-                            self.assertEqual(
-                                "Info: NeXus hasn't been setup yet. \n\n", er)
-                        else:
-                            self.assertEqual('', er)
-                        # self.assertTrue(vl)
-                        # print(txt)
-                        # print(vl)
-                        # print(er)
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")
                         self.assertEqual(lines[-1], "")
-                        self.assertTrue(lines[1].startswith("MISSING"))
+                        # self.assertTrue(lines[1].startswith("MISSING"))
                         if self.cpexists(cp):
                             self.deletecp(cp)
         finally:
@@ -1467,15 +1467,19 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            pname = 'test.nxsextrasp00'
+        else:
+            pname = 'nxsextrasp00'
         args = [
             [
                 ('nxscreate stdcomp -t collect4 -c myslits '
-                 '-p nxsextrasp00 '
+                 '-p %s '
                  ' first slit1 '
                  ' second slit2 '
                  ' third slit3 '
                  ' fourth slit4 '
-                 ' %s' % self.flags).split(),
+                 ' %s' % (pname, self.flags)).split(),
                 [
                     ['myslits'],
                     []
@@ -1493,12 +1497,12 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp --type collect4 --component myslits '
-                 ' --xml-package nxsextrasp00 '
+                 ' --xml-package %s '
                  ' first slit1 '
                  ' second slit2 '
                  ' third slit3 '
                  ' fourth slit4 '
-                 ' %s' % self.flags).split(),
+                 ' %s' % (pname, self.flags)).split(),
                 [
                     ['myslits'],
                     []
@@ -1524,15 +1528,19 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            pname = 'test.nxsextrasp00'
+        else:
+            pname = 'nxsextrasp00'
         args = [
             [
                 ('nxscreate stdcomp -t common4 -c myslit '
-                 '-p nxsextrasp00 '
+                 '-p %s '
                  ' dds slit1 '
                  ' ods1 slit2 '
                  ' ods2 slit3 '
                  ' ods3 slit4 '
-                 ' %s' % self.flags).split(),
+                 ' %s' % (pname, self.flags)).split(),
                 [
                     [],
                     ['myslit_common']
@@ -1553,12 +1561,12 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             ],
             [
                 ('nxscreate stdcomp --type common4 --component myslit '
-                 ' --xml-package nxsextrasp00 '
+                 ' --xml-package %s '
                  ' dds slit1 '
                  ' ods1 slit2 '
                  ' ods2 slit3 '
                  ' ods3 slit4 '
-                 ' %s' % self.flags).split(),
+                 ' %s' % (pname, self.flags)).split(),
                 [
                     [],
                     ['myslit_common']
@@ -1587,11 +1595,18 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            pname = 'test.nxsextrasp00'
+        else:
+            pname = 'nxsextrasp00'
         args = [
             [
                 ('nxscreate stdcomp '
-                 ' -p nxsextrasp00 '
-                 ' %s' % self.flags).split(),
+                 ' -p %s '
+                 ' %s' % (pname, self.flags)).split(),
+                ('nxscreate stdcomp '
+                 ' --xml-package %s '
+                 ' %s' % (pname, self.flags)).split(),
             ],
         ]
 
