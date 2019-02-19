@@ -1,4 +1,4 @@
-2019-02-XX Jan Kotanski <jankotan@gmail.com>
+2019-02-19 Jan Kotanski <jankotan@gmail.com>
 	* make nxscreate works without NXsConfigServer (if possible)
 	* fix for nxscreate -o file
 	* improve finding tango host from DB
