@@ -33,10 +33,10 @@ import nxstools
 from nxstools import nxscreate
 # from nxstools import nxsdevicetools
 
-# try:
-#     import nxsextrasp00
-# except ImportError:
-#     from . import nxsextrasp00
+try:
+    import nxsextrasp00
+except ImportError:
+    from . import nxsextrasp00
 
 try:
     from cStringIO import StringIO
@@ -354,7 +354,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'pedetector',           #
             'mythen2',              #
             'perkinelmer',          #
-            'mca_xia',              #
+            'mca_xia',              # +
             'pco',                  #
             'pilatus6m',            #
             'marccd',               # +
@@ -1990,6 +1990,169 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     self.deleteds(ds)
             if tsv:
                 tsv.tearDown()
+
+    def test_onlinecp_typelist_single_module(self):
+        """ test nxsccreate onlinecp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = '<?xml version="1.0"?>\n' \
+              '<hw>\n' \
+              '<device>\n' \
+              '    <name>%s</name>\n' \
+              '    <type>type_tango</type>\n' \
+              '    <module>%s</module>\n' \
+              '    <device>%s</device>\n' \
+              '    <control>tango</control>\n' \
+              '    <hostname>%s:%s</hostname>\n' \
+              '</device>\n' \
+              '</hw>\n'
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            pname = 'test.nxsextrasp00'
+        else:
+            pname = 'nxsextrasp00'
+
+        command = ('nxscreate onlinecp %s %s'
+                   ' -p %s '
+                   % (fname, self.flags, pname)).split()
+
+        args = [
+            ['my_test_%s' % ky, "mytest/%s/00" % ky, vl, ky]
+            for ky, vl in nxsextrasp00.moduleTemplateFiles.items()
+        ]
+
+        try:
+            for arg in args:
+                ds = arg[0]
+                dv = arg[1]
+                attr = list(arg[2])
+                module = arg[3]
+                if os.path.isfile(fname):
+                    raise Exception("Test file %s exists" % fname)
+                with open(fname, "w") as fl:
+                    fl.write(xml % (ds, module, dv, self.host, self.port))
+                try:
+
+                    skip = False
+                    for el in attr:
+                        if self.dsexists(
+                                "%s_%s" % (ds, el.lower())
+                                if el else ds):
+                            skip = True
+                    if not skip:
+
+                        vl, er = self.runtest(command)
+
+                        if er:
+                            self.assertTrue(er.startswith(
+                                "Info"))
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        lines = vl.split("\n")
+                        self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
+                        self.assertEqual(
+                            lines[-2].split(), [ds])
+                finally:
+                    os.remove(fname)
+        finally:
+            pass
+
+    def test_onlinecp_mymca_module(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>testmymca</name>
+ <type>type_tango</type>
+ <module>mymca</module>
+ <device>p09/mymca/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        if __name__ == 'test.NXSCreateStdCompFSTest':
+            pname = 'test.nxsextrasp00'
+        else:
+            pname = 'nxsextrasp00'
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c testmymca '
+                     ' -p %s '
+                     ' %s %s ' % (pname, fname, self.flags)).split(),
+                    ('nxscreate onlinecp --component testmymca '
+                     ' --xml-package %s '
+                     ' %s %s ' % (pname, fname, self.flags)).split(),
+                ],
+                [
+                    ['testmymca'],
+                    [
+                        'testmymca_data',
+                        'testmymca_mode'
+                    ],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" name="$var.entryname#\'scan\''
+                     '$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="testmymca">\n'
+                     '        <field type="NX_FLOAT64" name="data">'
+                     '$datasources.testmymca_data<strategy mode="STEP"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field type="NX_FLOAT64" name="mode">'
+                     '$datasources.testmymca_mode<strategy mode="INIT"/>\n'
+                     '          </field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="testmymca_data" type="TANGO">\n'
+                     '    <device group="testmymca_" hostname="haso000" '
+                     'member="attribute" name="p09/mymca/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Data"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="testmymca_mode" type="TANGO">\n'
+                     '    <device group="testmymca_" hostname="haso000" '
+                     'member="attribute" name="p09/mymca/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="Mode"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+
+        self.checkxmls(args, fname)
 
 
 if __name__ == '__main__':
