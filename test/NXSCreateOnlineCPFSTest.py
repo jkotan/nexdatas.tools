@@ -1636,13 +1636,12 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     ['<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_countsroi" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="CountsRoI"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'
-                     '',
+                     '</definition>\n' % (self.host, self.port),
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_icr" type="TANGO">\n'
@@ -1666,22 +1665,21 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_roiend" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="RoIEnd"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'
-                     '',
+                     '</definition>\n' % (self.host, self.port),
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_roistart" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="RoIStart"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'],
+                     '</definition>\n' % (self.host, self.port)],
                 ],
                 [
                     ('nxscreate onlinecp -c mymcaxia '
@@ -1873,13 +1871,12 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     ['<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_countsroi" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="CountsRoI"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'
-                     '',
+                     '</definition>\n' % (self.host, self.port),
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_icr" type="TANGO">\n'
@@ -1903,22 +1900,21 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_roiend" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="RoIEnd"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'
-                     '',
+                     '</definition>\n' % (self.host, self.port),
                      '<?xml version="1.0" ?>\n'
                      '<definition>\n'
                      '  <datasource name="mymcaxia_roistart" type="TANGO">\n'
-                     '    <device group="mymcaxia_" hostname="jessie" '
+                     '    <device group="mymcaxia_" hostname="%s" '
                      'member="attribute" name="p09/mcaxia/exp.01" '
-                     'port="10000"/>\n'
+                     'port="%s"/>\n'
                      '    <record name="RoIStart"/>\n'
                      '  </datasource>\n'
-                     '</definition>\n'],
+                     '</definition>\n' % (self.host, self.port)],
                 ],
                 [
                     ('nxscreate onlinecp -c mymcaxia -o '
