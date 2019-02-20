@@ -328,6 +328,104 @@ For more help:
         finally:
             os.remove(filename)
 
+    def test_field_emptyfile_geometry_source(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testfileinfo.nxs'
+
+        commands = [
+            ('nxsfileinfo field -g %s %s' % (filename, self.flags)).split(),
+            ('nxsfileinfo field --geometry %s %s'
+             % (filename, self.flags)).split(),
+            ('nxsfileinfo field -s %s %s' % (filename, self.flags)).split(),
+            ('nxsfileinfo field --source %s %s'
+             % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 1)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: 'testfileinfo.nxs'</title>")
+        finally:
+            os.remove(filename)
+
+    def test_general_simplefile(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testfileinfo.nxs'
+
+        commands = [
+            ('nxsfileinfo general %s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertEqual('\n', vl)
+
+        finally:
+            os.remove(filename)
+
     def ttest_execute_test_nofile(self):
         """ test nxsconfig execute empty file
         """

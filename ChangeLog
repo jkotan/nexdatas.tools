@@ -1,3 +1,8 @@
+2019-02-XX Jan Kotanski <jankotan@gmail.com>
+	* fix missing parameter support in nxscreate stdcomp
+	* add nxsfileinfo test
+	* tagged as v2.62.1
+
 2019-02-19 Jan Kotanski <jankotan@gmail.com>
 	* make nxscreate works without NXsConfigServer (if possible)
 	* fix for nxscreate -o file
