@@ -163,6 +163,36 @@ For more help:
             error = True
         self.assertEqual(error, True)
 
+    def checkGroupRow(self, row, gname):
+        self.assertEqual(len(row), 3)
+        self.assertEqual(row.tagname, "row")
+        self.assertEqual(len(row[0]), 1)
+        self.assertEqual(row[0].tagname, "entry")
+        self.assertEqual(len(row[0][0]), 1)
+        self.assertEqual(row[0][0].tagname, "paragraph")
+        self.assertEqual(str(row[0][0][0]), gname)
+        self.assertEqual(len(row[1]), 0)
+        self.assertEqual(str(row[1]), '<entry/>')
+        self.assertEqual(len(row[2]), 0)
+        self.assertEqual(str(row[2]), '<entry/>')
+
+    def checkFieldRow(self, row, fname, ftype, fshape):
+        self.assertEqual(len(row), 3)
+        self.assertEqual(row.tagname, "row")
+        self.assertEqual(len(row[0]), 1)
+        self.assertEqual(row[0].tagname, "entry")
+        self.assertEqual(len(row[0][0]), 1)
+        self.assertEqual(row[0][0].tagname, "paragraph")
+        self.assertEqual(str(row[0][0][0]), fname)
+        self.assertEqual(len(row[1]), 1)
+        self.assertEqual(row[1].tagname, 'entry')
+        self.assertEqual(row[1][0].tagname, 'paragraph')
+        self.assertEqual(len(row[1][0]), 1)
+        self.assertEqual(str(row[1][0][0]), ftype)
+        self.assertEqual(row[2][0].tagname, 'paragraph')
+        self.assertEqual(len(row[2][0]), 1)
+        self.assertEqual(str(row[2][0][0]), fshape)
+
     def test_default(self):
         """ test nxsconfig default
         """
@@ -444,7 +474,7 @@ For more help:
                 section = document[0]
                 self.assertEqual(len(section), 1)
                 self.assertTrue(
-                    "File name: testfileinfo.nxs" in str(section[0]))
+                    "File name: 'testfileinfo.nxs'" in str(section[0]))
 
         finally:
             os.remove(filename)
@@ -565,7 +595,7 @@ For more help:
                     self.assertEqual(len(section[0]), 1)
                     self.assertEqual(
                         str(section[0]),
-                        "<title>File name: %s</title>" % filename)
+                        "<title>File name: '%s'</title>" % filename)
                     self.assertEqual(len(section[1]), 1)
                     table = section[1]
                     self.assertEqual(table.tagname, 'table')
@@ -655,6 +685,200 @@ For more help:
                     self.assertEqual(len(tbody[7][1]), 1)
                     self.assertEqual(len(tbody[7][1][0]), 1)
                     self.assertEqual(str(tbody[7][1][0][0]), etime)
+
+            finally:
+                os.remove(filename)
+
+    def test_field_nodata(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "int",
+                ""
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+
+            commands = [
+                ('nxsfileinfo field %s %s' % (filename, self.flags)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for cmd in commands:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    parser = docutils.parsers.rst.Parser()
+                    components = (docutils.parsers.rst.Parser,)
+                    settings = docutils.frontend.OptionParser(
+                        components=components).get_default_values()
+                    document = docutils.utils.new_document(
+                        '<rst-doc>', settings=settings)
+                    parser.parse(vl, document)
+                    self.assertEqual(len(document), 1)
+                    section = document[0]
+                    self.assertEqual(len(section), 2)
+                    self.assertEqual(len(section[0]), 1)
+                    self.assertEqual(
+                        str(section[0]),
+                        "<title>File name: '%s'</title>" % filename)
+                    self.assertEqual(len(section[1]), 1)
+                    table = section[1]
+                    self.assertEqual(table.tagname, 'table')
+                    self.assertEqual(len(table), 1)
+                    self.assertEqual(table[0].tagname, 'tgroup')
+                    self.assertEqual(len(table[0]), 5)
+                    for i in range(3):
+                        self.assertEqual(table[0][i].tagname, 'colspec')
+                    self.assertEqual(table[0][3].tagname, 'thead')
+                    self.assertEqual(
+                        str(table[0][3]),
+                        '<thead><row>'
+                        '<entry><paragraph>nexus_path</paragraph></entry>'
+                        '<entry><paragraph>dtype</paragraph></entry>'
+                        '<entry><paragraph>shape</paragraph></entry>'
+                        '</row></thead>'
+                    )
+                    tbody = table[0][4]
+                    self.assertEqual(tbody.tagname, 'tbody')
+                    self.assertEqual(len(tbody), 14)
+                    row = tbody[0]
+                    self.assertEqual(len(row), 3)
+                    self.assertEqual(row.tagname, "row")
+                    self.assertEqual(len(row[0]), 2)
+                    self.assertEqual(row[0].tagname, "entry")
+                    self.assertEqual(len(row[0][0]), 1)
+                    self.assertEqual(row[0][0].tagname, "system_message")
+                    self.assertEqual(
+                        str(row[0][0][0]),
+                        "<paragraph>"
+                        "Unexpected possible title overline or transition.\n"
+                        "Treating it as ordinary text because it's so short."
+                        "</paragraph>"
+                    )
+                    self.assertEqual(len(row[1]), 0)
+                    self.assertEqual(str(row[1]), '<entry/>')
+                    self.assertEqual(len(row[2]), 0)
+                    self.assertEqual(str(row[2]), '<entry/>')
+
+                    drows = {}
+                    for irw in range(len(tbody)-1):
+                        rw = tbody[irw + 1]
+                        drows[str(rw[0][0][0])] = rw
+
+                    rows = [drows[nm] for nm in sorted(drows.keys())]
+
+                    self.checkGroupRow(
+                        rows[1], "/entry12345/data")
+                    self.checkFieldRow(
+                        rows[2], "/entry12345/end_time", "string", "[1]")
+                    self.checkFieldRow(
+                        rows[3], "/entry12345/experiment_identifier",
+                        "string", "[1]")
+                    self.checkGroupRow(
+                        rows[4], "/entry12345/instrument")
+                    self.checkGroupRow(
+                        rows[5], "/entry12345/instrument/detector")
+
+                    self.checkFieldRow(
+                        rows[6],
+                        "/entry12345/instrument/detector/intimage",
+                        "uint32", "['*', 30]"
+                    )
+                    self.checkFieldRow(
+                        rows[7],
+                        "/entry12345/instrument/name",
+                        "string", "[1]"
+                    )
+                    self.checkGroupRow(rows[8], "/entry12345/sample")
+                    self.checkFieldRow(
+                        rows[9], "/entry12345/sample/chemical_formula",
+                        "string", "[1]"
+                    )
+                    self.checkFieldRow(
+                        rows[10], "/entry12345/sample/name",
+                        "string", "[1]"
+                    )
+                    self.checkFieldRow(
+                        rows[11], "/entry12345/start_time", "string", "[1]")
+                    self.checkFieldRow(
+                        rows[12], "/entry12345/title", "string", "[1]")
 
             finally:
                 os.remove(filename)

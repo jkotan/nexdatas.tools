@@ -281,7 +281,7 @@ class General(Runner):
         fname = filewriter.first(
             (attr["file_name"][...]
              if "file_name" in names else " ") or " ")
-        title = "File name: %s" % fname
+        title = "File name: '%s'" % fname
 
         print("")
         for en in root:
