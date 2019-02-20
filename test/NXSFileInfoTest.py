@@ -386,7 +386,7 @@ For more help:
         finally:
             os.remove(filename)
 
-    def test_general_simplefile(self):
+    def test_general_simplefile_nodata(self):
         """ test nxsconfig execute empty file
         """
         fun = sys._getframe().f_code.co_name
@@ -403,6 +403,12 @@ For more help:
 
         try:
             nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            entry.create_group("data", "NXdata")
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
             nxsfile.close()
 
             for cmd in commands:
@@ -420,8 +426,92 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
-                self.assertEqual('', er)
-                self.assertEqual('\n', vl)
+                self.assertEqual(
+                    'nxsfileinfo: title cannot be found\n'
+                    'nxsfileinfo: experiment identifier cannot be found\n'
+                    'nxsfileinfo: instrument name cannot be found\n'
+                    'nxsfileinfo: instrument short name cannot be found\n'
+                    'nxsfileinfo: start time cannot be found\n'
+                    'nxsfileinfo: end time cannot be found\n', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 1)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: testfileinfo.nxs</title>")
+
+        finally:
+            os.remove(filename)
+
+    def test_general_simplefile_metadata(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testfileinfo.nxs'
+
+        commands = [
+            ('nxsfileinfo general %s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            entry.create_group("data", "NXdata")
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual(
+                    'nxsfileinfo: title cannot be found\n'
+                    'nxsfileinfo: experiment identifier cannot be found\n'
+                    'nxsfileinfo: instrument name cannot be found\n'
+                    'nxsfileinfo: instrument short name cannot be found\n'
+                    'nxsfileinfo: start time cannot be found\n'
+                    'nxsfileinfo: end time cannot be found\n', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 1)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: testfileinfo.nxs</title>")
 
         finally:
             os.remove(filename)
