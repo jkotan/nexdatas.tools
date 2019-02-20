@@ -165,14 +165,17 @@ if PNI_AVAILABLE:
     import FileWriterTest
     import PNIWriterTest
     import NXSCollectPNITest
+    import NXSFileInfoPNITest
 if H5PY_AVAILABLE:
     import H5PYWriterTest
     import FileWriterH5PYTest
     import NXSCollectH5PYTest
+    import NXSFileInfoH5PYTest
 if H5CPP_AVAILABLE:
     import H5CppWriterTest
     import FileWriterH5CppTest
     import NXSCollectH5CppTest
+    import NXSFileInfoH5CppTest
 if PNI_AVAILABLE and H5PY_AVAILABLE:
     import FileWriterPNIH5PYTest
 # if PNI_AVAILABLE and H5CPP_AVAILABLE:
@@ -180,6 +183,7 @@ if PNI_AVAILABLE and H5PY_AVAILABLE:
 
 if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
     import NXSCollectTest
+    import NXSFileInfoTest
 
 
 if PYTANGO_AVAILABLE:
@@ -273,6 +277,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCollectPNITest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoPNITest))
 
     if H5PY_AVAILABLE:
         suite.addTests(
@@ -282,6 +289,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCollectH5PYTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoH5PYTest))
     if H5CPP_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -291,6 +301,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCollectH5CppTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoH5CppTest))
     if PNI_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -300,6 +313,9 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCollectTest))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoTest))
 
     if PYTANGO_AVAILABLE:
         suite.addTests(
