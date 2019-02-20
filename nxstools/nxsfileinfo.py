@@ -480,7 +480,7 @@ def main():
 
     if options.subparser is None:
         sys.stderr.write(
-            "Err<or: %s\n" % str("too few arguments"))
+            "Error: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")
