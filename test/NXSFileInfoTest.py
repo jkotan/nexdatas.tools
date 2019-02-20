@@ -443,10 +443,8 @@ For more help:
                 self.assertEqual(len(document), 1)
                 section = document[0]
                 self.assertEqual(len(section), 1)
-                self.assertEqual(len(section[0]), 1)
-                self.assertEqual(
-                    str(section[0]),
-                    "<title>File name: testfileinfo.nxs</title>")
+                self.assertTrue(
+                    "File name: testfileinfo.nxs" in str(section[0]))
 
         finally:
             os.remove(filename)
@@ -457,64 +455,209 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testfileinfo.nxs'
-
-        commands = [
-            ('nxsfileinfo general %s %s' % (filename, self.flags)).split(),
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+            ],
+            [
+                "mmytestfileinfo.nxs",
+                "Super experiment",
+                "BT12sdf3_ADSAD",
+                "HASYLAB",
+                "HL",
+                "2019-01-14T15:19:21+00:00",
+                "2019-01-15T15:27:21+00:00",
+                "my sample",
+                "LaB6",
+            ],
         ]
 
-        wrmodule = WRITERS[self.writer]
-        filewriter.writer = wrmodule
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
 
-        try:
-            nxsfile = filewriter.create_file(filename, overwrite=True)
-            rt = nxsfile.root()
-            entry = rt.create_group("entry12345", "NXentry")
-            ins = entry.create_group("instrument", "NXinstrument")
-            det = ins.create_group("detector", "NXdetector")
-            entry.create_group("data", "NXdata")
-            det.create_field("intimage", "uint32", [0, 30], [1, 30])
-            nxsfile.close()
+            commands = [
+                ('nxsfileinfo general %s %s' % (filename, self.flags)).split(),
+            ]
 
-            for cmd in commands:
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsfileinfo.main()
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
 
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+            try:
 
-                self.assertEqual(
-                    'nxsfileinfo: title cannot be found\n'
-                    'nxsfileinfo: experiment identifier cannot be found\n'
-                    'nxsfileinfo: instrument name cannot be found\n'
-                    'nxsfileinfo: instrument short name cannot be found\n'
-                    'nxsfileinfo: start time cannot be found\n'
-                    'nxsfileinfo: end time cannot be found\n', er)
-                parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
-                document = docutils.utils.new_document(
-                    '<rst-doc>', settings=settings)
-                parser.parse(vl, document)
-                self.assertEqual(len(document), 1)
-                section = document[0]
-                self.assertEqual(len(section), 1)
-                self.assertEqual(len(section[0]), 1)
-                self.assertEqual(
-                    str(section[0]),
-                    "<title>File name: testfileinfo.nxs</title>")
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
 
-        finally:
-            os.remove(filename)
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for cmd in commands:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    parser = docutils.parsers.rst.Parser()
+                    components = (docutils.parsers.rst.Parser,)
+                    settings = docutils.frontend.OptionParser(
+                        components=components).get_default_values()
+                    document = docutils.utils.new_document(
+                        '<rst-doc>', settings=settings)
+                    parser.parse(vl, document)
+                    self.assertEqual(len(document), 1)
+                    section = document[0]
+                    self.assertEqual(len(section), 2)
+                    self.assertEqual(len(section[0]), 1)
+                    self.assertEqual(
+                        str(section[0]),
+                        "<title>File name: %s</title>" % filename)
+                    self.assertEqual(len(section[1]), 1)
+                    table = section[1]
+                    self.assertEqual(table.tagname, 'table')
+                    self.assertEqual(len(table), 1)
+                    self.assertEqual(table[0].tagname, 'tgroup')
+                    self.assertEqual(len(table[0]), 4)
+                    for i in range(2):
+                        self.assertEqual(table[0][i].tagname, 'colspec')
+                    self.assertEqual(table[0][2].tagname, 'thead')
+                    self.assertEqual(
+                        str(table[0][2]),
+                        '<thead><row>'
+                        '<entry><paragraph>Scan entry:</paragraph></entry>'
+                        '<entry><paragraph>entry12345</paragraph></entry>'
+                        '</row></thead>'
+                    )
+                    tbody = table[0][3]
+                    self.assertEqual(tbody.tagname, 'tbody')
+                    self.assertEqual(len(tbody), 8)
+                    self.assertEqual(len(tbody[0]), 2)
+                    self.assertEqual(len(tbody[0][0]), 1)
+                    self.assertEqual(len(tbody[0][0][0]), 1)
+                    self.assertEqual(str(tbody[0][0][0][0]), "Title:")
+                    self.assertEqual(len(tbody[0][1]), 1)
+                    self.assertEqual(len(tbody[0][1][0]), 1)
+                    self.assertEqual(str(tbody[0][1][0][0]), title)
+
+                    self.assertEqual(len(tbody[1]), 2)
+                    self.assertEqual(len(tbody[1][0]), 1)
+                    self.assertEqual(len(tbody[1][0][0]), 1)
+                    self.assertEqual(str(tbody[1][0][0][0]),
+                                     "Experiment identifier:")
+                    self.assertEqual(len(tbody[1][1]), 1)
+                    self.assertEqual(len(tbody[1][1][0]), 1)
+                    self.assertEqual(str(tbody[1][1][0][0]), beamtime)
+
+                    self.assertEqual(len(tbody[2]), 2)
+                    self.assertEqual(len(tbody[2][0]), 1)
+                    self.assertEqual(len(tbody[2][0][0]), 1)
+                    self.assertEqual(str(tbody[2][0][0][0]),
+                                     "Instrument name:")
+                    self.assertEqual(len(tbody[2][1]), 1)
+                    self.assertEqual(len(tbody[2][1][0]), 1)
+                    self.assertEqual(str(tbody[2][1][0][0]), insname)
+
+                    self.assertEqual(len(tbody[3]), 2)
+                    self.assertEqual(len(tbody[3][0]), 1)
+                    self.assertEqual(len(tbody[3][0][0]), 1)
+                    self.assertEqual(str(tbody[3][0][0][0]),
+                                     "Instrument short name:")
+                    self.assertEqual(len(tbody[3][1]), 1)
+                    self.assertEqual(len(tbody[3][1][0]), 1)
+                    self.assertEqual(str(tbody[3][1][0][0]), inssname)
+
+                    self.assertEqual(len(tbody[4]), 2)
+                    self.assertEqual(len(tbody[4][0]), 1)
+                    self.assertEqual(len(tbody[4][0][0]), 1)
+                    self.assertEqual(str(tbody[4][0][0][0]),
+                                     "Sample name:")
+                    self.assertEqual(len(tbody[4][1]), 1)
+                    self.assertEqual(len(tbody[4][1][0]), 1)
+                    self.assertEqual(str(tbody[4][1][0][0]), smpl)
+
+                    self.assertEqual(len(tbody[5]), 2)
+                    self.assertEqual(len(tbody[5][0]), 1)
+                    self.assertEqual(len(tbody[5][0][0]), 1)
+                    self.assertEqual(str(tbody[5][0][0][0]),
+                                     "Sample formula:")
+                    self.assertEqual(len(tbody[5][1]), 1)
+                    self.assertEqual(len(tbody[5][1][0]), 1)
+                    self.assertEqual(str(tbody[5][1][0][0]), formula)
+
+                    self.assertEqual(len(tbody[6]), 2)
+                    self.assertEqual(len(tbody[6][0]), 1)
+                    self.assertEqual(len(tbody[6][0][0]), 1)
+                    self.assertEqual(str(tbody[6][0][0][0]),
+                                     "Start time:")
+                    self.assertEqual(len(tbody[6][1]), 1)
+                    self.assertEqual(len(tbody[6][1][0]), 1)
+                    self.assertEqual(str(tbody[6][1][0][0]), stime)
+
+                    self.assertEqual(len(tbody[7]), 2)
+                    self.assertEqual(len(tbody[7][0]), 1)
+                    self.assertEqual(len(tbody[7][0][0]), 1)
+                    self.assertEqual(str(tbody[7][0][0][0]),
+                                     "End time:")
+                    self.assertEqual(len(tbody[7][1]), 1)
+                    self.assertEqual(len(tbody[7][1][0]), 1)
+                    self.assertEqual(str(tbody[7][1][0][0]), etime)
+
+            finally:
+                os.remove(filename)
 
     def ttest_execute_test_nofile(self):
         """ test nxsconfig execute empty file
