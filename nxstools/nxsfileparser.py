@@ -153,7 +153,8 @@ class NXSFileParser(object):
                     desc[key] = vl[1](filewriter.first(attrs[vl[0]][...]))
         if node.name in self.valuestostore and node.is_valid:
             vl = node[...]
-            while not isinstance(vl, str) and len(vl) == 1:
+            while (not isinstance(vl, str) and
+                   hasattr(vl, "__len__") and len(vl) == 1):
                 vl = vl[0]
             desc["value"] = vl
 

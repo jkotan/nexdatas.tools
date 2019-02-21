@@ -1432,6 +1432,589 @@ For more help:
         finally:
             os.remove(filename)
 
+    def test_field_data_filter(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "fttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ("nxsfileinfo field %s %s -f *:NXinstrument/*" %
+             (filename, self.flags)).split(),
+            ("nxsfileinfo field %s %s --filter *:NXinstrument/*" %
+             (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 2)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: '%s'</title>" % filename)
+                self.assertEqual(len(section[1]), 1)
+                table = section[1]
+                self.assertEqual(table.tagname, 'table')
+                self.assertEqual(len(table), 1)
+                self.assertEqual(table[0].tagname, 'tgroup')
+                self.assertEqual(len(table[0]), 5)
+                for i in range(3):
+                    self.assertEqual(table[0][i].tagname, 'colspec')
+                self.assertEqual(table[0][3].tagname, 'thead')
+                self.assertEqual(
+                    str(table[0][3]),
+                    '<thead><row>'
+                    '<entry><paragraph>nexus_path</paragraph></entry>'
+                    '<entry><paragraph>dtype</paragraph></entry>'
+                    '<entry><paragraph>shape</paragraph></entry>'
+                    '</row></thead>'
+                )
+                tbody = table[0][4]
+                self.assertEqual(tbody.tagname, 'tbody')
+                self.assertEqual(len(tbody), 2)
+
+                drows = {}
+                for irw in range(len(tbody)):
+                    rw = tbody[irw]
+                    drows[str(rw[0][0][0])] = rw
+
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkRow(
+                    rows[0],
+                    ["/entry12345/instrument/detector",
+                     None, None])
+                self.checkRow(
+                    rows[1],
+                    ["/entry12345/instrument/detector/intimage",
+                     "uint32", "['*', 30]"]
+                )
+
+        finally:
+            os.remove(filename)
+
+    def test_field_data_columns(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "cttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo field %s %s --columns '
+             ' nexus_path,source_name,shape,dtype,strategy' %
+             (filename, self.flags)).split(),
+            ('nxsfileinfo field %s %s '
+             ' -c  nexus_path,source_name,shape,dtype,strategy' %
+             (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 2)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: '%s'</title>" % filename)
+                self.assertEqual(len(section[1]), 1)
+                table = section[1]
+                self.assertEqual(table.tagname, 'table')
+                self.assertEqual(len(table), 1)
+                self.assertEqual(table[0].tagname, 'tgroup')
+                self.assertEqual(len(table[0]), 7)
+                for i in range(5):
+                    self.assertEqual(table[0][i].tagname, 'colspec')
+                self.assertEqual(table[0][5].tagname, 'thead')
+                self.assertEqual(
+                    str(table[0][5]),
+                    '<thead><row>'
+                    '<entry><paragraph>nexus_path</paragraph></entry>'
+                    '<entry><paragraph>source_name</paragraph></entry>'
+                    '<entry><paragraph>shape</paragraph></entry>'
+                    '<entry><paragraph>dtype</paragraph></entry>'
+                    '<entry><paragraph>strategy</paragraph></entry>'
+                    '</row></thead>'
+                )
+                tbody = table[0][6]
+                self.assertEqual(tbody.tagname, 'tbody')
+                self.assertEqual(len(tbody), 14)
+                row = tbody[0]
+                self.assertEqual(len(row), 5)
+                self.assertEqual(row.tagname, "row")
+                self.assertEqual(len(row[0]), 2)
+                self.assertEqual(row[0].tagname, "entry")
+                self.assertEqual(len(row[0][0]), 1)
+                self.assertEqual(row[0][0].tagname, "system_message")
+                self.assertEqual(
+                    str(row[0][0][0]),
+                    "<paragraph>"
+                    "Unexpected possible title overline or transition.\n"
+                    "Treating it as ordinary text because it's so short."
+                    "</paragraph>"
+                )
+                self.assertEqual(len(row[1]), 0)
+                self.assertEqual(str(row[1]), '<entry/>')
+                self.assertEqual(len(row[2]), 0)
+                self.assertEqual(str(row[2]), '<entry/>')
+
+                drows = {}
+                for irw in range(len(tbody)-1):
+                    rw = tbody[irw + 1]
+                    drows[str(rw[0][0][0])] = rw
+
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkRow(
+                    rows[0],
+                    ["-> /entry12345/instrument/detector/intimage",
+                     None, "['*', 30]", "uint32",  None]
+                )
+                self.checkRow(
+                    rows[1],
+                    ["/entry12345", None, None, None, None])
+                self.checkRow(
+                    rows[2],
+                    ["/entry12345/data", None, None, None, None])
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkRow(
+                    rows[3],
+                    ["/entry12345/data/lkintimage", None,
+                     "['*', 30]", "uint32", None]
+                )
+                self.checkRow(
+                    rows[4],
+                    ["/entry12345/instrument", None, None, None, None])
+                self.checkRow(
+                    rows[5],
+                    ["/entry12345/instrument/detector",
+                     None, None, None, None])
+                self.checkRow(
+                    rows[6],
+                    ["/entry12345/instrument/detector/intimage", None,
+                     "['*', 30]", "uint32", None]
+                )
+                self.checkRow(
+                    rows[7],
+                    ["/entry12345/sample", None, None, None, None])
+                self.checkRow(
+                    rows[8],
+                    ["/entry12345/sample/depends_on", None,
+                     "[1]", "string", None]
+                )
+                self.checkRow(
+                    rows[9],
+                    ["/entry12345/sample/name", None,
+                     "[1]", "string", None]
+                )
+                self.checkRow(
+                    rows[10],
+                    ["/entry12345/sample/transformations",
+                     None, None, None, None]
+                )
+                self.checkRow(
+                    rows[11],
+                    ["/entry12345/sample/transformations/phi",
+                     "sphi", "[1]", "float64", "FINAL"]
+                )
+                self.checkRow(
+                    rows[12],
+                    ["/entry12345/sample/transformations/z",
+                     "sz", "[1]", "float32", "INIT"]
+                )
+
+        finally:
+            os.remove(filename)
+
+    def test_field_data_values(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "vttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo field %s %s'
+             ' -v z,phi '
+             % (filename, self.flags)).split(),
+            ('nxsfileinfo field %s %s'
+             ' --value z,phi '
+             % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(5.)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(23.)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 2)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: '%s'</title>" % filename)
+                self.assertEqual(len(section[1]), 1)
+                table = section[1]
+                self.assertEqual(table.tagname, 'table')
+                self.assertEqual(len(table), 1)
+                self.assertEqual(table[0].tagname, 'tgroup')
+                self.assertEqual(len(table[0]), 8)
+                for i in range(6):
+                    self.assertEqual(table[0][i].tagname, 'colspec')
+                self.assertEqual(table[0][6].tagname, 'thead')
+                self.assertEqual(
+                    str(table[0][6]),
+                    '<thead><row>'
+                    '<entry><paragraph>nexus_path</paragraph></entry>'
+                    '<entry><paragraph>source_name</paragraph></entry>'
+                    '<entry><paragraph>units</paragraph></entry>'
+                    '<entry><paragraph>dtype</paragraph></entry>'
+                    '<entry><paragraph>shape</paragraph></entry>'
+                    '<entry><paragraph>value</paragraph></entry>'
+                    '</row></thead>'
+                )
+                tbody = table[0][7]
+                self.assertEqual(tbody.tagname, 'tbody')
+                self.assertEqual(len(tbody), 14)
+                row = tbody[0]
+                self.assertEqual(len(row), 6)
+                self.assertEqual(row.tagname, "row")
+                self.assertEqual(len(row[0]), 2)
+                self.assertEqual(row[0].tagname, "entry")
+                self.assertEqual(len(row[0][0]), 1)
+                self.assertEqual(row[0][0].tagname, "system_message")
+                self.assertEqual(
+                    str(row[0][0][0]),
+                    "<paragraph>"
+                    "Unexpected possible title overline or transition.\n"
+                    "Treating it as ordinary text because it's so short."
+                    "</paragraph>"
+                )
+                self.assertEqual(len(row[1]), 0)
+                self.assertEqual(str(row[1]), '<entry/>')
+                self.assertEqual(len(row[2]), 0)
+                self.assertEqual(str(row[2]), '<entry/>')
+
+                drows = {}
+                for irw in range(len(tbody)-1):
+                    rw = tbody[irw + 1]
+                    drows[str(rw[0][0][0])] = rw
+
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkRow(
+                    rows[0],
+                    ["-> /entry12345/instrument/detector/intimage",
+                     None, None, "uint32", "['*', 30]", None]
+                )
+                self.checkRow(
+                    rows[1],
+                    ["/entry12345", None, None, None, None, None])
+                self.checkRow(
+                    rows[2],
+                    ["/entry12345/data", None, None, None, None, None])
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkRow(
+                    rows[3],
+                    ["/entry12345/data/lkintimage", None, None,
+                     "uint32", "['*', 30]", None]
+                )
+                self.checkRow(
+                    rows[4],
+                    ["/entry12345/instrument", None, None, None, None, None])
+                self.checkRow(
+                    rows[5],
+                    ["/entry12345/instrument/detector",
+                     None, None, None, None, None])
+                self.checkRow(
+                    rows[6],
+                    ["/entry12345/instrument/detector/intimage", None, None,
+                     "uint32", "['*', 30]", None]
+                )
+                self.checkRow(
+                    rows[7],
+                    ["/entry12345/sample", None, None, None, None, None])
+                self.checkRow(
+                    rows[8],
+                    ["/entry12345/sample/depends_on", None, None,
+                     "string", "[1]",
+                     None]
+                )
+                self.checkRow(
+                    rows[9],
+                    ["/entry12345/sample/name", None, None,
+                     "string", "[1]", None]
+                )
+                self.checkRow(
+                    rows[10],
+                    ["/entry12345/sample/transformations",
+                     None, None, None, None, None]
+                )
+                self.checkRow(
+                    rows[11],
+                    ["/entry12345/sample/transformations/phi",
+                     "sphi", "deg", "float64", "[1]", "5.0"]
+                )
+                self.checkRow(
+                    rows[12],
+                    ["/entry12345/sample/transformations/z",
+                     "sz", "mm", "float32", "[1]", "23.0"]
+                )
+
+        finally:
+            os.remove(filename)
+
 
 if __name__ == '__main__':
     unittest.main()
