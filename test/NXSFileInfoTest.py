@@ -184,6 +184,126 @@ For more help:
         self.assertEqual(len(row[2][0]), 1)
         self.assertEqual(str(row[2][0][0]), fshape)
 
+    def checkGroupFRow(self, row, gname):
+        self.assertEqual(len(row), 6)
+        self.assertEqual(row.tagname, "row")
+        self.assertEqual(len(row[0]), 1)
+        self.assertEqual(row[0].tagname, "entry")
+        self.assertEqual(len(row[0][0]), 1)
+        self.assertEqual(row[0][0].tagname, "paragraph")
+        self.assertEqual(str(row[0][0][0]), gname)
+        self.assertEqual(len(row[1]), 0)
+        self.assertEqual(str(row[1]), '<entry/>')
+        self.assertEqual(len(row[2]), 0)
+        self.assertEqual(str(row[2]), '<entry/>')
+
+    def checkFieldFRow(self, row, fname, ftype, fshape,
+                       sname=None, units=None, value=None):
+        self.assertEqual(len(row), 6)
+        self.assertEqual(row.tagname, "row")
+        self.assertEqual(len(row[0]), 1)
+        self.assertEqual(row[0].tagname, "entry")
+        self.assertEqual(len(row[0][0]), 1)
+        self.assertEqual(row[0][0].tagname, "paragraph")
+        self.assertEqual(str(row[0][0][0]), fname)
+        if sname is None:
+            self.assertEqual(len(row[1]), 0)
+            self.assertEqual(str(row[1]), "<entry/>")
+        else:
+            self.assertEqual(len(row[1]), 1)
+            self.assertEqual(row[1].tagname, 'entry')
+            self.assertEqual(row[1][0].tagname, 'paragraph')
+            self.assertEqual(str(row[1][0][0]), sname)
+        if units is None:
+            self.assertEqual(len(row[2]), 0)
+            self.assertEqual(str(row[2]), "<entry/>")
+        else:
+            self.assertEqual(len(row[2]), 1)
+            self.assertEqual(row[2].tagname, 'entry')
+            self.assertEqual(row[2][0].tagname, 'paragraph')
+            self.assertEqual(str(row[2][0][0]), units)
+
+        self.assertEqual(len(row[3]), 1)
+        self.assertEqual(row[3][0].tagname, 'paragraph')
+        self.assertEqual(len(row[3][0]), 1)
+        self.assertEqual(str(row[3][0][0]), ftype)
+        self.assertEqual(len(row[4]), 1)
+        self.assertEqual(row[4][0].tagname, 'paragraph')
+        self.assertEqual(len(row[4][0]), 1)
+        self.assertEqual(str(row[4][0][0]), fshape)
+
+        if value is None:
+            self.assertEqual(len(row[5]), 0)
+            self.assertEqual(str(row[5]), "<entry/>")
+        else:
+            self.assertEqual(len(row[5]), 1)
+            self.assertEqual(row[5].tagname, 'entry')
+            self.assertEqual(row[5][0].tagname, 'paragraph')
+            self.assertEqual(str(row[5][0][0]), value)
+
+    def checkFieldGRow(self, row, fname,
+                       sname=None, units=None,
+                       ttype=None, tvector=None, toffset=None,
+                       dependson=None):
+        self.assertEqual(len(row), 7)
+        self.assertEqual(row.tagname, "row")
+        self.assertEqual(len(row[0]), 1)
+        self.assertEqual(row[0].tagname, "entry")
+        self.assertEqual(len(row[0][0]), 1)
+        self.assertEqual(row[0][0].tagname, "paragraph")
+        self.assertEqual(str(row[0][0][0]), fname)
+        if sname is None:
+            self.assertEqual(len(row[1]), 0)
+            self.assertEqual(str(row[1]), "<entry/>")
+        else:
+            self.assertEqual(len(row[1]), 1)
+            self.assertEqual(row[1].tagname, 'entry')
+            self.assertEqual(row[1][0].tagname, 'paragraph')
+            self.assertEqual(str(row[1][0][0]), sname)
+        if units is None:
+            self.assertEqual(len(row[2]), 0)
+            self.assertEqual(str(row[2]), "<entry/>")
+        else:
+            self.assertEqual(len(row[2]), 1)
+            self.assertEqual(row[2].tagname, 'entry')
+            self.assertEqual(row[2][0].tagname, 'paragraph')
+            self.assertEqual(str(row[2][0][0]), units)
+        if ttype is None:
+            self.assertEqual(len(row[3]), 0)
+            self.assertEqual(str(row[3]), "<entry/>")
+        else:
+            self.assertEqual(len(row[3]), 1)
+            self.assertEqual(row[3].tagname, 'entry')
+            self.assertEqual(row[3][0].tagname, 'paragraph')
+            self.assertEqual(str(row[3][0][0]), ttype)
+
+        if tvector is None:
+            self.assertEqual(len(row[4]), 0)
+            self.assertEqual(str(row[4]), "<entry/>")
+        else:
+            self.assertEqual(len(row[4]), 1)
+            self.assertEqual(row[4].tagname, 'entry')
+            self.assertEqual(row[4][0].tagname, 'paragraph')
+            self.assertEqual(str(row[4][0][0]), tvector)
+
+        if toffset is None:
+            self.assertEqual(len(row[5]), 0)
+            self.assertEqual(str(row[5]), "<entry/>")
+        else:
+            self.assertEqual(len(row[5]), 1)
+            self.assertEqual(row[5].tagname, 'entry')
+            self.assertEqual(row[5][0].tagname, 'paragraph')
+            self.assertEqual(str(row[5][0][0]), toffset)
+
+        if dependson is None:
+            self.assertEqual(len(row[6]), 0)
+            self.assertEqual(str(row[6]), "<entry/>")
+        else:
+            self.assertEqual(len(row[6]), 1)
+            self.assertEqual(row[6].tagname, 'entry')
+            self.assertEqual(row[6][0].tagname, 'paragraph')
+            self.assertEqual(str(row[6][0][0]), dependson)
+
     def test_default(self):
         """ test nxsconfig default
         """
@@ -836,6 +956,8 @@ For more help:
                     rows = [drows[nm] for nm in sorted(drows.keys())]
 
                     self.checkGroupRow(
+                        rows[0], "/entry12345")
+                    self.checkGroupRow(
                         rows[1], "/entry12345/data")
                     self.checkFieldRow(
                         rows[2], "/entry12345/end_time", "string", "[1]")
@@ -873,6 +995,379 @@ For more help:
 
             finally:
                 os.remove(filename)
+
+    def test_field_data(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "ttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo field %s %s' % (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 2)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: '%s'</title>" % filename)
+                self.assertEqual(len(section[1]), 1)
+                table = section[1]
+                self.assertEqual(table.tagname, 'table')
+                self.assertEqual(len(table), 1)
+                self.assertEqual(table[0].tagname, 'tgroup')
+                self.assertEqual(len(table[0]), 8)
+                for i in range(6):
+                    self.assertEqual(table[0][i].tagname, 'colspec')
+                self.assertEqual(table[0][6].tagname, 'thead')
+                self.assertEqual(
+                    str(table[0][6]),
+                    '<thead><row>'
+                    '<entry><paragraph>nexus_path</paragraph></entry>'
+                    '<entry><paragraph>source_name</paragraph></entry>'
+                    '<entry><paragraph>units</paragraph></entry>'
+                    '<entry><paragraph>dtype</paragraph></entry>'
+                    '<entry><paragraph>shape</paragraph></entry>'
+                    '<entry><paragraph>value</paragraph></entry>'
+                    '</row></thead>'
+                )
+                tbody = table[0][7]
+                self.assertEqual(tbody.tagname, 'tbody')
+                self.assertEqual(len(tbody), 14)
+                row = tbody[0]
+                self.assertEqual(len(row), 6)
+                self.assertEqual(row.tagname, "row")
+                self.assertEqual(len(row[0]), 2)
+                self.assertEqual(row[0].tagname, "entry")
+                self.assertEqual(len(row[0][0]), 1)
+                self.assertEqual(row[0][0].tagname, "system_message")
+                self.assertEqual(
+                    str(row[0][0][0]),
+                    "<paragraph>"
+                    "Unexpected possible title overline or transition.\n"
+                    "Treating it as ordinary text because it's so short."
+                    "</paragraph>"
+                )
+                self.assertEqual(len(row[1]), 0)
+                self.assertEqual(str(row[1]), '<entry/>')
+                self.assertEqual(len(row[2]), 0)
+                self.assertEqual(str(row[2]), '<entry/>')
+
+                drows = {}
+                for irw in range(len(tbody)-1):
+                    rw = tbody[irw + 1]
+                    drows[str(rw[0][0][0])] = rw
+
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkFieldFRow(
+                    rows[0],
+                    "-> /entry12345/instrument/detector/intimage",
+                    "uint32", "['*', 30]"
+                )
+                self.checkGroupFRow(
+                    rows[1], "/entry12345")
+                self.checkGroupFRow(
+                    rows[2], "/entry12345/data")
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkFieldFRow(
+                    rows[3],
+                    "/entry12345/data/lkintimage",
+                    "uint32", "['*', 30]"
+                )
+                self.checkGroupFRow(
+                    rows[4], "/entry12345/instrument")
+                self.checkGroupFRow(
+                    rows[5], "/entry12345/instrument/detector")
+                self.checkFieldFRow(
+                    rows[6],
+                    "/entry12345/instrument/detector/intimage",
+                    "uint32", "['*', 30]"
+                )
+                self.checkGroupFRow(
+                    rows[7], "/entry12345/sample")
+                self.checkFieldFRow(
+                    rows[8],
+                    "/entry12345/sample/depends_on",
+                    "string", "[1]",
+                    value="transformations/phi"
+                )
+                self.checkFieldFRow(
+                    rows[9], "/entry12345/sample/name",
+                    "string", "[1]"
+                )
+                self.checkGroupFRow(
+                    rows[10], "/entry12345/sample/transformations")
+                self.checkFieldFRow(
+                    rows[11], "/entry12345/sample/transformations/phi",
+                    "float64", "[1]", "sphi", "deg"
+                )
+                self.checkFieldFRow(
+                    rows[12], "/entry12345/sample/transformations/z",
+                    "float32", "[1]", "sz", "mm"
+                )
+
+        finally:
+            os.remove(filename)
+
+    def test_field_geometry(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "gtestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo field -g %s %s' %
+             (filename, self.flags)).split(),
+            ('nxsfileinfo field --geometry %s %s' %
+             (filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+            sz.attributes.create("offset", "float64", [3]).write(
+                [2.3, 1.2, 0])
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+
+            image = det.create_field("intimage", "uint32", [0, 30], [1, 30])
+            image.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="data">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/mca/1" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            image.attributes.create("nexdatas_strategy", "string").write(
+                "STEP")
+
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                parser = docutils.parsers.rst.Parser()
+                components = (docutils.parsers.rst.Parser,)
+                settings = docutils.frontend.OptionParser(
+                    components=components).get_default_values()
+                document = docutils.utils.new_document(
+                    '<rst-doc>', settings=settings)
+                parser.parse(vl, document)
+                self.assertEqual(len(document), 1)
+                section = document[0]
+                self.assertEqual(len(section), 2)
+                self.assertEqual(len(section[0]), 1)
+                self.assertEqual(
+                    str(section[0]),
+                    "<title>File name: '%s'</title>" % filename)
+                self.assertEqual(len(section[1]), 1)
+                table = section[1]
+                self.assertEqual(table.tagname, 'table')
+                self.assertEqual(len(table), 1)
+                self.assertEqual(table[0].tagname, 'tgroup')
+                self.assertEqual(len(table[0]), 9)
+                for i in range(7):
+                    self.assertEqual(table[0][i].tagname, 'colspec')
+                self.assertEqual(table[0][7].tagname, 'thead')
+                self.assertEqual(
+                    str(table[0][7]),
+                    '<thead><row>'
+                    '<entry><paragraph>nexus_path</paragraph></entry>'
+                    '<entry><paragraph>source_name</paragraph></entry>'
+                    '<entry><paragraph>units</paragraph></entry>'
+                    '<entry><paragraph>trans_type</paragraph></entry>'
+                    '<entry><paragraph>trans_vector</paragraph></entry>'
+                    '<entry><paragraph>trans_offset</paragraph></entry>'
+                    '<entry><paragraph>depends_on</paragraph></entry>'
+                    '</row></thead>'
+                )
+                tbody = table[0][8]
+                self.assertEqual(tbody.tagname, 'tbody')
+                self.assertEqual(len(tbody), 3)
+
+                drows = {}
+                for irw in range(len(tbody)):
+                    rw = tbody[irw]
+                    drows[str(rw[0][0][0])] = rw
+
+                rows = [drows[nm] for nm in sorted(drows.keys())]
+                self.checkFieldGRow(
+                    rows[0],
+                    "/entry12345/sample/depends_on",
+                    dependson="[transformations/phi]"
+                )
+                self.checkFieldGRow(
+                    rows[1],
+                    "/entry12345/sample/transformations/phi",
+                    "sphi", "deg", "rotation", "[1 0 0]",
+                    dependson="z"
+                )
+                self.checkFieldGRow(
+                    rows[2],
+                    "/entry12345/sample/transformations/z",
+                    "sz", "mm", "translation", "[0 0 1]",
+                    "[ 2.3  1.2  0. ]"
+                )
+
+        finally:
+            os.remove(filename)
 
 
 if __name__ == '__main__':

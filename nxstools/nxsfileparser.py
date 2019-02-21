@@ -148,12 +148,14 @@ class NXSFileParser(object):
         if hasattr(node, "attributes"):
             attrs = node.attributes
             anames = [at.name for at in attrs]
-
             for key, vl in self.attrdesc.items():
                 if vl[0] in anames:
                     desc[key] = vl[1](filewriter.first(attrs[vl[0]][...]))
         if node.name in self.valuestostore and node.is_valid:
-            desc["value"] = node[...]
+            vl = node[...]
+            while not isinstance(vl, str) and len(vl) == 1:
+                vl = vl[0]
+            desc["value"] = vl
 
         self.description.append(desc)
         if tgpath:
