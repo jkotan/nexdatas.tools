@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
-#    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
+#    Copyright (C) 2012-2017 DESY, Jan Kotanski <jkotan@mail.desy.de>
 #
 #    nexdatas is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -15,9 +15,29 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+# \package test nexdatas
+# \file NXSFileInfoTest.py
+# unittests for field Tags running Tango Server
 #
+import unittest
 
-"""  NXS tools release version"""
+try:
+    import NXSFileInfoTest
+except Exception:
+    from . import NXSFileInfoTest
 
-#: (:obj:`str`) package version
-__version__ = "2.62.1"
+
+# test fixture
+class NXSFileInfoH5PYTest(NXSFileInfoTest.NXSFileInfoTest):
+
+    # constructor
+    # \param methodName name of the test method
+
+    def __init__(self, methodName):
+        NXSFileInfoTest.NXSFileInfoTest.__init__(self, methodName)
+        self.writer = "h5py"
+        self.flags = "--h5py"
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -395,13 +395,12 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     if self.cpexists(cp):
                         skip = True
                     if not skip:
-                        for cp in arg[1]:
-                            totest.append(cp)
+                        totest.append(cp)
 
                         cmd = list(arg)
                         cmd.append(tp)
                         # print(tp)
-                        vl, er, txt = self.runtestexcept(cmd, Exception)
+                        vl, er = self.runtest(cmd)
 
                         if er:
                             self.assertEqual(
@@ -413,8 +412,9 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")
                         self.assertEqual(lines[-1], "")
-                        # print(vl)
                         self.assertTrue("MISSING" in vl)
+                        self.assertTrue("WARNING: " in vl)
+                        self.assertTrue(" cannot be created without " in vl)
                         if self.cpexists(cp):
                             self.deletecp(cp)
         finally:
@@ -1442,18 +1442,19 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     if self.cpexists(cp):
                         skip = True
                     if not skip:
-                        for cp in arg[1]:
-                            totest.append(cp)
+                        totest.append(cp)
 
                         cmd = list(arg)
                         cmd.append(tp)
                         # print(tp)
-                        vl, er, txt = self.runtestexcept(cmd, Exception)
+                        vl, er = self.runtest(cmd)
 
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")
                         self.assertEqual(lines[-1], "")
-                        # self.assertTrue(lines[1].startswith("MISSING"))
+                        self.assertTrue("MISSING" in vl)
+                        self.assertTrue("WARNING: " in vl)
+                        self.assertTrue(" cannot be created without " in vl)
                         if self.cpexists(cp):
                             self.deletecp(cp)
         finally:

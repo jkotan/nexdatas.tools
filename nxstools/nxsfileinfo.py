@@ -281,7 +281,7 @@ class General(Runner):
         fname = filewriter.first(
             (attr["file_name"][...]
              if "file_name" in names else " ") or " ")
-        title = "File name: %s" % fname
+        title = "File name: '%s'" % fname
 
         print("")
         for en in root:
@@ -480,7 +480,7 @@ def main():
 
     if options.subparser is None:
         sys.stderr.write(
-            "Err<or: %s\n" % str("too few arguments"))
+            "Error: %s\n" % str("too few arguments"))
         sys.stderr.flush()
         parser.print_help()
         print("")
