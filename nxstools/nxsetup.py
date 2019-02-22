@@ -293,6 +293,30 @@ class SetUp(object):
         time.sleep(0.2)
         return res
 
+    def getStarterName(self, host):
+        """ restarts server
+
+        :param host: server host name
+        :type host: :obj:`str`
+        :returns: starter device name
+        :rtype: :obj:`str`
+        """
+        admin = None
+        if not host:
+            host = socket.gethostname()
+        admins = self.db.get_device_exported_for_class(
+            "Starter").value_string
+        eadmins = [adm for adm in admins
+                   if self.db.get_device_exported(adm).value_string]
+        if len(eadmins) == 1:
+            admin = eadmins[0]
+        elif len(eadmins) > 1:
+            if 'tango/admin/%s' % host in eadmins:
+                admin = 'tango/admin/%s' % host
+            else:
+                admin = eadmins[0]
+        return admin
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -306,15 +330,14 @@ class SetUp(object):
         :type restart: :obj:`bool`
         """
         if name:
-            if not host:
-                host = socket.gethostname()
-            admin = self.db.get_device_exported(
-                'tango/admin/' + host).value_string
+            admin = self.getStarterName(host)
+            if not admin:
+                raise Exception("Starter tango server is not running")
             if admin:
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    adminproxy = PyTango.DeviceProxy(admin)
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -383,15 +406,14 @@ class SetUp(object):
         :type host: :obj:`str`
         """
         if name:
-            if not host:
-                host = socket.gethostname()
-            admin = self.db.get_device_exported(
-                'tango/admin/' + host).value_string
+            admin = self.getStarterName(host)
+            if not admin:
+                raise Exception("Starter tango server is not running")
             if admin:
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    adminproxy = PyTango.DeviceProxy(admin)
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -471,9 +493,12 @@ class SetUp(object):
             sys.stderr.flush()
             return False
 
-        adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
+        admin = self.getStarterName(host)
+        if not admin:
+            raise Exception("Starter tango server is not running")
+        adminproxy = PyTango.DeviceProxy(admin)
         startdspaths = self.db.get_device_property(
-            'tango/admin/' + host,
+            admin,
             "StartDsPath")["StartDsPath"]
         if '/usr/bin' not in startdspaths:
             if startdspaths:
@@ -482,7 +507,7 @@ class SetUp(object):
                 startdspaths = []
             startdspaths.append('/usr/bin')
             self.db.put_device_property(
-                'tango/admin/' + host, {"StartDsPath": startdspaths})
+                admin, {"StartDsPath": startdspaths})
             adminproxy.Init()
 
         sinfo = self.db.get_server_info(new)
@@ -538,7 +563,7 @@ class SetUp(object):
         full_class_name = 'NXSDataWriter/' + masterHost
         self.writer_name = "%s/nxsdatawriter/%s" % (beamline, masterHost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createDataWriter: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createDataWriter: DB contains already %s" % server_name)
@@ -589,7 +614,7 @@ class SetUp(object):
         server_name = server + '/' + masterHost
         self.cserver_name = "%s/nxsconfigserver/%s" % (beamline, masterHost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createConfigServer: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createConfigServer: DB contains already %s"
@@ -677,7 +702,7 @@ class SetUp(object):
         full_class_name = 'NXSRecSelector/' + masterHost
         device_name = "%s/nxsrecselector/%s" % (beamline, masterHost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createSelector: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createSelector: DB contains already %s" % server_name)

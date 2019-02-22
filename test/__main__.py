@@ -212,6 +212,8 @@ if PYTANGO_AVAILABLE:
     import NXSCreatePoolDSFS3Test
 
     if "MYSQL" in DB_AVAILABLE:
+        import NXSetUpSetTest
+
         import NXSCreateStdCompFSTest
         import NXSCreateStdCompFS2Test
         import NXSCreateStdCompFS3Test
@@ -378,6 +380,10 @@ def main():
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateCompFS3Test))
         if "MYSQL" in DB_AVAILABLE:
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSetUpSetTest))
+
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSConfigTest))
