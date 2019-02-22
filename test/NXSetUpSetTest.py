@@ -55,7 +55,7 @@ try:
         CNFSRV = True
     else:
         CNFSRV = True
-except:
+except Exception:
     CNFSRV = False
 
 try:
@@ -64,7 +64,7 @@ try:
         DTWRITER = True
     else:
         DTWRITER = False
-except:
+except Exception:
     DTWRITER = False
 
 try:
@@ -73,7 +73,7 @@ try:
         RECSEL = True
     else:
         RECSEL = False
-except:
+except Exception:
     RECSEL = False
 
 
