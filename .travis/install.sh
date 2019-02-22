@@ -25,17 +25,30 @@ docker exec -it --user root ndts service tango-starter restart
 
 
 if [ $2 = "2" ]; then
-    echo "install python-pytango"
-    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python-pytango python-fabio python-argcomplete python-whichcraft'
+    echo "install python-pytango ..."
+    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python-pytango python-fabio python-argcomplete'
 else
-    echo "install python3-pytango"
-    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete python3-whichcraft'
+    echo "install python3-pytango ..."
+    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete'
 fi
 if [ $? -ne "0" ]
 then
     exit -1
 fi
 
+if [ $1 -ne "debian8" ]; then
+if [ $2 = "2" ]; then
+    echo "install python-whichcraft"
+    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-whichcraft'
+else
+    echo "install python3-whichcraft"
+    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-whichcraft'
+fi
+fi
+if [ $? -ne "0" ]
+then
+    exit -1
+fi
 
 echo "install sardana, taurus and nexdatas"
 docker exec -it --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  nxsconfigserver-db; sleep 10; apt-get -qq install -y python-nxsconfigserver '

@@ -29,7 +29,6 @@ import time
 import PyTango
 from nxstools import nxsetup
 import socket
-import whichcraft
 import subprocess
 
 try:
@@ -50,17 +49,23 @@ except Exception as e:
 
 
 try:
+    import whichcraft
+    WHICHCRAFT = True
+except Exception:
+    WHICHCRAFT = False
+
+try:
     __import__("nxsconfigserver")
-    if whichcraft.which("NXSConfigServer"):
+    if not WHICHCRAFT or whichcraft.which("NXSConfigServer"):
         CNFSRV = True
     else:
-        CNFSRV = True
+        CNFSRV = False
 except Exception:
     CNFSRV = False
 
 try:
     __import__("nxswriter")
-    if whichcraft.which("NXSDataWriter"):
+    if not WHICHCRAFT or whichcraft.which("NXSDataWriter"):
         DTWRITER = True
     else:
         DTWRITER = False
@@ -69,7 +74,7 @@ except Exception:
 
 try:
     __import__("nxsrecconfig")
-    if whichcraft.which("NXSRecSelector"):
+    if not WHICHCRAFT or whichcraft.which("NXSRecSelector"):
         RECSEL = True
     else:
         RECSEL = False
