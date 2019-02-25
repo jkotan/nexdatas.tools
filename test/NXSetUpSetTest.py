@@ -119,7 +119,7 @@ def myinput(w, text):
 
 
 # test fixture
-class NXSSetupSetTest(unittest.TestCase):
+class NXSetUpSetTest(unittest.TestCase):
 
     # constructor
     # \param methodName name of the test method
@@ -151,9 +151,6 @@ optional arguments:
 
 For more help:
   nxsetup <sub-command> -h
-
-  (haso228jk is known: -b p09 -m haso228jk -u jkotan -d nxsconfig )
-
 """
 
         try:
@@ -403,7 +400,7 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         vl, er = self.runtestexcept(['nxsetup'], SystemExit)
-        self.assertEqual(self.helpinfo, vl)
+        self.assertTrue(self.helpinfo in vl)
         self.assertEqual(self.helperror, er)
 
     # comp_available test
@@ -415,7 +412,7 @@ For more help:
         helps = ['-h', '--help']
         for hl in helps:
             vl, er = self.runtestexcept(['nxsetup', hl], SystemExit)
-            self.assertTrue(vl.endswith(self.helpinfo[0:-1]))
+            self.assertTrue(self.helpinfo in vl)
             self.assertEqual('', er)
 
     # comp_available test
