@@ -1,5 +1,7 @@
 language: python
-dist: xenial
+sudo: required
+dist: trusty
+group: deprecated-2017Q2
 
 env:
   - TEST="flake8"
