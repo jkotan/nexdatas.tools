@@ -59,9 +59,11 @@ fi
 
 if [ $2 = "2" ]; then
     echo "install python-nxstools"
+    docker exec -it --user root ndts chown -R tango:tango .
     docker exec -it --user root ndts python setup.py -q install
 else
     echo "install python3-nxstools"
+    docker exec -it --user root ndts chown -R tango:tango .
     docker exec -it --user root ndts python3 setup.py -q install
 fi
 if [ $? -ne "0" ]
