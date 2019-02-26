@@ -303,8 +303,8 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -436,8 +436,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -571,8 +570,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -681,8 +679,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -791,8 +788,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -901,8 +897,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -1016,16 +1011,14 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
                     vl, er = self.runtestexcept(arg[3], Exception)
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -1139,16 +1132,14 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
                     vl, er = self.runtest(arg[3])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -1290,8 +1281,7 @@ class NXSCreateTangoDSFSTest(unittest.TestCase):
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)

@@ -236,8 +236,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(arg[0])
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -323,8 +322,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(cmd)
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -491,8 +489,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(cmd)
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -659,8 +656,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(cmd)
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -827,8 +823,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
 
                     vl, er = self.runtest(cmd)
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)
@@ -1009,8 +1004,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                         ncmd.append(tp)
                         vl, er = self.runtest(ncmd)
                         if er:
-                            self.assertEqual(
-                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                            self.assertTrue(er.startswith("Info: "))
                         else:
                             self.assertEqual('', er)
                         self.assertTrue(vl)
@@ -1186,8 +1180,7 @@ class NXSCreatePoolDSFSTest(unittest.TestCase):
                         ncmd.append(nm)
                         vl, er = self.runtest(ncmd)
                         if er:
-                            self.assertEqual(
-                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                            self.assertTrue(er.startswith("Info: "))
                         else:
                             self.assertEqual('', er)
                         self.assertTrue(vl)

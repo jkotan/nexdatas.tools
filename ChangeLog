@@ -1,3 +1,7 @@
+2019-02-XX Jan Kotanski <jankotan@gmail.com>
+	* improve search for Starter server
+	* tagged as v2.62.2
+
 2019-02-22 Jan Kotanski <jankotan@gmail.com>
 	* fix missing parameter support in nxscreate stdcomp
 	* add nxsfileinfo test

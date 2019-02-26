@@ -216,8 +216,7 @@ class NXSCreatePoolDSFS2Test(
 
                     vl, er = self.runtest(cmd)
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)

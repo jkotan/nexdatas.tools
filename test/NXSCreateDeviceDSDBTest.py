@@ -262,8 +262,7 @@ class NXSCreateDeviceDSDBTest(
                     vl, er = self.runtest(arg[0])
 
                     if er:
-                        self.assertEqual(
-                            "Info: NeXus hasn't been setup yet. \n\n", er)
+                        self.assertTrue(er.startswith("Info: "))
                     else:
                         self.assertEqual('', er)
                     self.assertTrue(vl)

@@ -36,124 +36,124 @@ _hostname = socket.gethostname()
 #: (:obj:`dict` <:obj:`dict` <:obj:`str` , :obj:`str` > > )
 #:    all SardanaHosts and DataBaseHosts should be known
 knownHosts = {
-    'hasdelay': {'beamline': 'delay', 'masterHost': 'hasdelay',
+    'hasdelay': {'beamline': 'delay', 'masterhost': 'hasdelay',
                  'user': 'delayusr', 'dbname': 'nxsconfig'},
-    'hasmfmc': {'beamline': 'fmc', 'masterHost': 'hasmfmc',
+    'hasmfmc': {'beamline': 'fmc', 'masterhost': 'hasmfmc',
                 'user': 'delayusr', 'dbname': 'nxsconfig'},
-    'hasmlqj': {'beamline': 'lqj', 'masterHost': 'hasmlqj',
+    'hasmlqj': {'beamline': 'lqj', 'masterhost': 'hasmlqj',
                 'user': 'lqjuser', 'dbname': 'nxsconfig'},
-    'haso111n': {'beamline': 'p09', 'masterHost': 'haso111n',
+    'haso111n': {'beamline': 'p09', 'masterhost': 'haso111n',
                  'user': 'tnunez', 'dbname': 'nxsconfig'},
-    'haso111tb': {'beamline': 'p09', 'masterHost': 'haso111tb',
+    'haso111tb': {'beamline': 'p09', 'masterhost': 'haso111tb',
                   'user': 'tnunez', 'dbname': 'nxsconfig'},
-    'haso113b': {'beamline': 'p09', 'masterHost': 'haso113b',
+    'haso113b': {'beamline': 'p09', 'masterhost': 'haso113b',
                  'user': 'blume', 'dbname': 'nxsconfig'},
-    'haso113u': {'beamline': 'p09', 'masterHost': 'haso113u',
+    'haso113u': {'beamline': 'p09', 'masterhost': 'haso113u',
                  'user': 'kracht', 'dbname': 'nxsconfig'},
-    'hastodt': {'beamline': 'p09', 'masterHost': 'hastodt',
+    'hastodt': {'beamline': 'p09', 'masterhost': 'hastodt',
                 'user': 'kracht', 'dbname': 'nxsconfig'},
-    'haso228jk': {'beamline': 'p09', 'masterHost': 'haso228jk',
+    'haso228jk': {'beamline': 'p09', 'masterhost': 'haso228jk',
                   'user': 'jkotan', 'dbname': 'nxsconfig'},
-    'haso224w': {'beamline': 'p02', 'masterHost': 'haso224w',
+    'haso224w': {'beamline': 'p02', 'masterhost': 'haso224w',
                  'user': 'wharmby', 'dbname': 'nxsconfig'},
-    'haso213p': {'beamline': 'p22', 'masterHost': 'haso213p',
+    'haso213p': {'beamline': 'p22', 'masterhost': 'haso213p',
                  'user': 'spiec', 'dbname': 'nxsconfig'},
-    'has6117b': {'beamline': 'p02', 'masterHost': 'has6117b',
+    'has6117b': {'beamline': 'p02', 'masterhost': 'has6117b',
                  'user': 'p02user', 'dbname': 'nxsconfig'},
-    'haspecsicl4': {'beamline': 'p02', 'masterHost': 'haspecsicl4',
+    'haspecsicl4': {'beamline': 'p02', 'masterhost': 'haspecsicl4',
                     'user': 'lacluser', 'dbname': 'nxsconfig'},
-    'haspp01eh1': {'beamline': 'p01', 'masterHost': 'haspp01eh1',
+    'haspp01eh1': {'beamline': 'p01', 'masterhost': 'haspp01eh1',
                    'user': 'p01user', 'dbname': 'nxsconfig'},
-    'haspp01eh2': {'beamline': 'p01', 'masterHost': 'haspp01eh2',
+    'haspp01eh2': {'beamline': 'p01', 'masterhost': 'haspp01eh2',
                    'user': 'p01user', 'dbname': 'nxsconfig'},
-    'haspp01eh3': {'beamline': 'p01', 'masterHost': 'haspp01eh3',
+    'haspp01eh3': {'beamline': 'p01', 'masterhost': 'haspp01eh3',
                    'user': 'p01user', 'dbname': 'nxsconfig'},
-    'haspp02ch1a': {'beamline': 'p02', 'masterHost': 'haspp02ch1a',
+    'haspp02ch1a': {'beamline': 'p02', 'masterhost': 'haspp02ch1a',
                     'user': 'p02user', 'dbname': 'nxsconfig'},
-    'haspp02ch1': {'beamline': 'p02', 'masterHost': 'haspp02ch1',
+    'haspp02ch1': {'beamline': 'p02', 'masterhost': 'haspp02ch1',
                    'user': 'p02user', 'dbname': 'nxsconfig'},
-    'haspp02ch2': {'beamline': 'p02', 'masterHost': 'haspp02ch2',
+    'haspp02ch2': {'beamline': 'p02', 'masterhost': 'haspp02ch2',
                    'user': 'p02user', 'dbname': 'nxsconfig'},
-    'haspp022ch': {'beamline': 'p022', 'masterHost': 'haspp022ch',
+    'haspp022ch': {'beamline': 'p022', 'masterhost': 'haspp022ch',
                    'user': 'p022user', 'dbname': 'nxsconfig'},
-    'haspp03': {'beamline': 'p03', 'masterHost': 'haspp03',
+    'haspp03': {'beamline': 'p03', 'masterhost': 'haspp03',
                 'user': 'p03user', 'dbname': 'nxsconfig'},
-    'haspp03nano': {'beamline': 'p03nano', 'masterHost': 'haspp03nano',
+    'haspp03nano': {'beamline': 'p03nano', 'masterhost': 'haspp03nano',
                     'user': 'p03nano', 'dbname': 'nxsconfig'},
-    'haspp04exp1': {'beamline': 'p04', 'masterHost': 'haspp04exp1',
+    'haspp04exp1': {'beamline': 'p04', 'masterhost': 'haspp04exp1',
                     'user': 'p04user', 'dbname': 'nxsconfig'},
-    'haspp04exp2': {'beamline': 'p04', 'masterHost': 'haspp04exp2',
+    'haspp04exp2': {'beamline': 'p04', 'masterhost': 'haspp04exp2',
                     'user': 'p04user', 'dbname': 'nxsconfig'},
-    'haspp06ctrl': {'beamline': 'p06', 'masterHost': 'haspp06ctrl',
+    'haspp06ctrl': {'beamline': 'p06', 'masterhost': 'haspp06ctrl',
                     'user': 'p06user', 'dbname': 'nxsconfig'},
-    'haspp06nc1': {'beamline': 'p06', 'masterHost': 'haspp06nc1',
+    'haspp06nc1': {'beamline': 'p06', 'masterhost': 'haspp06nc1',
                    'user': 'p06user', 'dbname': 'nxsconfig'},
-    'haspp06mc01': {'beamline': 'p06', 'masterHost': 'haspp06mc01',
+    'haspp06mc01': {'beamline': 'p06', 'masterhost': 'haspp06mc01',
                     'user': 'p06user', 'dbname': 'nxsconfig'},
-    'hasp029rack': {'beamline': 'p06', 'masterHost': 'hasp029rack',
+    'hasp029rack': {'beamline': 'p06', 'masterhost': 'hasp029rack',
                     'user': 'p06user', 'dbname': 'nxsconfig'},
-    'haspp07eh2': {'beamline': 'p07', 'masterHost': 'haspp07eh2',
+    'haspp07eh2': {'beamline': 'p07', 'masterhost': 'haspp07eh2',
                    'user': 'p07user', 'dbname': 'nxsconfig'},
-    'haspp08': {'beamline': 'p08', 'masterHost': 'haspp08',
+    'haspp08': {'beamline': 'p08', 'masterhost': 'haspp08',
                 'user': 'p08user', 'dbname': 'nxsconfig'},
-    'haspp09': {'beamline': 'p09', 'masterHost': 'haspp09',
+    'haspp09': {'beamline': 'p09', 'masterhost': 'haspp09',
                 'user': 'p09user', 'dbname': 'nxsconfig'},
-    'haspp09mag': {'beamline': 'p09', 'masterHost': 'haspp09mag',
+    'haspp09mag': {'beamline': 'p09', 'masterhost': 'haspp09mag',
                    'user': 'p09user', 'dbname': 'nxsconfig'},
-    'haspp09dif': {'beamline': 'p09', 'masterHost': 'haspp09dif',
+    'haspp09dif': {'beamline': 'p09', 'masterhost': 'haspp09dif',
                    'user': 'p09user', 'dbname': 'nxsconfig'},
-    'haspp09haxps': {'beamline': 'p09', 'masterHost': 'haspp09maxps',
+    'haspp09haxps': {'beamline': 'p09', 'masterhost': 'haspp09maxps',
                      'user': 'p09haxps', 'dbname': 'nxsconfig'},
-    'haspp10e1': {'beamline': 'p10', 'masterHost': 'haspp10e1',
+    'haspp10e1': {'beamline': 'p10', 'masterhost': 'haspp10e1',
                   'user': 'p10user', 'dbname': 'nxsconfig'},
-    'haspp10e2': {'beamline': 'p10', 'masterHost': 'haspp10e2',
+    'haspp10e2': {'beamline': 'p10', 'masterhost': 'haspp10e2',
                   'user': 'p10user', 'dbname': 'nxsconfig'},
-    'haspp10lcx': {'beamline': 'p10', 'masterHost': 'haspp10lcx',
+    'haspp10lcx': {'beamline': 'p10', 'masterhost': 'haspp10lcx',
                    'user': 'p10user', 'dbname': 'nxsconfig'},
-    'haspp10lab': {'beamline': 'p10', 'masterHost': 'haspp10lab',
+    'haspp10lab': {'beamline': 'p10', 'masterhost': 'haspp10lab',
                    'user': 'p10user', 'dbname': 'nxsconfig'},
-    'haspp11oh': {'beamline': 'p11', 'masterHost': 'haspp11oh',
+    'haspp11oh': {'beamline': 'p11', 'masterhost': 'haspp11oh',
                   'user': 'p11user', 'dbname': 'nxsconfig'},
     'haspp11sardana': {'beamline': 'p11',
-                       'masterHost': 'haspp11sardana',
+                       'masterhost': 'haspp11sardana',
                        'user': 'p11user', 'dbname': 'nxsconfig'},
-    'haspp11user02': {'beamline': 'p11', 'masterHost': 'haspp11user02',
+    'haspp11user02': {'beamline': 'p11', 'masterhost': 'haspp11user02',
                       'user': 'p11user', 'dbname': 'nxsconfig'},
-    'haspp21eh3': {'beamline': 'p21', 'masterHost': 'hasep21eh3',
+    'haspp21eh3': {'beamline': 'p21', 'masterhost': 'hasep21eh3',
                    'user': 'p21user', 'dbname': 'nxsconfig'},
-    'haspp212oh': {'beamline': 'p21', 'masterHost': 'hasep212oh',
+    'haspp212oh': {'beamline': 'p21', 'masterhost': 'hasep212oh',
                    'user': 'p21user', 'dbname': 'nxsconfig'},
-    'haspp21lab': {'beamline': 'p21', 'masterHost': 'haspp21lab',
+    'haspp21lab': {'beamline': 'p21', 'masterhost': 'haspp21lab',
                    'user': 'p21user', 'dbname': 'nxsconfig'},
-    'hasep211eh': {'beamline': 'p211', 'masterHost': 'hasep211eh',
+    'hasep211eh': {'beamline': 'p211', 'masterhost': 'hasep211eh',
                    'user': 'p211user', 'dbname': 'nxsconfig'},
-    'hasep23dev': {'beamline': 'p23', 'masterHost': 'hasep23dev',
+    'hasep23dev': {'beamline': 'p23', 'masterhost': 'hasep23dev',
                    'user': 'p23user', 'dbname': 'nxsconfig'},
-    'hasep23eh': {'beamline': 'p23', 'masterHost': 'hasep23eh',
+    'hasep23eh': {'beamline': 'p23', 'masterhost': 'hasep23eh',
                   'user': 'p23user', 'dbname': 'nxsconfig'},
-    'hasep24': {'beamline': 'p24', 'masterHost': 'hasep24',
+    'hasep24': {'beamline': 'p24', 'masterhost': 'hasep24',
                 'user': 'p24user', 'dbname': 'nxsconfig'},
-    'hasep24eh1': {'beamline': 'p24', 'masterHost': 'hasep24eh1',
+    'hasep24eh1': {'beamline': 'p24', 'masterhost': 'hasep24eh1',
                    'user': 'p24user', 'dbname': 'nxsconfig'},
-    'haso107klx': {'beamline': 'p09', 'masterHost': 'haso107klx',
+    'haso107klx': {'beamline': 'p09', 'masterhost': 'haso107klx',
                    'user': 'kracht', 'dbname': 'nxsconfig'},
-    'haso107d1': {'beamline': 'p09', 'masterHost': 'haso107d1',
+    'haso107d1': {'beamline': 'p09', 'masterhost': 'haso107d1',
                   'user': 'kracht', 'dbname': 'nxsconfig'},
-    'hascmexp': {'beamline': 'cmexp', 'masterHost': 'hascmexp',
+    'hascmexp': {'beamline': 'cmexp', 'masterhost': 'hascmexp',
                  'user': 'cmexp', 'dbname': 'nxsconfig'},
-    'hasnp64': {'beamline': 'p64', 'masterHost': 'hasnp64',
+    'hasnp64': {'beamline': 'p64', 'masterhost': 'hasnp64',
                 'user': 'p64user', 'dbname': 'nxsconfig'},
-    'hasnp64oh': {'beamline': 'p64', 'masterHost': 'hasnp64oh',
+    'hasnp64oh': {'beamline': 'p64', 'masterhost': 'hasnp64oh',
                   'user': 'p64user', 'dbname': 'nxsconfig'},
-    'hasnp65': {'beamline': 'p65', 'masterHost': 'hasnp65',
+    'hasnp65': {'beamline': 'p65', 'masterhost': 'hasnp65',
                 'user': 'p65user', 'dbname': 'nxsconfig'},
-    'hasnp66': {'beamline': 'p66', 'masterHost': 'hasnp66',
+    'hasnp66': {'beamline': 'p66', 'masterhost': 'hasnp66',
                 'user': 'p66user', 'dbname': 'nxsconfig'},
-    'hzgpp07eh1': {'beamline': 'p07', 'masterHost': 'hzgpp07eh1',
+    'hzgpp07eh1': {'beamline': 'p07', 'masterhost': 'hzgpp07eh1',
                    'user': 'p07user', 'dbname': 'nxsconfig'},
-    'hzgpp07eh3': {'beamline': 'p07', 'masterHost': 'hzgpp07eh3',
+    'hzgpp07eh3': {'beamline': 'p07', 'masterhost': 'hzgpp07eh3',
                    'user': 'p07user', 'dbname': 'nxsconfig'},
-    'hzgpp07eh4': {'beamline': 'p07', 'masterHost': 'hzgpp07eh4',
+    'hzgpp07eh4': {'beamline': 'p07', 'masterhost': 'hzgpp07eh4',
                    'user': 'p07user', 'dbname': 'nxsconfig'},
 }
 
@@ -293,6 +293,30 @@ class SetUp(object):
         time.sleep(0.2)
         return res
 
+    def getStarterName(self, host):
+        """ restarts server
+
+        :param host: server host name
+        :type host: :obj:`str`
+        :returns: starter device name
+        :rtype: :obj:`str`
+        """
+        admin = None
+        if not host:
+            host = socket.gethostname()
+        admins = self.db.get_device_exported_for_class(
+            "Starter").value_string
+        eadmins = [adm for adm in admins
+                   if self.db.get_device_exported(adm).value_string]
+        if len(eadmins) == 1:
+            admin = eadmins[0]
+        elif len(eadmins) > 1:
+            if 'tango/admin/%s' % host in eadmins:
+                admin = 'tango/admin/%s' % host
+            else:
+                admin = eadmins[0]
+        return admin
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -306,15 +330,14 @@ class SetUp(object):
         :type restart: :obj:`bool`
         """
         if name:
-            if not host:
-                host = socket.gethostname()
-            admin = self.db.get_device_exported(
-                'tango/admin/' + host).value_string
+            admin = self.getStarterName(host)
+            if not admin:
+                raise Exception("Starter tango server is not running")
             if admin:
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    adminproxy = PyTango.DeviceProxy(admin)
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -383,15 +406,14 @@ class SetUp(object):
         :type host: :obj:`str`
         """
         if name:
-            if not host:
-                host = socket.gethostname()
-            admin = self.db.get_device_exported(
-                'tango/admin/' + host).value_string
+            admin = self.getStarterName(host)
+            if not admin:
+                raise Exception("Starter tango server is not running")
             if admin:
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin[0])
+                    adminproxy = PyTango.DeviceProxy(admin)
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -471,9 +493,12 @@ class SetUp(object):
             sys.stderr.flush()
             return False
 
-        adminproxy = PyTango.DeviceProxy('tango/admin/' + host)
+        admin = self.getStarterName(host)
+        if not admin:
+            raise Exception("Starter tango server is not running")
+        adminproxy = PyTango.DeviceProxy(admin)
         startdspaths = self.db.get_device_property(
-            'tango/admin/' + host,
+            admin,
             "StartDsPath")["StartDsPath"]
         if '/usr/bin' not in startdspaths:
             if startdspaths:
@@ -482,7 +507,7 @@ class SetUp(object):
                 startdspaths = []
             startdspaths.append('/usr/bin')
             self.db.put_device_property(
-                'tango/admin/' + host, {"StartDsPath": startdspaths})
+                admin, {"StartDsPath": startdspaths})
             adminproxy.Init()
 
         sinfo = self.db.get_server_info(new)
@@ -515,30 +540,30 @@ class SetUp(object):
             cnt += 1
         return found
 
-    def createDataWriter(self, beamline, masterHost):
+    def createDataWriter(self, beamline, masterhost):
         """ creates data writer
 
         :param beamline: beamline name
         :type beamline: :obj:`str`
-        :param masterHost: master host of data writer
-        :type masterHost: :obj:`str`
+        :param masterhost: master host of data writer
+        :type masterhost: :obj:`str`
         :returns: True if server was created
         :rtype: :obj:`bool`
         """
         if not beamline:
             print("createDataWriter: no beamline given ")
             return False
-        if not masterHost:
-            print("createDataWriter: no masterHost given ")
+        if not masterhost:
+            print("createDataWriter: no masterhost given ")
             return False
 
         class_name = 'NXSDataWriter'
         server = class_name
-        server_name = server + '/' + masterHost
-        full_class_name = 'NXSDataWriter/' + masterHost
-        self.writer_name = "%s/nxsdatawriter/%s" % (beamline, masterHost)
+        server_name = server + '/' + masterhost
+        full_class_name = 'NXSDataWriter/' + masterhost
+        self.writer_name = "%s/nxsdatawriter/%s" % (beamline, masterhost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createDataWriter: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createDataWriter: DB contains already %s" % server_name)
@@ -565,13 +590,13 @@ class SetUp(object):
 
         return True
 
-    def createConfigServer(self, beamline, masterHost, jsonsettings=None):
+    def createConfigServer(self, beamline, masterhost, jsonsettings=None):
         """ creates configuration server
 
         :param beamline: beamline name
         :type beamline: :obj:`str`
-        :param masterHost: master host of data writer
-        :type masterHost: :obj:`str`
+        :param masterhost: master host of data writer
+        :type masterhost: :obj:`str`
         :param jsonsettings: connection settings to DB in json
         :type jsonsettings: :obj:`str`
         :returns: True if server was created
@@ -580,16 +605,16 @@ class SetUp(object):
         if not beamline:
             print("createConfigServer: no beamline given ")
             return False
-        if not masterHost:
-            print("createConfigServer: no masterHost given ")
+        if not masterhost:
+            print("createConfigServer: no masterhost given ")
             return False
 
         class_name = 'NXSConfigServer'
         server = class_name
-        server_name = server + '/' + masterHost
-        self.cserver_name = "%s/nxsconfigserver/%s" % (beamline, masterHost)
+        server_name = server + '/' + masterhost
+        self.cserver_name = "%s/nxsconfigserver/%s" % (beamline, masterhost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createConfigServer: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createConfigServer: DB contains already %s"
@@ -604,7 +629,7 @@ class SetUp(object):
             self.db.add_device(di)
             self.db.put_device_property(
                 self.cserver_name, {'VersionLabel': '%s@%s' % (
-                    beamline.upper(), masterHost.upper())})
+                    beamline.upper(), masterhost.upper())})
         elif (self.cserver_name not in
               self.db.get_device_class_list(server_name).value_string):
             print("\ncreateConfigServer: %s already exists. "
@@ -646,13 +671,13 @@ class SetUp(object):
 
         return True
 
-    def createSelector(self, beamline, masterHost, writer=None, cserver=None):
+    def createSelector(self, beamline, masterhost, writer=None, cserver=None):
         """ creates selector server
 
         :param beamline: beamline name
         :type beamline: :obj:`str`
-        :param masterHost: master host of data writer
-        :type masterHost: :obj:`str`
+        :param masterhost: master host of data writer
+        :type masterhost: :obj:`str`
         :param writer: writer device name
         :type writer: :obj:`str`
         :param cserver: configuration server device name
@@ -663,8 +688,8 @@ class SetUp(object):
         if not beamline:
             print("createSelector: no beamline given ")
             return False
-        if not masterHost:
-            print("createSelector: no masterHost given ")
+        if not masterhost:
+            print("createSelector: no masterhost given ")
             return False
         if writer:
             self.writer_name = writer
@@ -673,11 +698,11 @@ class SetUp(object):
 
         class_name = 'NXSRecSelector'
         server = class_name
-        server_name = server + '/' + masterHost
-        full_class_name = 'NXSRecSelector/' + masterHost
-        device_name = "%s/nxsrecselector/%s" % (beamline, masterHost)
+        server_name = server + '/' + masterhost
+        full_class_name = 'NXSRecSelector/' + masterhost
+        device_name = "%s/nxsrecselector/%s" % (beamline, masterhost)
         if server_name not in self.db.get_server_list(server_name):
-            print("createSelector: creating %s" % server_name)
+            print("creating: %s" % server_name)
 
             if server_name in self.db.get_server_list(server_name):
                 print("createSelector: DB contains already %s" % server_name)
@@ -733,8 +758,8 @@ class Set(Runner):
             dest="beamline", help="name of the beamline"
             " ( default: 'nxs' )")
         parser.add_argument(
-            "-m", "--masterHost", action="store",
-            dest="masterHost", help="the host that stores the Mg"
+            "-m", "--masterhost", action="store",
+            dest="masterhost", help="the host that stores the Mg"
             " ( default: <localhost> )")
         parser.add_argument(
             "-u", "--user", action="store",
@@ -749,7 +774,7 @@ class Set(Runner):
             dest="csjson",
             help="JSONSettings for the configuration server. "
             "( default: '{\"host\": \"localhost\",\"db\": <DBNAME>,"
-            " \"use_unicode\": true',"
+            " \"use_unicode\": true,"
             " \"read_default_file\": <MY_CNF_FILE>}'"
             "  where <MY_CNF_FILE> stays for"
             " \"/home/<USER>/.my.cnf\""
@@ -778,11 +803,11 @@ class Set(Runner):
             else:
                 options.beamline = 'nxs'
 
-        if options.masterHost is None:
+        if options.masterhost is None:
             if _hostname in knownHosts.keys():
-                options.masterHost = knownHosts[_hostname]['masterHost']
+                options.masterhost = knownHosts[_hostname]['masterhost']
             else:
-                options.masterHost = _hostname
+                options.masterhost = _hostname
 
         if options.user is None:
             if local_user:
@@ -798,7 +823,7 @@ class Set(Runner):
 
         print("\noptions are set to:  -b %s -m %s -u %s -d %s \n" % (
             options.beamline,
-            options.masterHost,
+            options.masterhost,
             options.user,
             options.dbname,
         ))
@@ -808,7 +833,7 @@ class Set(Runner):
         if not args or "NXSDataWriter" in args:
             if not setUp.createDataWriter(
                     beamline=options.beamline,
-                    masterHost=options.masterHost):
+                    masterhost=options.masterhost):
                 print("startup failed to create the nexus data writer")
                 sys.exit(255)
 
@@ -822,7 +847,7 @@ class Set(Runner):
         if not args or "NXSConfigServer" in args:
             if not setUp.createConfigServer(
                     beamline=options.beamline,
-                    masterHost=options.masterHost,
+                    masterhost=options.masterhost,
                     jsonsettings=jsonsettings):
                 print("startup failed to create the nexus config server")
                 sys.exit(255)
@@ -830,7 +855,7 @@ class Set(Runner):
         if not args or "NXSRecSelector" in args:
             if not setUp.createSelector(
                     beamline=options.beamline,
-                    masterHost=options.masterHost):
+                    masterhost=options.masterhost):
                 print("startup failed to create the nexus selector server")
                 sys.exit(255)
 
@@ -1147,7 +1172,7 @@ def main():
         epilog += "\n\n  (%s is known: -b %s -m %s -u %s -d %s )" % (
             _hostname,
             knownHosts[_hostname]['beamline'],
-            knownHosts[_hostname]['masterHost'],
+            knownHosts[_hostname]['masterhost'],
             local_user,
             knownHosts[_hostname]['dbname']
         )
