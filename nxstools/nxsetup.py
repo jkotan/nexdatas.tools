@@ -338,6 +338,7 @@ class SetUp(object):
                 started = None
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy.UpdateServersInfo()
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -382,6 +383,7 @@ class SetUp(object):
                                     try:
                                         sys.stdout.write('.')
                                         sys.stdout.flush()
+                                        adminproxy.UpdateServersInfo()
                                         rsvs = adminproxy.RunningServers
                                         if svl in rsvs:
                                             problems = False
@@ -414,6 +416,7 @@ class SetUp(object):
                 started = None
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy.UpdateServersInfo()
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
@@ -439,6 +442,7 @@ class SetUp(object):
                                     try:
                                         sys.stdout.write('.')
                                         sys.stdout.flush()
+                                        adminproxy.UpdateServersInfo()
                                         rsvs = adminproxy.RunningServers
                                         if svl not in rsvs:
                                             problems = False
@@ -516,6 +520,7 @@ class SetUp(object):
         sinfo.mode = ctrl
         sinfo.level = level
         self.db.put_server_info(sinfo)
+        adminproxy.UpdateServersInfo()
         running = adminproxy.DevGetRunningServers(True)
         if new not in running:
             adminproxy.DevStart(new)
@@ -530,12 +535,16 @@ class SetUp(object):
             try:
                 sys.stdout.write(".")
                 sys.stdout.flush()
-                dp = PyTango.DeviceProxy(device)
-                time.sleep(0.01)
-                dp.ping()
+                exl = self.db.get_device_exported(device)
+                if device not in exl.value_string:
+                    time.sleep(0.01)
+                    cnt += 1
+                    continue
                 found = True
                 print(" %s is working" % device)
-            except Exception:
+            except Exception as e:
+                print(str(e))
+                time.sleep(0.01)
                 found = False
             cnt += 1
         return found
