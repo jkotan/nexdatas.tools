@@ -1444,7 +1444,7 @@ For more help:
                             try:
                                 self.stopServer(dwsvname)
                                 self.unregisterServer(dwsvname, dwdvname)
-                            except:
+                            except Exception:
                                 pass
                             raise
 
@@ -1605,7 +1605,7 @@ For more help:
                                 self.unregisterServer(dwsvname, dwdvname)
                                 self.stopServer(cfsvname)
                                 self.unregisterServer(cfsvname, cfdvname)
-                            except:
+                            except Exception:
                                 pass
                             raise
 
