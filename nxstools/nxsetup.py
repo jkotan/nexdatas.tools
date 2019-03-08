@@ -791,7 +791,7 @@ class Set(Runner):
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
-            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+            help='server names, e.g.: NXSRecSelector NXSConfigServer')
 
     def run(self, options):
         """ the main program function
