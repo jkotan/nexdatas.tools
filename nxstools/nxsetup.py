@@ -472,9 +472,14 @@ class SetUp(object):
                                     self._changeLevel(
                                         svl, level, tohigher=False)
                                 if started and svl in started:
-                                    adminproxy.DevStop(svl)
-                                    self.waitServerNotRunning(
+                                    try:
+                                        adminproxy.DevStop(svl)
+                                    except Exception:
+                                        adminproxy.HardKillServer(svl)
+                                    problems = self.waitServerNotRunning(
                                         svl, None, adminproxy)
+                                    if problems:
+                                        print("Server Running")
                                     sys.stdout.write("Restarting: %s" % svl)
                                 else:
                                     sys.stdout.write("Starting: %s" % svl)
@@ -490,6 +495,8 @@ class SetUp(object):
                                     except Exception:
                                         counter += 1
                                         time.sleep(0.2)
+                                # problems = not self.waitServerRunning(
+                                #    svl, None, adminproxy)
                                 counter = 0
                                 problems = True
                                 while problems and counter < 100:
@@ -849,11 +856,12 @@ class SetUp(object):
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
+            dp.ping()
+            self.waitServerRunning(None, device_name)
             if self.cserver_name:
                 dp.configDevice = self.cserver_name
             if self.writer_name:
                 dp.writerDevice = self.writer_name
-
         return True
 
 

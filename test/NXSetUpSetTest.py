@@ -245,6 +245,15 @@ For more help:
         return pid
 
     def stopServer(self, svname):
+        # HardKillServer does not work
+        try:
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            adp = PyTango.DeviceProxy(admin)
+            adp.UpdateServersInfo()
+            adp.HardKillServer(svname)
+        except Exception:
+            pass
+
         svname, instance = svname.split("/")
         if sys.version_info > (3,):
             with subprocess.Popen(
@@ -276,11 +285,6 @@ For more help:
                         shell=True)
             pipe.close()
 
-        # HardKillServer does not work
-        # admin = nxsetup.SetUp().getStarterName(self.host)
-        # adp = PyTango.DeviceProxy(admin)
-        # adp.UpdateServersInfo()
-        # adp.HardKillServer(svname)
 
     def unregisterServer(self, svname, dvname=None):
         if dvname is not None:
@@ -322,8 +326,8 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        # print(vl)
-        # print(er)
+        print(vl)
+        print(er)
         if etxt:
             print(etxt)
         self.assertTrue(etxt is None)
@@ -3148,6 +3152,8 @@ For more help:
                     nsvname = "%s/%s" % ("TestServer", cnf["instance"])
                     slservers.append(nsvname)
                     vl, er = self.runtest(["nxsetup", "start", nsvname])
+                    print(vl)
+                    print(er)
                     self.assertEqual('', er)
                     self.assertTrue(vl)
                     for tcnf in cnfs:
@@ -3193,6 +3199,13 @@ For more help:
                         self.assertTrue(dvname in devices)
                         self.checkDevice(dvname)
             finally:
+                try:
+                    for cnf in cnfs:
+                        nsvname = "%s/%s" % ("TestServer", cnf["instance"])
+                        vl, er = self.runtest(["nxsetup", "stop", nsvname])
+                except Exception:
+                    pass
+
                 self.db.put_device_property(
                     admin, {"StartDsPath": startdspaths})
                 adminproxy.Init()
