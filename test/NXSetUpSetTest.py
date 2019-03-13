@@ -247,8 +247,9 @@ For more help:
         # adp.UpdateServersInfo()
         # adp.HardKillServer(svname)
 
-    def unregisterServer(self, svname, dvname):
-        self.db.delete_device(dvname)
+    def unregisterServer(self, svname, dvname=None):
+        if dvname is not None:
+            self.db.delete_device(dvname)
         self.db.delete_server(svname)
 
     # test starter
@@ -275,13 +276,22 @@ For more help:
 
         old_argv = sys.argv
         sys.argv = argv
-        nxsetup.main()
+        etxt = None
+        try:
+            nxsetup.main()
+        except Exception as e:
+            etxt = str(e)
         sys.argv = old_argv
 
         sys.stdout = old_stdout
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
+        # print(vl)
+        # print(er)
+        if etxt:
+            print(etxt)
+        self.assertTrue(etxt is None)
         return vl, er
 
     def runtestexcept(self, argv, exception):
@@ -396,6 +406,9 @@ For more help:
         admin = nxsetup.SetUp().getStarterName(self.host)
         if not admin:
             skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
 
         commands = ['nxsetup set'.split()]
         for cmd in commands:
@@ -424,20 +437,41 @@ For more help:
                     self.checkDevice(cfdvname)
                     self.checkDevice(dwdvname)
                     self.checkDevice(rsdvname)
-                    self.stopServer(cfsvname)
-                    self.unregisterServer(cfsvname, cfdvname)
-                    self.stopServer(dwsvname)
-                    self.unregisterServer(dwsvname, dwdvname)
-                    self.stopServer(rssvname)
-                    self.unregisterServer(rssvname, rsdvname)
-                except Exception:
-                    self.stopServer(rssvname)
-                    self.unregisterServer(rssvname, rsdvname)
-                    self.stopServer(dwsvname)
-                    self.unregisterServer(dwsvname, dwdvname)
-                    self.stopServer(cfsvname)
-                    self.unregisterServer(cfsvname, cfdvname)
-                    raise
+                finally:
+                    try:
+                        self.stopServer(rssvname)
+                    except Exception:
+                        pass
+                    finally:
+                        try:
+                            self.unregisterServer(rssvname, rsdvname)
+                        except Exception:
+                            pass
+                    try:
+                        self.stopServer(cfsvname)
+                    except Exception:
+                        pass
+                    finally:
+                        try:
+                            self.unregisterServer(cfsvname, cfdvname)
+                        except Exception:
+                            pass
+                    try:
+                        self.stopServer(dwsvname)
+                    except Exception:
+                        pass
+                    finally:
+                        try:
+                            self.unregisterServer(dwsvname, dwdvname)
+                        except Exception:
+                            pass
+                    setup = nxsetup.SetUp()
+                    setup.waitServerNotRunning(
+                        cfsvname, cfdvname,  adminproxy, verbose=False)
+                    setup.waitServerNotRunning(
+                        dwsvname, dwdvname, adminproxy, verbose=False)
+                    setup.waitServerNotRunning(
+                        rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -504,6 +538,9 @@ For more help:
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
 
             commands = [
                 ('nxsetup set -b %s -m %s ' %
@@ -542,20 +579,41 @@ For more help:
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                    except Exception:
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        raise
+                    finally:
+                        try:
+                            self.stopServer(rssvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(rssvname, rsdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(cfsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(cfsvname, cfdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(dwsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(dwsvname, dwdvname)
+                            except Exception:
+                                pass
+                        setup = nxsetup.SetUp()
+                        setup.waitServerNotRunning(
+                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            dwsvname, dwdvname, adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -622,6 +680,9 @@ For more help:
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
 
             commands = [
                 ('nxsetup set '
@@ -643,6 +704,8 @@ For more help:
                 if not skiptest:
                     try:
                         vl, er = self.runtest(cmd)
+                        # print(vl)
+                        # print(el)
                         self.assertEqual('', er)
                         self.assertTrue(vl)
                         cfservers = self.db.get_server_list(
@@ -662,31 +725,47 @@ For more help:
                         rsdevices = self.db.get_device_exported_for_class(
                             "NXSRecSelector").value_string
                         self.assertTrue(cfdvname in cfdevices)
-                        if dwdvname not in dwdevices:
-                            print("%s %s" % (dwdvname, dwdevices))
-                            dwdevices = self.db.get_device_exported_for_class(
-                                "NXSDataWriter").value_string
-                            print("%s %s" % (dwdvname, dwdevices))
                         self.assertTrue(dwdvname in dwdevices)
                         self.assertTrue(rsdvname in rsdevices)
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
 
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                    except Exception:
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        raise
+                    finally:
+                        try:
+                            self.stopServer(rssvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(rssvname, rsdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(cfsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(cfsvname, cfdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(dwsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(dwsvname, dwdvname)
+                            except Exception:
+                                pass
+                        setup = nxsetup.SetUp()
+                        setup.waitServerNotRunning(
+                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            dwsvname, dwdvname, adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -753,6 +832,9 @@ For more help:
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
             commands = [
                 ('nxsetup set NXSConfigServer '
                  ' -b %s '
@@ -795,12 +877,19 @@ For more help:
                         self.assertTrue(dwdvname not in dwdevices)
                         self.assertTrue(rsdvname not in rsdevices)
                         self.checkDevice(cfdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                    except Exception:
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        raise
+                    finally:
+                        try:
+                            self.stopServer(cfsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(cfsvname, cfdvname)
+                            except Exception:
+                                pass
+                        setup = nxsetup.SetUp()
+                        setup.waitServerNotRunning(
+                            cfsvname, cfdvname,  adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -867,6 +956,9 @@ For more help:
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
             if not os.path.isfile("/home/%s/.my.cnf" % cnf['user']):
                 skiptest = True
             csjson = '{"host":"localhost","db":"%s",' \
@@ -916,20 +1008,41 @@ For more help:
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                    except Exception:
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        raise
+                    finally:
+                        try:
+                            self.stopServer(rssvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(rssvname, rsdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(cfsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(cfsvname, cfdvname)
+                            except Exception:
+                                pass
+                        try:
+                            self.stopServer(dwsvname)
+                        except Exception:
+                            pass
+                        finally:
+                            try:
+                                self.unregisterServer(dwsvname, dwdvname)
+                            except Exception:
+                                pass
+                        setup = nxsetup.SetUp()
+                        setup.waitServerNotRunning(
+                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            dwsvname, dwdvname, adminproxy, verbose=False)
+                        setup.waitServerNotRunning(
+                            rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -998,6 +1111,9 @@ For more help:
                 admin = nxsetup.SetUp().getStarterName(self.host)
                 if not admin:
                     skiptest = True
+                    adminproxy = None
+                else:
+                    adminproxy = PyTango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set '
@@ -1049,21 +1165,41 @@ For more help:
                             self.checkDevice(cfdvname)
                             self.checkDevice(dwdvname)
                             self.checkDevice(rsdvname)
-
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            self.stopServer(rssvname)
-                            self.unregisterServer(rssvname, rsdvname)
-                        except Exception:
-                            self.stopServer(rssvname)
-                            self.unregisterServer(rssvname, rsdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            raise
+                        finally:
+                            try:
+                                self.stopServer(rssvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(rssvname, rsdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(cfsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(cfsvname, cfdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(dwsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(dwsvname, dwdvname)
+                                except Exception:
+                                    pass
+                            setup = nxsetup.SetUp()
+                            setup.waitServerNotRunning(
+                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                dwsvname, dwdvname, adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -1131,6 +1267,9 @@ For more help:
                 admin = nxsetup.SetUp().getStarterName(self.host)
                 if not admin:
                     skiptest = True
+                    adminproxy = None
+                else:
+                    adminproxy = PyTango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set '
@@ -1180,21 +1319,41 @@ For more help:
                             self.checkDevice(cfdvname)
                             self.checkDevice(dwdvname)
                             self.checkDevice(rsdvname)
-
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            self.stopServer(rssvname)
-                            self.unregisterServer(rssvname, rsdvname)
-                        except Exception:
-                            self.stopServer(rssvname)
-                            self.unregisterServer(rssvname, rsdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            raise
+                        finally:
+                            try:
+                                self.stopServer(rssvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(rssvname, rsdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(cfsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(cfsvname, cfdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(dwsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(dwsvname, dwdvname)
+                                except Exception:
+                                    pass
+                            setup = nxsetup.SetUp()
+                            setup.waitServerNotRunning(
+                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                dwsvname, dwdvname, adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -1262,6 +1421,9 @@ For more help:
                 admin = nxsetup.SetUp().getStarterName(self.host)
                 if not admin:
                     skiptest = True
+                    adminproxy = None
+                else:
+                    adminproxy = PyTango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set NXSDataWriter NXSConfigServer '
@@ -1310,21 +1472,30 @@ For more help:
                             self.checkDevice(dwdvname)
                             # self.checkDevice(rsdvname)
 
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            # self.stopServer(rssvname)
-                            # self.unregisterServer(rssvname, rsdvname)
-                        except Exception as e:
-                            print(str(e))
-                            # self.stopServer(rssvname)
-                            # self.unregisterServer(rssvname, rsdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            raise
+                        finally:
+                            try:
+                                self.stopServer(cfsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(cfsvname, cfdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(dwsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(dwsvname, dwdvname)
+                                except Exception:
+                                    pass
+                            setup = nxsetup.SetUp()
+                            setup.waitServerNotRunning(
+                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                dwsvname, dwdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -1392,6 +1563,9 @@ For more help:
                 admin = nxsetup.SetUp().getStarterName(self.host)
                 if not admin:
                     skiptest = True
+                    adminproxy = None
+                else:
+                    adminproxy = PyTango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set NXSDataWriter '
@@ -1437,16 +1611,19 @@ For more help:
                             self.assertTrue(dwdvname in dwdevices)
                             self.assertTrue(rsdvname not in rsdevices)
                             self.checkDevice(dwdvname)
-
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                        except Exception:
+                        finally:
                             try:
                                 self.stopServer(dwsvname)
-                                self.unregisterServer(dwsvname, dwdvname)
                             except Exception:
                                 pass
-                            raise
+                            finally:
+                                try:
+                                    self.unregisterServer(dwsvname, dwdvname)
+                                except Exception:
+                                    pass
+                            setup = nxsetup.SetUp()
+                            setup.waitServerNotRunning(
+                                dwsvname, dwdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -1513,6 +1690,9 @@ For more help:
                 admin = nxsetup.SetUp().getStarterName(self.host)
                 if not admin:
                     skiptest = True
+                    adminproxy = None
+                else:
+                    adminproxy = PyTango.DeviceProxy(admin)
 
                 dwcfsvs = ['NXSDataWriter', 'NXSConfigServer']
                 rssvs = ['NXSRecSelector']
@@ -1590,24 +1770,41 @@ For more help:
                             self.checkDevice(dwdvname)
                             self.checkDevice(rsdvname)
 
-                            self.stopServer(rssvname)
-                            self.unregisterServer(rssvname, rsdvname)
-                            self.stopServer(cfsvname)
-                            self.unregisterServer(cfsvname, cfdvname)
-                            self.stopServer(dwsvname)
-                            self.unregisterServer(dwsvname, dwdvname)
-                        except Exception as e:
-                            print(str(e))
+                        finally:
                             try:
                                 self.stopServer(rssvname)
-                                self.unregisterServer(rssvname, rsdvname)
-                                self.stopServer(dwsvname)
-                                self.unregisterServer(dwsvname, dwdvname)
-                                self.stopServer(cfsvname)
-                                self.unregisterServer(cfsvname, cfdvname)
                             except Exception:
                                 pass
-                            raise
+                            finally:
+                                try:
+                                    self.unregisterServer(rssvname, rsdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(cfsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(cfsvname, cfdvname)
+                                except Exception:
+                                    pass
+                            try:
+                                self.stopServer(dwsvname)
+                            except Exception:
+                                pass
+                            finally:
+                                try:
+                                    self.unregisterServer(dwsvname, dwdvname)
+                                except Exception:
+                                    pass
+                            setup = nxsetup.SetUp()
+                            setup.waitServerNotRunning(
+                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                dwsvname, dwdvname, adminproxy, verbose=False)
+                            setup.waitServerNotRunning(
+                                rssvname, rsdvname, adminproxy, verbose=False)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -1630,14 +1827,18 @@ For more help:
         cnfs[1]['beamline'] = 'testnxs2'
         cnfs[1]['masterhost'] = 'hasoo12'
         cnfs[2]['beamline'] = 'test2nxs'
-        cnfs[2]['masterhost'] = 'hasoo12'
+        cnfs[2]['masterhost'] = 'hasooo12'
         cnfs[3]['beamline'] = 'testnxs3'
         cnfs[3]['masterhost'] = 'hasoo000'
 
         for cnf in cnfs:
+            # print(cnf)
             cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
             dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
             rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+            # acfsvname = "NXSConfigServer"
+            # adwsvname = "NXSDataWriter"
+            # arssvname = "NXSRecSelector"
             cfdvname = "%s/nxsconfigserver/%s" % \
                 (cnf['beamline'], cnf["masterhost"])
             dwdvname = "%s/nxsdatawriter/%s" % \
@@ -1648,6 +1849,9 @@ For more help:
             cfservers = self.db.get_server_list(cfsvname).value_string
             dwservers = self.db.get_server_list(dwsvname).value_string
             rsservers = self.db.get_server_list(rssvname).value_string
+            # acfservers = self.db.get_server_list(acfsvname).value_string
+            # adwservers = self.db.get_server_list(adwsvname).value_string
+            # arsservers = self.db.get_server_list(arssvname).value_string
 
             dwdevices = self.db.get_device_exported_for_class(
                 "NXSDataWriter").value_string
@@ -1668,36 +1872,171 @@ For more help:
                 skiptest = True
             if rsdvname in rsdevices:
                 skiptest = True
+            acfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            adwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            arsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            if acfdevices:
+                skiptest = True
+            if adwdevices:
+                skiptest = True
+            if arsdevices:
+                skiptest = True
 
             skiptest = skiptest or not CNFSRV or not DTWRITER or not RECSEL
-
+            # print(skiptest)
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
 
-            commands = [
-                ('nxsetup set '
-                 ' -b %s '
-                 ' -m %s '
-                 ' -u %s '
-                 ' -d %s '
-                 % (cnf['beamline'], cnf['masterhost'],
-                    cnf['user'], cnf['dbname'])).split(),
-                ('nxsetup set '
-                 ' --beamline %s '
-                 ' --masterhost %s '
-                 ' --user %s '
-                 ' --database %s '
-                 % (cnf['beamline'], cnf['masterhost'],
-                    cnf['user'], cnf['dbname'])).split(),
-            ]
-            
-            for cmd in commands:
-                if not skiptest:
-                    try:
-                        vl, er = self.runtest(cmd)
-                        self.assertEqual('', er)
-                        self.assertTrue(vl)
+        skiptests = skiptest
+
+        if not skiptest:
+            rservers = []
+            try:
+                for cnf in cnfs:
+                    commands = [
+                        ('nxsetup set '
+                         ' -b %s '
+                         ' -m %s '
+                         ' -u %s '
+                         ' -d %s '
+                         % (cnf['beamline'], cnf['masterhost'],
+                            cnf['user'], cnf['dbname'])).split(),
+                        # ('nxsetup set '
+                        #  ' --beamline %s '
+                        #  ' --masterhost %s '
+                        #  ' --user %s '
+                        #  ' --database %s '
+                        #  % (cnf['beamline'], cnf['masterhost'],
+                        #     cnf['user'], cnf['dbname'])).split(),
+                    ]
+                    cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                    dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                    rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                    # acfsvname = "NXSConfigServer"
+                    # adwsvname = "NXSDataWriter"
+                    # arssvname = "NXSRecSelector"
+                    cfdvname = "%s/nxsconfigserver/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    dwdvname = "%s/nxsdatawriter/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    rsdvname = "%s/nxsrecselector/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+
+                    for cmd in commands:
+                        try:
+
+                            rservers.append((cfsvname, cfdvname))
+                            rservers.append((dwsvname, dwdvname))
+                            rservers.append((rssvname, rsdvname))
+                            vl, er = self.runtest(cmd)
+                            # print("VS")
+                            # print(vl)
+                            # print("VE")
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            cfservers = self.db.get_server_list(
+                                cfsvname).value_string
+                            dwservers = self.db.get_server_list(
+                                dwsvname).value_string
+                            rsservers = self.db.get_server_list(
+                                rssvname).value_string
+                            self.assertTrue(cfsvname in cfservers)
+                            self.assertTrue(dwsvname in dwservers)
+                            self.assertTrue(rssvname in rsservers)
+
+                            cfdevices = self.db.get_device_exported_for_class(
+                                "NXSConfigServer").value_string
+                            dwdevices = self.db.get_device_exported_for_class(
+                                "NXSDataWriter").value_string
+                            rsdevices = self.db.get_device_exported_for_class(
+                                "NXSRecSelector").value_string
+                            self.assertTrue(cfdvname in cfdevices)
+                            self.assertTrue(dwdvname in dwdevices)
+                            self.assertTrue(rsdvname in rsdevices)
+                            self.checkDevice(cfdvname)
+                            self.checkDevice(dwdvname)
+                            self.checkDevice(rsdvname)
+                        except Exception as e:
+                            print(str(e))
+                            skiptests = True
+                # time.sleep(5)
+                if not skiptests:
+                    print("TEST STOP")
+                    vl, er = self.runtest(["nxsetup", "stop"])
+                    self.assertEqual('', er)
+                    # print("VS")
+                    # print(vl)
+                    # print("VE")
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        # print(cnf)
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        # acfsvname = "NXSConfigServer"
+                        # adwsvname = "NXSDataWriter"
+                        # arssvname = "NXSRecSelector"
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
+                        cfservers = self.db.get_server_list(
+                            cfsvname).value_string
+                        dwservers = self.db.get_server_list(
+                            dwsvname).value_string
+                        rsservers = self.db.get_server_list(
+                            rssvname).value_string
+                        self.assertTrue(cfsvname in cfservers)
+                        self.assertTrue(dwsvname in dwservers)
+                        self.assertTrue(rssvname in rsservers)
+
+                        cfdevices = self.db.get_device_exported_for_class(
+                            "NXSConfigServer").value_string
+                        dwdevices = self.db.get_device_exported_for_class(
+                            "NXSDataWriter").value_string
+                        rsdevices = self.db.get_device_exported_for_class(
+                            "NXSRecSelector").value_string
+                        # print(cfdevices)
+                        # print(dwdevices)
+                        # print(rsdevices)
+                        self.assertTrue(cfdvname not in cfdevices)
+                        self.assertTrue(dwdvname not in dwdevices)
+                        self.assertTrue(rsdvname not in rsdevices)
+                        # self.checkDevice(cfdvname)
+                        # self.checkDevice(dwdvname)
+                        # self.checkDevice(rsdvname)
+                    print("TEST START")
+                    vl, er = self.runtest(["nxsetup", "start"])
+                    self.assertEqual('', er)
+                    # print("VS")
+                    # print(vl)
+                    # print("VE")
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        # print(cnf)
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        # acfsvname = "NXSConfigServer"
+                        # adwsvname = "NXSDataWriter"
+                        # arssvname = "NXSRecSelector"
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
                         cfservers = self.db.get_server_list(
                             cfsvname).value_string
                         dwservers = self.db.get_server_list(
@@ -1715,31 +2054,32 @@ For more help:
                         rsdevices = self.db.get_device_exported_for_class(
                             "NXSRecSelector").value_string
                         self.assertTrue(cfdvname in cfdevices)
-                        if dwdvname not in dwdevices:
-                            print("%s %s" % (dwdvname, dwdevices))
-                            dwdevices = self.db.get_device_exported_for_class(
-                                "NXSDataWriter").value_string
-                            print("%s %s" % (dwdvname, dwdevices))
                         self.assertTrue(dwdvname in dwdevices)
                         self.assertTrue(rsdvname in rsdevices)
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                    except Exception:
-                        self.stopServer(rssvname)
-                        self.unregisterServer(rssvname, rsdvname)
-                        self.stopServer(dwsvname)
-                        self.unregisterServer(dwsvname, dwdvname)
-                        self.stopServer(cfsvname)
-                        self.unregisterServer(cfsvname, cfdvname)
-                        raise
+                    vl, er = self.runtest(["nxsetup", "stop"])
+                    # print("VS")
+                    # print(vl)
+                    # print("VE")
+            finally:
+                print(rservers)
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
 
 
 if __name__ == '__main__':

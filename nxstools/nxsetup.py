@@ -317,6 +317,117 @@ class SetUp(object):
                 admin = eadmins[0]
         return admin
 
+    def waitServerNotRunning(self, server=None, device=None,
+                             adminproxy=None,
+                             maxcnt=1000, verbose=True):
+        """  wait until device is exported and server is running
+
+        :param server: server name, check if running when not None
+        :type server: :obj:`str`
+        :param device: device name, check if exported when not None
+        :type device: :obj:`str`
+        :param adminproxy: Starter device proxy
+        :type adminproxy: :obj:`tango.DeviceProxy`
+        :param maxcnt: maximal waiting time in 10ms
+        :type maxcnt: :obj:`int`
+        :param verbose: verbose mode
+        :type verbose: :obj:`bool`
+        :returns: True if server is running
+        :rtype: :obj:`bool`
+        """
+        found = True
+        cnt = 0
+        running = True
+        while found and cnt < maxcnt:
+            try:
+                if server and adminproxy is not None and running:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    adminproxy.UpdateServersInfo()
+                    running = adminproxy.RunningServers
+                    # running = adminproxy.DevGetRunningServers(True)
+                    if server in running:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                    else:
+                        running = False
+                if device:
+                    if verbose:
+                        sys.stdout.write(":")
+                        sys.stdout.flush()
+                    exl = self.db.get_device_exported(device)
+                    if device in exl.value_string:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                found = False
+                if verbose:
+                    print(" %s is not working" % device)
+            except Exception as e:
+                print(str(e))
+                time.sleep(0.01)
+                found = True
+            cnt += 1
+        return found
+
+    def waitServerRunning(self, server=None, device=None,
+                          adminproxy=None,
+                          maxcnt=1000, verbose=True):
+        """  wait until device is exported and server is running
+
+        :param server: server name, check if running when not None
+        :type server: :obj:`str`
+        :param device: device name, check if exported when not None
+        :type device: :obj:`str`
+        :param adminproxy: Starter device proxy
+        :type adminproxy: :obj:`tango.DeviceProxy`
+        :param maxcnt: maximal waiting time in 10ms
+        :type maxcnt: :obj:`int`
+        :param verbose: verbose mode
+        :type verbose: :obj:`bool`
+        :returns: True if server is running
+        :rtype: :obj:`bool`
+        """
+        found = False
+        cnt = 0
+        exported = False
+        while not found and cnt < maxcnt:
+            try:
+                if device and not exported:
+                    if verbose:
+                        sys.stdout.write(":")
+                        sys.stdout.flush()
+                    exl = self.db.get_device_exported(device)
+                    if device not in exl.value_string:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                    else:
+                        exported = True
+                if server is not None and adminproxy is not None:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    adminproxy.UpdateServersInfo()
+                    # running = adminproxy.RunningServers
+                    running = adminproxy.DevGetRunningServers(True)
+                    # print(running)
+                    if server not in running:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                found = True
+                if verbose:
+                    print(" %s is working" % device)
+            except Exception as e:
+                print(str(e))
+                time.sleep(0.01)
+                found = False
+            cnt += 1
+        return found
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -351,6 +462,7 @@ class SetUp(object):
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
                             self._changeLevel(svl, 4)
+
                         if (started and svl in started) or not restart:
                             if '/' in name:
                                 cname = svl
@@ -399,6 +511,17 @@ class SetUp(object):
                                     print("Warning: Process with the server"
                                           "instance could be suspended")
 
+    def __exported_servers(self):
+        """ returns Servers for exported devices
+
+        :rtype: :obj:`list` <:obj:`str`>
+        :returns: server list
+        """
+        dvexported = self.db.get_device_exported("*").value_string
+        return [sv for sv in self.db.get_server_list()
+                if (set(self.db.get_device_class_list(sv).value_string[:2])
+                    & set(dvexported))]
+
     def stopServer(self, name, host=None):
         """ restarts server
 
@@ -420,6 +543,7 @@ class SetUp(object):
                     servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.command_inout(
                         "DevGetRunningServers", True)
+                    # started = self.__exported_servers()
                 except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
@@ -433,7 +557,11 @@ class SetUp(object):
                                 cname = svl.split('/')[0]
                             if cname == name:
                                 if started and svl in started:
-                                    adminproxy.DevStop(svl)
+                                    try:
+                                        adminproxy.DevStop(svl)
+                                    except Exception:
+                                        adminproxy.HardKillServer(svl)
+
                                     sys.stdout.write("Stopping: %s" % svl)
                                     sys.stdout.flush()
                                 problems = True
@@ -521,33 +649,20 @@ class SetUp(object):
         sinfo.level = level
         self.db.put_server_info(sinfo)
         adminproxy.UpdateServersInfo()
-        running = adminproxy.DevGetRunningServers(True)
+        # running = adminproxy.DevGetRunningServers(True)
+        running = adminproxy.RunningServers
+        print(running)
         if new not in running:
+            print("START %s" % new)
             adminproxy.DevStart(new)
+        else:
+            print("NOT START %s" % new)
+
         adminproxy.UpdateServersInfo()
 
         sys.stdout.write("waiting for server")
         sys.stdout.flush()
-
-        found = False
-        cnt = 0
-        while not found and cnt < 1000:
-            try:
-                sys.stdout.write(".")
-                sys.stdout.flush()
-                exl = self.db.get_device_exported(device)
-                if device not in exl.value_string:
-                    time.sleep(0.01)
-                    cnt += 1
-                    continue
-                found = True
-                print(" %s is working" % device)
-            except Exception as e:
-                print(str(e))
-                time.sleep(0.01)
-                found = False
-            cnt += 1
-        return found
+        return self.waitServerRunning(new, device, adminproxy)
 
     def createDataWriter(self, beamline, masterhost):
         """ creates data writer
