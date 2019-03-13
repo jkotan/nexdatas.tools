@@ -209,6 +209,36 @@ For more help:
             cnt += 1
         self.assertTrue(found)
 
+    def serverPid(self, svname):
+        pid = None
+        svname, instance = svname.split("/")
+        if sys.version_info > (3,):
+            with subprocess.Popen(
+                    "ps -ef | grep '%s %s' | grep -v grep" %
+                    (svname, instance),
+                    stdout=subprocess.PIPE, shell=True) as proc:
+
+                pipe = proc.stdout
+                res = str(pipe.read(), "utf8").split("\n")
+                for r in res:
+                    sr = r.split()
+                    if len(sr) > 2:
+                        pid = sr[1]
+                pipe.close()
+        else:
+            pipe = subprocess.Popen(
+                "ps -ef | grep '%s %s' | grep -v grep" %
+                (svname, instance),
+                stdout=subprocess.PIPE, shell=True).stdout
+
+            res = str(pipe.read()).split("\n")
+            for r in res:
+                sr = r.split()
+                if len(sr) > 2:
+                    pid = sr[1]
+            pipe.close()
+        return pid
+
     def stopServer(self, svname):
         svname, instance = svname.split("/")
         if sys.version_info > (3,):
@@ -571,9 +601,6 @@ For more help:
                         rsdevices = self.db.get_device_exported_for_class(
                             "NXSRecSelector").value_string
                         self.assertTrue(cfdvname in cfdevices)
-                        if dwdvname not in dwdevices:
-                            print(dwdvname)
-                            print(dwdevices)
                         self.assertTrue(dwdvname in dwdevices)
                         self.assertTrue(rsdvname in rsdevices)
                         self.checkDevice(cfdvname)
@@ -1000,9 +1027,6 @@ For more help:
                         rsdevices = self.db.get_device_exported_for_class(
                             "NXSRecSelector").value_string
                         self.assertTrue(cfdvname in cfdevices)
-                        if dwdvname not in dwdevices:
-                            print(dwdvname)
-                            print(dwdevices)
                         self.assertTrue(dwdvname in dwdevices)
                         self.assertTrue(rsdvname in rsdevices)
                         self.checkDevice(cfdvname)
@@ -1157,9 +1181,6 @@ For more help:
                             rsdevices = self.db.get_device_exported_for_class(
                                 "NXSRecSelector").value_string
                             self.assertTrue(cfdvname in cfdevices)
-                            if dwdvname not in dwdevices:
-                                print("%s %s" % (dwdvname, dwdevices))
-                                print("%s %s" % (dwdvname, dwdevices))
                             self.assertTrue(dwdvname in dwdevices)
                             self.assertTrue(rsdvname in rsdevices)
                             self.checkDevice(cfdvname)
@@ -1312,8 +1333,6 @@ For more help:
                             rsdevices = self.db.get_device_exported_for_class(
                                 "NXSRecSelector").value_string
                             self.assertTrue(cfdvname in cfdevices)
-                            if dwdvname not in dwdevices:
-                                print("%s %s" % (dwdvname, dwdevices))
                             self.assertTrue(dwdvname in dwdevices)
                             self.assertTrue(rsdvname in rsdevices)
                             self.checkDevice(cfdvname)
@@ -1464,8 +1483,6 @@ For more help:
                             rsdevices = self.db.get_device_exported_for_class(
                                 "NXSRecSelector").value_string
                             self.assertTrue(cfdvname in cfdevices)
-                            if dwdvname not in dwdevices:
-                                print("%s %s" % (dwdvname, dwdevices))
                             self.assertTrue(dwdvname in dwdevices)
                             self.assertTrue(rsdvname not in rsdevices)
                             self.checkDevice(cfdvname)
@@ -1606,8 +1623,6 @@ For more help:
                             rsdevices = self.db.get_device_exported_for_class(
                                 "NXSRecSelector").value_string
                             self.assertTrue(cfdvname not in cfdevices)
-                            if dwdvname not in dwdevices:
-                                print("%s %s" % (dwdvname, dwdevices))
                             self.assertTrue(dwdvname in dwdevices)
                             self.assertTrue(rsdvname not in rsdevices)
                             self.checkDevice(dwdvname)
@@ -2059,12 +2074,64 @@ For more help:
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-                    vl, er = self.runtest(["nxsetup", "stop"])
+                    print("TEST RESTART")
+                    svpids = {}
+                    for sv, dv in rservers:
+                        svpids[sv] = self.serverPid(sv)
+                    vl, er = self.runtest(["nxsetup", "restart"])
+                    self.assertEqual('', er)
+                    for sv, pid in svpids.items():
+                        self.assertTrue(self.serverPid(sv) != pid)
+                    # print("VS")
+                    # print(vl)
+                    # print("VE")
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        # print(cnf)
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        # acfsvname = "NXSConfigServer"
+                        # adwsvname = "NXSDataWriter"
+                        # arssvname = "NXSRecSelector"
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
+                        cfservers = self.db.get_server_list(
+                            cfsvname).value_string
+                        dwservers = self.db.get_server_list(
+                            dwsvname).value_string
+                        rsservers = self.db.get_server_list(
+                            rssvname).value_string
+                        self.assertTrue(cfsvname in cfservers)
+                        self.assertTrue(dwsvname in dwservers)
+                        self.assertTrue(rssvname in rsservers)
+
+                        cfdevices = self.db.get_device_exported_for_class(
+                            "NXSConfigServer").value_string
+                        dwdevices = self.db.get_device_exported_for_class(
+                            "NXSDataWriter").value_string
+                        rsdevices = self.db.get_device_exported_for_class(
+                            "NXSRecSelector").value_string
+                        self.assertTrue(cfdvname in cfdevices)
+                        self.assertTrue(dwdvname in dwdevices)
+                        self.assertTrue(rsdvname in rsdevices)
+                        self.checkDevice(cfdvname)
+                        self.checkDevice(dwdvname)
+                        self.checkDevice(rsdvname)
                     # print("VS")
                     # print(vl)
                     # print("VE")
             finally:
-                print(rservers)
+                try:
+                vl, er = self.runtest(["nxsetup", "stop"])
+                except Exception:
+                    pass
+                # print(rservers)
                 for svname, dvname in set(rservers):
                     try:
                         self.stopServer(svname)

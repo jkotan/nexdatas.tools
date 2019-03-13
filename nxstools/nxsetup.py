@@ -413,7 +413,6 @@ class SetUp(object):
                     adminproxy.UpdateServersInfo()
                     # running = adminproxy.RunningServers
                     running = adminproxy.DevGetRunningServers(True)
-                    # print(running)
                     if server not in running:
                         time.sleep(0.01)
                         cnt += 1
@@ -651,12 +650,10 @@ class SetUp(object):
         adminproxy.UpdateServersInfo()
         # running = adminproxy.DevGetRunningServers(True)
         running = adminproxy.RunningServers
-        print(running)
         if new not in running:
-            print("START %s" % new)
             adminproxy.DevStart(new)
         else:
-            print("NOT START %s" % new)
+            print("%s NOT STARTED" % new)
 
         adminproxy.UpdateServersInfo()
 
