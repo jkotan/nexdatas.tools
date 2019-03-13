@@ -2128,7 +2128,7 @@ For more help:
                     # print("VE")
             finally:
                 try:
-                vl, er = self.runtest(["nxsetup", "stop"])
+                    vl, er = self.runtest(["nxsetup", "stop"])
                 except Exception:
                     pass
                 # print(rservers)
