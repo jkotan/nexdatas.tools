@@ -285,7 +285,6 @@ For more help:
                         shell=True)
             pipe.close()
 
-
     def unregisterServer(self, svname, dvname=None):
         if dvname is not None:
             self.db.delete_device(dvname)

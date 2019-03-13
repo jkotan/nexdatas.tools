@@ -861,6 +861,7 @@ class SetUp(object):
             if self.cserver_name:
                 dp.configDevice = self.cserver_name
             if self.writer_name:
+                print(dir(dp))
                 dp.writerDevice = self.writer_name
         return True
 
