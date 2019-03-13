@@ -47,6 +47,11 @@ except Exception as e:
     print(str(e))
     from . import TestPoolSetUp
 
+try:
+    import TestServerSetUp
+except ImportError:
+    from . import TestServerSetUp
+
 
 try:
     import whichcraft
@@ -2079,7 +2084,8 @@ For more help:
                         self.checkDevice(rsdvname)
             finally:
                 try:
-                    vl, er = self.runtest(["nxsetup", "stop"])
+                    if not skiptest:
+                        vl, er = self.runtest(["nxsetup", "stop"])
                 except Exception:
                     pass
                 # print(rservers)
@@ -2363,7 +2369,8 @@ For more help:
                         self.checkDevice(rsdvname)
             finally:
                 try:
-                    vl, er = self.runtest(["nxsetup", "stop"])
+                    if not skiptest:
+                        vl, er = self.runtest(["nxsetup", "stop"])
                 except Exception:
                     pass
                 # print(rservers)
@@ -2614,7 +2621,8 @@ For more help:
                                 self.checkDevice(dvname)
             finally:
                 try:
-                    vl, er = self.runtest(["nxsetup", "stop"])
+                    if not skiptest:
+                        vl, er = self.runtest(["nxsetup", "stop"])
                 except Exception:
                     pass
                 # print(rservers)
@@ -2777,22 +2785,24 @@ For more help:
                             self.assertEqual('', er)
                             self.assertTrue(vl)
                             for slsv in nservers:
-                                svname = "%s/%s" % (slsv, cnf["masterhost"])
-                                dvname = "%s/%s/%s" % \
-                                         (cnf['beamline'],
-                                          slsv.lower(), cnf["masterhost"])
+                                for tcnf in cnfs:
+                                    svname = "%s/%s" % (
+                                        slsv, tcnf["masterhost"])
+                                    dvname = "%s/%s/%s" % \
+                                             (tcnf['beamline'],
+                                              slsv.lower(), tcnf["masterhost"])
 
-                                servers = self.db.get_server_list(
-                                    svname).value_string
-                                self.assertTrue(svname in servers)
+                                    servers = self.db.get_server_list(
+                                        svname).value_string
+                                    self.assertTrue(svname in servers)
 
-                                devices = self.db.\
-                                    get_device_exported_for_class(
-                                        slsv).value_string
-                                if svname in slservers:
-                                    self.assertTrue(dvname not in devices)
-                                else:
-                                    self.assertTrue(dvname in devices)
+                                    devices = self.db.\
+                                        get_device_exported_for_class(
+                                            slsv).value_string
+                                    if svname in slservers:
+                                        self.assertTrue(dvname not in devices)
+                                    else:
+                                        self.assertTrue(dvname in devices)
                     print("\nTEST START")
                     slservers = []
                     for nsv in nservers:
@@ -2805,24 +2815,26 @@ For more help:
                             self.assertEqual('', er)
                             self.assertTrue(vl)
                             for slsv in nservers:
-                                svname = "%s/%s" % (slsv, cnf["masterhost"])
-                                dvname = "%s/%s/%s" % \
-                                         (cnf['beamline'],
-                                          slsv.lower(), cnf["masterhost"])
+                                for tcnf in cnfs:
+                                    svname = "%s/%s" % (
+                                        slsv, tcnf["masterhost"])
+                                    dvname = "%s/%s/%s" % \
+                                             (tcnf['beamline'],
+                                              slsv.lower(), tcnf["masterhost"])
 
-                                servers = self.db.get_server_list(
-                                    svname).value_string
-                                self.assertTrue(svname in servers)
+                                    servers = self.db.get_server_list(
+                                        svname).value_string
+                                    self.assertTrue(svname in servers)
 
-                                devices = self.db.\
-                                    get_device_exported_for_class(
-                                        slsv).value_string
+                                    devices = self.db.\
+                                        get_device_exported_for_class(
+                                            slsv).value_string
 
-                                if svname in slservers:
-                                    self.assertTrue(dvname in devices)
-                                    self.checkDevice(dvname)
-                                else:
-                                    self.assertTrue(dvname not in devices)
+                                    if svname in slservers:
+                                        self.assertTrue(dvname in devices)
+                                        self.checkDevice(dvname)
+                                    else:
+                                        self.assertTrue(dvname not in devices)
                     print("\nTEST RESTART")
                     slservers = []
                     for nsv in nservers:
@@ -2841,21 +2853,23 @@ For more help:
                             self.assertEqual('', er)
                             self.assertTrue(vl)
                             for slsv in nservers:
-                                svname = "%s/%s" % (slsv, cnf["masterhost"])
-                                dvname = "%s/%s/%s" % \
-                                    (cnf['beamline'],
-                                     slsv.lower(), cnf["masterhost"])
+                                for tcnf in cnfs:
+                                    svname = "%s/%s" % (
+                                        slsv, tcnf["masterhost"])
+                                    dvname = "%s/%s/%s" % \
+                                        (tcnf['beamline'],
+                                         slsv.lower(), tcnf["masterhost"])
 
-                                servers = self.db.get_server_list(
-                                    svname).value_string
-                                self.assertTrue(svname in servers)
+                                    servers = self.db.get_server_list(
+                                        svname).value_string
+                                    self.assertTrue(svname in servers)
 
-                                devices = self.db.\
-                                    get_device_exported_for_class(
-                                        slsv).value_string
+                                    devices = self.db.\
+                                        get_device_exported_for_class(
+                                            slsv).value_string
 
-                                self.assertTrue(dvname in devices)
-                                self.checkDevice(dvname)
+                                    self.assertTrue(dvname in devices)
+                                    self.checkDevice(dvname)
             finally:
                 for svname, dvname in set(rservers):
                     try:
@@ -2865,6 +2879,340 @@ For more help:
                     try:
                         self.unregisterServer(svname, dvname)
                     except Exception as e:
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_server_stop_start_restart(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        admin = None
+        skiptest = False
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+            adevices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if adevices:
+                skiptest = True
+
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            if not admin:
+                skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.db.get_device_property(
+            admin,
+            "StartDsPath")["StartDsPath"]
+        if startdspaths:
+            startdspaths = [p for p in startdspaths if p]
+        else:
+            startdspaths = []
+
+        rservers = []
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                if not skiptest:
+                    # time.sleep(5)
+                    print("\nTEST STOP")
+                    vl, er = self.runtest(["nxsetup", "stop", "TestServer"])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        svname = "TestServer/%s" % cnf["instance"]
+                        dvname = cnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        self.assertTrue(dvname not in devices)
+                    print("\nTEST START")
+                    vl, er = self.runtest(["nxsetup", "start", "TestServer"])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        svname = "TestServer/%s" % cnf["instance"]
+                        dvname = cnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        self.assertTrue(dvname in devices)
+
+                        self.checkDevice(dvname)
+                    print("\nTEST RESTART")
+                    svpids = {}
+                    for sv, dv in rservers:
+                        svpids[sv] = self.serverPid(sv)
+                    vl, er = self.runtest(["nxsetup", "restart", "TestServer"])
+                    for sv, pid in svpids.items():
+                        self.assertTrue(self.serverPid(sv) != pid)
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        svname = "TestServer/%s" % cnf["instance"]
+                        dvname = cnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        self.assertTrue(dvname in devices)
+                        self.checkDevice(dvname)
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                        vl, er = self.runtest(
+                            ["nxsetup", "stop", "TestServer"])
+                except Exception:
+                    pass
+                # print(rservers)
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_instance_stop_start_restart(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        admin = None
+        skiptest = False
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            if not admin:
+                skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.db.get_device_property(
+            admin,
+            "StartDsPath")["StartDsPath"]
+        if startdspaths:
+            startdspaths = [p for p in startdspaths if p]
+        else:
+            startdspaths = []
+
+        rservers = []
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                slservers = []
+                print("\nTEST STOP")
+                for cnf in cnfs:
+                    nsvname = "%s/%s" % ("TestServer", cnf["instance"])
+                    slservers.append(nsvname)
+                    vl, er = self.runtest(["nxsetup", "stop", nsvname])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for tcnf in cnfs:
+                        svname = "TestServer/%s" % tcnf["instance"]
+                        dvname = tcnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        if svname in slservers:
+                            self.assertTrue(dvname not in devices)
+                        else:
+                            self.assertTrue(dvname in devices)
+
+                print("\nTEST START")
+                slservers = []
+                for cnf in cnfs:
+                    nsvname = "%s/%s" % ("TestServer", cnf["instance"])
+                    slservers.append(nsvname)
+                    vl, er = self.runtest(["nxsetup", "start", nsvname])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for tcnf in cnfs:
+                        svname = "TestServer/%s" % tcnf["instance"]
+                        dvname = tcnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        if svname in slservers:
+                            self.assertTrue(dvname in devices)
+                            self.checkDevice(dvname)
+                        else:
+                            self.assertTrue(dvname not in devices)
+
+                slservers = []
+                print("\nTEST RESTART")
+                for cnf in cnfs:
+                    nsvname = "%s/%s" % ("TestServer", cnf["instance"])
+                    slservers.append(nsvname)
+                    svpids = {}
+                    for sv, dv in rservers:
+                        if sv == nsvname:
+                            svpids[sv] = self.serverPid(sv)
+                    vl, er = self.runtest(["nxsetup", "restart", nsvname])
+                    for sv, pid in svpids.items():
+                        self.assertTrue(self.serverPid(sv) != pid)
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for tcnf in cnfs:
+                        svname = "TestServer/%s" % tcnf["instance"]
+                        dvname = tcnf["device"]
+
+                        servers = self.db.get_server_list(
+                            svname).value_string
+                        self.assertTrue(svname in servers)
+
+                        devices = self.db.get_device_exported_for_class(
+                            "TestServer").value_string
+                        self.assertTrue(dvname in devices)
+                        self.checkDevice(dvname)
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+                # print(rservers)
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
+                        # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
                 for svname, dvname in set(rservers):

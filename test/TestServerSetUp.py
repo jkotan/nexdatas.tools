@@ -107,12 +107,12 @@ class TestServerSetUp(object):
 
         if sys.version_info > (3,):
             self._psub = subprocess.call(
-                "cd %s; python3 ./TestServer.py %s &" %
+                "cd %s; python3 ./TestServer %s &" %
                 (path, self.instance), stdout=None,
                 stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
-                "cd %s; python ./TestServer.py %s &" %
+                "cd %s; python ./TestServer %s &" %
                 (path, self.instance), stdout=None,
                 stderr=None, shell=True)
 
@@ -156,7 +156,7 @@ class TestServerSetUp(object):
     def stop(self):
         if sys.version_info > (3,):
             with subprocess.Popen(
-                    "ps -ef | grep 'TestServer.py %s' | grep -v grep" %
+                    "ps -ef | grep 'TestServer %s' | grep -v grep" %
                     self.instance,
                     stdout=subprocess.PIPE, shell=True) as proc:
 
@@ -171,7 +171,7 @@ class TestServerSetUp(object):
                 pipe.close()
         else:
             pipe = subprocess.Popen(
-                "ps -ef | grep 'TestServer.py %s' | grep -v grep" %
+                "ps -ef | grep 'TestServer %s' | grep -v grep" %
                 self.instance,
                 stdout=subprocess.PIPE, shell=True).stdout
 
@@ -263,11 +263,11 @@ class MultiTestServerSetUp(object):
 
         if sys.version_info > (3,):
             self._psub = subprocess.call(
-                "cd %s;  python3 ./TestServer.py %s &" % (path, self.instance),
+                "cd %s;  python3 ./TestServer %s &" % (path, self.instance),
                 stdout=None, stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
-                "cd %s;  python ./TestServer.py %s &" % (path, self.instance),
+                "cd %s;  python ./TestServer %s &" % (path, self.instance),
                 stdout=None, stderr=None, shell=True)
         sys.stdout.write("waiting for simple server")
 
@@ -310,7 +310,7 @@ class MultiTestServerSetUp(object):
     def stop(self):
         if sys.version_info > (3,):
             with subprocess.Popen(
-                    "ps -ef | grep 'TestServer.py %s' | grep -v grep" %
+                    "ps -ef | grep 'TestServer %s' | grep -v grep" %
                     self.instance,
                     stdout=subprocess.PIPE, shell=True) as proc:
 
@@ -325,7 +325,7 @@ class MultiTestServerSetUp(object):
                 pipe.close()
         else:
             pipe = subprocess.Popen(
-                "ps -ef | grep 'TestServer.py %s' | grep -v grep" %
+                "ps -ef | grep 'TestServer %s' | grep -v grep" %
                 self.instance,
                 stdout=subprocess.PIPE, shell=True).stdout
 
