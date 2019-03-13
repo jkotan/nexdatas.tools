@@ -1851,9 +1851,6 @@ For more help:
             cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
             dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
             rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
-            # acfsvname = "NXSConfigServer"
-            # adwsvname = "NXSDataWriter"
-            # arssvname = "NXSRecSelector"
             cfdvname = "%s/nxsconfigserver/%s" % \
                 (cnf['beamline'], cnf["masterhost"])
             dwdvname = "%s/nxsdatawriter/%s" % \
@@ -1864,9 +1861,6 @@ For more help:
             cfservers = self.db.get_server_list(cfsvname).value_string
             dwservers = self.db.get_server_list(dwsvname).value_string
             rsservers = self.db.get_server_list(rssvname).value_string
-            # acfservers = self.db.get_server_list(acfsvname).value_string
-            # adwservers = self.db.get_server_list(adwsvname).value_string
-            # arsservers = self.db.get_server_list(arssvname).value_string
 
             dwdevices = self.db.get_device_exported_for_class(
                 "NXSDataWriter").value_string
@@ -1901,7 +1895,6 @@ For more help:
                 skiptest = True
 
             skiptest = skiptest or not CNFSRV or not DTWRITER or not RECSEL
-            # print(skiptest)
             admin = nxsetup.SetUp().getStarterName(self.host)
             if not admin:
                 skiptest = True
@@ -1923,20 +1916,10 @@ For more help:
                          ' -d %s '
                          % (cnf['beamline'], cnf['masterhost'],
                             cnf['user'], cnf['dbname'])).split(),
-                        # ('nxsetup set '
-                        #  ' --beamline %s '
-                        #  ' --masterhost %s '
-                        #  ' --user %s '
-                        #  ' --database %s '
-                        #  % (cnf['beamline'], cnf['masterhost'],
-                        #     cnf['user'], cnf['dbname'])).split(),
                     ]
                     cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
                     dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
                     rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
-                    # acfsvname = "NXSConfigServer"
-                    # adwsvname = "NXSDataWriter"
-                    # arssvname = "NXSRecSelector"
                     cfdvname = "%s/nxsconfigserver/%s" % \
                                (cnf['beamline'], cnf["masterhost"])
                     dwdvname = "%s/nxsdatawriter/%s" % \
@@ -1951,9 +1934,6 @@ For more help:
                             rservers.append((dwsvname, dwdvname))
                             rservers.append((rssvname, rsdvname))
                             vl, er = self.runtest(cmd)
-                            # print("VS")
-                            # print(vl)
-                            # print("VE")
                             self.assertEqual('', er)
                             self.assertTrue(vl)
                             cfservers = self.db.get_server_list(
@@ -1983,21 +1963,14 @@ For more help:
                             skiptests = True
                 # time.sleep(5)
                 if not skiptests:
-                    print("TEST STOP")
+                    print("\nTEST STOP")
                     vl, er = self.runtest(["nxsetup", "stop"])
                     self.assertEqual('', er)
-                    # print("VS")
-                    # print(vl)
-                    # print("VE")
                     self.assertTrue(vl)
                     for cnf in cnfs:
-                        # print(cnf)
                         cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
                         dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
                         rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
-                        # acfsvname = "NXSConfigServer"
-                        # adwsvname = "NXSDataWriter"
-                        # arssvname = "NXSRecSelector"
                         cfdvname = "%s/nxsconfigserver/%s" % \
                                    (cnf['beamline'], cnf["masterhost"])
                         dwdvname = "%s/nxsdatawriter/%s" % \
@@ -2021,30 +1994,18 @@ For more help:
                             "NXSDataWriter").value_string
                         rsdevices = self.db.get_device_exported_for_class(
                             "NXSRecSelector").value_string
-                        # print(cfdevices)
-                        # print(dwdevices)
-                        # print(rsdevices)
                         self.assertTrue(cfdvname not in cfdevices)
                         self.assertTrue(dwdvname not in dwdevices)
                         self.assertTrue(rsdvname not in rsdevices)
-                        # self.checkDevice(cfdvname)
-                        # self.checkDevice(dwdvname)
-                        # self.checkDevice(rsdvname)
-                    print("TEST START")
+                    print("\nTEST START")
                     vl, er = self.runtest(["nxsetup", "start"])
                     self.assertEqual('', er)
-                    # print("VS")
-                    # print(vl)
-                    # print("VE")
                     self.assertTrue(vl)
                     for cnf in cnfs:
                         # print(cnf)
                         cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
                         dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
                         rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
-                        # acfsvname = "NXSConfigServer"
-                        # adwsvname = "NXSDataWriter"
-                        # arssvname = "NXSRecSelector"
                         cfdvname = "%s/nxsconfigserver/%s" % \
                                    (cnf['beamline'], cnf["masterhost"])
                         dwdvname = "%s/nxsdatawriter/%s" % \
@@ -2074,7 +2035,7 @@ For more help:
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-                    print("TEST RESTART")
+                    print("\nTEST RESTART")
                     svpids = {}
                     for sv, dv in rservers:
                         svpids[sv] = self.serverPid(sv)
@@ -2082,18 +2043,11 @@ For more help:
                     self.assertEqual('', er)
                     for sv, pid in svpids.items():
                         self.assertTrue(self.serverPid(sv) != pid)
-                    # print("VS")
-                    # print(vl)
-                    # print("VE")
                     self.assertTrue(vl)
                     for cnf in cnfs:
-                        # print(cnf)
                         cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
                         dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
                         rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
-                        # acfsvname = "NXSConfigServer"
-                        # adwsvname = "NXSDataWriter"
-                        # arssvname = "NXSRecSelector"
                         cfdvname = "%s/nxsconfigserver/%s" % \
                                    (cnf['beamline'], cnf["masterhost"])
                         dwdvname = "%s/nxsdatawriter/%s" % \
@@ -2123,9 +2077,6 @@ For more help:
                         self.checkDevice(cfdvname)
                         self.checkDevice(dwdvname)
                         self.checkDevice(rsdvname)
-                    # print("VS")
-                    # print(vl)
-                    # print("VE")
             finally:
                 try:
                     vl, er = self.runtest(["nxsetup", "stop"])
@@ -2142,6 +2093,778 @@ For more help:
                         self.unregisterServer(svname, dvname)
                     except Exception as e:
                         # print(str(e))
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_set_stop_start_restart_all(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if self.host in nxsetup.knownHosts.keys():
+            dfcnf = nxsetup.knownHosts[self.host]
+        else:
+            dfcnf = {'beamline': 'nxs',
+                     'masterhost': '%s' % self.host,
+                     'user': 'tango',
+                     'dbname': 'nxsconfig'}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['beamline'] = 'testnxs'
+        cnfs[0]['masterhost'] = 'haso000'
+        cnfs[1]['beamline'] = 'testnxs2'
+        cnfs[1]['masterhost'] = 'hasoo12'
+        cnfs[2]['beamline'] = 'test2nxs'
+        cnfs[2]['masterhost'] = 'hasooo12'
+        cnfs[3]['beamline'] = 'testnxs3'
+        cnfs[3]['masterhost'] = 'hasoo000'
+
+        for cnf in cnfs:
+            # print(cnf)
+            cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+            dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+            rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+            cfdvname = "%s/nxsconfigserver/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            dwdvname = "%s/nxsdatawriter/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            rsdvname = "%s/nxsrecselector/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+
+            cfservers = self.db.get_server_list(cfsvname).value_string
+            dwservers = self.db.get_server_list(dwsvname).value_string
+            rsservers = self.db.get_server_list(rssvname).value_string
+
+            dwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            cfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            rsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            skiptest = False
+            if cfsvname in cfservers:
+                skiptest = True
+            if dwsvname in dwservers:
+                skiptest = True
+            if rssvname in rsservers:
+                skiptest = True
+            if cfdvname in cfdevices:
+                skiptest = True
+            if dwdvname in dwdevices:
+                skiptest = True
+            if rsdvname in rsdevices:
+                skiptest = True
+            acfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            adwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            arsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            if acfdevices:
+                skiptest = True
+            if adwdevices:
+                skiptest = True
+            if arsdevices:
+                skiptest = True
+
+            skiptest = skiptest or not CNFSRV or not DTWRITER or not RECSEL
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            if not admin:
+                skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
+
+        skiptests = skiptest
+
+        if not skiptest:
+            rservers = []
+            try:
+                for cnf in cnfs:
+                    commands = [
+                        ('nxsetup set '
+                         ' -b %s '
+                         ' -m %s '
+                         ' -u %s '
+                         ' -d %s '
+                         % (cnf['beamline'], cnf['masterhost'],
+                            cnf['user'], cnf['dbname'])).split(),
+                    ]
+                    cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                    dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                    rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                    cfdvname = "%s/nxsconfigserver/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    dwdvname = "%s/nxsdatawriter/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    rsdvname = "%s/nxsrecselector/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+
+                    for cmd in commands:
+                        try:
+
+                            rservers.append((cfsvname, cfdvname))
+                            rservers.append((dwsvname, dwdvname))
+                            rservers.append((rssvname, rsdvname))
+                            vl, er = self.runtest(cmd)
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            cfservers = self.db.get_server_list(
+                                cfsvname).value_string
+                            dwservers = self.db.get_server_list(
+                                dwsvname).value_string
+                            rsservers = self.db.get_server_list(
+                                rssvname).value_string
+                            self.assertTrue(cfsvname in cfservers)
+                            self.assertTrue(dwsvname in dwservers)
+                            self.assertTrue(rssvname in rsservers)
+
+                            cfdevices = self.db.get_device_exported_for_class(
+                                "NXSConfigServer").value_string
+                            dwdevices = self.db.get_device_exported_for_class(
+                                "NXSDataWriter").value_string
+                            rsdevices = self.db.get_device_exported_for_class(
+                                "NXSRecSelector").value_string
+                            self.assertTrue(cfdvname in cfdevices)
+                            self.assertTrue(dwdvname in dwdevices)
+                            self.assertTrue(rsdvname in rsdevices)
+                            self.checkDevice(cfdvname)
+                            self.checkDevice(dwdvname)
+                            self.checkDevice(rsdvname)
+                        except Exception as e:
+                            print(str(e))
+                            skiptests = True
+                # time.sleep(5)
+                if not skiptests:
+                    print("\nTEST STOP")
+                    vl, er = self.runtest(
+                        ["nxsetup", "stop",
+                         "NXSDataWriter", "NXSConfigServer", "NXSRecSelector"])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
+                        cfservers = self.db.get_server_list(
+                            cfsvname).value_string
+                        dwservers = self.db.get_server_list(
+                            dwsvname).value_string
+                        rsservers = self.db.get_server_list(
+                            rssvname).value_string
+                        self.assertTrue(cfsvname in cfservers)
+                        self.assertTrue(dwsvname in dwservers)
+                        self.assertTrue(rssvname in rsservers)
+
+                        cfdevices = self.db.get_device_exported_for_class(
+                            "NXSConfigServer").value_string
+                        dwdevices = self.db.get_device_exported_for_class(
+                            "NXSDataWriter").value_string
+                        rsdevices = self.db.get_device_exported_for_class(
+                            "NXSRecSelector").value_string
+                        self.assertTrue(cfdvname not in cfdevices)
+                        self.assertTrue(dwdvname not in dwdevices)
+                        self.assertTrue(rsdvname not in rsdevices)
+                    print("\nTEST START")
+                    vl, er = self.runtest(
+                        ["nxsetup", "start",
+                         "NXSDataWriter", "NXSConfigServer", "NXSRecSelector"])
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        # print(cnf)
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
+                        cfservers = self.db.get_server_list(
+                            cfsvname).value_string
+                        dwservers = self.db.get_server_list(
+                            dwsvname).value_string
+                        rsservers = self.db.get_server_list(
+                            rssvname).value_string
+                        self.assertTrue(cfsvname in cfservers)
+                        self.assertTrue(dwsvname in dwservers)
+                        self.assertTrue(rssvname in rsservers)
+
+                        cfdevices = self.db.get_device_exported_for_class(
+                            "NXSConfigServer").value_string
+                        dwdevices = self.db.get_device_exported_for_class(
+                            "NXSDataWriter").value_string
+                        rsdevices = self.db.get_device_exported_for_class(
+                            "NXSRecSelector").value_string
+                        self.assertTrue(cfdvname in cfdevices)
+                        self.assertTrue(dwdvname in dwdevices)
+                        self.assertTrue(rsdvname in rsdevices)
+                        self.checkDevice(cfdvname)
+                        self.checkDevice(dwdvname)
+                        self.checkDevice(rsdvname)
+                    print("\nTEST RESTART")
+                    svpids = {}
+                    for sv, dv in rservers:
+                        svpids[sv] = self.serverPid(sv)
+                    vl, er = self.runtest(
+                        ["nxsetup", "restart",
+                         "NXSDataWriter", "NXSConfigServer", "NXSRecSelector"])
+                    self.assertEqual('', er)
+                    for sv, pid in svpids.items():
+                        self.assertTrue(self.serverPid(sv) != pid)
+                    self.assertTrue(vl)
+                    for cnf in cnfs:
+                        cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                        dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                        rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                        cfdvname = "%s/nxsconfigserver/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        dwdvname = "%s/nxsdatawriter/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+                        rsdvname = "%s/nxsrecselector/%s" % \
+                                   (cnf['beamline'], cnf["masterhost"])
+
+                        cfservers = self.db.get_server_list(
+                            cfsvname).value_string
+                        dwservers = self.db.get_server_list(
+                            dwsvname).value_string
+                        rsservers = self.db.get_server_list(
+                            rssvname).value_string
+                        self.assertTrue(cfsvname in cfservers)
+                        self.assertTrue(dwsvname in dwservers)
+                        self.assertTrue(rssvname in rsservers)
+
+                        cfdevices = self.db.get_device_exported_for_class(
+                            "NXSConfigServer").value_string
+                        dwdevices = self.db.get_device_exported_for_class(
+                            "NXSDataWriter").value_string
+                        rsdevices = self.db.get_device_exported_for_class(
+                            "NXSRecSelector").value_string
+                        self.assertTrue(cfdvname in cfdevices)
+                        self.assertTrue(dwdvname in dwdevices)
+                        self.assertTrue(rsdvname in rsdevices)
+                        self.checkDevice(cfdvname)
+                        self.checkDevice(dwdvname)
+                        self.checkDevice(rsdvname)
+            finally:
+                try:
+                    vl, er = self.runtest(["nxsetup", "stop"])
+                except Exception:
+                    pass
+                # print(rservers)
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_server_set_stop_start_restart(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if self.host in nxsetup.knownHosts.keys():
+            dfcnf = nxsetup.knownHosts[self.host]
+        else:
+            dfcnf = {'beamline': 'nxs',
+                     'masterhost': '%s' % self.host,
+                     'user': 'tango',
+                     'dbname': 'nxsconfig'}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['beamline'] = 'testnxs'
+        cnfs[0]['masterhost'] = 'haso000'
+        cnfs[1]['beamline'] = 'testnxs2'
+        cnfs[1]['masterhost'] = 'hasoo12'
+        cnfs[2]['beamline'] = 'test2nxs'
+        cnfs[2]['masterhost'] = 'hasooo12'
+        cnfs[3]['beamline'] = 'testnxs3'
+        cnfs[3]['masterhost'] = 'hasoo000'
+
+        for cnf in cnfs:
+            # print(cnf)
+            cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+            dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+            rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+            cfdvname = "%s/nxsconfigserver/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            dwdvname = "%s/nxsdatawriter/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            rsdvname = "%s/nxsrecselector/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+
+            cfservers = self.db.get_server_list(cfsvname).value_string
+            dwservers = self.db.get_server_list(dwsvname).value_string
+            rsservers = self.db.get_server_list(rssvname).value_string
+
+            dwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            cfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            rsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            skiptest = False
+            if cfsvname in cfservers:
+                skiptest = True
+            if dwsvname in dwservers:
+                skiptest = True
+            if rssvname in rsservers:
+                skiptest = True
+            if cfdvname in cfdevices:
+                skiptest = True
+            if dwdvname in dwdevices:
+                skiptest = True
+            if rsdvname in rsdevices:
+                skiptest = True
+            acfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            adwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            arsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            if acfdevices:
+                skiptest = True
+            if adwdevices:
+                skiptest = True
+            if arsdevices:
+                skiptest = True
+
+            skiptest = skiptest or not CNFSRV or not DTWRITER or not RECSEL
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            if not admin:
+                skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
+
+        skiptests = skiptest
+
+        if not skiptest:
+            rservers = []
+            try:
+                for cnf in cnfs:
+                    commands = [
+                        ('nxsetup set '
+                         ' -b %s '
+                         ' -m %s '
+                         ' -u %s '
+                         ' -d %s '
+                         % (cnf['beamline'], cnf['masterhost'],
+                            cnf['user'], cnf['dbname'])).split(),
+                    ]
+                    cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                    dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                    rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                    cfdvname = "%s/nxsconfigserver/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    dwdvname = "%s/nxsdatawriter/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    rsdvname = "%s/nxsrecselector/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+
+                    for cmd in commands:
+                        try:
+
+                            rservers.append((cfsvname, cfdvname))
+                            rservers.append((dwsvname, dwdvname))
+                            rservers.append((rssvname, rsdvname))
+                            vl, er = self.runtest(cmd)
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            cfservers = self.db.get_server_list(
+                                cfsvname).value_string
+                            dwservers = self.db.get_server_list(
+                                dwsvname).value_string
+                            rsservers = self.db.get_server_list(
+                                rssvname).value_string
+                            self.assertTrue(cfsvname in cfservers)
+                            self.assertTrue(dwsvname in dwservers)
+                            self.assertTrue(rssvname in rsservers)
+
+                            cfdevices = self.db.get_device_exported_for_class(
+                                "NXSConfigServer").value_string
+                            dwdevices = self.db.get_device_exported_for_class(
+                                "NXSDataWriter").value_string
+                            rsdevices = self.db.get_device_exported_for_class(
+                                "NXSRecSelector").value_string
+                            self.assertTrue(cfdvname in cfdevices)
+                            self.assertTrue(dwdvname in dwdevices)
+                            self.assertTrue(rsdvname in rsdevices)
+                            self.checkDevice(cfdvname)
+                            self.checkDevice(dwdvname)
+                            self.checkDevice(rsdvname)
+                        except Exception as e:
+                            print(str(e))
+                            skiptests = True
+                # time.sleep(5)
+                if not skiptests:
+                    print("\nTEST STOP")
+                    nservers = ["NXSConfigServer",
+                                "NXSDataWriter",
+                                "NXSRecSelector"]
+                    slservers = []
+                    for nsv in nservers:
+                        vl, er = self.runtest(["nxsetup", "stop", nsv])
+                        slservers.append(nsv)
+                        self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        for cnf in cnfs:
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                         (cnf['beamline'],
+                                          slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+                                if slsv in slservers:
+                                    self.assertTrue(dvname not in devices)
+                                else:
+                                    self.assertTrue(dvname in devices)
+                    print("\nTEST START")
+                    slservers = []
+                    for nsv in nservers:
+                        slservers.append(nsv)
+                        vl, er = self.runtest(["nxsetup", "start", nsv])
+                        self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        for cnf in cnfs:
+                            # print(cnf)
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                         (cnf['beamline'],
+                                          slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+
+                                if slsv in slservers:
+                                    self.assertTrue(dvname in devices)
+                                    self.checkDevice(dvname)
+                                else:
+                                    self.assertTrue(dvname not in devices)
+                    print("\nTEST RESTART")
+                    slservers = []
+                    for nsv in nservers:
+                        slservers.append(nsv)
+                        svpids = {}
+                        for sv, dv in rservers:
+                            if sv.startswith(nsv):
+                                svpids[sv] = self.serverPid(sv)
+                        vl, er = self.runtest(["nxsetup", "restart", nsv])
+                        for sv, pid in svpids.items():
+                            self.assertTrue(self.serverPid(sv) != pid)
+                        self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        for cnf in cnfs:
+                            # print(cnf)
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                    (cnf['beamline'],
+                                     slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+
+                                self.assertTrue(dvname in devices)
+                                self.checkDevice(dvname)
+            finally:
+                try:
+                    vl, er = self.runtest(["nxsetup", "stop"])
+                except Exception:
+                    pass
+                # print(rservers)
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
+                        # print(str(e))
+                        pass
+                setup = nxsetup.SetUp()
+                for svname, dvname in set(rservers):
+                    setup.waitServerNotRunning(
+                        svname, dvname, adminproxy, verbose=False)
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_instance_set_stop_start_restart(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if self.host in nxsetup.knownHosts.keys():
+            dfcnf = nxsetup.knownHosts[self.host]
+        else:
+            dfcnf = {'beamline': 'nxs',
+                     'masterhost': '%s' % self.host,
+                     'user': 'tango',
+                     'dbname': 'nxsconfig'}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['beamline'] = 'testnxs'
+        cnfs[0]['masterhost'] = 'haso000'
+        cnfs[1]['beamline'] = 'testnxs2'
+        cnfs[1]['masterhost'] = 'hasoo12'
+        cnfs[2]['beamline'] = 'test2nxs'
+        cnfs[2]['masterhost'] = 'hasooo12'
+        cnfs[3]['beamline'] = 'testnxs3'
+        cnfs[3]['masterhost'] = 'hasoo000'
+
+        for cnf in cnfs:
+            # print(cnf)
+            cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+            dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+            rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+            cfdvname = "%s/nxsconfigserver/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            dwdvname = "%s/nxsdatawriter/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+            rsdvname = "%s/nxsrecselector/%s" % \
+                (cnf['beamline'], cnf["masterhost"])
+
+            cfservers = self.db.get_server_list(cfsvname).value_string
+            dwservers = self.db.get_server_list(dwsvname).value_string
+            rsservers = self.db.get_server_list(rssvname).value_string
+
+            dwdevices = self.db.get_device_exported_for_class(
+                "NXSDataWriter").value_string
+            cfdevices = self.db.get_device_exported_for_class(
+                "NXSConfigServer").value_string
+            rsdevices = self.db.get_device_exported_for_class(
+                "NXSRecSelector").value_string
+            skiptest = False
+            if cfsvname in cfservers:
+                skiptest = True
+            if dwsvname in dwservers:
+                skiptest = True
+            if rssvname in rsservers:
+                skiptest = True
+            if cfdvname in cfdevices:
+                skiptest = True
+            if dwdvname in dwdevices:
+                skiptest = True
+            if rsdvname in rsdevices:
+                skiptest = True
+
+            skiptest = skiptest or not CNFSRV or not DTWRITER or not RECSEL
+            admin = nxsetup.SetUp().getStarterName(self.host)
+            if not admin:
+                skiptest = True
+                adminproxy = None
+            else:
+                adminproxy = PyTango.DeviceProxy(admin)
+
+        skiptests = skiptest
+
+        if not skiptest:
+            rservers = []
+            try:
+                for cnf in cnfs:
+                    commands = [
+                        ('nxsetup set '
+                         ' -b %s '
+                         ' -m %s '
+                         ' -u %s '
+                         ' -d %s '
+                         % (cnf['beamline'], cnf['masterhost'],
+                            cnf['user'], cnf['dbname'])).split(),
+                    ]
+                    cfsvname = "NXSConfigServer/%s" % cnf["masterhost"]
+                    dwsvname = "NXSDataWriter/%s" % cnf["masterhost"]
+                    rssvname = "NXSRecSelector/%s" % cnf["masterhost"]
+                    cfdvname = "%s/nxsconfigserver/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    dwdvname = "%s/nxsdatawriter/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+                    rsdvname = "%s/nxsrecselector/%s" % \
+                               (cnf['beamline'], cnf["masterhost"])
+
+                    for cmd in commands:
+                        try:
+
+                            rservers.append((cfsvname, cfdvname))
+                            rservers.append((dwsvname, dwdvname))
+                            rservers.append((rssvname, rsdvname))
+                            vl, er = self.runtest(cmd)
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            cfservers = self.db.get_server_list(
+                                cfsvname).value_string
+                            dwservers = self.db.get_server_list(
+                                dwsvname).value_string
+                            rsservers = self.db.get_server_list(
+                                rssvname).value_string
+                            self.assertTrue(cfsvname in cfservers)
+                            self.assertTrue(dwsvname in dwservers)
+                            self.assertTrue(rssvname in rsservers)
+
+                            cfdevices = self.db.get_device_exported_for_class(
+                                "NXSConfigServer").value_string
+                            dwdevices = self.db.get_device_exported_for_class(
+                                "NXSDataWriter").value_string
+                            rsdevices = self.db.get_device_exported_for_class(
+                                "NXSRecSelector").value_string
+                            self.assertTrue(cfdvname in cfdevices)
+                            self.assertTrue(dwdvname in dwdevices)
+                            self.assertTrue(rsdvname in rsdevices)
+                            self.checkDevice(cfdvname)
+                            self.checkDevice(dwdvname)
+                            self.checkDevice(rsdvname)
+                        except Exception as e:
+                            print(str(e))
+                            skiptests = True
+                # time.sleep(5)
+                if not skiptests:
+                    print("\nTEST STOP")
+                    nservers = ["NXSConfigServer",
+                                "NXSDataWriter",
+                                "NXSRecSelector"]
+                    slservers = []
+                    for nsv in nservers:
+                        for cnf in cnfs:
+                            nsvname = "%s/%s" % (nsv, cnf["masterhost"])
+                            slservers.append(nsvname)
+                            vl, er = self.runtest(["nxsetup", "stop", nsvname])
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                         (cnf['beamline'],
+                                          slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+                                if svname in slservers:
+                                    self.assertTrue(dvname not in devices)
+                                else:
+                                    self.assertTrue(dvname in devices)
+                    print("\nTEST START")
+                    slservers = []
+                    for nsv in nservers:
+                        for cnf in cnfs:
+                            # print(cnf)
+                            nsvname = "%s/%s" % (nsv, cnf["masterhost"])
+                            slservers.append(nsvname)
+                            vl, er = self.runtest(
+                                ["nxsetup", "start", nsvname])
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                         (cnf['beamline'],
+                                          slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+
+                                if svname in slservers:
+                                    self.assertTrue(dvname in devices)
+                                    self.checkDevice(dvname)
+                                else:
+                                    self.assertTrue(dvname not in devices)
+                    print("\nTEST RESTART")
+                    slservers = []
+                    for nsv in nservers:
+                        for cnf in cnfs:
+                            # print(cnf)
+                            nsvname = "%s/%s" % (nsv, cnf["masterhost"])
+                            slservers.append(nsvname)
+                            svpids = {}
+                            for sv, dv in rservers:
+                                if sv == nsv:
+                                    svpids[sv] = self.serverPid(sv)
+                            vl, er = self.runtest(
+                                ["nxsetup", "restart", nsvname])
+                            for sv, pid in svpids.items():
+                                self.assertTrue(self.serverPid(sv) != pid)
+                            self.assertEqual('', er)
+                            self.assertTrue(vl)
+                            for slsv in nservers:
+                                svname = "%s/%s" % (slsv, cnf["masterhost"])
+                                dvname = "%s/%s/%s" % \
+                                    (cnf['beamline'],
+                                     slsv.lower(), cnf["masterhost"])
+
+                                servers = self.db.get_server_list(
+                                    svname).value_string
+                                self.assertTrue(svname in servers)
+
+                                devices = self.db.\
+                                    get_device_exported_for_class(
+                                        slsv).value_string
+
+                                self.assertTrue(dvname in devices)
+                                self.checkDevice(dvname)
+            finally:
+                for svname, dvname in set(rservers):
+                    try:
+                        self.stopServer(svname)
+                    except Exception as e:
+                        pass
+                    try:
+                        self.unregisterServer(svname, dvname)
+                    except Exception as e:
                         pass
                 setup = nxsetup.SetUp()
                 for svname, dvname in set(rservers):
