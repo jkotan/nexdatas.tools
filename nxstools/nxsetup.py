@@ -473,6 +473,8 @@ class SetUp(object):
                                         svl, level, tohigher=False)
                                 if started and svl in started:
                                     adminproxy.DevStop(svl)
+                                    self.waitServerNotRunning(
+                                        svl, None, adminproxy)
                                     sys.stdout.write("Restarting: %s" % svl)
                                 else:
                                     sys.stdout.write("Starting: %s" % svl)
