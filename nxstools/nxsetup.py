@@ -458,9 +458,8 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
-                    servers = adminproxy.read_attribute('Servers')
-                    started = adminproxy.command_inout(
-                        "DevGetRunningServers", True)
+                    servers = adminproxy.Servers
+                    started = adminproxy.DevGetRunningServers(True)
                 except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
@@ -504,26 +503,8 @@ class SetUp(object):
                                     except Exception:
                                         counter += 1
                                         time.sleep(0.2)
-                                # problems = not self.waitServerRunning(
-                                #    svl, None, adminproxy)
-                                counter = 0
-                                problems = True
-                                while problems and counter < 100:
-                                    try:
-                                        sys.stdout.write('.')
-                                        sys.stdout.flush()
-                                        adminproxy.UpdateServersInfo()
-                                        # rsvs = adminproxy.RunningServers
-                                        rsvs = adminproxy.DevGetRunningServers(
-                                            True)
-                                        if svl in rsvs:
-                                            problems = False
-                                        else:
-                                            time.sleep(0.2)
-                                    except Exception:
-                                        time.sleep(0.2)
-                                    finally:
-                                        counter += 1
+                                problems = not self.waitServerRunning(
+                                    svl, None, adminproxy) or problems
                                 print(" ")
                                 if problems:
                                     print("%s was not restarted" % svl)
@@ -559,9 +540,8 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
-                    servers = adminproxy.read_attribute('Servers')
-                    started = adminproxy.command_inout(
-                        "DevGetRunningServers", True)
+                    servers = adminproxy.Servers
+                    started = adminproxy.DevGetRunningServers(True)
                     # started = self.__exported_servers()
                 except Exception:
                     pass
@@ -583,24 +563,8 @@ class SetUp(object):
 
                                     sys.stdout.write("Stopping: %s" % svl)
                                     sys.stdout.flush()
-                                problems = True
-                                counter = 0
-                                while problems and counter < 100:
-                                    try:
-                                        sys.stdout.write('.')
-                                        sys.stdout.flush()
-                                        adminproxy.UpdateServersInfo()
-                                        rsvs = adminproxy.DevGetRunningServers(
-                                            True)
-                                        # rsvs = adminproxy.RunningServers
-                                        if svl not in rsvs:
-                                            problems = False
-                                        else:
-                                            time.sleep(0.2)
-                                    except Exception:
-                                        time.sleep(0.2)
-                                    finally:
-                                        counter += 1
+                                problems = not self.waitServerNotRunning(
+                                    svl, None, adminproxy)
                                 print(" ")
                                 if problems:
                                     print("%s was not stopped" % svl)
