@@ -193,7 +193,7 @@ class SetUp(object):
         if not os.path.isdir(path):
             return res
         instance = instance or "*"
-        
+
         mss = self.db.get_server_list("MacroServer/%s" % instance).value_string
         for ms in mss:
             devserv = self.db.get_device_class_list(ms).value_string
@@ -445,6 +445,7 @@ class SetUp(object):
         :param restart:  if server should be restarted
         :type restart: :obj:`bool`
         """
+        print(name)
         if name:
             admin = self.getStarterName(host)
             if not admin:

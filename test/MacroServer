@@ -2,7 +2,7 @@
 #    "$Header:  $";
 # ============================================================================
 #
-# file :        TestMacroServer.py
+# file :        MacroServer
 #
 # description : Python source for the TestMacroServer and its commands.
 #                The class is derived from Device. It represents the
