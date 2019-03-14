@@ -333,8 +333,8 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        print(vl)
-        print(er)
+        # print(vl)
+        # print(er)
         if etxt:
             print(etxt)
         self.assertTrue(etxt is None)
@@ -3538,6 +3538,165 @@ For more help:
                     msdv1, {"RecorderPath": recorder1paths})
 
                 ms2.tearDown()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_addrecorderpath_instance_multi(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        ins2 = "MSMTESTS2"
+        msdv2 = ["msmtestp09/testts/t1r228", "msmtestp09/testts/t2r228"]
+        ms2 = MacroServerSetUp.MacroServerSetUp(
+            instance=ins2,
+            msdevices=msdv2,
+            doordevices=["doormtestp09/testts/t2r228"])
+        try:
+            ms2.setUp()
+            setup = nxsetup.SetUp()
+            admin = setup.getStarterName(self.host)
+            startdspaths = self.getProperty(admin, "StartDsPath")
+            adp = PyTango.DeviceProxy(admin)
+            setup.waitServerRunning("MacroServer/%s" % ins2,
+                                    msdv2[0],  adp)
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            print(newpath)
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adp.Init()
+            recorder1paths = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths = self.getProperty(msdv2[1], "RecorderPath")
+            self.assertEqual(recorder1paths, [])
+            self.assertEqual(recorder2paths, [])
+
+            pid = self.serverPid("MacroServer/%s" % ins2)
+            path1 = "/tmp/"
+            vl, er = self.runtest(
+                ["nxsetup", "add-recorder-path", path1, "-i", ins2])
+            self.assertEqual('', er)
+            self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
+
+            recorder1paths1 = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths1 = self.getProperty(msdv2[1], "RecorderPath")
+            df1 = list(set(recorder1paths1) - set(recorder1paths))
+            self.assertEqual(df1, [path1])
+            df1 = list(set(recorder2paths1) - set(recorder2paths))
+            self.assertEqual(df1, [path1])
+
+            pid = self.serverPid("MacroServer/%s" % ins2)
+            path2 = "/usr/share/"
+            vl, er = self.runtest(
+                ["nxsetup", "add-recorder-path", path2, "--instance", ins2])
+            self.assertEqual('', er)
+            self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
+
+            recorder1paths2 = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths2 = self.getProperty(msdv2[1], "RecorderPath")
+            df2 = list(set(recorder1paths2) - set(recorder1paths1))
+            self.assertEqual(df2, [path2])
+            df2 = list(set(recorder2paths2) - set(recorder2paths1))
+            self.assertEqual(df2, [path2])
+
+            pid = self.serverPid("MacroServer/%s" % ins2)
+            path2 = "/usr/share/"
+            vl, er = self.runtest(
+                ["nxsetup", "add-recorder-path", path2, "--instance", ins2])
+            self.assertEqual('', er)
+            self.assertTrue(self.serverPid("MacroServer/%s" % ins2) == pid)
+
+            recorder1paths3 = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths3 = self.getProperty(msdv2[1], "RecorderPath")
+            df2 = list(set(recorder1paths3) - set(recorder1paths2))
+            self.assertEqual(df2, [])
+            df2 = list(set(recorder2paths3) - set(recorder2paths2))
+            self.assertEqual(df2, [])
+
+        finally:
+            self.db.put_device_property(
+                admin, {"StartDsPath": startdspaths})
+            adp.Init()
+            self.db.put_device_property(
+                msdv2[1], {"RecorderPath": recorder2paths})
+            self.db.put_device_property(
+                msdv2[0], {"RecorderPath": recorder1paths})
+
+            ms2.tearDown()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_addrecorderpath_instance_multi_postpone(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        ins2 = "MSMTESTS2"
+        msdv2 = ["msmtestp09/testts/t1r228", "msmtestp09/testts/t2r228"]
+        ms2 = MacroServerSetUp.MacroServerSetUp(
+            instance=ins2,
+            msdevices=msdv2,
+            doordevices=["doormtestp09/testts/t2r228"])
+        try:
+            ms2.setUp()
+            setup = nxsetup.SetUp()
+            admin = setup.getStarterName(self.host)
+            startdspaths = self.getProperty(admin, "StartDsPath")
+            adp = PyTango.DeviceProxy(admin)
+            setup.waitServerRunning("MacroServer/%s" % ins2,
+                                    msdv2[0],  adp)
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            print(newpath)
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adp.Init()
+            recorder1paths = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths = self.getProperty(msdv2[1], "RecorderPath")
+            self.assertEqual(recorder1paths, [])
+            self.assertEqual(recorder2paths, [])
+
+            pid = self.serverPid("MacroServer/%s" % ins2)
+            path1 = "/tmp/"
+            vl, er = self.runtest(
+                ["nxsetup", "add-recorder-path", path1, "-i", ins2, "-t"])
+            self.assertEqual('', er)
+            self.assertTrue(self.serverPid("MacroServer/%s" % ins2) == pid)
+
+            recorder1paths1 = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths1 = self.getProperty(msdv2[1], "RecorderPath")
+            df1 = list(set(recorder1paths1) - set(recorder1paths))
+            self.assertEqual(df1, [path1])
+            df1 = list(set(recorder2paths1) - set(recorder2paths))
+            self.assertEqual(df1, [path1])
+
+            pid = self.serverPid("MacroServer/%s" % ins2)
+            path2 = "/usr/share/"
+            vl, er = self.runtest(
+                ["nxsetup", "add-recorder-path", path2, "--instance", ins2,
+                 "--postpone"])
+            self.assertEqual('', er)
+            self.assertTrue(self.serverPid("MacroServer/%s" % ins2) == pid)
+
+            recorder1paths2 = self.getProperty(msdv2[0], "RecorderPath")
+            recorder2paths2 = self.getProperty(msdv2[1], "RecorderPath")
+            df2 = list(set(recorder1paths2) - set(recorder1paths1))
+            self.assertEqual(df2, [path2])
+            df2 = list(set(recorder2paths2) - set(recorder2paths1))
+            self.assertEqual(df2, [path2])
+
+        finally:
+            self.db.put_device_property(
+                admin, {"StartDsPath": startdspaths})
+            adp.Init()
+            self.db.put_device_property(
+                msdv2[1], {"RecorderPath": recorder2paths})
+            self.db.put_device_property(
+                msdv2[0], {"RecorderPath": recorder1paths})
+
+            ms2.tearDown()
 
 
 if __name__ == '__main__':
