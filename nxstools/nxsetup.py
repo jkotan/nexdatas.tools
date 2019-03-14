@@ -670,7 +670,7 @@ class SetUp(object):
         self.db.put_server_info(sinfo)
         adminproxy.UpdateServersInfo()
         running = adminproxy.DevGetRunningServers(True)
-        # running = adminproxy.RunningServers 
+        # running = adminproxy.RunningServers
         if new not in running:
             adminproxy.DevStart(new)
         else:
