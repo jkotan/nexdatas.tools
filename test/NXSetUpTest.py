@@ -3298,6 +3298,10 @@ For more help:
             adp.Init()
             self.db.put_device_property(
                 msdv2, {"RecorderPath": recorderpaths})
+            try:
+                self.stopServer("MacroServer/%s" % ins2)
+            except Exception:
+                pass
 
             ms2.tearDown()
 
@@ -3453,6 +3457,14 @@ For more help:
                 self.assertEqual(df2, [])
 
             finally:
+                try:
+                    self.stopServer("MacroServer/%s" % ins1)
+                except Exception:
+                    pass
+                try:
+                    self.stopServer("MacroServer/%s" % ins2)
+                except Exception:
+                    pass
                 self.db.put_device_property(
                     admin, {"StartDsPath": startdspaths})
                 adp.Init()
@@ -3460,7 +3472,6 @@ For more help:
                     msdv2, {"RecorderPath": recorder2paths})
                 self.db.put_device_property(
                     msdv1, {"RecorderPath": recorder1paths})
-
                 ms2.tearDown()
 
     # comp_available test
@@ -3628,6 +3639,10 @@ For more help:
                 msdv2[1], {"RecorderPath": recorder2paths})
             self.db.put_device_property(
                 msdv2[0], {"RecorderPath": recorder1paths})
+            try:
+                self.stopServer("MacroServer/%s" % ins2)
+            except Exception:
+                pass
 
             ms2.tearDown()
 

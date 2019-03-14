@@ -352,8 +352,8 @@ class SetUp(object):
                         sys.stdout.write(".")
                         sys.stdout.flush()
                     adminproxy.UpdateServersInfo()
-                    running = adminproxy.RunningServers
-                    # running = adminproxy.DevGetRunningServers(True)
+                    # running = adminproxy.RunningServers
+                    running = adminproxy.DevGetRunningServers(True)
                     if server in running:
                         time.sleep(0.01)
                         cnt += 1
@@ -513,7 +513,9 @@ class SetUp(object):
                                         sys.stdout.write('.')
                                         sys.stdout.flush()
                                         adminproxy.UpdateServersInfo()
-                                        rsvs = adminproxy.RunningServers
+                                        # rsvs = adminproxy.RunningServers
+                                        rsvs = adminproxy.DevGetRunningServers(
+                                            True)
                                         if svl in rsvs:
                                             problems = False
                                         else:
@@ -588,7 +590,9 @@ class SetUp(object):
                                         sys.stdout.write('.')
                                         sys.stdout.flush()
                                         adminproxy.UpdateServersInfo()
-                                        rsvs = adminproxy.RunningServers
+                                        rsvs = adminproxy.DevGetRunningServers(
+                                            True)
+                                        # rsvs = adminproxy.RunningServers
                                         if svl not in rsvs:
                                             problems = False
                                         else:
@@ -641,7 +645,6 @@ class SetUp(object):
                              + ' not defined in database\n')
             sys.stderr.flush()
             return False
-
         admin = self.getStarterName(host)
         if not admin:
             raise Exception("Starter tango server is not running")
@@ -666,8 +669,8 @@ class SetUp(object):
         sinfo.level = level
         self.db.put_server_info(sinfo)
         adminproxy.UpdateServersInfo()
-        # running = adminproxy.DevGetRunningServers(True)
-        running = adminproxy.RunningServers
+        running = adminproxy.DevGetRunningServers(True)
+        # running = adminproxy.RunningServers 
         if new not in running:
             adminproxy.DevStart(new)
         else:
