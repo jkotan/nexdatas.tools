@@ -232,9 +232,12 @@ class SetUp(object):
         :rtype: :obj:`bool`
 
         """
-        sclass = sclass or server
+        ssvr = server.split("/")
+        sclass = sclass or ssvr[0]
+        if len(ssvr) == 1:
+            server = "%s/*" % server
         res = False
-        mss = self.db.get_server_list("%s/*" % server).value_string
+        mss = self.db.get_server_list(server).value_string
         for ms in mss:
             devserv = self.db.get_device_class_list(ms).value_string
             dev = devserv[0::2]
@@ -445,7 +448,6 @@ class SetUp(object):
         :param restart:  if server should be restarted
         :type restart: :obj:`bool`
         """
-        print(name)
         if name:
             admin = self.getStarterName(host)
             if not admin:

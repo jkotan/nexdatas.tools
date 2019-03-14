@@ -327,14 +327,16 @@ For more help:
             nxsetup.main()
         except Exception as e:
             etxt = str(e)
+        except SystemExit as e:
+            etxt = str(e)
         sys.argv = old_argv
 
         sys.stdout = old_stdout
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        print(vl)
-        print(er)
+        # print(vl)
+        # print(er)
         if etxt:
             print(etxt)
         self.assertTrue(etxt is None)
@@ -3704,7 +3706,7 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
-    def test_moveproperty_instance(self):
+    def test_moveprop_instance(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
@@ -3717,26 +3719,28 @@ For more help:
 
         cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
         cnfs[0]['instance'] = 'haso000'
-        cnfs[0]['oldname'] = "MyOldProp"
-        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
         cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
         cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
         cnfs[1]['instance'] = 'haso000t'
-        cnfs[1]['oldname'] = "MyOldProp"
-        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
         cnfs[1]['value'] = ["MyNpsdf", "asddf"]
         cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
         cnfs[2]['instance'] = 'haso000tt'
-        cnfs[2]['oldname'] = "MyOldProp"
-        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
         cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
         cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
         cnfs[3]['instance'] = 'haso000ttt'
-        cnfs[3]['oldname'] = "MyOldProp"
-        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
         cnfs[3]['value'] = ["MyNadsas"]
         admin = None
         skiptest = False
+        if tss:
+            skiptest = True
         for cnf in cnfs:
             # print(cnf)
             svname = "TestServer/%s" % cnf["instance"]
@@ -3778,6 +3782,8 @@ For more help:
                 tsvs.append(tsv)
                 rservers.append(
                     ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
             for cnf in cnfs:
@@ -3786,19 +3792,1455 @@ For more help:
                     cnf["device"], adminproxy)
             try:
                 for cnf in cnfs:
-                    commands = [
-                        [
-                            'nxsetup', 'move-property',
-                            '-o', cnf['oldname'],
-                            '-n', cnf['newname']
-                        ]
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '-o', cnf['oldname'],
+                        '-n', cnf['newname'],
+                        'TestServer/%s' % cnf['instance']
+                        # 'TestServer'
                     ]
-                    for cmd in commands:
-                        print(cmd)
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid != pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
             finally:
                 self.db.put_device_property(
                     admin, {"StartDsPath": startdspaths})
                 adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_instance_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '--oldname', cnf['oldname'],
+                        '--newname', cnf['newname'],
+                        'TestServer/%s' % cnf['instance']
+                        # 'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid != pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_instance_postpone(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '-o', cnf['oldname'],
+                        '-n', cnf['newname'], '-t',
+                        'TestServer/%s' % cnf['instance']
+                        # 'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid == pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_instance_postpone_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '--oldname', cnf['oldname'],
+                        '--newname', cnf['newname'], '--postpone',
+                        'TestServer/%s' % cnf['instance']
+                        # 'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid == pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '-o', cnf['oldname'],
+                        '-n', cnf['newname'],
+                        'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid != pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '--oldname', cnf['oldname'],
+                        '--newname', cnf['newname'],
+                        'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid != pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_postpone(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '-o', cnf['oldname'],
+                        '-n', cnf['newname'], '-t',
+                        'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid == pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_postpone_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp1"
+        cnfs[0]['newname'] = "MyNewProp1"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp2"
+        cnfs[1]['newname'] = "MyNewProp2"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp3"
+        cnfs[2]['newname'] = "MyNewProp3"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp4"
+        cnfs[3]['newname'] = "MyNewProp4"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                    cmd = [
+                        'nxsetup', 'move-prop',
+                        '--oldname', cnf['oldname'],
+                        '--newname', cnf['newname'], '--postpone',
+                        'TestServer'
+                    ]
+                    pid = self.serverPid("TestServer/%s" % cnf["instance"])
+                    vl, er = self.runtest(cmd)
+                    pid2 = self.serverPid("TestServer/%s" % cnf["instance"])
+                    self.assertTrue(pid == pid2)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_multi(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp"
+        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp"
+        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp"
+        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp"
+        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                svpids = {}
+                for cnf in cnfs:
+                    sv = "TestServer/%s" % cnf["instance"]
+                    svpids[sv] = self.serverPid(sv)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                cmd = [
+                    'nxsetup', 'move-prop',
+                    '-o', cnfs[0]['oldname'],
+                    '-n', cnfs[0]['newname'],
+                    'TestServer'
+                ]
+                vl, er = self.runtest(cmd)
+                for sv, pid in svpids.items():
+                    self.assertTrue(self.serverPid(sv) != pid)
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_multi_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp"
+        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp"
+        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp"
+        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp"
+        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                svpids = {}
+                for cnf in cnfs:
+                    sv = "TestServer/%s" % cnf["instance"]
+                    svpids[sv] = self.serverPid(sv)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                cmd = [
+                    'nxsetup', 'move-prop',
+                    '--oldname', cnfs[0]['oldname'],
+                    '--newname', cnfs[0]['newname'],
+                    'TestServer'
+                ]
+                vl, er = self.runtest(cmd)
+                for sv, pid in svpids.items():
+                    self.assertTrue(self.serverPid(sv) != pid)
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_postpone_multi(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp"
+        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp"
+        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp"
+        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp"
+        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                svpids = {}
+                for cnf in cnfs:
+                    sv = "TestServer/%s" % cnf["instance"]
+                    svpids[sv] = self.serverPid(sv)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                cmd = [
+                    'nxsetup', 'move-prop', '-t',
+                    '-o', cnfs[0]['oldname'],
+                    '-n', cnfs[0]['newname'],
+                    'TestServer'
+                ]
+                vl, er = self.runtest(cmd)
+                for sv, pid in svpids.items():
+                    self.assertTrue(self.serverPid(sv) == pid)
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveprop_server_postpone_multi_long(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp"
+        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp"
+        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp"
+        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp"
+        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['value'] = ["MyNadsas"]
+        admin = None
+        skiptest = False
+        if tss:
+            skiptest = True
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+
+        rservers = []
+
+        if not skiptest:
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+                self.db.put_device_property(
+                    cnf["device"], {cnf["oldname"]: cnf["value"]})
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                svpids = {}
+                for cnf in cnfs:
+                    sv = "TestServer/%s" % cnf["instance"]
+                    svpids[sv] = self.serverPid(sv)
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        cnf["value"]
+                    )
+                cmd = [
+                    'nxsetup', 'move-prop', '--postpone',
+                    '--oldname', cnfs[0]['oldname'],
+                    '--newname', cnfs[0]['newname'],
+                    'TestServer'
+                ]
+                vl, er = self.runtest(cmd)
+                for sv, pid in svpids.items():
+                    self.assertTrue(self.serverPid(sv) == pid)
+                for cnf in cnfs:
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["newname"]),
+                        cnf["value"]
+                    )
+                    self.assertEqual(
+                        self.getProperty(cnf["device"], cnf["oldname"]),
+                        []
+                    )
+
+            finally:
+                for cnf in cnfs:
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["newname"])
+                    except Exception:
+                        pass
+                    try:
+                        self.db.delete_device_property(
+                            cnf["device"], cnf["oldname"])
+                    except Exception:
+                        pass
                 try:
                     if not skiptest:
                         for tsv in tsvs:
