@@ -338,6 +338,13 @@ class DoorClass(PyTango.DeviceClass):
 
     #    Device Properties
     device_property_list = {
+        'RecorderPath':
+            [
+                PyTango.DevVarStringArray,
+                "list of directories to search for recorders (path separators "
+                "can be '\n' or ':')",
+                []
+            ],
     }
 
     #    Command definitions

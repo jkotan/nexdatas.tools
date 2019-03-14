@@ -124,7 +124,7 @@ def myinput(w, text):
 
 
 # test fixture
-class NXSetUpSetTest(unittest.TestCase):
+class NXSetUpTest(unittest.TestCase):
 
     # constructor
     # \param methodName name of the test method
@@ -3231,6 +3231,13 @@ For more help:
                     setup.waitServerNotRunning(
                         svname, dvname, adminproxy, verbose=False)
 
-
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_addrecorderpath(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        mss = self.db.get_server_list("MacroServer/*")
+        print(mss)
+        
 if __name__ == '__main__':
     unittest.main()

@@ -179,18 +179,22 @@ class SetUp(object):
         #: (:obj:`str`) NeXus config server device name
         self.cserver_name = None
 
-    def changeRecorderPath(self, path):
+    def changeRecorderPath(self, path, instance=None):
         """ adds a new recorder path
 
         :param path: new recorder path
         :type path: :obj:`str`
+        :param instance: MacroServer instance name
+        :type instance: :obj:`str`
         :returns: True if record path was added
         :rtype: :obj:`bool`
         """
         res = False
         if not os.path.isdir(path):
             return res
-        mss = self.db.get_server_list("MacroServer/*").value_string
+        instance = instance or "*"
+        
+        mss = self.db.get_server_list("MacroServer/%s" % instance).value_string
         for ms in mss:
             devserv = self.db.get_device_class_list(ms).value_string
             dev = devserv[0::2]
@@ -355,7 +359,7 @@ class SetUp(object):
                         running = False
                 if device:
                     if verbose:
-                        sys.stdout.write(":")
+                        sys.stdout.write(".")
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device in exl.value_string:
@@ -364,7 +368,8 @@ class SetUp(object):
                         continue
                 found = False
                 if verbose:
-                    print(" %s is not working" % device)
+                    if device or server:
+                        print(" %s is not working" % (device or server))
             except Exception as e:
                 print(str(e))
                 time.sleep(0.01)
@@ -397,7 +402,7 @@ class SetUp(object):
             try:
                 if device and not exported:
                     if verbose:
-                        sys.stdout.write(":")
+                        sys.stdout.write(".")
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
@@ -419,7 +424,8 @@ class SetUp(object):
                         continue
                 found = True
                 if verbose:
-                    print(" %s is working" % device)
+                    if device or server:
+                        print(" %s is working" % (device or server))
             except Exception as e:
                 print(str(e))
                 time.sleep(0.01)
@@ -477,7 +483,7 @@ class SetUp(object):
                                     except Exception:
                                         adminproxy.HardKillServer(svl)
                                     problems = self.waitServerNotRunning(
-                                        svl, None, adminproxy)
+                                        svl, None, adminproxy, verbose=None)
                                     if problems:
                                         print("Server Running")
                                     sys.stdout.write("Restarting: %s" % svl)
@@ -666,7 +672,7 @@ class SetUp(object):
 
         adminproxy.UpdateServersInfo()
 
-        sys.stdout.write("waiting for server")
+        sys.stdout.write("waiting for server ")
         sys.stdout.flush()
         return self.waitServerRunning(new, device, adminproxy)
 
@@ -861,7 +867,6 @@ class SetUp(object):
             if self.cserver_name:
                 dp.configDevice = self.cserver_name
             if self.writer_name:
-                print(dir(dp))
                 dp.writerDevice = self.writer_name
         return True
 
@@ -1157,6 +1162,8 @@ class AddRecorderPath(Runner):
         + "/usr/share/pyshared/sardananxsrecorder\n" \
         + "       nxsetup add-recorder-path -t "\
         + "/usr/share/pyshared/sardananxsrecorder\n" \
+        + "       nxsetup add-recorder-path "\
+        + "/usr/share/pyshared/sardananxsrecorder -i haso\n" \
         + "\n"
 
     def create(self):
@@ -1167,6 +1174,11 @@ class AddRecorderPath(Runner):
             "-t", "--postpone", action="store_true",
             default=False, dest="postpone",
             help="do not restart the server")
+        parser.add_argument(
+            "-i", "--instance", action="store",
+            dest="instance",
+            help="macroserver instance name, i.e. haso"
+            " ( default: '*'")
 
     def postauto(self):
         """ creates parser
@@ -1183,10 +1195,18 @@ class AddRecorderPath(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        if options.instance is None:
+            options.instance = "*"
+
         setUp = SetUp()
-        if setUp.changeRecorderPath(options.recpath[0]):
+        if setUp.changeRecorderPath(
+                options.recpath[0], options.instance):
             if not options.postpone:
-                setUp.restartServer("MacroServer")
+                if options.instance != "*":
+                    ms = "MacroServer/%s" % options.instance
+                else:
+                    ms = "MacroServer"
+                setUp.restartServer(ms)
 
 
 class Restart(Runner):
