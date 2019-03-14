@@ -179,18 +179,22 @@ class SetUp(object):
         #: (:obj:`str`) NeXus config server device name
         self.cserver_name = None
 
-    def changeRecorderPath(self, path):
+    def changeRecorderPath(self, path, instance=None):
         """ adds a new recorder path
 
         :param path: new recorder path
         :type path: :obj:`str`
+        :param instance: MacroServer instance name
+        :type instance: :obj:`str`
         :returns: True if record path was added
         :rtype: :obj:`bool`
         """
         res = False
         if not os.path.isdir(path):
             return res
-        mss = self.db.get_server_list("MacroServer/*").value_string
+        instance = instance or "*"
+
+        mss = self.db.get_server_list("MacroServer/%s" % instance).value_string
         for ms in mss:
             devserv = self.db.get_device_class_list(ms).value_string
             dev = devserv[0::2]
@@ -210,7 +214,7 @@ class SetUp(object):
                                 dev[idx],
                                 {"RecorderPath": recorderpaths})
                             res = True
-        time.sleep(0.2)
+        # time.sleep(0.2)
         return res
 
     def changePropertyName(self, server, oldname, newname, sclass=None):
@@ -228,9 +232,12 @@ class SetUp(object):
         :rtype: :obj:`bool`
 
         """
-        sclass = sclass or server
+        ssvr = server.split("/")
+        sclass = sclass or ssvr[0]
+        if len(ssvr) == 1:
+            server = "%s/*" % server
         res = False
-        mss = self.db.get_server_list("%s/*" % server).value_string
+        mss = self.db.get_server_list(server).value_string
         for ms in mss:
             devserv = self.db.get_device_class_list(ms).value_string
             dev = devserv[0::2]
@@ -317,6 +324,118 @@ class SetUp(object):
                 admin = eadmins[0]
         return admin
 
+    def waitServerNotRunning(self, server=None, device=None,
+                             adminproxy=None,
+                             maxcnt=1000, verbose=True):
+        """  wait until device is exported and server is running
+
+        :param server: server name, check if running when not None
+        :type server: :obj:`str`
+        :param device: device name, check if exported when not None
+        :type device: :obj:`str`
+        :param adminproxy: Starter device proxy
+        :type adminproxy: :obj:`tango.DeviceProxy`
+        :param maxcnt: maximal waiting time in 10ms
+        :type maxcnt: :obj:`int`
+        :param verbose: verbose mode
+        :type verbose: :obj:`bool`
+        :returns: True if server is running
+        :rtype: :obj:`bool`
+        """
+        found = True
+        cnt = 0
+        running = True
+        while found and cnt < maxcnt:
+            try:
+                if server and adminproxy is not None and running:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    adminproxy.UpdateServersInfo()
+                    # running = adminproxy.RunningServers
+                    running = adminproxy.DevGetRunningServers(True)
+                    if server in running:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                    else:
+                        running = False
+                if device:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    exl = self.db.get_device_exported(device)
+                    if device in exl.value_string:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                found = False
+                if verbose:
+                    if device or server:
+                        print(" %s is not working" % (device or server))
+            except Exception as e:
+                print(str(e))
+                time.sleep(0.01)
+                found = True
+            cnt += 1
+        return found
+
+    def waitServerRunning(self, server=None, device=None,
+                          adminproxy=None,
+                          maxcnt=1000, verbose=True):
+        """  wait until device is exported and server is running
+
+        :param server: server name, check if running when not None
+        :type server: :obj:`str`
+        :param device: device name, check if exported when not None
+        :type device: :obj:`str`
+        :param adminproxy: Starter device proxy
+        :type adminproxy: :obj:`tango.DeviceProxy`
+        :param maxcnt: maximal waiting time in 10ms
+        :type maxcnt: :obj:`int`
+        :param verbose: verbose mode
+        :type verbose: :obj:`bool`
+        :returns: True if server is running
+        :rtype: :obj:`bool`
+        """
+        found = False
+        cnt = 0
+        exported = False
+        while not found and cnt < maxcnt:
+            try:
+                if device and not exported:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    exl = self.db.get_device_exported(device)
+                    if device not in exl.value_string:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                    else:
+                        exported = True
+                if server is not None and adminproxy is not None:
+                    if verbose:
+                        sys.stdout.write(".")
+                        sys.stdout.flush()
+                    adminproxy.UpdateServersInfo()
+                    # running = adminproxy.RunningServers
+                    running = adminproxy.DevGetRunningServers(True)
+                    if server not in running:
+                        time.sleep(0.01)
+                        cnt += 1
+                        continue
+                found = True
+                if verbose:
+                    if device or server:
+                        print(" %s is working" % (device or server))
+            except Exception as e:
+                print(str(e))
+                time.sleep(0.01)
+                found = False
+            cnt += 1
+        return found
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -340,8 +459,7 @@ class SetUp(object):
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
                     servers = adminproxy.read_attribute('Servers')
-                    started = adminproxy.command_inout(
-                        "DevGetRunningServers", True)
+                    started = adminproxy.DevGetRunningServers(True)
                 except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
@@ -351,6 +469,7 @@ class SetUp(object):
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
                             self._changeLevel(svl, 4)
+
                         if (started and svl in started) or not restart:
                             if '/' in name:
                                 cname = svl
@@ -361,7 +480,14 @@ class SetUp(object):
                                     self._changeLevel(
                                         svl, level, tohigher=False)
                                 if started and svl in started:
-                                    adminproxy.DevStop(svl)
+                                    try:
+                                        adminproxy.DevStop(svl)
+                                    except Exception:
+                                        adminproxy.HardKillServer(svl)
+                                    problems = self.waitServerNotRunning(
+                                        svl, None, adminproxy, verbose=None)
+                                    if problems:
+                                        print("Server Running")
                                     sys.stdout.write("Restarting: %s" % svl)
                                 else:
                                     sys.stdout.write("Starting: %s" % svl)
@@ -377,27 +503,24 @@ class SetUp(object):
                                     except Exception:
                                         counter += 1
                                         time.sleep(0.2)
-                                counter = 0
-                                problems = True
-                                while problems and counter < 100:
-                                    try:
-                                        sys.stdout.write('.')
-                                        sys.stdout.flush()
-                                        adminproxy.UpdateServersInfo()
-                                        rsvs = adminproxy.RunningServers
-                                        if svl in rsvs:
-                                            problems = False
-                                        else:
-                                            time.sleep(0.2)
-                                    except Exception:
-                                        time.sleep(0.2)
-                                    finally:
-                                        counter += 1
+                                problems = not self.waitServerRunning(
+                                    svl, None, adminproxy) or problems
                                 print(" ")
                                 if problems:
                                     print("%s was not restarted" % svl)
                                     print("Warning: Process with the server"
                                           "instance could be suspended")
+
+    def __exported_servers(self):
+        """ returns Servers for exported devices
+
+        :rtype: :obj:`list` <:obj:`str`>
+        :returns: server list
+        """
+        dvexported = self.db.get_device_exported("*").value_string
+        return [sv for sv in self.db.get_server_list()
+                if (set(self.db.get_device_class_list(sv).value_string[:2])
+                    & set(dvexported))]
 
     def stopServer(self, name, host=None):
         """ restarts server
@@ -417,9 +540,8 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
+                    started = adminproxy.DevGetRunningServers(True)
                     servers = adminproxy.read_attribute('Servers')
-                    started = adminproxy.command_inout(
-                        "DevGetRunningServers", True)
                 except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
@@ -433,25 +555,15 @@ class SetUp(object):
                                 cname = svl.split('/')[0]
                             if cname == name:
                                 if started and svl in started:
-                                    adminproxy.DevStop(svl)
+                                    try:
+                                        adminproxy.DevStop(svl)
+                                    except Exception:
+                                        adminproxy.HardKillServer(svl)
+
                                     sys.stdout.write("Stopping: %s" % svl)
                                     sys.stdout.flush()
-                                problems = True
-                                counter = 0
-                                while problems and counter < 100:
-                                    try:
-                                        sys.stdout.write('.')
-                                        sys.stdout.flush()
-                                        adminproxy.UpdateServersInfo()
-                                        rsvs = adminproxy.RunningServers
-                                        if svl not in rsvs:
-                                            problems = False
-                                        else:
-                                            time.sleep(0.2)
-                                    except Exception:
-                                        time.sleep(0.2)
-                                    finally:
-                                        counter += 1
+                                problems = self.waitServerNotRunning(
+                                    svl, None, adminproxy)
                                 print(" ")
                                 if problems:
                                     print("%s was not stopped" % svl)
@@ -496,7 +608,6 @@ class SetUp(object):
                              + ' not defined in database\n')
             sys.stderr.flush()
             return False
-
         admin = self.getStarterName(host)
         if not admin:
             raise Exception("Starter tango server is not running")
@@ -522,32 +633,17 @@ class SetUp(object):
         self.db.put_server_info(sinfo)
         adminproxy.UpdateServersInfo()
         running = adminproxy.DevGetRunningServers(True)
+        # running = adminproxy.RunningServers
         if new not in running:
             adminproxy.DevStart(new)
+        else:
+            print("%s NOT STARTED" % new)
+
         adminproxy.UpdateServersInfo()
 
-        sys.stdout.write("waiting for server")
+        sys.stdout.write("waiting for server ")
         sys.stdout.flush()
-
-        found = False
-        cnt = 0
-        while not found and cnt < 1000:
-            try:
-                sys.stdout.write(".")
-                sys.stdout.flush()
-                exl = self.db.get_device_exported(device)
-                if device not in exl.value_string:
-                    time.sleep(0.01)
-                    cnt += 1
-                    continue
-                found = True
-                print(" %s is working" % device)
-            except Exception as e:
-                print(str(e))
-                time.sleep(0.01)
-                found = False
-            cnt += 1
-        return found
+        return self.waitServerRunning(new, device, adminproxy)
 
     def createDataWriter(self, beamline, masterhost):
         """ creates data writer
@@ -735,11 +831,12 @@ class SetUp(object):
 
         if self.writer_name or self.cserver_name:
             dp = PyTango.DeviceProxy(device_name)
+            dp.ping()
+            self.waitServerRunning(None, device_name)
             if self.cserver_name:
                 dp.configDevice = self.cserver_name
             if self.writer_name:
                 dp.writerDevice = self.writer_name
-
         return True
 
 
@@ -791,7 +888,7 @@ class Set(Runner):
         parser.add_argument(
             'args', metavar='server_name',
             type=str, nargs='*',
-            help='server names, e.g.: NXSRecSelector NXSDataWriter/TDW1')
+            help='server names, e.g.: NXSRecSelector NXSConfigServer')
 
     def run(self, options):
         """ the main program function
@@ -1034,6 +1131,8 @@ class AddRecorderPath(Runner):
         + "/usr/share/pyshared/sardananxsrecorder\n" \
         + "       nxsetup add-recorder-path -t "\
         + "/usr/share/pyshared/sardananxsrecorder\n" \
+        + "       nxsetup add-recorder-path "\
+        + "/usr/share/pyshared/sardananxsrecorder -i haso\n" \
         + "\n"
 
     def create(self):
@@ -1044,6 +1143,11 @@ class AddRecorderPath(Runner):
             "-t", "--postpone", action="store_true",
             default=False, dest="postpone",
             help="do not restart the server")
+        parser.add_argument(
+            "-i", "--instance", action="store",
+            dest="instance",
+            help="macroserver instance name, i.e. haso"
+            " ( default: '*'")
 
     def postauto(self):
         """ creates parser
@@ -1060,10 +1164,18 @@ class AddRecorderPath(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        if options.instance is None:
+            options.instance = "*"
+
         setUp = SetUp()
-        if setUp.changeRecorderPath(options.recpath[0]):
+        if setUp.changeRecorderPath(
+                options.recpath[0], options.instance):
             if not options.postpone:
-                setUp.restartServer("MacroServer")
+                if options.instance != "*":
+                    ms = "MacroServer/%s" % options.instance
+                else:
+                    ms = "MacroServer"
+                setUp.restartServer(ms)
 
 
 class Restart(Runner):

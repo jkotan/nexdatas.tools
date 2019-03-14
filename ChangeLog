@@ -1,6 +1,7 @@
 2019-02-XX Jan Kotanski <jankotan@gmail.com>
+	* add waitServerRunning and waitServerNotRunning method  to nxsetup
 	* improve search for Starter server
-	* tagged as v2.62.2
+	* tagged as v2.63.0
 
 2019-02-22 Jan Kotanski <jankotan@gmail.com>
 	* fix missing parameter support in nxscreate stdcomp

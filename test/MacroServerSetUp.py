@@ -26,13 +26,13 @@ import subprocess
 import PyTango
 import time
 try:
-    import TestMacroServer
+    import TestPool
 except Exception:
-    from . import TestMacroServer
+    from . import TestPool
 
 
 # test fixture
-class TestMacroServerSetUp(object):
+class MacroServerSetUp(object):
 
     # constructor
     # \brief defines server parameters
@@ -87,22 +87,22 @@ class TestMacroServerSetUp(object):
     # starts server
     def start(self):
         db = PyTango.Database()
-        path = os.path.dirname(TestMacroServer.__file__)
+        path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
 
         if (sys.version_info > (3,) and self.python is None) or \
            self.python == 3:
             self._psub = subprocess.call(
-                "cd %s;  python3 ./TestMacroServer.py %s &" %
+                "cd %s;  python3 ./MacroServer %s &" %
                 (path, self.instance),
                 stdout=None, stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
-                "cd %s;  python2 ./TestMacroServer.py %s &" %
+                "cd %s;  python2 ./MacroServer %s &" %
                 (path, self.instance),
                 stdout=None, stderr=None, shell=True)
-        sys.stdout.write("waiting for simple server")
+        sys.stdout.write("waiting for test macro server")
 
         found = False
         cnt = 0
@@ -145,7 +145,7 @@ class TestMacroServerSetUp(object):
     def stop(self):
         if sys.version_info > (3,):
             with subprocess.Popen(
-                    "ps -ef | grep 'TestMacroServer.py %s' | grep -v grep" %
+                    "ps -ef | grep 'MacroServer %s' | grep -v grep" %
                     self.instance,
                     stdout=subprocess.PIPE, shell=True) as proc:
                 pipe = proc.stdout
@@ -159,7 +159,7 @@ class TestMacroServerSetUp(object):
                 pipe.close()
         else:
             pipe = subprocess.Popen(
-                "ps -ef | grep 'TestMacroServer.py %s' | grep -v grep" %
+                "ps -ef | grep 'MacroServer %s' | grep -v grep" %
                 self.instance,
                 stdout=subprocess.PIPE, shell=True).stdout
             res = str(pipe.read()).split("\n")
@@ -173,7 +173,7 @@ class TestMacroServerSetUp(object):
 
 
 if __name__ == "__main__":
-    simps = TestMacroServerSetUp()
+    simps = MacroServerSetUp()
     simps.setUp()
 #    import time
 #    time.sleep(30)
