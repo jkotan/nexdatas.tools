@@ -458,7 +458,7 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
-                    servers = adminproxy.Servers
+                    servers = adminproxy.read_attribute('Servers')
                     started = adminproxy.DevGetRunningServers(True)
                 except Exception:
                     pass
@@ -540,9 +540,8 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
-                    servers = adminproxy.Servers
                     started = adminproxy.DevGetRunningServers(True)
-                    # started = self.__exported_servers()
+                    servers = adminproxy.read_attribute('Servers')
                 except Exception:
                     pass
                 if servers and hasattr(servers, "value") \
@@ -563,7 +562,7 @@ class SetUp(object):
 
                                     sys.stdout.write("Stopping: %s" % svl)
                                     sys.stdout.flush()
-                                problems = not self.waitServerNotRunning(
+                                problems = self.waitServerNotRunning(
                                     svl, None, adminproxy)
                                 print(" ")
                                 if problems:
