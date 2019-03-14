@@ -402,7 +402,7 @@ class SetUp(object):
             try:
                 if device and not exported:
                     if verbose:
-                        sys.stdout.write(":")
+                        sys.stdout.write(".")
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
