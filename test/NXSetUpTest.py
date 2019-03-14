@@ -3380,6 +3380,8 @@ For more help:
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
                                         msdv2,  adp)
+                setup.waitServerRunning("MacroServer/%s" % ins1,
+                                        msdv1,  adp)
                 newpath = os.path.abspath(
                     os.path.dirname(TestServerSetUp.__file__))
                 newstartdspaths = list(startdspaths)
@@ -3488,6 +3490,8 @@ For more help:
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
                                         msdv2,  adp)
+                setup.waitServerRunning("MacroServer/%s" % ins1,
+                                        msdv1,  adp)
 
                 recorder2paths = self.getProperty(msdv2, "RecorderPath")
                 recorder1paths = self.getProperty(msdv1, "RecorderPath")
@@ -3713,12 +3717,24 @@ For more help:
 
         cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
         cnfs[0]['instance'] = 'haso000'
+        cnfs[0]['oldname'] = "MyOldProp"
+        cnfs[0]['newname'] = "MyNewProp"
+        cnfs[0]['value'] = ["MyNp", "asda", "aasd"]
         cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
         cnfs[1]['instance'] = 'haso000t'
+        cnfs[1]['oldname'] = "MyOldProp"
+        cnfs[1]['newname'] = "MyNewProp"
+        cnfs[1]['value'] = ["MyNpsdf", "asddf"]
         cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
         cnfs[2]['instance'] = 'haso000tt'
+        cnfs[2]['oldname'] = "MyOldProp"
+        cnfs[2]['newname'] = "MyNewProp"
+        cnfs[2]['value'] = ["MyNp", "asda", "aasd", "asdsad"]
         cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
         cnfs[3]['instance'] = 'haso000ttt'
+        cnfs[3]['oldname'] = "MyOldProp"
+        cnfs[3]['newname'] = "MyNewProp"
+        cnfs[3]['value'] = ["MyNadsas"]
         admin = None
         skiptest = False
         for cnf in cnfs:
@@ -3757,6 +3773,7 @@ For more help:
             for cnf in cnfs:
                 tsv = TestServerSetUp.TestServerSetUp(
                     cnf["device"], cnf["instance"])
+
                 tsv.setUp()
                 tsvs.append(tsv)
                 rservers.append(
@@ -3768,8 +3785,16 @@ For more help:
                     "TestServer/%s" % cnf["instance"],
                     cnf["device"], adminproxy)
             try:
-                pass
-                # slservers = []
+                for cnf in cnfs:
+                    commands = [
+                        [
+                            'nxsetup', 'move-property',
+                            '-o', cnf['oldname'],
+                            '-n', cnf['newname']
+                        ]
+                    ]
+                    for cmd in commands:
+                        print(cmd)
             finally:
                 self.db.put_device_property(
                     admin, {"StartDsPath": startdspaths})
