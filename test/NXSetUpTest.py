@@ -333,8 +333,8 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        # print(vl)
-        # print(er)
+        print(vl)
+        print(er)
         if etxt:
             print(etxt)
         self.assertTrue(etxt is None)
@@ -3697,6 +3697,89 @@ For more help:
                 msdv2[0], {"RecorderPath": recorder1paths})
 
             ms2.tearDown()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_moveproperty_instance(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tss = self.db.get_server_list("TestServer/*").value_string
+        print(tss)
+        dvname = "ttestp09/testts/t1r228"
+        dfcnf = {}
+
+        cnfs = [dict(dfcnf) for _ in range(4)]
+
+        cnfs[0]['device'] = 'tttest/testnxsteststs/mytest123'
+        cnfs[0]['instance'] = 'haso000'
+        cnfs[1]['device'] = 'ttest/testnxsteststs/mytest123s'
+        cnfs[1]['instance'] = 'haso000t'
+        cnfs[2]['device'] = 'ttest/testnxsteststs/mytest123r'
+        cnfs[2]['instance'] = 'haso000tt'
+        cnfs[3]['device'] = 'ttest/testnxsteststs/mytest123t'
+        cnfs[3]['instance'] = 'haso000ttt'
+        admin = None
+        skiptest = False
+        for cnf in cnfs:
+            # print(cnf)
+            svname = "TestServer/%s" % cnf["instance"]
+            dvname = cnf["device"]
+
+            servers = self.db.get_server_list(svname).value_string
+
+            devices = self.db.get_device_exported_for_class(
+                "TestServer").value_string
+            if svname in servers:
+                skiptest = True
+            if dvname in devices:
+                skiptest = True
+
+        admin = nxsetup.SetUp().getStarterName(self.host)
+        if not admin:
+            skiptest = True
+            adminproxy = None
+        else:
+            adminproxy = PyTango.DeviceProxy(admin)
+        startdspaths = self.getProperty(admin, "StartDsPath")
+
+        rservers = []
+
+        if not skiptest:
+            newpath = os.path.abspath(
+                os.path.dirname(TestServerSetUp.__file__))
+            newstartdspaths = list(startdspaths)
+            newstartdspaths.append(newpath)
+            self.db.put_device_property(
+                admin, {"StartDsPath": newstartdspaths})
+            adminproxy.Init()
+            tsvs = []
+            for cnf in cnfs:
+                tsv = TestServerSetUp.TestServerSetUp(
+                    cnf["device"], cnf["instance"])
+                tsv.setUp()
+                tsvs.append(tsv)
+                rservers.append(
+                    ("TestServer/%s" % cnf["instance"], cnf["device"]))
+
+            setup = nxsetup.SetUp()
+            for cnf in cnfs:
+                setup.waitServerRunning(
+                    "TestServer/%s" % cnf["instance"],
+                    cnf["device"], adminproxy)
+            try:
+                pass
+                # slservers = []
+            finally:
+                self.db.put_device_property(
+                    admin, {"StartDsPath": startdspaths})
+                adminproxy.Init()
+                try:
+                    if not skiptest:
+                        for tsv in tsvs:
+                            tsv.tearDown()
+                except Exception:
+                    pass
 
 
 if __name__ == '__main__':
