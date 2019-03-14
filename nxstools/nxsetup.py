@@ -214,7 +214,7 @@ class SetUp(object):
                                 dev[idx],
                                 {"RecorderPath": recorderpaths})
                             res = True
-        time.sleep(0.2)
+        # time.sleep(0.2)
         return res
 
     def changePropertyName(self, server, oldname, newname, sclass=None):
@@ -402,7 +402,7 @@ class SetUp(object):
             try:
                 if device and not exported:
                     if verbose:
-                        sys.stdout.write(".")
+                        sys.stdout.write(":")
                         sys.stdout.flush()
                     exl = self.db.get_device_exported(device)
                     if device not in exl.value_string:
