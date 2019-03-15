@@ -503,7 +503,8 @@ class Collector(object):
 
 class Execute(Runner):
 
-    """ Execute runner"""
+    """ Execute runner
+    """
 
     #: (:obj:`str`) command description
     description = "execute the collection process"
@@ -553,7 +554,7 @@ class Execute(Runner):
 
     def run(self, options):
         """ the main program function
-<
+
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
