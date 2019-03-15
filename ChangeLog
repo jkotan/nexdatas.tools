@@ -1,4 +1,4 @@
-2019-02-XX Jan Kotanski <jankotan@gmail.com>
+2019-03-15 Jan Kotanski <jankotan@gmail.com>
 	* add waitServerRunning and waitServerNotRunning method  to nxsetup
 	* improve search for Starter server
 	* tagged as v2.63.0
