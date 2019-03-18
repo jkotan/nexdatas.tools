@@ -199,8 +199,8 @@ def open_file(filename, readonly=False, libver=None, swmr=False):
     """
 
     fapl = h5cpp.property.FileAccessList()
-    if hasattr(fapl, "set_close_degree"):
-        fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+    # if hasattr(fapl, "set_close_degree"):
+    #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
     if readonly:
         flag = h5cpp.file.AccessFlags.READONLY
     else:
@@ -229,8 +229,8 @@ def create_file(filename, overwrite=False, libver=None, swmr=None):
     """
     fcpl = h5cpp.property.FileCreationList()
     fapl = h5cpp.property.FileAccessList()
-    if hasattr(fapl, "set_close_degree"):
-        fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+    # if hasattr(fapl, "set_close_degree"):
+    #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
     flag = h5cpp.file.AccessFlags.TRUNCATE if overwrite \
         else h5cpp.file.AccessFlags.EXCLUSIVE
     if libver is None or libver == 'lastest' or swmr:
@@ -388,8 +388,8 @@ class H5CppFile(filewriter.FTFile):
         """
 
         fapl = h5cpp.property.FileAccessList()
-        if hasattr(fapl, "set_close_degree"):
-            fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+        # if hasattr(fapl, "set_close_degree"):
+        #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
         if libver is None or libver == 'lastest' or swmr:
             fapl.library_version_bounds(
                 h5cpp.property.LibVersion.LATEST,
