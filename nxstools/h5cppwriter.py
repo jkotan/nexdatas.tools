@@ -215,7 +215,7 @@ def open_file(filename, readonly=False, libver=None, swmr=False):
     return H5CppFile(h5cpp.file.open(filename, flag, fapl), filename)
 
 
-def create_file(filename, overwrite=False, libver=None):
+def create_file(filename, overwrite=False, libver=None, swmr=None):
     """ create a new file
 
     :param filename: file name
@@ -233,7 +233,7 @@ def create_file(filename, overwrite=False, libver=None):
     #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
     flag = h5cpp.file.AccessFlags.TRUNCATE if overwrite \
         else h5cpp.file.AccessFlags.EXCLUSIVE
-    if libver is None or libver == 'lastest':
+    if libver is None or libver == 'lastest' or swmr:
         fapl.library_version_bounds(
             h5cpp.property.LibVersion.LATEST,
             h5cpp.property.LibVersion.LATEST)
