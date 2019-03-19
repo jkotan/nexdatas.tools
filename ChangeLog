@@ -1,5 +1,7 @@
 2019-03-19 Jan Kotanski <jankotan@gmail.com>
 	* impove searching for servers
+	* fix showing attributes by nxsconfig info
+	* skip DS if device do not exists in onlineds
 	* tagged as v2.63.2
 
 2019-03-18 Jan Kotanski <jankotan@gmail.com>
