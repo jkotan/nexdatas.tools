@@ -196,11 +196,12 @@ class ParserTools(object):
         while node.parentNode:
             onode = node
             node = node.parentNode
+            print("NAME %s %s" % (name, node.nodeName))
             if onode.nodeName == "attribute":
                 attr = True
             else:
                 attr = False
-            if node.nodeName != "group":
+            if node.nodeName not in ["group", "field"]:
                 return name
             else:
                 gname = cls.__getAttr(node, "name")
@@ -393,7 +394,7 @@ class ParserTools(object):
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
                 strategy = cls.__getAttr(stnodes[0], "mode") \
                     if stnodes else None
-
+                print(nxpath)
                 sfdinfo = {
                     "strategy": strategy,
                     "nexus_path": nxpath,
