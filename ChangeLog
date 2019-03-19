@@ -1,6 +1,6 @@
 2019-03-19 Jan Kotanski <jankotan@gmail.com>
 	* impove searching for servers
-	* tagged as v2.63.1
+	* tagged as v2.63.2
 
 2019-03-18 Jan Kotanski <jankotan@gmail.com>
 	* fix support for swmr parameter for h5cpp
