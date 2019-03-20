@@ -1122,15 +1122,22 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         :returns: attribute object
         :rtype: :class:`H5CppAtribute`
         """
+        at = None
         names = [at.name for at in self._h5object]
         if name in names:
             if overwrite:
-                self._h5object.remove(name)
+                try:
+                    at = self._h5object[name]
+                except:
+                    self._h5object.remove(name)
+                else:
+                    return at
             else:
                 raise Exception("Attribute %s exists" % name)
         shape = shape or []
         if shape:
-            at = self._h5object.create(name, pTh[_tostr(dtype)], shape)
+            if at is None:
+                at = self._h5object.create(name, pTh[_tostr(dtype)], shape)
             if dtype in ['string', b'string']:
                 emp = np.empty(shape, dtype="unicode")
                 emp[:] = ''
@@ -1138,7 +1145,8 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
             else:
                 at.write(np.zeros(shape, dtype=dtype))
         else:
-            at = self._h5object.create(name, pTh[_tostr(dtype)])
+            if at is None:
+                at = self._h5object.create(name, pTh[_tostr(dtype)])
             if dtype in ['string', b'string']:
                 at.write(np.array(u"", dtype="unicode"))
             else:
