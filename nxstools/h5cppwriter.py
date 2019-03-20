@@ -1127,8 +1127,11 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         if name in names:
             if overwrite:
                 try:
-                     at = self._h5object[name]
-                except Exception:
+                    if str(self[name].dtype) == _tostr(dtype):
+                        at = self._h5object[name]
+                except Exception as e:
+                    print(str(e))
+                if at is None:    
                     self._h5object.remove(name)
             else:
                 raise Exception("Attribute %s exists" % name)
