@@ -1131,7 +1131,7 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
                         at = self._h5object[name]
                 except Exception as e:
                     print(str(e))
-                if at is None:    
+                if at is None:
                     self._h5object.remove(name)
             else:
                 raise Exception("Attribute %s exists" % name)
