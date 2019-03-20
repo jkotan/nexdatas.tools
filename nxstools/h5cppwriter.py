@@ -1123,15 +1123,13 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         :rtype: :class:`H5CppAtribute`
         """
         at = None
-        names = [at.name for at in self._h5object]
+        names = [att.name for att in self._h5object]
         if name in names:
             if overwrite:
                 try:
-                    at = self._h5object[name]
+                     at = self._h5object[name]
                 except:
                     self._h5object.remove(name)
-                else:
-                    return at
             else:
                 raise Exception("Attribute %s exists" % name)
         shape = shape or []
