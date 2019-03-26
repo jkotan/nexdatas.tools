@@ -13,7 +13,7 @@ env:
   - OS=ubuntu18.04 PY=2 TEST="testsuit"
   - OS=ubuntu16.04 PY=2 TEST="testsuit"
 #  - OS=ubuntu16.04 PY=3 TEST="testsuit"
- 
+
 services:
   - docker
 
