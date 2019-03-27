@@ -522,7 +522,7 @@ class SetUp(object):
                     & set(dvexported))]
 
     def __registered_servers(self):
-        """ returns Servers for exported devices
+        """ returns registered Servers
 
         :rtype: :obj:`list` <:obj:`str`>
         :returns: server list
