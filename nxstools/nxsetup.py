@@ -458,13 +458,12 @@ class SetUp(object):
                 try:
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
-                    servers = adminproxy.read_attribute('Servers')
+                    servers = self.__registered_servers()
                     started = adminproxy.DevGetRunningServers(True)
                 except Exception:
                     pass
-                if servers and hasattr(servers, "value") \
-                        and servers.value:
-                    for vl in servers.value:
+                if servers:
+                    for vl in servers:
                         svl = vl.split('\t')[0]
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
@@ -522,6 +521,18 @@ class SetUp(object):
                 if (set(self.db.get_device_class_list(sv).value_string[:2])
                     & set(dvexported))]
 
+    def __registered_servers(self):
+        """ returns registered Servers
+
+        :rtype: :obj:`list` <:obj:`str`>
+        :returns: server list
+        """
+        hosts = self.db.get_host_list().value_string
+        svlist = []
+        for ht in hosts:
+            svlist.extend(self.db.get_host_server_list(ht).value_string)
+        return svlist
+
     def stopServer(self, name, host=None):
         """ restarts server
 
@@ -541,12 +552,11 @@ class SetUp(object):
                     adminproxy = PyTango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
                     started = adminproxy.DevGetRunningServers(True)
-                    servers = adminproxy.read_attribute('Servers')
+                    servers = self.__registered_servers()
                 except Exception:
                     pass
-                if servers and hasattr(servers, "value") \
-                        and servers.value:
-                    for vl in servers.value:
+                if servers:
+                    for vl in servers:
                         svl = vl.split('\t')[0]
                         if started and svl in started:
                             if '/' in name:
