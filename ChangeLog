@@ -1,3 +1,7 @@
+2019-04-08 Jan Kotanski <jankotan@gmail.com>
+	* add open_link method to writers
+	* tagged as v2.64.0
+
 2019-03-27 Jan Kotanski <jankotan@gmail.com>
 	* fix for starting servers
 	* tagged as v2.63.4
