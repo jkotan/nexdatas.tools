@@ -32,6 +32,8 @@
           <field type="NX_UINT" name="signal">1</field>
           <field type="NX_CHAR" name="file_start_index_num">
             <strategy mode="STEP"/>$datasources.$(name)_filestartnum_cb</field>
+          <field type="NX_CHAR" name="mx_parameters">
+            <strategy mode="FINAL"/>$datasources.$(name)_mxparameters_cb</field>
         </group>
       </group>
     </group>

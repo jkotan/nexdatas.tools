@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_mxparameters_cb">
+    <result name="result">
+pars = ds.$(name)_mxparameters
+# pars = "# Wavelength 1.03320 A\r\n# Detector_distance 0.32200 m\r\n# Beam_xy (1261.00, 1242.00) pixels\r\n# Filter_transmission 0.1000\r\n# Start_angle 204.9240 deg.\r\n# Angle_increment 0.1000 deg.\r\n# Phi 404.0470 deg.\r"
+ds.result = pars
+try:
+    spars = pars.split("\n")
+    tpars = [pr.replace("# ", "").replace("\r", "") for pr in spars]
+    tspars = [pr.split(" ") for pr in tpars]
+    res = {}
+    params = {
+        "wavelength": "wavelength",
+        "detector_distance": "distance",
+        "beam_x": "beam_center_x",
+        "beam_y": "beam_center_y",
+        "beam_xy": ["beam_center_x", "beam_center_y"]
+    }
+    for pr in tspars:
+        try:
+            res[pr[0].lower()] = eval(" ".join(pr[1:]))
+        except Exception:
+            try:
+                res[pr[0].lower()] = tuple([eval(" ".join(pr[1:-1])), pr[-1]])
+            except Exception:
+                res[pr[0].lower()] = tuple([" ".join(pr[1:-1]), pr[-1]])
+    if res and "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
+        dt = en.open("data")
+        ins = en.open("instrument")
+        det = ins.open("$(name)")
+        for pname, fname in params.items():
+            if pname in res.keys():
+                val = res[pname]
+                if isinstance(val, tuple):
+                    val, units = val
+                else:
+                    units = ""
+                if not isinstance(val, tuple) and not isinstance(val, list):
+                    fld = det.create_field(fname, "float64")
+                    fld.write(val)
+                    if units:
+                        fld.attributes.create("units", "string").write(units)
+                elif isinstance(fname, tuple) or isinstance(fname, list):
+                    if len(fname) == len(val):
+                        for i, fn in enumerate(fname):
+                            fld = det.create_field(str(fn), "float64")
+                            vl = val[i]
+                            fld.write(float(vl))
+                            if units:
+                                fld.attributes.create("units", "string").write(units)
+except Exception as e:
+    # pass
+    ds.result += str(e)
+</result>
+ $datasources.$(name)_mxparameters</datasource>
+</definition>
