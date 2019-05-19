@@ -278,7 +278,8 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
                  'testcs_variables',
                  'testcs_linkdatasources',
                  'testcs_version',
-                 'testcs_stepdatasources'],
+                 'testcs_stepdatasources',
+                 'testcs_canfaildatasources'],
                 [
                     '<?xml version="1.0" ?>\n'
                     '<definition>\n'
@@ -337,6 +338,15 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
                     '    <device group="testcs_" hostname="%s" '
                     'member="attribute" name="%s" port="%s"/>\n'
                     '    <record name="STEPDataSources"/>\n'
+                    '  </datasource>\n'
+                    '</definition>\n',
+                    '<?xml version="1.0" ?>\n'
+                    '<definition>\n'
+                    '  <datasource name="testcs_canfaildatasources" '
+                    'type="TANGO">\n'
+                    '    <device group="testcs_" hostname="%s" '
+                    'member="attribute" name="%s" port="%s"/>\n'
+                    '    <record name="CanFailDataSources"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
