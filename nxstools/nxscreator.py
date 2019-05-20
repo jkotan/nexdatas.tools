@@ -1168,24 +1168,27 @@ class OnlineDSCreator(Creator):
                     smultattr = self.xmlpackage.moduleMultiAttributes[
                         smodule]
                     if smultattr and not dv.sdevice:
-                        raise Exception(
-                            "Device %s cannot be found" % dv.name)
-                    for at in smultattr:
-                        dsname = "%s_%s" % (
-                            dv.name, at.lower())
-                        xml = self._createTangoDataSource(
-                            dsname, None, None, None,
-                            dv.sdevice, at, dv.shost, dv.sport,
-                            "%s_" % (dv.name))
-                        #   "__CLIENT__")
-                        self.datasources[dsname] = xml
-                        mdv = copy.copy(dv)
-                        mdv.name = dsname
-                        mdv.tdevice = dv.sdevice
-                        mdv.hostname = "%s:%s" % (dv.shost, dv.sport)
-                        mdv.attribute = at
-                        self._printAction(mdv, dscps)
-                    created = True
+                        if self._printouts:
+                            print(
+                                "SKIPPING %s: Device cannot be found" %
+                                dv.name)
+                    else:
+                        for at in smultattr:
+                            dsname = "%s_%s" % (
+                                dv.name, at.lower())
+                            xml = self._createTangoDataSource(
+                                dsname, None, None, None,
+                                dv.sdevice, at, dv.shost, dv.sport,
+                                "%s_" % (dv.name))
+                            #   "__CLIENT__")
+                            self.datasources[dsname] = xml
+                            mdv = copy.copy(dv)
+                            mdv.name = dsname
+                            mdv.tdevice = dv.sdevice
+                            mdv.hostname = "%s:%s" % (dv.shost, dv.sport)
+                            mdv.attribute = at
+                            self._printAction(mdv, dscps)
+                        created = True
                 if not created:
                     if self._printouts:
                         print(

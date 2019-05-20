@@ -22,6 +22,7 @@
 import sys
 import os
 import time
+import socket
 
 #: (:obj:`dict` <:obj:`str` , :obj:`dict` <:obj:`str` , :obj:`str` > >)
 #:     standard component template variables
@@ -471,8 +472,15 @@ def checkServer(name='NXSConfigServer'):
     if len(servers) > 1:
         thost = os.getenv('TANGO_HOST')
         if thost:
-            lhost = thost.split(":")[0]
-            servers = [sr for sr in servers if sr.endswith("/%s" % lhost)]
+            tlhost = thost.split(":")[0]
+            tservers = [sr for sr in servers if sr.endswith("/%s" % tlhost)]
+            if tservers:
+                servers = tservers
+            else:
+                lhost = socket.gethostname()
+                lservers = [sr for sr in servers if sr.endswith("/%s" % lhost)]
+                if lservers:
+                    servers = lservers
         if len(servers) > 1:
             sys.stderr.write(
                 "Info: More than on %s " % name

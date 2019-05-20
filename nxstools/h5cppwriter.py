@@ -199,15 +199,20 @@ def open_file(filename, readonly=False, libver=None, swmr=False):
     """
 
     fapl = h5cpp.property.FileAccessList()
-    if hasattr(fapl, "set_close_degree"):
-        fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+    # if hasattr(fapl, "set_close_degree"):
+    #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
     if readonly:
         flag = h5cpp.file.AccessFlags.READONLY
     else:
         flag = h5cpp.file.AccessFlags.READWRITE
     if swmr:
-        if hasattr(h5cpp.file.AccessFlags, "SWMRREAD"):
-            flag = flag | h5cpp.file.AccessFlags.SWMRREAD
+        if readonly:
+            if hasattr(h5cpp.file.AccessFlags, "SWMRREAD"):
+                flag = flag | h5cpp.file.AccessFlags.SWMRREAD
+        else:
+            if hasattr(h5cpp.file.AccessFlags, "SWMRWRITE"):
+                flag = flag | h5cpp.file.AccessFlags.SWMRWRITE
+
     if libver is None or libver == 'lastest':
         fapl.library_version_bounds(
             h5cpp.property.LibVersion.LATEST,
@@ -215,7 +220,7 @@ def open_file(filename, readonly=False, libver=None, swmr=False):
     return H5CppFile(h5cpp.file.open(filename, flag, fapl), filename)
 
 
-def create_file(filename, overwrite=False, libver=None):
+def create_file(filename, overwrite=False, libver=None, swmr=None):
     """ create a new file
 
     :param filename: file name
@@ -229,11 +234,11 @@ def create_file(filename, overwrite=False, libver=None):
     """
     fcpl = h5cpp.property.FileCreationList()
     fapl = h5cpp.property.FileAccessList()
-    if hasattr(fapl, "set_close_degree"):
-        fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+    # if hasattr(fapl, "set_close_degree"):
+    #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
     flag = h5cpp.file.AccessFlags.TRUNCATE if overwrite \
         else h5cpp.file.AccessFlags.EXCLUSIVE
-    if libver is None or libver == 'lastest':
+    if libver is None or libver == 'lastest' or swmr:
         fapl.library_version_bounds(
             h5cpp.property.LibVersion.LATEST,
             h5cpp.property.LibVersion.LATEST)
@@ -388,8 +393,8 @@ class H5CppFile(filewriter.FTFile):
         """
 
         fapl = h5cpp.property.FileAccessList()
-        if hasattr(fapl, "set_close_degree"):
-            fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
+        # if hasattr(fapl, "set_close_degree"):
+        #     fapl.set_close_degree(h5cpp._property.CloseDegree.STRONG)
         if libver is None or libver == 'lastest' or swmr:
             fapl.library_version_bounds(
                 h5cpp.property.LibVersion.LATEST,
@@ -488,6 +493,18 @@ class H5CppGroup(filewriter.FTGroup):
             return H5CppLink(
                 [lk for lk in self._h5object.links
                  if lk.path.name == name][0], self)
+
+    def open_link(self, name):
+        """ open a file tree element as link
+
+        :param name: element name
+        :type name: :obj:`str`
+        :returns: file tree object
+        :rtype: :class:`FTObject`
+        """
+        return H5CppLink(
+            [lk for lk in self._h5object.links
+             if lk.path.name == name][0], self)
 
     def create_group(self, n, nxclass=None):
         """ open a file tree element
@@ -1122,15 +1139,23 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         :returns: attribute object
         :rtype: :class:`H5CppAtribute`
         """
-        names = [at.name for at in self._h5object]
+        at = None
+        names = [att.name for att in self._h5object]
         if name in names:
             if overwrite:
-                self._h5object.remove(name)
+                try:
+                    if str(self[name].dtype) == _tostr(dtype):
+                        at = self._h5object[name]
+                except Exception as e:
+                    print(str(e))
+                if at is None:
+                    self._h5object.remove(name)
             else:
                 raise Exception("Attribute %s exists" % name)
         shape = shape or []
         if shape:
-            at = self._h5object.create(name, pTh[_tostr(dtype)], shape)
+            if at is None:
+                at = self._h5object.create(name, pTh[_tostr(dtype)], shape)
             if dtype in ['string', b'string']:
                 emp = np.empty(shape, dtype="unicode")
                 emp[:] = ''
@@ -1138,7 +1163,8 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
             else:
                 at.write(np.zeros(shape, dtype=dtype))
         else:
-            at = self._h5object.create(name, pTh[_tostr(dtype)])
+            if at is None:
+                at = self._h5object.create(name, pTh[_tostr(dtype)])
             if dtype in ['string', b'string']:
                 at.write(np.array(u"", dtype="unicode"))
             else:

@@ -26,9 +26,9 @@ import subprocess
 import PyTango
 import time
 try:
-    import TestMacroServer
+    import TestPool
 except Exception:
-    from . import TestMacroServer
+    from . import TestPool
 
 
 # test fixture
@@ -101,7 +101,7 @@ class TestServerSetUp(object):
     # starts server
     def start(self):
         db = PyTango.Database()
-        path = os.path.dirname(TestMacroServer.__file__)
+        path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
 
@@ -257,7 +257,7 @@ class MultiTestServerSetUp(object):
     # starts server
     def start(self):
         db = PyTango.Database()
-        path = os.path.dirname(TestMacroServer.__file__)
+        path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
 

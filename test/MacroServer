@@ -1,8 +1,9 @@
+#!/usr/bin/env python
 #    "$Name:  $";
 #    "$Header:  $";
 # ============================================================================
 #
-# file :        TestMacroServer.py
+# file :        MacroServer
 #
 # description : Python source for the TestMacroServer and its commands.
 #                The class is derived from Device. It represents the
@@ -338,6 +339,13 @@ class DoorClass(PyTango.DeviceClass):
 
     #    Device Properties
     device_property_list = {
+        'RecorderPath':
+            [
+                PyTango.DevVarStringArray,
+                "list of directories to search for recorders (path separators "
+                "can be '\n' or ':')",
+                []
+            ],
     }
 
     #    Command definitions
