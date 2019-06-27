@@ -155,6 +155,8 @@ knownHosts = {
                    'user': 'p07user', 'dbname': 'nxsconfig'},
     'hzgpp07eh4': {'beamline': 'p07', 'masterhost': 'hzgpp07eh4',
                    'user': 'p07user', 'dbname': 'nxsconfig'},
+    'hasmrixs': {'beamline': 'rix', 'masterhost': 'hasmrixs',
+                 'user': 'rixuser', 'dbname': 'nxsconfig'},
 }
 
 
