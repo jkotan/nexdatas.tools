@@ -1509,7 +1509,9 @@ class OnlineCPCreator(CPCreator):
         cpnames = set()
         while device:
             if device.nodeName == 'device':
-                name = self._getChildText(device, "name")
+                dvname = self._getChildText(device, "name")
+                sardananame = self._getChildText(device, "sardananame")
+                name = sardananame or dvname
                 if self.options.lower:
                     name = name.lower()
                 dv = Device()
@@ -1542,7 +1544,9 @@ class OnlineCPCreator(CPCreator):
             self.options.external or self.options.server)
         while device:
             if device.nodeName == 'device':
-                name = self._getChildText(device, "name")
+                dvname = self._getChildText(device, "name")
+                sardananame = self._getChildText(device, "sardananame")
+                name = sardananame or dvname
                 if self.options.lower:
                     name = name.lower()
                     cpname = cpname.lower()

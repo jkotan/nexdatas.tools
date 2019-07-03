@@ -861,6 +861,399 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 
         self.checkxmls(args, fname)
 
+    def test_onlinecp_pilatus_sardananame(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>p1m</name>
+ <sardananame>mypilatus</sardananame>
+ <type>type_tango</type>
+ <module>pilatus</module>
+ <device>p09/pilatus/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c mypilatus '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                    ('nxscreate onlinecp --component mypilatus '
+                     ' %s %s ' % (fname,  self.flags)).split(),
+                ],
+                [
+                    ['mypilatus'],
+                    [
+                        'mypilatus_delaytime',
+                        'mypilatus_description',
+                        'mypilatus_exposureperiod',
+                        'mypilatus_exposuretime',
+                        'mypilatus_filedir',
+                        'mypilatus_filepostfix',
+                        'mypilatus_fileprefix',
+                        'mypilatus_filestartnum_cb',
+                        'mypilatus_filestartnum',
+                        'mypilatus_mxparameters_cb',
+                        'mypilatus_mxparameters',
+                        'mypilatus_lastimagetaken',
+                        'mypilatus_nbexposures',
+                        'mypilatus_nbframes',
+                        'mypilatus_postrun'
+                    ],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" '
+                     'name="$var.entryname#\'scan\'$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="mypilatus">\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="x_pixel_size">172</field>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="y_pixel_size">172</field>\n'
+                     '        <field type="NX_CHAR" name="layout">area'
+                     '</field>\n'
+                     '        <field type="NX_CHAR" name="description">'
+                     '$datasources.mypilatus_description'
+                     '<strategy mode="INIT"/>\n'
+                     '        </field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field units="s" type="NX_FLOAT64" '
+                     'name="delay_time">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_delaytime</field>\n'
+                     '          <field units="s" type="NX_FLOAT64" '
+                     'name="exposure_period">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_exposureperiod</field>\n'
+                     '          <field units="s" type="NX_FLOAT64" '
+                     'name="exposure_time">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_exposuretime</field>\n'
+                     '          <field type="NX_UINT64" name="nb_frames">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_nbframes</field>\n'
+                     '          <field type="NX_UINT64" name="nb_exposures">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_nbexposures</field>\n'
+                     '          <field type="NX_CHAR" name="postrun">'
+                     '$datasources.mypilatus_postrun<strategy mode="FINAL"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_CHAR" name="file_dir">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_filedir</field>\n'
+                     '          <field type="NX_CHAR" name="file_postfix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_filepostfix</field>\n'
+                     '          <field type="NX_CHAR" name="file_prefix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_fileprefix</field>\n'
+                     '          <field type="NX_CHAR" '
+                     'name="last_image_taken">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_lastimagetaken</field>\n'
+                     '          <field type="NX_UINT" '
+                     'name="signal">1</field>\n'
+                     '          <field type="NX_CHAR" '
+                     'name="file_start_index_num">\n'
+                     '            <strategy mode="STEP"/>'
+                     '$datasources.mypilatus_filestartnum_cb</field>\n'
+                     '          <field type="NX_CHAR" name="mx_parameters">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.mypilatus_mxparameters_cb</field>\n'
+                     '        </group>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link '
+                     'target="$var.entryname#\'scan\'$var.serialno/'
+                     'instrument/mypilatus/data" name="mypilatus"/>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'],
+                    ['<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_delaytime" type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" '
+                     'name="p09/pilatus/exp.01" port="10000"/>\n'
+                     '    <record name="DelayTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="mypilatus_description">\n'
+                     '    <result name="result">\n'
+                     'if "mypilatus_filestartnum" in commonblock:\n'
+                     '    commonblock.pop("mypilatus_filestartnum")\n'
+                     'ds.result = "mypilatus"</result>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_exposureperiod" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ExposurePeriod"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_exposuretime" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="ExposureTime"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_filedir" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FileDir"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_filepostfix" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FilePostfix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_fileprefix" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FilePrefix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="mypilatus_filestartnum_cb">\n'
+                     '    <result name="result">\n'
+                     'if "mypilatus_filestartnum" not in commonblock:\n'
+                     '    commonblock["mypilatus_filestartnum"] = '
+                     'ds.mypilatus_filestartnum - ds.mypilatus_nbframes + 1\n'
+                     'ds.result = ds.mypilatus_filestartnum - '
+                     'ds.mypilatus_nbframes</result>\n'
+                     ' $datasources.mypilatus_filestartnum\n'
+                     ' $datasources.mypilatus_nbframes</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_filestartnum" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="FileStartNum"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n<definition>\n'
+                     '  <datasource type="PYEVAL" '
+                     'name="mypilatus_mxparameters_cb">\n'
+                     '    <result name="result">\n'
+                     'pars = ds.mypilatus_mxparameters\n'
+                     '# pars = "# Wavelength 1.03320 A\\r\\n'
+                     '# Detector_distance 0.32200 m\\r\\n'
+                     '# Beam_xy (1261.00, 1242.00) pixels\\r\\n'
+                     '# Filter_transmission 0.1000\\r\\n'
+                     '# Start_angle 204.9240 deg.\\r\\n'
+                     '# Angle_increment 0.1000 deg.\\r\\n'
+                     '# Phi 404.0470 deg.\\r"\n'
+                     'ds.result = pars\n'
+                     'try:\n'
+                     '    spars = pars.split("\\n'
+                     '")\n'
+                     '    tpars = [pr.replace("# ", "").replace("\\r", "") '
+                     'for pr in spars]\n'
+                     '    tspars = [pr.split(" ") for pr in tpars]\n'
+                     '    res = {}\n'
+                     '    params = {\n'
+                     '        "wavelength": "wavelength",\n'
+                     '        "detector_distance": "distance",\n'
+                     '        "beam_x": "beam_center_x",\n'
+                     '        "beam_y": "beam_center_y",\n'
+                     '        "beam_xy": ["beam_center_x", "beam_center_y"]\n'
+                     '    }\n'
+                     '    for pr in tspars:\n'
+                     '        try:\n'
+                     '            res[pr[0].lower()] = eval('
+                     '" ".join(pr[1:]))\n'
+                     '        except Exception:\n'
+                     '            try:\n'
+                     '                res[pr[0].lower()] = '
+                     'tuple([eval(" ".join(pr[1:-1])), pr[-1]])\n'
+                     '            except Exception:\n'
+                     '                res[pr[0].lower()] = '
+                     'tuple([" ".join(pr[1:-1]), pr[-1]])\n'
+                     '    if res and "__root__" in commonblock.keys():\n'
+                     '        root = commonblock["__root__"]\n'
+                     '        en = root.open('
+                     '"$var.entryname#\'scan\'$var.serialno")\n'
+                     '        dt = en.open("data")\n'
+                     '        ins = en.open("instrument")\n'
+                     '        det = ins.open("mypilatus")\n'
+                     '        for pname, fname in params.items():\n'
+                     '            if pname in res.keys():\n'
+                     '                val = res[pname]\n'
+                     '                if isinstance(val, tuple):\n'
+                     '                    val, units = val\n'
+                     '                else:\n'
+                     '                    units = ""\n'
+                     '                if not isinstance(val, tuple) and not '
+                     'isinstance(val, list):\n'
+                     '                    fld = det.create_field('
+                     'fname, "float64")\n'
+                     '                    fld.write(val)\n'
+                     '                    if units:\n'
+                     '                        fld.attributes.create('
+                     '"units", "string").write(units)\n'
+                     '                elif isinstance(fname, tuple) '
+                     'or isinstance(fname, list):\n'
+                     '                    if len(fname) == len(val):\n'
+                     '                        for i, fn in enumerate(fname):\n'
+                     '                            fld = det.create_field('
+                     'str(fn), "float64")\n'
+                     '                            vl = val[i]\n'
+                     '                            fld.write(float(vl))\n'
+                     '                            if units:\n'
+                     '                                fld.attributes.create('
+                     '"units", "string").write(units)\n'
+                     'except Exception as e:\n'
+                     '    # pass\n'
+                     '    ds.result += str(e)\n'
+                     '</result>\n'
+                     ' $datasources.mypilatus_mxparameters</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  '
+                     '<datasource name="mypilatus_mxparameters" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000"'
+                     ' member="attribute" name="p09/pilatus/exp.01"'
+                     ' port="10000"/>\n'
+                     '    <record name="MXparameters"/>\n'
+                     '  </datasource>\n</definition>\n',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_lastimagetaken" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="LastImageTaken"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_nbexposures" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="NbExposures"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version="1.0" ?>\n'
+                     '<definition>\n'
+                     '  <datasource name="mypilatus_nbframes" '
+                     'type="TANGO">\n'
+                     '    <device group="mypilatus_" hostname="haso000" '
+                     'member="attribute" name="p09/pilatus/exp.01" '
+                     'port="10000"/>\n'
+                     '    <record name="NbFrames"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="mypilatus_postrun">\n'
+                     '    <result name="result">\n'
+                     'unixdir = (ds.mypilatus_filedir).replace("\\\\","/")\n'
+                     'if len(unixdir)> 1 and unixdir[1] == ":":\n'
+                     '    unixdir = "/data" + unixdir[2:]\n'
+                     'if unixdir and unixdir[-1] == "/":\n'
+                     '    unixdir = unixdir[:-1]\n'
+                     'filestartnum = commonblock["mypilatus_filestartnum"] - '
+                     '1\n'
+                     'result = "" + unixdir + "/" + ds.mypilatus_fileprefix + '
+                     '"%05d"\n'
+                     'result += ds.mypilatus_filepostfix + ":"\n'
+                     'filelastnumber = ds.mypilatus_filestartnum - 1\n'
+                     'if "__root__" in commonblock.keys():\n'
+                     '    root = commonblock["__root__"]\n'
+                     '    if hasattr(root, "currentfileid") and '
+                     'hasattr(root, "stepsperfile"):\n'
+                     '        spf = root.stepsperfile\n'
+                     '        cfid = root.currentfileid\n'
+                     '        if spf > 0 and cfid > 0:\n'
+                     '            nbframes = ds.mypilatus_nbframes\n'
+                     '            filelastnumber = min(filestartnum + cfid * '
+                     'nbframes * spf - 1, filelastnumber)\n'
+                     '            filestartnum = filestartnum + (cfid - 1) * '
+                     'nbframes * spf\n'
+                     'result += str(filestartnum) + ":" +  '
+                     'str(filelastnumber)\n'
+                     'ds.result = result\n'
+                     '</result>\n'
+                     ' $datasources.mypilatus_filestartnum\n'
+                     ' $datasources.mypilatus_filedir\n'
+                     ' $datasources.mypilatus_nbframes\n'
+                     ' $datasources.mypilatus_filepostfix\n'
+                     ' $datasources.mypilatus_fileprefix</datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+
+        self.checkxmls(args, fname)
+
     def test_onlinecp_lambda_entry(self):
         """ test nxsccreate stdcomp file system
         """
