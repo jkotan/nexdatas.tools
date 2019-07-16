@@ -20,10 +20,7 @@
 # the unittest runner
 #
 
-import os
-import sys
 import main
-
 
 
 if __name__ == "__main__":
