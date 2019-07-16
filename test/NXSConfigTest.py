@@ -61,6 +61,8 @@ class mytty(object):
     def isatty(self):
         return True
 
+    def __del__(self):
+        self.__underlying.close()
 
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
@@ -76,8 +78,7 @@ IS64BIT = (struct.calcsize("P") == 8)
 def myinput(w, text):
     myio = os.fdopen(w, 'w')
     myio.write(text)
-
-    # myio.close()
+    myio.close()
 
 
 # test fixture
@@ -145,6 +146,7 @@ For more help:
         self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
         self.__cmps = []
+        self.maxDiff = None
         self.__ds = []
         self.__man = []
         self.children = ("record", "doc", "device", "database", "query",
@@ -353,9 +355,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -452,9 +454,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -512,9 +514,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -576,9 +578,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -646,9 +648,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -720,9 +722,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -788,9 +790,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -860,9 +862,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -928,9 +930,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -1001,9 +1003,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "__mcs_test_component__"
         name2 = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1__'
@@ -1100,9 +1102,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "__mcs_test_component__"
         name2 = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1__'
@@ -1216,9 +1218,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -1326,9 +1328,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<datasource type='TANGO' name='testds1'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<datasource type='CLIENT' name'testds1'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -1433,9 +1435,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><group type='NXentry'/>" \
               "\n</definition>"
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
                "$datasources.sl1right</definition>"
         while name in avc:
             name = name + '_1'
@@ -1577,9 +1579,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<datasource type='TANGO' name='testds1'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<datasource type='CLIENT' name'testds1'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -1726,12 +1728,12 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>" \
-              "\n</definition>"
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
-               "$datasources.sl1right</definition>"
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
-               "</definition>"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><group type='NXentry'/>" \
+              "\n</definition>\n"
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>\n"
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
+               "</definition>\n"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -1784,7 +1786,8 @@ For more help:
                 er = mystderr.getvalue()
                 el.createConfiguration(man + [nm])
                 cpxml = el.xmlstring
-                self.assertEqual(vl.strip(), cpxml)
+                cpxml = cpxml.strip("\n")
+                self.assertEqual(vl.strip(), cpxml.strip())
                 self.assertEqual(er, "")
 
         for scmd in commands:
@@ -1828,6 +1831,7 @@ For more help:
             er = mystderr.getvalue()
             el.createConfiguration(man + [name, name2])
             cpxml = el.xmlstring
+            cpxml = cpxml.strip("\n")
             self.assertEqual(vl.strip(), cpxml)
 
             self.assertEqual(er, "")
@@ -1848,6 +1852,7 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue().strip()
             er = mystderr.getvalue().strip()
+            cpxml = cpxml.strip("\n")
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -1875,9 +1880,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition>" \
               "<group type='NXentry' name='test'/>\n</definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<group type='NXentry2' name='test'/>" \
                "$datasources.sl1right</definition>"
         while name in avc:
@@ -1957,9 +1962,9 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition>" \
               "<field type='NXentry' name='test'/>\n</definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<field type='NXentry2' name='test'/>" \
                "$datasources.sl1right</definition>"
         while name in avc:
@@ -2039,8 +2044,8 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<field type='NXentry' name='test'>\n"
-        xml2 = "<?xml version='1.0'?><field type='NXentry' name='test2'>"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<field type='NXentry' name='test'>\n"
+        xml2 = "<?xml version='1.0' encoding='utf8'?><field type='NXentry' name='test2'>"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -2095,9 +2100,7 @@ For more help:
             vl = mystdout.getvalue().strip()
             er = mystderr.getvalue()
             self.assertEqual(vl.strip(), "")
-            self.assertEqual(
-                str(er)[:40],
-                "Error from XML parser: no element found: "[:40])
+            self.assertEqual(str(er)[:5], "Error")
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
@@ -2128,9 +2131,9 @@ For more help:
         while dsname2 in avds:
             dsname2 = dsname2 + '_2'
 
-        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><group type='NXentry'/>" \
               "$datasources.%s\n</definition>" % dsname
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
                "$datasources.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
@@ -2215,9 +2218,9 @@ For more help:
         while dsname2 in avc:
             dsname2 = dsname2 + '_2'
 
-        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><group type='NXentry'/>" \
               "$components.%s\n</definition>" % dsname
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
@@ -2304,15 +2307,15 @@ For more help:
         while dsname2 in avds:
             dsname2 = dsname2 + '_2'
 
-        xml = "<?xml version='1.0'?>\n<definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition>" \
               "<attribute type='NXentry'>$datasources.%s\n</attribute>" \
               "</definition>" % dsname
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'>" \
                "$datasources.%s</field></definition>" % dsname2
-        dsxml = "<?xml version='1.0'?><definition>" \
+        dsxml = "<?xml version='1.0' encoding='utf8'?><definition>" \
                 "<datasource name='%s' type='TANGO'><datasource/>" \
                 "</datasource></definition>" % dsname
-        dsxml2 = "<?xml version='1.0'?><definition>" \
+        dsxml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                  "<datasource name='%s' type='CLIENT'><datasource/>" \
                  "</datasource></definition>" % dsname2
         while name in avc:
@@ -2371,6 +2374,7 @@ For more help:
                 sys.stderr = old_stderr
                 el.createConfiguration(man + [nm])
                 cpxml = el.xmlstring
+                cpxml = cpxml.strip("\n")
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), cpxml)
@@ -2405,9 +2409,9 @@ For more help:
         while dsname2 in avc:
             dsname2 = dsname2 + '_2'
 
-        xml = "<?xml version='1.0'?>\n<definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><group type='NXentry'/>" \
               "$components.%s\n</definition>" % dsname
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'/>" \
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
@@ -2465,6 +2469,7 @@ For more help:
                 sys.stderr = old_stderr
                 el.createConfiguration(man + [nm, dss[nm]])
                 cpxml = el.xmlstring
+                cpxml = cpxml.strip("\n")
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), cpxml)
@@ -2494,10 +2499,10 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?>\n<group type='NXentry'/>\n</definition>"
-        xml2 = "<?xml version='1.0'?><definition<field type='NXentry2'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<group type='NXentry'/>\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition<field type='NXentry2'/>" \
                "</definition>"
-        xml3 = "<?xml version='1.0'?><definition<field type='NXentry2/>" \
+        xml3 = "<?xml version='1.0' encoding='utf8'?><definition<field type='NXentry2/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2554,8 +2559,7 @@ For more help:
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), "")
-                self.assertTrue(str(er).startswith(
-                    "Error from XML parser: not well-formed (invalid token):"))
+                self.assertEqual(str(er)[:5], "Error")
 
         self.assertEqual(el.deleteComponent(name3), None)
         self.__cmps.pop()
@@ -2591,17 +2595,17 @@ For more help:
         while dsname3 in avds:
             dsname3 = dsname3 + '_3'
 
-        xml = "<?xml version='1.0'?>\n<definition><attribute type='NXentry'>" \
+        xml = "<?xml version='1.0' encoding='utf8'?>\n<definition><attribute type='NXentry'>" \
               "$datasources.%s\n</attribute></definition>" % dsname
-        xml2 = "<?xml version='1.0'?><definition><field type='NXentry2'>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><field type='NXentry2'>" \
                "$datasources.%s</field></definition>" % dsname2
-        xml3 = "<?xml version='1.0'?><definition>" \
+        xml3 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<field type='NXentry2'>$datasources.%s</field>" \
                "</definition>" % dsname3
-        dsxml = "<?xml version='1.0'?><definition>" \
+        dsxml = "<?xml version='1.0' encoding='utf8'?><definition>" \
                 "<datasource name=%s' type='TANGO'></datasource>" \
                 "</definition>" % dsname
-        dsxml2 = "<?xml version='1.0'?>" \
+        dsxml2 = "<?xml version='1.0' encoding='utf8'?>" \
                  "<definition><datasource name='%s' type='CLIENT'>" \
                  "</definition>" % dsname2
         dsxml3 = "<?xml version='1.0'>" \
@@ -2670,7 +2674,7 @@ For more help:
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), "")
-                self.assertTrue(str(er).startswith("Error from XML parser:"))
+                self.assertEqual(str(er)[:5], "Error")
 
         self.assertEqual(el.deleteComponent(name3), None)
         self.__cmps.pop()
@@ -2695,7 +2699,7 @@ For more help:
         avc = el.availableComponents()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2744,7 +2748,7 @@ For more help:
         avc = el.availableComponents()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        # xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        # xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
         #       "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2765,9 +2769,9 @@ For more help:
         avc = el.availableComponents()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2833,9 +2837,9 @@ For more help:
         avc = el.availableComponents()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2911,7 +2915,7 @@ For more help:
         avc = el.availableSelections()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_selection"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2958,7 +2962,7 @@ For more help:
         avc = el.availableSelections()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_selection"
-        # xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        # xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
         #       "</definition>"
         while name in avc:
             name = name + '_1'
@@ -2979,9 +2983,9 @@ For more help:
         avc = el.availableSelections()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_selection"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3047,9 +3051,9 @@ For more help:
         avc = el.availableSelections()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_selection"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3126,7 +3130,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3167,7 +3171,7 @@ For more help:
         avc = el.availableDataSources()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3216,7 +3220,7 @@ For more help:
         avc = el.availableDataSources()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        # xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        # xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
         #       "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3237,9 +3241,9 @@ For more help:
         avc = el.availableDataSources()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3305,9 +3309,9 @@ For more help:
         avc = el.availableDataSources()
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_datasource"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
-        xml2 = "<?xml version='1.0'?><definition><group type='NXentry2'/>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry2'/>" \
                "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3384,7 +3388,7 @@ For more help:
         avc = el.availableComponents()
 
         name = "mcs_test_component"
-        # xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        # xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
         #       "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3413,7 +3417,7 @@ For more help:
         avc = el.availableComponents()
 
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3466,7 +3470,7 @@ For more help:
         avc = el.availableComponents()
 
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -3576,7 +3580,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -3632,7 +3636,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='$var.myentry'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -3698,9 +3702,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         name2 = "mcs_var_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='$var.myentry'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition><doc>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><doc>" \
                "$var(myentry=entry2)</doc></definition>"
         while name in avc:
             name = name + '_1'
@@ -3784,7 +3788,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='$var.entryType' name='$var.myentry'/>" \
               "</definition>"
         while name in avc:
@@ -3850,9 +3854,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         name2 = "mcs_var_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='$var.entryType' name='$var.myentry'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<doc>$var(myentry=entry2) $var(entryType=NXentry)</doc>" \
                "</definition>"
         while name in avc:
@@ -3934,10 +3938,10 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         name2 = "mcs_var_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='$var.entryType' " \
               "name='$var.myentry#\"12def34\"'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<doc>$var(myentry=entry2) $var(entryType=NXentry)</doc>" \
                "</definition>"
         while name in avc:
@@ -4020,13 +4024,13 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         name2 = "mcs_var_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='entry'>" \
               "<group type='NXinstrument' name='instrument'> " \
               "<group type='NXdetector' name='$var.detector#\"mydetector\"'>" \
               "<group type='NXtransformations' name='transformations'/>" \
               "</group></group></group></definition>"
-        xml2 = "<?xml version='1.0'?><definition>" \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
                "<group type='NXentry' name='entry'>" \
                "<group type='NXinstrument' name='instrument'>" \
                "<group type='NXdetector' name='pilatus'>" \
@@ -4115,7 +4119,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='$var.myentry#\"12def34\"'/>" \
               "</definition>"
         while name in avc:
@@ -4181,7 +4185,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" + \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" + \
               "<group type='NXentry' " + \
               "name='$var.myentry#&quot;12def34&quot;'/></definition>"
         while name in avc:
@@ -4245,7 +4249,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry' " +\
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry' " +\
               "name='$var.myentry#&quot;12def34&quot;'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -4501,7 +4505,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" + \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" + \
               "<group type='$var.entryType#\'myty\'' name='$var.myentry'/>" + \
               "</definition>"
         while name in avc:
@@ -4632,7 +4636,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" + \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" + \
               "<group type=\"$var.entryType#'myty'\" name='$var.myentry'/>" + \
               "</definition>"
         while name in avc:
@@ -5640,7 +5644,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition><group type='NXentry'/>" + \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition><group type='NXentry'/>" + \
               "</definition>"
         while name in avc:
             name = name + '_1'
@@ -5695,7 +5699,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='$var.myentry'/></definition>"
         while name in avc:
             name = name + '_1'
@@ -5759,9 +5763,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         name2 = "mcs_var_component"
-        xml = "<?xml version='1.0'?><definition>" \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<group type='NXentry' name='$var.myentry'/></definition>"
-        xml2 = "<?xml version='1.0'?><definition><doc>" + \
+        xml2 = "<?xml version='1.0' encoding='utf8'?><definition><doc>" + \
                "$var(myentry=entry2)</doc></definition>"
         while name in avc:
             name = name + '_1'
@@ -5837,7 +5841,7 @@ For more help:
 
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
-        xml = "<?xml version='1.0'?><definition>" + \
+        xml = "<?xml version='1.0' encoding='utf8'?><definition>" + \
               "<group type='$var.entryType' name='$var.myentry'/></definition>"
         while name in avc:
             name = name + '_1'
