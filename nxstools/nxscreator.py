@@ -87,8 +87,8 @@ def _toxml(node):
     :rtype: :obj:`str`
     """
     xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
-    if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
-        xml = str(xml[38:])
+    # if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
+    #     xml = str(xml[38:])
     return xml
 
 
@@ -1803,14 +1803,16 @@ class StandardCPCreator(CPCreator):
                             xml,
                             parser=XMLParser(collect_ids=False))
                     nodes = root.findall(".//attribute")
-                    nodes.extend(root.findall("../field"))
-                    nodes.extend(root.findall("../link"))
+                    nodes.extend(root.findall(".//field"))
+                    nodes.extend(root.findall(".//link"))
                     grnodes = root.findall(".//group")
                     for node in nodes:
                         text = self.__getText(node)
                         for ms in missing:
                             label = "$(%s)" % ms
                             if label in text:
+                                parent = node.getparent()
+                                parent.remove(node)
                                 break
                     for node in grnodes:
                         text = node.attrib["name"]
@@ -1818,6 +1820,8 @@ class StandardCPCreator(CPCreator):
                             for ms in missing:
                                 label = "$(%s)" % ms
                                 if label in text:
+                                    parent = node.getparent()
+                                    parent.remove(node)
                                     break
                     xml = _toxml(root)
                     if self._printouts:
