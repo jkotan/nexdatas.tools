@@ -1161,7 +1161,7 @@ class OnlineDSCreator(Creator):
                     dv.tolower()
                 try:
                     dv.splitHostPort()
-                except Exception as e:
+                except Exception:
                     if self._printouts:
                         print("ERROR %s: host for module %s of %s "
                               "type not defined"
