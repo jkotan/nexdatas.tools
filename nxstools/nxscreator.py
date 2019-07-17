@@ -22,8 +22,12 @@
 import copy
 import os.path
 import json
+import sys
 
-from xml.dom.minidom import parse, parseString
+import lxml.etree as etree
+import xml.etree.ElementTree as et
+from lxml.etree import XMLParser
+
 from nxstools.nxsdevicetools import (
     storeDataSource, getDataSourceComponents, storeComponent,
     moduleAttributes, motorModules,
@@ -41,6 +45,10 @@ try:
 except Exception:
     pass
 
+if sys.version_info > (3,):
+    basestring = str
+    unicode = str
+
 
 class CPExistsException(Exception):
 
@@ -52,6 +60,36 @@ class DSExistsException(Exception):
 
     """ DataSource already exists exception
     """
+
+
+def _tostr(text):
+    """ converts text  to str type
+
+    :param text: text
+    :type text: :obj:`bytes` or :obj:`unicode`
+    :returns: text in str type
+    :rtype: :obj:`str`
+    """
+    if isinstance(text, str):
+        return text
+    elif sys.version_info > (3,):
+        return str(text, encoding="utf8")
+    else:
+        return str(text)
+
+
+def _toxml(node):
+    """ provides xml content of the whole node
+
+    :param node: DOM node
+    :type node: :class:`xml.dom.Node`
+    :returns: xml content string
+    :rtype: :obj:`str`
+    """
+    xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
+    if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
+        xml = str(xml[38:])
+    return xml
 
 
 class Device(object):
@@ -539,13 +577,13 @@ class Creator(object):
         """ provides xml content of the node
 
         :param node: DOM node
-        :type node: :class:`xml.dom.minidom.Node`
+        :type node: :class:`lxml.etree.Element`
         :returns: xml content string
         :rtype: :obj:`str`
         """
         if not node:
             return
-        xml = node.toxml()
+        xml = _toxml(node)
         start = xml.find('>')
         end = xml.rfind('<')
         if start == -1 or end < start:
@@ -558,15 +596,14 @@ class Creator(object):
         """ provides text of child named by childname
 
         :param parent: parent node
-        :type parent: :class:`xml.dom.minidom.Node`
+        :type parent: :class:`lxml.etree.Element`
         :param childname: child name
         :type childname: :opj:`str`
         :returns: text string
         :rtype: :obj:`str`
         """
-        return cls._getText(
-            parent.getElementsByTagName(childname)[0]) \
-            if len(parent.getElementsByTagName(childname)) else None
+        children = parent.findall(childname)
+        return cls._getText(children[0]) if len(children) else None
 
     def _getModuleName(self, device):
         """ provides module name
@@ -1093,10 +1130,10 @@ class OnlineDSCreator(Creator):
         self.datasources = {}
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
-
-        indom = parse(self.args[0])
-        hw = indom.getElementsByTagName("hw")
-        device = hw[0].firstChild
+        hw = etree.parse(self.args[0],
+                         parser=XMLParser(collect_ids=False)).getroot()
+        if hw.tag != 'hw':
+            hw = hw.find('hw')
         dscps = {}
         if self.options.server and self._printouts and \
            (
@@ -1109,8 +1146,8 @@ class OnlineDSCreator(Creator):
             except Exception:
                 dscps = {}
 
-        while device:
-            if device.nodeName == 'device':
+        for device in hw:
+            if device.tag == 'device':
                 dv = Device()
                 dv.name = self._getChildText(device, "name")
                 dv.dtype = self._getChildText(device, "type")
@@ -1129,7 +1166,6 @@ class OnlineDSCreator(Creator):
                         print("ERROR %s: host for module %s of %s "
                               "type not defined"
                               % (dv.name, dv.module, dv.dtype))
-                    device = device.nextSibling
                     continue
                 dv.findAttribute(tangohost, self.options.clientlike)
                 created = False
@@ -1195,7 +1231,6 @@ class OnlineDSCreator(Creator):
                             "SKIPPING %s:    module '%s' of '%s' "
                             "type not defined"
                             % (dv.name, dv.module, dv.dtype))
-            device = device.nextSibling
 
 
 class CPCreator(Creator):
@@ -1332,13 +1367,13 @@ class CompareOnlineDS(object):
         """ provides xml content of the node
 
         :param node: DOM node
-        :type node: :class:`xml.dom.minidom.Node`
+        :type node: :class:`lxml.etree.Element`
         :returns: xml content string
         :rtype: :obj:`str`
         """
         if not node:
             return
-        xml = node.toxml()
+        xml = _toxml(node)
         start = xml.find('>')
         end = xml.rfind('<')
         if start == -1 or end < start:
@@ -1351,15 +1386,14 @@ class CompareOnlineDS(object):
         """ provides text of child named by childname
 
         :param parent: parent node
-        :type parent: :class:`xml.dom.minidom.Node`
+        :type parent: :class:`lxml.etree.Element`
         :param childname: child name
         :type childname: :opj:`str`
         :returns: text string
         :rtype: :obj:`str`
         """
-        return cls._getText(
-            parent.getElementsByTagName(childname)[0]) \
-            if len(parent.getElementsByTagName(childname)) else None
+        children = parent.findall(childname)
+        return cls._getText(children[0]) if len(children) else None
 
     def _load(self, fname):
         """ loads device data from online.xml file
@@ -1371,11 +1405,12 @@ class CompareOnlineDS(object):
         """
 
         dct = {}
-        indom = parse(fname)
-        hw = indom.getElementsByTagName("hw")
-        device = hw[0].firstChild
-        while device:
-            if device.nodeName == 'device':
+        hw = etree.parse(fname,
+                         parser=XMLParser(collect_ids=False)).getroot()
+        if hw.tag != 'hw':
+            hw = hw.find('hw')
+        for device in hw:
+            if device.tag == 'device':
                 name = self._getChildText(device, "name")
                 if self.options.lower:
                     name = name.lower()
@@ -1503,11 +1538,14 @@ class OnlineCPCreator(CPCreator):
         :returns: list of components with xml templates
         :rtype: :obj:`list` <:obj:`str` >
         """
-        indom = parse(self.args[0])
-        hw = indom.getElementsByTagName("hw")
+        hw = etree.parse(
+            self.args[0],
+            parser=XMLParser(collect_ids=False)).getroot()
+        if hw.tag != 'hw':
+            hw = hw.find('hw')
         device = hw[0].firstChild
         cpnames = set()
-        while device:
+        for device in hw:
             if device.nodeName == 'device':
                 dvname = self._getChildText(device, "name")
                 sardananame = self._getChildText(device, "sardananame")
@@ -1536,14 +1574,15 @@ class OnlineCPCreator(CPCreator):
         """
         self.datasources = {}
         self.components = {}
-        indom = parse(self.args[0])
-        hw = indom.getElementsByTagName("hw")
-        device = hw[0].firstChild
+        hw = etree.parse(self.args[0],
+                         parser=XMLParser(collect_ids=False)).getroot()
+        if hw.tag != 'hw':
+            hw = hw.find('hw')
         cpname = self.options.component
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
-        while device:
-            if device.nodeName == 'device':
+        for device in hw:
+            if device.tag == 'device':
                 dvname = self._getChildText(device, "name")
                 sardananame = self._getChildText(device, "sardananame")
                 name = sardananame or dvname
@@ -1760,29 +1799,32 @@ class StandardCPCreator(CPCreator):
                     else:
                         missing.append(var)
                 if missing:
-                    indom = parseString(xml)
-                    nodes = indom.getElementsByTagName("attribute")
-                    nodes.extend(indom.getElementsByTagName("field"))
-                    nodes.extend(indom.getElementsByTagName("link"))
-                    grnodes = indom.getElementsByTagName("group")
+                    if sys.version_info > (3,):
+                        root = et.fromstring(
+                            bytes(xml, "UTF-8"),
+                            parser=XMLParser(collect_ids=False))
+                    else:
+                        root = et.fromstring(
+                            xml,
+                            parser=XMLParser(collect_ids=False))
+                    nodes = root.findall(".//attribute")
+                    nodes.extend(root.findall("../field"))
+                    nodes.extend(root.findall("../link"))
+                    grnodes = root.findall(".//group")
                     for node in nodes:
                         text = self.__getText(node)
                         for ms in missing:
                             label = "$(%s)" % ms
                             if label in text:
-                                parent = node.parentNode
-                                parent.removeChild(node)
                                 break
                     for node in grnodes:
-                        text = node.getAttribute("name")
+                        text = node.attrib["name"]
                         if text and "$(" in text:
                             for ms in missing:
                                 label = "$(%s)" % ms
                                 if label in text:
-                                    parent = node.parentNode
-                                    parent.removeChild(node)
                                     break
-                    xml = indom.toxml()
+                    xml = _toxml(root)
                     if self._printouts:
                         print("MISSING %s" % missing)
                     errors = []
@@ -1830,22 +1872,17 @@ class StandardCPCreator(CPCreator):
                     self.__params))
 
     @classmethod
-    def __getText(cls, node):
+    def getText(cls, node):
         """ collects text from text child nodes
 
         :param node: parent node
-        :type node: :obj:`xml.dom.minidom.Node`
-        :returns: node content text
-        :rtype: :obj:`str`
+        :type node: :obj:`xml.etree.ElementTree.Element`
         """
-        text = ""
-        if node:
-            child = node.firstChild
-            while child:
-                if child.nodeType == child.TEXT_NODE:
-                    text += child.data
-                child = child.nextSibling
-        return text
+        if node is not None:
+            tnodes = ([node.text] if node.text else []) \
+                     + [child.tail for child in node if child.tail]
+            return unicode("".join(tnodes)).strip()
+        return ""
 
 
 if __name__ == "__main__":

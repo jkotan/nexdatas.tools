@@ -19,8 +19,54 @@
 
 """ Command-line tool for ascess to the nexdatas configuration server """
 
-import xml
-from xml.dom.minidom import parseString
+import sys
+import xml.etree.ElementTree as et
+from lxml.etree import XMLParser
+
+
+if sys.version_info > (3,):
+    unicode = str
+
+
+def _parseString(text):
+    if sys.version_info > (3,):
+        return et.fromstring(
+            bytes(text, "UTF-8"),
+            parser=XMLParser(collect_ids=False))
+    else:
+        return et.fromstring(
+            text,
+            parser=XMLParser(collect_ids=False))
+
+
+def _tostr(text):
+    """ converts text  to str type
+
+    :param text: text
+    :type text: :obj:`bytes` or :obj:`unicode`
+    :returns: text in str type
+    :rtype: :obj:`str`
+    """
+    if isinstance(text, str):
+        return text
+    elif sys.version_info > (3,):
+        return str(text, encoding="utf8")
+    else:
+        return str(text)
+
+
+def _toxml(node):
+    """ provides xml content of the whole node
+
+    :param node: DOM node
+    :type node: :class:`xml.dom.Node`
+    :returns: xml content string
+    :rtype: :obj:`str`
+    """
+    xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
+    if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
+        xml = str(xml[38:])
+        return xml
 
 
 class ParserTools(object):
@@ -29,31 +75,30 @@ class ParserTools(object):
     """
 
     @classmethod
-    def _getPureText(cls, node):
-        """ provides  xml content of the node
-        :param node: DOM node
-        :type node: :class:`xml.dom.minidom.Node`
-        :returns: xml content string
-        :rtype: :obj:`str`
+    def getPureText(cls, node):
+        """ collects text from text child nodes
+
+        :param node: parent node
+        :type node: :obj:`xml.etree.ElementTree.Element`
         """
-        rc = []
-        for child in node.childNodes:
-            if child.nodeType == node.TEXT_NODE:
-                rc.append(str(child.data).strip())
-        return ''.join(rc).strip()
+        if node is not None:
+            tnodes = ([node.text] if node.text else []) \
+                     + [child.tail for child in node if child.tail]
+            return unicode("".join(tnodes)).strip()
+        return ""
 
     @classmethod
     def _getText(cls, node):
         """ provides  xml content of the node
 
         :param node: DOM node
-        :type node: :class:`xml.dom.minidom.Node`
+        :type node: :class:`lxml.etree.Element`
         :returns: xml content string
         :rtype: :obj:`str`
         """
         if not node:
             return
-        xmlc = node.toxml()
+        xmlc = _toxml(node)
         start = xmlc.find('>')
         end = xmlc.rfind('<')
         if start == -1 or end < start:
@@ -66,51 +111,56 @@ class ParserTools(object):
         """ fetches record name or query from datasource node
 
         :param node: datasource node
-        :type node: :class:`xml.dom.minidom.Node`
+        :type node: :class:`lxml.etree.Element`
         :returns: record name or query
         :rtype: :obj:`str`
         """
         withRec = ["CLIENT", "TANGO"]
         withQuery = ["DB"]
-        if node.nodeName == 'datasource':
+        if node.tag == 'datasource':
             dsource = node
         else:
-            dsource = node.getElementsByTagName("datasource")[0] \
-                if len(node.getElementsByTagName("datasource")) else None
-        dstype = dsource.attributes["type"] \
-            if dsource and dsource.hasAttribute("type") else None
-        if dstype and dstype.value in withRec:
+            dsource = node.find(".//datasource")
+        dstype = dsource.attrib["type"]
+        if dstype and dstype in withRec:
             res = ''
             host = None
             port = None
             dname = None
             rname = None
-            device = dsource.getElementsByTagName("device")
-            if device and len(device) > 0:
-                if device[0].hasAttribute("hostname"):
-                    host = device[0].attributes["hostname"].value
-                if device[0].hasAttribute("port"):
-                    port = device[0].attributes["port"].value
-                if device[0].hasAttribute("name"):
-                    dname = device[0].attributes["name"].value
+            member = None
+            device = node.findall("device")
+            if device is not None and len(device) > 0:
+                host = device[0].get("hostname")
+                port = device[0].get("port")
+                dname = device[0].get("name")
+                member = device[0].get("member")
 
-            record = dsource.getElementsByTagName("record")
-            if record and len(record) > 0:
-                if record[0].hasAttribute("name"):
-                    rname = record[0].attributes["name"].value
+            surfix = ""
+            prefix = ""
+            if member or member != 'attribute':
+                if member == 'property':
+                    prefix = '@'
+                elif member == 'command':
+                    surfix = '()'
+
+            record = node.findall("record")
+            if record is not None and len(record) > 0:
+                rname = record[0].get("name")
+                if rname:
                     if dname:
                         if host:
                             if not port:
                                 port = '10000'
-                            res = '%s:%s/%s/%s' % (host, port, dname, rname)
+                            res = '%s:%s/%s/%s%s%s' % (
+                                host, port, dname, prefix, rname, surfix)
                         else:
-                            res = '%s/%s' % (dname, rname)
+                            res = '%s/%s%s%s' % (dname, prefix, rname, surfix)
                     else:
                         res = rname
-            return res
-        elif dstype and dstype.value in withQuery:
-            query = cls._getText(dsource.getElementsByTagName("query")[0]) \
-                if len(dsource.getElementsByTagName("query")) else None
+                        return res
+        elif dstype and dstype in withQuery:
+            query = dsource.find(".//query")
             if query and query.strip():
                 return query.strip() or ""
 
@@ -126,14 +176,16 @@ class ParserTools(object):
         """
         rxml = ""
         if xmls:
-            indom1 = parseString(xmls[0])
+            indom1 = _parseString(xmls[0])
             for xmlc in xmls[1:]:
-                indom2 = parseString(xmlc)
-                definitions = indom2.getElementsByTagName("definition")
+                definition = _parseString(xmlc)
+                if definition.tag == "definition":
+                    definitions = [definition]
+                else:
+                    definitions = definition.findall("definition")
                 for defin in definitions:
-                    for tag in defin.childNodes:
-                        imp = indom1.importNode(tag, True)
-                        indom1.childNodes[0].appendChild(imp)
+                    for tag in defin:
+                        indom1.append(tag)
             rxml = indom1.toxml()
         return rxml
 
@@ -146,7 +198,7 @@ class ParserTools(object):
         :returns: list of datasource descriptions
         :rtype: :obj:`list` <:obj:`dict` <:obj:`str`, :obj:`str`>>
         """
-        indom = parseString(xmlc)
+        indom = _parseString(xmlc)
         return cls.__getDataSources(indom)
 
     @classmethod
@@ -158,21 +210,19 @@ class ParserTools(object):
         :returns: list of datasource descriptions
         :rtype: :obj:`list` <:obj:`dict` <:obj:`str`, :obj:`str`>>
         """
-        if direct:
-            dss = cls.__getChildrenByTagName(node, "datasource")
+        if node.tag == "datasource":
+            dss = [node]
         else:
-            dss = node.getElementsByTagName("datasource")
+            dss = []
+        if direct:
+            dss.extend(node.findadd("datasource"))
+        else:
+            dss.extend(node.findadd("../datasource"))
         dslist = []
         for ds in dss:
-            if ds.nodeName == 'datasource':
-                if ds.hasAttribute("type"):
-                    dstype = ds.attributes["type"].value
-                else:
-                    dstype = None
-                if ds.hasAttribute("name"):
-                    dsname = ds.attributes["name"].value
-                else:
-                    dsname = None
+            if ds.tag == 'datasource':
+                dstype = ds.attrib["type"]
+                dsname = ds.attrib["name"]
                 record = cls.getRecord(ds)
                 dslist.append({
                     "source_type": dstype,
@@ -186,21 +236,21 @@ class ParserTools(object):
     def __getPath(cls, node):
         """ provides node path
 
-        :param node: minidom node
-        :type node: :class:`xml.dom.minidom.Node`
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
         :returns: node path
         :rtype: :obj:`str`
         """
         name = cls.__getAttr(node, "name")
         attr = False
-        while node.parentNode:
+        while node.getparent() is not None:
             onode = node
-            node = node.parentNode
-            if onode.nodeName == "attribute":
+            node = node.getparent()
+            if onode.tag == "attribute":
                 attr = True
             else:
                 attr = False
-            if node.nodeName not in ["group", "field"]:
+            if node.tag not in ["group", "field"]:
                 return name
             else:
                 gname = cls.__getAttr(node, "name")
@@ -219,15 +269,19 @@ class ParserTools(object):
     def __getAttr(cls, node, name, tag=False):
         """ provides value of attirbute
 
-        :param node: minidom node
-        :type node: :class:`xml.dom.minidom.Node`
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
         :returns: attribute value
         :rtype: :obj:`str`
         """
-        if node.hasAttribute(name):
-            return node.attributes[name].value
+        if name in node.attrib:
+            return node.attrib[name]
         elif tag:
-            atnodes = node.getElementsByTagName("attribute")
+            if node.tag == "attribute":
+                atnodes = [node]
+            else:
+                atnodes = []
+            atnodes.extend(node.findall("attribute"))
             text = None
             for at in atnodes:
                 if cls.__getAttr(at, "name") == name:
@@ -243,34 +297,35 @@ class ParserTools(object):
     def __getShape(cls, node):
         """ provides node shape
 
-        :param node: minidom node
-        :type node: :class:`xml.dom.minidom.Node`
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
         :returns: shape list
         :rtype: :obj:`list` <:obj:`int`>
         """
-        rank = int(node.attributes["rank"].value)
+        rank = int(node.attrib["rank"])
         #        shape = ['*'] * rank
         shape = [None] * rank
-        dims = node.getElementsByTagName("dim")
+        dims = node.findall("dim")
         for dim in dims:
-            index = int(dim.attributes["index"].value)
-            if dim.hasAttribute("value"):
+            index = int(dim.attrib["index"])
+            if "value" in dim.attrib:
                 try:
-                    value = int(dim.attributes["value"].value)
+                    value = int(dim.attrib["value"])
                 except ValueError:
-                    value = str(dim.attributes["value"].value)
+                    value = str(dim.attrib["value"])
                 shape[index - 1] = value
             else:
-                dss = node.getElementsByTagName("datasource")
+                dss = dim.findall("datasource")
                 if dss:
-                    if dss[0].hasAttribute("name"):
-                        value = dss[0].attributes["name"].value
-                    else:
+                    value = dss[0].get("name")
+                    if not value:
                         value = '__unnamed__'
                     shape[index - 1] = "$datasources.%s" % value
                 else:
-                    value = " ".join(t.nodeValue for t in dim.childNodes
-                                     if t.nodeType == t.TEXT_NODE)
+                    tnodes = " ".join(
+                        ([dim.text] if dim.text else []) +
+                        [child.tail for child in dim if child.tail])
+                    value = ("".join(tnodes)).strip()
                     try:
                         value = int(value)
                     except Exception:
@@ -286,19 +341,13 @@ class ParserTools(object):
         """ provides direct children by tag name
 
         :param parent: parent node
-        :type parent: :class:`xml.dom.minidom.Node`
+        :type parent: :class:`lxml.etree.Element`
         :param name: tag name
         :type name: :obj:`str`
         :returns: list of children
-        :rtype: :obj:`list` <:class:`xml.dom.minidom.Node`>
+        :rtype: :obj:`list` <:class:`lxml.etree.Element`>
         """
-        children = []
-        for child in parent.childNodes:
-            if child.nodeType == xml.dom.Node.ELEMENT_NODE:
-                if child.tagName == name:
-                    children.append(child)
-
-        return children
+        return [ch for ch in parent.findall(name) if ch.tag == name]
 
     @classmethod
     def parseFields(cls, xmlc):
@@ -310,8 +359,11 @@ class ParserTools(object):
         :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "field"
-        indom = parseString(xmlc)
-        nodes = indom.getElementsByTagName(tagname)
+        indom = _parseString(xmlc)
+        nodes = []
+        if indom.tag == tagname:
+            nodes.append(indom)
+        nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
             if nd.nodeName == tagname:
@@ -374,7 +426,7 @@ class ParserTools(object):
         :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "attribute"
-        indom = parseString(xmlc)
+        indom = _parseString(xmlc)
         nodes = indom.getElementsByTagName(tagname)
         taglist = []
         for nd in nodes:
@@ -437,7 +489,7 @@ class ParserTools(object):
         :rtype: :obj:`list` < :obj:`dict` <:obj:`str`, `any`> >
         """
         tagname = "link"
-        indom = parseString(xmlc)
+        indom = _parseString(xmlc)
         nodes = indom.getElementsByTagName(tagname)
         taglist = []
         for nd in nodes:
@@ -490,7 +542,7 @@ class ParserTools(object):
         :returns: source record
         :rtype: :obj:`str`
         """
-        indom = parseString(xmlc)
+        indom = _parseString(xmlc)
         return cls.getRecord(indom)
 
 

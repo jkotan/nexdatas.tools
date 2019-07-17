@@ -21,7 +21,9 @@
 
 from . import filewriter
 import fnmatch
-from xml.dom.minidom import parseString
+import sys
+import xml.etree.ElementTree as et
+from lxml.etree import XMLParser
 
 from nxstools.nxsparser import ParserTools
 
@@ -33,14 +35,22 @@ def getdsname(xmlstring):
     :type xmlstring: :obj:`str`
     """
 
-    indom = parseString(xmlstring)
-    nodes = indom.getElementsByTagName("datasource")
+    if sys.version_info > (3,):
+        node = et.fromstring(
+            bytes(xmlstring, "UTF-8"),
+            parser=XMLParser(collect_ids=False))
+    else:
+        node = et.fromstring(
+            xmlstring,
+            parser=XMLParser(collect_ids=False))
+    if node.tag == 'datasource':
+        nodes = [node]
+    else:
+        nodes = node.findall(".//datasource")
     dsname = ""
     if nodes:
-        ds = nodes[0]
-        if ds.hasAttribute("name"):
-            dsname = ds.attributes["name"].value
-    return dsname
+        dsname = nodes[0].attrib["name"]
+    return dsname or ""
 
 
 def getdstype(xmlstring):
@@ -50,13 +60,21 @@ def getdstype(xmlstring):
     :type xmlstring: :obj:`str`
     """
 
-    indom = parseString(xmlstring)
-    nodes = indom.getElementsByTagName("datasource")
+    if sys.version_info > (3,):
+        node = et.fromstring(
+            bytes(xmlstring, "UTF-8"),
+            parser=XMLParser(collect_ids=False))
+    else:
+        node = et.fromstring(
+            xmlstring,
+            parser=XMLParser(collect_ids=False))
+    if node.tag == 'datasource':
+        nodes = [node]
+    else:
+        nodes = node.findall(".//datasource")
     dstype = ""
     if nodes:
-        ds = nodes[0]
-        if ds.hasAttribute("type"):
-            dstype = str(ds.attributes["type"].value)
+        dstype = nodes[0].attrib["type"]
     return dstype
 
 
@@ -67,8 +85,18 @@ def getdssource(xmlstring):
     :type xmlstring: :obj:`str`
     """
 
-    indom = parseString(xmlstring)
-    nodes = indom.getElementsByTagName("datasource")
+    if sys.version_info > (3,):
+        node = et.fromstring(
+            bytes(xmlstring, "UTF-8"),
+            parser=XMLParser(collect_ids=False))
+    else:
+        node = et.fromstring(
+            xmlstring,
+            parser=XMLParser(collect_ids=False))
+    if node.tag == 'datasource':
+        nodes = [node]
+    else:
+        nodes = node.findall(".//datasource")
     dssource = ""
     if nodes:
         ds = nodes[0]
