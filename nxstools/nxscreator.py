@@ -87,9 +87,20 @@ def _toxml(node):
     :rtype: :obj:`str`
     """
     xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
-    # if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
-    #     xml = str(xml[38:])
+    if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
+        xml = str(xml[38:])
     return xml
+
+
+def _simpletoxml(node):
+    """ provides xml content of the whole node
+
+    :param node: DOM node
+    :type node: :class:`xml.dom.Node`
+    :returns: xml content string
+    :rtype: :obj:`str`
+    """
+    return _tostr(et.tostring(node, encoding='utf8', method='xml'))
 
 
 class Device(object):
@@ -1823,7 +1834,7 @@ class StandardCPCreator(CPCreator):
                                     parent = node.getparent()
                                     parent.remove(node)
                                     break
-                    xml = _toxml(root)
+                    xml = _simpletoxml(root)
                     if self._printouts:
                         print("MISSING %s" % missing)
                     errors = []
