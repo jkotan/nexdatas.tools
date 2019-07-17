@@ -88,6 +88,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
         self._sv = ServerSetUp.ServerSetUp()
+        self.maxDiff = None
         self.directory = "."
         self.flags = " -r testp09/testmcs/testr228 "
         self.device = 'testp09/testmcs/testr228'

@@ -581,7 +581,7 @@ class Creator(object):
         :returns: xml content string
         :rtype: :obj:`str`
         """
-        if not node:
+        if node is None:
             return
         xml = _toxml(node)
         start = xml.find('>')
@@ -1161,7 +1161,7 @@ class OnlineDSCreator(Creator):
                     dv.tolower()
                 try:
                     dv.splitHostPort()
-                except Exception:
+                except Exception as e:
                     if self._printouts:
                         print("ERROR %s: host for module %s of %s "
                               "type not defined"
@@ -1371,7 +1371,7 @@ class CompareOnlineDS(object):
         :returns: xml content string
         :rtype: :obj:`str`
         """
-        if not node:
+        if node is None:
             return
         xml = _toxml(node)
         start = xml.find('>')
@@ -1392,6 +1392,7 @@ class CompareOnlineDS(object):
         :returns: text string
         :rtype: :obj:`str`
         """
+
         children = parent.findall(childname)
         return cls._getText(children[0]) if len(children) else None
 
@@ -1426,7 +1427,6 @@ class CompareOnlineDS(object):
                 if name not in dct.keys():
                     dct[name] = []
                 dct[name].append(dv)
-            device = device.nextSibling
         return dct
 
     def compare(self):
@@ -1543,10 +1543,9 @@ class OnlineCPCreator(CPCreator):
             parser=XMLParser(collect_ids=False)).getroot()
         if hw.tag != 'hw':
             hw = hw.find('hw')
-        device = hw[0].firstChild
         cpnames = set()
         for device in hw:
-            if device.nodeName == 'device':
+            if device.tag == 'device':
                 dvname = self._getChildText(device, "name")
                 sardananame = self._getChildText(device, "sardananame")
                 name = sardananame or dvname
@@ -1566,7 +1565,6 @@ class OnlineCPCreator(CPCreator):
                 if module:
                     if module.lower() in self.xmlpackage.moduleTemplateFiles:
                         cpnames.add(dv.name)
-            device = device.nextSibling
         return cpnames
 
     def createXMLs(self):
@@ -1608,7 +1606,6 @@ class OnlineCPCreator(CPCreator):
                             print("ERROR %s: host for module %s of %s "
                                   "type not defined"
                                   % (dv.name, dv.module, dv.dtype))
-                        device = device.nextSibling
                         continue
                     module = self._getModuleName(dv)
                     if module:
@@ -1679,8 +1676,6 @@ class OnlineCPCreator(CPCreator):
                                     self.datasources[newname] = xml
                                 else:
                                     self.components[newname] = xml
-
-            device = device.nextSibling
 
 
 class StandardCPCreator(CPCreator):
@@ -1872,7 +1867,7 @@ class StandardCPCreator(CPCreator):
                     self.__params))
 
     @classmethod
-    def getText(cls, node):
+    def __getText(cls, node):
         """ collects text from text child nodes
 
         :param node: parent node
