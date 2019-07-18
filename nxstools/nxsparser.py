@@ -143,8 +143,7 @@ class ParserTools(object):
                     prefix = '@'
                 elif member == 'command':
                     surfix = '()'
-
-            record = node.findall("record")
+            record = dsource.findall("record")
             if record is not None and len(record) > 0:
                 rname = record[0].get("name")
                 if rname:
@@ -158,11 +157,12 @@ class ParserTools(object):
                             res = '%s/%s%s%s' % (dname, prefix, rname, surfix)
                     else:
                         res = rname
-                        return res
+                return res
         elif dstype and dstype in withQuery:
             query = dsource.find(".//query")
             if query and query.strip():
                 return query.strip() or ""
+        return res
 
     @classmethod
     def mergeDefinitions(cls, xmls):
