@@ -517,7 +517,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     ['absorber1_foil', 'absorber1_thickness']
                 ],
                 [
-                    ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    ['<?xml version=\'1.0\'?>\n'
                      '<definition>\n'
                      '  <group type="NXentry" '
                      'name="$var.entryname#\'scan\'$var.serialno">\n'
@@ -583,7 +583,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '    </group>\n'
                      '  </group>\n'
                      '</definition>\n'],
-                    ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                    ['<?xml version=\'1.0\'?>\n'
                      '<definition>\n'
                      '  <datasource type="PYEVAL" name="absorber1_foil">\n'
                      '    <result name="result">\n'
@@ -597,7 +597,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '    </result>\n'
                      ' $datasources.mot01</datasource>\n'
                      '</definition>\n',
-                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<?xml version=\'1.0\'?>\n'
                      '<definition>\n'
                      '  <datasource type="PYEVAL"'
                      ' name="absorber1_thickness">\n'
