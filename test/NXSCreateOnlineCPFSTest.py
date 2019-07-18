@@ -615,7 +615,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mypilatus_exposureperiod"'
+                     '  <datasource type="TANGO"'
+                     ' name="mypilatus_exposureperiod"'
                      '>\n'
                      '    <device name="p09/pilatus/exp.01" '
                      'member="attribute" hostname="haso000" '
@@ -783,7 +784,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '  </datasource>\n</definition>\n',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mypilatus_lastimagetaken"'
+                     '  <datasource type="TANGO"'
+                     ' name="mypilatus_lastimagetaken"'
                      '>\n'
                      '    <device name="p09/pilatus/exp.01" '
                      'member="attribute" hostname="haso000" '
@@ -1008,7 +1010,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mypilatus_exposureperiod"'
+                     '  <datasource type="TANGO"'
+                     ' name="mypilatus_exposureperiod"'
                      '>\n'
                      '    <device name="p09/pilatus/exp.01" '
                      'member="attribute" hostname="haso000" '
@@ -1077,7 +1080,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mypilatus_filestartnum"' 
+                     '  <datasource type="TANGO" name="mypilatus_filestartnum"'
                      '>\n'
                      '    <device name="p09/pilatus/exp.01" '
                      'member="attribute" hostname="haso000" '
@@ -1176,7 +1179,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '  </datasource>\n</definition>\n',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mypilatus_lastimagetaken"'
+                     '  <datasource type="TANGO"'
+                     ' name="mypilatus_lastimagetaken"'
                      '>\n'
                      '    <device name="p09/pilatus/exp.01" '
                      'member="attribute" hostname="haso000" '
@@ -1700,7 +1704,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="mylmbd_livelastimagedata"'
+                     '  <datasource type="TANGO"'
+                     ' name="mylmbd_livelastimagedata"'
                      '>\n'
                      '    <device name="p09/lambda/exp.01"'
                      ' member="attribute" hostname="haso000" '
@@ -1979,7 +1984,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
-                     '  <datasource type="TANGO" name="MyMarccd_savingdirectory"'
+                     '  <datasource type="TANGO"'
+                     ' name="MyMarccd_savingdirectory"'
                      '>\n'
                      '    <device name="p09/marccd/exp.01" '
                      'member="attribute" hostname="haso000" '
