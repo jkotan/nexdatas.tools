@@ -1776,6 +1776,7 @@ class StandardCPCreator(CPCreator):
             if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
                 xmlfiles = ["%s.xml" % module]
         for xmlfile in xmlfiles:
+            print(xmlfile)
             newname = self._replaceName(xmlfile, cpname, module)
             with open(
                     '%s/%s' % (
