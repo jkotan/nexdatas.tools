@@ -84,6 +84,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
         # home = expanduser("~")
+        self.maxDiff = None
         db = PyTango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
@@ -145,13 +146,21 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
 
         old_argv = sys.argv
         sys.argv = argv
-        nxscreate.main()
+        err = False
+        try:
+            nxscreate.main()
+        except Exception:
+            err = True
         sys.argv = old_argv
 
         sys.stdout = old_stdout
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
+        if err:
+            print(vl)
+            print(er)
+            raise
         return vl, er
 
     def runtestexcept(self, argv, exception):
@@ -245,28 +254,31 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_exp_mot02',
                  'my_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot01">\n'
+                    '    <device name="p09/motor/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot02">\n'
+                    '    <device name="p09/motor/exp.02"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot03">\n'
+                    '    <device name="p09/motor/exp.03"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -365,27 +377,27 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_oh1_mot02',
                  'my_oh1_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot01" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.01" '
+                    '  <datasource type="TANGO" name="my_oh1_mot01">\n'
+                    '    <device name="p09/motor/oh1.01"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot02" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.02" '
+                    '  <datasource type="TANGO" name="my_oh1_mot02">\n'
+                    '    <device name="p09/motor/oh1.02"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot03" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.03" '
+                    '  <datasource type="TANGO" name="my_oh1_mot03">\n'
+                    '    <device name="p09/motor/oh1.03"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -398,27 +410,27 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_oh1_mot02',
                  'my_oh1_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot01" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.01" '
+                    '  <datasource type="TANGO" name="my_oh1_mot01">\n'
+                    '    <device name="p09/motor/oh1.01"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot02" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.02" '
+                    '  <datasource type="TANGO" name="my_oh1_mot02">\n'
+                    '    <device name="p09/motor/oh1.02"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oh1_mot03" type="TANGO">\n'
-                    '    <device hostname="haso000"'
-                    ' member="attribute" name="p09/motor/oh1.03" '
+                    '  <datasource type="TANGO" name="my_oh1_mot03">\n'
+                    '    <device name="p09/motor/oh1.03"'
+                    ' member="attribute" hostname="haso000" '
                     'port="10000"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -518,28 +530,31 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_exp_mot02',
                  'my_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot01">\n'
+                    '    <device name="p09/motor/exp.01"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot02">\n'
+                    '    <device name="p09/motor/exp.02"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot03">\n'
+                    '    <device name="p09/motor/exp.03"'
+                    ' member="attribute" hostname="haso000" '
+                    'port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -638,28 +653,31 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_exp_Mot02',
                  'My_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/Motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot01">\n'
+                    '    <device name="p09/Motor/exp.01" '
+                    'member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_Mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="P09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_Mot02">\n'
+                    '    <device name="P09/motor/exp.02"'
+                    ' member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="My_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="P09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="My_exp_mot03">\n'
+                    '    <device name="P09/motor/exp.03"'
+                    ' member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -671,28 +689,31 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                  'my_exp_Mot02',
                  'My_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_mot01" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/Motor/exp.01" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_mot01">\n'
+                    '    <device name="p09/Motor/exp.01"'
+                    ' member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_exp_Mot02" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="P09/motor/exp.02" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_exp_Mot02">\n'
+                    '    <device name="P09/motor/exp.02"'
+                    ' member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="My_exp_mot03" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="P09/motor/exp.03" '
-                    'port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="My_exp_mot03">\n'
+                    '    <device name="P09/motor/exp.03"'
+                    ' member="attribute" '
+                    'hostname="haso000" port="10000" '
+                    'group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -883,116 +904,129 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     'my_smaract',
                 ],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_abs" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/absorbercontroller/mag.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_abs">\n'
+                    '    <device name="p09/absorbercontroller/mag.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my2_abs" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/absorbercontroller/mag.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my2_abs">\n'
+                    '    <device name="p09/absorbercontroller/mag.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_tango_motor" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/motor/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_tango_motor">\n'
+                    '    <device name="p09/motor/mot.01" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_kohzu" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/kohzu/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_kohzu">\n'
+                    '    <device name="p09/kohzu/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_smchydra" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/smchydra/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_smchydra">\n'
+                    '    <device name="p09/smchydra/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_lom" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/lom/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_lom">\n'
+                    '    <device name="p09/lom/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_oms58" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/oms58/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_oms58">\n'
+                    '    <device name="p09/oms58/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_e6c" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/e6c/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_e6c">\n'
+                    '    <device name="p09/e6c/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_omsmaxv" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/omsmaxv/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_omsmaxv">\n'
+                    '    <device name="p09/omsmaxv/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_spk" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/spk/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_spk">\n'
+                    '    <device name="p09/spk/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_pie710" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/pie710/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_pie710">\n'
+                    '    <device name="p09/pie710/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_pie712" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/pie712/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_pie712">\n'
+                    '    <device name="p09/pie712/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_e6c_p09_eh2" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/e6c_p09_eh2/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_e6c_p09_eh2">\n'
+                    '    <device name="p09/e6c_p09_eh2/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_smaract" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="p09/smaract/mot.01"'
-                    ' port="10000"/>\n    <record name="Position"/>\n'
+                    '  <datasource type="TANGO" name="my_smaract">\n'
+                    '    <device name="p09/smaract/mot.01"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Position"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -1184,118 +1218,123 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                     'my_test_vfcadc',
                 ],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_counter_tango"'
-                    ' type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/vcexecutor/ct"'
-                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  <datasource'
+                    ' type="TANGO" name="my_test_counter_tango">\n'
+                    '    <device name="mytest/vcexecutor/ct"'
+                    ' member="attribute" hostname="haso000"'
+                    ' port="10000" group="__CLIENT__"'
+                    '/>\n    <record name="Counts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_v260" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/v260/ct"'
-                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  <datasource type="TANGO" name="my_test_v260">\n'
+                    '    <device name="mytest/v260/ct" member="attribute"'
+                    ' hostname="haso000"'
+                    ' port="10000" group="__CLIENT__"/>\n'
+                    '    <record name="Counts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_dgg2" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/dgg2/ct"'
-                    ' port="10000"/>\n    <record name="SampleTime"/>\n'
+                    '  <datasource type="TANGO" name="my_test_dgg2">\n'
+                    '    <device name="mytest/dgg2/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"'
+                    '/>\n    <record name="SampleTime"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_mca_8701" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/mca_8701/ct"'
-                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  <datasource type="TANGO" name="my_test_mca_8701">\n'
+                    '    <device name="mytest/mca_8701/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_mca_sis3302new"'
-                    ' type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/mca_sis3302new/ct"'
-                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  <datasource type="TANGO"'
+                    ' name="my_test_mca_sis3302new">\n'
+                    '    <device name="mytest/mca_sis3302new/ct"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_mca_sis3302" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/mca_sis3302/ct"'
-                    ' port="10000"/>\n    <record name="Data"/>\n'
+                    '  <datasource type="TANGO" name="my_test_mca_sis3302">\n'
+                    '    <device name="mytest/mca_sis3302/ct"'
+                    ' member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_sis3610" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/sis3610/ct"'
-                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  <datasource type="TANGO" name="my_test_sis3610">\n'
+                    '    <device name="mytest/sis3610/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Value"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_vdot32in" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/vdot32in/ct"'
-                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  <datasource type="TANGO" name="my_test_vdot32in">\n'
+                    '    <device name="mytest/vdot32in/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Value"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_sis3820" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/sis3820/ct"'
-                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  <datasource type="TANGO" name="my_test_sis3820">\n'
+                    '    <device name="mytest/sis3820/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Counts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_tip551" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/tip551/ct"'
-                    ' port="10000"/>\n    <record name="Voltage"/>\n'
+                    '  <datasource type="TANGO" name="my_test_tip551">\n'
+                    '    <device name="mytest/tip551/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Voltage"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_tip850dac" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/tip850dac/ct"'
-                    ' port="10000"/>\n    <record name="Voltage"/>\n'
+                    '  <datasource type="TANGO" name="my_test_tip850dac">\n'
+                    '    <device name="mytest/tip850dac/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Voltage"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_tip830" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/tip830/ct"'
-                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  <datasource type="TANGO" name="my_test_tip830">\n'
+                    '    <device name="mytest/tip830/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Counts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_tip850adc" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/tip850adc/ct"'
-                    ' port="10000"/>\n    <record name="Value"/>\n'
+                    '  <datasource type="TANGO" name="my_test_tip850adc">\n'
+                    '    <device name="mytest/tip850adc/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Value"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="my_test_vfcadc" type="TANGO">\n'
-                    '    <device group="__CLIENT__" hostname="haso000"'
-                    ' member="attribute" name="mytest/vfcadc/ct"'
-                    ' port="10000"/>\n    <record name="Counts"/>\n'
+                    '  <datasource type="TANGO" name="my_test_vfcadc">\n'
+                    '    <device name="mytest/vfcadc/ct" member="attribute"'
+                    ' hostname="haso000" port="10000"'
+                    ' group="__CLIENT__"/>\n    <record name="Counts"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
                 ],
@@ -1361,7 +1400,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
               '</hw>\n'
 
         dsout = \
-            '<?xml version="1.0" ?>\n' \
+            '<?xml version=\'1.0\' encoding=\'utf8\'?>\n' \
             '<definition>\n' \
             '  <datasource name="%s"' \
             ' type="TANGO">\n' \
@@ -1450,13 +1489,12 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
               '</hw>\n'
 
         dsout = \
-            '<?xml version="1.0" ?>\n' \
+            '<?xml version=\'1.0\' encoding=\'utf8\'?>\n' \
             '<definition>\n' \
-            '  <datasource name="%s"' \
-            ' type="TANGO">\n' \
-            '    <device group="%s" hostname="%s"' \
-            ' member="attribute" name="%s"' \
-            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  <datasource type="TANGO" name="%s">\n' \
+            '    <device name="%s" member="attribute" hostname="%s"' \
+            ' port="%s" group="%s"/>\n' \
+            '    <record name="%s"/>\n' \
             '  </datasource>\n' \
             '</definition>\n'
 
@@ -1511,7 +1549,6 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                                 "%s_%s" % (ds, el.lower())
                                 if el else ds
                             )
-
                         vl, er = self.runtest(command)
 
                         if er:
@@ -1529,8 +1566,10 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                             self.assertEqual(
                                 dsout % (
                                     "%s_%s" % (ds, el.lower()) if el else ds,
+                                    dv,
+                                    self.host, self.port,
                                     "%s_" % (ds) if el else "__CLIENT__",
-                                    self.host, dv, self.port, el or "Value"),
+                                    el or "Value"),
                                 dsxml)
 
                         for el in attr:
@@ -1569,13 +1608,12 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
               '</hw>\n'
 
         dsout = \
-            '<?xml version="1.0" ?>\n' \
+            '<?xml version=\'1.0\' encoding=\'utf8\'?>\n' \
             '<definition>\n' \
-            '  <datasource name="%s"' \
-            ' type="TANGO">\n' \
-            '    <device group="%s" hostname="%s"' \
-            ' member="attribute" name="%s"' \
-            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  <datasource type="TANGO" name="%s">\n' \
+            '    <device name="%s" member="attribute"' \
+            ' hostname="%s" port="%s"' \
+            ' group="%s"/>\n    <record name="%s"/>\n' \
             '  </datasource>\n' \
             '</definition>\n'
 
@@ -1651,8 +1689,9 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                             self.assertEqual(
                                 dsout % (
                                     "%s_%s" % (ds, el.lower()) if el else ds,
+                                    dv, self.host, self.port,
                                     "%s_" % (ds) if el else "__CLIENT__",
-                                    self.host, dv, self.port, el or "Value"),
+                                    el or "Value"),
                                 dsxml)
 
                         for el in attr:
@@ -1691,13 +1730,12 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
               '</hw>\n'
 
         dsout = \
-            '<?xml version="1.0" ?>\n' \
+            '<?xml version=\'1.0\' encoding=\'utf8\'?>\n' \
             '<definition>\n' \
-            '  <datasource name="%s"' \
-            ' type="TANGO">\n' \
-            '    <device group="%s" hostname="%s"' \
-            ' member="attribute" name="%s"' \
-            ' port="%s"/>\n    <record name="%s"/>\n' \
+            '  <datasource type="TANGO" name="%s">\n' \
+            '    <device name="%s" member="attribute"' \
+            ' hostname="%s" port="%s"' \
+            ' group="%s"/>\n    <record name="%s"/>\n' \
             '  </datasource>\n' \
             '</definition>\n'
 
@@ -1782,8 +1820,10 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
                             self.assertEqual(
                                 dsout % (
                                     "%s_%s" % (ds, el.lower()) if el else ds,
+                                    dv,
+                                    self.host, self.port,
                                     "%s_" % (ds) if el else "__CLIENT__",
-                                    self.host, dv, self.port, el or "Value"),
+                                    el or "Value"),
                                 dsxml)
 
                         for el in attr:

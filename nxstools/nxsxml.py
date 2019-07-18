@@ -21,8 +21,30 @@
 
 
 import PyTango
+import sys
 
-from xml.dom.minidom import Document
+import lxml.etree
+
+
+if sys.version_info > (3,):
+    unicode = str
+
+
+def _tostr(text):
+    """ convert bytestr or unicode to python str
+    :param text: text to convert
+    :type text: :obj:`bytes` or :obj:`unicode` or :obj:`str`
+    :returns: converted text
+    :rtype: :obj:`str`
+    """
+    if isinstance(text, str):
+        return text
+    else:
+        if sys.version_info > (3,) and \
+           (isinstance(text, bytes) or isinstance(text, unicode)):
+            return str(text, "utf8")
+        else:
+            return str(text)
 
 
 class NTag(object):
@@ -45,16 +67,14 @@ class NTag(object):
         :type typeAttr: :obj:`str`
         """
 
-        #: (:class:`xml.dom.minidom.Node`) XML minidom root
-        self.root = parent.root
-        #: (:class:`xml.dom.minidom.Element`) tag element from minidom
-        self.elem = self.root.createElement(tagName)
-        parent.elem.appendChild(self.elem)
+        #: (:class:`lxml.etree.Element`) tag element from etree
+        self.elem = lxml.etree.Element(tagName)
+        parent.elem.append(self.elem)
 
         if nameAttr != "":
-            self.elem.setAttribute("name", nameAttr)
+            self.elem.attrib["name"] = nameAttr
         if typeAttr != "":
-            self.elem.setAttribute("type", typeAttr)
+            self.elem.attrib["type"] = typeAttr
 
     def addTagAttr(self, name, value):
         """ adds tag attribute
@@ -64,7 +84,7 @@ class NTag(object):
         :param value: attribute value
         :type value: :obj:`str`
         """
-        self.elem.setAttribute(name, value)
+        self.elem.attrib[name] = value
 
     def setText(self, text):
         """ sets tag content
@@ -72,8 +92,7 @@ class NTag(object):
         :param text: tag content
         :type text: :obj:`str`
         """
-        ptext = self.root.createTextNode(text)
-        self.elem.appendChild(ptext)
+        self.elem.text = text
 
     def addText(self, text):
         """ adds tag content
@@ -81,8 +100,7 @@ class NTag(object):
         :param text: tag content
         :type text: :obj:`str`
         """
-        ptext = self.root.createTextNode(text)
-        self.elem.appendChild(ptext)
+        self.elem.text = self.elem.text + text
 
 
 class NAttr(NTag):
@@ -700,20 +718,23 @@ class XMLFile(object):
         """
         #: (:obj:`str`) XML file name
         self.fname = fname
-        #: (:class:`xml.dom.minidom.Document`) XML root instance
-        self.root = Document()
-        #: (:class:`xml.dom.minidom.Element`) XML definition element
-        self.elem = self.root.createElement("definition")
-        self.root.appendChild(self.elem)
+        #: (:class:`lxml.etree.Element`) XML root instance
+        self.elem = lxml.etree.Element("definition")
 
     def prettyPrint(self, etNode=None):
-        """prints pretty XML making use of minidom
+        """prints pretty XML making use of etree
 
         :param etNode: node
-        :type etNode: :class:`xml.dom.minidom`
+        :type etNode: :class:`lxml.etree.Element`
         """
-        node = etNode if etNode else self.root
-        return node.toprettyxml(indent="  ")
+        node = etNode if etNode is not None else self.elem
+        xmls = _tostr(
+            lxml.etree.tostring(
+                node, encoding='utf8',
+                method='xml', pretty_print=True))
+        if not xmls.startswith("<?xml"):
+            xmls = "<?xml version='1.0' encoding='utf8'?>\n" + xmls
+        return xmls
 
     def dump(self):
         """ dumps XML structure into the XML file
@@ -721,7 +742,7 @@ class XMLFile(object):
         :brief: It opens XML file, calls prettyPrint and closes the XML file
         """
         myfile = open(self.fname, "w")
-        myfile.write(self.prettyPrint(self.root))
+        myfile.write(self.prettyPrint(self.elem))
         myfile.close()
 
 

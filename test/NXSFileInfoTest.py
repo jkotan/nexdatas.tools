@@ -1368,7 +1368,6 @@ For more help:
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
-
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
                 components = (docutils.parsers.rst.Parser,)

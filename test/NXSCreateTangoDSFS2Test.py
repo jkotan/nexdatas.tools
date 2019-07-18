@@ -81,27 +81,27 @@ class NXSCreateTangoDSFS2Test(
                  'my_exp_mot02',
                  'my_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot01" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/01" port="%s"/>\n'
+                    '  <datasource type="TANGO" name="exp_mot01">\n'
+                    '    <device name="test/motor/01" member="attribute"'
+                    ' hostname="%s" port="%s"/>\n'
                     '    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/02" port="%s"/>\n'
+                    '  <datasource type="TANGO" name="exp_mot02">\n'
+                    '    <device name="test/motor/02" member="attribute"'
+                    ' hostname="%s" port="%s"/>\n'
                     '    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="exp_mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/motor/03" port="%s"/>\n'
+                    '  <datasource type="TANGO" name="exp_mot03">\n'
+                    '    <device name="test/motor/03" member="attribute"'
+                    ' hostname="%s" port="%s"/>\n'
                     '    <record name="Data"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
@@ -115,19 +115,19 @@ class NXSCreateTangoDSFS2Test(
                 ['test_exp_mot02',
                  'test_exp_mot03'],
                 [
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="mot02" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/02" port="%s"/>\n'
+                    '  <datasource type="TANGO" name="mot02">\n'
+                    '    <device name="test/vm/02" member="attribute"'
+                    ' hostname="%s" port="%s"/>\n'
                     '    <record name="Voltage"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
-                    '<?xml version="1.0" ?>\n'
+                    '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                     '<definition>\n'
-                    '  <datasource name="mot03" type="TANGO">\n'
-                    '    <device hostname="%s" member="attribute"'
-                    ' name="test/vm/03" port="%s"/>\n'
+                    '  <datasource type="TANGO" name="mot03">\n'
+                    '    <device name="test/vm/03" member="attribute"'
+                    ' hostname="%s" port="%s"/>\n'
                     '    <record name="Voltage"/>\n'
                     '  </datasource>\n'
                     '</definition>\n',
