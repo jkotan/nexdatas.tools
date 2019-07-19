@@ -1,6 +1,7 @@
-2019-07-XX Jan Kotanski <jankotan@gmail.com>
+2019-07-19 Jan Kotanski <jankotan@gmail.com>
+	* change minidom to etree
 	* adopt tests to NXSConfigServer with etree
-	* tagged as v2.65.3
+	* tagged as v2.66.0
 
 2019-07-03 Jan Kotanski <jankotan@gmail.com>
 	* fix for setting sardananame in onlinecp tool
