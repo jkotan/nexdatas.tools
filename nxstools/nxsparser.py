@@ -186,7 +186,7 @@ class ParserTools(object):
                 for defin in definitions:
                     for tag in defin:
                         indom1.append(tag)
-            rxml = indom1.toxml()
+            rxml = _toxml(indom1)
         return rxml
 
     @classmethod
