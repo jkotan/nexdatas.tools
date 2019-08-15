@@ -75,7 +75,7 @@ class ParserTools(object):
     """
 
     @classmethod
-    def getPureText(cls, node):
+    def _getPureText(cls, node):
         """ collects text from text child nodes
 
         :param node: parent node
@@ -122,8 +122,8 @@ class ParserTools(object):
         else:
             dsource = node.find(".//datasource")
         dstype = dsource.attrib["type"]
+        res = ''
         if dstype and dstype in withRec:
-            res = ''
             host = None
             port = None
             dname = None
@@ -215,9 +215,9 @@ class ParserTools(object):
         else:
             dss = []
         if direct:
-            dss.extend(node.findadd("datasource"))
+            dss.extend(node.findall("datasource"))
         else:
-            dss.extend(node.findadd("../datasource"))
+            dss.extend(node.findall(".//datasource"))
         dslist = []
         for ds in dss:
             if ds.tag == 'datasource':
@@ -366,8 +366,7 @@ class ParserTools(object):
         nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
-
+            if nd.tag == tagname:
                 nxtype = cls.__getAttr(nd, "type")
                 units = cls.__getAttr(nd, "units")
                 value = cls._getPureText(nd) or None
@@ -427,10 +426,13 @@ class ParserTools(object):
         """
         tagname = "attribute"
         indom = _parseString(xmlc)
-        nodes = indom.getElementsByTagName(tagname)
+        nodes = []
+        if indom.tag == tagname:
+            nodes.append(indom)
+        nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
+            if nd.tag == tagname:
 
                 nxtype = cls.__getAttr(nd, "type")
                 units = cls.__getAttr(nd, "units")
@@ -490,10 +492,13 @@ class ParserTools(object):
         """
         tagname = "link"
         indom = _parseString(xmlc)
-        nodes = indom.getElementsByTagName(tagname)
+        nodes = []
+        if indom.tag == tagname:
+            nodes.append(indom)
+        nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
+            if nd.tag == tagname:
 
                 target = cls.__getAttr(nd, "target")
                 value = cls._getPureText(nd) or None
