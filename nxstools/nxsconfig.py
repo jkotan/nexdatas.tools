@@ -109,13 +109,11 @@ class ConfigServer(object):
 
         return result
 
-    def componentsCmd(self, components, mandatory=False):
+    def componentsCmd(self, components):
         """ lists components of the components
 
         :param components: given components
         :type components: :obj:`list` <:obj:`str`>
-        :param mandatory: flag set True for mandatory components
-        :type mandatory: :obj:`bool`
         :returns: list of component names
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -127,12 +125,7 @@ class ConfigServer(object):
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
-        if mandatory:
-            mcps = list(self._cnfServer.MandatoryComponents())
-            mcps.extend(components)
-            result = self._cnfServer.DependentComponents(mcps)
-        else:
-            result = self._cnfServer.DependentComponents(components)
+        result = self._cnfServer.DependentComponents(components)
 
         return result
 
@@ -971,7 +964,7 @@ class Variables(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.componentsCmd(
+        string = cnfserver.char.join(cnfserver.variablesCmd(
             options.args, options.mandatory))
         return string
 
