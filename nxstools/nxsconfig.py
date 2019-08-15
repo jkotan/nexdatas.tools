@@ -109,11 +109,13 @@ class ConfigServer(object):
 
         return result
 
-    def componentsCmd(self, components):
+    def componentsCmd(self, components, mandatory=False):
         """ lists components of the components
 
         :param components: given components
         :type components: :obj:`list` <:obj:`str`>
+        :param mandatory: flag set True for mandatory components
+        :type mandatory: :obj:`bool`
         :returns: list of component names
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -125,7 +127,12 @@ class ConfigServer(object):
                                  "the configuration server\n" % component)
                 sys.stderr.flush()
                 return []
-        result = self._cnfServer.DependentComponents(components)
+        if mandatory:
+            mcps = list(self._cnfServer.MandatoryComponents())
+            mcps.extend(components)
+            result = self._cnfServer.DependentComponents(mcps)
+        else:
+            result = self._cnfServer.DependentComponents(components)
 
         return result
 
