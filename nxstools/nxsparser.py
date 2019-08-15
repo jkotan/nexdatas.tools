@@ -75,7 +75,7 @@ class ParserTools(object):
     """
 
     @classmethod
-    def getPureText(cls, node):
+    def _getPureText(cls, node):
         """ collects text from text child nodes
 
         :param node: parent node
@@ -122,20 +122,19 @@ class ParserTools(object):
         else:
             dsource = node.find(".//datasource")
         dstype = dsource.attrib["type"]
+        res = ''
         if dstype and dstype in withRec:
-            res = ''
             host = None
             port = None
             dname = None
             rname = None
             member = None
-            device = node.findall("device")
+            device = dsource.findall("device")
             if device is not None and len(device) > 0:
                 host = device[0].get("hostname")
                 port = device[0].get("port")
                 dname = device[0].get("name")
                 member = device[0].get("member")
-
             surfix = ""
             prefix = ""
             if member or member != 'attribute':
@@ -186,7 +185,7 @@ class ParserTools(object):
                 for defin in definitions:
                     for tag in defin:
                         indom1.append(tag)
-            rxml = indom1.toxml()
+            rxml = _toxml(indom1)
         return rxml
 
     @classmethod
@@ -215,9 +214,9 @@ class ParserTools(object):
         else:
             dss = []
         if direct:
-            dss.extend(node.findadd("datasource"))
+            dss.extend(node.findall("datasource"))
         else:
-            dss.extend(node.findadd("../datasource"))
+            dss.extend(node.findall(".//datasource"))
         dslist = []
         for ds in dss:
             if ds.tag == 'datasource':
@@ -366,8 +365,7 @@ class ParserTools(object):
         nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
-
+            if nd.tag == tagname:
                 nxtype = cls.__getAttr(nd, "type")
                 units = cls.__getAttr(nd, "units")
                 value = cls._getPureText(nd) or None
@@ -427,10 +425,13 @@ class ParserTools(object):
         """
         tagname = "attribute"
         indom = _parseString(xmlc)
-        nodes = indom.getElementsByTagName(tagname)
+        nodes = []
+        if indom.tag == tagname:
+            nodes.append(indom)
+        nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
+            if nd.tag == tagname:
 
                 nxtype = cls.__getAttr(nd, "type")
                 units = cls.__getAttr(nd, "units")
@@ -490,10 +491,13 @@ class ParserTools(object):
         """
         tagname = "link"
         indom = _parseString(xmlc)
-        nodes = indom.getElementsByTagName(tagname)
+        nodes = []
+        if indom.tag == tagname:
+            nodes.append(indom)
+        nodes.extend(indom.findall(".//%s" % tagname))
         taglist = []
         for nd in nodes:
-            if nd.nodeName == tagname:
+            if nd.tag == tagname:
 
                 target = cls.__getAttr(nd, "target")
                 value = cls._getPureText(nd) or None

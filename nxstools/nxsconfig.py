@@ -964,7 +964,7 @@ class Variables(Runner):
         :rtype: :obj:`str`
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
-        string = cnfserver.char.join(cnfserver.componentsCmd(
+        string = cnfserver.char.join(cnfserver.variablesCmd(
             options.args, options.mandatory))
         return string
 
