@@ -129,13 +129,12 @@ class ParserTools(object):
             dname = None
             rname = None
             member = None
-            device = node.findall("device")
+            device = dsource.findall("device")
             if device is not None and len(device) > 0:
                 host = device[0].get("hostname")
                 port = device[0].get("port")
                 dname = device[0].get("name")
                 member = device[0].get("member")
-
             surfix = ""
             prefix = ""
             if member or member != 'attribute':
