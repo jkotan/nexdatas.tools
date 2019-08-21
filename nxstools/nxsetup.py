@@ -193,6 +193,8 @@ knownHosts = {
                    'user': 'kracht', 'dbname': 'nxsconfig'},
     'haso107d1': {'beamline': 'p09', 'masterhost': 'haso107d1',
                   'user': 'kracht', 'dbname': 'nxsconfig'},
+    'haso107tk': {'beamline': 'p09', 'masterhost': 'haso107tk',
+                  'user': 'kracht', 'dbname': 'nxsconfig'},
     # ? 'vbtkdesy': {'beamline': 'p09'},
     # ? 'vbtkhome': {'beamline': 'p09'},
     'hascmexp': {'beamline': 'cmexp', 'masterhost': 'hascmexp',

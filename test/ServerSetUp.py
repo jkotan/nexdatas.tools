@@ -61,6 +61,7 @@ class ServerSetUp(object):
                 stderr=None, shell=True)
         else:
             self._psub = subprocess.call(
+                # "NXSConfigServer %s &" % self.__instance,
                 "export PYTHONPATH= ;NXSConfigServer %s &" % self.__instance,
                 stdout=None,
                 stderr=None, shell=True)
