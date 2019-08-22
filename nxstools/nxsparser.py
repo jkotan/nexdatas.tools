@@ -209,10 +209,7 @@ class ParserTools(object):
         :returns: list of datasource descriptions
         :rtype: :obj:`list` <:obj:`dict` <:obj:`str`, :obj:`str`>>
         """
-        if node.tag == "datasource":
-            dss = [node]
-        else:
-            dss = []
+        dss = []
         if direct:
             dss.extend(node.findall("datasource"))
         else:
