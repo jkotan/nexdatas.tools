@@ -22,7 +22,8 @@
 import sys
 
 import argparse
-from .nxsparser import ParserTools, TableTools
+import json
+from .nxsparser import ParserTools, TableTools, TableDictTools
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
 #: (:obj:`bool`) True if PyTango available
@@ -410,6 +411,51 @@ class ConfigServer(object):
             return ""
         return description
 
+    def __describeProfiles(self, args, headers=None):
+        """ provides description of datasources
+
+        :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
+        :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
+        :returns: list with description
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        xmls = ""
+        parameters = []
+        description = []
+        dss = self._cnfServer.AvailableSelections()
+        if not dss:
+            sys.stderr.write(
+                "\n'%s' does not have any profiles\n\n"
+                % self._cnfServer.name())
+            sys.stderr.flush()
+            return ""
+        for ar in args:
+            if ar not in dss:
+                sys.stderr.write(
+                    "Error: Profile '%s' not stored in "
+                    "the configuration server\n" % ar)
+                sys.stderr.flush()
+                return ""
+        args = args or dss
+        dsxmls = self._cnfServer.Selections(args)
+        for i, xmls in enumerate(dsxmls):
+            parameters = [json.loads(xmls)]
+            ttools = TableDictTools(parameters)
+            ttools.title = "Profile: '%s'" % args[i]
+            if headers:
+                ttools.headers = headers
+            description.extend(ttools.generateList())
+
+        if not description:
+            sys.stderr.write(
+                "\nHint: add profile names as command arguments "
+                "or -m for mandatory components \n\n")
+            sys.stderr.flush()
+            return ""
+        return description
+
     def __describeComponents(self, args, headers=None, nonone=None,
                              private=False):
         """ provides description of components
@@ -564,7 +610,7 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args)
 
-    def infoCmd(self, ds, args, md, pr):
+    def infoCmd(self, ds, args, md, pr, profiles):
         """ Provides info for given elements
 
         :param ds: flag set True for datasources
@@ -575,6 +621,8 @@ class ConfigServer(object):
         :type md: :obj:`bool`
         :param pr: flag set True for private components
         :type pr: :obj:`bool`
+        :param profiles: flag set True for profiles
+        :type profiles: :obj:`bool`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -590,6 +638,8 @@ class ConfigServer(object):
         nonone = ["source_name"]
         if ds:
             return self.__describeDataSources(args)
+        elif profiles:
+            return self.__describeProfiles(args)
         elif not md:
             return self.__describeComponents(args, cpheaders, nonone, pr)
         else:
@@ -1202,6 +1252,9 @@ class Info(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
+        parser.add_argument("-r", "--profiles", action="store_true",
+                            default=False, dest="profiles",
+                            help="perform operation for datasources")
         parser.add_argument("-m", "--mandatory", action="store_true",
                             default=False, dest="mandatory",
                             help="make use mandatory components")
@@ -1226,7 +1279,7 @@ class Info(Runner):
         cnfserver = ConfigServer(options.server, options.nonewlines)
         string = cnfserver.char.join(cnfserver.infoCmd(
             options.datasources, options.args, options.mandatory,
-            options.private))
+            options.private, options.profiles))
         return string
 
 
