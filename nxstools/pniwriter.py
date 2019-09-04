@@ -595,6 +595,10 @@ class PNIDataFilter(filewriter.FTDataFilter):
     """
 
 
+class PNIDeflate(PNIDataFilter):
+    pass
+
+
 class PNIAttributeManager(filewriter.FTAttributeManager):
 
     """ file tree attribute
