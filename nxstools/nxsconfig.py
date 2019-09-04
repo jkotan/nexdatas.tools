@@ -58,7 +58,7 @@ class ConfigServer(object):
         self._cnfServer = openServer(device)
         self._cnfServer.Open()
 
-    def listCmd(self, ds, mandatory=False, private=False):
+    def listCmd(self, ds, mandatory=False, private=False, profiles=False):
         """ lists the DB item names
 
         :param ds: flag set True for datasources
@@ -67,6 +67,8 @@ class ConfigServer(object):
         :type mandatory: :obj:`bool`
         :param private: flag set True for components starting with '__'
         :type private: :obj:`bool`
+        :param profiles: flag set True for profiles
+        :type profiles: :obj:`bool`
         :returns: list op item names
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -74,6 +76,8 @@ class ConfigServer(object):
         if ds:
             if not mandatory:
                 return self._cnfServer.AvailableDataSources()
+        elif profiles:
+            return self._cnfServer.AvailableSelections()
         else:
             if mandatory:
                 return self._cnfServer.MandatoryComponents()
@@ -228,7 +232,7 @@ class ConfigServer(object):
                     return []
         return records
 
-    def showCmd(self, ds, args, mandatory=False):
+    def showCmd(self, ds, args, mandatory=False, profiles=False):
         """ shows the DB items
 
         :param ds: flag set True for datasources
@@ -237,6 +241,8 @@ class ConfigServer(object):
         :type args: :obj:`list` <:obj:`str`>
         :param mandatory: flag set True for mandatory components
         :type mandatory: :obj:`bool`
+        :param profiles: flag set True for profiles
+        :type profiles: :obj:`bool`
         :returns: list of XML items
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -249,6 +255,15 @@ class ConfigServer(object):
                     sys.stderr.flush()
                     return []
             return self._cnfServer.DataSources(args)
+        elif profiles:
+            dsrc = self._cnfServer.AvailableSelections()
+            for ar in args:
+                if ar not in dsrc:
+                    sys.stderr.write("Error: Profile '%s' not stored in "
+                                     "the configuration server\n" % ar)
+                    sys.stderr.flush()
+                    return []
+            return self._cnfServer.Selections(args)
         else:
             cmps = self._cnfServer.AvailableComponents()
             for ar in args:
@@ -265,7 +280,7 @@ class ConfigServer(object):
                 return self._cnfServer.Components(args)
         return []
 
-    def deleteCmd(self, ds, args, ask=True):
+    def deleteCmd(self, ds, args, ask=True, profiles=False):
         """ delete the DB items
 
         :param ds: flag set True for datasources
@@ -274,28 +289,35 @@ class ConfigServer(object):
         :type args: :obj:`list` <:obj:`str`>
         :param mandatory: flag set True for mandatory components
         :type mandatory: :obj:`bool`
+        :param profiles: flag set True for profiles
+        :type profiles: :obj:`bool`
         :returns: list of XML items
         :rtype: :obj:`list` <:obj:`str`>
         """
         valid = {"yes": True, "y": True, "ye": True,
                  "no": False, "n": False}
         default = "y"
+        label = "Component"
         if ds:
             dsrc = self._cnfServer.AvailableDataSources()
+            label = "DataSource"
+        elif profiles:
+            dsrc = self._cnfServer.AvailableSelections()
+            label = "Profile"
         else:
             dsrc = self._cnfServer.AvailableComponents()
         for ar in args:
             if ar not in dsrc:
-                sys.stderr.write("Error: %s '%s' not stored in "
-                                 "the configuration server\n" % (
-                                     "DataSource" if ds else "Component", ar))
+                sys.stderr.write(
+                    "Error: %s '%s' not stored in "
+                    "the configuration server\n" % (label, ar))
                 sys.stderr.flush()
                 return []
         for ar in args:
             choice = default
             if ask:
                 choice = raw_input("Remove %s '%s'? [Y/n] \n" % (
-                    "DataSource" if ds else "Component", ar)).lower()
+                    label, ar)).lower()
                 while True:
                     if choice == '':
                         choice = default
@@ -309,6 +331,8 @@ class ConfigServer(object):
             if valid[choice]:
                 if ds:
                     self._cnfServer.DeleteDataSource(ar)
+                elif profiles:
+                    self._cnfServer.DeleteSelection(ar)
                 else:
                     self._cnfServer.DeleteComponent(ar)
         return []
@@ -654,6 +678,9 @@ class List(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
+        parser.add_argument("-r", "--profiles", action="store_true",
+                            default=False, dest="profiles",
+                            help="perform operation for datasources")
         parser.add_argument("-m", "--mandatory", action="store_true",
                             default=False, dest="mandatory",
                             help="make use mandatory components")
@@ -675,7 +702,9 @@ class List(Runner):
         """
         cnfserver = ConfigServer(options.server, options.nonewlines)
         string = cnfserver.char.join(cnfserver.listCmd(
-            options.datasources, options.mandatory, options.private))
+            options.datasources, options.mandatory, options.private,
+            options.profiles
+        ))
         return string
 
 
@@ -701,6 +730,9 @@ class Show(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
+        parser.add_argument("-r", "--profiles", action="store_true",
+                            default=False, dest="profiles",
+                            help="perform operation for datasources")
 #        parser.add_argument("-m", "--mandatory", action="store_true",
 #                            default=False, dest="mandatory",
 #                            help="make use mandatory components")
@@ -724,7 +756,9 @@ class Show(Runner):
         """
         cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.showCmd(
-            options.datasources, options.args, False))
+            options.datasources, options.args, False,
+            options.profiles
+        ))
         return string
 
 
@@ -750,6 +784,9 @@ class Delete(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
+        parser.add_argument("-r", "--profiles", action="store_true",
+                            default=False, dest="profiles",
+                            help="perform operation for datasources")
         parser.add_argument("-f", "--force", action="store_true",
                             default=False, dest="force",
                             help="do not ask")
@@ -766,7 +803,9 @@ class Delete(Runner):
         """
         cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.deleteCmd(
-            options.datasources, options.args, not options.force))
+            options.datasources, options.args, not options.force,
+            options.profiles
+        ))
         return string
 
 
