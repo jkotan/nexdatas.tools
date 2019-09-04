@@ -92,9 +92,9 @@ def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
-    :rtype: :class:`PNIDeflate`
+    :rtype: :class:`PNIDataFilter`
     """
-    return PNIDeflate(nx.deflate_filter())
+    return PNIDataFilter(nx.deflate_filter())
 
 
 deflate_filter = data_filter
@@ -254,7 +254,7 @@ class PNIGroup(filewriter.FTGroup):
         :param chunk: chunk
         :type chunk: :obj:`list` < :obj:`int` >
         :param dfilter: filter deflater
-        :type dfilter: :class:`PNIDeflate`
+        :type dfilter: :class:`PNIDataFilter`
         :returns: file tree field
         :rtype: :class:`PNIField`
         """
@@ -589,7 +589,7 @@ class PNILink(filewriter.FTLink):
         self._h5object = None
 
 
-class PNIDeflate(filewriter.FTDeflate):
+class PNIDataFilter(filewriter.FTDataFilter):
 
     """ file tree deflate
     """

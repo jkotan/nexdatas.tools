@@ -2061,11 +2061,11 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.H5PYDeflate()
-            df1 = H5PYWriter.H5PYDeflate()
+            df0 = H5PYWriter.H5PYDataFilter()
+            df1 = H5PYWriter.H5PYDataFilter()
             df1.rate = 2
             df2 = H5PYWriter.deflate_filter()
-            df2 = H5PYWriter.H5PYDeflate()
+            df2 = H5PYWriter.H5PYDataFilter()
             df2.rate = 4
             df2.shuffle = True
 

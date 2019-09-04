@@ -310,9 +310,9 @@ def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
-    :rtype: :class:`H5CppDeflate`
+    :rtype: :class:`H5CppDataFilter`
     """
-    return H5CppDeflate(h5cpp.filter.Deflate())
+    return H5CppDataFilter(h5cpp.filter.Deflate())
 
 
 deflate_filter = data_filter
@@ -538,7 +538,7 @@ class H5CppGroup(filewriter.FTGroup):
         :param chunk: chunk
         :type chunk: :obj:`list` < :obj:`int` >
         :param dfilter: filter deflater
-        :type dfilter: :class:`H5CppDeflate`
+        :type dfilter: :class:`H5CppDataFilter`
         :returns: file tree field
         :rtype: :class:`H5CppField`
         """
@@ -1062,7 +1062,7 @@ class H5CppLink(filewriter.FTLink):
         self._h5object = None
 
 
-class H5CppDeflate(filewriter.FTDeflate):
+class H5CppDataFilter(filewriter.FTDataFilter):
 
     """ file tree deflate
     """
@@ -1073,7 +1073,7 @@ class H5CppDeflate(filewriter.FTDeflate):
         :param h5object: pni object
         :type h5object: :obj:`any`
         """
-        filewriter.FTDeflate.__init__(self, h5object)
+        filewriter.FTDataFilter.__init__(self, h5object)
         self.__shuffle = False
 
     def __getrate(self):

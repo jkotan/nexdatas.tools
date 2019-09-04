@@ -590,7 +590,7 @@ class FTLink(FTObject):
         FTObject._reopen(self)
 
 
-class FTDeflate(FTObject):
+class FTDataFilter(FTObject):
 
     """ file tree data filter
     """
@@ -691,7 +691,8 @@ class FTDeflate(FTObject):
         FTObject._reopen(self)
 
 
-FTDataFilter = FTDeflate
+class FTDeflate(FTDataFilter):
+    pass
 
 
 class FTAttributeManager(FTObject):

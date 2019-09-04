@@ -133,9 +133,9 @@ def deflate_filter():
     """ create deflate filter
 
     :returns: deflate filter object
-    :rtype: :class:`H5PYDeflate`
+    :rtype: :class:`H5PYDataFilter`
     """
-    return H5PYDeflate()
+    return H5PYDataFilter()
 
 
 class H5PYFile(filewriter.FTFile):
@@ -379,7 +379,7 @@ class H5PYGroup(filewriter.FTGroup):
         :param chunk: chunk
         :type chunk: :obj:`list` < :obj:`int` >
         :param dfilter: filter deflater
-        :type dfilter: :class:`H5PYDeflate`
+        :type dfilter: :class:`H5PYDataFilter`
         :returns: file tree field
         :rtype: :class:`H5PYField`
         """
@@ -766,7 +766,7 @@ class H5PYLink(filewriter.FTLink):
         self._h5object = None
 
 
-class H5PYDeflate(filewriter.FTDeflate):
+class H5PYDataFilter(filewriter.FTDataFilter):
 
     """ file tree data filter
     """

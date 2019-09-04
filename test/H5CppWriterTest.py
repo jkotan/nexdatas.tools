@@ -2297,10 +2297,10 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.H5CppDeflate(h5cpp.filter.Deflate())
-            df1 = H5CppWriter.H5CppDeflate(h5cpp.filter.Deflate())
+            df0 = H5CppWriter.H5CppDataFilter(h5cpp.filter.Deflate())
+            df1 = H5CppWriter.H5CppDataFilter(h5cpp.filter.Deflate())
             df1.rate = 2
-            df2 = H5CppWriter.H5CppDeflate(h5cpp.filter.Deflate())
+            df2 = H5CppWriter.H5CppDataFilter(h5cpp.filter.Deflate())
             df2.rate = 4
             df2.shuffle = True
 
