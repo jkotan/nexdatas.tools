@@ -306,13 +306,16 @@ def get_links(parent):
     return links
 
 
-def deflate_filter():
+def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
     :rtype: :class:`H5CppDeflate`
     """
     return H5CppDeflate(h5cpp.filter.Deflate())
+
+
+deflate_filter = data_filter
 
 
 class H5CppFile(filewriter.FTFile):
@@ -544,7 +547,13 @@ class H5CppGroup(filewriter.FTGroup):
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape), tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
         if dfilter:
-            dfilter.h5object(dcpl)
+            if dfilter.filterid == 1:
+                h5object = dfilter.h5object
+                h5object.level = dfilter.rate
+            else:
+                h5object = h5cpp.filter.ExternalFilter(
+                    dfilter.filterid, list(dfilter.options))
+            h5object(dcpl)
             if dfilter.shuffle:
                 sfilter = h5cpp.filter.Shuffle()
                 sfilter(dcpl)
@@ -1076,6 +1085,22 @@ class H5CppDeflate(filewriter.FTDeflate):
         return self._h5object.level
 
     def __setrate(self, value):
+        """ setter for compression rate
+
+        :param value: compression rate
+        :type value: :obj:`int`
+        """
+        self._h5object.level = value
+
+    def __getfilterid(self):
+        """ getter for compression filterid
+
+        :returns: compression filterid
+        :rtype: :obj:`int`
+        """
+        return self._h5object.level
+
+    def __setfilterid(self, value):
         """ setter for compression rate
 
         :param value: compression rate

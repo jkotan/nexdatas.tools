@@ -88,13 +88,16 @@ def get_links(parent):
     return links
 
 
-def deflate_filter():
+def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
     :rtype: :class:`PNIDeflate`
     """
     return PNIDeflate(nx.deflate_filter())
+
+
+deflate_filter = data_filter
 
 
 class PNIFile(filewriter.FTFile):
@@ -255,10 +258,22 @@ class PNIGroup(filewriter.FTGroup):
         :returns: file tree field
         :rtype: :class:`PNIField`
         """
-        return PNIField(
-            self._h5object.create_field(
-                name, type_code, shape, chunk,
-                dfilter if not dfilter else dfilter.h5object), self)
+        if dfilter:
+            if dfilter.filterid == 1:
+                h5object = dfilter.h5object
+                h5object.rate = dfilter.rate
+                h5object.shuffle = dfilter.shuffle
+                return PNIField(
+                    self._h5object.create_field(
+                        name, type_code, shape, chunk, h5object), self)
+            else:
+                raise Exception("The filter %s is not supported by PNI"
+                                % dfilter.filterid)
+        else:
+            return PNIField(
+                self._h5object.create_field(
+                    name, type_code, shape, chunk),
+                self)
 
     @property
     def size(self):
@@ -578,52 +593,6 @@ class PNIDeflate(filewriter.FTDeflate):
 
     """ file tree deflate
     """
-
-    def __init__(self, h5object):
-        """ constructor
-
-        :param h5object: pni object
-        :type h5object: :obj:`any`
-        """
-        filewriter.FTDeflate.__init__(self, h5object)
-
-    def __getrate(self):
-        """ getter for compression rate
-
-        :returns: compression rate
-        :rtype: :obj:`int`
-        """
-        return self._h5object.rate
-
-    def __setrate(self, value):
-        """ setter for compression rate
-
-        :param value: compression rate
-        :type value: :obj:`int`
-        """
-        self._h5object.rate = value
-
-    #: (:obj:`int`) compression rate
-    rate = property(__getrate, __setrate)
-
-    def __getshuffle(self):
-        """ getter for compression shuffle
-
-        :returns: compression shuffle
-        :rtype: :obj:`bool`
-        """
-        return self._h5object.shuffle
-
-    def __setshuffle(self, value):
-        """ setter for compression shuffle
-
-        :param value: compression shuffle
-        :type value: :obj:`bool`
-        """
-        self._h5object.shuffle = value
-
-    #: (:obj:`bool`) compression shuffle
-    shuffle = property(__getshuffle, __setshuffle)
 
 
 class PNIAttributeManager(filewriter.FTAttributeManager):

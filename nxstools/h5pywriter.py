@@ -390,16 +390,31 @@ class H5PYGroup(filewriter.FTGroup):
             # type_code = h5py.special_dtype(vlen=unicode)
             # type_code = h5py.special_dtype(vlen=bytes)
         if dfilter:
-            f = H5PYField(
-                self._h5object.create_dataset(
-                    name, shape, type_code,
-                    chunks=(tuple(chunk)
-                            if chunk is not None else None),
-                    compression="gzip",
-                    compression_opts=dfilter.rate,
-                    shuffle=dfilter.shuffle, maxshape=mshape
-                ),
-                self)
+            if dfilter.filterid == 1:
+                f = H5PYField(
+                    self._h5object.create_dataset(
+                        name, shape, type_code,
+                        chunks=(tuple(chunk)
+                                if chunk is not None else None),
+                        compression="gzip",
+                        compression_opts=(
+                            dfilter.options[0]
+                            if dfilter.options
+                            else dfilter.rate),
+                        shuffle=dfilter.shuffle, maxshape=mshape
+                    ),
+                    self)
+            else:
+                f = H5PYField(
+                    self._h5object.create_dataset(
+                        name, shape, type_code,
+                        chunks=(tuple(chunk)
+                                if chunk is not None else None),
+                        compression=dfilter.filterid,
+                        compression_opts=dfilter.options,
+                        shuffle=dfilter.shuffle, maxshape=mshape
+                    ),
+                    self)
         else:
             f = H5PYField(
                 self._h5object.create_dataset(
@@ -753,56 +768,8 @@ class H5PYLink(filewriter.FTLink):
 
 class H5PYDeflate(filewriter.FTDeflate):
 
-    """ file tree deflate
+    """ file tree data filter
     """
-
-    def __init__(self):
-        """ constructor
-
-        """
-        filewriter.FTDeflate.__init__(self, None)
-        #: (:obj:`bool`) compression shuffle
-        self._shuffle = False
-        #: (:obj:`int`) compression rate
-        self._rate = 0
-
-    def __getrate(self):
-        """ getter for compression rate
-
-        :returns: compression rate
-        :rtype: :obj:`int`
-        """
-        return self._rate
-
-    def __setrate(self, value):
-        """ setter for compression rate
-
-        :param value: compression rate
-        :type value: :obj:`int`
-        """
-        self._rate = value
-
-    #: (:obj:`int`) compression rate
-    rate = property(__getrate, __setrate)
-
-    def __getshuffle(self):
-        """ getter for compression shuffle
-
-        :returns: compression shuffle
-        :rtype: :obj:`bool`
-        """
-        return self._shuffle
-
-    def __setshuffle(self, value):
-        """ setter for compression shuffle
-
-        :param value: compression shuffle
-        :type value: :obj:`bool`
-        """
-        self._shuffle = value
-
-    #: (:obj:`bool`) compression shuffle
-    shuffle = property(__getshuffle, __setshuffle)
 
 
 class H5PYAttributeManager(filewriter.FTAttributeManager):
