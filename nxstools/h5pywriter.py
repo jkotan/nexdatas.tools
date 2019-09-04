@@ -414,7 +414,7 @@ class H5PYGroup(filewriter.FTGroup):
                         chunks=(tuple(chunk)
                                 if chunk is not None else None),
                         compression=dfilter.filterid,
-                        compression_opts=dfilter.options,
+                        compression_opts=tuple(dfilter.options),
                         shuffle=dfilter.shuffle, maxshape=mshape
                     ),
                     self)

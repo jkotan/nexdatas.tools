@@ -389,7 +389,7 @@ class Collector(object):
                     elif isinstance(opts, list) and opts:
                         cfilter = filewriter.data_filter(node)
                         cfilter.filterid = opts[0]
-                        cfilter.options = opts[1:]
+                        cfilter.options = tuple(opts[1:])
                 field = node.create_field(
                     fieldname,
                     dtype,
