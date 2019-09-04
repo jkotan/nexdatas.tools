@@ -306,13 +306,16 @@ def get_links(parent):
     return links
 
 
-def deflate_filter():
+def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
-    :rtype: :class:`H5CppDeflate`
+    :rtype: :class:`H5CppDataFilter`
     """
-    return H5CppDeflate(h5cpp.filter.Deflate())
+    return H5CppDataFilter(h5cpp.filter.Deflate())
+
+
+deflate_filter = data_filter
 
 
 class H5CppFile(filewriter.FTFile):
@@ -535,7 +538,7 @@ class H5CppGroup(filewriter.FTGroup):
         :param chunk: chunk
         :type chunk: :obj:`list` < :obj:`int` >
         :param dfilter: filter deflater
-        :type dfilter: :class:`H5CppDeflate`
+        :type dfilter: :class:`H5CppDataFilter`
         :returns: file tree field
         :rtype: :class:`H5CppField`
         """
@@ -544,7 +547,13 @@ class H5CppGroup(filewriter.FTGroup):
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape), tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
         if dfilter:
-            dfilter.h5object(dcpl)
+            if dfilter.filterid == 1:
+                h5object = dfilter.h5object
+                h5object.level = dfilter.rate
+            else:
+                h5object = h5cpp.filter.ExternalFilter(
+                    dfilter.filterid, list(dfilter.options))
+            h5object(dcpl)
             if dfilter.shuffle:
                 sfilter = h5cpp.filter.Shuffle()
                 sfilter(dcpl)
@@ -1053,57 +1062,14 @@ class H5CppLink(filewriter.FTLink):
         self._h5object = None
 
 
-class H5CppDeflate(filewriter.FTDeflate):
+class H5CppDataFilter(filewriter.FTDataFilter):
 
     """ file tree deflate
     """
 
-    def __init__(self, h5object):
-        """ constructor
 
-        :param h5object: pni object
-        :type h5object: :obj:`any`
-        """
-        filewriter.FTDeflate.__init__(self, h5object)
-        self.__shuffle = False
-
-    def __getrate(self):
-        """ getter for compression rate
-
-        :returns: compression rate
-        :rtype: :obj:`int`
-        """
-        return self._h5object.level
-
-    def __setrate(self, value):
-        """ setter for compression rate
-
-        :param value: compression rate
-        :type value: :obj:`int`
-        """
-        self._h5object.level = value
-
-    #: (:obj:`int`) compression rate
-    rate = property(__getrate, __setrate)
-
-    def __getshuffle(self):
-        """ getter for compression shuffle
-
-        :returns: compression shuffle
-        :rtype: :obj:`bool`
-        """
-        return self.__shuffle
-
-    def __setshuffle(self, value):
-        """ setter for compression shuffle
-
-        :param value: compression shuffle
-        :type value: :obj:`bool`
-        """
-        self.__shuffle = value
-
-    #: (:obj:`bool`) compression shuffle
-    shuffle = property(__getshuffle, __setshuffle)
+class H5CppDeflate(H5CppDataFilter):
+    pass
 
 
 class H5CppAttributeManager(filewriter.FTAttributeManager):

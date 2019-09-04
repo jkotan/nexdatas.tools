@@ -63,6 +63,41 @@ except Exception:
     pass
 
 
+def getcompression(compression):
+    """ converts compression string to a deflate level parameter
+        or list with [filterid, opt1, opt2, ...]
+
+    :param compression: compression string
+    :type compression: :obj:`str`
+    :returns: deflate level parameter
+              or list with [filterid, opt1, opt2, ...]
+    :rtype: :obj:`int` or :obj:`list` < :obj:`int` > or `None`
+
+    """
+    if compression:
+        if isinstance(compression, int) or ":" not in compression:
+            level = None
+            try:
+                level = int(compression)
+            except Exception:
+                raise Exception(
+                    "Error: argument -c/--compression: "
+                    "invalid int value: '%s'\n" % compression)
+            return level
+        else:
+            opts = None
+            try:
+                sfid, sopts = compression.split(":")
+                opts = [int(sfid)]
+                opts.extend([int(opt) for opt in sopts.split(",")])
+            except Exception:
+                raise Exception(
+                    "Error: argument -c/--compression: "
+                    "invalid format: '%s'\n" % compression)
+            return opts
+        return
+
+
 class Collector(object):
 
     """ Collector merge images of external file-formats
@@ -347,15 +382,21 @@ class Collector(object):
             if not self.__testmode:
                 cfilter = None
                 if fieldcompression:
-                    cfilter = filewriter.deflate_filter(node)
-                    cfilter.rate = fieldcompression
-                    field = node.create_field(
-                        fieldname,
-                        dtype,
-                        shape=[0, shape[0], shape[1]],
-                        chunk=[1, shape[0], shape[1]],
-                        dfilter=cfilter)
-            self._addattr(field, fieldattrs)
+                    opts = getcompression(fieldcompression)
+                    if isinstance(opts, int):
+                        cfilter = filewriter.data_filter(node)
+                        cfilter.rate = opts
+                    elif isinstance(opts, list) and opts:
+                        cfilter = filewriter.data_filter(node)
+                        cfilter.filterid = opts[0]
+                        cfilter.options = tuple(opts[1:])
+                field = node.create_field(
+                    fieldname,
+                    dtype,
+                    shape=[0, shape[0], shape[1]],
+                    chunk=[1, shape[0], shape[1]],
+                    dfilter=cfilter)
+                self._addattr(field, fieldattrs)
             return field
 
     def _collectimages(self, files, node, fieldname=None, fieldattrs=None,
@@ -440,7 +481,7 @@ class Collector(object):
                         if at.name == "fieldname":
                             fieldname = at[...]
                         elif at.name == "fieldcompression":
-                            fieldcompression = int(at[...])
+                            fieldcompression = at[...]
                         elif at.name == "fielddtype":
                             fielddtype = at[...]
                         elif at.name == "fieldshape":
@@ -512,6 +553,7 @@ class Execute(Runner):
     epilog = "" \
         + " examples:\n" \
         + "       nxscollect execute -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "       nxscollect execute -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
         + "\n"
 
     def create(self):
@@ -520,8 +562,10 @@ class Execute(Runner):
         parser = self._parser
         parser.add_argument(
             "-c", "--compression", dest="compression",
-            action="store", type=int, default=2,
-            help="deflate compression rate from 0 to 9 (default: 2)")
+            action="store", type=str, default=2,
+            help="deflate compression rate from 0 to 9 (default: 2)"
+            " or <filterid>:opt1,opt2,..."
+            " e.g.  -c 32008:0,2  for bitshuffle with lz4")
         parser.add_argument(
             "-s", "--skip_missing", action="store_true",
             default=False, dest="skipmissing",
@@ -560,6 +604,15 @@ class Execute(Runner):
         """
         parser = self._parser
         nexusfiles = options.args
+
+        try:
+            getcompression(options.compression)
+        except Exception as e:
+            print(str(e))
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
         if not nexusfiles or not nexusfiles[0]:
             parser.print_help()
             print("")
@@ -614,6 +667,15 @@ class Test(Execute):
         """
         parser = self._parser
         nexusfiles = options.args
+
+        try:
+            getcompression(options.compression)
+        except Exception as e:
+            print(str(e))
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
         if not nexusfiles or not nexusfiles[0]:
             parser.print_help()
             print("")
