@@ -299,7 +299,7 @@ class NField(NTag):
 
     def setStrategy(self, mode="STEP", trigger=None, value=None,
                     grows=None, compression=False, rate=None,
-                    shuffle=None, canfail=None):
+                    shuffle=None, canfail=None, compression_opts=None):
         """ sets the field strategy
 
         :param mode: mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
@@ -333,9 +333,17 @@ class NField(NTag):
         if canfail:
             strategy.addTagAttr("canfail", "true")
         if compression:
-            strategy.addTagAttr("compression", "true")
-            if rate is not None:
-                strategy.addTagAttr("rate", str(rate))
+            if int(compression) == 1:
+                strategy.addTagAttr("compression", "true")
+                if rate is not None:
+                    strategy.addTagAttr("rate", str(rate))
+            else:
+                strategy.addTagAttr(
+                    "compression", int(compression))
+                if compression_opts:
+                    strategy.addTagAttr(
+                        "compression_opts",
+                        ",".join([str(opts) for opts in compression_opts]))
             if shuffle is not None:
                 strategy.addTagAttr(
                     "shuffle",

@@ -157,7 +157,7 @@ def data_filter(parent=None):
     if not wr:
         with writerlock:
             wr = writer
-    return wr.deflate_filter()
+    return wr.data_filter()
 
 
 deflate_filter = data_filter

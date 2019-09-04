@@ -34,6 +34,7 @@ import numpy as np
 import json
 from nxstools import nxscollect
 from nxstools import filewriter
+from pninexus import h5cpp
 
 try:
     from cStringIO import StringIO
@@ -556,7 +557,8 @@ For more help:
             ('nxscollect execute  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s -c1  %s' %
+             (filename, self.flags)).split(),
             ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -r -c4 %s' %
@@ -564,11 +566,21 @@ For more help:
             ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -s -c6 %s' %
              (filename, self.flags)).split(),
+
             ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
             ('nxscollect execute  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
+        extra_commands = [
+            ('nxscollect execute  %s -r -s -c32008:0,2 %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s -c32008:0,2' %
+             (filename, self.flags)).split(),
+        ]
+        if hasattr(h5cpp.filter, "is_filter_available") \
+           and h5cpp.filter.is_filter_available(32008):
+            commands.extend(extra_commands)
 
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -1132,6 +1144,15 @@ For more help:
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
+        extra_commands = [
+            ('nxscollect execute  %s -r -s -c32008:0,2 %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect -x %s -r -s %s -c32008:0,2' %
+             (filename, self.flags)).split(),
+        ]
+        if hasattr(h5cpp.filter, "is_filter_available") \
+           and h5cpp.filter.is_filter_available(32008):
+            commands.extend(extra_commands)
 
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
