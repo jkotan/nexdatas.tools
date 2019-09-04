@@ -135,6 +135,7 @@ For more help:
             self.writer = "pni"
 
         self.flags = ""
+        self.externalfilters = True
 
     # test starter
     # \brief Common set up
@@ -578,9 +579,10 @@ For more help:
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
-        if hasattr(h5cpp.filter, "is_filter_available") \
-           and h5cpp.filter.is_filter_available(32008):
-            commands.extend(extra_commands)
+        if self.externalfilters:
+            if hasattr(h5cpp.filter, "is_filter_available") \
+               and h5cpp.filter.is_filter_available(32008):
+                commands.extend(extra_commands)
 
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -1150,9 +1152,10 @@ For more help:
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
-        if hasattr(h5cpp.filter, "is_filter_available") \
-           and h5cpp.filter.is_filter_available(32008):
-            commands.extend(extra_commands)
+        if self.externalfilters:
+            if hasattr(h5cpp.filter, "is_filter_available") \
+               and h5cpp.filter.is_filter_available(32008):
+                commands.extend(extra_commands)
 
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
