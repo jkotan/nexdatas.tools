@@ -2203,10 +2203,10 @@ class PNIWriterTest(unittest.TestCase):
             # dt =
             entry.create_group("data", "NXdata")
 
-            df0 = PNIWriter.PNIDeflate(nx.deflate_filter())
-            df1 = PNIWriter.PNIDeflate(nx.deflate_filter())
+            df0 = PNIWriter.PNIDataFilter(nx.deflate_filter())
+            df1 = PNIWriter.PNIDataFilter(nx.deflate_filter())
             df1.rate = 2
-            df2 = PNIWriter.PNIDeflate(nx.deflate_filter())
+            df2 = PNIWriter.PNIDataFilter(nx.deflate_filter())
             df2.rate = 4
             df2.shuffle = True
 

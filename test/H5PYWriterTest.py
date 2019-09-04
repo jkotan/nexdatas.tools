@@ -28,6 +28,7 @@ import binascii
 import string
 import h5py
 import time
+from pninexus import h5cpp
 
 import nxstools.filewriter as FileWriter
 import nxstools.h5pywriter as H5PYWriter
@@ -2044,6 +2045,70 @@ class H5PYWriterTest(unittest.TestCase):
 
     # default createfile test
     # \brief It tests default settings
+    def test_h5pybitshuffle(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._fname = '%s/%s%s.h5' % (os.getcwd(),
+                                      self.__class__.__name__, fun)
+
+        if hasattr(h5cpp.filter, "is_filter_available") \
+           and h5cpp.filter.is_filter_available(32008):
+            try:
+                # overwrite = False
+                fl = H5PYWriter.create_file(self._fname)
+
+                rt = fl.root()
+                rt.create_group("notype")
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+
+                df0 = H5PYWriter.deflate_filter()
+                df1 = H5PYWriter.deflate_filter()
+                df1.filterid = 32008
+                df1.options = (0, 2)
+                df2 = H5PYWriter.data_filter()
+                df2.filterid = 32008
+                df2.options = (0, 2)
+                df2.shuffle = True
+
+                entry.create_field("strscalar", "string")
+                entry.create_field("floatscalar", "float64")
+                entry.create_field("intscalar", "uint64")
+                ins.create_field("strspec", "string", [10], [6])
+                ins.create_field("floatspec", "float32", [20], [16])
+                ins.create_field("intspec", "int64", [30], [5])
+                det.create_field("strimage", "string", [2, 2], [2, 1])
+                det.create_field(
+                    "floatimage", "float64", [20, 10], dfilter=df0)
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+                det.create_field("strvec", "string", [0, 2, 2], [1, 2, 2])
+                det.create_field(
+                    "floatvec", "float64", [1, 20, 10], [1, 10, 10],
+                    dfilter=df1)
+                det.create_field(
+                    "intvec", "uint32", [0, 2, 30], dfilter=df2)
+
+                self.assertEqual(df0.rate, 0)
+                self.assertEqual(df0.shuffle, False)
+                self.assertEqual(df0.parent, None)
+                self.assertEqual(df0.h5object, None)
+                self.assertEqual(df1.rate, 0)
+                self.assertEqual(df1.shuffle, False)
+                self.assertEqual(df1.parent, None)
+                self.assertEqual(df1.h5object, None)
+                self.assertEqual(df2.rate, 0)
+                self.assertEqual(df2.shuffle, True)
+                self.assertEqual(df2.parent, None)
+                self.assertEqual(df2.h5object, None)
+            finally:
+                os.remove(self._fname)
+        else:
+            print("Skip: %s.%s() " % (self.__class__.__name__, fun))
+
+    # default createfile test
+    # \brief It tests default settings
     def test_h5pydeflate_const(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2061,11 +2126,11 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.H5PYDeflate()
-            df1 = H5PYWriter.H5PYDeflate()
+            df0 = H5PYWriter.H5PYDataFilter()
+            df1 = H5PYWriter.H5PYDataFilter()
             df1.rate = 2
             df2 = H5PYWriter.deflate_filter()
-            df2 = H5PYWriter.H5PYDeflate()
+            df2 = H5PYWriter.H5PYDataFilter()
             df2.rate = 4
             df2.shuffle = True
 
