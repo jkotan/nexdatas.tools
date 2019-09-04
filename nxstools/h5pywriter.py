@@ -129,13 +129,16 @@ def get_links(parent):
         for name in parent.names()]
 
 
-def deflate_filter():
+def data_filter():
     """ create deflate filter
 
     :returns: deflate filter object
     :rtype: :class:`H5PYDataFilter`
     """
     return H5PYDataFilter()
+
+
+deflate_filter = data_filter
 
 
 class H5PYFile(filewriter.FTFile):
@@ -770,6 +773,10 @@ class H5PYDataFilter(filewriter.FTDataFilter):
 
     """ file tree data filter
     """
+
+
+class H5PYDeflate(H5PYDataFilter):
+    pass
 
 
 class H5PYAttributeManager(filewriter.FTAttributeManager):

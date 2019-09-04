@@ -1067,68 +1067,9 @@ class H5CppDataFilter(filewriter.FTDataFilter):
     """ file tree deflate
     """
 
-    def __init__(self, h5object):
-        """ constructor
 
-        :param h5object: pni object
-        :type h5object: :obj:`any`
-        """
-        filewriter.FTDataFilter.__init__(self, h5object)
-        self.__shuffle = False
-
-    def __getrate(self):
-        """ getter for compression rate
-
-        :returns: compression rate
-        :rtype: :obj:`int`
-        """
-        return self._h5object.level
-
-    def __setrate(self, value):
-        """ setter for compression rate
-
-        :param value: compression rate
-        :type value: :obj:`int`
-        """
-        self._h5object.level = value
-
-    def __getfilterid(self):
-        """ getter for compression filterid
-
-        :returns: compression filterid
-        :rtype: :obj:`int`
-        """
-        return self._h5object.level
-
-    def __setfilterid(self, value):
-        """ setter for compression rate
-
-        :param value: compression rate
-        :type value: :obj:`int`
-        """
-        self._h5object.level = value
-
-    #: (:obj:`int`) compression rate
-    rate = property(__getrate, __setrate)
-
-    def __getshuffle(self):
-        """ getter for compression shuffle
-
-        :returns: compression shuffle
-        :rtype: :obj:`bool`
-        """
-        return self.__shuffle
-
-    def __setshuffle(self, value):
-        """ setter for compression shuffle
-
-        :param value: compression shuffle
-        :type value: :obj:`bool`
-        """
-        self.__shuffle = value
-
-    #: (:obj:`bool`) compression shuffle
-    shuffle = property(__getshuffle, __setshuffle)
+class H5CppDeflate(H5CppDataFilter):
+    pass
 
 
 class H5CppAttributeManager(filewriter.FTAttributeManager):
