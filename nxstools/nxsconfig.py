@@ -1374,7 +1374,9 @@ def main():
         print("")
         sys.exit(255)
 
-    if options.datasources and options.profiles:
+    if hasattr(options, "datasources") and \
+       hasattr(options, "profiles") and \
+       options.datasources and options.profiles:
         sys.stderr.write(
             "Error: %s\n" % str("argument -d/--datasources and -r/--profiles "
                                 "cannot be selected simultaneously"))
