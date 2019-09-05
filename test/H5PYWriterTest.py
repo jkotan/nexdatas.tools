@@ -28,10 +28,15 @@ import binascii
 import string
 import h5py
 import time
-from pninexus import h5cpp
 
 import nxstools.filewriter as FileWriter
 import nxstools.h5pywriter as H5PYWriter
+
+try:
+    from pninexus import h5cpp
+    H5CPP = True
+except ImportError:
+    H5CPP = False
 
 H5PYMAJOR, H5PYMINOR, H5PYPATCH = h5py.__version__.split(".", 2)
 
@@ -2051,7 +2056,7 @@ class H5PYWriterTest(unittest.TestCase):
         self._fname = '%s/%s%s.h5' % (os.getcwd(),
                                       self.__class__.__name__, fun)
 
-        if hasattr(h5cpp.filter, "is_filter_available") \
+        if H5CPP and hasattr(h5cpp.filter, "is_filter_available") \
            and h5cpp.filter.is_filter_available(32008):
             try:
                 # overwrite = False

@@ -20,6 +20,7 @@
 """ Command-line tool for ascess to the nexdatas configuration server """
 
 import sys
+import json
 import xml.etree.ElementTree as et
 from lxml.etree import XMLParser
 
@@ -696,4 +697,167 @@ class TableTools(object):
 
         lst.append("")
 
+        return lst
+
+
+class TableDictTools(object):
+
+    """ configuration server adapter
+    """
+
+    def __init__(self, description, nonone=None):
+        """ constructor
+
+        :param description: description list
+        :type description:  :obj:`list` <:obj:`str`>
+        :param nonone: list of parameters which have to exist to be shown
+        :type nonone:  :obj:`list` <:obj:`str`>
+        """
+        #: (:obj:`list` <:obj:`str`>)
+        #:    description list
+        self.__description = description
+
+        #: (:obj:`list` <:obj:`str`>)
+        #:    headers
+        self.headers = [
+            'Timer',
+            'DataSourceSelection',
+            'ComponentSelection',
+            'ComponentPreselection',
+            'DataSourcePreselection',
+
+            'UserData',
+            'AppendEntry',
+            'ConfigDevice',
+            'WriterDevice',
+            'Door',
+
+            'DynamicComponents',
+            'ComponentsFromMntGrp',
+            'DefaultDynamicLinks',
+            'DefaultDynamicPath',
+            'UnplottedComponents',
+            'OptionalComponents',
+            'ConfigVariables',
+
+            # 'TimeZone',
+            # 'Version',
+            # 'OrderedChannels',
+            # 'PreselectingDataSources',
+            # 'MntGrpConfiguration',
+            # 'ChannelProperties',
+            # 'MntGrp',
+        ]
+
+        self.headertypenames = {
+            'MntGrp': ('str', None),
+            'Timer': ('list', 'Timer(s)'),
+            'ComponentSelection':
+            ('tdict', 'Detector Components'),
+            'DataSourceSelection': (
+                'tdict', 'Pool/Dynamic Detector Components'),
+            'ComponentPreselection': (
+                'tdict', 'Descriptive Components'),
+            'DataSourcePreselection': (
+                'tdict', 'Descriptive Dynamic Components'),
+            'UserData': ('dict', 'User Data'),
+            'AppendEntry': ('str', None),
+            'ConfigDevice': ('str', None),
+            'WriterDevice': ('str', None),
+            'UnplottedComponents': ('list', 'Unplotted Components'),
+            'MntGrpConfiguration': ('str', None),
+            'Version': ('str', None),
+            'TimeZone': ('str', None),
+            'Door': ('str', None),
+            'DynamicComponents': ('str', None),
+            'PreselectingDataSources': ('list', None),
+            'OrderedChannels': ('list', None),
+            'DefaultDynamicLinks': ('str', None),
+            'ConfigVariables': ('str', None),
+            'ComponentsFromMntGrp': ('str', None),
+            'ChannelProperties': ('str', None),
+            'OptionalComponents': ('list', None),
+            'DefaultDynamicPath': ('str', None),
+        }
+
+        self.typemethods = {
+            'str': self._getstr,
+            'list': self._getlist,
+            'tdict': self._gettdict,
+            'dict': self._getdict,
+        }
+
+        #: (:obj:`str`) table title
+        self.title = None
+        self.maxnamesize = max(
+            [len(hd) for hd in self.headers] +
+            [len(self.headertypenames[hd][1])
+             for hd in self.headers
+             if self.headertypenames[hd][1]]
+        )
+
+    def _getstr(self, name, value):
+        space = " " * (self.maxnamesize - len(name))
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, value)]
+
+    def _getlist(self, name, value):
+        space = " " * (self.maxnamesize - len(name))
+        svalue = ", ".join(json.loads(value)) if value else ""
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, svalue)]
+
+    def _gettdict(self, name, value):
+        space = " " * (self.maxnamesize - len(name))
+        dvl = json.loads(value)
+        svalue = ""
+        if dvl:
+            svalue = ", ".join([key for key in dvl.keys() if dvl[key]])
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, svalue)]
+
+    def _getdict(self, name, value):
+        space = " " * (self.maxnamesize - len(name))
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, value)]
+
+    @classmethod
+    def __toString(cls, lst):
+        """ converts list to string
+
+        :param lst: given list
+        :type lst: :obj:`list` <:obj:`str`>
+        :returns: list in string representation
+        :rtype: :obj:`str`
+        """
+        res = []
+        for it in lst:
+            res.append(it or "*")
+        return str(res)
+
+    def generateList(self):
+        """ generate row lists of table
+
+        :returns:  table rows
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        self.maxnamesize = max(
+            [len(hd) for hd in self.headers] +
+            [len(self.headertypenames[hd][1])
+             for hd in self.headers
+             if self.headertypenames[hd][1]]
+        )
+        lst = [""]
+
+        if self.title is not None:
+            lst.append(self.title)
+            lst.append("-" * len(self.title))
+            lst.append("")
+
+        for desc in self.__description:
+            for hd in self.headers:
+                if hd in desc.keys():
+                    htp, name = self.headertypenames[hd]
+                    method = self.typemethods[htp]
+                    lst.extend(method(name or hd, desc[hd]))
         return lst
