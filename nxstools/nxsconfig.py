@@ -1374,6 +1374,15 @@ def main():
         print("")
         sys.exit(255)
 
+    if options.datasources and options.profiles:
+        sys.stderr.write(
+            "Error: %s\n" % str("argument -d/--datasources and -r/--profiles "
+                                "cannot be selected simultaneously"))
+        sys.stderr.flush()
+        parser.print_help()
+        print("")
+        sys.exit(255)
+
     if options.subparser is None:
         sys.stderr.write(
             "Error: %s\n" % str("too few arguments"))

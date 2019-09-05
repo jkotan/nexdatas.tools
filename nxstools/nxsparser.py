@@ -721,8 +721,8 @@ class TableDictTools(object):
         #:    headers
         self.headers = [
             'Timer',
-            'ComponentSelection',
             'DataSourceSelection',
+            'ComponentSelection',
             'ComponentPreselection',
             'DataSourcePreselection',
 
@@ -732,13 +732,13 @@ class TableDictTools(object):
             'WriterDevice',
             'Door',
 
-            'UnplottedComponents',
             'DynamicComponents',
-            'DefaultDynamicLinks',
-            'ConfigVariables',
             'ComponentsFromMntGrp',
-            'OptionalComponents',
+            'DefaultDynamicLinks',
             'DefaultDynamicPath',
+            'UnplottedComponents',
+            'OptionalComponents',
+            'ConfigVariables',
 
             # 'TimeZone',
             # 'Version',
@@ -752,15 +752,19 @@ class TableDictTools(object):
         self.headertypenames = {
             'MntGrp': ('str', None),
             'Timer': ('list', 'Timer(s)'),
-            'ComponentSelection': ('tdict', 'Detector Components'),
-            'DataSourceSelection': ('tdict', 'Detector DataSources'),
-            'ComponentPreselection': ('tdict', 'Descriptive Components'),
-            'DataSourcePreselection': ('tdict', 'Descriptive DataSources'),
+            'ComponentSelection':
+            ('tdict', 'Detector Components'),
+            'DataSourceSelection': (
+                'tdict', 'Pool/Dynamic Detector Components'),
+            'ComponentPreselection': (
+                'tdict', 'Descriptive Components'),
+            'DataSourcePreselection': (
+                'tdict', 'Descriptive Dynamic Components'),
             'UserData': ('dict', 'User Data'),
             'AppendEntry': ('str', None),
             'ConfigDevice': ('str', None),
             'WriterDevice': ('str', None),
-            'UnplottedComponents': ('str', None),
+            'UnplottedComponents': ('list', 'Unplotted Components'),
             'MntGrpConfiguration': ('str', None),
             'Version': ('str', None),
             'TimeZone': ('str', None),
@@ -785,17 +789,23 @@ class TableDictTools(object):
 
         #: (:obj:`str`) table title
         self.title = None
-        self.maxnamesize = max([len(hd) for hd in self.headers])
+        self.maxnamesize = max(
+            [len(hd) for hd in self.headers] +
+            [len(self.headertypenames[hd][1])
+             for hd in self.headers
+             if self.headertypenames[hd][1]]
+        )
 
     def _getstr(self, name, value):
         space = " " * (self.maxnamesize - len(name))
-        return ["%s: %s%s" % (name, space, value)]
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, value)]
 
     def _getlist(self, name, value):
         space = " " * (self.maxnamesize - len(name))
         svalue = ", ".join(json.loads(value)) if value else ""
-
-        return ["%s: %s%s" % (name, space, svalue)]
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, svalue)]
 
     def _gettdict(self, name, value):
         space = " " * (self.maxnamesize - len(name))
@@ -803,11 +813,13 @@ class TableDictTools(object):
         svalue = ""
         if dvl:
             svalue = ", ".join([key for key in dvl.keys() if dvl[key]])
-        return ["%s: %s%s" % (name, space, svalue)]
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, svalue)]
 
     def _getdict(self, name, value):
         space = " " * (self.maxnamesize - len(name))
-        return ["%s: %s%s" % (name, space, value)]
+        sep = ":" if name != " " else name
+        return ["%s%s %s%s" % (name, sep, space, value)]
 
     @classmethod
     def __toString(cls, lst):
@@ -829,7 +841,12 @@ class TableDictTools(object):
         :returns:  table rows
         :rtype: :obj:`list` <:obj:`str`>
         """
-        self.maxnamesize = max([len(hd) for hd in self.headers])
+        self.maxnamesize = max(
+            [len(hd) for hd in self.headers] +
+            [len(self.headertypenames[hd][1])
+             for hd in self.headers
+             if self.headertypenames[hd][1]]
+        )
         lst = [""]
 
         if self.title is not None:
