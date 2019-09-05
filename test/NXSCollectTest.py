@@ -34,7 +34,12 @@ import numpy as np
 import json
 from nxstools import nxscollect
 from nxstools import filewriter
-from pninexus import h5cpp
+try:
+    from pninexus import h5cpp
+    H5CPP = True
+except ImportError:
+    H5CPP = False
+
 
 try:
     from cStringIO import StringIO
@@ -579,7 +584,7 @@ For more help:
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
-        if self.externalfilters:
+        if self.externalfilters and H5CPP:
             if hasattr(h5cpp.filter, "is_filter_available") \
                and h5cpp.filter.is_filter_available(32008):
                 commands.extend(extra_commands)
@@ -1152,7 +1157,7 @@ For more help:
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
-        if self.externalfilters:
+        if self.externalfilters and H5CPP:
             if hasattr(h5cpp.filter, "is_filter_available") \
                and h5cpp.filter.is_filter_available(32008):
                 commands.extend(extra_commands)
