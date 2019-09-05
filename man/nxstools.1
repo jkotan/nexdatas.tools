@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Jul 19, 2019" "2.66" "NXSTools"
+.TH "NXSTOOLS" "1" "Sep 05, 2019" "2.67" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1564,7 +1564,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = \(aq examples:\en       nxscollect execute \-c1 /tmp/gpfs/raw/scan_234.nxs \en\en\en\(aq
+.B epilog = \(aq examples:\en       nxscollect execute \-c1 /tmp/gpfs/raw/scan_234.nxs \en\en       nxscollect execute \-c32008:0,2 /ramdisk/scan_123.nxs \en\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -1615,6 +1615,27 @@ the main program function
 .B Parameters
 \fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.getcompression(compression)
+.INDENT 7.0
+.TP
+.B converts compression string to a deflate level parameter
+or list with [filterid, opt1, opt2, …]
+.UNINDENT
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcompression\fP (\fI\%str\fP) – compression string
+.TP
+.B Returns
+deflate level parameter
+or list with [filterid, opt1, opt2, …]
+.TP
+.B Return type
+\fI\%int\fP or \fI\%list\fP < \fI\%int\fP > or \fINone\fP
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1728,7 +1749,7 @@ JSON with variables
 .UNINDENT
 .INDENT 7.0
 .TP
-.B deleteCmd(ds, args, ask=True)
+.B deleteCmd(ds, args, ask=True, profiles=False)
 delete the DB items
 .INDENT 7.0
 .TP
@@ -1740,6 +1761,8 @@ delete the DB items
 \fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
 \fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
+.IP \(bu 2
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -1817,7 +1840,7 @@ XML configuration string
 .UNINDENT
 .INDENT 7.0
 .TP
-.B infoCmd(ds, args, md, pr)
+.B infoCmd(ds, args, md, pr, profiles)
 Provides info for given elements
 .INDENT 7.0
 .TP
@@ -1831,6 +1854,8 @@ Provides info for given elements
 \fBmd\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
 \fBpr\fP (\fI\%bool\fP) – flag set True for private components
+.IP \(bu 2
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -1842,7 +1867,7 @@ list with description
 .UNINDENT
 .INDENT 7.0
 .TP
-.B listCmd(ds, mandatory=False, private=False)
+.B listCmd(ds, mandatory=False, private=False, profiles=False)
 lists the DB item names
 .INDENT 7.0
 .TP
@@ -1854,6 +1879,8 @@ lists the DB item names
 \fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
 \fBprivate\fP (\fI\%bool\fP) – flag set True for components starting with ‘__’
+.IP \(bu 2
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -1902,7 +1929,7 @@ list of record names
 .UNINDENT
 .INDENT 7.0
 .TP
-.B showCmd(ds, args, mandatory=False)
+.B showCmd(ds, args, mandatory=False, profiles=False)
 shows the DB items
 .INDENT 7.0
 .TP
@@ -1914,6 +1941,8 @@ shows the DB items
 \fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
 \fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
+.IP \(bu 2
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -2612,7 +2641,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = \(aq * with \-b: components are created (without datasources) in Configuration Server database\en * without \-b: components are created (without datasources) on the local filesystem in \-d <directory> \en * default: <directory> is \e\(aq.\e\(aq \en            <server> is taken from Tango DB\en            <strategy> is step\en            <type> is NX_FLOAT\en            <chunk> is SCALAR\en            <nexuspath> is "/$var.entryname#\e\(aqscan\e\(aq$var.serialno:NXentry/instrument/collection/"\en examples:\en       nxscreate comp counter \en       nxscreate comp \-f1 \-l \-v exp_c01 \-b \en       nxscreate comp lambda \-d /home/user/xmldir/ \en       nxscreate comp \-n "/$var.entryname#\e\(aqscan\e\(aq$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/" \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m \en       nxscreate comp \-n "/$var.entryname#\e\(aqscan\e\(aq$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM\en\en\(aq
+.B epilog = \(aq * with \-b: components are created (without datasources) in Configuration Server database\en * without \-b: components are created (without datasources) on the local filesystem in \-d <directory> \en * default: <directory> is \e\(aq.\e\(aq \en            <server> is taken from Tango DB\en            <strategy> is step\en            <type> is NX_FLOAT\en            <chunk> is SCALAR\en            <nexuspath> is "/\e\e$var.entryname#\e\(aqscan\e\(aq\e\e$var.serialno:NXentry/instrument/collection/"\en examples:\en       nxscreate comp counter \en       nxscreate comp \-f1 \-l \-v exp_c01 \-b \en       nxscreate comp lambda \-d /home/user/xmldir/ \en       nxscreate comp \-n "/\e\e$var.entryname#\e\(aqscan\e\(aq\e\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/" \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m \en       nxscreate comp \-n "/\e\e$var.entryname#\e\(aqscan\e\(aq\e\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -3870,7 +3899,7 @@ the main program function
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsetup.knownHosts = {\(aqcfeld\-pcx27083\(aq: {\(aqbeamline\(aq: \(aqcfeld\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqcfeld\-pcx27083\(aq, \(aquser\(aq: \(aqritzkowf\(aq}, \(aqhas6117b\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhas6117b\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhascmexp\(aq: {\(aqbeamline\(aq: \(aqcmexp\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhascmexp\(aq, \(aquser\(aq: \(aqcmexp\(aq}, \(aqhasdelay\(aq: {\(aqbeamline\(aq: \(aqdelay\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasdelay\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasdelay2\(aq: {\(aqbeamline\(aq: \(aqdelsauto\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasdelay2\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasep211eh\(aq: {\(aqbeamline\(aq: \(aqp211\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep211eh\(aq, \(aquser\(aq: \(aqp211user\(aq}, \(aqhasep212lab\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212lab\(aq, \(aquser\(aq: \(aqp212user\(aq}, \(aqhasep212oh\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212oh\(aq, \(aquser\(aq: \(aqp212user\(aq}, \(aqhasep22ch1\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22ch1\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep22ch2\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22ch2\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep22oh\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22oh\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep23ch\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23ch\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep23dev\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23dev\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep23eh\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23eh\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep24\(aq: {\(aqbeamline\(aq: \(aqp24\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep24\(aq, \(aquser\(aq: \(aqp24user\(aq}, \(aqhasep24eh1\(aq: {\(aqbeamline\(aq: \(aqp24\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep24eh1\(aq, \(aquser\(aq: \(aqp24user\(aq}, \(aqhasfmirr\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfmirr\(aq, \(aquser\(aq: \(aqmusixusr\(aq}, \(aqhasfpgm1\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfpgm1\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhasfvls\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfvls\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhaskmusixtng\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaskmusixtng\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhasmfmc\(aq: {\(aqbeamline\(aq: \(aqfmc\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmfmc\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasmlqj\(aq: {\(aqbeamline\(aq: \(aqlqj\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmlqj\(aq, \(aquser\(aq: \(aqlqjuser\(aq}, \(aqhasmrixs\(aq: {\(aqbeamline\(aq: \(aqrix\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmrixs\(aq, \(aquser\(aq: \(aqrixuser\(aq}, \(aqhasnp61ch1\(aq: {\(aqbeamline\(aq: \(aqp61\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp61ch1\(aq, \(aquser\(aq: \(aqp61user\(aq}, \(aqhasnp64\(aq: {\(aqbeamline\(aq: \(aqp64\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp64\(aq, \(aquser\(aq: \(aqp64user\(aq}, \(aqhasnp64oh\(aq: {\(aqbeamline\(aq: \(aqp64\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp64oh\(aq, \(aquser\(aq: \(aqp64user\(aq}, \(aqhasnp65\(aq: {\(aqbeamline\(aq: \(aqp65\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp65\(aq, \(aquser\(aq: \(aqp65user\(aq}, \(aqhasnp66\(aq: {\(aqbeamline\(aq: \(aqp66\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp66\(aq, \(aquser\(aq: \(aqp66user\(aq}, \(aqhaso107d1\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso107d1\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso107klx\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso107klx\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso111n\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso111n\(aq, \(aquser\(aq: \(aqtnunez\(aq}, \(aqhaso111o\(aq: {\(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaso111tb\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso111tb\(aq, \(aquser\(aq: \(aqtnunez\(aq}, \(aqhaso113b\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso113b\(aq, \(aquser\(aq: \(aqblume\(aq}, \(aqhaso113u\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso113u\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso204n\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso204n\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhaso213p\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso213p\(aq, \(aquser\(aq: \(aqspiec\(aq}, \(aqhaso224w\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso224w\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaso228jk\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso228jk\(aq, \(aquser\(aq: \(aqjkotan\(aq}, \(aqhaso232s\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp232s\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhasodlsauto\(aq: {\(aqbeamline\(aq: \(aqdlsauto\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasodlsauto\(aq, \(aquser\(aq: \(aqdlsuser\(aq}, \(aqhasp029rack\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasp029rack\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhasp068xlab\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasp068xlab\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspecsicl4\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspecsicl4\(aq, \(aquser\(aq: \(aqlacluser\(aq}, \(aqhaspllabcl1\(aq: {\(aqbeamline\(aq: \(aqllab\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspllabcl1\(aq, \(aquser\(aq: \(aqlacluser\(aq}, \(aqhaspp01eh1\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh1\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp01eh2\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh2\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp01eh3\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh3\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp021ch1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021ch1\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp021ch1a\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021ch1a\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp021jenkins\(aq: {\(aqbeamline\(aq: \(aqp021\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021jenkins\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp022ch\(aq: {\(aqbeamline\(aq: \(aqp022\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp022ch\(aq, \(aquser\(aq: \(aqp022user\(aq}, \(aqhaspp02ch1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch1\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02ch1a\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch1a\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02ch2\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch2\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02lakl\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02lakl\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02oh1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02oh1\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp03\(aq: {\(aqbeamline\(aq: \(aqp03\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp03\(aq, \(aquser\(aq: \(aqp03user\(aq}, \(aqhaspp03nano\(aq: {\(aqbeamline\(aq: \(aqp03nano\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp03nano\(aq, \(aquser\(aq: \(aqp03nano\(aq}, \(aqhaspp04exp1\(aq: {\(aqbeamline\(aq: \(aqp04\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp04exp1\(aq, \(aquser\(aq: \(aqp04user\(aq}, \(aqhaspp04exp2\(aq: {\(aqbeamline\(aq: \(aqp04\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp04exp2\(aq, \(aquser\(aq: \(aqp04user\(aq}, \(aqhaspp06ctrl\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06ctrl\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp06mc01\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06mc01\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp06nc1\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06nc1\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp07eh2\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp07eh2\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhaspp08\(aq: {\(aqbeamline\(aq: \(aqp08\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp08\(aq, \(aquser\(aq: \(aqp08user\(aq}, \(aqhaspp08lisa2\(aq: {\(aqbeamline\(aq: \(aqp08\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp08lisa2\(aq, \(aquser\(aq: \(aqp08user\(aq}, \(aqhaspp09\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp09dif\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09dif\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp09haxps\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09maxps\(aq, \(aquser\(aq: \(aqp09haxps\(aq}, \(aqhaspp09mag\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09mag\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp10e1\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10e1\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10e2\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10e2\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10lab\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10lab\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10lcx\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10lcx\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp11oh\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11oh\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp11sardana\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11sardana\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp11user02\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11user02\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp212oh\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212oh\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21eh2\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep21eh2\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21eh3\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep21eh3\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21lab\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp21lab\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhastodt\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhastodt\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhzgpp07eh1\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh1\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhzgpp07eh3\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh3\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhzgpp07eh4\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh4\(aq, \(aquser\(aq: \(aqp07user\(aq}}
+.B nxstools.nxsetup.knownHosts = {\(aqcfeld\-pcx27083\(aq: {\(aqbeamline\(aq: \(aqcfeld\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqcfeld\-pcx27083\(aq, \(aquser\(aq: \(aqritzkowf\(aq}, \(aqhas6117b\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhas6117b\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhascmexp\(aq: {\(aqbeamline\(aq: \(aqcmexp\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhascmexp\(aq, \(aquser\(aq: \(aqcmexp\(aq}, \(aqhasdelay\(aq: {\(aqbeamline\(aq: \(aqdelay\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasdelay\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasdelay2\(aq: {\(aqbeamline\(aq: \(aqdelsauto\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasdelay2\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasep211eh\(aq: {\(aqbeamline\(aq: \(aqp211\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep211eh\(aq, \(aquser\(aq: \(aqp211user\(aq}, \(aqhasep212lab\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212lab\(aq, \(aquser\(aq: \(aqp212user\(aq}, \(aqhasep212oh\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212oh\(aq, \(aquser\(aq: \(aqp212user\(aq}, \(aqhasep22ch1\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22ch1\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep22ch2\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22ch2\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep22oh\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep22oh\(aq, \(aquser\(aq: \(aqp22user\(aq}, \(aqhasep23ch\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23ch\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep23dev\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23dev\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep23eh\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep23eh\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhasep24\(aq: {\(aqbeamline\(aq: \(aqp24\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep24\(aq, \(aquser\(aq: \(aqp24user\(aq}, \(aqhasep24eh1\(aq: {\(aqbeamline\(aq: \(aqp24\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep24eh1\(aq, \(aquser\(aq: \(aqp24user\(aq}, \(aqhasfmirr\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfmirr\(aq, \(aquser\(aq: \(aqmusixusr\(aq}, \(aqhasfpgm1\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfpgm1\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhasfvls\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasfvls\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhaskmusixtng\(aq: {\(aqbeamline\(aq: \(aqflash\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaskmusixtng\(aq, \(aquser\(aq: \(aqvuvfuser\(aq}, \(aqhasmfmc\(aq: {\(aqbeamline\(aq: \(aqfmc\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmfmc\(aq, \(aquser\(aq: \(aqdelayusr\(aq}, \(aqhasmlqj\(aq: {\(aqbeamline\(aq: \(aqlqj\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmlqj\(aq, \(aquser\(aq: \(aqlqjuser\(aq}, \(aqhasmrixs\(aq: {\(aqbeamline\(aq: \(aqrix\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasmrixs\(aq, \(aquser\(aq: \(aqrixuser\(aq}, \(aqhasnp61ch1\(aq: {\(aqbeamline\(aq: \(aqp61\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp61ch1\(aq, \(aquser\(aq: \(aqp61user\(aq}, \(aqhasnp64\(aq: {\(aqbeamline\(aq: \(aqp64\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp64\(aq, \(aquser\(aq: \(aqp64user\(aq}, \(aqhasnp64oh\(aq: {\(aqbeamline\(aq: \(aqp64\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp64oh\(aq, \(aquser\(aq: \(aqp64user\(aq}, \(aqhasnp65\(aq: {\(aqbeamline\(aq: \(aqp65\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp65\(aq, \(aquser\(aq: \(aqp65user\(aq}, \(aqhasnp66\(aq: {\(aqbeamline\(aq: \(aqp66\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasnp66\(aq, \(aquser\(aq: \(aqp66user\(aq}, \(aqhaso107d1\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso107d1\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso107klx\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso107klx\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso107tk\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso107tk\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso111n\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso111n\(aq, \(aquser\(aq: \(aqtnunez\(aq}, \(aqhaso111o\(aq: {\(aqbeamline\(aq: \(aqp09\(aq}, \(aqhaso111tb\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso111tb\(aq, \(aquser\(aq: \(aqtnunez\(aq}, \(aqhaso113b\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso113b\(aq, \(aquser\(aq: \(aqblume\(aq}, \(aqhaso113u\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso113u\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhaso204n\(aq: {\(aqbeamline\(aq: \(aqp23\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso204n\(aq, \(aquser\(aq: \(aqp23user\(aq}, \(aqhaso213p\(aq: {\(aqbeamline\(aq: \(aqp22\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso213p\(aq, \(aquser\(aq: \(aqspiec\(aq}, \(aqhaso224w\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso224w\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaso228jk\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaso228jk\(aq, \(aquser\(aq: \(aqjkotan\(aq}, \(aqhaso232s\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp232s\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhasodlsauto\(aq: {\(aqbeamline\(aq: \(aqdlsauto\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasodlsauto\(aq, \(aquser\(aq: \(aqdlsuser\(aq}, \(aqhasp029rack\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasp029rack\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhasp068xlab\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasp068xlab\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspecsicl4\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspecsicl4\(aq, \(aquser\(aq: \(aqlacluser\(aq}, \(aqhaspllabcl1\(aq: {\(aqbeamline\(aq: \(aqllab\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspllabcl1\(aq, \(aquser\(aq: \(aqlacluser\(aq}, \(aqhaspp01eh1\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh1\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp01eh2\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh2\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp01eh3\(aq: {\(aqbeamline\(aq: \(aqp01\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp01eh3\(aq, \(aquser\(aq: \(aqp01user\(aq}, \(aqhaspp021ch1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021ch1\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp021ch1a\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021ch1a\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp021jenkins\(aq: {\(aqbeamline\(aq: \(aqp021\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp021jenkins\(aq, \(aquser\(aq: \(aqp021user\(aq}, \(aqhaspp022ch\(aq: {\(aqbeamline\(aq: \(aqp022\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp022ch\(aq, \(aquser\(aq: \(aqp022user\(aq}, \(aqhaspp02ch1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch1\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02ch1a\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch1a\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02ch2\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02ch2\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02lakl\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02lakl\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp02oh1\(aq: {\(aqbeamline\(aq: \(aqp02\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp02oh1\(aq, \(aquser\(aq: \(aqp02user\(aq}, \(aqhaspp03\(aq: {\(aqbeamline\(aq: \(aqp03\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp03\(aq, \(aquser\(aq: \(aqp03user\(aq}, \(aqhaspp03nano\(aq: {\(aqbeamline\(aq: \(aqp03nano\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp03nano\(aq, \(aquser\(aq: \(aqp03nano\(aq}, \(aqhaspp04exp1\(aq: {\(aqbeamline\(aq: \(aqp04\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp04exp1\(aq, \(aquser\(aq: \(aqp04user\(aq}, \(aqhaspp04exp2\(aq: {\(aqbeamline\(aq: \(aqp04\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp04exp2\(aq, \(aquser\(aq: \(aqp04user\(aq}, \(aqhaspp06ctrl\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06ctrl\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp06mc01\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06mc01\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp06nc1\(aq: {\(aqbeamline\(aq: \(aqp06\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp06nc1\(aq, \(aquser\(aq: \(aqp06user\(aq}, \(aqhaspp07eh2\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp07eh2\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhaspp08\(aq: {\(aqbeamline\(aq: \(aqp08\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp08\(aq, \(aquser\(aq: \(aqp08user\(aq}, \(aqhaspp08lisa2\(aq: {\(aqbeamline\(aq: \(aqp08\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp08lisa2\(aq, \(aquser\(aq: \(aqp08user\(aq}, \(aqhaspp09\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp09dif\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09dif\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp09haxps\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09maxps\(aq, \(aquser\(aq: \(aqp09haxps\(aq}, \(aqhaspp09mag\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp09mag\(aq, \(aquser\(aq: \(aqp09user\(aq}, \(aqhaspp10e1\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10e1\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10e2\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10e2\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10lab\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10lab\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp10lcx\(aq: {\(aqbeamline\(aq: \(aqp10\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp10lcx\(aq, \(aquser\(aq: \(aqp10user\(aq}, \(aqhaspp11oh\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11oh\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp11sardana\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11sardana\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp11user02\(aq: {\(aqbeamline\(aq: \(aqp11\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp11user02\(aq, \(aquser\(aq: \(aqp11user\(aq}, \(aqhaspp212oh\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep212oh\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21eh2\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep21eh2\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21eh3\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhasep21eh3\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhaspp21lab\(aq: {\(aqbeamline\(aq: \(aqp21\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhaspp21lab\(aq, \(aquser\(aq: \(aqp21user\(aq}, \(aqhastodt\(aq: {\(aqbeamline\(aq: \(aqp09\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhastodt\(aq, \(aquser\(aq: \(aqkracht\(aq}, \(aqhzgpp07eh1\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh1\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhzgpp07eh3\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh3\(aq, \(aquser\(aq: \(aqp07user\(aq}, \(aqhzgpp07eh4\(aq: {\(aqbeamline\(aq: \(aqp07\(aq, \(aqdbname\(aq: \(aqnxsconfig\(aq, \(aqmasterhost\(aq: \(aqhzgpp07eh4\(aq, \(aquser\(aq: \(aqp07user\(aq}}
 (\fI\%dict\fP <\fI\%dict\fP <\fI\%str\fP , \fI\%str\fP > > )
 all SardanaHosts and DataBaseHosts should be known
 .UNINDENT
@@ -4769,16 +4798,6 @@ Bases: \fI\%object\fP
 configuration server adapter
 .INDENT 7.0
 .TP
-.B classmethod getPureText(node)
-collects text from text child nodes
-.INDENT 7.0
-.TP
-.B Parameters
-\fBnode\fP (\fI\%xml.etree.ElementTree.Element\fP) – parent node
-.UNINDENT
-.UNINDENT
-.INDENT 7.0
-.TP
 .B classmethod getRecord(node)
 fetches record name or query from datasource node
 .INDENT 7.0
@@ -4892,6 +4911,49 @@ source record
 .B Return type
 \fI\%str\fP
 .UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsparser.TableDictTools(description, nonone=None)
+Bases: \fI\%object\fP
+.sp
+configuration server adapter
+.sp
+constructor
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) – description list
+.IP \(bu 2
+\fBnonone\fP (\fI\%list\fP <\fI\%str\fP>) – list of parameters which have to exist to be shown
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B generateList()
+generate row lists of table
+.INDENT 7.0
+.TP
+.B Returns
+table rows
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B headers = None
+(\fI\%list\fP <\fI\%str\fP>)
+headers
+.UNINDENT
+.INDENT 7.0
+.TP
+.B title = None
+(\fI\%str\fP) table title
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5227,7 +5289,7 @@ adds doc tag content
 .UNINDENT
 .INDENT 7.0
 .TP
-.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, grows=None, compression=False, rate=None, shuffle=None, canfail=None)
+.B setStrategy(mode=\(aqSTEP\(aq, trigger=None, value=None, grows=None, compression=False, rate=None, shuffle=None, canfail=None, compression_opts=None)
 sets the field strategy
 .INDENT 7.0
 .TP
