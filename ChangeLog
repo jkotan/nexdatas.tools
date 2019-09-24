@@ -1,3 +1,7 @@
+2019-09-24 Jan Kotanski <jankotan@gmail.com>
+	* improve support for a no-tango mode
+	* tagged as v2.67.1
+
 2019-09-05 Jan Kotanski <jankotan@gmail.com>
 	* add external filters
 	* add list delete info show commands for profile
