@@ -476,7 +476,6 @@ class H5CppGroup(filewriter.FTGroup):
         :returns: file tree object
         :rtype: :class:`FTObject`
         """
-        name = str(name)
         try:
             if self._h5object.has_group(h5cpp.Path(name)):
                 return H5CppGroup(
