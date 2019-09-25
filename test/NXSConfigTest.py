@@ -93,32 +93,35 @@ class NXSConfigTest(unittest.TestCase):
         self.helperror = "Error: too few arguments\n"
 
         self.helpinfo = """usage: nxsconfig [-h]
-                 {list,show,get,delete,variables,sources,record,merge,components,data,describe,info,geometry,servers}
+                 {list,show,get,delete,upload,variables,sources,record,merge,components,data,describe,info,geometry,servers}
                  ...
 
 Command-line tool for reading NeXus configuration from NXSConfigServer
 
 positional arguments:
-  {list,show,get,delete,variables,sources,record,merge,components,data,describe,info,geometry,servers}
+  {list,show,get,delete,upload,variables,sources,record,merge,components,data,describe,info,geometry,servers}
                         sub-command help
-    list                list names of available components (or datasources)
-    show                show components (or datasources) with given names
-    get                 get full configuration of components (or datasources)
-    delete              delete components (or datasources) with given names
+    list                list names of available components, datasources or
+                        profiles
+    show                show (or write to files) components, datasources or
+                        profiles with given names
+    get                 get full configuration of components
+    delete              delete components, datasources or profiles with given
+                        names from ConfigServer
+    upload              upload components, datasources or profiles with given
+                        names from locale filesystem into ConfigServer
     variables           get a list of component variables
     sources             get a list of component datasources
     record              get a list of datasource record names for components
                         or datasources
-    merge               get merged configuration of components (or
-                        datasources)
+    merge               get merged configuration of components or datasources
     components          get a list of dependent components
     data                get/set values of component variables
-    describe            show all parameters of given components (or
-                        datasources)
-    info                show source parameters of given components (or
-                        datasources)
-    geometry            show transformation parameters of given components (or
-                        datasources)
+    describe            show all parameters of given components or datasources
+    info                show general parameters of given components,
+                        datasources or profile
+    geometry            show transformation parameters of given components or
+                        datasources
     servers             get a list of configuration servers from the current
                         tango host
 
