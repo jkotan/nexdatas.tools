@@ -20,7 +20,7 @@
 """ Command-line tool for ascess to the nexdatas configuration server """
 
 import sys
-
+import os
 import argparse
 import json
 from .nxsparser import ParserTools, TableTools, TableDictTools
@@ -233,7 +233,8 @@ class ConfigServer(object):
                     return []
         return records
 
-    def showCmd(self, ds, args, mandatory=False, profiles=False):
+    def showCmd(self, ds, args, mandatory=False, profiles=False,
+                directory=None):
         """ shows the DB items
 
         :param ds: flag set True for datasources
@@ -244,6 +245,8 @@ class ConfigServer(object):
         :type mandatory: :obj:`bool`
         :param profiles: flag set True for profiles
         :type profiles: :obj:`bool`
+        :param directory: output file directory
+        :type directory: :obj:`str`
         :returns: list of XML items
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -255,7 +258,15 @@ class ConfigServer(object):
                                      "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return []
-            return self._cnfServer.DataSources(args)
+            elems = self._cnfServer.DataSources(args)
+            if not directory:
+                return elems
+            else:
+                for i, ar in enumerate(args):
+                    name = os.path.join(directory, "%s.ds.xml" % ar)
+                    with open(name, "w") as text_file:
+                        text_file.write(elems[i])
+
         elif profiles:
             dsrc = self._cnfServer.AvailableSelections()
             for ar in args:
@@ -264,7 +275,14 @@ class ConfigServer(object):
                                      "the configuration server\n" % ar)
                     sys.stderr.flush()
                     return []
-            return self._cnfServer.Selections(args)
+            elems = self._cnfServer.Selections(args)
+            if not directory:
+                return elems
+            else:
+                for i, ar in enumerate(args):
+                    name = os.path.join(directory, "%s.json" % ar)
+                    with open(name, "w") as text_file:
+                        text_file.write(elems[i])
         else:
             cmps = self._cnfServer.AvailableComponents()
             for ar in args:
@@ -276,9 +294,17 @@ class ConfigServer(object):
             if mandatory:
                 mand = list(self._cnfServer.MandatoryComponents())
                 mand.extend(args)
-                return self._cnfServer.Components(mand)
+                elems = self._cnfServer.Components(mand)
             else:
-                return self._cnfServer.Components(args)
+                elems = self._cnfServer.Components(args)
+                mand = args
+            if not directory:
+                return elems
+            else:
+                for i, ar in enumerate(mand):
+                    name = os.path.join(directory, "%s.xml" % ar)
+                    with open(name, "w") as text_file:
+                        text_file.write(elems[i])
         return []
 
     def deleteCmd(self, ds, args, ask=True, profiles=False):
@@ -288,8 +314,8 @@ class ConfigServer(object):
         :type ds: :obj:`bool`
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
-        :param mandatory: flag set True for mandatory components
-        :type mandatory: :obj:`bool`
+        :param ask: ask flag
+        :type ask: :obj:`bool`
         :param profiles: flag set True for profiles
         :type profiles: :obj:`bool`
         :returns: list of XML items
@@ -336,6 +362,60 @@ class ConfigServer(object):
                     self._cnfServer.DeleteSelection(ar)
                 else:
                     self._cnfServer.DeleteComponent(ar)
+        return []
+
+    def uploadCmd(self, ds, args, force=False, profiles=False, directory='.'):
+        """ upload the DB items from files
+
+        :param ds: flag set True for datasources
+        :type ds: :obj:`bool`
+        :param args: list of item names
+        :type args: :obj:`list` <:obj:`str`>
+        :param force: force flag
+        :type force: :obj:`bool`
+        :param profiles: flag set True for profiles
+        :type profiles: :obj:`bool`
+        :param directory: input file directory
+        :type directory: :obj:`str`
+        :returns: list of XML items
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        label = "Component"
+        if ds:
+            dsrc = self._cnfServer.AvailableDataSources()
+            label = "DataSource"
+        elif profiles:
+            dsrc = self._cnfServer.AvailableSelections()
+            label = "Profile"
+        else:
+            dsrc = self._cnfServer.AvailableComponents()
+        if not force:
+            for ar in args:
+                if ar in dsrc:
+                    sys.stderr.write(
+                        "Error: %s '%s' is stored in "
+                        "the configuration server\n" % (label, ar))
+                    sys.stderr.flush()
+                    return []
+        for ar in args:
+            if ds:
+                name = os.path.join(directory, "%s.ds.xml" % ar)
+                with open(name, 'r') as fl:
+                    txt = fl.read()
+                self._cnfServer.XMLString = txt
+                self._cnfServer.StoreDataSource(ar)
+            elif profiles:
+                name = os.path.join(directory, "%s.json" % ar)
+                with open(name, 'r') as fl:
+                    txt = fl.read()
+                self._cnfServer.Selection = txt
+                self._cnfServer.StoreSelection(ar)
+            else:
+                name = os.path.join(directory, "%s.xml" % ar)
+                with open(name, 'r') as fl:
+                    txt = fl.read()
+                self._cnfServer.XMLString = txt
+                self._cnfServer.StoreComponent(ar)
         return []
 
     def getCmd(self, args):
@@ -711,7 +791,7 @@ class List(Runner):
     """ List runner"""
 
     #: (:obj:`str`) command description
-    description = "list names of available components (or datasources)"
+    description = "list names of available components, datasources or profiles"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -763,7 +843,8 @@ class Show(Runner):
     """ Show runner"""
 
     #: (:obj:`str`) command description
-    description = "show components (or datasources) with given names"
+    description = "show (or write to files) " \
+                  "components, datasources or profiles with given names"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -783,9 +864,9 @@ class Show(Runner):
         parser.add_argument("-r", "--profiles", action="store_true",
                             default=False, dest="profiles",
                             help="perform operation for datasources")
-#        parser.add_argument("-m", "--mandatory", action="store_true",
-#                            default=False, dest="mandatory",
-#                            help="make use mandatory components")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="make use mandatory components")
 #        parser.add_argument("-p", "--private", action="store_true",
 #                            default=False, dest="private",
 #                            help="make use private components,"
@@ -793,8 +874,11 @@ class Show(Runner):
 #        parser.add_argument("-n", "--no-newlines", action="store_true",
 #                            default=False, dest="nonewlines",
 #                            help="split result with space characters")
+        parser.add_argument("-o", "--directory", dest="directory",
+                            help=("output file directory"))
         parser.add_argument('args', metavar='name', type=str, nargs='*',
-                            help='names of components or datasources')
+                            help='names of components, datasources '
+                            'or profiles')
 
     def run(self, options):
         """ the main program function
@@ -807,7 +891,7 @@ class Show(Runner):
         cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.showCmd(
             options.datasources, options.args, False,
-            options.profiles
+            options.profiles, options.directory
         ))
         return string
 
@@ -817,7 +901,8 @@ class Delete(Runner):
     """ Show runner"""
 
     #: (:obj:`str`) command description
-    description = "delete components (or datasources) with given names"
+    description = "delete components, datasources or profiles " \
+                  "with given names from ConfigServer"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -841,7 +926,8 @@ class Delete(Runner):
                             default=False, dest="force",
                             help="do not ask")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
-                            help='names of components or datasources')
+                            help='names of components, datasources '
+                            'or profiles')
 
     def run(self, options):
         """ the main program function
@@ -859,12 +945,64 @@ class Delete(Runner):
         return string
 
 
+class Upload(Runner):
+
+    """ Store runner"""
+
+    #: (:obj:`str`) command description
+    description = "upload components, datasources or profiles " \
+        "with given names from locale filesystem into ConfigServer"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsconfig upload exp_c01 exp_c02\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        parser = self._parser
+        parser.add_argument("-s", "--server", dest="server",
+                            help=("configuration server device name"))
+        parser.add_argument("-d", "--datasources", action="store_true",
+                            default=False, dest="datasources",
+                            help="perform operation for datasources")
+        parser.add_argument("-r", "--profiles", action="store_true",
+                            default=False, dest="profiles",
+                            help="perform operation for datasources")
+        parser.add_argument("-f", "--force", action="store_true",
+                            default=False, dest="force",
+                            help="do not ask")
+        parser.add_argument("-i", "--directory", dest="directory",
+                            default=".",
+                            help=("input file directory"))
+        parser.add_argument('args', metavar='name', type=str, nargs='*',
+                            help='names of components, datasources '
+                            'or profiles')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        cnfserver = ConfigServer(options.server, False)
+        string = cnfserver.char.join(cnfserver.uploadCmd(
+            options.datasources, options.args, options.force,
+            options.profiles, options.directory
+        ))
+        return string
+
+
 class Get(Runner):
 
     """ Get runner"""
 
     #: (:obj:`str`) command description
-    description = "get full configuration of components (or datasources)"
+    description = "get full configuration of components"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -902,7 +1040,7 @@ class Merge(Runner):
     """ Merge runner"""
 
     #: (:obj:`str`) command description
-    description = "get merged configuration of components (or datasources)"
+    description = "get merged configuration of components or datasources"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1184,7 +1322,7 @@ class Describe(Runner):
 
     #: (:obj:`str`) command description
     description = "show all parameters of given components" \
-                  + " (or datasources)"
+                  + " or datasources"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1234,8 +1372,8 @@ class Info(Runner):
     """ List runner"""
 
     #: (:obj:`str`) command description
-    description = "show source parameters of given components" \
-                  + " (or datasources)"
+    description = "show general parameters of given components," \
+                  + " datasources or profile"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1266,7 +1404,8 @@ class Info(Runner):
                             default=False, dest="nonewlines",
                             help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
-                            help='names of components or datasources')
+                            help='names of components, datasources '
+                            'or profiles')
 
     def run(self, options):
         """ the main program function
@@ -1289,7 +1428,7 @@ class Geometry(Runner):
 
     #: (:obj:`str`) command description
     description = "show transformation parameters of given components" \
-                  + " (or datasources)"
+                  + " or datasources"
     epilog = "" \
         + " examples:\n" \
         + "       nxsconfig geometry dcm\n" \
@@ -1354,6 +1493,7 @@ def main():
                          ('show', Show),
                          ('get', Get),
                          ('delete', Delete),
+                         ('upload', Upload),
                          ('variables', Variables),
                          ('sources', Sources),
                          ('record', Record),
@@ -1378,8 +1518,9 @@ def main():
        hasattr(options, "profiles") and \
        options.datasources and options.profiles:
         sys.stderr.write(
-            "Error: %s\n" % str("argument -d/--datasources and -r/--profiles "
-                                "cannot be selected simultaneously"))
+            "Error: %s\n" % str(
+                "argument -d/--datasources and -r/--profiles "
+                "cannot be selected simultaneously"))
         sys.stderr.flush()
         parser.print_help()
         print("")
@@ -1417,7 +1558,7 @@ def main():
     try:
         result = runners[options.subparser].run(options)
 
-#    except PyTango.DevFailed as
+        # except PyTango.DevFailed as
     except Exception as e:
         if isinstance(e, EOFError) \
            and str(e).startswith("EOF when reading a line"):
