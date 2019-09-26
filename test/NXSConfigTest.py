@@ -150,6 +150,7 @@ For more help:
         self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
         self.__cmps = []
+        self.__profs = []
         self.maxDiff = None
         self.__ds = []
         self.__man = []
@@ -513,6 +514,65 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_delete_profile(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__cmps.append(name)
+
+        commands = [
+            ('nxsconfig delete -f -r  -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -f --profiles --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            self.setSelection(el, jsn2)
+            self.assertEqual(el.storeSelection(name2), None)
+            self.__cmps.append(name2)
+            avc2 = el.availableSelections()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            # vl =
+            mystdout.getvalue()
+            # er =
+            mystderr.getvalue()
+            avc3 = el.availableSelections()
+            self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_delete_ds(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -727,6 +787,79 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_delete_profile_noforce_pipe(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -r -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -r --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n', 'Y\n', 'y\n'',N\n', 'n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setXML(el, jsn2)
+                self.assertEqual(el.storeSelection(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableSelections()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                # mystdin =
+                sys.stdin = StringIO()
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:14], 'Remove Profile')
+                self.assertEqual(
+                    er,
+                    "Error: EOF when reading a line. "
+                    "Consider to use the --force option \n")
+                avc3 = el.availableSelections()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__ds.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -871,6 +1004,77 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_delete_profile_noforce(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -r -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -r --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['\n', 'Y\n', 'y\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setSelection(el, jsn2)
+                self.assertEqual(el.storeSelection(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableSelections()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:14], 'Remove Profile')
+                self.assertEqual('', er)
+                avc3 = el.availableSelections()
+                self.assertEqual((list(set(avc2) - set(avc3))), [name2])
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__ds.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_no(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1009,6 +1213,76 @@ For more help:
                 self.assertEqual((list(set(avc2) - set(avc3))), [])
 
         self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop()
+
+        el.close()
+
+    # \brief It tests XMLConfigurator
+    def test_delete_profile_noforce_no(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        #        print avc
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__ds.append(name)
+
+        commands = [
+            ('nxsconfig delete -r -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete -r --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles -s %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+            ('nxsconfig delete --profiles --server %s %s'
+             % (self._sv.new_device_info_writer.name, name2)).split(),
+        ]
+        answers = ['N\n', 'n\n']
+        for cmd in commands:
+            for ans in answers:
+                self.setSelection(el, jsn2)
+                self.assertEqual(el.storeSelection(name2), None)
+                self.__cmps.append(name2)
+                avc2 = el.availableSelections()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                r, w = os.pipe()
+                new_stdin = mytty(os.fdopen(r, 'r'))
+                old_stdin, sys.stdin = sys.stdin, new_stdin
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                tm = threading.Timer(1., myinput, [w, ans])
+                tm.start()
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                sys.stdin = old_stdin
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual(vl[:14], 'Remove Profile')
+                self.assertEqual('', er)
+                avc3 = el.availableSelections()
+                self.assertEqual((list(set(avc2) - set(avc3))), [])
+
+        self.assertEqual(el.deleteSelection(name), None)
         self.__ds.pop()
 
         el.close()
@@ -1454,6 +1728,112 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_list_profiles_available(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+#        print avc
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__ds.append(name)
+        self.setSelection(el, jsn2)
+        self.assertEqual(el.storeSelection(name2), None)
+        self.__ds.append(name2)
+        avc2 = el.availableSelections()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.selections([name])
+        self.assertEqual(cpx[0], jsn)
+
+        commands = [
+            ('nxsconfig list -r -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list -r --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig list --profiles --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.split('\n')
+
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(cp in avc2)
+
+            for cp in avc2:
+                self.assertTrue(cp in avc3)
+
+            self.assertEqual('', er)
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__ds.pop(-2)
+        self.assertEqual(el.deleteSelection(name2), None)
+        self.__ds.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_show_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1600,6 +1980,151 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_show_profile_av(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+        profs = {name: jsn, name2: jsn2}
+
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__profs.append(name)
+        self.setSelection(el, jsn2)
+        self.assertEqual(el.storeSelection(name2), None)
+        self.__profs.append(name2)
+        avc2 = el.availableSelections()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.selections([name])
+        self.assertEqual(cpx[0], jsn)
+
+        commands = [
+            'nxsconfig show %s -r -s %s',
+            'nxsconfig show %s -r --server %s',
+            'nxsconfig show %s -r -s %s',
+            'nxsconfig show %s -r --server %s',
+            'nxsconfig show %s --profiles -s %s',
+            'nxsconfig show %s --profiles --server %s',
+            'nxsconfig show %s --profiles -s %s',
+            'nxsconfig show %s --profiles --server %s',
+        ]
+        for scmd in commands:
+            for nm in profs.keys():
+                cmd = (scmd % (
+                    nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), profs[nm])
+                self.assertEqual(er, "")
+
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(
+                er,
+                "Error: Profile '%s' not stored in the configuration server"
+                % name3)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl,
+                             ("%s\n%s" % (profs[name], profs[name2])))
+            self.assertEqual(er, "")
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(
+                er,
+                "Error: Profile '%s' not stored in the configuration server"
+                % name3)
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__profs.pop(-2)
+        self.assertEqual(el.deleteSelection(name2), None)
+        self.__profs.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_show_datasources_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1615,13 +2140,13 @@ For more help:
                "<datasource type='CLIENT' name'testds1'/></definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
@@ -1769,13 +2294,13 @@ For more help:
                "</definition>\n"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
@@ -1920,14 +2445,14 @@ For more help:
                "$datasources.sl1right</definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
             #        print avc
-        # cmps = {name: xml, name2: xml2}
+            # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -2002,14 +2527,14 @@ For more help:
                "$datasources.sl1right</definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
-        # cmps = {name: xml, name2: xml2}
+            #        print avc
+            # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -2083,14 +2608,14 @@ For more help:
                "<field type='NXentry' name='test2'>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-        #        print avc
-        # cmps = {name: xml, name2: xml2}
+            #        print avc
+            # cmps = {name: xml, name2: xml2}
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
@@ -2130,8 +2655,8 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-#            el.createConfiguration(man + [name, name2])
-#            cpxml = el.xmlstring
+            #            el.createConfiguration(man + [name, name2])
+            #            cpxml = el.xmlstring
             vl = mystdout.getvalue().strip()
             er = mystderr.getvalue()
             self.assertEqual(vl.strip(), "")
@@ -2174,13 +2699,13 @@ For more help:
                "$datasources.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
         dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
@@ -2268,13 +2793,13 @@ For more help:
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
         dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
@@ -2365,13 +2890,13 @@ For more help:
                  "</datasource></definition>" % dsname2
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
         # dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
@@ -2462,13 +2987,13 @@ For more help:
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2}
         dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
@@ -2556,13 +3081,13 @@ For more help:
                "</definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2, name3: xml3}
 
         self.setXML(el, xml)
@@ -2664,13 +3189,13 @@ For more help:
                  "<datasource name='%s' type='CLIENT'></datasource>" % dsname3
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
+            name2 = name + '_2'
+            name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
-#        print avc
+            #        print avc
         cmps = {name: xml, name2: xml2, name3: xml3}
         # dss = {name: dsname, name2: dsname2}
         self.setXML(el, xml)
@@ -2756,13 +3281,13 @@ For more help:
               "</definition>"
         while name in avc:
             name = name + '_1'
-#        print avc
+            #        print avc
         cpx = el.components(avc)
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
         avc2 = el.availableComponents()
-#        print avc2
+        #        print avc2
         cpx2 = el.components(avc2)
         self.assertTrue(isinstance(avc2, list))
         for i in range(len(avc)):
@@ -2806,9 +3331,9 @@ For more help:
         #       "</definition>"
         while name in avc:
             name = name + '_1'
-#        print avc
-        # self.myAssertRaise(
-        #    NonregisteredDBRecordError, el.components, [name])
+            #        print avc
+            # self.myAssertRaise(
+            #    NonregisteredDBRecordError, el.components, [name])
 
         self.assertEqual(long(el.version.split('.')[-1]), self.revision)
         self.assertEqual(el.close(), None)
@@ -2831,14 +3356,14 @@ For more help:
                "</definition>"
         while name in avc:
             name = name + '_1'
-#        print avc
+            #        print avc
         cpx = el.components(avc)
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
         avc2 = el.availableComponents()
-#        print avc2
+        #        print avc2
         cpx2 = el.components(avc2)
         self.assertTrue(isinstance(avc2, list))
         for i in range(len(avc)):
@@ -2854,7 +3379,7 @@ For more help:
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
         avc2 = el.availableComponents()
-#        print avc2
+        #        print avc2
         cpx2 = el.components(avc2)
         self.assertTrue(isinstance(avc2, list))
         for i in range(len(avc)):
@@ -2901,17 +3426,17 @@ For more help:
                "</definition>"
         while name in avc:
             name = name + '_1'
-        name2 = name + '_2'
+            name2 = name + '_2'
         while name2 in avc:
             name2 = name2 + '_2'
-#        print avc
+            #        print avc
         cpx = el.components(avc)
 
         self.setXML(el, xml)
         self.assertEqual(el.storeComponent(name), None)
         self.__cmps.append(name)
         avc2 = el.availableComponents()
-#        print avc2
+        #        print avc2
         cpx2 = el.components(avc2)
         self.assertTrue(isinstance(avc2, list))
         for i in range(len(avc)):
@@ -2927,7 +3452,7 @@ For more help:
         self.assertEqual(el.storeComponent(name2), None)
         self.__cmps.append(name2)
         avc2 = el.availableComponents()
-#        print avc2
+        #        print avc2
         cpx2 = el.components(avc2)
         self.assertTrue(isinstance(avc2, list))
         for i in range(len(avc)):
