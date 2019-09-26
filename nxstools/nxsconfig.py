@@ -864,16 +864,16 @@ class Show(Runner):
         parser.add_argument("-r", "--profiles", action="store_true",
                             default=False, dest="profiles",
                             help="perform operation for profiles")
-        parser.add_argument("-m", "--mandatory", action="store_true",
-                            default=False, dest="mandatory",
-                            help="make use mandatory components")
-#        parser.add_argument("-p", "--private", action="store_true",
-#                            default=False, dest="private",
-#                            help="make use private components,"
-#                            " i.e. starting with '__'")
-#        parser.add_argument("-n", "--no-newlines", action="store_true",
-#                            default=False, dest="nonewlines",
-#                            help="split result with space characters")
+        # parser.add_argument("-m", "--mandatory", action="store_true",
+        #                     default=False, dest="mandatory",
+        #                     help="make use mandatory components")
+        # parser.add_argument("-p", "--private", action="store_true",
+        #                     default=False, dest="private",
+        #                     help="make use private components,"
+        #                     " i.e. starting with '__'")
+        # parser.add_argument("-n", "--no-newlines", action="store_true",
+        #                     default=False, dest="nonewlines",
+        #                     help="split result with space characters")
         parser.add_argument("-o", "--directory", dest="directory",
                             help=("output file directory"))
         parser.add_argument('args', metavar='name', type=str, nargs='*',
