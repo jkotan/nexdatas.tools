@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Sep 05, 2019" "2.67" "NXSTools"
+.TH "NXSTOOLS" "1" "Sep 26, 2019" "2.68" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1760,7 +1760,7 @@ delete the DB items
 .IP \(bu 2
 \fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
+\fBask\fP (\fI\%bool\fP) – ask flag
 .IP \(bu 2
 \fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
@@ -1929,7 +1929,7 @@ list of record names
 .UNINDENT
 .INDENT 7.0
 .TP
-.B showCmd(ds, args, mandatory=False, profiles=False)
+.B showCmd(ds, args, mandatory=False, profiles=False, directory=None)
 shows the DB items
 .INDENT 7.0
 .TP
@@ -1943,6 +1943,8 @@ shows the DB items
 \fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
 \fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
+.IP \(bu 2
+\fBdirectory\fP (\fI\%str\fP) – output file directory
 .UNINDENT
 .TP
 .B Returns
@@ -1963,6 +1965,33 @@ lists datasources of the components
 .TP
 .B Returns
 list of datasource names
+.TP
+.B Return type
+\fI\%list\fP <\fI\%str\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B uploadCmd(ds, args, force=False, profiles=False, directory=\(aq.\(aq)
+upload the DB items from files
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
+.IP \(bu 2
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
+.IP \(bu 2
+\fBforce\fP (\fI\%bool\fP) – force flag
+.IP \(bu 2
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
+.IP \(bu 2
+\fBdirectory\fP (\fI\%str\fP) – input file directory
+.UNINDENT
+.TP
+.B Returns
+list of XML items
 .TP
 .B Return type
 \fI\%list\fP <\fI\%str\fP>
@@ -2050,7 +2079,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqdelete components (or datasources) with given names\(aq
+.B description = \(aqdelete components, datasources or profiles with given names from ConfigServer\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2095,7 +2124,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqshow all parameters of given components (or datasources)\(aq
+.B description = \(aqshow all parameters of given components or datasources\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2140,7 +2169,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqshow transformation parameters of given components (or datasources)\(aq
+.B description = \(aqshow transformation parameters of given components or datasources\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2184,7 +2213,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqget full configuration of components (or datasources)\(aq
+.B description = \(aqget full configuration of components\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2229,7 +2258,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqshow source parameters of given components (or datasources)\(aq
+.B description = \(aqshow general parameters of given components, datasources or profile\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2274,7 +2303,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqlist names of available components (or datasources)\(aq
+.B description = \(aqlist names of available components, datasources or profiles\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2319,7 +2348,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqget merged configuration of components (or datasources)\(aq
+.B description = \(aqget merged configuration of components or datasources\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2454,7 +2483,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B description = \(aqshow components (or datasources) with given names\(aq
+.B description = \(aqshow (or write to files) components, datasources or profiles with given names\(aq
 (\fI\%str\fP) command description
 .UNINDENT
 .INDENT 7.0
@@ -2505,6 +2534,51 @@ creates parser
 .INDENT 7.0
 .TP
 .B epilog = \(aq examples:\en       nxsconfig sources slit1\en\en\(aq
+(\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B run(options)
+the main program function
+.INDENT 7.0
+.TP
+.B Parameters
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
+.TP
+.B Returns
+output information
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsconfig.Upload(parser)
+Bases: \fI\%nxstools.nxsargparser.Runner\fP
+.sp
+Store runner
+.sp
+parser creator
+.INDENT 7.0
+.TP
+.B Parameters
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates parser
+.UNINDENT
+.INDENT 7.0
+.TP
+.B description = \(aqupload components, datasources or profiles with given names from locale filesystem into ConfigServer\(aq
+(\fI\%str\fP) command description
+.UNINDENT
+.INDENT 7.0
+.TP
+.B epilog = \(aq examples:\en       nxsconfig upload exp_c01 exp_c02\en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
