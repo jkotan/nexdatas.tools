@@ -1980,6 +1980,982 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_upload_comp_av(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+
+        with open("%s.xml" % (name), "w") as fl:
+            fl.write(xml)
+        with open("%s.xml" % (name2), "w") as fl:
+            fl.write(xml2)
+        with open("%s.xml" % (name3), "w") as fl:
+            fl.write(xml)
+
+        self.__cmps.append(name)
+        self.__cmps.append(name2)
+
+        commands = [
+            'nxsconfig upload %s -s %s',
+            'nxsconfig upload %s  --server %s',
+            'nxsconfig upload %s  -s %s',
+            'nxsconfig upload %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableComponents()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.components([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteComponent(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableComponents()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.components([name])
+            self.assertEqual(cpx[0], xml)
+            cpx = el.components([name2])
+            self.assertEqual(cpx[0], xml2)
+
+            self.assertEqual(el.deleteComponent(name), None)
+            self.assertEqual(el.deleteComponent(name2), None)
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        os.remove("%s.xml" % name)
+        os.remove("%s.xml" % name2)
+        os.remove("%s.xml" % name3)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_comp_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dirname = "test_comp_dir"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+        with open("%s/%s.xml" % (dirname, name), "w") as fl:
+            fl.write(xml)
+        with open("%s/%s.xml" % (dirname, name2), "w") as fl:
+            fl.write(xml2)
+        with open("%s/%s.xml" % (dirname, name3), "w") as fl:
+            fl.write(xml)
+
+        self.__cmps.append(name)
+        self.__cmps.append(name2)
+
+        commands = [
+            'nxsconfig upload %s -i %s -s %s',
+            'nxsconfig upload %s -i %s  --server %s',
+            'nxsconfig upload %s -i %s  -s %s',
+            'nxsconfig upload %s -i %s  --server %s',
+            'nxsconfig upload %s --directory %s -s %s',
+            'nxsconfig upload %s --directory %s  --server %s',
+            'nxsconfig upload %s --directory %s  -s %s',
+            'nxsconfig upload %s --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableComponents()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.components([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteComponent(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableComponents()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.components([name])
+            self.assertEqual(cpx[0], xml)
+            cpx = el.components([name2])
+            self.assertEqual(cpx[0], xml2)
+
+            self.assertEqual(el.deleteComponent(name), None)
+            self.assertEqual(el.deleteComponent(name2), None)
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_ds_av(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+
+        with open("%s.ds.xml" % (name), "w") as fl:
+            fl.write(xml)
+        with open("%s.ds.xml" % (name2), "w") as fl:
+            fl.write(xml2)
+        with open("%s.ds.xml" % (name3), "w") as fl:
+            fl.write(xml)
+
+        self.__ds.append(name)
+        self.__ds.append(name2)
+
+        commands = [
+            'nxsconfig upload %s -d -s %s',
+            'nxsconfig upload %s -d  --server %s',
+            'nxsconfig upload %s -d  -s %s',
+            'nxsconfig upload %s -d  --server %s',
+            'nxsconfig upload %s --datasources -s %s',
+            'nxsconfig upload %s --datasources  --server %s',
+            'nxsconfig upload %s --datasources  -s %s',
+            'nxsconfig upload %s --datasources  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableDataSources()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.datasources([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteDataSource(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableDataSources()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.datasources([name])
+            self.assertEqual(cpx[0], xml)
+            cpx = el.datasources([name2])
+            self.assertEqual(cpx[0], xml2)
+
+            self.assertEqual(el.deleteDataSource(name), None)
+            self.assertEqual(el.deleteDataSource(name2), None)
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop(-2)
+        self.assertEqual(el.deleteDataSource(name2), None)
+        self.__ds.pop()
+
+        os.remove("%s.ds.xml" % name)
+        os.remove("%s.ds.xml" % name2)
+        os.remove("%s.ds.xml" % name3)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_ds_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        dirname = "test_comp_dir"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+        with open("%s/%s.ds.xml" % (dirname, name), "w") as fl:
+            fl.write(xml)
+        with open("%s/%s.ds.xml" % (dirname, name2), "w") as fl:
+            fl.write(xml2)
+        with open("%s/%s.ds.xml" % (dirname, name3), "w") as fl:
+            fl.write(xml)
+
+        self.__ds.append(name)
+        self.__ds.append(name2)
+
+        commands = [
+            'nxsconfig upload %s --datasources -i %s -s %s',
+            'nxsconfig upload %s --datasources -i %s  --server %s',
+            'nxsconfig upload %s --datasources -i %s  -s %s',
+            'nxsconfig upload %s --datasources -i %s  --server %s',
+            'nxsconfig upload %s --datasources --directory %s -s %s',
+            'nxsconfig upload %s --datasources --directory %s  --server %s',
+            'nxsconfig upload %s --datasources --directory %s  -s %s',
+            'nxsconfig upload %s --datasources --directory %s  --server %s',
+            'nxsconfig upload %s -d -i %s -s %s',
+            'nxsconfig upload %s -d -i %s  --server %s',
+            'nxsconfig upload %s -d -i %s  -s %s',
+            'nxsconfig upload %s -d -i %s  --server %s',
+            'nxsconfig upload %s -d --directory %s -s %s',
+            'nxsconfig upload %s -d --directory %s  --server %s',
+            'nxsconfig upload %s -d --directory %s  -s %s',
+            'nxsconfig upload %s -d --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableDataSources()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.datasources([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteDataSource(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableDataSources()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.datasources([name])
+            self.assertEqual(cpx[0], xml)
+            cpx = el.datasources([name2])
+            self.assertEqual(cpx[0], xml2)
+
+            self.assertEqual(el.deleteDataSource(name), None)
+            self.assertEqual(el.deleteDataSource(name2), None)
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop(-2)
+        self.assertEqual(el.deleteDataSource(name2), None)
+        self.__ds.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_profile_av(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: jsn, name2: jsn2}
+
+        with open("%s.json" % (name), "w") as fl:
+            fl.write(jsn)
+        with open("%s.json" % (name2), "w") as fl:
+            fl.write(jsn2)
+        with open("%s.json" % (name3), "w") as fl:
+            fl.write(jsn)
+
+        self.__profs.append(name)
+        self.__profs.append(name2)
+
+        commands = [
+            'nxsconfig upload %s -r -s %s',
+            'nxsconfig upload %s -r  --server %s',
+            'nxsconfig upload %s -r -s %s',
+            'nxsconfig upload %s -r  --server %s',
+            'nxsconfig upload %s --profiles -s %s',
+            'nxsconfig upload %s --profiles  --server %s',
+            'nxsconfig upload %s --profiles  -s %s',
+            'nxsconfig upload %s --profiles  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableSelections()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.selections([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteSelection(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2),
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableSelections()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.selections([name])
+            self.assertEqual(cpx[0], jsn)
+            cpx = el.selections([name2])
+            self.assertEqual(cpx[0], jsn2)
+
+            self.assertEqual(el.deleteSelection(name), None)
+            self.assertEqual(el.deleteSelection(name2), None)
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__profs.pop(-2)
+        self.assertEqual(el.deleteSelection(name2), None)
+        self.__profs.pop()
+
+        os.remove("%s.json" % name)
+        os.remove("%s.json" % name2)
+        os.remove("%s.json" % name3)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_profile_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        dirname = "test_profile_dir"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: jsn, name2: jsn2}
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+        with open("%s/%s.json" % (dirname, name), "w") as fl:
+            fl.write(jsn)
+        with open("%s/%s.json" % (dirname, name2), "w") as fl:
+            fl.write(jsn2)
+        with open("%s/%s.json" % (dirname, name3), "w") as fl:
+            fl.write(jsn)
+
+        self.__profs.append(name)
+        self.__profs.append(name2)
+
+        commands = [
+            'nxsconfig upload %s --profiles -i %s -s %s',
+            'nxsconfig upload %s --profiles -i %s  --server %s',
+            'nxsconfig upload %s --profiles -i %s  -s %s',
+            'nxsconfig upload %s --profiles -i %s  --server %s',
+            'nxsconfig upload %s --profiles --directory %s -s %s',
+            'nxsconfig upload %s --profiles --directory %s  --server %s',
+            'nxsconfig upload %s --profiles --directory %s  -s %s',
+            'nxsconfig upload %s --profiles --directory %s  --server %s',
+            'nxsconfig upload %s -r -i %s -s %s',
+            'nxsconfig upload %s -r -i %s  --server %s',
+            'nxsconfig upload %s -r -i %s  -s %s',
+            'nxsconfig upload %s -r -i %s  --server %s',
+            'nxsconfig upload %s -r --directory %s -s %s',
+            'nxsconfig upload %s -r --directory %s  --server %s',
+            'nxsconfig upload %s -r --directory %s  -s %s',
+            'nxsconfig upload %s -r --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm, fvl in cmps.items():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+                avc2 = el.availableSelections()
+                self.assertTrue(isinstance(avc2, list))
+                for cp in avc:
+                    self.assertTrue(cp in avc2)
+
+                self.assertTrue(nm in avc2)
+                cpx = el.selections([nm])
+                self.assertEqual(cpx[0], fvl)
+
+                self.assertEqual(el.deleteSelection(nm), None)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            self.assertEqual(vl, "")
+            self.assertEqual(er, "")
+
+            avc2 = el.availableSelections()
+            self.assertTrue(isinstance(avc2, list))
+            for cp in avc:
+                self.assertTrue(cp in avc2)
+
+            self.assertTrue(name in avc2)
+            self.assertTrue(name2 in avc2)
+            self.assertTrue(name3 not in avc2)
+            cpx = el.selections([name])
+            self.assertEqual(cpx[0], jsn)
+            cpx = el.selections([name2])
+            self.assertEqual(cpx[0], jsn2)
+
+            self.assertEqual(el.deleteSelection(name), None)
+            self.assertEqual(el.deleteSelection(name2), None)
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__profs.pop(-2)
+        self.assertEqual(el.deleteSelection(name2), None)
+        self.__profs.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_ds_av_noexist(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_ds"
+        dirname = "test_ds_dir"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = [name, name2]
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig upload %s --datasources -i %s -s %s',
+            'nxsconfig upload %s --datasources -i %s  --server %s',
+            'nxsconfig upload %s --datasources -i %s  -s %s',
+            'nxsconfig upload %s --datasources -i %s  --server %s',
+            'nxsconfig upload %s --datasources --directory %s -s %s',
+            'nxsconfig upload %s --datasources --directory %s  --server %s',
+            'nxsconfig upload %s --datasources --directory %s  -s %s',
+            'nxsconfig upload %s --datasources --directory %s  --server %s',
+            'nxsconfig upload %s -d -i %s -s %s',
+            'nxsconfig upload %s -d -i %s  --server %s',
+            'nxsconfig upload %s -d -i %s  -s %s',
+            'nxsconfig upload %s -d -i %s  --server %s',
+            'nxsconfig upload %s -d --directory %s -s %s',
+            'nxsconfig upload %s -d --directory %s  --server %s',
+            'nxsconfig upload %s -d --directory %s  -s %s',
+            'nxsconfig upload %s -d --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps:
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+                self.assertTrue(er)
+                self.assertEqual('', vl)
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_comp_av_noexist(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dirname = "test_comp_dir"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = [name, name2]
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig upload %s -i %s -s %s',
+            'nxsconfig upload %s -i %s  --server %s',
+            'nxsconfig upload %s -i %s  -s %s',
+            'nxsconfig upload %s -i %s  --server %s',
+            'nxsconfig upload %s --directory %s -s %s',
+            'nxsconfig upload %s --directory %s  --server %s',
+            'nxsconfig upload %s --directory %s  -s %s',
+            'nxsconfig upload %s --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps:
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+                self.assertTrue(er)
+                self.assertEqual('', vl)
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_upload_profile_av_noexist(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_profile"
+        dirname = "test_profile_dir"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = [name, name2]
+
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig upload %s --profiles -i %s -s %s',
+            'nxsconfig upload %s --profiles -i %s  --server %s',
+            'nxsconfig upload %s --profiles -i %s  -s %s',
+            'nxsconfig upload %s --profiles -i %s  --server %s',
+            'nxsconfig upload %s --profiles --directory %s -s %s',
+            'nxsconfig upload %s --profiles --directory %s  --server %s',
+            'nxsconfig upload %s --profiles --directory %s  -s %s',
+            'nxsconfig upload %s --profiles --directory %s  --server %s',
+            'nxsconfig upload %s -r -i %s -s %s',
+            'nxsconfig upload %s -r -i %s  --server %s',
+            'nxsconfig upload %s -r -i %s  -s %s',
+            'nxsconfig upload %s -r -i %s  --server %s',
+            'nxsconfig upload %s -r --directory %s -s %s',
+            'nxsconfig upload %s -r --directory %s  --server %s',
+            'nxsconfig upload %s -r --directory %s  -s %s',
+            'nxsconfig upload %s -r --directory %s  --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps:
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+                self.assertTrue(er)
+                self.assertEqual('', vl)
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_show_comp_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
