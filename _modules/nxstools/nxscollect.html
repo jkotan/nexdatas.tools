@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscollect &#8212; NXSTools 2.63.0 documentation</title>
+    <title>nxstools.nxscollect &#8212; NXSTools 2.68.0 documentation</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
@@ -38,7 +38,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.63</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.68</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -243,6 +243,41 @@
     <span class="n">WRITERS</span><span class="p">[</span><span class="s2">&quot;h5cpp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5cppwriter</span>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="getcompression"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.getcompression">[docs]</a><span class="k">def</span> <span class="nf">getcompression</span><span class="p">(</span><span class="n">compression</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; converts compression string to a deflate level parameter</span>
+<span class="sd">        or list with [filterid, opt1, opt2, ...]</span>
+
+<span class="sd">    :param compression: compression string</span>
+<span class="sd">    :type compression: :obj:`str`</span>
+<span class="sd">    :returns: deflate level parameter</span>
+<span class="sd">              or list with [filterid, opt1, opt2, ...]</span>
+<span class="sd">    :rtype: :obj:`int` or :obj:`list` &lt; :obj:`int` &gt; or `None`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">compression</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">compression</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">compression</span><span class="p">:</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">compression</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s2">&quot;Error: argument -c/--compression: &quot;</span>
+                    <span class="s2">&quot;invalid int value: &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">compression</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">level</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sfid</span><span class="p">,</span> <span class="n">sopts</span> <span class="o">=</span> <span class="n">compression</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+                <span class="n">opts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">sfid</span><span class="p">)]</span>
+                <span class="n">opts</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span> <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">sopts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)])</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s2">&quot;Error: argument -c/--compression: &quot;</span>
+                    <span class="s2">&quot;invalid format: &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">compression</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">opts</span>
+        <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="Collector"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Collector">[docs]</a><span class="k">class</span> <span class="nc">Collector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -529,15 +564,21 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__testmode</span><span class="p">:</span>
                 <span class="n">cfilter</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="n">fieldcompression</span><span class="p">:</span>
-                    <span class="n">cfilter</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">deflate_filter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-                    <span class="n">cfilter</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">fieldcompression</span>
-                    <span class="n">field</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span>
-                        <span class="n">fieldname</span><span class="p">,</span>
-                        <span class="n">dtype</span><span class="p">,</span>
-                        <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                        <span class="n">chunk</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
-                        <span class="n">dfilter</span><span class="o">=</span><span class="n">cfilter</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_addattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="p">)</span>
+                    <span class="n">opts</span> <span class="o">=</span> <span class="n">getcompression</span><span class="p">(</span><span class="n">fieldcompression</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                        <span class="n">cfilter</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">data_filter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="n">cfilter</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">opts</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">opts</span><span class="p">:</span>
+                        <span class="n">cfilter</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">data_filter</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                        <span class="n">cfilter</span><span class="o">.</span><span class="n">filterid</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">cfilter</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">opts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">create_field</span><span class="p">(</span>
+                    <span class="n">fieldname</span><span class="p">,</span>
+                    <span class="n">dtype</span><span class="p">,</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                    <span class="n">chunk</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                    <span class="n">dfilter</span><span class="o">=</span><span class="n">cfilter</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_addattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">field</span>
 
     <span class="k">def</span> <span class="nf">_collectimages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">fieldname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fieldattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -622,7 +663,7 @@
                         <span class="k">if</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">:</span>
                             <span class="n">fieldname</span> <span class="o">=</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
                         <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fieldcompression&quot;</span><span class="p">:</span>
-                            <span class="n">fieldcompression</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">])</span>
+                            <span class="n">fieldcompression</span> <span class="o">=</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
                         <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fielddtype&quot;</span><span class="p">:</span>
                             <span class="n">fielddtype</span> <span class="o">=</span> <span class="n">at</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
                         <span class="k">elif</span> <span class="n">at</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fieldshape&quot;</span><span class="p">:</span>
@@ -694,6 +735,7 @@
     <span class="n">epilog</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot; examples:</span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;       nxscollect execute -c1 /tmp/gpfs/raw/scan_234.nxs </span><span class="se">\n\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscollect execute -c32008:0,2 /ramdisk/scan_123.nxs </span><span class="se">\n\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
 <div class="viewcode-block" id="Execute.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscollect.Execute.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -702,8 +744,10 @@
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--compression&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;deflate compression rate from 0 to 9 (default: 2)&quot;</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;deflate compression rate from 0 to 9 (default: 2)&quot;</span>
+            <span class="s2">&quot; or &lt;filterid&gt;:opt1,opt2,...&quot;</span>
+            <span class="s2">&quot; e.g.  -c 32008:0,2  for bitshuffle with lz4&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--skip_missing&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;skipmissing&quot;</span><span class="p">,</span>
@@ -742,6 +786,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">nexusfiles</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">getcompression</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">compression</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nexusfiles</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">nexusfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -796,6 +849,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
         <span class="n">nexusfiles</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">getcompression</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">compression</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">nexusfiles</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">nexusfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>

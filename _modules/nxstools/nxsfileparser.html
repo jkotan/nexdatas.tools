@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileparser &#8212; NXSTools 2.63.0 documentation</title>
+    <title>nxstools.nxsfileparser &#8212; NXSTools 2.68.0 documentation</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
@@ -38,7 +38,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.63</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.68</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -203,7 +203,9 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">filewriter</span>
 <span class="kn">import</span> <span class="nn">fnmatch</span>
-<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="k">import</span> <span class="n">parseString</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">et</span>
+<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="k">import</span> <span class="n">XMLParser</span>
 
 <span class="kn">from</span> <span class="nn">nxstools.nxsparser</span> <span class="k">import</span> <span class="n">ParserTools</span>
 
@@ -215,14 +217,22 @@
 <span class="sd">    :type xmlstring: :obj:`str`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">)</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;datasource&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="nb">bytes</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">),</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="n">xmlstring</span><span class="p">,</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;datasource&#39;</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//datasource&quot;</span><span class="p">)</span>
     <span class="n">dsname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">nodes</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">):</span>
-            <span class="n">dsname</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
-    <span class="k">return</span> <span class="n">dsname</span></div>
+        <span class="n">dsname</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dsname</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="getdstype"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.getdstype">[docs]</a><span class="k">def</span> <span class="nf">getdstype</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">):</span>
@@ -232,13 +242,21 @@
 <span class="sd">    :type xmlstring: :obj:`str`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">)</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;datasource&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="nb">bytes</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">),</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="n">xmlstring</span><span class="p">,</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;datasource&#39;</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//datasource&quot;</span><span class="p">)</span>
     <span class="n">dstype</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">nodes</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ds</span><span class="o">.</span><span class="n">hasAttribute</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">):</span>
-            <span class="n">dstype</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">dstype</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">dstype</span></div>
 
 
@@ -249,8 +267,18 @@
 <span class="sd">    :type xmlstring: :obj:`str`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">)</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;datasource&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="nb">bytes</span><span class="p">(</span><span class="n">xmlstring</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">),</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+            <span class="n">xmlstring</span><span class="p">,</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;datasource&#39;</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//datasource&quot;</span><span class="p">)</span>
     <span class="n">dssource</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">nodes</span><span class="p">:</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

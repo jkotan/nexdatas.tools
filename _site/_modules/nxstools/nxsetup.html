@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>nxstools.nxsetup &mdash; NXSTools 2.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.3.4/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="NXSTools 2.2.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          NXSTools</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../nxscollect.html">nxcollect</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsconfig.html">nxsconfig</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsconfig.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxscreate.html">nxscreate</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-clientds">nxscreate clientds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-tangods">nxscreate tangods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-deviceds">nxscreate deviceds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlineds">nxscreate onlineds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsdata.html">nxsdata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsdata.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsetup.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../nxstools.html">nxstools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscollect">nxstools.nxscollect module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsconfig">nxstools.nxsconfig module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_clientds">nxstools.nxscreate_clientds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_comp">nxstools.nxscreate_comp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_deviceds">nxstools.nxscreate_deviceds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlinecp">nxstools.nxscreate_onlinecp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_onlineds">nxstools.nxscreate_onlineds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreate_tangods">nxstools.nxscreate_tangods module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdata">nxstools.nxsdata module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsetup">nxstools.nxsetup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxscreator">nxstools.nxscreator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsparser">nxstools.nxsparser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsxml">nxstools.nxsxml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.nxsdevicetools">nxstools.nxsdevicetools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.filenamegenerator">nxstools.filenamegenerator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools.release">nxstools.release module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxstools.html#module-nxstools">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for nxstools.nxsetup</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span class="c">#</span>
+<span class="c">#    Copyright (C) 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    nexdatas is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with nexdatas.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+
+<span class="sd">&quot;&quot;&quot; Set Up NeXus Tango Servers&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">PyTango</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+
+
+<span class="c">#: (:obj:`str`) host name</span>
+<span class="n">_hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+
+
+<span class="c">#: (:obj:`dict` &lt;:obj:`dict` &lt;:obj:`str` , :obj:`str` &gt; &gt; )</span>
+<span class="c">#:    all SardanaHosts and DataBaseHosts should be known</span>
+<span class="n">knownHosts</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;hasdelay&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;delay&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasdelay&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;delayusr&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasmfmc&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;fmc&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasmfmc&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;delayusr&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasmlqj&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;lqj&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasmlqj&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;lqjuser&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso111n&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso111n&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;tnunez&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso111tb&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso111tb&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;tnunez&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso113b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso113b&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;blume&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso113u&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso113u&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;blume&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hastodt&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hastodt&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;kracht&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso228k&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso228k&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;jkotan&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;has6117b&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p02&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;has6117b&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p02user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspecsicl4&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p02&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspecsicl4&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;lacluser&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp01eh1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p01&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp01eh1&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p01user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp01eh2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p01&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp01eh2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p01user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp01eh3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p01&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp01eh3&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p01user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp02ch1a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p02&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp02ch1a&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p02user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp02ch1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p02&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp02ch1&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p02user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp02ch2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p02&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp02ch2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p02user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp03&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p03&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp03&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p03user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp03nano&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p03nano&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp03nano&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p03nano&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp04exp1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p04&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp04exp1&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p04user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp04exp2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p04&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp04exp2&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p04user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp06ctrl&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p06&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp06ctrl&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p06user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp06nc1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p06&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp06nc1&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p06user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp06mc01&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p06&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp06mc01&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p06user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasp029rack&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p06&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasp029rack&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p06user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp07eh2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p07&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp07eh2&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p07user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp08&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p08&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp08&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p08user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp09&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp09&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p09user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp09mag&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp09mag&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p09user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp09dif&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp09dif&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p09user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp09haxps&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp09maxps&#39;</span><span class="p">,</span>
+                     <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p09haxps&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp10e1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p10&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp10e1&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p10user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp10e2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p10&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp10e2&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p10user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp10lcx&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p10&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp10lcx&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p10user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp10lab&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p10&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp10lab&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p10user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp11oh&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p11&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp11oh&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p11user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp11sardana&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p11&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp11sardana&#39;</span><span class="p">,</span>
+                       <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p11user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp11user02&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p11&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp11user02&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p11user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haspp21lab&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p21&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haspp21lab&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p21user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso107klx&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso107klx&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;kracht&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;haso107d1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p09&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;haso107d1&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;kracht&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hascmexp&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;cmexp&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hascmexp&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;cmexp&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasnp64&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p64&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasnp64&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p64user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasnp64oh&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p64&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasnp64oh&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p64user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasnp65&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p65&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasnp65&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p65user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hasnp66&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p66&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hasnp66&#39;</span><span class="p">,</span>
+                <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p66user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hzgpp07eh1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p07&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hzgpp07eh1&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p07user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hzgpp07eh3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p07&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hzgpp07eh3&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p07user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+    <span class="s">&#39;hzgpp07eh4&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;beamline&#39;</span><span class="p">:</span> <span class="s">&#39;p07&#39;</span><span class="p">,</span> <span class="s">&#39;masterHost&#39;</span><span class="p">:</span> <span class="s">&#39;hzgpp07eh4&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;user&#39;</span><span class="p">:</span> <span class="s">&#39;p07user&#39;</span><span class="p">,</span> <span class="s">&#39;dbname&#39;</span><span class="p">:</span> <span class="s">&#39;nxsconfig&#39;</span><span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SetUp"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp">[docs]</a><span class="k">class</span> <span class="nc">SetUp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; setup NXSDataWriter, NXSConfigServer and NXSRecSelector Tango servers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c">#: (:class:`PyTango.Database`) tango database server</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">Database</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Can&#39;t connect to tango database on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+                  <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">&#39;TANGO_HOST&#39;</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="c">#: (:obj:`str`) NeXus writer device name   </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c">#: (:obj:`str`) NeXus config server device name   </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="SetUp.changeRecorderPath"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changeRecorderPath">[docs]</a>    <span class="k">def</span> <span class="nf">changeRecorderPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; adds a new recorder path</span>
+
+<span class="sd">        :param path: new recorder path</span>
+<span class="sd">        :type path: :obj:`str`</span>
+<span class="sd">        :returns: True if record path was added</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="n">mss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="s">&quot;MacroServer/*&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+        <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">mss</span><span class="p">:</span>
+            <span class="n">devserv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_class_list</span><span class="p">(</span><span class="n">ms</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">serv</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ser</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">serv</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">ser</span> <span class="o">==</span> <span class="s">&#39;MacroServer&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                        <span class="n">recorderpaths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_property</span><span class="p">(</span>
+                            <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s">&quot;RecorderPath&quot;</span><span class="p">)[</span><span class="s">&quot;RecorderPath&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">recorderpaths</span><span class="p">:</span>
+                            <span class="n">recorderpaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">recorderpaths</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">recorderpaths</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recorderpaths</span><span class="p">:</span>
+                            <span class="n">recorderpaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span>
+                                <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                                <span class="p">{</span><span class="s">&quot;RecorderPath&quot;</span><span class="p">:</span> <span class="n">recorderpaths</span><span class="p">})</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="SetUp.changePropertyName"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.changePropertyName">[docs]</a>    <span class="k">def</span> <span class="nf">changePropertyName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="p">,</span> <span class="n">sclass</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; changes property name</span>
+
+<span class="sd">        :param server: server name</span>
+<span class="sd">        :type server: :obj:`str`</span>
+<span class="sd">        :param oldname: old property name</span>
+<span class="sd">        :type oldname: :obj:`str`</span>
+<span class="sd">        :param newname: new property name</span>
+<span class="sd">        :type newname: :obj:`str`</span>
+<span class="sd">        :param sclass: server class name</span>
+<span class="sd">        :type sclass: :obj:`str`</span>
+<span class="sd">        :returns: True if property name was changed</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sclass</span> <span class="o">=</span> <span class="n">sclass</span> <span class="ow">or</span> <span class="n">server</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">mss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">/*&quot;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+        <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">mss</span><span class="p">:</span>
+            <span class="n">devserv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_class_list</span><span class="p">(</span><span class="n">ms</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">serv</span> <span class="o">=</span> <span class="n">devserv</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ser</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">serv</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">ser</span> <span class="o">==</span> <span class="n">sclass</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_property</span><span class="p">(</span>
+                                <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">newname</span><span class="p">)[</span><span class="n">newname</span><span class="p">]:</span>
+                            <span class="n">oldprop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_property</span><span class="p">(</span>
+                                <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">oldname</span><span class="p">)[</span><span class="n">oldname</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">oldprop</span><span class="p">:</span>
+                                <span class="n">oldprop</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">oldprop</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span>
+                                    <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                                    <span class="p">{</span><span class="n">newname</span><span class="p">:</span> <span class="n">oldprop</span><span class="p">})</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">delete_device_property</span><span class="p">(</span>
+                                    <span class="n">dev</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">oldname</span><span class="p">)</span>
+                                <span class="n">res</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="SetUp.restartServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.restartServer">[docs]</a>    <span class="k">def</span> <span class="nf">restartServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">restart</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; restarts server</span>
+
+<span class="sd">        :param name: server name</span>
+<span class="sd">        :type name: :obj:`str`</span>
+<span class="sd">        :param host: server host name</span>
+<span class="sd">        :type host: :obj:`str`</span>
+<span class="sd">        :param level: start up level</span>
+<span class="sd">        :type level: :obj:`int`</span>
+<span class="sd">        :param restart:  if server should be restarted</span>
+<span class="sd">        :type restart: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">host</span><span class="p">:</span>
+                <span class="n">host</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+            <span class="n">admin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_exported</span><span class="p">(</span>
+                <span class="s">&#39;tango/admin/&#39;</span> <span class="o">+</span> <span class="n">host</span><span class="p">)</span><span class="o">.</span><span class="n">value_string</span>
+            <span class="k">if</span> <span class="n">admin</span><span class="p">:</span>
+                <span class="n">servers</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">started</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">servers</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">read_attribute</span><span class="p">(</span><span class="s">&#39;Servers&#39;</span><span class="p">)</span>
+                    <span class="n">started</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">command_inout</span><span class="p">(</span>
+                        <span class="s">&quot;DevGetRunningServers&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">if</span> <span class="n">servers</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">servers</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">)</span> \
+                        <span class="ow">and</span> <span class="n">servers</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">vl</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="n">svl</span> <span class="o">=</span> <span class="n">vl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;NXSRecSelector&quot;</span><span class="p">)</span> \
+                                <span class="ow">and</span> <span class="n">svl</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;NXSRecSelector&quot;</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_changeLevel</span><span class="p">(</span><span class="n">svl</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">started</span> <span class="ow">and</span> <span class="n">svl</span> <span class="ow">in</span> <span class="n">started</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">restart</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="s">&#39;/&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+                                <span class="n">cname</span> <span class="o">=</span> <span class="n">svl</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">cname</span> <span class="o">=</span> <span class="n">svl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">cname</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_changeLevel</span><span class="p">(</span>
+                                        <span class="n">svl</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tohigher</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">started</span> <span class="ow">and</span> <span class="n">svl</span> <span class="ow">in</span> <span class="n">started</span><span class="p">:</span>
+                                    <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevStop</span><span class="p">(</span><span class="n">svl</span><span class="p">)</span>
+                                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Restarting: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Starting: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
+                                <span class="n">problems</span> <span class="o">=</span> <span class="bp">True</span>
+                                <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+                                <span class="k">while</span> <span class="n">problems</span> <span class="ow">and</span> <span class="n">counter</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+                                    <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+                                        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                                        <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevStart</span><span class="p">(</span><span class="n">svl</span><span class="p">)</span>
+                                        <span class="n">problems</span> <span class="o">=</span> <span class="bp">False</span>
+                                    <span class="k">except</span><span class="p">:</span>
+                                        <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+                                <span class="k">print</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">problems</span><span class="p">:</span>
+                                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> was not restarted&quot;</span> <span class="o">%</span> <span class="n">svl</span><span class="p">)</span>
+                                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: Process with the server&quot;</span>
+                                          <span class="s">&quot;instance could be suspended&quot;</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_changeLevel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">tohigher</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; change startup level</span>
+
+<span class="sd">        :param name: server name</span>
+<span class="sd">        :type name: :obj:`str`</span>
+<span class="sd">        :param level: new startup level</span>
+<span class="sd">        :type level: :obj:`int`</span>
+<span class="sd">        :returns: True if level was changed</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sinfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tohigher</span> <span class="ow">or</span> <span class="n">level</span> <span class="o">&gt;</span> <span class="n">sinfo</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+            <span class="n">sinfo</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_server_info</span><span class="p">(</span><span class="n">sinfo</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">_startupServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">ctrl</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; starts the server up</span>
+
+<span class="sd">        :param new: new server name</span>
+<span class="sd">        :type new: :obj:`str`</span>
+<span class="sd">        :param level: startup level</span>
+<span class="sd">        :type level: :obj:`int`</span>
+<span class="sd">        :param host: tango host name</span>
+<span class="sd">        :type host: :obj:`str`</span>
+<span class="sd">        :param ctrl: control mode</span>
+<span class="sd">        :type ctrl: :obj:`str`</span>
+<span class="sd">        :param device: device name</span>
+<span class="sd">        :type device: :obj:`str`</span>
+<span class="sd">        :returns: True if server was started up</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_class_list</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">server</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Server &#39;</span> <span class="o">+</span> <span class="n">new</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                             <span class="o">+</span> <span class="s">&#39; not defined in database</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="s">&#39;tango/admin/&#39;</span> <span class="o">+</span> <span class="n">host</span><span class="p">)</span>
+        <span class="n">startdspaths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_property</span><span class="p">(</span>
+            <span class="s">&#39;tango/admin/&#39;</span> <span class="o">+</span> <span class="n">host</span><span class="p">,</span>
+            <span class="s">&quot;StartDsPath&quot;</span><span class="p">)[</span><span class="s">&quot;StartDsPath&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">&#39;/usr/bin&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">startdspaths</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">startdspaths</span><span class="p">:</span>
+                <span class="n">startdspaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">startdspaths</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">startdspaths</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">startdspaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;/usr/bin&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span>
+                <span class="s">&#39;tango/admin/&#39;</span> <span class="o">+</span> <span class="n">host</span><span class="p">,</span> <span class="p">{</span><span class="s">&quot;StartDsPath&quot;</span><span class="p">:</span> <span class="n">startdspaths</span><span class="p">})</span>
+            <span class="n">adminproxy</span><span class="o">.</span><span class="n">Init</span><span class="p">()</span>
+
+        <span class="n">sinfo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_info</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+        <span class="n">sinfo</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new</span>
+        <span class="n">sinfo</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="n">sinfo</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">ctrl</span>
+        <span class="n">sinfo</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_server_info</span><span class="p">(</span><span class="n">sinfo</span><span class="p">)</span>
+        <span class="n">running</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevGetRunningServers</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">running</span><span class="p">:</span>
+            <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevStart</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+        <span class="n">adminproxy</span><span class="o">.</span><span class="n">UpdateServersInfo</span><span class="p">()</span>
+
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;waiting for server&quot;</span><span class="p">)</span>
+
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+                <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                <span class="n">dp</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> is working&quot;</span> <span class="o">%</span> <span class="n">device</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">found</span>
+
+<div class="viewcode-block" id="SetUp.createDataWriter"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createDataWriter">[docs]</a>    <span class="k">def</span> <span class="nf">createDataWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates data writer</span>
+
+<span class="sd">        :param beamline: beamline name</span>
+<span class="sd">        :type beamline: :obj:`str`</span>
+<span class="sd">        :param masterHost: master host of data writer</span>
+<span class="sd">        :type masterHost: :obj:`str`</span>
+<span class="sd">        :returns: True if server was created</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">beamline</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createDataWriter: no beamline given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">masterHost</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createDataWriter: no masterHost given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">class_name</span> <span class="o">=</span> <span class="s">&#39;NXSDataWriter&#39;</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">class_name</span>
+        <span class="n">server_name</span> <span class="o">=</span> <span class="n">server</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">masterHost</span>
+        <span class="n">full_class_name</span> <span class="o">=</span> <span class="s">&#39;NXSDataWriter/&#39;</span> <span class="o">+</span> <span class="n">masterHost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/nxsdatawriter/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">server_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createDataWriter: creating </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">server_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;createDataWriter: DB contains already </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">add_device</span><span class="p">(</span><span class="n">di</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span><span class="p">,</span>
+                                        <span class="p">{</span><span class="s">&#39;NumberOfThreads&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+
+        <span class="n">hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">full_class_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="SetUp.createConfigServer"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createConfigServer">[docs]</a>    <span class="k">def</span> <span class="nf">createConfigServer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">,</span> <span class="n">jsonsettings</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates configuration server</span>
+
+<span class="sd">        :param beamline: beamline name</span>
+<span class="sd">        :type beamline: :obj:`str`</span>
+<span class="sd">        :param masterHost: master host of data writer</span>
+<span class="sd">        :type masterHost: :obj:`str`</span>
+<span class="sd">        :param jsonsettings: connection settings to DB in json</span>
+<span class="sd">        :type jsonsettings: :obj:`str`</span>
+<span class="sd">        :returns: True if server was created</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">beamline</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createConfigServer: no beamline given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">masterHost</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createConfigServer: no masterHost given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">class_name</span> <span class="o">=</span> <span class="s">&#39;NXSConfigServer&#39;</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">class_name</span>
+        <span class="n">server_name</span> <span class="o">=</span> <span class="n">server</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">masterHost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/nxsconfigserver/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">server_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createConfigServer: creating </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">server_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;createConfigServer: DB contains already </span><span class="si">%s</span><span class="s">&quot;</span>
+                      <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">add_device</span><span class="p">(</span><span class="n">di</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">put_device_property</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;VersionLabel&#39;</span><span class="p">:</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">@</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">beamline</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">masterHost</span><span class="o">.</span><span class="n">upper</span><span class="p">())})</span>
+
+        <span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_db_host</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">server_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
+
+        <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dp</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DevState</span><span class="o">.</span><span class="n">ON</span><span class="p">:</span>
+            <span class="n">dp</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">jsonsettings</span><span class="p">:</span>
+            <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
+            <span class="n">dp</span><span class="o">.</span><span class="n">JSONSettings</span> <span class="o">=</span> <span class="n">jsonsettings</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dp</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">jsettings</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">jsonsettings</span><span class="p">)</span>
+                <span class="n">jsettings</span><span class="p">[</span><span class="s">&#39;read_default_file&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                    <span class="s">&#39;/var/lib/nxsconfigserver/.my.cnf&#39;</span>
+                <span class="n">dp</span><span class="o">.</span><span class="n">JSONSettings</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">jsettings</span><span class="p">))</span>
+                <span class="n">dp</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">jsettings</span><span class="p">[</span><span class="s">&#39;read_default_file&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                        <span class="s">&#39;/var/lib/nxsconfigserver/.my.cnf&#39;</span>
+                    <span class="n">dp</span><span class="o">.</span><span class="n">JSONSettings</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">jsettings</span><span class="p">))</span>
+                    <span class="n">dp</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;createConfigServer: &quot;</span>
+                          <span class="s">&quot;</span><span class="si">%s</span><span class="s"> cannot connect the&quot;</span>
+                          <span class="s">&quot; database with JSONSettings: </span><span class="se">\n</span><span class="si">%s</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="p">(</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">,</span> <span class="n">jsonsettings</span><span class="p">))</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">&quot;try to change the settings&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="SetUp.createSelector"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.SetUp.createSelector">[docs]</a>    <span class="k">def</span> <span class="nf">createSelector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cserver</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates selector server</span>
+
+<span class="sd">        :param beamline: beamline name</span>
+<span class="sd">        :type beamline: :obj:`str`</span>
+<span class="sd">        :param masterHost: master host of data writer</span>
+<span class="sd">        :type masterHost: :obj:`str`</span>
+<span class="sd">        :param writer: writer device name</span>
+<span class="sd">        :type writer: :obj:`str`</span>
+<span class="sd">        :param cserver: configuration server device name</span>
+<span class="sd">        :type cserver: :obj:`str`</span>
+<span class="sd">        :returns: True if server was created</span>
+<span class="sd">        :rtype: :obj:`bool`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">beamline</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createSelector: no beamline given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">masterHost</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createSelector: no masterHost given &quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span> <span class="o">=</span> <span class="n">writer</span>
+        <span class="k">if</span> <span class="n">cserver</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span> <span class="o">=</span> <span class="n">cserver</span>
+
+        <span class="n">class_name</span> <span class="o">=</span> <span class="s">&#39;NXSRecSelector&#39;</span>
+        <span class="n">server</span> <span class="o">=</span> <span class="n">class_name</span>
+        <span class="n">server_name</span> <span class="o">=</span> <span class="n">server</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">masterHost</span>
+        <span class="n">full_class_name</span> <span class="o">=</span> <span class="s">&#39;NXSRecSelector/&#39;</span> <span class="o">+</span> <span class="n">masterHost</span>
+        <span class="n">device_name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">/nxsrecselector/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">beamline</span><span class="p">,</span> <span class="n">masterHost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">server_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;createSelector: creating </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">server_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_server_list</span><span class="p">(</span><span class="n">server_name</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;createSelector: DB contains already </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">device_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
+            <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">add_device</span><span class="p">(</span><span class="n">di</span><span class="p">)</span>
+
+        <span class="n">hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">full_class_name</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">:</span>
+            <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">:</span>
+                <span class="n">dp</span><span class="o">.</span><span class="n">configDevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span><span class="p">:</span>
+                <span class="n">dp</span><span class="o">.</span><span class="n">writerDevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_createParser</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; creates parser</span>
+
+<span class="sd">    :param user: user name</span>
+<span class="sd">    :type user: :obj:`str`</span>
+<span class="sd">    :returns: option parser</span>
+<span class="sd">    :rtype: :class:`optparse.OptionParser`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">user</span> <span class="ow">or</span> <span class="s">&quot;&lt;USER&gt;&quot;</span>
+    <span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s"> %prog -x [-b &lt;beamline&gt;] [-m &lt;masterHost&gt;] &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;[-u &lt;local_user&gt;] [-d &lt;dbname&gt;] [-j jsonsettings] &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; %prog -r [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; %prog -s [&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; %prog -p -n newname -o oldname &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;[&lt;server_class1&gt; &lt;server_class2&gt; ... ]</span><span class="se">\n\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; %prog -a &lt;recorder_path&gt;</span><span class="se">\n\n</span><span class="s"> &quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;e.g.: nxsetup -x</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -x -b p09 -m haso228 -u p09user -d nxsconfig&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; NXSConfigServer</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -a /usr/share/pyshared/sardananxsrecorder</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -p -n DefaultPreselectedComponents&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot; -o DefaultAutomaticComponents NXSRecSelector</span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -r Pool/haso228 -l 2 </span><span class="se">\n</span><span class="s">&quot;</span> \
+            <span class="o">+</span> <span class="s">&quot;      nxsetup -s MacroServer -l 3 </span><span class="se">\n</span><span class="s">&quot;</span>
+
+    <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">usage</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">  (</span><span class="si">%s</span><span class="s"> is known, -b </span><span class="si">%s</span><span class="s"> -m </span><span class="si">%s</span><span class="s"> -u </span><span class="si">%s</span><span class="s"> -d </span><span class="si">%s</span><span class="s"> )&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">_hostname</span><span class="p">,</span>
+                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;beamline&#39;</span><span class="p">],</span>
+                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;masterHost&#39;</span><span class="p">],</span>
+                    <span class="n">user</span><span class="p">,</span>
+                    <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;dbname&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-x&quot;</span><span class="p">,</span> <span class="s">&quot;--execute&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;execute&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;setup servers action&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;--beamline&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;beamline&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;name of the beamline&quot;</span>
+                      <span class="s">&quot; ( default: &#39;nxs&#39; )&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-m&quot;</span><span class="p">,</span> <span class="s">&quot;--masterHost&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;masterHost&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the host that stores the Mg&quot;</span>
+                      <span class="s">&quot; ( default: &lt;localhost&gt; )&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-u&quot;</span><span class="p">,</span> <span class="s">&quot;--user&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the local user&quot;</span>
+                      <span class="s">&quot; ( default: &#39;tango&#39; )&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-d&quot;</span><span class="p">,</span> <span class="s">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;dbname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;the database name&quot;</span>
+                      <span class="s">&quot;  ( default: &#39;nxsconfig&#39;)&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-j&quot;</span><span class="p">,</span> <span class="s">&quot;--csjson&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;csjson&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;JSONSettings for the configuration server. &quot;</span>
+                      <span class="s">&quot;( default: &#39;{</span><span class="se">\&quot;</span><span class="s">host</span><span class="se">\&quot;</span><span class="s">: </span><span class="se">\&quot;</span><span class="s">localhost</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">db</span><span class="se">\&quot;</span><span class="s">: &lt;DBNAME&gt;,&quot;</span>
+                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">use_unicode</span><span class="se">\&quot;</span><span class="s">: true&#39;,&quot;</span>
+                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">read_default_file</span><span class="se">\&quot;</span><span class="s">: &lt;MY_CNF_FILE&gt;}&#39;&quot;</span>
+                      <span class="s">&quot;  where &lt;MY_CNF_FILE&gt; stays for&quot;</span>
+                      <span class="s">&quot; </span><span class="se">\&quot;</span><span class="s">/home/&lt;USER&gt;/.my.cnf</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+                      <span class="s">&quot; or </span><span class="se">\&quot;</span><span class="s">/var/lib/nxsconfigserver/.my.cnf</span><span class="se">\&quot;</span><span class="s"> )&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-a&quot;</span><span class="p">,</span> <span class="s">&quot;--add-recorder-path&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span>
+                      <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;recpath&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;add recorder path to the RecorderPath property&quot;</span>
+                      <span class="s">&quot; of all MacroServers&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;--move-prop&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;moveprop&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;change property name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="s">&quot;--oldname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;oldname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;old property name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-n&quot;</span><span class="p">,</span> <span class="s">&quot;--newname&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;newname&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;new property name&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;--restart&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;restart&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;restart server(s) action&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;--start&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span>
+                      <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;start&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;start server(s) action&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;--level&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                      <span class="n">dest</span><span class="o">=</span><span class="s">&quot;level&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;startup level&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsetup.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; the main program function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">local_user</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">):</span>
+        <span class="n">local_user</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/home/etc/local_user&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">local_user</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">]</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">_createParser</span><span class="p">(</span><span class="n">local_user</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">execute</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">restart</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">recpath</span> \
+       <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">execute</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">beamline</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">beamline</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;beamline&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">beamline</span> <span class="o">=</span> <span class="s">&#39;nxs&#39;</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">masterHost</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">masterHost</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;masterHost&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">masterHost</span> <span class="o">=</span> <span class="n">_hostname</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">local_user</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">local_user</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="s">&#39;tango&#39;</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">dbname</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_hostname</span> <span class="ow">in</span> <span class="n">knownHosts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">dbname</span> <span class="o">=</span> <span class="n">knownHosts</span><span class="p">[</span><span class="n">_hostname</span><span class="p">][</span><span class="s">&#39;dbname&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">dbname</span> <span class="o">=</span> <span class="s">&#39;nxsconfig&#39;</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">options are set to:  -b </span><span class="si">%s</span><span class="s"> -m </span><span class="si">%s</span><span class="s"> -u </span><span class="si">%s</span><span class="s"> -d </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">beamline</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">masterHost</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">dbname</span><span class="p">,</span>
+        <span class="p">))</span>
+
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;NXSDataWriter&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">setUp</span><span class="o">.</span><span class="n">createDataWriter</span><span class="p">(</span>
+                    <span class="n">beamline</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">beamline</span><span class="p">,</span>
+                    <span class="n">masterHost</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">masterHost</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;startup failed to create the nexus data writer&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">csjson</span><span class="p">:</span>
+            <span class="n">jsonsettings</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">csjson</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">jsonsettings</span> <span class="o">=</span> <span class="s">&#39;{&quot;host&quot;:&quot;localhost&quot;,&quot;db&quot;:&quot;</span><span class="si">%s</span><span class="s">&quot;,&#39;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">dbname</span> \
+                <span class="o">+</span> <span class="s">&#39; &quot;read_default_file&quot;:&quot;/home/</span><span class="si">%s</span><span class="s">/.my.cnf&quot;,&#39;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">user</span> \
+                <span class="o">+</span> <span class="s">&#39; &quot;use_unicode&quot;:true}&#39;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;NXSConfigServer&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">setUp</span><span class="o">.</span><span class="n">createConfigServer</span><span class="p">(</span>
+                    <span class="n">beamline</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">beamline</span><span class="p">,</span>
+                    <span class="n">masterHost</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">masterHost</span><span class="p">,</span>
+                    <span class="n">jsonsettings</span><span class="o">=</span><span class="n">jsonsettings</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;startup failed to create the nexus config server&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">or</span> <span class="s">&quot;NXSRecSelector&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">setUp</span><span class="o">.</span><span class="n">createSelector</span><span class="p">(</span>
+                    <span class="n">beamline</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">beamline</span><span class="p">,</span>
+                    <span class="n">masterHost</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">masterHost</span><span class="p">):</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;startup failed to create the nexus selector server&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">restart</span><span class="p">:</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span>
+                <span class="n">server</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="p">[</span>
+            <span class="s">&quot;NXSConfigServer&quot;</span><span class="p">,</span> <span class="s">&quot;NXSRecSelector&quot;</span><span class="p">,</span> <span class="s">&quot;NXSDataWriter&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span>
+                <span class="n">server</span><span class="p">,</span>
+                <span class="n">level</span><span class="o">=</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">None</span><span class="p">),</span>
+                <span class="n">restart</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">:</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changeRecorderPath</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">):</span>
+            <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="s">&quot;MacroServer&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">moveprop</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">oldname</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+        <span class="n">servers</span> <span class="o">=</span> <span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changePropertyName</span><span class="p">(</span>
+                    <span class="n">server</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">oldname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">newname</span><span class="p">):</span>
+                <span class="n">setUp</span><span class="o">.</span><span class="n">restartServer</span><span class="p">(</span><span class="n">server</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012-2016 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
+
+GNU GENERAL PUBLIC LICENSE, version 3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreator &#8212; NXSTools 2.63.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 2.68.0 documentation</title>
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
@@ -38,7 +38,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.63</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.68</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -204,8 +204,12 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">xml.dom.minidom</span> <span class="k">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">parseString</span>
+<span class="kn">import</span> <span class="nn">lxml.etree</span> <span class="k">as</span> <span class="nn">etree</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">et</span>
+<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="k">import</span> <span class="n">XMLParser</span>
+
 <span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">storeDataSource</span><span class="p">,</span> <span class="n">getDataSourceComponents</span><span class="p">,</span> <span class="n">storeComponent</span><span class="p">,</span>
     <span class="n">moduleAttributes</span><span class="p">,</span> <span class="n">motorModules</span><span class="p">,</span>
@@ -223,6 +227,10 @@
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
 
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+    <span class="n">unicode</span> <span class="o">=</span> <span class="nb">str</span>
+
 
 <div class="viewcode-block" id="CPExistsException"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPExistsException">[docs]</a><span class="k">class</span> <span class="nc">CPExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 
@@ -234,6 +242,47 @@
 
     <span class="sd">&quot;&quot;&quot; DataSource already exists exception</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="k">def</span> <span class="nf">_tostr</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; converts text  to str type</span>
+
+<span class="sd">    :param text: text</span>
+<span class="sd">    :type text: :obj:`bytes` or :obj:`unicode`</span>
+<span class="sd">    :returns: text in str type</span>
+<span class="sd">    :rtype: :obj:`str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_toxml</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
+
+<span class="sd">    :param node: DOM node</span>
+<span class="sd">    :type node: :class:`xml.dom.Node`</span>
+<span class="sd">    :returns: xml content string</span>
+<span class="sd">    :rtype: :obj:`str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xml</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span><span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">xml</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf8&#39;?&gt;&quot;</span><span class="p">):</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml</span><span class="p">[</span><span class="mi">38</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">xml</span>
+
+
+<span class="k">def</span> <span class="nf">_simpletoxml</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; provides xml content of the whole node</span>
+
+<span class="sd">    :param node: DOM node</span>
+<span class="sd">    :type node: :class:`xml.dom.Node`</span>
+<span class="sd">    :returns: xml content string</span>
+<span class="sd">    :rtype: :obj:`str`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_tostr</span><span class="p">(</span><span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="Device"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.Device">[docs]</a><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -721,13 +770,13 @@
         <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
 
 <span class="sd">        :param node: DOM node</span>
-<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :type node: :class:`lxml.etree.Element`</span>
 <span class="sd">        :returns: xml content string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">xml</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">_toxml</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
@@ -740,15 +789,14 @@
         <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
 
 <span class="sd">        :param parent: parent node</span>
-<span class="sd">        :type parent: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :type parent: :class:`lxml.etree.Element`</span>
 <span class="sd">        :param childname: child name</span>
 <span class="sd">        :type childname: :opj:`str`</span>
 <span class="sd">        :returns: text string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">childname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_getModuleName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides module name</span>
@@ -1275,10 +1323,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
-
-        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;hw&quot;</span><span class="p">)</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                         <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
         <span class="n">dscps</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span> <span class="ow">and</span> \
            <span class="p">(</span>
@@ -1291,8 +1339,8 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">dscps</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
                 <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
                 <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
                 <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
@@ -1311,7 +1359,6 @@
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR </span><span class="si">%s</span><span class="s2">: host for module </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2"> &quot;</span>
                               <span class="s2">&quot;type not defined&quot;</span>
                               <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
-                    <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
                     <span class="k">continue</span>
                 <span class="n">dv</span><span class="o">.</span><span class="n">findAttribute</span><span class="p">(</span><span class="n">tangohost</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">clientlike</span><span class="p">)</span>
                 <span class="n">created</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1350,31 +1397,33 @@
                     <span class="n">smultattr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleMultiAttributes</span><span class="p">[</span>
                         <span class="n">smodule</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">smultattr</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">dv</span><span class="o">.</span><span class="n">sdevice</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                            <span class="s2">&quot;Device </span><span class="si">%s</span><span class="s2"> cannot be found&quot;</span> <span class="o">%</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">smultattr</span><span class="p">:</span>
-                        <span class="n">dsname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                            <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-                        <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
-                            <span class="n">dsname</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
-                            <span class="n">dv</span><span class="o">.</span><span class="n">sdevice</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">shost</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">sport</span><span class="p">,</span>
-                            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-                        <span class="c1">#   &quot;__CLIENT__&quot;)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
-                        <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
-                        <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
-                        <span class="n">mdv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="n">dv</span><span class="o">.</span><span class="n">sdevice</span>
-                        <span class="n">mdv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">shost</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">sport</span><span class="p">)</span>
-                        <span class="n">mdv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">at</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">,</span> <span class="n">dscps</span><span class="p">)</span>
-                    <span class="n">created</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="s2">&quot;SKIPPING </span><span class="si">%s</span><span class="s2">: Device cannot be found&quot;</span> <span class="o">%</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">smultattr</span><span class="p">:</span>
+                            <span class="n">dsname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">at</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                            <span class="n">xml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_createTangoDataSource</span><span class="p">(</span>
+                                <span class="n">dsname</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                <span class="n">dv</span><span class="o">.</span><span class="n">sdevice</span><span class="p">,</span> <span class="n">at</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">shost</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">sport</span><span class="p">,</span>
+                                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                            <span class="c1">#   &quot;__CLIENT__&quot;)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">dsname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
+                            <span class="n">mdv</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                            <span class="n">mdv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">dsname</span>
+                            <span class="n">mdv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="n">dv</span><span class="o">.</span><span class="n">sdevice</span>
+                            <span class="n">mdv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">shost</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">sport</span><span class="p">)</span>
+                            <span class="n">mdv</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">at</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">mdv</span><span class="p">,</span> <span class="n">dscps</span><span class="p">)</span>
+                        <span class="n">created</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">created</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span>
                             <span class="s2">&quot;SKIPPING </span><span class="si">%s</span><span class="s2">:    module &#39;</span><span class="si">%s</span><span class="s2">&#39; of &#39;</span><span class="si">%s</span><span class="s2">&#39; &quot;</span>
                             <span class="s2">&quot;type not defined&quot;</span>
-                            <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span></div></div>
+                            <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="CPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CPCreator">[docs]</a><span class="k">class</span> <span class="nc">CPCreator</span><span class="p">(</span><span class="n">Creator</span><span class="p">):</span>
@@ -1511,13 +1560,13 @@
         <span class="sd">&quot;&quot;&quot; provides xml content of the node</span>
 
 <span class="sd">        :param node: DOM node</span>
-<span class="sd">        :type node: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :type node: :class:`lxml.etree.Element`</span>
 <span class="sd">        :returns: xml content string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">xml</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">_toxml</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">xml</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">end</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
@@ -1530,15 +1579,15 @@
         <span class="sd">&quot;&quot;&quot; provides text of child named by childname</span>
 
 <span class="sd">        :param parent: parent node</span>
-<span class="sd">        :type parent: :class:`xml.dom.minidom.Node`</span>
+<span class="sd">        :type parent: :class:`lxml.etree.Element`</span>
 <span class="sd">        :param childname: child name</span>
 <span class="sd">        :type childname: :opj:`str`</span>
 <span class="sd">        :returns: text string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> \
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="n">childname</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">childname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getText</span><span class="p">(</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; loads device data from online.xml file</span>
@@ -1550,11 +1599,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;hw&quot;</span><span class="p">)</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
-        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span>
+                         <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -1570,7 +1620,6 @@
                 <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                     <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
         <span class="k">return</span> <span class="n">dct</span>
 
 <div class="viewcode-block" id="CompareOnlineDS.compare"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1682,13 +1731,17 @@
 <span class="sd">        :returns: list of components with xml templates</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str` &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;hw&quot;</span><span class="p">)</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
         <span class="n">cpnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">dvname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">sardananame</span> <span class="ow">or</span> <span class="n">dvname</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                 <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
@@ -1705,7 +1758,6 @@
                 <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleTemplateFiles</span><span class="p">:</span>
                         <span class="n">cpnames</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
         <span class="k">return</span> <span class="n">cpnames</span></div>
 
 <div class="viewcode-block" id="OnlineCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1713,15 +1765,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">indom</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">hw</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;hw&quot;</span><span class="p">)</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">hw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">firstChild</span>
+        <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                         <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
         <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">component</span>
         <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
-        <span class="k">while</span> <span class="n">device</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">nodeName</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+                <span class="n">dvname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">sardananame</span> <span class="ow">or</span> <span class="n">dvname</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                     <span class="n">cpname</span> <span class="o">=</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
@@ -1744,7 +1799,6 @@
                             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR </span><span class="si">%s</span><span class="s2">: host for module </span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2"> &quot;</span>
                                   <span class="s2">&quot;type not defined&quot;</span>
                                   <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
-                        <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span>
                         <span class="k">continue</span>
                     <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getModuleName</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
@@ -1814,9 +1868,7 @@
                                 <span class="k">if</span> <span class="n">xmlfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.ds.xml&quot;</span><span class="p">):</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span>
-
-            <span class="n">device</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">nextSibling</span></div></div>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span></div></div>
 
 
 <div class="viewcode-block" id="StandardCPCreator"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator">[docs]</a><span class="k">class</span> <span class="nc">StandardCPCreator</span><span class="p">(</span><span class="n">CPCreator</span><span class="p">):</span>
@@ -1906,6 +1958,7 @@
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmltemplatepath</span><span class="p">,</span> <span class="n">module</span><span class="p">)):</span>
                 <span class="n">xmlfiles</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="n">module</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">xmlfile</span> <span class="ow">in</span> <span class="n">xmlfiles</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
             <span class="n">newname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replaceName</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
                     <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
@@ -1935,29 +1988,36 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">missing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
-                    <span class="n">indom</span> <span class="o">=</span> <span class="n">parseString</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
-                    <span class="n">nodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;attribute&quot;</span><span class="p">)</span>
-                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">))</span>
-                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">))</span>
-                    <span class="n">grnodes</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;group&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                            <span class="nb">bytes</span><span class="p">(</span><span class="n">xml</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">),</span>
+                            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="n">et</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span>
+                            <span class="n">xml</span><span class="p">,</span>
+                            <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+                    <span class="n">nodes</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//attribute&quot;</span><span class="p">)</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//field&quot;</span><span class="p">))</span>
+                    <span class="n">nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//link&quot;</span><span class="p">))</span>
+                    <span class="n">grnodes</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.//group&quot;</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
                         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getText</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
                             <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">ms</span>
                             <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
-                                <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parentNode</span>
-                                <span class="n">parent</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                                <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                                <span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                                 <span class="k">break</span>
                     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">grnodes</span><span class="p">:</span>
-                        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
                         <span class="k">if</span> <span class="n">text</span> <span class="ow">and</span> <span class="s2">&quot;$(&quot;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
                             <span class="k">for</span> <span class="n">ms</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
                                 <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;$(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">ms</span>
                                 <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
-                                    <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">parentNode</span>
-                                    <span class="n">parent</span><span class="o">.</span><span class="n">removeChild</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                                    <span class="n">parent</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+                                    <span class="n">parent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                                     <span class="k">break</span>
-                    <span class="n">xml</span> <span class="o">=</span> <span class="n">indom</span><span class="o">.</span><span class="n">toxml</span><span class="p">()</span>
+                    <span class="n">xml</span> <span class="o">=</span> <span class="n">_simpletoxml</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MISSING </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">missing</span><span class="p">)</span>
                     <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2009,18 +2069,13 @@
         <span class="sd">&quot;&quot;&quot; collects text from text child nodes</span>
 
 <span class="sd">        :param node: parent node</span>
-<span class="sd">        :type node: :obj:`xml.dom.minidom.Node`</span>
-<span class="sd">        :returns: node content text</span>
-<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        :type node: :obj:`xml.etree.ElementTree.Element`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
-            <span class="n">child</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">firstChild</span>
-            <span class="k">while</span> <span class="n">child</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">nodeType</span> <span class="o">==</span> <span class="n">child</span><span class="o">.</span><span class="n">TEXT_NODE</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">+=</span> <span class="n">child</span><span class="o">.</span><span class="n">data</span>
-                <span class="n">child</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">nextSibling</span>
-        <span class="k">return</span> <span class="n">text</span></div>
+        <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tnodes</span> <span class="o">=</span> <span class="p">([</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">]</span> <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="p">[])</span> \
+                     <span class="o">+</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">tail</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span> <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tail</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">unicode</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tnodes</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
