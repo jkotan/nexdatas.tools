@@ -30,7 +30,7 @@ import threading
 import PyTango
 import json
 from nxstools import nxsconfig
-
+import shutil
 
 try:
     import ServerSetUp
@@ -1980,6 +1980,549 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_show_comp_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dirname = "test_comp_dir"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig show %s -o %s -s %s',
+            'nxsconfig show %s -o %s --server %s',
+            'nxsconfig show %s -o %s -s %s',
+            'nxsconfig show %s -o %s --server %s',
+            'nxsconfig show %s --directory %s -s %s',
+            'nxsconfig show %s --directory %s --server %s',
+            'nxsconfig show %s --directory %s -s %s',
+            'nxsconfig show %s --directory %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                with open("%s/%s.xml" % (dirname, nm), "r") as fl:
+                    fvl = fl.read()
+                self.assertEqual(fvl.strip(), cmps[nm])
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertTrue(not os.path.exists("%s/%s.xml" % (nm, dirname)))
+            self.assertEqual(
+                er,
+                "Error: Component '%s' not stored in the configuration server"
+                % name3)
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            with open("%s/%s.xml" % (dirname, name), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             cmps[name].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            with open("%s/%s.xml" % (dirname, name2), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             cmps[name2].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            self.assertEqual(vl.strip(), "")
+            self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertTrue(not os.path.exists("%s/%s.xml" % (nm, dirname)))
+            self.assertEqual(vl, "")
+            self.assertEqual(
+                er,
+                "Error: Component '%s' not stored in the configuration server"
+                % name3)
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_show_ds_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableDataSources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_datasource"
+        dirname = "test_ds_dir"
+        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
+              "<definition><group type='NXentry'/>" \
+              "\n</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><field type='NXentry2'/>" \
+               "$datasources.sl1right</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        cmps = {name: xml, name2: xml2}
+        self.setXML(el, xml)
+        self.assertEqual(el.storeDataSource(name), None)
+        self.__ds.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeDataSource(name2), None)
+        self.__ds.append(name2)
+        avc2 = el.availableDataSources()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.datasources([name])
+        self.assertEqual(cpx[0], xml)
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig show %s -d -o %s -s %s',
+            'nxsconfig show %s -d -o %s --server %s',
+            'nxsconfig show %s -d -o %s -s %s',
+            'nxsconfig show %s -d -o %s --server %s',
+            'nxsconfig show %s -d --directory %s -s %s',
+            'nxsconfig show %s -d --directory %s --server %s',
+            'nxsconfig show %s -d --directory %s -s %s',
+            'nxsconfig show %s -d --directory %s --server %s',
+            'nxsconfig show %s --datasources -o %s -s %s',
+            'nxsconfig show %s --datasources -o %s --server %s',
+            'nxsconfig show %s --datasources -o %s -s %s',
+            'nxsconfig show %s --datasources -o %s --server %s',
+            'nxsconfig show %s --datasources --directory %s -s %s',
+            'nxsconfig show %s --datasources --directory %s --server %s',
+            'nxsconfig show %s --datasources --directory %s -s %s',
+            'nxsconfig show %s --datasources --directory %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in cmps.keys():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                with open("%s/%s.ds.xml" % (dirname, nm), "r") as fl:
+                    fvl = fl.read()
+                self.assertEqual(fvl.strip(), cmps[nm])
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertTrue(not os.path.exists("%s/%s.ds.xml" % (nm, dirname)))
+            self.assertEqual(
+                er,
+                "Error: DataSource '%s' not stored in the configuration server"
+                % name3)
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            with open("%s/%s.ds.xml" % (dirname, name), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             cmps[name].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            with open("%s/%s.ds.xml" % (dirname, name2), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             cmps[name2].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            self.assertEqual(vl.strip(), "")
+            self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertTrue(not os.path.exists("%s/%s.ds.xml" % (nm, dirname)))
+            self.assertEqual(vl, "")
+            self.assertEqual(
+                er,
+                "Error: DataSource '%s' not stored in the configuration server"
+                % name3)
+
+        self.assertEqual(el.deleteDataSource(name), None)
+        self.__ds.pop(-2)
+        self.assertEqual(el.deleteDataSource(name2), None)
+        self.__ds.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_show_profile_av_directory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableSelections()
+
+        self.assertTrue(isinstance(avc, list))
+        dirname = "test_profile_dir"
+        name = "mcs_test_profile"
+        jsn = '{"DataSourceSelection": ' \
+              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+#        print avc
+        profs = {name: jsn, name2: jsn2}
+        self.setSelection(el, jsn)
+        self.assertEqual(el.storeSelection(name), None)
+        self.__profs.append(name)
+        self.setSelection(el, jsn2)
+        self.assertEqual(el.storeSelection(name2), None)
+        self.__profs.append(name2)
+        avc2 = el.availableSelections()
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.selections([name])
+        self.assertEqual(cpx[0], jsn)
+        while os.path.exists(dirname):
+            dirname = dirname + '_1'
+        os.mkdir(dirname)
+
+        commands = [
+            'nxsconfig show %s -r -o %s -s %s',
+            'nxsconfig show %s -r -o %s --server %s',
+            'nxsconfig show %s -r -o %s -s %s',
+            'nxsconfig show %s -r -o %s --server %s',
+            'nxsconfig show %s -r --directory %s -s %s',
+            'nxsconfig show %s -r --directory %s --server %s',
+            'nxsconfig show %s -r --directory %s -s %s',
+            'nxsconfig show %s -r --directory %s --server %s',
+            'nxsconfig show %s --profiles -o %s -s %s',
+            'nxsconfig show %s --profiles -o %s --server %s',
+            'nxsconfig show %s --profiles -o %s -s %s',
+            'nxsconfig show %s --profiles -o %s --server %s',
+            'nxsconfig show %s --profiles --directory %s -s %s',
+            'nxsconfig show %s --profiles --directory %s --server %s',
+            'nxsconfig show %s --profiles --directory %s -s %s',
+            'nxsconfig show %s --profiles --directory %s --server %s',
+        ]
+        for scmd in commands:
+            for nm in profs.keys():
+                cmd = (scmd % (
+                    nm, dirname,
+                    self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                with open("%s/%s.json" % (dirname, nm), "r") as fl:
+                    fvl = fl.read()
+                self.assertEqual(fvl.strip(), profs[nm])
+                self.assertEqual(vl.strip(), "")
+                self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+        for scmd in commands:
+            nm = name3
+            cmd = (scmd % (nm, dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertEqual(vl, "")
+            self.assertTrue(not os.path.exists("%s/%s.json" % (nm, dirname)))
+            self.assertEqual(
+                er,
+                "Error: Profile '%s' not stored in the configuration server"
+                % name3)
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name2), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue()
+
+            with open("%s/%s.json" % (dirname, name), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             profs[name].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            with open("%s/%s.json" % (dirname, name2), "r") as fl:
+                fvl = fl.read()
+            self.assertEqual(fvl.replace(">\n<", "><").replace("> <", "><"),
+                             profs[name2].replace(
+                                 ">\n<", "><").replace("> <", "><"))
+            self.assertEqual(vl.strip(), "")
+            self.assertEqual(er, "")
+
+        shutil.rmtree(dirname)
+        os.mkdir(dirname)
+
+        for scmd in commands:
+            cmd = (scmd % ("%s %s" % (name, name3), dirname,
+                           self._sv.new_device_info_writer.name)).split()
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue().strip()
+            er = mystderr.getvalue().strip()
+
+            self.assertTrue(not os.path.exists("%s/%s.json" % (nm, dirname)))
+            self.assertEqual(vl, "")
+            self.assertEqual(
+                er,
+                "Error: Profile '%s' not stored in the configuration server"
+                % name3)
+
+        self.assertEqual(el.deleteSelection(name), None)
+        self.__profs.pop(-2)
+        self.assertEqual(el.deleteSelection(name2), None)
+        self.__profs.pop()
+
+        shutil.rmtree(dirname)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_show_profile_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2140,8 +2683,8 @@ For more help:
                "<datasource type='CLIENT' name'testds1'/></definition>"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2294,8 +2837,8 @@ For more help:
                "</definition>\n"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2445,8 +2988,8 @@ For more help:
                "$datasources.sl1right</definition>"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2527,8 +3070,8 @@ For more help:
                "$datasources.sl1right</definition>"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2608,8 +3151,8 @@ For more help:
                "<field type='NXentry' name='test2'>"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2699,8 +3242,8 @@ For more help:
                "$datasources.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2793,8 +3336,8 @@ For more help:
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2890,8 +3433,8 @@ For more help:
                  "</datasource></definition>" % dsname2
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -2987,8 +3530,8 @@ For more help:
                "$components.%s</definition>" % dsname2
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -3081,8 +3624,8 @@ For more help:
                "</definition>"
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
@@ -3189,8 +3732,8 @@ For more help:
                  "<datasource name='%s' type='CLIENT'></datasource>" % dsname3
         while name in avc:
             name = name + '_1'
-            name2 = name + '_2'
-            name3 = name + '_3'
+        name2 = name + '_2'
+        name3 = name + '_3'
         while name2 in avc:
             name2 = name2 + '_2'
         while name3 in avc:
