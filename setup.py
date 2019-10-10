@@ -21,7 +21,11 @@
 
 import os
 from distutils.core import setup, Command
-from sphinx.setup_command import BuildDoc
+
+try:
+    from sphinx.setup_command import BuildDoc
+except Exception:
+    BuildDoc = None
 
 
 PKG = "nxstools"
