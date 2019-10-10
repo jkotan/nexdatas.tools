@@ -22,7 +22,7 @@
 import os
 import sys
 from setuptools import setup
-from setuptools.command.build_py import build_py
+# from setuptools.command.build_py import build_py
 # from distutils.core import setup
 from distutils.core import Command
 
