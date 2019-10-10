@@ -27,6 +27,17 @@ from sphinx.setup_command import BuildDoc
 PKG = "nxstools"
 IPKG = __import__(PKG)
 
+install_requires = [
+    'argcomplete',
+    'h5py',
+    'pytz',
+    'numpy>1.6.0',
+    'lxml',
+    'fabio',
+    # 'pytango',
+    # 'pninexus',
+]
+
 
 def read(fname):
     """reading a file
