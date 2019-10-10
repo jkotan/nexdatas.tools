@@ -92,6 +92,7 @@ SETUPDATA = dict(
     keywords="configuration writer Tango component nexus data",
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
+    install_requires=install_requires,
     packages=["nxstools", "nxstools.xmltemplates"],
     package_data={'nxstools.xmltemplates': ['*.xml']},
     scripts=[
@@ -108,7 +109,8 @@ SETUPDATA = dict(
             'project': ('setup.py', name),
             'version': ('setup.py', version),
             'release': ('setup.py', release)}},
-    long_description=read('README.rst')
+    long_description=read('README.rst'),
+    long_description_content_type='text/x-rst'
 )
 
 
