@@ -2,10 +2,10 @@
 
 if [ $1 = "2" ]; then
     echo "run python-nxstools"
-    docker exec -it ndts python setup.py test
+    docker exec -it ndts python test
 else
     echo "run python3-nxstools"
-    docker exec -it ndts python3 setup.py test
+    docker exec -it ndts python3 test
 fi    
 if [ $? -ne "0" ]
 then

@@ -64,7 +64,7 @@ except SystemError as e:
 
 import unittest
 
-import NXSToolsTest
+import NXSTools_test
 
 if not PNI_AVAILABLE and not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
     raise Exception("Please install h5py, h5cpp or pni")
@@ -132,7 +132,7 @@ try:
     import cx_Oracle
     # pwd
     passwd = open(
-        '%s/pwd' % os.path.dirname(NXSToolsTest.__file__)).read()[:-1]
+        '%s/pwd' % os.path.dirname(NXSTools_test.__file__)).read()[:-1]
 
     # connection arguments to ORACLE DB
     args = {}
@@ -157,113 +157,113 @@ except Exception:
 # db = PyTango.Database()
 
 if PNI_AVAILABLE:
-    import FileWriterTest
-    import PNIWriterTest
-    import NXSCollectPNITest
-    import NXSFileInfoPNITest
+    import FileWriter_test
+    import PNIWriter_test
+    import NXSCollectPNI_test
+    import NXSFileInfoPNI_test
 if H5PY_AVAILABLE:
-    import H5PYWriterTest
-    import FileWriterH5PYTest
-    import NXSCollectH5PYTest
-    import NXSFileInfoH5PYTest
+    import H5PYWriter_test
+    import FileWriterH5PY_test
+    import NXSCollectH5PY_test
+    import NXSFileInfoH5PY_test
 if H5CPP_AVAILABLE:
-    import H5CppWriterTest
-    import FileWriterH5CppTest
-    import NXSCollectH5CppTest
-    import NXSFileInfoH5CppTest
+    import H5CppWriter_test
+    import FileWriterH5Cpp_test
+    import NXSCollectH5Cpp_test
+    import NXSFileInfoH5Cpp_test
 if PNI_AVAILABLE and H5PY_AVAILABLE:
-    import FileWriterPNIH5PYTest
+    import FileWriterPNIH5PY_test
 # if PNI_AVAILABLE and H5CPP_AVAILABLE:
-#     import FileWriterPNIH5CppTest
+#     import FileWriterPNIH5Cpp_test
 
 if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
-    import NXSCollectTest
-    import NXSFileInfoTest
+    import NXSCollect_test
+    import NXSFileInfo_test
 
 
 if PYTANGO_AVAILABLE:
-    import NXSCreateClientDSFSTest
-    import NXSCreateClientDSFS2Test
-    import NXSCreateClientDSFS3Test
-    import NXSCreateTest
-    import NXSCreateCompareTest
+    import NXSCreateClientDSFS_test
+    import NXSCreateClientDSFS2_test
+    import NXSCreateClientDSFS3_test
+    import NXSCreate_test
+    import NXSCreateCompare_test
 
-    import NXSCreateTangoDSFSTest
-    import NXSCreateTangoDSFS2Test
-    import NXSCreateTangoDSFS3Test
+    import NXSCreateTangoDSFS_test
+    import NXSCreateTangoDSFS2_test
+    import NXSCreateTangoDSFS3_test
 
-    import NXSCreateDeviceDSFSTest
-    import NXSCreateDeviceDSFS2Test
-    import NXSCreateDeviceDSFS3Test
+    import NXSCreateDeviceDSFS_test
+    import NXSCreateDeviceDSFS2_test
+    import NXSCreateDeviceDSFS3_test
 
-    import NXSCreateCompFSTest
-    import NXSCreateCompFS2Test
-    import NXSCreateCompFS3Test
+    import NXSCreateCompFS_test
+    import NXSCreateCompFS2_test
+    import NXSCreateCompFS3_test
 
-    import NXSCreateOnlineDSFSTest
-    import NXSCreateOnlineDSFS2Test
-    import NXSCreateOnlineDSFS3Test
+    import NXSCreateOnlineDSFS_test
+    import NXSCreateOnlineDSFS2_test
+    import NXSCreateOnlineDSFS3_test
 
-    import NXSCreateOnlineCPFSTest
-    import NXSCreateOnlineCPFS2Test
-    import NXSCreateOnlineCPFS3Test
+    import NXSCreateOnlineCPFS_test
+    import NXSCreateOnlineCPFS2_test
+    import NXSCreateOnlineCPFS3_test
 
-    import NXSCreatePoolDSFSTest
-    import NXSCreatePoolDSFS2Test
-    import NXSCreatePoolDSFS3Test
+    import NXSCreatePoolDSFS_test
+    import NXSCreatePoolDSFS2_test
+    import NXSCreatePoolDSFS3_test
 
     if "MYSQL" in DB_AVAILABLE:
-        import NXSetUpTest
+        import NXSetUp_test
 
-        import NXSCreateStdCompFSTest
-        import NXSCreateStdCompFS2Test
-        import NXSCreateStdCompFS3Test
+        import NXSCreateStdCompFS_test
+        import NXSCreateStdCompFS2_test
+        import NXSCreateStdCompFS3_test
 
-        import NXSConfigTest
-        import NXSCreateClientDSDBTest
-        import NXSCreateClientDSDB2Test
-        import NXSCreateClientDSDBRTest
-        import NXSCreateClientDSDBR2Test
+        import NXSConfig_test
+        import NXSCreateClientDSDB_test
+        import NXSCreateClientDSDB2_test
+        import NXSCreateClientDSDBR_test
+        import NXSCreateClientDSDBR2_test
 
-        import NXSCreateTangoDSDBTest
-        import NXSCreateTangoDSDB2Test
-        import NXSCreateTangoDSDBRTest
-        import NXSCreateTangoDSDBR2Test
+        import NXSCreateTangoDSDB_test
+        import NXSCreateTangoDSDB2_test
+        import NXSCreateTangoDSDBR_test
+        import NXSCreateTangoDSDBR2_test
 
-        import NXSCreateCompDBTest
-        import NXSCreateCompDB2Test
-        import NXSCreateCompDBRTest
-        import NXSCreateCompDBR2Test
+        import NXSCreateCompDB_test
+        import NXSCreateCompDB2_test
+        import NXSCreateCompDBR_test
+        import NXSCreateCompDBR2_test
 
-        import NXSCreateDeviceDSDBTest
-        import NXSCreateDeviceDSDB2Test
-        import NXSCreateDeviceDSDBRTest
-        import NXSCreateDeviceDSDBR2Test
-        import NXSCreateDeviceDSFS4Test
+        import NXSCreateDeviceDSDB_test
+        import NXSCreateDeviceDSDB2_test
+        import NXSCreateDeviceDSDBR_test
+        import NXSCreateDeviceDSDBR2_test
+        import NXSCreateDeviceDSFS4_test
 
-        import NXSCreateOnlineDSDBTest
-        import NXSCreateOnlineDSDB2Test
-        import NXSCreateOnlineDSDBRTest
-        import NXSCreateOnlineDSDBR2Test
-        import NXSCreateOnlineDSDBETest
-        import NXSCreateOnlineDSDBE2Test
+        import NXSCreateOnlineDSDB_test
+        import NXSCreateOnlineDSDB2_test
+        import NXSCreateOnlineDSDBR_test
+        import NXSCreateOnlineDSDBR2_test
+        import NXSCreateOnlineDSDBE_test
+        import NXSCreateOnlineDSDBE2_test
 
-        import NXSCreateOnlineCPDBTest
-        import NXSCreateOnlineCPDB2Test
-        import NXSCreateOnlineCPDBRTest
-        import NXSCreateOnlineCPDBR2Test
+        import NXSCreateOnlineCPDB_test
+        import NXSCreateOnlineCPDB2_test
+        import NXSCreateOnlineCPDBR_test
+        import NXSCreateOnlineCPDBR2_test
 
-        import NXSCreateStdCompDBTest
-        import NXSCreateStdCompDB2Test
-        import NXSCreateStdCompDBRTest
-        import NXSCreateStdCompDBR2Test
-        import NXSCreateStdCompDBETest
-        import NXSCreateStdCompDBE2Test
+        import NXSCreateStdCompDB_test
+        import NXSCreateStdCompDB2_test
+        import NXSCreateStdCompDBR_test
+        import NXSCreateStdCompDBR2_test
+        import NXSCreateStdCompDBE_test
+        import NXSCreateStdCompDBE2_test
 
-        import NXSCreatePoolDSDBTest
-        import NXSCreatePoolDSDB2Test
-        import NXSCreatePoolDSDBRTest
-        import NXSCreatePoolDSDBR2Test
+        import NXSCreatePoolDSDB_test
+        import NXSCreatePoolDSDB2_test
+        import NXSCreatePoolDSDBR_test
+        import NXSCreatePoolDSDBR2_test
 
 
 # main function
@@ -274,267 +274,270 @@ def main():
 
     if PNI_AVAILABLE:
         suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(FileWriterTest))
+            unittest.defaultTestLoader.loadTestsFromModule(FileWriter_test))
         suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(PNIWriterTest))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCollectPNITest))
+            unittest.defaultTestLoader.loadTestsFromModule(PNIWriter_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSFileInfoPNITest))
+                NXSCollectPNI_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoPNI_test))
 
     if H5PY_AVAILABLE:
         suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(FileWriterH5PYTest))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(H5PYWriterTest))
+            unittest.defaultTestLoader.loadTestsFromModule(
+                FileWriterH5PY_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCollectH5PYTest))
+                H5PYWriter_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSFileInfoH5PYTest))
+                NXSCollectH5PY_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoH5PY_test))
     if H5CPP_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                FileWriterH5CppTest))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(H5CppWriterTest))
+                FileWriterH5Cpp_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCollectH5CppTest))
+                H5CppWriter_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSFileInfoH5CppTest))
+                NXSCollectH5Cpp_test))
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
+                NXSFileInfoH5Cpp_test))
     if PNI_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                FileWriterPNIH5PYTest))
+                FileWriterPNIH5PY_test))
 
     if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCollectTest))
+                NXSCollect_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSFileInfoTest))
+                NXSFileInfo_test))
 
     if PYTANGO_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateClientDSFSTest))
+                NXSCreateClientDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateClientDSFS2Test))
+                NXSCreateClientDSFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateClientDSFS3Test))
+                NXSCreateClientDSFS3_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateTest))
+                NXSCreate_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateCompareTest))
+                NXSCreateCompare_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateTangoDSFSTest))
+                NXSCreateTangoDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateTangoDSFS2Test))
+                NXSCreateTangoDSFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateTangoDSFS3Test))
+                NXSCreateTangoDSFS3_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineDSFSTest))
+                NXSCreateOnlineDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineDSFS2Test))
+                NXSCreateOnlineDSFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineDSFS3Test))
+                NXSCreateOnlineDSFS3_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineCPFSTest))
+                NXSCreateOnlineCPFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineCPFS2Test))
+                NXSCreateOnlineCPFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateOnlineCPFS3Test))
+                NXSCreateOnlineCPFS3_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreatePoolDSFSTest))
+                NXSCreatePoolDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreatePoolDSFS2Test))
+                NXSCreatePoolDSFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreatePoolDSFS3Test))
+                NXSCreatePoolDSFS3_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateDeviceDSFSTest))
+                NXSCreateDeviceDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateDeviceDSFS2Test))
+                NXSCreateDeviceDSFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateDeviceDSFS3Test))
+                NXSCreateDeviceDSFS3_test))
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateCompFSTest))
+                NXSCreateCompFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateCompFS2Test))
+                NXSCreateCompFS2_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCreateCompFS3Test))
+                NXSCreateCompFS3_test))
         if "MYSQL" in DB_AVAILABLE:
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSetUpTest))
+                    NXSetUp_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSConfigTest))
+                    NXSConfig_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompFSTest))
+                    NXSCreateStdCompFS_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompFS2Test))
+                    NXSCreateStdCompFS2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompFS3Test))
+                    NXSCreateStdCompFS3_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateClientDSDBTest))
+                    NXSCreateClientDSDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateClientDSDB2Test))
+                    NXSCreateClientDSDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateClientDSDBRTest))
+                    NXSCreateClientDSDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateClientDSDBR2Test))
+                    NXSCreateClientDSDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateTangoDSDBTest))
+                    NXSCreateTangoDSDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateTangoDSDB2Test))
+                    NXSCreateTangoDSDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateTangoDSDBRTest))
+                    NXSCreateTangoDSDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateTangoDSDBR2Test))
+                    NXSCreateTangoDSDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineCPDBTest))
+                    NXSCreateOnlineCPDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineCPDB2Test))
+                    NXSCreateOnlineCPDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineCPDBRTest))
+                    NXSCreateOnlineCPDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineCPDBR2Test))
+                    NXSCreateOnlineCPDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDBTest))
+                    NXSCreateOnlineDSDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDB2Test))
+                    NXSCreateOnlineDSDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDBRTest))
+                    NXSCreateOnlineDSDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDBR2Test))
+                    NXSCreateOnlineDSDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDBETest))
+                    NXSCreateOnlineDSDBE_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateOnlineDSDBE2Test))
+                    NXSCreateOnlineDSDBE2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDBTest))
+                    NXSCreateStdCompDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDB2Test))
+                    NXSCreateStdCompDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDBRTest))
+                    NXSCreateStdCompDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDBR2Test))
+                    NXSCreateStdCompDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDBETest))
+                    NXSCreateStdCompDBE_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateStdCompDBE2Test))
+                    NXSCreateStdCompDBE2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreatePoolDSDBTest))
+                    NXSCreatePoolDSDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreatePoolDSDB2Test))
+                    NXSCreatePoolDSDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreatePoolDSDBRTest))
+                    NXSCreatePoolDSDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreatePoolDSDBR2Test))
+                    NXSCreatePoolDSDBR2_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateDeviceDSDBTest))
+                    NXSCreateDeviceDSDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateDeviceDSDB2Test))
+                    NXSCreateDeviceDSDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateDeviceDSDBRTest))
+                    NXSCreateDeviceDSDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateDeviceDSDBR2Test))
+                    NXSCreateDeviceDSDBR2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateDeviceDSFS4Test))
+                    NXSCreateDeviceDSFS4_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateCompDBTest))
+                    NXSCreateCompDB_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateCompDB2Test))
+                    NXSCreateCompDB2_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateCompDBRTest))
+                    NXSCreateCompDBR_test))
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
-                    NXSCreateCompDBR2Test))
+                    NXSCreateCompDBR2_test))
 
     # test runner
     runner = unittest.TextTestRunner()

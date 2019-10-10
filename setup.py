@@ -20,7 +20,11 @@
 """ setup.py for command-line tools """
 
 import os
-from distutils.core import setup, Command
+import sys
+from setuptools import setup
+from setuptools.command.build_py import build_py
+# from distutils.core import setup
+from distutils.core import Command
 
 try:
     from sphinx.setup_command import BuildDoc
@@ -30,6 +34,9 @@ except Exception:
 
 PKG = "nxstools"
 IPKG = __import__(PKG)
+
+needs_pytest = set(['test']).intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 install_requires = [
     'argcomplete',
@@ -120,12 +127,20 @@ SETUPDATA = dict(
         'nxsetup',
         'nxsfileinfo',
     ],
-    cmdclass={'test': TestCommand, 'build_sphinx': BuildDoc},
+    cmdclass={
+        # 'test': TestCommand,
+        'build_sphinx': BuildDoc
+    },
+    zip_safe=False,
+    setup_requires=pytest_runner,
+    tests_require=['pytest'],
     command_options={
         'build_sphinx': {
             'project': ('setup.py', name),
             'version': ('setup.py', version),
-            'release': ('setup.py', release)}},
+            'release': ('setup.py', release)
+        }
+    },
     long_description=read('README.rst'),
     long_description_content_type='text/x-rst'
 )
