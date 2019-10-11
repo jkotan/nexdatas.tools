@@ -106,3 +106,21 @@ and
 	  $ apt-get install python-nxsrecselector nxselector python-sardana-nxsrecorder
 
 for Component Selector and Sardana related packages.
+
+From pip
+""""""""
+
+To install it from pip you can
+
+.. code-block:: console
+
+   $ python3 -m venv myvenv
+   $ . myvenv/bin/activate
+
+   $ pip install nxstools
+
+Moreover it is also good to install
+
+.. code-block:: console
+
+   $ pip install pytango
