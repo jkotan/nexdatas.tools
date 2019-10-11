@@ -1,3 +1,8 @@
+2019-10-10 Jan Kotanski <jankotan@gmail.com>
+	* add support for pip
+	* switch to setuptools
+	* tagged as v2.68.1
+
 2019-09-24 Jan Kotanski <jankotan@gmail.com>
 	* add nxsconfig upload command for loading elements from files
 	* add nxsconfig show -o command option saving elements to files

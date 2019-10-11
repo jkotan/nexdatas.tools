@@ -20,12 +20,34 @@
 """ setup.py for command-line tools """
 
 import os
-from distutils.core import setup, Command
-from sphinx.setup_command import BuildDoc
+import sys
+from setuptools import setup
+# from setuptools.command.build_py import build_py
+# from distutils.core import setup
+from distutils.core import Command
+
+try:
+    from sphinx.setup_command import BuildDoc
+except Exception:
+    BuildDoc = None
 
 
 PKG = "nxstools"
 IPKG = __import__(PKG)
+
+needs_pytest = set(['test']).intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
+
+install_requires = [
+    'argcomplete',
+    'h5py',
+    'pytz',
+    'numpy>1.6.0',
+    'lxml',
+    'fabio',
+    # 'pytango',
+    # 'pninexus',
+]
 
 
 def read(fname):
@@ -81,6 +103,20 @@ SETUPDATA = dict(
     keywords="configuration writer Tango component nexus data",
     url="http://github.com/jkotan/nexdatas/",
     platforms=("Linux"),
+    install_requires=install_requires,
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ],
     packages=["nxstools", "nxstools.xmltemplates"],
     package_data={'nxstools.xmltemplates': ['*.xml']},
     scripts=[
@@ -91,13 +127,22 @@ SETUPDATA = dict(
         'nxsetup',
         'nxsfileinfo',
     ],
-    cmdclass={'test': TestCommand, 'build_sphinx': BuildDoc},
+    cmdclass={
+        # 'test': TestCommand,
+        'build_sphinx': BuildDoc
+    },
+    zip_safe=False,
+    setup_requires=pytest_runner,
+    tests_require=['pytest'],
     command_options={
         'build_sphinx': {
             'project': ('setup.py', name),
             'version': ('setup.py', version),
-            'release': ('setup.py', release)}},
-    long_description=read('README.rst')
+            'release': ('setup.py', release)
+        }
+    },
+    long_description=read('README.rst'),
+    # long_description_content_type='text/x-rst'
 )
 
 

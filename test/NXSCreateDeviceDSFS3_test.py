@@ -15,9 +15,37 @@
 #
 #    You should have received a copy of the GNU General Public License
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
+# \package test nexdatas
+# \file XMLConfigurator_test.py
+# unittests for field Tags running Tango Server
 #
+import unittest
+import sys
 
-"""  NXS tools release version"""
 
-#: (:obj:`str`) package version
-__version__ = "2.68.1"
+try:
+    import NXSCreateDeviceDSFS2_test
+except Exception:
+    from . import NXSCreateDeviceDSFS2_test
+
+
+if sys.version_info > (3,):
+    unicode = str
+    long = int
+
+
+# test fixture
+class NXSCreateDeviceDSFS3Test(
+        NXSCreateDeviceDSFS2_test.NXSCreateDeviceDSFS2Test):
+
+    # constructor
+    # \param methodName name of the test method
+    def __init__(self, methodName):
+        NXSCreateDeviceDSFS2_test.NXSCreateDeviceDSFS2Test.__init__(
+            self, methodName)
+
+        self.flags = " --directory %s" % self.directory
+
+
+if __name__ == '__main__':
+    unittest.main()
