@@ -291,7 +291,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      "collect2", "collect3", "common2", "common3",
                      "datasignal", "dcm", "default", "defaultinstrument",
                      "defaultsample", "empty", "keithley", "maia",
-                     "maiadimension", "maiaflux", "pinhole",
+                     "maiadimension", "maiaflux", "msnsar", "mssar",
+                     "pinhole",
                      "pointdet", "qbpm", "samplehkl", "slit",
                      "source", "undulator"])
                 self.assertEqual(lines[-1], "")
