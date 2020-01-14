@@ -287,6 +287,10 @@ standardComponentVariables = {
         },
     },
     'pinhole': {
+        'diameter': {
+            'default': None,
+            'doc': "pinhole diameter (datasource)"
+        },
         'x': {
             'default': None,
             'doc': "horizontal position (datasource)"
@@ -942,6 +946,35 @@ standardComponentVariables = {
             'doc': "optional detasource name MANDATORY (datasource)"
         }
     },
+    'mssar': {
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        },
+        'varname': {
+            'default': None,
+            'doc': "sardana environment variable name MANDATORY (string)"
+        },
+        'sardanadevice': {
+            'default': None,
+            'doc': "sardana device name MANDATORY (string)"
+        }
+    },
+    'msnsar': {
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        },
+        'varname': {
+            'default': None,
+            'doc': "nested sardana environment variable name "
+            " MANDATORY (string)"
+        },
+        'sardanadevice': {
+            'default': None,
+            'doc': "sardana device name MANDATORY (string)"
+        }
+    },
     'common3': {
         'dds': {
             'default': None,
@@ -1041,6 +1074,14 @@ standardComponentTemplateFiles = {
     ],
     'common3': [
         'common3_common.ds.xml',
+    ],
+    'msnsar': [
+        'msnsar_env.ds.xml',
+        'sardanaenvironment.ds.xml',
+    ],
+    'mssar': [
+        'mssar_env.ds.xml',
+        'sardanaenvironment.ds.xml',
     ],
     'absorber': [
         'absorber_foil.ds.xml',

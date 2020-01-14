@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_env">
+    <result name="result">
+import pickle
+import sys
+import json
+
+varname = json.loads('$(varname)')
+
+pmsenv = ds.$(msenv)
+if sys.version_info > (3,):
+    msenv = pickle.loads(pmsenv[1], encoding='latin1')['new']
+else:
+    msenv = pickle.loads(pmsenv[1])['new']
+
+ds.result = msenv
+for var in varname:
+    ds.result = ds.result[var]
+    </result>
+ $datasources.$(msenv)</datasource>
+</definition>
