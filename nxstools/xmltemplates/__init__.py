@@ -955,10 +955,18 @@ standardComponentVariables = {
             'default': None,
             'doc': "sardana environment variable name MANDATORY (string)"
         },
-        'sardanadevice': {
+        'mssardanadevice': {
             'default': None,
-            'doc': "sardana device name MANDATORY (string)"
-        }
+            'doc': "macroserver sardana device name MANDATORY (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
     },
     'msnsar': {
         'msenv': {
@@ -973,7 +981,15 @@ standardComponentVariables = {
         'sardanadevice': {
             'default': None,
             'doc': "sardana device name MANDATORY (string)"
-        }
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
     },
     'common3': {
         'dds': {

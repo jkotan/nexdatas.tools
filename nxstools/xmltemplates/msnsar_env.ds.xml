@@ -8,11 +8,10 @@ import json
 
 varname = json.loads('$(varname)')
 
-pmsenv = ds.$(msenv)
 if sys.version_info > (3,):
-    msenv = pickle.loads(pmsenv[1], encoding='latin1')['new']
+    msenv = pickle.loads(ds.$(msenv), encoding='latin1')['new']
 else:
-    msenv = pickle.loads(pmsenv[1])['new']
+    msenv = pickle.loads(ds.$(msenv))['new']
 
 ds.result = msenv
 for var in varname:
