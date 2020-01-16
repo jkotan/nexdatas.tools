@@ -8,7 +8,7 @@
         <field type="NX_CHAR" name="depends_on">transformations/y<strategy mode="INIT"/>
         </field>
         <group type="NXtransformations" name="transformations">
-          <field depends_on="x" units="mm" type="NX_FLOAT64" name="y">
+          <field depends_on="$(xname)" units="mm" type="NX_FLOAT64" name="$(yname)">
             <strategy mode="INIT"/>$datasources.$(y)
 	    <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
@@ -19,7 +19,7 @@
             </dimensions>
             </attribute>
           </field>
-          <field depends_on="z" units="mm" type="NX_FLOAT64" name="x">
+          <field depends_on="$(zname)" units="mm" type="NX_FLOAT64" name="$(xname)">
             <strategy mode="INIT"/>$datasources.$(x)
 	    <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
@@ -30,7 +30,7 @@
             </dimensions>
             </attribute>
           </field>
-          <field units="mm" type="NX_FLOAT64" name="z">
+          <field units="mm" type="NX_FLOAT64" name="$(zname)">
             <strategy mode="INIT"/>$datasources.$(z)
 	    <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>

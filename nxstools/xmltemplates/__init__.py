@@ -301,7 +301,19 @@ standardComponentVariables = {
         },
         'z': {
             'default': None,
-            'doc': "vertical position (datasource)"
+            'doc': "along the beam position (datasource)"
+        },
+        'xname': {
+            'default': 'x',
+            'doc': "horizontal position name (string)"
+        },
+        'yname': {
+            'default': 'y',
+            'doc': "vertical position name (string)"
+        },
+        'zname': {
+            'default': 'z',
+            'doc': "along the beam position name (string)"
         },
         'xsign': {
             'default': "",
@@ -329,6 +341,18 @@ standardComponentVariables = {
         'z': {
             'default': None,
             'doc': "vertical position (datasource)"
+        },
+        'xname': {
+            'default': 'x',
+            'doc': "horizontal position name (string)"
+        },
+        'yname': {
+            'default': 'y',
+            'doc': "vertical position name (string)"
+        },
+        'zname': {
+            'default': 'z',
+            'doc': "along the beam position name (string)"
         },
     },
     'samplehkl': {
