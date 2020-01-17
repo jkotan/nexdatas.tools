@@ -220,45 +220,80 @@ standardComponentVariables = {
             'doc': "horizontal lattice translation of the first cristal"
             " (datasource)"
         },
+        'latname': {
+            'default': 'lat',
+            'doc': "horizontal lattice translation name of the first cristal"
+            " (string)"
+        },
         'yaw': {
             'default': None,
             'doc': "phi rotation of the first cristal"
             " (datasource)"
+        },
+        'yawname': {
+            'default': 'phi',
+            'doc': "phi rotation name of the first cristal"
+            " (string)"
         },
         'para': {
             'default': None,
             'doc': "distance between the crystals"
             " (string)"
         },
-        'roll1': {
-            'default': None,
-            'doc': "chi rotation of the first cristal"
-            " (datasource)"
+        'paraname': {
+            'default': 'para',
+            'doc': "beam parallel translation name of the second cristal"
+            " (string)"
         },
         'braggangle': {
             'default': None,
             'doc': "bragg angle"
             " (datasource)"
         },
+        'bragganglename': {
+            'default': 'bragg',
+            'doc': "bragg angle name "
+            " (string)"
+        },
         'jack1': {
             'default': None,
             'doc': "first vertical jack of table"
             " (datasource)"
+        },
+        'jack1name': {
+            'default': 'jack1',
+            'doc': "first vertical jack name of table"
+            " (string)"
         },
         'jack2': {
             'default': None,
             'doc': "second vertical jack of table"
             " (datasource)"
         },
+        'jack2name': {
+            'default': 'jack2',
+            'doc': "second vertical jack name of table"
+            " (string)"
+        },
         'jack3': {
             'default': None,
             'doc': "third vertical jack of table"
             " (datasource)"
         },
+        'jack3name': {
+            'default': 'jack3',
+            'doc': "third vertical jack name of table"
+            " (string)"
+        },
         'table': {
             'default': None,
             'doc': "vertical position of table"
             " (datasource)"
+        },
+        'tablename': {
+            'default': 'table',
+            'doc': "vertical position name of table"
+            " (string)"
         },
         'oxfordhorizontal': {
             'default': None,
@@ -279,6 +314,11 @@ standardComponentVariables = {
             'default': None,
             'doc': "theta angle"
             " (datasource)"
+        },
+        'thetaname': {
+            'default': 'theta',
+            'doc': "theta angle name"
+            " (string)"
         },
         'chcutdevice': {
             'default': None,
@@ -382,6 +422,10 @@ standardComponentVariables = {
             'default': None,
             'doc': "vertical position (datasource)"
         },
+        'yname': {
+            'default': 'y',
+            'doc': "vertical position name (string)"
+        },
         'attenfactor': {
             'default': None,
             'doc': "attenuation factor (datasource)"
@@ -410,6 +454,10 @@ standardComponentVariables = {
         'distance': {
             'default': None,
             'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distancename': {
+            'default': None,
+            'doc': "distance name for the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
             'default': None,
@@ -465,6 +513,14 @@ standardComponentVariables = {
             'default': None,
             'doc': "vertical position (datasource)"
         },
+        'xname': {
+            'default': 'x',
+            'doc': "horizontal position name (string)"
+        },
+        'yname': {
+            'default': 'y',
+            'doc': "vertical position name (string)"
+        },
         'foilposdict': {
             'default': '{"Ti": 43, "Ni": 23, "Out": 3}',
             'doc': "foil_type position json dictionary (string)"
@@ -472,6 +528,10 @@ standardComponentVariables = {
         'distance': {
             'default': None,
             'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distancename': {
+            'default': 'distance',
+            'doc': "distance name for the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
             'default': None,
@@ -503,6 +563,14 @@ standardComponentVariables = {
         'yoffset': {
             'default': None,
             'doc': "vertiacal offset (datasource)"
+        },
+        'xoffsetname': {
+            'default': "x_offset",
+            'doc': "horizontal offset name (string)"
+        },
+        'yoffsetname': {
+            'default': "y_offset",
+            'doc': "vertiacal offset name (string)"
         },
         'left': {
             'default': None,
@@ -544,9 +612,21 @@ standardComponentVariables = {
             'default': None,
             'doc': "vertiacal offset calibration (datasource)"
         },
+        'xoffsetcalibrationname': {
+            'default': "x_offset_calibration",
+            'doc': "horizontal offset calibration name (string)"
+        },
+        'yoffsetcalibrationname': {
+            'default': "y_offset_calibration",
+            'doc': "vertiacal offset calibration name (string)"
+        },
         'distance': {
             'default': None,
             'doc': "distance for the sample in m, e.g. 0 (string)"
+        },
+        'distancename': {
+            'default': "distance",
+            'doc': "distance name for the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
             'default': None,
@@ -657,6 +737,10 @@ standardComponentVariables = {
         'distance': {
             'default': None,
             'doc': "distance from the sample in m, e.g. 0 (string)"
+        },
+        'distancename': {
+            'default': None,
+            'doc': "distance name from the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
             'default': None,
@@ -830,75 +914,150 @@ standardComponentVariables = {
             'doc': "horizontal lattice translation of the first cristal"
             " (datasource)"
         },
+        'latname': {
+            'default': 'lat',
+            'doc': "horizontal lattice translation name of the first cristal"
+            " (string)"
+        },
         'lat2': {
             'default': None,
             'doc': "horizontal lattice translation of the second cristal"
             " (datasource)"
+        },
+        'lat2name': {
+            'default': 'lat',
+            'doc': "horizontal lattice translation name of the second cristal"
+            " (string)"
         },
         'yaw': {
             'default': None,
             'doc': "phi rotation of the first cristal"
             " (datasource)"
         },
+        'yawname': {
+            'default': 'phi',
+            'doc': "phi rotation name of the first cristal"
+            " (string)"
+        },
         'yaw2': {
             'default': None,
             'doc': "phi rotation of the second cristal"
             " (datasource)"
+        },
+        'yaw2name': {
+            'default': 'phi',
+            'doc': "phi rotation name of the second cristal"
+            " (string)"
         },
         'roll1': {
             'default': None,
             'doc': "chi rotation of the first cristal"
             " (datasource)"
         },
+        'roll1name': {
+            'default': 'chi',
+            'doc': "chi rotation name of the first cristal"
+            " (string)"
+        },
         'roll2': {
             'default': None,
             'doc': "chi rotation of the second cristal"
             " (datasource)"
+        },
+        'roll2name': {
+            'default': 'chi',
+            'doc': "chi rotation name of the second cristal"
+            " (string)"
         },
         'pitch1': {
             'default': None,
             'doc': "theta rotation of the first cristal"
             " (datasource)"
         },
+        'pitch1name': {
+            'default': 'theta',
+            'doc': "theta rotation name of the first cristal"
+            " (string)"
+        },
         'pitch2': {
             'default': None,
             'doc': "theta rotation of the second cristal"
             " (datasource)"
+        },
+        'pitch2name': {
+            'default': 'theta',
+            'doc': "theta rotation name of the second cristal"
+            " (string)"
         },
         'perp2': {
             'default': None,
             'doc': "vertical translation of the second cristal"
             " (datasource)"
         },
+        'perp2name': {
+            'default': 'perp',
+            'doc': "vertical translation name of the second cristal"
+            " (string)"
+        },
         'par2': {
             'default': None,
             'doc': "beam parallel translation of the second cristal"
             " (datasource)"
+        },
+        'par2name': {
+            'default': 'para',
+            'doc': "beam parallel translation name of the second cristal"
+            " (string)"
         },
         'braggangle': {
             'default': None,
             'doc': "bragg angle"
             " (datasource)"
         },
+        'bragganglename': {
+            'default': 'bragg',
+            'doc': "bragg angle name "
+            " (string)"
+        },
         'jack1': {
             'default': None,
             'doc': "first vertical jack of table"
             " (datasource)"
+        },
+        'jack1name': {
+            'default': 'jack1',
+            'doc': "first vertical jack name of table"
+            " (string)"
         },
         'jack2': {
             'default': None,
             'doc': "second vertical jack of table"
             " (datasource)"
         },
+        'jack2name': {
+            'default': 'jack2',
+            'doc': "second vertical jack name of table"
+            " (string)"
+        },
         'jack3': {
             'default': None,
             'doc': "third vertical jack of table"
             " (datasource)"
         },
+        'jack3name': {
+            'default': 'jack3',
+            'doc': "third vertical jack name of table"
+            " (string)"
+        },
         'table': {
             'default': None,
             'doc': "vertical position of table"
             " (datasource)"
+        },
+        'tablename': {
+            'default': 'table',
+            'doc': "vertical position name of table"
+            " (string)"
         },
         'oxfordhorizontal': {
             'default': None,
@@ -924,6 +1083,11 @@ standardComponentVariables = {
             'default': None,
             'doc': "theta angle"
             " (datasource)"
+        },
+        'thetaname': {
+            'default': 'theta',
+            'doc': "theta angle name"
+            " (string)"
         },
         'dcmdevice': {
             'default': None,
