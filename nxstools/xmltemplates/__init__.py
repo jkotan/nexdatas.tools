@@ -960,6 +960,87 @@ standardComponentVariables = {
             " (datasource)"
         }
     },
+    'collect4': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
+        },
+        'third': {
+            'default': None,
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
+        }
+        'fourh': {
+            'default': None,
+            'doc': "name of the fourth component to collect MANDATORY"
+            " (datasource)"
+        }
+    },
+    'collect5': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
+        },
+        'third': {
+            'default': None,
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
+        }
+        'fourh': {
+            'default': None,
+            'doc': "name of the fourth component to collect MANDATORY"
+            " (datasource)"
+        }
+        'fifth': {
+            'default': None,
+            'doc': "name of the fifth component to collect MANDATORY"
+            " (datasource)"
+        }
+    },
+    'collect6': {
+        'first': {
+            'default': None,
+            'doc': "name of the first component to collect MANDATORY"
+            " (datasource)"
+        },
+        'second': {
+            'default': None,
+            'doc': "name of the second component to collect MANDATORY"
+            " (datasource)"
+        },
+        'third': {
+            'default': None,
+            'doc': "name of the third component to collect MANDATORY"
+            " (datasource)"
+        }
+        'fourh': {
+            'default': None,
+            'doc': "name of the fourth component to collect MANDATORY"
+            " (datasource)"
+        }
+        'fifth': {
+            'default': None,
+            'doc': "name of the fifth component to collect MANDATORY"
+            " (datasource)"
+        }
+        'sixth': {
+            'default': None,
+            'doc': "name of the sixth component to collect MANDATORY"
+            " (datasource)"
+        }
+    },
     'common2': {
         'dds': {
             'default': None,
@@ -1108,6 +1189,15 @@ standardComponentTemplateFiles = {
     ],
     'collect3': [
         'collect3.xml',
+    ],
+    'collect4': [
+        'collect4.xml',
+    ],
+    'collect5': [
+        'collect5.xml',
+    ],
+    'collect6': [
+        'collect6.xml',
     ],
     'common2': [
         'common2_common.ds.xml',
