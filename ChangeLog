@@ -1,4 +1,8 @@
 2019-10-17 Jan Kotanski <jankotan@gmail.com>
+	* add collect4 collect5 collect6
+	* tagged as v2.69.2
+
+2019-10-17 Jan Kotanski <jankotan@gmail.com>
 	* add fieldname parameters for beamstop and pinhole
 	* tagged as v2.69.1
 
