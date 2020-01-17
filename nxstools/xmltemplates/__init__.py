@@ -976,7 +976,7 @@ standardComponentVariables = {
             'doc': "name of the third component to collect MANDATORY"
             " (datasource)"
         },
-        'fourh': {
+        'fourth': {
             'default': None,
             'doc': "name of the fourth component to collect MANDATORY"
             " (datasource)"
@@ -998,7 +998,7 @@ standardComponentVariables = {
             'doc': "name of the third component to collect MANDATORY"
             " (datasource)"
         },
-        'fourh': {
+        'fourth': {
             'default': None,
             'doc': "name of the fourth component to collect MANDATORY"
             " (datasource)"
@@ -1025,7 +1025,7 @@ standardComponentVariables = {
             'doc': "name of the third component to collect MANDATORY"
             " (datasource)"
         },
-        'fourh': {
+        'fourth': {
             'default': None,
             'doc': "name of the fourth component to collect MANDATORY"
             " (datasource)"
