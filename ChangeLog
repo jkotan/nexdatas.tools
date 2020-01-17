@@ -1,3 +1,7 @@
+2019-10-17 Jan Kotanski <jankotan@gmail.com>
+	* add fieldname parameters for beamstop and pinhole
+	* tagged as v2.69.1
+
 2019-10-15 Jan Kotanski <jankotan@gmail.com>
 	* add support for MacroServer environment datasources
 	* tagged as v2.69.0
