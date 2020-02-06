@@ -456,7 +456,7 @@ standardComponentVariables = {
             'doc': "distance for the sample in m, e.g. 0 (string)"
         },
         'distancename': {
-            'default': None,
+            'default': 'distance',
             'doc': "distance name for the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
@@ -739,7 +739,7 @@ standardComponentVariables = {
             'doc': "distance from the sample in m, e.g. 0 (string)"
         },
         'distancename': {
-            'default': None,
+            'default': "distance",
             'doc': "distance name from the sample in m, e.g. 0 (string)"
         },
         'distanceoffset': {
