@@ -1247,7 +1247,7 @@ standardComponentVariables = {
             'doc': "nested sardana environment variable name "
             " MANDATORY (string)"
         },
-        'sardanadevice': {
+        'mssardanadevice': {
             'default': None,
             'doc': "sardana device name MANDATORY (string)"
         },
