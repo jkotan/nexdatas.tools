@@ -16,7 +16,7 @@
           <strategy mode="INIT"/>$datasources.$(position)</field>
 	</group>
         <group type="NXtransformations" name="$(transformations)">
-          <field depends_on="$(distance)" units="mm" type="NX_FLOAT64" name="$(yname)">
+          <field depends_on="$(distancename)" units="mm" type="NX_FLOAT64" name="$(yname)">
             <strategy mode="INIT"/>$datasources.$(y)
 	    <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>
