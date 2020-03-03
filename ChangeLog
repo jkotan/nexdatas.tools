@@ -1,3 +1,7 @@
+2020-03-03 Jan Kotanski <jankotan@gmail.com>
+	* add -m option to nxsconfig upload
+	* tagged as v2.70.0
+
 2020-02-07 Jan Kotanski <jankotan@gmail.com>
 	* add fieldname for other template components
 	* tagged as v2.69.4
