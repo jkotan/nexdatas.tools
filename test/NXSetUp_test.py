@@ -2887,11 +2887,11 @@ For more help:
                 for svname, dvname in set(rservers):
                     try:
                         self.stopServer(svname)
-                    except Exception as e:
+                    except Exception:
                         pass
                     try:
                         self.unregisterServer(svname, dvname)
-                    except Exception as e:
+                    except Exception:
                         pass
                 setup = nxsetup.SetUp()
                 for svname, dvname in set(rservers):

@@ -421,7 +421,7 @@ class ConfigServer(object):
                 self._cnfServer.StoreComponent(ar)
                 if mandatory:
                     self._cnfServer.SetMandatoryComponents([ar])
-                    
+
         return []
 
     def getCmd(self, args):
