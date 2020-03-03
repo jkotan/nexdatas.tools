@@ -364,7 +364,8 @@ class ConfigServer(object):
                     self._cnfServer.DeleteComponent(ar)
         return []
 
-    def uploadCmd(self, ds, args, force=False, profiles=False, directory='.'):
+    def uploadCmd(self, ds, args, force=False, profiles=False, directory='.',
+                  mandatory=False):
         """ upload the DB items from files
 
         :param ds: flag set True for datasources
@@ -377,6 +378,8 @@ class ConfigServer(object):
         :type profiles: :obj:`bool`
         :param directory: input file directory
         :type directory: :obj:`str`
+        :param mandatory: mandatory flag
+        :type mandatory: :obj:`bool`
         :returns: list of XML items
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -416,6 +419,9 @@ class ConfigServer(object):
                     txt = fl.read()
                 self._cnfServer.XMLString = txt
                 self._cnfServer.StoreComponent(ar)
+                if mandatory:
+                    self._cnfServer.SetMandatoryComponents([ar])
+                    
         return []
 
     def getCmd(self, args):
@@ -968,6 +974,9 @@ class Upload(Runner):
         parser.add_argument("-d", "--datasources", action="store_true",
                             default=False, dest="datasources",
                             help="perform operation for datasources")
+        parser.add_argument("-m", "--mandatory", action="store_true",
+                            default=False, dest="mandatory",
+                            help="set the component as mandatory")
         parser.add_argument("-r", "--profiles", action="store_true",
                             default=False, dest="profiles",
                             help="perform operation for profiles")
@@ -992,7 +1001,7 @@ class Upload(Runner):
         cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.uploadCmd(
             options.datasources, options.args, options.force,
-            options.profiles, options.directory
+            options.profiles, options.directory, options.mandatory
         ))
         return string
 
