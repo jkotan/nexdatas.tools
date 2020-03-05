@@ -323,10 +323,25 @@ class OnlineDS(Runner):
         + "            <server> is taken from Tango DB\n\n" \
         + " `onlineds` overwrites existing datasources\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate onlineds -b  \n" \
+        + "\n" \
+        + "           - create datasources from online.xml file \n" \
+        + "             and upload them to NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate onlineds -b -t \n" \
+        + "\n" \
+        + "           - like above but set motor tango datasources to \n" \
+        + "             be no __CLIENT__ like\n" \
+        + "\n" \
         + "       nxscreate onlineds -d /home/user/xmldir \n" \
-        + "       nxscreate onlineds \n"
+        + "\n" \
+        + "           - create datasources from online.xml file \n" \
+        + "             and save them into given directory \n" \
+        + "\n" \
+        + "       nxscreate onlineds \n" \
+        + "\n" \
+        + "           - run in test mode without create datasources \n" 
 
     def create(self):
         """ creates parser
