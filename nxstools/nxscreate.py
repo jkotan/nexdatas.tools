@@ -341,7 +341,8 @@ class OnlineDS(Runner):
         + "\n" \
         + "       nxscreate onlineds \n" \
         + "\n" \
-        + "           - run in test mode without create datasources \n" 
+        + "           - run the command in test mode \n" \
+        + "             without creating datasources \n"
 
     def create(self):
         """ creates parser
