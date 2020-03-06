@@ -60,18 +60,57 @@ class TangoDS(Runner):
         + "            <server> is taken from Tango DB\n" \
         + "            <datasource> is 'exp_mot' \n" \
         + "            <host>, <port> are taken from <server>\n" \
+        + "\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l2 -v p09/motor/exp. -s exp_mot \n" \
+        + "\n" \
+        + "           - create the 'exp_mot01' and 'exp_mot02' datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'p09/motor/exp.0?' " \
+        + "device names\n" \
+        + "               and 'Position' tango attribute names" \
+        + " in the local directory\n" \
+        + "               where '?' is 1, 2 respectively \n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l32 -v p02/motor/eh1a. -s exp_mot" \
-        + "-b \n" \
-        + "       nxscreate tangods -f1 -l32 -v p01/motor/oh1. " \
-        + "-s exp_mot -b\n" \
+        + " -b \n" \
+        + "\n" \
+        + "           - create the 'exp_mot01', ... ,'exp_mot32'"\
+        " datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'p09/motor/eh1a.??' " \
+        + "device names\n" \
+        + "               while their attribute name is 'Position' " \
+        + " and upload them to the NXSConfigServer database\n" \
+        + "               where '??' is 01, 02, ... ,32 respectively \n" \
+        + "\n" \
         + "       nxscreate tangods -v petra/globals/keyword " \
         + "-s source_current -u haso228 -t 10000 \\ \n "\
         + "                        -a BeamCurrent " \
         + "-b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__\n" \
+        + "\n" \
+        + "           - create the a 'source_current' datasource " \
+        + "of the 'TANGO' type belonging to the '__CLIENT__' group \n" \
+        + "               with the 'petra/globals/keyword' device name\n" \
+        + "               while their attribute name is 'BeamCurrent', \n" \
+        + "               their hostname is 'haso228', " \
+        + "their tango port is '10000'\n" \
+        + "               and upload them to the NXSConfigServer " \
+        + "'p09/nxsconfigserver/haso228' database\n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u" \
         + " hasppXX.desy.de -b \n" \
+        + "\n" \
+        + "           - create the 'slt_exp_01', ... ,'slt_exp_08'" \
+        " datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'pXX/slt/exp.0?' " \
+        + "device names\n" \
+        + "               while their attribute name is 'Position', \n" \
+        + "               their hostname is 'hasppXX.desy.de' " \
+        + " and upload them to the NXSConfigServer database\n" \
+        + "               where '??' is 1, 2, ... ,8 respectively \n" \
         + "\n"
 
     def create(self):
@@ -902,6 +941,7 @@ class Comp(Runner):
         + "            <nexuspath> is " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry" \
         + "/instrument/collection/\"\n" \
+        + "\n" \
         + " examples:\n" \
         + "\n" \
         + "       nxscreate comp counter \n" \
@@ -921,7 +961,7 @@ class Comp(Runner):
         + " corresponding 'exp_c0?' datasources to corresponding\n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
         + "instrument:NXinstrument/collection:NXcollection/exp_c0?'\n" \
-        + "                where '?' is 5,6,7 respectively \n" \
+        + "                where '?' is 5, 6, 7 respectively \n" \
         + "\n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
         + "\n" \
@@ -949,7 +989,7 @@ class Comp(Runner):
         + "               float64 fields and creates corresponding\n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
         + "data:NXdata/sis3302_1_roi?' links\n" \
-        + "               where '?' is 1,2,3 respectively \n" \
+        + "               where '?' is 1, 2, 3 respectively \n" \
         + "\n" \
         + "       nxscreate comp -n " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry/instrument/" \
@@ -1108,6 +1148,7 @@ class ClientDS(Runner):
              + " on the local filesystem in -d <directory> \n" \
              + " * default: <directory> is '.' \n" \
              + "            <server> is taken from Tango DB\n" \
+             + "\n" \
              + " examples:\n" \
              + "\n" \
              + "       nxscreate clientds starttime -b  \n" \
@@ -1132,7 +1173,7 @@ class ClientDS(Runner):
              + "record names\n" \
              + "               and upload them to the NXSConfigServer " \
              + "database \n" \
-             + "               where '?' is 1,2,3,4 respectively \n" \
+             + "               where '?' is 1, 2, 3, 4 respectively \n" \
              + "\n" \
              + "       nxscreate clientds -v " \
              + "hasppXX:10000/expchan/vfcadc_exp/" \
@@ -1145,7 +1186,7 @@ class ClientDS(Runner):
              + "'hasppXX:10000/expchan/vfcadc_exp/?' record names\n" \
              + "               and upload them to the NXSConfigServer " \
              + "database \n" \
-             + "               where '?' is 5,6,7,8 respectively \n" \
+             + "               where '?' is 5, 6, 7, 8 respectively \n" \
              + "\n"
 
     def create(self):
