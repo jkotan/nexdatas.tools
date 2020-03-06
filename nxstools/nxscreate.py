@@ -958,7 +958,8 @@ class Comp(Runner):
         + "\n" \
         + "           - create the 'eh1_mca01' component" \
         + " in the NXSConfigServer database \n" \
-        + "               which set fetching STECTRUM data in the 'STEP' mode from" \
+        + "               which set fetching STECTRUM data in the " \
+        + "'STEP' mode from" \
         + " a 'eh1_mca01' datasource to \n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
         + "instrument:NXinstrument/\/eh1_mca01:NXdetector/data\n" \
@@ -1108,12 +1109,44 @@ class ClientDS(Runner):
              + " * default: <directory> is '.' \n" \
              + "            <server> is taken from Tango DB\n" \
              + " examples:\n" \
+             + "\n" \
              + "       nxscreate clientds starttime -b  \n" \
+             + "\n" \
+             + "           - create the 'starttime' datasource " \
+             + "of the 'CLIENT' type with the 'starttime' record name\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate clientds title -d /home/user/xmldir \n" \
+             + "\n" \
+             + "           - create the 'title' datasource " \
+             + "of the 'CLIENT' type with the 'title' record name\n" \
+             + "               in the '/home/user/xmldir' directory\n" \
+             + "\n" \
              + "       nxscreate clientds -v exp_c -f1 -l4 -b  \n" \
+             + "\n" \
+             + "           - create the 'exp_c01', 'exp_c02', " \
+             "'exp_c03', 'exp_c04' datasources " \
+             + "of the 'CLIENT' type\n" \
+             + "               with the corresponding 'exp_c0? " \
+             + "record names\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "               where '?' is 1,2,3,4 respectively \n" \
+             + "\n" \
              + "       nxscreate clientds -v " \
              + "hasppXX:10000/expchan/vfcadc_exp/" \
-             + " -f1 -l8  -m -b -s exp_vfc\n"
+             + " -f5 -l8  -m -b -s exp_vfc\n" \
+             + "\n" \
+             + "           - create the 'exp_vfc05', 'exp_vfc06', " \
+             "'exp_vfc07', 'exp_vfc08' datasources " \
+             + "of the 'CLIENT' type\n" \
+             + "               with the corresponding " \
+             + "'hasppXX:10000/expchan/vfcadc_exp/?' record names\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "               where '?' is 5,6,7,8 respectively \n" \
+             + "\n"
 
     def create(self):
         """ parser creator
