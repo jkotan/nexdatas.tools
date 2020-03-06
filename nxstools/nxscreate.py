@@ -327,22 +327,22 @@ class OnlineDS(Runner):
         + "       nxscreate onlineds -b  \n" \
         + "\n" \
         + "           - create datasources from online.xml file \n" \
-        + "             and upload them to NXSConfigServer database \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
         + "\n" \
         + "       nxscreate onlineds -b -t \n" \
         + "\n" \
         + "           - like above but set motor tango datasources to \n" \
-        + "             be no __CLIENT__ like\n" \
+        + "               be no __CLIENT__ like\n" \
         + "\n" \
         + "       nxscreate onlineds -d /home/user/xmldir \n" \
         + "\n" \
         + "           - create datasources from online.xml file \n" \
-        + "             and save them into given directory \n" \
+        + "               and save them into given directory \n" \
         + "\n" \
         + "       nxscreate onlineds \n" \
         + "\n" \
-        + "           - run the command in test mode \n" \
-        + "             without creating datasources \n"
+        + "           - run the command in test mode" \
+        + " without creating datasources \n"
 
     def create(self):
         """ creates parser
@@ -539,7 +539,7 @@ class Compare(Runner):
         + "'/online_dir/online.xml' \n" \
         + "            if only file is given\n\n" \
         + " examples:\n" \
-        + "       nxscreate onlineds /online_dir/online.xml online.xml \n" \
+        + "       nxscreate compare /online_dir/online.xml online.xml \n" \
         + "       nxscreate compare online.xml \n"
 
     def create(self):
@@ -591,12 +591,24 @@ class OnlineCP(Runner):
         + " on the local filesystem in -d <directory> \n" \
         + " * default: <directory> is '.' \n" \
         + " * default: <inputFile> is '/online_dir/online.xml' \n" \
-        + "            <server> is taken from Tango DB\n" \
+        + "            <server> is taken from Tango DB\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate onlinecp  \n" \
+        + "\n" \
+        + "           - list possible components which " \
+        + "can be created from online.xml \n" \
+        + "\n" \
         + "       nxscreate onlinecp -c pilatus -b \n" \
-        + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n\n"
-
+        + "\n" \
+        + "           - create the 'pilatus' component and its datasources\n" \
+        + "               in the NXSConfigServer database\n"\
+        + "\n" \
+        + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n" \
+        + "\n" \
+        + "           - create the 'lambda' component and its datasources\n" \
+        + "               in the '/home/user/xmldir/' directory\n"
+    
     def create(self):
         """ creates parser
         """
@@ -704,7 +716,7 @@ class StdComp(Runner):
         + " on the local filesystem in -d <directory> \n" \
         + " * default: <directory> is '.' \n" \
         + " * [name1 value1 [name2 value2] ...] sequence" \
-        + "  defines component variable values \n" \
+        + "  defines component variable values \n\n" \
         + " examples:\n" \
         + "\n" \
         + "       nxscreate stdcomp  \n" \
