@@ -576,7 +576,7 @@ class Compare(Runner):
         + "       nxscreate compare /online_dir/online_040.xml online.xml \n" \
         + "\n" \
         + "           - compare '/online_dir/online_040.xml' to 'online.xml'" \
-        + "\n" 
+        + "\n"
 
     def create(self):
         """ creates parser
@@ -903,18 +903,69 @@ class Comp(Runner):
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry" \
         + "/instrument/collection/\"\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate comp counter \n" \
-        + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
+        + "\n" \
+        + "           - create the 'counter' component" \
+        + " in the local directory \n" \
+        + "               which sets fetching data in the 'STEP' mode from " \
+        + "a 'counter' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/counter' \n" \
+        + "\n" \
+        + "       nxscreate comp -f5 -l7 -v exp_c -b \n" \
+        + "\n" \
+        + "           - create the 'exp_c05', 'exp_c06' 'exp_c07' components" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching data in the 'STEP' mode from " \
+        + " corresponding 'exp_c0?' datasources to corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/exp_c0?'\n" \
+        + "                where '?' is 5,6,7 respectively \n" \
+        + "\n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
+        + "\n" \
+        + "           - create the 'lambda' component" \
+        + " in the '/home/user/xmldir/' directory \n" \
+        + "               which sets fetching data in the 'STEP' mode from " \
+        + "a 'lambda' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/lambda' \n" \
+        + "\n" \
         + "       nxscreate comp -n " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry/instrument/" \
         + "sis3302:NXdetector/collection:NXcollection/\" " \
-        + "-v sis3302_1_roi -f1 -l4 " \
-        + " -g STEP -t NX_FLOAT64 -k -b -m \n" \
+        + "-v sis3302_1_roi -f1 -l3 " \
+        + " -g FINAL -t NX_FLOAT64 -k -b -m \n" \
+        + "\n" \
+        + "           - create the 'sis3302_1_roi1', sis3302_1_roi2'," \
+        + " sis3302_1_roi3' components" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching data in the 'FINAL' mode from" \
+        + " corresponding 'sis3302_1_roi?' datasources to corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/\/sis3302:NXdetector/" \
+        + "collection:NXcollection/sis3302_1_roi?'\n" \
+        + "               float64 fields and creates corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "data:NXdata/sis3302_1_roi?' links\n" \
+        + "               where '?' is 1,2,3 respectively \n" \
+        + "\n" \
         + "       nxscreate comp -n " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry/instrument/" \
         + "eh1_mca01:NXdetector/data\" eh1_mca01 -g STEP -t NX_FLOAT64" \
         + " -i -b -c SPECTRUM\n" \
+        + "\n" \
+        + "           - create the 'eh1_mca01' component" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching STECTRUM data in the 'STEP' mode from" \
+        + " a 'eh1_mca01' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/\/eh1_mca01:NXdetector/data\n" \
+        + "               float64 fields and creates \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "data:NXdata/eh1_mca01' links\n" \
+        + "\n" \
         + "\n"
 
     def create(self):
