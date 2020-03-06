@@ -1010,7 +1010,7 @@ class Comp(Runner):
         + "               which set fetching data in the 'FINAL' mode from" \
         + " corresponding 'sis3302_1_roi?' datasources to corresponding\n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
-        + "instrument:NXinstrument/\/sis3302:NXdetector/" \
+        + "instrument:NXinstrument/sis3302:NXdetector/" \
         + "collection:NXcollection/sis3302_1_roi?'\n" \
         + "               float64 fields and creates corresponding\n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
@@ -1028,7 +1028,7 @@ class Comp(Runner):
         + "'STEP' mode from" \
         + " a 'eh1_mca01' datasource to \n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
-        + "instrument:NXinstrument/\/eh1_mca01:NXdetector/data\n" \
+        + "instrument:NXinstrument/eh1_mca01:NXdetector/data\n" \
         + "               float64 fields and creates \n" \
         + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
         + "data:NXdata/eh1_mca01' links\n" \
