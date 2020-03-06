@@ -241,12 +241,38 @@ class DeviceDS(Runner):
              + "            <server> is taken from Tango DB\n" \
              + "            <datasource> is 'exp_mot' \n" \
              + "            <host>, <port> are taken from <server>\n" \
+             + "\n" \
              + " examples:\n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/pilatus/haso228k \n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for all attribute of 'p09/pilatus/haso228k'" \
+             + " tango device\n" \
+             + "               in the local file directory " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/lambda2m/haso228k -u" \
              + "haslambda -b \n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for all attribute of 'p09/lambda2m/haso228k'" \
+             + " tango device\n" \
+             + "               with their hostname 'haslambda' \n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/pilatus300k/haso228k -b" \
-             + " -s pilatus300k_ RoI Energy ExposureTime\n"
+             + " -s pilatus300k_ RoI Energy ExposureTime\n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for RoI Energy ExposureTime attribute of" \
+             + " 'p09/lambda2m/haso228k'" \
+             + " tango device\n" \
+             + "               with the 'pilatus300k_' datasource prefix \n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n"
 
     def create(self):
         """ creates parser
