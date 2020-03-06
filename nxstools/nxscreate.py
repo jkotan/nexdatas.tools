@@ -706,11 +706,41 @@ class StdComp(Runner):
         + " * [name1 value1 [name2 value2] ...] sequence" \
         + "  defines component variable values \n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate stdcomp  \n" \
-        + "       nxscreate stdcomp -t source \n" \
-        + "       nxscreate stdcomp -t default -c default -m -b\n" \
-        + "       nxscreate stdcomp -t slit -c front_slit1 -b" \
-        + " xgap slt1x ygap slt1y\n\n"
+        + "\n" \
+        + "           - list possible component types\n" \
+        + "               from the 'nxstools.xmltemplates' package\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -p nxsextrasp00  \n" \
+        + "\n" \
+        + "           - list possible component types" \
+        + " from the 'nxsextrasp00' package\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t source \n" \
+        + "\n" \
+        + "           - list a description of 'source' component variables\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t default  -c default  -m  -b\n" \
+        + "\n" \
+        + "           - create 'default' component  of the 'default' type\n" \
+        + "               in the NXSConfigServer database"\
+        + " and set it as mandatory\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t slit  -c front_slit1" \
+        + "   xgap slt1x  ygap slt1y\n" \
+        + "\n" \
+        + "           - create 'front_slit1' component  of the 'slit' type\n" \
+        + "               where variables xgap='slt1x' and ygap='slt1and'" \
+        + " in the local directory \n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -p nxsextrasp08  -t analyzer " \
+        + " -c analyzer1  v anav  roll anaroll  -b\n" \
+        + "\n" \
+        + "           - create 'analyzer1' component of " \
+        + "the 'analyzer type'\n" \
+        + "               where variables v='anav' and roll='amaroll'"\
+        + " in the NXSConfigServer database\n"
 
     def create(self):
         """ creates parser
