@@ -337,7 +337,8 @@ class OnlineDS(Runner):
         + "       nxscreate onlineds -d /home/user/xmldir \n" \
         + "\n" \
         + "           - create datasources from online.xml file \n" \
-        + "               and save them into given directory \n" \
+        + "               and save them" \
+        " in the '/home/user/xmldir' directory \n" \
         + "\n" \
         + "       nxscreate onlineds \n" \
         + "\n" \
@@ -444,12 +445,40 @@ class PoolDS(Runner):
         + "            <pool> is taken from Tango DB\n\n" \
         + " `poolds` overwrites existing datasources\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate poolds -b  \n" \
+        + "\n" \
+        + "           - create all datasources defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate poolds -b -t \n" \
-        + "       nxscreate poolds -d -p p09/pool/haso228 \n" \
+        + "\n" \
+        + "           - like above but set motor tango datasources to \n" \
+        + "               be no __CLIENT__ like\n" \
+        + "\n" \
+        + "       nxscreate poolds -d . -p p09/pool/haso228 \n" \
+        + "\n" \
+        + "           - create all datasources defined in the" \
+        " 'p09/pool/haso228' Pool \n" \
+        + "               and save them in the local directory \n" \
+        + "\n" \
         + "       nxscreate poolds -b Motor CTExpChannel \n" \
+        + "\n" \
+        + "           - create datasources of " \
+        + "'Motor' and CTExpChannel classes \n" \
+        + "               defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate poolds -b mot01 mot03 \n" \
-        + "       nxscreate poolds \n"
+        + "\n" \
+        + "           - create 'mot01' and 'mot03' datasources\n" \
+        + "               defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
+        + "       nxscreate poolds \n" \
+        + "\n" \
+        + "           - run the command in test mode" \
+        + " without creating datasources \n"
 
     def create(self):
         """ creates parser
@@ -608,7 +637,7 @@ class OnlineCP(Runner):
         + "\n" \
         + "           - create the 'lambda' component and its datasources\n" \
         + "               in the '/home/user/xmldir/' directory\n"
-    
+
     def create(self):
         """ creates parser
         """
