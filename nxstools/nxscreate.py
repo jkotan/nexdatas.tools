@@ -60,18 +60,57 @@ class TangoDS(Runner):
         + "            <server> is taken from Tango DB\n" \
         + "            <datasource> is 'exp_mot' \n" \
         + "            <host>, <port> are taken from <server>\n" \
+        + "\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l2 -v p09/motor/exp. -s exp_mot \n" \
+        + "\n" \
+        + "           - create the 'exp_mot01' and 'exp_mot02' datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'p09/motor/exp.0?' " \
+        + "device names\n" \
+        + "               and 'Position' tango attribute names" \
+        + " in the local directory\n" \
+        + "               where '?' is 1, 2 respectively \n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l32 -v p02/motor/eh1a. -s exp_mot" \
-        + "-b \n" \
-        + "       nxscreate tangods -f1 -l32 -v p01/motor/oh1. " \
-        + "-s exp_mot -b\n" \
+        + " -b \n" \
+        + "\n" \
+        + "           - create the 'exp_mot01', ... ,'exp_mot32'"\
+        " datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'p09/motor/eh1a.??' " \
+        + "device names\n" \
+        + "               while their attribute name is 'Position' " \
+        + " and upload them to the NXSConfigServer database\n" \
+        + "               where '??' is 01, 02, ... ,32 respectively \n" \
+        + "\n" \
         + "       nxscreate tangods -v petra/globals/keyword " \
         + "-s source_current -u haso228 -t 10000 \\ \n "\
         + "                        -a BeamCurrent " \
         + "-b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__\n" \
+        + "\n" \
+        + "           - create the a 'source_current' datasource " \
+        + "of the 'TANGO' type belonging to the '__CLIENT__' group \n" \
+        + "               with the 'petra/globals/keyword' device name\n" \
+        + "               while their attribute name is 'BeamCurrent', \n" \
+        + "               their hostname is 'haso228', " \
+        + "their tango port is '10000'\n" \
+        + "               and upload them to the NXSConfigServer " \
+        + "'p09/nxsconfigserver/haso228' database\n" \
+        + "\n" \
         + "       nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u" \
         + " hasppXX.desy.de -b \n" \
+        + "\n" \
+        + "           - create the 'slt_exp_01', ... ,'slt_exp_08'" \
+        " datasources " \
+        + "of the 'TANGO' type\n" \
+        + "               with the corresponding 'pXX/slt/exp.0?' " \
+        + "device names\n" \
+        + "               while their attribute name is 'Position', \n" \
+        + "               their hostname is 'hasppXX.desy.de' " \
+        + " and upload them to the NXSConfigServer database\n" \
+        + "               where '??' is 1, 2, ... ,8 respectively \n" \
         + "\n"
 
     def create(self):
@@ -202,12 +241,38 @@ class DeviceDS(Runner):
              + "            <server> is taken from Tango DB\n" \
              + "            <datasource> is 'exp_mot' \n" \
              + "            <host>, <port> are taken from <server>\n" \
+             + "\n" \
              + " examples:\n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/pilatus/haso228k \n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for all attribute of 'p09/pilatus/haso228k'" \
+             + " tango device\n" \
+             + "               in the local file directory " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/lambda2m/haso228k -u" \
              + "haslambda -b \n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for all attribute of 'p09/lambda2m/haso228k'" \
+             + " tango device\n" \
+             + "               with their hostname 'haslambda' \n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate deviceds  -v p09/pilatus300k/haso228k -b" \
-             + " -s pilatus300k_ RoI Energy ExposureTime\n"
+             + " -s pilatus300k_ RoI Energy ExposureTime\n" \
+             + "\n" \
+             + "           - create datasources of the 'TANGO' type\n" \
+             + "               for RoI Energy ExposureTime attribute of" \
+             + " 'p09/lambda2m/haso228k'" \
+             + " tango device\n" \
+             + "               with the 'pilatus300k_' datasource prefix \n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n"
 
     def create(self):
         """ creates parser
@@ -323,10 +388,27 @@ class OnlineDS(Runner):
         + "            <server> is taken from Tango DB\n\n" \
         + " `onlineds` overwrites existing datasources\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate onlineds -b  \n" \
+        + "\n" \
+        + "           - create datasources from online.xml file \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate onlineds -b -t \n" \
+        + "\n" \
+        + "           - like above but set motor tango datasources to \n" \
+        + "               be no __CLIENT__ like\n" \
+        + "\n" \
         + "       nxscreate onlineds -d /home/user/xmldir \n" \
-        + "       nxscreate onlineds \n"
+        + "\n" \
+        + "           - create datasources from online.xml file \n" \
+        + "               and save them" \
+        " in the '/home/user/xmldir' directory \n" \
+        + "\n" \
+        + "       nxscreate onlineds \n" \
+        + "\n" \
+        + "           - run the command in test mode" \
+        + " without creating datasources \n"
 
     def create(self):
         """ creates parser
@@ -428,12 +510,40 @@ class PoolDS(Runner):
         + "            <pool> is taken from Tango DB\n\n" \
         + " `poolds` overwrites existing datasources\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate poolds -b  \n" \
+        + "\n" \
+        + "           - create all datasources defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate poolds -b -t \n" \
-        + "       nxscreate poolds -d -p p09/pool/haso228 \n" \
+        + "\n" \
+        + "           - like above but set motor tango datasources to \n" \
+        + "               be no __CLIENT__ like\n" \
+        + "\n" \
+        + "       nxscreate poolds -d . -p p09/pool/haso228 \n" \
+        + "\n" \
+        + "           - create all datasources defined in the" \
+        " 'p09/pool/haso228' Pool \n" \
+        + "               and save them in the local directory \n" \
+        + "\n" \
         + "       nxscreate poolds -b Motor CTExpChannel \n" \
+        + "\n" \
+        + "           - create datasources of " \
+        + "'Motor' and CTExpChannel classes \n" \
+        + "               defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
         + "       nxscreate poolds -b mot01 mot03 \n" \
-        + "       nxscreate poolds \n"
+        + "\n" \
+        + "           - create 'mot01' and 'mot03' datasources\n" \
+        + "               defined in the local Pool \n" \
+        + "               and upload them to the NXSConfigServer database \n" \
+        + "\n" \
+        + "       nxscreate poolds \n" \
+        + "\n" \
+        + "           - run the command in test mode" \
+        + " without creating datasources \n"
 
     def create(self):
         """ creates parser
@@ -523,8 +633,15 @@ class Compare(Runner):
         + "'/online_dir/online.xml' \n" \
         + "            if only file is given\n\n" \
         + " examples:\n" \
-        + "       nxscreate onlineds /online_dir/online.xml online.xml \n" \
-        + "       nxscreate compare online.xml \n"
+        + "\n" \
+        + "       nxscreate compare online.xml \n"\
+        + "\n" \
+        + "           - compare 'online.xml' to '/online_dir/online.xml\n' " \
+        + "\n" \
+        + "       nxscreate compare /online_dir/online_040.xml online.xml \n" \
+        + "\n" \
+        + "           - compare '/online_dir/online_040.xml' to 'online.xml'" \
+        + "\n"
 
     def create(self):
         """ creates parser
@@ -575,11 +692,23 @@ class OnlineCP(Runner):
         + " on the local filesystem in -d <directory> \n" \
         + " * default: <directory> is '.' \n" \
         + " * default: <inputFile> is '/online_dir/online.xml' \n" \
-        + "            <server> is taken from Tango DB\n" \
+        + "            <server> is taken from Tango DB\n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate onlinecp  \n" \
+        + "\n" \
+        + "           - list possible components which " \
+        + "can be created from online.xml \n" \
+        + "\n" \
         + "       nxscreate onlinecp -c pilatus -b \n" \
-        + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n\n"
+        + "\n" \
+        + "           - create the 'pilatus' component and its datasources\n" \
+        + "               in the NXSConfigServer database\n"\
+        + "\n" \
+        + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n" \
+        + "\n" \
+        + "           - create the 'lambda' component and its datasources\n" \
+        + "               in the '/home/user/xmldir/' directory\n"
 
     def create(self):
         """ creates parser
@@ -688,13 +817,43 @@ class StdComp(Runner):
         + " on the local filesystem in -d <directory> \n" \
         + " * default: <directory> is '.' \n" \
         + " * [name1 value1 [name2 value2] ...] sequence" \
-        + "  defines component variable values \n" \
+        + "  defines component variable values \n\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate stdcomp  \n" \
-        + "       nxscreate stdcomp -t source \n" \
-        + "       nxscreate stdcomp -t default -c default -m -b\n" \
-        + "       nxscreate stdcomp -t slit -c front_slit1 -b" \
-        + " xgap slt1x ygap slt1y\n\n"
+        + "\n" \
+        + "           - list possible component types\n" \
+        + "               from the 'nxstools.xmltemplates' package\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -p nxsextrasp00  \n" \
+        + "\n" \
+        + "           - list possible component types" \
+        + " from the 'nxsextrasp00' package\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t source \n" \
+        + "\n" \
+        + "           - list a description of 'source' component variables\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t default  -c default  -m  -b\n" \
+        + "\n" \
+        + "           - create 'default' component  of the 'default' type\n" \
+        + "               in the NXSConfigServer database"\
+        + " and set it as mandatory\n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -t slit  -c front_slit1" \
+        + "   xgap slt1x  ygap slt1y\n" \
+        + "\n" \
+        + "           - create 'front_slit1' component  of the 'slit' type\n" \
+        + "               where variables xgap='slt1x' and ygap='slt1and'" \
+        + " in the local directory \n" \
+        + "\n" \
+        + "       nxscreate stdcomp  -p nxsextrasp08  -t analyzer " \
+        + " -c analyzer1  v anav  roll anaroll  -b\n" \
+        + "\n" \
+        + "           - create 'analyzer1' component of " \
+        + "the 'analyzer type'\n" \
+        + "               where variables v='anav' and roll='amaroll'"\
+        + " in the NXSConfigServer database\n"
 
     def create(self):
         """ creates parser
@@ -808,19 +967,72 @@ class Comp(Runner):
         + "            <nexuspath> is " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry" \
         + "/instrument/collection/\"\n" \
+        + "\n" \
         + " examples:\n" \
+        + "\n" \
         + "       nxscreate comp counter \n" \
-        + "       nxscreate comp -f1 -l -v exp_c01 -b \n" \
+        + "\n" \
+        + "           - create the 'counter' component" \
+        + " in the local directory \n" \
+        + "               which sets fetching data in the 'STEP' mode from " \
+        + "a 'counter' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/counter' \n" \
+        + "\n" \
+        + "       nxscreate comp -f5 -l7 -v exp_c -b \n" \
+        + "\n" \
+        + "           - create the 'exp_c05', 'exp_c06' 'exp_c07' components" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching data in the 'STEP' mode from " \
+        + " corresponding 'exp_c0?' datasources to corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/exp_c0?'\n" \
+        + "                where '?' is 5, 6, 7 respectively \n" \
+        + "\n" \
         + "       nxscreate comp lambda -d /home/user/xmldir/ \n" \
+        + "\n" \
+        + "           - create the 'lambda' component" \
+        + " in the '/home/user/xmldir/' directory \n" \
+        + "               which sets fetching data in the 'STEP' mode from " \
+        + "a 'lambda' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/collection:NXcollection/lambda' \n" \
+        + "\n" \
         + "       nxscreate comp -n " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry/instrument/" \
         + "sis3302:NXdetector/collection:NXcollection/\" " \
-        + "-v sis3302_1_roi -f1 -l4 " \
-        + " -g STEP -t NX_FLOAT64 -k -b -m \n" \
+        + "-v sis3302_1_roi -f1 -l3 " \
+        + " -g FINAL -t NX_FLOAT64 -k -b -m \n" \
+        + "\n" \
+        + "           - create the 'sis3302_1_roi1', sis3302_1_roi2'," \
+        + " sis3302_1_roi3' components" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching data in the 'FINAL' mode from" \
+        + " corresponding 'sis3302_1_roi?' datasources to corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/sis3302:NXdetector/" \
+        + "collection:NXcollection/sis3302_1_roi?'\n" \
+        + "               float64 fields and creates corresponding\n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "data:NXdata/sis3302_1_roi?' links\n" \
+        + "               where '?' is 1, 2, 3 respectively \n" \
+        + "\n" \
         + "       nxscreate comp -n " \
         + "\"/\\$var.entryname#'scan'\\$var.serialno:NXentry/instrument/" \
         + "eh1_mca01:NXdetector/data\" eh1_mca01 -g STEP -t NX_FLOAT64" \
         + " -i -b -c SPECTRUM\n" \
+        + "\n" \
+        + "           - create the 'eh1_mca01' component" \
+        + " in the NXSConfigServer database \n" \
+        + "               which set fetching STECTRUM data in the " \
+        + "'STEP' mode from" \
+        + " a 'eh1_mca01' datasource to \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "instrument:NXinstrument/eh1_mca01:NXdetector/data\n" \
+        + "               float64 fields and creates \n" \
+        + "               '/\\$var.entryname#'scan'\\$var.serialno:NXentry/" \
+        + "data:NXdata/eh1_mca01' links\n" \
+        + "\n" \
         + "\n"
 
     def create(self):
@@ -962,13 +1174,46 @@ class ClientDS(Runner):
              + " on the local filesystem in -d <directory> \n" \
              + " * default: <directory> is '.' \n" \
              + "            <server> is taken from Tango DB\n" \
+             + "\n" \
              + " examples:\n" \
+             + "\n" \
              + "       nxscreate clientds starttime -b  \n" \
+             + "\n" \
+             + "           - create the 'starttime' datasource " \
+             + "of the 'CLIENT' type with the 'starttime' record name\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "\n" \
              + "       nxscreate clientds title -d /home/user/xmldir \n" \
+             + "\n" \
+             + "           - create the 'title' datasource " \
+             + "of the 'CLIENT' type with the 'title' record name\n" \
+             + "               in the '/home/user/xmldir' directory\n" \
+             + "\n" \
              + "       nxscreate clientds -v exp_c -f1 -l4 -b  \n" \
+             + "\n" \
+             + "           - create the 'exp_c01', 'exp_c02', " \
+             "'exp_c03', 'exp_c04' datasources " \
+             + "of the 'CLIENT' type\n" \
+             + "               with the corresponding 'exp_c0? " \
+             + "record names\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "               where '?' is 1, 2, 3, 4 respectively \n" \
+             + "\n" \
              + "       nxscreate clientds -v " \
              + "hasppXX:10000/expchan/vfcadc_exp/" \
-             + " -f1 -l8  -m -b -s exp_vfc\n"
+             + " -f5 -l8  -m -b -s exp_vfc\n" \
+             + "\n" \
+             + "           - create the 'exp_vfc05', 'exp_vfc06', " \
+             "'exp_vfc07', 'exp_vfc08' datasources " \
+             + "of the 'CLIENT' type\n" \
+             + "               with the corresponding " \
+             + "'hasppXX:10000/expchan/vfcadc_exp/?' record names\n" \
+             + "               and upload them to the NXSConfigServer " \
+             + "database \n" \
+             + "               where '?' is 5, 6, 7, 8 respectively \n" \
+             + "\n"
 
     def create(self):
         """ parser creator

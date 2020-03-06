@@ -1,3 +1,7 @@
+2020-03-07 Jan Kotanski <jankotan@gmail.com>
+	* add comments for help examplesp of nxscreate sub-command
+	* tagged as v2.70.1
+
 2020-03-03 Jan Kotanski <jankotan@gmail.com>
 	* add -m option to nxsconfig upload
 	* tagged as v2.70.0
