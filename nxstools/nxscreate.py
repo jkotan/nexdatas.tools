@@ -568,8 +568,15 @@ class Compare(Runner):
         + "'/online_dir/online.xml' \n" \
         + "            if only file is given\n\n" \
         + " examples:\n" \
-        + "       nxscreate compare /online_dir/online.xml online.xml \n" \
-        + "       nxscreate compare online.xml \n"
+        + "\n" \
+        + "       nxscreate compare online.xml \n"\
+        + "\n" \
+        + "           - compare 'online.xml' to '/online_dir/online.xml\n' " \
+        + "\n" \
+        + "       nxscreate compare /online_dir/online_040.xml online.xml \n" \
+        + "\n" \
+        + "           - compare '/online_dir/online_040.xml' to 'online.xml'" \
+        + "\n" 
 
     def create(self):
         """ creates parser
