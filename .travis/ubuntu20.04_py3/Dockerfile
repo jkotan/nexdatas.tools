@@ -4,9 +4,9 @@ MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y software-properties-common curl
 RUN curl http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
-RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian bionic main" -y
+RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian focal main" -y
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
-RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get  install -y mysql-client mysql-client python3-h5py python3-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python3-distutils python3-pninexus python3-argcomplete python3-tz python3-lxml
+RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get  install -y -qq mysql-client mysql-client python3-h5py python3-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python3-distutils python3-pninexus python3-argcomplete python3-tz python3-lxml
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y  python3-pninexus
 RUN apt-get -qq install -y hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 hdf5-plugins-common
 RUN useradd -ms /bin/bash tango
