@@ -33,9 +33,9 @@ from nxstools import nxscreate
 from nxstools.xmltemplates import standardComponentVariables
 
 try:
-    from .checks import checkxmls, checknxmls
+    from .checks import checkxmls
 except Exception:
-    from checks import checkxmls, checknxmls
+    from checks import checkxmls
 
 try:
     import nxsextrasp00
