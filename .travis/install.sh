@@ -69,7 +69,9 @@ if [ $2 = "2" ]; then
     docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-nxsconfigserver nxsconfigserver'
 else
     if [ $1 = "ubuntu20.04" ]; then
-	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver'
+	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver git libhdf5-dev'
+	docker exec -it --user root ndts /bin/sh -c 'git clone https://github.com/h5py/h5py h5py'
+	docker exec -it --user root ndts /bin/sh -c 'cd h5py; python3 setup.py install'
     else
 	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver3'
     fi
