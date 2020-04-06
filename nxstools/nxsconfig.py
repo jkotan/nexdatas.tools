@@ -1588,7 +1588,8 @@ def main():
                     % mydss[0])
                 sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
-                    "nxsconfigserver.Errors.NonregisteredDBRecordError: The datasource "):
+                    "nxsconfigserver.Errors.NonregisteredDBRecordError:"
+                    " The datasource "):
                 mydss = str((e.args[0]).desc)[66:].split()
                 if not mydss or not mydss[0]:
                     mydss = ["UKNOWN"]
@@ -1606,7 +1607,8 @@ def main():
                     % mydss[0])
                 sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
-                    "nxsconfigserver.Errors.NonregisteredDBRecordError: Component "):
+                    "nxsconfigserver.Errors.NonregisteredDBRecordError:"
+                    " Component "):
                 mydss = str((e.args[0]).desc)[61:].split()
                 if not mydss or not mydss[0]:
                     mydss = ["UKNOWN"]
