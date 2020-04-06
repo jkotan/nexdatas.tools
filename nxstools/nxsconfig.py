@@ -1577,9 +1577,19 @@ def main():
             sys.exit(255)
 
         if PYTANGO and isinstance(e, PyTango.DevFailed):
+            # print(str((e.args[0]).desc))
             if str((e.args[0]).desc).startswith(
                     "NonregisteredDBRecordError: The datasource "):
                 mydss = str((e.args[0]).desc)[43:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Datasource %s not stored in Configuration Server\n"
+                    % mydss[0])
+                sys.stderr.flush()
+            elif str((e.args[0]).desc).startswith(
+                    "nxsconfigserver.Errors.NonregisteredDBRecordError: The datasource "):
+                mydss = str((e.args[0]).desc)[66:].split()
                 if not mydss or not mydss[0]:
                     mydss = ["UKNOWN"]
                 sys.stderr.write(
@@ -1596,13 +1606,31 @@ def main():
                     % mydss[0])
                 sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
+                    "nxsconfigserver.Errors.NonregisteredDBRecordError: Component "):
+                mydss = str((e.args[0]).desc)[61:].split()
+                if not mydss or not mydss[0]:
+                    mydss = ["UKNOWN"]
+                sys.stderr.write(
+                    "Error: Component %s not stored in Configuration Server\n"
+                    % mydss[0])
+                sys.stderr.flush()
+            elif str((e.args[0]).desc).startswith(
                     'IncompatibleNodeError: '):
                 sys.stderr.write("Error:%s\n" % (e.args[0]).desc[22:])
+                sys.stderr.flush()
+            elif str((e.args[0]).desc).startswith(
+                    'nxsconfigserver.Errors.IncompatibleNodeError: '):
+                sys.stderr.write("Error:%s\n" % (e.args[0]).desc[45:])
                 sys.stderr.flush()
             elif str((e.args[0]).desc).startswith(
                     'ExpatError: '):
                 sys.stderr.write("Error from XML parser: %s\n"
                                  % (e.args[0]).desc[12:])
+                sys.stderr.flush()
+            elif str((e.args[0]).desc).startswith(
+                    'nxsconfigserver.Errors.ExpatError: '):
+                sys.stderr.write("Error from XML parser: %s\n"
+                                 % (e.args[0]).desc[35:])
                 sys.stderr.flush()
             else:
                 sys.stderr.write("Error: %s\n" % str(e))

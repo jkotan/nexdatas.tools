@@ -4273,9 +4273,10 @@ For more help:
                 # print(vl)
                 # print(er)
                 self.assertEqual(vl.strip(), "")
-                self.assertTrue(" not " in er)
-                self.assertTrue("Error" in er)
-                self.assertTrue(("atasource %s" % dss[nm]) in er)
+                self.assertEqual(
+                    er,
+                    "Error: Datasource %s not stored in "
+                    "Configuration Server\n" % dss[nm])
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
@@ -4361,13 +4362,10 @@ For more help:
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), "")
-                self.assertTrue(" not " in er)
-                self.assertTrue("Error" in er)
-                self.assertTrue(("omponent %s" % dss[nm]) in er)
-                # self.assertEqual(
-                #     er,
-                #     "Error: Component %s not stored "
-                #     "in Configuration Server\n" % dss[nm])
+                self.assertEqual(
+                    er,
+                    "Error: Component %s not stored "
+                    "in Configuration Server\n" % dss[nm])
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
