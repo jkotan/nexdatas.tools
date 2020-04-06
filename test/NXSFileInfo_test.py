@@ -172,6 +172,8 @@ For more help:
                         replace("[ ", "[").replace("  ", " "),
                         arg.replace(" ]", "]").
                         replace("[ ", "[").replace("  ", " "))
+                elif str(row[i][0][0]).startswith("\x00"):
+                    self.assertEqual(str(row[i][0][0])[1:], arg)
                 else:
                     self.assertEqual(str(row[i][0][0]), arg)
 
