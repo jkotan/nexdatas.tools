@@ -22,6 +22,7 @@
 import os
 import sys
 import subprocess
+import shutil
 
 import PyTango
 import time
@@ -82,6 +83,11 @@ class TestServerSetUp(object):
     # \brief Common set up of Tango Server
     def setUp(self):
         print("\nsetting up...")
+        path = os.path.dirname(TestPool.__file__)
+        if sys.version_info > (3,):
+            shutil.copy2("%s/TestServer3" % path, "%s/TestServer" % path)
+        else:
+            shutil.copy2("%s/TestServer2" % path, "%s/TestServer" % path)
         self.add()
         self.start()
 
@@ -145,6 +151,8 @@ class TestServerSetUp(object):
         print("tearing down ...")
         self.delete()
         self.stop()
+        path = os.path.dirname(TestPool.__file__)
+        os.remove("%s/TestServer" % path)
 
     def delete(self):
         db = PyTango.Database()
