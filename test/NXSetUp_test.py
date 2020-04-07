@@ -30,7 +30,6 @@ import PyTango
 from nxstools import nxsetup
 import socket
 import subprocess
-import string
 
 try:
     from cStringIO import StringIO
