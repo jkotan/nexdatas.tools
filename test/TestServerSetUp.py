@@ -151,8 +151,9 @@ class TestServerSetUp(object):
         print("tearing down ...")
         self.delete()
         self.stop()
-        path = os.path.dirname(TestPool.__file__)
-        os.remove("%s/TestServer" % path)
+        path = "%s/TestServer" % os.path.dirname(TestPool.__file__)
+        if os.path.exists(path):
+            os.remove(path)
 
     def delete(self):
         db = PyTango.Database()

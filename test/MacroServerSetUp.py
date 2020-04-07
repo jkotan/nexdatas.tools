@@ -142,8 +142,9 @@ class MacroServerSetUp(object):
         print("tearing down ...")
         self.delete()
         self.stop()
-        path = os.path.dirname(TestPool.__file__)
-        os.remove("%s/MacroServer" % path)
+        path = "%s/MacroServer" % os.path.dirname(TestPool.__file__)
+        if os.path.exists(path):
+            os.remove(path)
 
     def delete(self):
         db = PyTango.Database()
