@@ -32,6 +32,10 @@ import PyTango
 from nxstools import nxscreate
 from nxstools.xmltemplates import standardComponentVariables
 
+try:
+    from .checks import checkxmls
+except Exception:
+    from checks import checkxmls
 
 try:
     import nxsextrasp00
@@ -241,10 +245,14 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
 
                     for i, ds in enumerate(arg[1][1]):
                         xml = self.getds(ds)
-                        self.assertEqual(arg[2][1][i], xml)
+                        checkxmls(
+                            self,
+                            arg[2][1][i], xml)
                     for i, cp in enumerate(arg[1][0]):
                         xml = self.getcp(cp)
-                        self.assertEqual(arg[2][0][i], xml)
+                        checkxmls(
+                            self,
+                            arg[2][0][i], xml)
                         self.checkmandatory(cp, mandatory)
 
                     for ds in arg[1][1]:

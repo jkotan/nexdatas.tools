@@ -22,6 +22,7 @@
 import os
 import sys
 import subprocess
+import shutil
 
 import PyTango
 import time
@@ -70,6 +71,11 @@ class MacroServerSetUp(object):
     # \brief Common set up of Tango Server
     def setUp(self):
         print("\nsetting up...")
+        path = os.path.dirname(TestPool.__file__)
+        if sys.version_info > (3,):
+            shutil.copy2("%s/MacroServer3" % path, "%s/MacroServer" % path)
+        else:
+            shutil.copy2("%s/MacroServer2" % path, "%s/MacroServer" % path)
         self.add()
         self.start()
 
@@ -136,6 +142,9 @@ class MacroServerSetUp(object):
         print("tearing down ...")
         self.delete()
         self.stop()
+        path = "%s/MacroServer" % os.path.dirname(TestPool.__file__)
+        if os.path.exists(path):
+            os.remove(path)
 
     def delete(self):
         db = PyTango.Database()

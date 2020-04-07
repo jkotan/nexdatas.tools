@@ -386,7 +386,10 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         vl, er, et = self.runtestexcept(['nxsetup'], SystemExit)
-        self.assertTrue(self.helpinfo in vl)
+        self.assertEqual(
+            [ch for ch in self.helpinfo if ch.isalpha()],
+            [ch for ch in vl if ch.isalpha()]
+        )
         self.assertEqual(self.helperror, er)
 
     # comp_available test
@@ -398,7 +401,10 @@ For more help:
         helps = ['-h', '--help']
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsetup', hl], SystemExit)
-            self.assertTrue(self.helpinfo in vl)
+            self.assertEqual(
+                [ch for ch in self.helpinfo if ch.isalpha()],
+                [ch for ch in vl if ch.isalpha()]
+            )
             self.assertEqual('', er)
 
     # comp_available test
