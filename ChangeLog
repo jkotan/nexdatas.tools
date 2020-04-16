@@ -1,5 +1,9 @@
+2020-04-16 Jan Kotanski <jankotan@gmail.com>
+	* add tests nxsconfig servers
+	* tagged as v2.70.3
+
 2020-04-07 Jan Kotanski <jankotan@gmail.com>
-	* impove catching execptions for py3 
+	* impove catching execptions for py3
 	* tagged as v2.70.2
 
 2020-03-07 Jan Kotanski <jankotan@gmail.com>
