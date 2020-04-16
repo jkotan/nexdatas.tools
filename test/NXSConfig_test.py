@@ -394,7 +394,6 @@ For more help:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
             else:
                 avc3 = vl.strip().split('\n')
-            print(avc3)
             server = self._sv.new_device_info_writer.name
             for cp in avc3:
                 if cp:
@@ -403,6 +402,65 @@ For more help:
             self.assertEqual('', er)
 
         el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_servers_2(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        server2 = "aatestp09/testmcs2/testr228"
+        sv2 = ServerSetUp.ServerSetUp(instance="AMCSTEST2",
+                                      dvname=server2)
+        sv2.setUp()
+        el = self.openConf()
+        commands = [
+            ('nxsconfig servers -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig servers --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            if "-n" in cmd or "--no-newlines" in cmd:
+                avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
+            else:
+                avc3 = vl.strip().split('\n')
+            server = self._sv.new_device_info_writer.name
+            for cp in avc3:
+                if cp:
+                    self.assertTrue(server in avc3)
+                    self.assertTrue(server2 in avc3)
+
+            self.assertEqual('', er)
+
+        el.close()
+        sv2.tearDown()
 
     # comp_available test
     # \brief It tests XMLConfigurator
