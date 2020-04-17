@@ -768,6 +768,112 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_variables(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><group name=\"$var.entryname#'scan'$var.serialno\" " \
+            " type=\"NXentry\"/>" \
+              "</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><group type='NXentry2'>$var.myfield" \
+               "</group>" \
+               "</definition>"
+        xml3 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><group type='NXentry3'/>" \
+               "</definition>"
+        var = ["entryname", "serialno"]
+        var2 = ["myfield"]
+        var3 = []
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        name3 = name + '_3'
+        while name3 in avc:
+            name3 = name3 + '_3'
+            #        print avc
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        self.setXML(el, xml3)
+        self.assertEqual(el.storeComponent(name3), None)
+        self.__cmps.append(name3)
+        names = [name, name2, name3]
+        vrs = [var, var2, var3]
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        commands = [
+            ('nxsconfig variables -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig variables --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+        for cmd in commands:
+            for i, nm in enumerate(names):
+                cd = list(cmd)
+                cd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                if "-n" in cmd or "--no-newlines" in cmd:
+                    avc3 = [ec.strip() for ec in vl.split(' ')
+                            if ec.strip()]
+                else:
+                    avc3 = [ec for ec in vl.strip().split('\n') if ec]
+
+                self.assertEqual(sorted(avc3), sorted(vrs[i]))
+
+                self.assertEqual('', er)
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop(-1)
+        self.assertEqual(el.deleteComponent(name3), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_components_two_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
