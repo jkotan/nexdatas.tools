@@ -768,6 +768,120 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_data_read(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+
+        vrs = [
+            '{"myentry":"entry1"}',
+            '{"myentry":"entry2", "sample_name":"water"}',
+            '{"formula":"H20", "sample_name":"water"}',
+        ]
+
+        commands = [
+            ('nxsconfig data -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+        for cmd in commands:
+            for i, vr in enumerate(vrs):
+                el.variables = vr
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                avc3 = vl.strip()
+                self.assertEqual(vr, avc3)
+
+                self.assertEqual('', er)
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_data_write(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+
+        vrs = [
+            '{"myentry":"entry1"}',
+            '{"myentry":"entry2", "sample_name":"water"}',
+            '{"formula":"H20", "sample_name":"water"}',
+        ]
+
+        commands = [
+            ('nxsconfig data -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+        for cmd in commands:
+            for i, vr in enumerate(vrs):
+                cd = list(cmd)
+                cd.append(vr)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                rvr = el.variables.strip()
+                self.assertEqual(vr, rvr)
+
+                self.assertEqual('', er)
+                self.assertEqual(vr, vl.strip())
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_variables(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
