@@ -160,7 +160,7 @@ class ParserTools(object):
                 return res
         elif dstype and dstype in withQuery:
             query = dsource.find(".//query")
-            if query and query.strip():
+            if len(query) and query.strip():
                 return query.strip() or ""
         return res
 
