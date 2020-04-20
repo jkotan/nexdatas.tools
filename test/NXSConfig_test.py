@@ -3154,7 +3154,6 @@ For more help:
         self.assertEqual(el.storeComponent(name3), None)
         self.__cmps.append(name3)
 
-
         commands = [
             'nxsconfig sources %s -s %s',
             'nxsconfig sources %s --server %s',
