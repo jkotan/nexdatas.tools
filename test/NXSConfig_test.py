@@ -2955,8 +2955,6 @@ For more help:
         commands = [
             'nxsconfig record %s -s %s',
             'nxsconfig record %s --server %s',
-            'nxsconfig record %s -s %s',
-            'nxsconfig record %s --server %s',
             'nxsconfig record %s --no-newlines -s %s',
             'nxsconfig record %s -n --server %s',
             'nxsconfig record %s -n -s %s',
@@ -3129,8 +3127,6 @@ For more help:
         commands = [
             'nxsconfig record %s -s %s',
             'nxsconfig record %s --server %s',
-            'nxsconfig record %s -s %s',
-            'nxsconfig record %s --server %s',
             'nxsconfig record %s --no-newlines -s %s',
             'nxsconfig record %s -n --server %s',
             'nxsconfig record %s -n -s %s',
@@ -3170,6 +3166,112 @@ For more help:
         self.__cmps.pop(-1)
         self.assertEqual(el.deleteComponent(name4), None)
         self.__cmps.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_record_dss(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        dsavc = el.availableDatasources()
+
+        dname = "mcs_test_datasources"
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>"
+        ]
+
+        dsname = [dname] * 5
+        while dsname[0] in dsavc:
+            dsname[0] = dsname[0] + '_1'
+        dsname[1] = dsname[0] + '_2'
+        dsname[2] = dsname[0] + '_3'
+        dsname[3] = dsname[0] + '_4'
+        dsname[4] = dsname[0] + '_5'
+        while dsname[1] in dsavc:
+            dsname[1] = dsname[1] + '_2'
+        while dsname[2] in dsavc:
+            dsname[2] = dsname[2] + '_2'
+        while dsname[3] in dsavc:
+            dsname[3] = dsname[3] + '_3'
+        while dsname[4] in dsavc:
+            dsname[4] = dsname[4] + '_4'
+        rec = {
+            dsname[0]: ["motor_1"],
+            dsname[1]: ["motor_2"],
+            dsname[2]: [
+                "haso.desy.de:10000/p09/motor/exp.01/Position"],
+            dsname[3]: [],
+            dsname[4]: [],
+        }
+
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            'nxsconfig record %s -d -s %s',
+            'nxsconfig record %s -d --server %s',
+            'nxsconfig record %s -d --no-newlines -s %s',
+            'nxsconfig record %s -d -n --server %s',
+            'nxsconfig record %s -d -n -s %s',
+            'nxsconfig record %s -d --no-newlines --server %s',
+            'nxsconfig record %s --datasources -s %s',
+            'nxsconfig record %s --datasources --server %s',
+            'nxsconfig record %s --datasources --no-newlines -s %s',
+            'nxsconfig record %s --datasources -n --server %s',
+            'nxsconfig record %s --datasources -n -s %s',
+            'nxsconfig record %s --datasources --no-newlines --server %s',
+        ]
+        for scmd in commands:
+            for nm in dsname:
+                cmd = (scmd % (
+                    nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                if "-n" in cmd or "--no-newlines" in cmd:
+                    avc3 = [ec.strip() for ec in vl.split(' ')
+                            if ec.strip()]
+                else:
+                    avc3 = [ec for ec in vl.split('\n') if ec]
+                self.assertEqual(sorted(avc3), sorted(rec[nm]))
+                self.assertEqual(er, "")
 
         el.close()
 
