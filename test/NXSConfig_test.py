@@ -3086,6 +3086,116 @@ For more help:
 
     # comp_available test
     # \brief It tests XMLConfigurator
+    def test_sources_nods(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        dsavc = el.availableDatasources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dname = "mcs_test_datasources"
+        xml = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><field name='data0'>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><field name='data'>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        xml3 = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition>" \
+            "<field name='data'>" \
+            "$datasources.%s" \
+            "</field>" \
+            "<field name='data2'>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+            #        print avc
+
+        dsname = [dname] * 4
+        while dsname[0] in dsavc:
+            dsname[0] = dsname[0] + '_1'
+        dsname[1] = dsname[0] + '_2'
+        dsname[2] = dsname[0] + '_3'
+        dsname[3] = dsname[0] + '_4'
+        while dsname[1] in dsavc:
+            dsname[1] = dsname[1] + '_2'
+        while dsname[2] in dsavc:
+            dsname[2] = dsname[2] + '_2'
+        while dsname[3] in dsavc:
+            dsname[3] = dsname[3] + '_3'
+        dss = {
+            name: [dsname[0]],
+            name2: [dsname[1]],
+            name3: [dsname[2], dsname[3]],
+        }
+
+        self.setXML(el, xml % dss[name])
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2 % dss[name2])
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        self.setXML(el, xml3 % tuple(dss[name3]))
+        self.assertEqual(el.storeComponent(name3), None)
+        self.__cmps.append(name3)
+
+
+        commands = [
+            'nxsconfig sources %s -s %s',
+            'nxsconfig sources %s --server %s',
+            'nxsconfig sources %s --no-newlines -s %s',
+            'nxsconfig sources %s -n --server %s',
+            'nxsconfig sources %s -n -s %s',
+            'nxsconfig sources %s --no-newlines --server %s',
+        ]
+        for scmd in commands:
+            for nm in dss.keys():
+                cmd = (scmd % (
+                    nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                with self.assertRaises(SystemExit):
+                    nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                self.assertTrue(er.startswith("Error: Datasource "))
+                self.assertEqual(vl, "")
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop(-1)
+        self.assertEqual(el.deleteComponent(name3), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
     def test_sources_mand(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
