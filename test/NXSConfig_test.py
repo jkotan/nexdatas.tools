@@ -2903,8 +2903,6 @@ For more help:
         self.setXML(el, xml3)
         self.assertEqual(el.storeComponent(name3), None)
         self.__cmps.append(name3)
-        avc2 = el.availableComponents()
-        # print avc2
 
         commands = [
             'nxsconfig sources %s -s %s',
@@ -2941,7 +2939,6 @@ For more help:
                     avc3 = [ec for ec in vl.split('\n') if ec]
                 self.assertEqual(sorted(avc3), sorted(dss[nm]))
                 self.assertEqual(er, "")
-
 
         self.assertEqual(el.deleteComponent(name), None)
         self.__cmps.pop(-2)
