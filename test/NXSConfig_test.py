@@ -2889,8 +2889,8 @@ For more help:
                "name='p09/motor/exp.01' port='10000' " \
                "encoding='LIMA_VIDEO_IMAGE'/>" \
                "<record name='Position'/>" \
-               "<strategy mode='FINAL'/>" \
                "</datasource>" \
+               "<strategy mode='FINAL'/>" \
                "</field>" \
                "</definition>"
         xml4 = "<?xml version='1.0' encoding='utf8'?>" \
@@ -2909,6 +2909,7 @@ For more help:
                "<query format='IMAGE'>SELECT * from weather limit 3" \
                "</query>" \
                "</datasource>" \
+               "<strategy mode='FINAL'/>" \
                "</field>" \
                "</definition>"
         while name in avc:
@@ -2921,6 +2922,8 @@ For more help:
             name2 = name2 + '_2'
         while name3 in avc:
             name3 = name3 + '_3'
+        while name4 in avc:
+            name4 = name4 + '_4'
         while name5 in avc:
             name5 = name5 + '_5'
             #        print avc
@@ -2983,6 +2986,180 @@ For more help:
                 else:
                     avc3 = [ec for ec in vl.split('\n') if ec]
                 self.assertEqual(sorted(avc3), sorted(dss[nm]))
+                self.assertEqual(er, "")
+
+        self.assertEqual(el.deleteComponent(name), None)
+        self.__cmps.pop(-3)
+        self.assertEqual(el.deleteComponent(name2), None)
+        self.__cmps.pop(-2)
+        self.assertEqual(el.deleteComponent(name3), None)
+        self.__cmps.pop(-1)
+        self.assertEqual(el.deleteComponent(name4), None)
+        self.__cmps.pop()
+
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_record_sep(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        avc = el.availableComponents()
+        dsavc = el.availableDatasources()
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        dname = "mcs_test_datasources"
+        xml = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><field name='data'>" \
+            "<strategy mode='INIT'/>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition>" \
+            "<field name='data'>" \
+            "<strategy mode='STEP'/>" \
+            "$datasources.%s" \
+            "</field>" \
+            "<field name='data2'>" \
+            "<strategy mode='FINAL'/>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        xml3 = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><field name='data'>" \
+            "<strategy mode='INIT'/>" \
+            "$datasources.%s" \
+            "</field>" \
+            "</definition>"
+        xml4 = "<?xml version='1.0' encoding='utf8'?>" \
+            "<definition><field name='data'>" \
+            "$datasources.%s" \
+            "<strategy mode='FINAL'/>" \
+            "</field>" \
+            "</definition>"
+
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>"
+        ]
+
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        name3 = name + '_3'
+        name4 = name + '_4'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        while name3 in avc:
+            name3 = name3 + '_3'
+        while name4 in avc:
+            name4 = name4 + '_4'
+            #        print avc
+        dsname = [dname] * 5
+        while dsname[0] in dsavc:
+            dsname[0] = dsname[0] + '_1'
+        dsname[1] = dsname[0] + '_2'
+        dsname[2] = dsname[0] + '_3'
+        dsname[3] = dsname[0] + '_4'
+        dsname[4] = dsname[0] + '_5'
+        while dsname[1] in dsavc:
+            dsname[1] = dsname[1] + '_2'
+        while dsname[2] in dsavc:
+            dsname[2] = dsname[2] + '_2'
+        while dsname[3] in dsavc:
+            dsname[3] = dsname[3] + '_3'
+        while dsname[4] in dsavc:
+            dsname[4] = dsname[4] + '_4'
+        dss = {
+            name: [dsname[0]],
+            name2: [dsname[1], dsname[2]],
+            name3: [dsname[3]],
+            name4: [dsname[4]],
+        }
+        rec = {
+            name: ["motor_1"],
+            name2: ["motor_2",
+                    "haso.desy.de:10000/p09/motor/exp.01/Position"],
+            name3: [],
+            name4: [],
+        }
+
+        self.setXML(el, xml % dss[name])
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2 % tuple(dss[name2]))
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        self.setXML(el, xml3 % dss[name3])
+        self.assertEqual(el.storeComponent(name3), None)
+        self.__cmps.append(name3)
+        self.setXML(el, xml4 % dss[name4])
+        self.assertEqual(el.storeComponent(name4), None)
+        self.__cmps.append(name4)
+
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            'nxsconfig record %s -s %s',
+            'nxsconfig record %s --server %s',
+            'nxsconfig record %s -s %s',
+            'nxsconfig record %s --server %s',
+            'nxsconfig record %s --no-newlines -s %s',
+            'nxsconfig record %s -n --server %s',
+            'nxsconfig record %s -n -s %s',
+            'nxsconfig record %s --no-newlines --server %s',
+        ]
+        for scmd in commands:
+            for nm in dss.keys():
+                cmd = (scmd % (
+                    nm, self._sv.new_device_info_writer.name)).split()
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue().strip()
+                er = mystderr.getvalue()
+
+                if "-n" in cmd or "--no-newlines" in cmd:
+                    avc3 = [ec.strip() for ec in vl.split(' ')
+                            if ec.strip()]
+                else:
+                    avc3 = [ec for ec in vl.split('\n') if ec]
+                self.assertEqual(sorted(avc3), sorted(rec[nm]))
                 self.assertEqual(er, "")
 
         self.assertEqual(el.deleteComponent(name), None)
