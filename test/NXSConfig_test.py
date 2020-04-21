@@ -30,6 +30,7 @@ import threading
 import PyTango
 import json
 from nxstools import nxsconfig
+from checks import checkxmls
 import shutil
 
 try:
@@ -9494,6 +9495,287 @@ For more help:
         el.setMandatoryComponents(man)
         el.close()
 
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_merge_default(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+
+        commands = [
+            ('nxsconfig merge -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+
+            self.assertEqual('', er)
+            self.assertEqual('', avc3)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_merge_2(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        result = "<?xml version='1.0' encoding='utf8'?><definition>" \
+            "<group type='NXentry'/>" \
+            "<group type='NXentry2'/>" \
+            "</definition>"
+
+        self.assertTrue(isinstance(avc, list))
+        name = "mcs_test_component"
+        xml = "<?xml version='1.0' encoding='utf8'?>" \
+              "<definition><group type='NXentry'/>" \
+              "</definition>"
+        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
+               "<definition><group type='NXentry2'/>" \
+               "</definition>"
+        while name in avc:
+            name = name + '_1'
+        name2 = name + '_2'
+        while name2 in avc:
+            name2 = name2 + '_2'
+        self.setXML(el, xml)
+        self.assertEqual(el.storeComponent(name), None)
+        self.__cmps.append(name)
+        self.setXML(el, xml2)
+        self.assertEqual(el.storeComponent(name2), None)
+        self.__cmps.append(name2)
+        avc2 = el.availableComponents()
+        # print avc2
+        self.assertTrue(isinstance(avc2, list))
+        for cp in avc:
+            self.assertTrue(cp in avc2)
+
+        self.assertTrue(name in avc2)
+        cpx = el.components([name])
+        self.assertEqual(cpx[0], xml)
+
+        commands = [
+            ('nxsconfig merge -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            cmd = list(cd)
+            cmd.extend([name, name2])
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+
+            self.assertEqual('', er)
+            checkxmls(self, avc3, result)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_merge_group_field_3(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        self.__man += man
+
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = ["<definition><group type='NXentry'><field type='field'/>"
+               "</group></definition>"] * 3
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig merge -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            cmd = list(cd)
+            cmd.extend(name)
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+
+            self.assertEqual('', er)
+            checkxmls(self, xml[0], avc3)
+        el.close()
+
+    # comp_available test
+    # \brief It tests XMLConfigurator
+    def test_merge_group_group_field(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        self.__man += man
+
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<definition><group type='NXentry'><field name='field1'/>"
+            "</group></definition>",
+            "<definition><group type='NXentry2'/><field name='field1'/>"
+            "</definition>"]
+        result = "<definition><group type='NXentry'><field name='field1'/>" \
+            "</group><group type='NXentry2'/><field name='field1'/>" \
+            "</definition>"
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig merge -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge -n --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig merge --no-newlines  --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            cmd = list(cd)
+            cmd.extend(name)
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+
+            self.assertEqual('', er)
+            checkxmls(self, avc3, result)
+        el.close()
+
     # creatConf test
     # \brief It tests XMLConfigurator
     def ttest_merge_default_2(self):
@@ -10028,53 +10310,6 @@ For more help:
             self.__cmps.pop(0)
 
         self.assertEqual(long(el.version.split('.')[-1]), revision + 4)
-        el.setMandatoryComponents(man)
-        el.close()
-
-    # creatConf test
-    # \brief It tests XMLConfigurator
-    def ttest_merge_group_field_3(self):
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        el = self.openConf()
-        man = el.mandatoryComponents()
-        el.unsetMandatoryComponents(man)
-        self.__man += man
-
-        revision = long(el.version.split('.')[-1])
-
-        avc = el.availableComponents()
-
-        oname = "mcs_test_component"
-        self.assertTrue(isinstance(avc, list))
-        xml = ["<definition><group type='NXentry'><field type='field'/>"
-               "</group></definition>"] * 3
-        np = len(xml)
-        name = []
-        for i in range(np):
-
-            name.append(oname + '_%s' % i)
-            while name[i] in avc:
-                name[i] = name[i] + '_%s' % i
-#        print avc
-
-        for i in range(np):
-            self.setXML(el, xml[i])
-            self.assertEqual(el.storeComponent(name[i]), None)
-            self.__cmps.append(name[i])
-
-        gxml = el.merge(name)
-        self.assertEqual(
-            gxml.replace("?>\n<", "?><"),
-            '<?xml version="1.0" ?><definition><group type="NXentry">'
-            '<field type="field"/></group></definition>')
-
-        for i in range(np):
-            self.assertEqual(el.deleteComponent(name[i]), None)
-            self.__cmps.pop(0)
-
-        self.assertEqual(long(el.version.split('.')[-1]), revision + 6)
         el.setMandatoryComponents(man)
         el.close()
 
