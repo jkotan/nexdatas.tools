@@ -168,7 +168,7 @@ For more help:
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
 
-    def parseRst(self, text):
+    def parseRST(self, text):
         parser = docutils.parsers.rst.Parser()
         components = (docutils.parsers.rst.Parser,)
         settings = docutils.frontend.OptionParser(
@@ -177,6 +177,43 @@ For more help:
             '<rst-doc>', settings=settings)
         parser.parse(text, document)
         return document
+
+    def checkRSTTable(self, section, title, header, result):
+        self.assertEqual(section.tagname, 'section')
+        self.assertEqual(len(section), 2)
+        self.assertEqual(len(section[0]), 1)
+        self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+        self.assertEqual(len(section[1]), 1)
+        table = section[1]
+        self.assertEqual(table.tagname, 'table')
+        self.assertEqual(len(table), 1)
+        self.assertEqual(table[0].tagname, 'tgroup')
+        self.assertEqual(len(table[0]), len(result[0]) + 2)
+        for i in range(len(result[0])):
+            self.assertEqual(table[0][i].tagname, 'colspec')
+        self.assertEqual(table[0][len(result[0])].tagname, 'thead')
+        self.assertEqual(
+            str(table[0][len(result[0])]),
+            header
+        )
+        tbody = table[0][7]
+        self.assertEqual(tbody.tagname, 'tbody')
+        self.assertEqual(len(tbody), len(result))
+        self.assertEqual(len(tbody[0]), len(result[0]))
+        for i in range(len(result)):
+            self.assertEqual(len(tbody[i]), len(result[i]))
+            self.assertEqual(tbody[i].tagname, 'row')
+            for j in range(len(result[i])):
+                if len(tbody[i][j]):
+                    self.assertEqual(tbody[i][j].tagname, 'entry')
+                    self.assertEqual(
+                        tbody[i][j][0].tagname, 'paragraph')
+                    self.assertEqual(
+                        tbody[i][j][0][0].tagname, '#text')
+                    self.assertEqual(
+                        str(tbody[i][j][0][0]), result[i][j])
+                else:
+                    self.assertTrue(result[i][j] is None)
 
     # opens config server
     # \param args connection arguments
@@ -7342,7 +7379,7 @@ For more help:
             self.assertEqual('', er)
         el.close()
 
-    def test_info_datasources(self):
+    def test_info_components(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
@@ -7356,7 +7393,7 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         xml = [
             "<?xml version='1.0' encoding='utf8'?>"
-            "<definition><field name='data'>"
+            "<definition><field name='data' type='NX_FLOAT'>"
             "<datasource name='sl1right' type='CLIENT'>"
             "<record name='motor_1'/>"
             "</datasource>"
@@ -7387,19 +7424,48 @@ For more help:
             "<result>ds.result = 25.6"
             "</result>"
             "</datasource>"
+            "<dimensions rank='1'>"
+            "<dim index='0'  value='20'/>"
+            "</dimensions>"
             "<strategy mode='INIT'/>"
             "</field>"
             "</definition>",
             "<?xml version='1.0' encoding='utf8'?>"
-            "<definition><field name='data'>"
+            "<definition><field name='data' type='NX_CHAR'>"
             "<datasource name='sl1right' type='DB'>"
             "<database dbname='mydb' dbtype='PGSQL'/>"
             "<query format='IMAGE'>SELECT * from weather limit 3"
             "</query>"
             "</datasource>"
+            "<dimensions rank='2' />"
             "<strategy mode='FINAL'/>"
             "</field>"
             "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["sl1right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+            [
+                ["sl2bottom", "CLIENT", None, None, "STEP", "motor_2"],
+                ["sl2top", "TANGO", None, None, "FINAL",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"],
+            ],
+            [
+                ["sl3right", "PYEVAL", None, "[20]", "INIT", None],
+            ],
+            [
+                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+            ],
         ]
         np = len(xml)
         name = []
@@ -7422,36 +7488,30 @@ For more help:
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
-        for i, cd in enumerate(commands):
-            cmd = list(cd)
-            cmd.append(name[i])
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
 
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
-            self.assertEqual('', er)
-            avc3 = vl.strip()
-            doc = self.parseRst(avc3)
-            self.assertEqual(len(doc), 1)
-            section = doc[0]
-            title = "Component: '%s'" % name[i]
-            self.assertEqual(section.tagname, 'section')
-            self.assertEqual(len(section), 2)
-            self.assertEqual(len(section[0]), 1)
-            self.assertEqual(str(section[0]), '<title>%s</title>' % title)
-            self.assertEqual(len(section[1]), 1)
-            table = section[1]
-            print(table)
-            self.assertEqual(table.tagname, 'table')
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTTable(section, title, header, result[ni])
         el.close()
 
 
