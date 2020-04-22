@@ -32,6 +32,10 @@ from nxstools import nxsconfig
 from checks import checkxmls
 import shutil
 
+import docutils.parsers.rst
+import docutils.utils
+# import dateutil.parser
+
 try:
     import ServerSetUp
 except ImportError:
@@ -164,6 +168,16 @@ For more help:
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
 
+    def parseRst(self, text):
+        parser = docutils.parsers.rst.Parser()
+        components = (docutils.parsers.rst.Parser,)
+        settings = docutils.frontend.OptionParser(
+            components=components).get_default_values()
+        document = docutils.utils.new_document(
+            '<rst-doc>', settings=settings)
+        parser.parse(text, document)
+        return document
+
     # opens config server
     # \param args connection arguments
     # \returns NXSConfigServer instance
@@ -285,8 +299,6 @@ For more help:
     def getSelection(self, selectionc):
         return selectionc.selection
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_default(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -308,8 +320,6 @@ For more help:
         self.assertEqual(self.helpinfo, vl)
         self.assertEqual(self.helperror, er)
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_help(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -333,8 +343,6 @@ For more help:
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_servers(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -387,8 +395,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_servers_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -446,8 +452,6 @@ For more help:
         el.close()
         sv2.tearDown()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -547,8 +551,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -648,8 +650,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -750,8 +750,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_data_read(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -806,8 +804,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_data_write(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -864,8 +860,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_variables(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -970,8 +964,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_variables_man(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1102,8 +1094,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_two_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1204,8 +1194,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_cyclic_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1307,8 +1295,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1369,8 +1355,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1428,8 +1412,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1494,8 +1476,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1566,8 +1546,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1642,8 +1620,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1715,8 +1691,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1785,8 +1759,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1859,8 +1831,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1930,8 +1900,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_no(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2000,8 +1968,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce_no(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2144,8 +2110,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_private(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2245,8 +2209,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_private2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2362,8 +2324,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_mandatory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2478,8 +2438,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_datasources_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2585,8 +2543,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_profiles_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2691,8 +2647,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2837,8 +2791,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2981,8 +2933,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record_sep(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3153,8 +3103,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record_dss(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3259,8 +3207,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3360,8 +3306,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_sep(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3490,8 +3434,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_nods(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3599,8 +3541,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_mand(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3710,8 +3650,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3833,8 +3771,6 @@ For more help:
         os.remove("%s.xml" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3962,8 +3898,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4089,8 +4023,6 @@ For more help:
         os.remove("%s.ds.xml" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4226,8 +4158,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4350,8 +4280,6 @@ For more help:
         os.remove("%s.json" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4484,8 +4412,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4554,8 +4480,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4616,8 +4540,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4686,8 +4608,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_comp_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4863,8 +4783,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_ds_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5048,8 +4966,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_profile_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5229,8 +5145,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_profile_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5374,8 +5288,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_datasources_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5522,8 +5434,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5676,8 +5586,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_groups(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5758,8 +5666,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_fields(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5840,8 +5746,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_tags(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5920,8 +5824,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_nods(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6015,8 +5917,6 @@ For more help:
         self.assertEqual(el.deleteComponent(name2), None)
         self.__cmps.pop()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_nocp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6106,8 +6006,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_ds(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6210,8 +6108,6 @@ For more help:
         self.assertEqual(el.deleteDataSource(dsname2), None)
         self.__ds.pop()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_cp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6309,8 +6205,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_wrongxml(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6396,8 +6290,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_wrongdsxml(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6518,8 +6410,6 @@ For more help:
         self.__ds.pop()
 
     # creatConf test
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6565,8 +6455,6 @@ For more help:
             self.assertEqual('', avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6637,8 +6525,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2_var(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6712,8 +6598,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2_var_cp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6790,8 +6674,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6874,8 +6756,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_field_3(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6946,8 +6826,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_5(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7018,8 +6896,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7094,8 +6970,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7169,8 +7043,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_3(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7245,8 +7117,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_4(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7322,8 +7192,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_field(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7400,8 +7268,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_field_4(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7475,8 +7341,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_mandatory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7548,6 +7412,70 @@ For more help:
 
             self.assertEqual('', er)
             checkxmls(self, avc3, result)
+        el.close()
+
+    def test_info_default(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = ["<definition><group type='NXentry'><field type='field'/>"
+               "</group></definition>"]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig info -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            cmd = list(cd)
+            cmd.extend(name)
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+            doc = self.parseRst(avc3)
+            self.assertEqual(len(doc), 1)
+            section = doc[0]
+            title = "Component: 'mcs_test_component_0'"
+            self.assertEqual(section.tagname, 'section')
+            self.assertEqual(len(section), 1)
+            self.assertEqual(len(section[0]), 1)
+            self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+            self.assertEqual('', er)
         el.close()
 
 
