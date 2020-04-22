@@ -7368,7 +7368,7 @@ For more help:
             er = mystderr.getvalue()
 
             avc3 = vl.strip()
-            doc = self.parseRst(avc3)
+            doc = self.parseRST(avc3)
             self.assertEqual(len(doc), 1)
             section = doc[0]
             title = "Component: 'mcs_test_component_0'"
