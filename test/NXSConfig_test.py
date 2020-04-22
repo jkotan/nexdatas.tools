@@ -7432,7 +7432,6 @@ For more help:
             old_argv = sys.argv
             sys.argv = cmd
             nxsconfig.main()
-                
 
             sys.argv = old_argv
             sys.stdout = old_stdout
