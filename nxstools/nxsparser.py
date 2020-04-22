@@ -239,6 +239,8 @@ class ParserTools(object):
         :rtype: :obj:`str`
         """
         name = cls.__getAttr(node, "name")
+        if not name:
+            return ""
         attr = False
         while node.getparent() is not None:
             onode = node

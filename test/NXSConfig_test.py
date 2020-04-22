@@ -32,6 +32,10 @@ from nxstools import nxsconfig
 from checks import checkxmls
 import shutil
 
+import docutils.parsers.rst
+import docutils.utils
+# import dateutil.parser
+
 try:
     import ServerSetUp
 except ImportError:
@@ -164,6 +168,53 @@ For more help:
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
 
+    def parseRST(self, text):
+        parser = docutils.parsers.rst.Parser()
+        components = (docutils.parsers.rst.Parser,)
+        settings = docutils.frontend.OptionParser(
+            components=components).get_default_values()
+        document = docutils.utils.new_document(
+            '<rst-doc>', settings=settings)
+        parser.parse(text, document)
+        return document
+
+    def checkRSTTable(self, section, title, header, result):
+        self.assertEqual(section.tagname, 'section')
+        self.assertEqual(len(section), 2)
+        self.assertEqual(len(section[0]), 1)
+        self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+        self.assertEqual(len(section[1]), 1)
+        table = section[1]
+        self.assertEqual(table.tagname, 'table')
+        self.assertEqual(len(table), 1)
+        self.assertEqual(table[0].tagname, 'tgroup')
+        self.assertEqual(len(table[0]), len(result[0]) + 2)
+        for i in range(len(result[0])):
+            self.assertEqual(table[0][i].tagname, 'colspec')
+        self.assertEqual(table[0][len(result[0])].tagname, 'thead')
+        self.assertEqual(
+            str(table[0][len(result[0])]),
+            header
+        )
+        tbody = table[0][7]
+        self.assertEqual(tbody.tagname, 'tbody')
+        self.assertEqual(len(tbody), len(result))
+        self.assertEqual(len(tbody[0]), len(result[0]))
+        for i in range(len(result)):
+            self.assertEqual(len(tbody[i]), len(result[i]))
+            self.assertEqual(tbody[i].tagname, 'row')
+            for j in range(len(result[i])):
+                if len(tbody[i][j]):
+                    self.assertEqual(tbody[i][j].tagname, 'entry')
+                    self.assertEqual(
+                        tbody[i][j][0].tagname, 'paragraph')
+                    self.assertEqual(
+                        tbody[i][j][0][0].tagname, '#text')
+                    self.assertEqual(
+                        str(tbody[i][j][0][0]), result[i][j])
+                else:
+                    self.assertTrue(result[i][j] is None)
+
     # opens config server
     # \param args connection arguments
     # \returns NXSConfigServer instance
@@ -285,8 +336,6 @@ For more help:
     def getSelection(self, selectionc):
         return selectionc.selection
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_default(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -308,8 +357,6 @@ For more help:
         self.assertEqual(self.helpinfo, vl)
         self.assertEqual(self.helperror, er)
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_help(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -333,8 +380,6 @@ For more help:
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_servers(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -387,8 +432,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_servers_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -446,8 +489,6 @@ For more help:
         el.close()
         sv2.tearDown()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -547,8 +588,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -648,8 +687,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -750,8 +787,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_data_read(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -767,19 +802,7 @@ For more help:
         commands = [
             ('nxsconfig data -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
@@ -806,8 +829,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_data_write(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -823,19 +844,7 @@ For more help:
         commands = [
             ('nxsconfig data -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
@@ -864,8 +873,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_variables(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -970,8 +977,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_variables_man(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1102,8 +1107,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_two_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1204,8 +1207,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_components_cyclic_dependent(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1307,8 +1308,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1369,8 +1368,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1428,8 +1425,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1494,8 +1489,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1566,8 +1559,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1642,8 +1633,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile_noforce_pipe(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1715,8 +1704,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1785,8 +1772,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1859,8 +1844,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_profile_noforce(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1930,8 +1913,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_comp_noforce_no(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2000,8 +1981,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_delete_ds_noforce_no(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2144,8 +2123,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_private(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2245,8 +2222,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_private2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2362,8 +2337,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_comp_available_mandatory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2478,8 +2451,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_datasources_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2585,8 +2556,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_list_profiles_available(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2691,8 +2660,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2837,8 +2804,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2981,8 +2946,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record_sep(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3153,8 +3116,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_record_dss(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3259,8 +3220,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3360,8 +3319,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_sep(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3490,8 +3447,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_nods(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3599,8 +3554,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_sources_mand(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3710,8 +3663,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3833,8 +3784,6 @@ For more help:
         os.remove("%s.xml" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -3962,8 +3911,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4089,8 +4036,6 @@ For more help:
         os.remove("%s.ds.xml" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4226,8 +4171,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4350,8 +4293,6 @@ For more help:
         os.remove("%s.json" % name3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4484,8 +4425,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_ds_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4554,8 +4493,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_comp_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4616,8 +4553,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_upload_profile_av_noexist(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4686,8 +4621,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_comp_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4863,8 +4796,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_ds_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5048,8 +4979,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_profile_av_directory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5229,8 +5158,6 @@ For more help:
         shutil.rmtree(dirname)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_profile_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5374,8 +5301,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_show_datasources_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5522,8 +5447,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_av(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5676,8 +5599,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_groups(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5758,8 +5679,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_fields(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5840,8 +5759,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_incompnodes_tags(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -5920,8 +5837,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_nods(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6015,8 +5930,6 @@ For more help:
         self.assertEqual(el.deleteComponent(name2), None)
         self.__cmps.pop()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_nocp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6106,8 +6019,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_ds(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6210,8 +6121,6 @@ For more help:
         self.assertEqual(el.deleteDataSource(dsname2), None)
         self.__ds.pop()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_cp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6309,8 +6218,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_wrongxml(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6396,8 +6303,6 @@ For more help:
 
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_get_comp_wrongdsxml(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6518,8 +6423,6 @@ For more help:
         self.__ds.pop()
 
     # creatConf test
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6532,15 +6435,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6565,8 +6460,6 @@ For more help:
             self.assertEqual('', avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6602,15 +6495,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6637,8 +6522,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2_var(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6677,15 +6560,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6712,8 +6587,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_default_2_var_cp(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6755,15 +6628,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6790,8 +6655,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6839,15 +6702,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6874,8 +6729,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_field_3(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6911,15 +6764,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6946,8 +6791,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_5(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -6983,15 +6826,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7018,8 +6853,6 @@ For more help:
             checkxmls(self, xml[0], avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7059,15 +6892,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7094,8 +6919,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_2(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7134,15 +6957,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7169,8 +6984,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_3(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7210,15 +7023,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7245,8 +7050,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_4(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7287,15 +7090,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         #        commands = [['nxsconfig', 'list']]
@@ -7322,8 +7117,6 @@ For more help:
             checkxmls(self, result, avc3)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_field(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7365,15 +7158,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7400,8 +7185,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_field_4(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7440,15 +7223,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7475,8 +7250,6 @@ For more help:
             checkxmls(self, avc3, result)
         el.close()
 
-    # comp_available test
-    # \brief It tests XMLConfigurator
     def test_merge_group_group_mandatory(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -7515,15 +7288,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7548,6 +7313,205 @@ For more help:
 
             self.assertEqual('', er)
             checkxmls(self, avc3, result)
+        el.close()
+
+    def test_info_default(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = ["<definition><group type='NXentry'><field type='field'/>"
+               "</group></definition>"]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig info -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            cmd = list(cd)
+            cmd.extend(name)
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            avc3 = vl.strip()
+            doc = self.parseRST(avc3)
+            self.assertEqual(len(doc), 1)
+            section = doc[0]
+            title = "Component: 'mcs_test_component_0'"
+            self.assertEqual(section.tagname, 'section')
+            self.assertEqual(len(section), 1)
+            self.assertEqual(len(section[0]), 1)
+            self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+            self.assertEqual('', er)
+        el.close()
+
+    def test_info_components(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_FLOAT'>"
+            "<datasource name='sl1right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<field name='data'>"
+            "<strategy mode='STEP'/>"
+            "<datasource name='sl2bottom' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field name='data2'>"
+            "<datasource name='sl2top' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "<datasource name='sl3right' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>"
+            "<dimensions rank='1'>"
+            "<dim index='0'  value='20'/>"
+            "</dimensions>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_CHAR'>"
+            "<datasource name='sl1right' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>"
+            "<dimensions rank='2' />"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["sl1right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+            [
+                ["sl2bottom", "CLIENT", None, None, "STEP", "motor_2"],
+                ["sl2top", "TANGO", None, None, "FINAL",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"],
+            ],
+            [
+                ["sl3right", "PYEVAL", None, "[20]", "INIT", None],
+            ],
+            [
+                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+            ],
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig info -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTTable(section, title, header, result[ni])
         el.close()
 
 

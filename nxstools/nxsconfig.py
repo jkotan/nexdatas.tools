@@ -619,7 +619,6 @@ class ConfigServer(object):
                 if headers:
                     ttools.headers = headers
                 description.extend(ttools.generateList())
-
         if not description:
             sys.stderr.write(
                 "\nHint: add component names as command arguments "
@@ -870,16 +869,6 @@ class Show(Runner):
         parser.add_argument("-r", "--profiles", action="store_true",
                             default=False, dest="profiles",
                             help="perform operation for profiles")
-        # parser.add_argument("-m", "--mandatory", action="store_true",
-        #                     default=False, dest="mandatory",
-        #                     help="make use mandatory components")
-        # parser.add_argument("-p", "--private", action="store_true",
-        #                     default=False, dest="private",
-        #                     help="make use private components,"
-        #                     " i.e. starting with '__'")
-        # parser.add_argument("-n", "--no-newlines", action="store_true",
-        #                     default=False, dest="nonewlines",
-        #                     help="split result with space characters")
         parser.add_argument("-o", "--directory", dest="directory",
                             help=("output file directory"))
         parser.add_argument('args', metavar='name', type=str, nargs='*',
@@ -1025,9 +1014,6 @@ class Get(Runner):
         parser = self._parser
         parser.add_argument("-s", "--server", dest="server",
                             help=("configuration server device name"))
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components')
 
@@ -1039,7 +1025,7 @@ class Get(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = str(cnfserver.getCmd(options.args))
         return string
 
@@ -1063,9 +1049,6 @@ class Merge(Runner):
         parser = self._parser
         parser.add_argument("-s", "--server", dest="server",
                             help=("configuration server device name"))
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components')
 
@@ -1077,7 +1060,7 @@ class Merge(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = str(cnfserver.getCmd(options.args))
         return string
 
@@ -1225,9 +1208,6 @@ class Data(Runner):
         parser = self._parser
         parser.add_argument("-s", "--server", dest="server",
                             help=("configuration server device name"))
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='?',
                             help='data dictionary in json string')
 
@@ -1239,7 +1219,7 @@ class Data(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.dataCmd(
             options.args))
         return string
@@ -1355,9 +1335,6 @@ class Describe(Runner):
                             default=False, dest="private",
                             help="make use private components,"
                             " i.e. starting with '__'")
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components or datasources')
 
@@ -1369,7 +1346,7 @@ class Describe(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.describeCmd(
             options.datasources, options.args, options.mandatory,
             options.private))
@@ -1409,9 +1386,6 @@ class Info(Runner):
                             default=False, dest="private",
                             help="make use private components,"
                             " i.e. starting with '__'")
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components, datasources '
                             'or profiles')
@@ -1424,7 +1398,7 @@ class Info(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.infoCmd(
             options.datasources, options.args, options.mandatory,
             options.private, options.profiles))
@@ -1460,9 +1434,6 @@ class Geometry(Runner):
                             default=False, dest="private",
                             help="make use private components,"
                             " i.e. starting with '__'")
-        parser.add_argument("-n", "--no-newlines", action="store_true",
-                            default=False, dest="nonewlines",
-                            help="split result with space characters")
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components or datasources')
 
@@ -1474,7 +1445,7 @@ class Geometry(Runner):
         :returns: output information
         :rtype: :obj:`str`
         """
-        cnfserver = ConfigServer(options.server, options.nonewlines)
+        cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.geometryCmd(
             options.datasources, options.args, options.mandatory,
             options.private))
