@@ -759,10 +759,6 @@ For more help:
         vrs = [
             '{"myentry":"entry1"}',
             '{"myentry":"entry2", "sample_name":"water"}',
-            ('nxsconfig data -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
             '{"formula":"H20", "sample_name":"water"}',
         ]
 
@@ -7344,6 +7340,119 @@ For more help:
             self.assertEqual(len(section[0]), 1)
             self.assertEqual(str(section[0]), '<title>%s</title>' % title)
             self.assertEqual('', er)
+        el.close()
+
+    def test_info_datasources(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "<datasource name='sl1right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<field name='data'>"
+            "<strategy mode='STEP'/>"
+            "<datasource name='sl2bottom' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field name='data2'>"
+            "<datasource name='sl2top' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "<datasource name='sl3right' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "<datasource name='sl1right' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>"
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig info -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for i, cd in enumerate(commands):
+            cmd = list(cd)
+            cmd.append(name[i])
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsconfig.main()
+                
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+            self.assertEqual('', er)
+            avc3 = vl.strip()
+            doc = self.parseRst(avc3)
+            self.assertEqual(len(doc), 1)
+            section = doc[0]
+            title = "Component: '%s'" % name[i]
+            self.assertEqual(section.tagname, 'section')
+            self.assertEqual(len(section), 2)
+            self.assertEqual(len(section[0]), 1)
+            self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+            self.assertEqual(len(section[1]), 1)
+            table = section[1]
+            print(table)
+            self.assertEqual(table.tagname, 'table')
         el.close()
 
 
