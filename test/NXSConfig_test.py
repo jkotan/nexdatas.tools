@@ -759,25 +759,17 @@ For more help:
         vrs = [
             '{"myentry":"entry1"}',
             '{"myentry":"entry2", "sample_name":"water"}',
+            ('nxsconfig data -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig data --server %s'
+             % self._sv.new_device_info_writer.name).split(),
             '{"formula":"H20", "sample_name":"water"}',
         ]
 
         commands = [
             ('nxsconfig data -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
@@ -819,19 +811,7 @@ For more help:
         commands = [
             ('nxsconfig data -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig data --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
@@ -6422,15 +6402,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6490,15 +6462,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6563,15 +6527,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6639,15 +6595,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6721,15 +6669,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6791,15 +6731,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6861,15 +6793,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -6935,15 +6859,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7008,15 +6924,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7082,15 +6990,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7157,15 +7057,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
         #        commands = [['nxsconfig', 'list']]
@@ -7233,15 +7125,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7306,15 +7190,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
@@ -7379,15 +7255,7 @@ For more help:
         commands = [
             ('nxsconfig merge -s %s'
              % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n -s %s'
-             % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig merge --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge -n --server %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  -s %s'
-             % self._sv.new_device_info_writer.name).split(),
-            ('nxsconfig merge --no-newlines  --server %s'
              % self._sv.new_device_info_writer.name).split(),
         ]
 #        commands = [['nxsconfig', 'list']]
