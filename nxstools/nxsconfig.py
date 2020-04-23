@@ -507,7 +507,6 @@ class ConfigServer(object):
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
-        print("P1")
         xmls = ""
         parameters = []
         description = []
@@ -525,29 +524,22 @@ class ConfigServer(object):
                     "the configuration server\n" % ar)
                 sys.stderr.flush()
                 return ""
-        print("P2")
         args = args or dss
         dsxmls = self._cnfServer.Selections(args)
-        print("P2_0")
         for i, xmls in enumerate(dsxmls):
-            print("P2_a: %s "% xmls)
             parameters = [json.loads(xmls)]
-            print("P2_1")
             ttools = TableDictTools(parameters)
-            print("P2_2")
             ttools.title = "Profile: '%s'" % args[i]
             if headers:
                 ttools.headers = headers
             description.extend(ttools.generateList())
 
-        print("P3")
         if not description:
             sys.stderr.write(
                 "\nHint: add profile names as command arguments "
                 "or -m for mandatory components \n\n")
             sys.stderr.flush()
             return ""
-        print("P4")
         return description
 
     def __describeComponents(self, args, headers=None, nonone=None,

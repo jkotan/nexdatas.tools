@@ -62,7 +62,7 @@ class ServerSetUp(object):
         else:
             self._psub = subprocess.call(
                 # "NXSConfigServer %s &" % self.__instance,
-                "export PYTHONPATH= ;NXSConfigServer %s &" % self.__instance,
+                "NXSConfigServer %s &" % self.__instance,
                 stdout=None,
                 stderr=None, shell=True)
         sys.stdout.write("waiting for server.")
