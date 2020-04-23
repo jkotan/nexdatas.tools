@@ -1378,8 +1378,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -1643,8 +1643,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -1854,8 +1854,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -2064,8 +2064,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -2463,7 +2463,7 @@ For more help:
         xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<datasource type='TANGO' name='testds1'/></definition>"
         xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
-               "<datasource type='CLIENT' name'testds1'/></definition>"
+               "<datasource type='CLIENT' name='testds1'/></definition>"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -2566,8 +2566,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -4181,8 +4181,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -4304,8 +4304,8 @@ For more help:
         name = "mcs_test_profile"
         dirname = "test_profile_dir"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -4990,8 +4990,8 @@ For more help:
         dirname = "test_profile_dir"
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -5168,8 +5168,8 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_profile"
         jsn = '{"DataSourceSelection": ' \
-              '"{\"lmbd01\": false, \"exp_mca01\": true}"}'
-        jsn2 = '{"ComponentSelection": "{\"pilatus\": true}"}'
+              '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}'
+        jsn2 = '{"ComponentSelection": "{\\"pilatus\\": true}"}'
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -5313,7 +5313,7 @@ For more help:
         xml = "<?xml version='1.0' encoding='utf8'?><definition>" \
               "<datasource type='TANGO' name='testds1'/></definition>"
         xml2 = "<?xml version='1.0' encoding='utf8'?><definition>" \
-               "<datasource type='CLIENT' name'testds1'/></definition>"
+               "<datasource type='CLIENT' name='testds1'/></definition>"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -5771,9 +5771,9 @@ For more help:
         self.assertTrue(isinstance(avc, list))
         name = "mcs_test_component"
         xml = "<?xml version='1.0' encoding='utf8'?>\n" \
-              "<field type='NXentry' name='test'>\n"
+              "<field type='NXentry' name='test' />\n"
         xml2 = "<?xml version='1.0' encoding='utf8'?>" \
-               "<field type='NXentry' name='test2'>"
+               "<field type='NXentry' name='test2'/>"
         while name in avc:
             name = name + '_1'
         name2 = name + '_2'
@@ -6217,210 +6217,6 @@ For more help:
         self.__cmps.pop()
 
         el.close()
-
-    def test_get_comp_wrongxml(self):
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        el = self.openConf()
-        avc = el.availableComponents()
-        # man =
-        el.mandatoryComponents()
-
-        self.assertTrue(isinstance(avc, list))
-        name = "mcs_test_component"
-        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
-              "<group type='NXentry'/>\n</definition>"
-        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
-               "<definition<field type='NXentry2'/>" \
-               "</definition>"
-        xml3 = "<?xml version='1.0' encoding='utf8'?>" \
-               "<definition<field type='NXentry2/>" \
-               "</definition>"
-        while name in avc:
-            name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
-        while name2 in avc:
-            name2 = name2 + '_2'
-        while name3 in avc:
-            name3 = name3 + '_3'
-            #        print avc
-        cmps = {name: xml, name2: xml2, name3: xml3}
-
-        self.setXML(el, xml)
-        self.assertEqual(el.storeComponent(name), None)
-        self.__cmps.append(name)
-        self.setXML(el, xml2)
-        self.assertEqual(el.storeComponent(name2), None)
-        self.__cmps.append(name2)
-        self.setXML(el, xml3)
-        self.assertEqual(el.storeComponent(name3), None)
-        self.__cmps.append(name3)
-        avc2 = el.availableComponents()
-        # print avc2
-        self.assertTrue(isinstance(avc2, list))
-        for cp in avc:
-            self.assertTrue(cp in avc2)
-
-        self.assertTrue(name in avc2)
-        cpx = el.components([name])
-        self.assertEqual(cpx[0], xml)
-
-        commands = [
-            'nxsconfig get %s -s %s',
-            'nxsconfig get %s --server %s',
-            'nxsconfig get %s -s %s',
-            'nxsconfig get %s --server %s',
-        ]
-        for scmd in commands:
-            for nm in cmps.keys():
-                cmd = (scmd % (
-                    nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
-                self.assertEqual(vl.strip(), "")
-                self.assertEqual(str(er)[:5], "Error")
-
-        self.assertEqual(el.deleteComponent(name3), None)
-        self.__cmps.pop()
-        self.assertEqual(el.deleteComponent(name2), None)
-        self.__cmps.pop()
-        self.assertEqual(el.deleteComponent(name), None)
-        self.__cmps.pop()
-
-        el.close()
-
-    def test_get_comp_wrongdsxml(self):
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        el = self.openConf()
-        avc = el.availableComponents()
-        avds = el.availableDataSources()
-        # man =
-        el.mandatoryComponents()
-
-        self.assertTrue(isinstance(avc, list))
-        name = "mcs_test_component"
-        dsname = "mcs_test_datasource"
-        dsname2 = "mcs_test_datasource2"
-        dsname3 = "mcs_test_datasource3"
-        while dsname in avds:
-            dsname = dsname + '_1'
-
-        while dsname2 in avds:
-            dsname2 = dsname2 + '_2'
-        while dsname3 in avds:
-            dsname3 = dsname3 + '_3'
-
-        xml = "<?xml version='1.0' encoding='utf8'?>\n" \
-              "<definition><attribute type='NXentry'>" \
-              "$datasources.%s\n</attribute></definition>" % dsname
-        xml2 = "<?xml version='1.0' encoding='utf8'?>" \
-               "<definition><field type='NXentry2'>" \
-               "$datasources.%s</field></definition>" % dsname2
-        xml3 = "<?xml version='1.0' encoding='utf8'?><definition>" \
-               "<field type='NXentry2'>$datasources.%s</field>" \
-               "</definition>" % dsname3
-        dsxml = "<?xml version='1.0' encoding='utf8'?><definition>" \
-                "<datasource name=%s' type='TANGO'></datasource>" \
-                "</definition>" % dsname
-        dsxml2 = "<?xml version='1.0' encoding='utf8'?>" \
-                 "<definition><datasource name='%s' type='CLIENT'>" \
-                 "</definition>" % dsname2
-        dsxml3 = "<?xml version='1.0'>" \
-                 "<datasource name='%s' type='CLIENT'></datasource>" % dsname3
-        while name in avc:
-            name = name + '_1'
-        name2 = name + '_2'
-        name3 = name + '_3'
-        while name2 in avc:
-            name2 = name2 + '_2'
-        while name3 in avc:
-            name3 = name3 + '_3'
-            #        print avc
-        cmps = {name: xml, name2: xml2, name3: xml3}
-        # dss = {name: dsname, name2: dsname2}
-        self.setXML(el, xml)
-        self.assertEqual(el.storeComponent(name), None)
-        self.__cmps.append(name)
-        self.setXML(el, xml2)
-        self.assertEqual(el.storeComponent(name2), None)
-        self.__cmps.append(name2)
-        self.setXML(el, xml3)
-        self.assertEqual(el.storeComponent(name3), None)
-        self.__cmps.append(name3)
-        self.setXML(el, dsxml)
-        self.assertEqual(el.storeDataSource(dsname), None)
-        self.__ds.append(dsname)
-        self.setXML(el, dsxml2)
-        self.assertEqual(el.storeDataSource(dsname2), None)
-        self.__ds.append(dsname2)
-        self.setXML(el, dsxml3)
-        self.assertEqual(el.storeDataSource(dsname3), None)
-        self.__ds.append(dsname3)
-        avc2 = el.availableComponents()
-        # print avc2
-        self.assertTrue(isinstance(avc2, list))
-        for cp in avc:
-            self.assertTrue(cp in avc2)
-
-        self.assertTrue(name in avc2)
-        cpx = el.components([name])
-        self.assertEqual(cpx[0], xml)
-
-        commands = [
-            'nxsconfig get %s -s %s',
-            'nxsconfig get %s --server %s',
-            'nxsconfig get %s -s %s',
-            'nxsconfig get %s --server %s',
-        ]
-        for scmd in commands:
-            for nm in cmps.keys():
-                cmd = (
-                    scmd % (nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
-                self.assertEqual(vl.strip(), "")
-                self.assertEqual(str(er)[:5], "Error")
-
-        self.assertEqual(el.deleteComponent(name3), None)
-        self.__cmps.pop()
-        self.assertEqual(el.deleteComponent(name2), None)
-        self.__cmps.pop()
-        self.assertEqual(el.deleteComponent(name), None)
-        self.__cmps.pop()
-        self.assertEqual(el.deleteDataSource(dsname3), None)
-        self.__ds.pop()
-        self.assertEqual(el.deleteDataSource(dsname2), None)
-        self.__ds.pop()
-        self.assertEqual(el.deleteDataSource(dsname), None)
-        self.__ds.pop()
 
     # creatConf test
     def test_merge_default(self):
