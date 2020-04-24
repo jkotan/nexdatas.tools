@@ -217,7 +217,7 @@ For more help:
         self.assertEqual(str(section[0]), '<title>%s</title>' % title)
         self.assertEqual(len(section[1]), 1)
         table = section[1]
-        self.checkRSTTable(self, table, header, result)
+        self.checkRSTTable(table, header, result)
 
     # opens config server
     # \param args connection arguments
