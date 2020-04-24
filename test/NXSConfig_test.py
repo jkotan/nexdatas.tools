@@ -178,13 +178,8 @@ For more help:
         parser.parse(text, document)
         return document
 
-    def checkRSTTable(self, section, title, header, result):
-        self.assertEqual(section.tagname, 'section')
-        self.assertEqual(len(section), 2)
-        self.assertEqual(len(section[0]), 1)
-        self.assertEqual(str(section[0]), '<title>%s</title>' % title)
-        self.assertEqual(len(section[1]), 1)
-        table = section[1]
+    def checkRSTTable(self, section, header, result):
+        table = section
         self.assertEqual(table.tagname, 'table')
         self.assertEqual(len(table), 1)
         self.assertEqual(table[0].tagname, 'tgroup')
@@ -214,6 +209,15 @@ For more help:
                         str(tbody[i][j][0][0]), result[i][j])
                 else:
                     self.assertTrue(result[i][j] is None)
+
+    def checkRSTSection(self, section, title, header, result):
+        self.assertEqual(section.tagname, 'section')
+        self.assertEqual(len(section), 2)
+        self.assertEqual(len(section[0]), 1)
+        self.assertEqual(str(section[0]), '<title>%s</title>' % title)
+        self.assertEqual(len(section[1]), 1)
+        table = section[1]
+        self.checkRSTTable(self, table, header, result)
 
     # opens config server
     # \param args connection arguments
@@ -7307,7 +7311,308 @@ For more help:
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
                 title = "Component: '%s'" % nm
-                self.checkRSTTable(section, title, header, result[ni])
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_info_components_mandatory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='datax' type='NX_FLOAT'>"
+            "<datasource name='sl2right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<field name='data'>"
+            "<strategy mode='STEP'/>"
+            "<datasource name='sl2bottom' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field name='data2'>"
+            "<datasource name='sl2top' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "<datasource name='sl3right' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>"
+            "<dimensions rank='1'>"
+            "<dim index='0'  value='20'/>"
+            "</dimensions>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_CHAR'>"
+            "<datasource name='sl1right' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>"
+            "<dimensions rank='2' />"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["sl2bottom", "CLIENT", None, None, "STEP", "motor_2"],
+                ["sl2top", "TANGO", None, None, "FINAL",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"],
+                ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+            [
+                ["sl3right", "PYEVAL", None, "[20]", "INIT", None],
+                ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+            [
+                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+                ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+        self.assertEqual(el.setMandatoryComponents([name[0]]), None)
+
+        commands = [
+            ('nxsconfig info -m -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info -m --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --mandatory -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --mandatory --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name[1:]):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                self.checkRSTTable(section, header, result[ni])
+        el.close()
+
+    def test_info_components_external(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        odsname = "mcs_test_datasource"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_FLOAT'>"
+            "$datasources.%s"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<field name='data'>"
+            "<strategy mode='STEP'/>"
+            "$datasources.%s"
+            "</field>"
+            "<field name='data2'>"
+            "$datasources.%s"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "$datasources.%s"
+            "<dimensions rank='1'>"
+            "<dim index='0'  value='20'/>"
+            "</dimensions>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_CHAR'>"
+            "$datasources.%s"
+            "<dimensions rank='2' />"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>"
+        ]
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>",
+        ]
+
+        header = '<thead><row>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        dsname = []
+        for i in range(len(xds)):
+
+            dsname.append(odsname + '_%s' % i)
+            while dsname[i] in avc:
+                dsname[i] = dsname[i] + '_%s' % i
+        dss = {
+            name[0]: [dsname[0]],
+            name[1]: [dsname[1], dsname[2]],
+            name[2]: [dsname[3]],
+            name[3]: [dsname[4]],
+        }
+
+        result = [
+            [
+                [dsname[0], "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
+            ],
+            [
+                [dsname[1], "CLIENT", None, None, "STEP", "motor_2"],
+                [dsname[2], "TANGO", None, None, "FINAL",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"],
+            ],
+            [
+                [dsname[3], "PYEVAL", None, "[20]", "INIT", None],
+            ],
+            [
+                [dsname[4], "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+            ],
+        ]
+        for i in range(np):
+            self.setXML(el, xml[i] % tuple(dss[name[i]]))
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            ('nxsconfig info -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
         el.close()
 
 
