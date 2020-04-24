@@ -30,12 +30,16 @@ import numpy as np
 import threading
 import PyTango
 from nxstools import nxsconfig
-from checks import checkxmls
 import shutil
 
 import docutils.parsers.rst
 import docutils.utils
 # import dateutil.parser
+
+try:
+    from checks import checkxmls
+except ImportError:
+    from .checks import checkxmls
 
 try:
     import ServerSetUp
@@ -197,8 +201,10 @@ For more help:
         self.assertEqual(len(tbody), len(result))
         self.assertEqual(len(tbody[0]), len(result[0]))
         if sort:
-            rix = np.argsort([el[0] for el in result])
-            tix = np.argsort([str(el[0][0][0]) for el in tbody])
+            rix = [int(el)
+                   for el in np.argsort([el[0] for el in result])]
+            tix = [int(el)
+                   for el in np.argsort([str(el[0][0][0]) for el in tbody])]
         else:
             rix = range(len(result[0]))
             tix = rix
