@@ -26,6 +26,7 @@ import random
 import struct
 import binascii
 import time
+import numpy as np
 import threading
 import PyTango
 from nxstools import nxsconfig
@@ -178,7 +179,7 @@ For more help:
         parser.parse(text, document)
         return document
 
-    def checkRSTTable(self, section, header, result):
+    def checkRSTTable(self, section, header, result, sort=False):
         table = section
         self.assertEqual(table.tagname, 'table')
         self.assertEqual(len(table), 1)
@@ -195,29 +196,36 @@ For more help:
         self.assertEqual(tbody.tagname, 'tbody')
         self.assertEqual(len(tbody), len(result))
         self.assertEqual(len(tbody[0]), len(result[0]))
+        if sort:
+            rix = np.argsort([el[0] for el in result])
+            tix = np.argsort([str(el[0][0][0]) for el in tbody])
+        else:
+            rix = range(len(result[0]))
+            tix = rix
+
         for i in range(len(result)):
-            self.assertEqual(len(tbody[i]), len(result[i]))
-            self.assertEqual(tbody[i].tagname, 'row')
-            for j in range(len(result[i])):
-                if len(tbody[i][j]):
+            self.assertEqual(len(tbody[tix[i]]), len(result[rix[i]]))
+            self.assertEqual(tbody[tix[i]].tagname, 'row')
+            for j in range(len(result[rix[i]])):
+                if len(tbody[tix[i]][j]):
                     self.assertEqual(tbody[i][j].tagname, 'entry')
                     self.assertEqual(
-                        tbody[i][j][0].tagname, 'paragraph')
+                        tbody[tix[i]][j][0].tagname, 'paragraph')
                     self.assertEqual(
-                        tbody[i][j][0][0].tagname, '#text')
+                        tbody[tix[i]][j][0][0].tagname, '#text')
                     self.assertEqual(
-                        str(tbody[i][j][0][0]), result[i][j])
+                        str(tbody[tix[i]][j][0][0]), result[rix[i]][j])
                 else:
-                    self.assertTrue(result[i][j] is None)
+                    self.assertTrue(result[rix[i]][j] is None)
 
-    def checkRSTSection(self, section, title, header, result):
+    def checkRSTSection(self, section, title, header, result, sort=False):
         self.assertEqual(section.tagname, 'section')
         self.assertEqual(len(section), 2)
         self.assertEqual(len(section[0]), 1)
         self.assertEqual(str(section[0]), '<title>%s</title>' % title)
         self.assertEqual(len(section[1]), 1)
         table = section[1]
-        self.checkRSTTable(table, header, result)
+        self.checkRSTTable(table, header, result, sort)
 
     # opens config server
     # \param args connection arguments
@@ -7449,7 +7457,7 @@ For more help:
                 doc = self.parseRST(avc3)
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
-                self.checkRSTTable(section, header, result[ni])
+                self.checkRSTTable(section, header, result[ni], sort=True)
         el.close()
 
     def test_info_components_external(self):
