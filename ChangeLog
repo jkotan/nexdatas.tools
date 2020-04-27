@@ -1,5 +1,6 @@
 2020-04-22 Jan Kotanski <jankotan@gmail.com>
 	* remove -nonewlines from nxsconfig info|geometry|describe
+	* improve output of nxsconfig info -r
 	* tagged as v2.71.0
 
 2020-04-16 Jan Kotanski <jankotan@gmail.com>

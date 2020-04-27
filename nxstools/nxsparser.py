@@ -851,17 +851,30 @@ class TableDictTools(object):
              for hd in self.headers
              if self.headertypenames[hd][1]]
         )
+        # self.maxvaluesize = 0
+        # for desc in self.__description:
+        #     for hd in self.headers:
+        #         if hd in desc.keys():
+        #             if self.maxvaluesize < len(desc[hd]):
+        #                 self.maxvaluesize = len(desc[hd])
         lst = [""]
 
         if self.title is not None:
             lst.append(self.title)
             lst.append("-" * len(self.title))
             lst.append("")
-
+        tb = len(lst)
+        lst.append("")
         for desc in self.__description:
             for hd in self.headers:
                 if hd in desc.keys():
                     htp, name = self.headertypenames[hd]
                     method = self.typemethods[htp]
                     lst.extend(method(name or hd, desc[hd]))
+
+        maxsize = max(len(el) for el in lst)
+        lst.append(
+            "=" * (self.maxnamesize + 1) + " " +
+            "=" * (maxsize - 2 - self.maxnamesize))
+        lst[tb] = lst[-1]
         return lst
