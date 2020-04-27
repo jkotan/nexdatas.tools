@@ -214,6 +214,8 @@ class ParserTools(object):
         if direct:
             dss.extend(node.findall("datasource"))
         else:
+            if node.tag == "datasource":
+                dss.append(node)
             dss.extend(node.findall(".//datasource"))
         dslist = []
         for ds in dss:
