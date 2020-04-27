@@ -863,16 +863,18 @@ class TableDictTools(object):
             lst.append(self.title)
             lst.append("-" * len(self.title))
             lst.append("")
-        lst.append(
-            "=" * (self.maxnamesize + 1) + " " +
-            "=" * self.maxnamesize)
+        tb = len(lst)
+        lst.append("")
         for desc in self.__description:
             for hd in self.headers:
                 if hd in desc.keys():
                     htp, name = self.headertypenames[hd]
                     method = self.typemethods[htp]
                     lst.extend(method(name or hd, desc[hd]))
+
+        maxsize = max(len(el) for el in lst)
         lst.append(
             "=" * (self.maxnamesize + 1) + " " +
-            "=" * self.maxnamesize)
+            "=" * (maxsize - 2 - self.maxnamesize))
+        lst[tb] = lst[-1]
         return lst
