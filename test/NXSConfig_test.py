@@ -162,6 +162,7 @@ For more help:
         self.__profs = []
         self.maxDiff = None
         self.__ds = []
+        self.__sels = []
         self.__man = []
         self.children = ("record", "doc", "device", "database", "query",
                          "datasource", "result")
@@ -188,15 +189,21 @@ For more help:
         self.assertEqual(table.tagname, 'table')
         self.assertEqual(len(table), 1)
         self.assertEqual(table[0].tagname, 'tgroup')
-        self.assertEqual(len(table[0]), len(result[0]) + 2)
+        if header:
+            self.assertEqual(len(table[0]), len(result[0]) + 2)
+        else:
+            self.assertEqual(len(table[0]), len(result[0]) + 1)
         for i in range(len(result[0])):
             self.assertEqual(table[0][i].tagname, 'colspec')
-        self.assertEqual(table[0][len(result[0])].tagname, 'thead')
-        self.assertEqual(
-            str(table[0][len(result[0])]),
-            header
-        )
-        tbody = table[0][len(result[0])+1]
+        if header:
+            self.assertEqual(table[0][len(result[0])].tagname, 'thead')
+            self.assertEqual(
+                str(table[0][len(result[0])]),
+                header
+            )
+            tbody = table[0][len(result[0])+1]
+        else:
+            tbody = table[0][len(result[0])]
         self.assertEqual(tbody.tagname, 'tbody')
         self.assertEqual(len(tbody), len(result))
         self.assertEqual(len(tbody[0]), len(result[0]))
@@ -314,6 +321,12 @@ For more help:
             el = self.openConf()
             for ds in self.__ds:
                 el.deleteDataSource(ds)
+            el.close()
+
+        if self.__sels:
+            el = self.openConf()
+            for sel in self.__sels:
+                el.deleteSelection(sel)
             el.close()
 
         if self.__man:
@@ -1671,7 +1684,7 @@ For more help:
         #        print avc
         self.setSelection(el, jsn)
         self.assertEqual(el.storeSelection(name), None)
-        self.__ds.append(name)
+        self.__sels.append(name)
 
         commands = [
             ('nxsconfig delete -r -s %s %s'
@@ -1718,7 +1731,7 @@ For more help:
                 self.assertEqual((list(set(avc2) - set(avc3))), [])
 
         self.assertEqual(el.deleteSelection(name), None)
-        self.__ds.pop()
+        self.__sels.pop()
 
         el.close()
 
@@ -1882,7 +1895,7 @@ For more help:
         #        print avc
         self.setSelection(el, jsn)
         self.assertEqual(el.storeSelection(name), None)
-        self.__ds.append(name)
+        self.__sels.append(name)
 
         commands = [
             ('nxsconfig delete -r -s %s %s'
@@ -1927,7 +1940,7 @@ For more help:
                 self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
         self.assertEqual(el.deleteSelection(name), None)
-        self.__ds.pop()
+        self.__sels.pop()
 
         el.close()
 
@@ -2092,7 +2105,7 @@ For more help:
         #        print avc
         self.setSelection(el, jsn)
         self.assertEqual(el.storeSelection(name), None)
-        self.__ds.append(name)
+        self.__sels.append(name)
 
         commands = [
             ('nxsconfig delete -r -s %s %s'
@@ -2137,7 +2150,7 @@ For more help:
                 self.assertEqual((list(set(avc2) - set(avc3))), [])
 
         self.assertEqual(el.deleteSelection(name), None)
-        self.__ds.pop()
+        self.__sels.pop()
 
         el.close()
 
@@ -2594,10 +2607,10 @@ For more help:
 #        print avc
         self.setSelection(el, jsn)
         self.assertEqual(el.storeSelection(name), None)
-        self.__ds.append(name)
+        self.__sels.append(name)
         self.setSelection(el, jsn2)
         self.assertEqual(el.storeSelection(name2), None)
-        self.__ds.append(name2)
+        self.__sels.append(name2)
         avc2 = el.availableSelections()
         # print avc2
         self.assertTrue(isinstance(avc2, list))
@@ -2672,9 +2685,9 @@ For more help:
             self.assertEqual('', er)
 
         self.assertEqual(el.deleteSelection(name), None)
-        self.__ds.pop(-2)
+        self.__sels.pop(-1)
         self.assertEqual(el.deleteSelection(name2), None)
-        self.__ds.pop()
+        self.__sels.pop()
 
         el.close()
 
@@ -7730,6 +7743,79 @@ For more help:
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
                 title = "DataSource: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_info_profiles(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+
+        oslname = "mcs_test_profile"
+        avds = el.availableSelections()
+        xds = [
+            '{"Timer": "[\\"ct01\\"]", "DataSourceSelection": '
+            '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}',
+            '{"ComponentSelection": "{\\"pilatus\\": true}"}'
+        ]
+
+        header = None
+        slname = []
+        for i in range(len(xds)):
+            slname.append(oslname + '_%s' % i)
+            while slname[i] in avds:
+                slname[i] = slname[i] + '_%s' % i
+
+        result = [
+            [
+                ["Timer(s):", "ct01"],
+                ["Pool/Dynamic Detector Components:", "exp_mca01"],
+            ],
+            [
+                ["Detector Components:", "pilatus"]
+            ],
+        ]
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setSelection(el, xds[i])
+            self.assertEqual(el.storeSelection(slname[i]), None)
+            self.__sels.append(slname[i])
+
+        commands = [
+            ('nxsconfig info -r -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info -r --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --profiles -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --profiles --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(slname):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Profile: '%s'" % nm
                 self.checkRSTSection(section, title, header, result[ni])
         el.close()
 
