@@ -196,7 +196,7 @@ For more help:
             str(table[0][len(result[0])]),
             header
         )
-        tbody = table[0][7]
+        tbody = table[0][len(result[0])+1]
         self.assertEqual(tbody.tagname, 'tbody')
         self.assertEqual(len(tbody), len(result))
         self.assertEqual(len(tbody[0]), len(result[0]))
@@ -7475,6 +7475,7 @@ For more help:
         el.unsetMandatoryComponents(man)
         self.__man += man
         avc = el.availableComponents()
+        avds = el.availableDataSources()
 
         oname = "mcs_test_component"
         odsname = "mcs_test_datasource"
@@ -7560,7 +7561,7 @@ For more help:
         for i in range(len(xds)):
 
             dsname.append(odsname + '_%s' % i)
-            while dsname[i] in avc:
+            while dsname[i] in avds:
                 dsname[i] = dsname[i] + '_%s' % i
         dss = {
             name[0]: [dsname[0]],
@@ -7626,6 +7627,109 @@ For more help:
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
                 title = "Component: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_info_datasources(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+
+        odsname = "mcs_test_datasource"
+        avds = el.availableDataSources()
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>",
+        ]
+
+        header = '<thead><row>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+        dsname = []
+        for i in range(len(xds)):
+            dsname.append(odsname + '_%s' % i)
+            while dsname[i] in avds:
+                dsname[i] = dsname[i] + '_%s' % i
+
+        result = [
+            [
+                ["CLIENT", "motor_1"]
+            ],
+            [
+                ["CLIENT", "motor_2"]
+            ],
+            [
+                ["TANGO",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"]
+            ],
+            [
+                ["PYEVAL", None]
+            ],
+            [
+                ["DB", None]
+            ],
+        ]
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            ('nxsconfig info -d -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info -d --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --datasources -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig info --datasources --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(dsname):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "DataSource: '%s'" % nm
                 self.checkRSTSection(section, title, header, result[ni])
         el.close()
 
