@@ -7759,7 +7759,7 @@ For more help:
             '{"ComponentSelection": "{\\"pilatus\\": true}"}',
             '{"UnplottedComponents": "[\\"exp_c01\\"]", '
             '"DataSourceSelection": "{\\"exp_c01\\": true, '
-            '\\"exp_c02\\": false, \\"exp_c03\\": false}", '
+            '\\"exp_c02\\": true, \\"exp_c03\\": false}", '
             '"DataSourcePreselection": '
             '"{\\"exp_mot04\\": true, \\"exp_mot03\\": false, '
             '\\"nexdatas_configuration\\": false}", '
@@ -7785,6 +7785,29 @@ For more help:
             '"{\\"lmbd01\\": true, \\"lmbd02\\": false}", '
             '"DefaultDynamicPath": '
             '"/$var.entryname#\'scan\'$var.serialno:NXentry/'
+            'NXinstrument/collection"}',
+            '{"DataSourceSelection": '
+            '"{\\"exp_c01\\": true, \\"exp_c02\\": true, '
+            '\\"exp_c03\\": true, \\"exp_c04\\": true}", '
+            '"DataSourcePreselection": '
+            '"{\\"exp_mot04\\": true, \\"exp_mot03\\": true, '
+            '\\"exp_mot05\\": true, \\"exp_mot06\\": true, '
+            '\\"nexdatas_configuration\\": false}", '
+            '"ComponentPreselection": '
+            '"{\\"beamtime_id\\": true, \\"slit2\\": true, '
+            '\\"slit1\\": true, \\"slit3\\": true}", '
+            '"ComponentSelection": '
+            '"{\\"lmbd01\\": true, \\"lmbd02\\": true, '
+            '\\"lmbd03\\": true, \\"lmbd04\\": true}", '
+            '"OrderedChannels": '
+            '"['
+            '\\"exp_c03\\", \\"exp_c02\\", '
+            '\\"lmbd04\\", \\"lmbd03\\", '
+            '\\"exp_mot06\\", \\"exp_mot04\\", '
+            '\\"slit2\\", \\"slit1\\" '
+            ']", '
+            '"DefaultDynamicPath": '
+            '"/$var.entryname#\'scan\'$var.serialno:NXentry/'
             'NXinstrument/collection"}'
         ]
 
@@ -7805,7 +7828,7 @@ For more help:
             ],
             [
                 ["Timer(s):", "exp_t01"],
-                ["Pool/Dynamic Detector Components:", "exp_c01"],
+                ["Pool/Dynamic Detector Components:", "exp_c01, exp_c02"],
                 ["Detector Components:", "lmbd01"],
                 ["Descriptive Components:", "beamtime_id, slit2"],
                 ["Descriptive Dynamic Components:", 'exp_mot04'],
@@ -7825,6 +7848,19 @@ For more help:
                 ["Unplotted Components:", "exp_c01"],
                 ["OptionalComponents:", "slit5"],
                 ["ConfigVariables:", "{}"]
+            ],
+            [
+                ["Pool/Dynamic Detector Components:",
+                 "exp_c03, exp_c02, exp_c01, exp_c04"],
+                ["Detector Components:",
+                 "lmbd04, lmbd03, lmbd01, lmbd02"],
+                ["Descriptive Components:",
+                 "slit2, slit1, beamtime_id, slit3"],
+                ["Descriptive Dynamic Components:",
+                 'exp_mot06, exp_mot04, exp_mot03, exp_mot05'],
+                ["DefaultDynamicPath:",
+                 "/$var.entryname#'scan'$var.serialno:NXentry/"
+                 "NXinstrument/collection"]
             ],
         ]
         dsnp = len(xds)
@@ -7862,6 +7898,7 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
                 self.assertEqual('', er)
+                # print(vl)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
                 self.assertEqual(len(doc), 1)
