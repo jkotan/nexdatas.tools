@@ -213,15 +213,14 @@ For more help:
             tix = [int(el)
                    for el in np.argsort([str(el[0][0][0]) for el in tbody])]
         else:
-            rix = range(len(result[0]))
+            rix = range(len(result))
             tix = rix
-
         for i in range(len(result)):
             self.assertEqual(len(tbody[tix[i]]), len(result[rix[i]]))
             self.assertEqual(tbody[tix[i]].tagname, 'row')
             for j in range(len(result[rix[i]])):
                 if len(tbody[tix[i]][j]):
-                    self.assertEqual(tbody[i][j].tagname, 'entry')
+                    self.assertEqual(tbody[tix[i]][j].tagname, 'entry')
                     self.assertEqual(
                         tbody[tix[i]][j][0].tagname, 'paragraph')
                     self.assertEqual(
@@ -7756,8 +7755,60 @@ For more help:
         avds = el.availableSelections()
         xds = [
             '{"Timer": "[\\"ct01\\"]", "DataSourceSelection": '
-            '"{\\"lmbd01\\": false, \\"exp_mca01\\": true}"}',
-            '{"ComponentSelection": "{\\"pilatus\\": true}"}'
+            '"{\\"exp_mca01\\": true}"}',
+            '{"ComponentSelection": "{\\"pilatus\\": true}"}',
+            '{"UnplottedComponents": "[\\"exp_c01\\"]", '
+            '"DataSourceSelection": "{\\"exp_c01\\": true, '
+            '\\"exp_c02\\": true, \\"exp_c03\\": false}", '
+            '"DataSourcePreselection": '
+            '"{\\"exp_mot04\\": true, \\"exp_mot03\\": false, '
+            '\\"nexdatas_configuration\\": false}", '
+            '"Version": "3.12.4", '
+            '"DefaultDynamicLinks": true, '
+            '"ConfigVariables": "{}", '
+            '"ComponentPreselection": '
+            '"{\\"beamtime_id\\": true, \\"slit2\\": true, '
+            '\\"slit1\\": false}", '
+            '"TimeZone": "Europe/Berlin", '
+            '"ComponentsFromMntGrp": false, '
+            '"Timer": "[\\"exp_t01\\"]", '
+            '"UserData": "{\\"sample_name\\": \\"\\", '
+            '\\"chemical_formula\\": \\"\\", \\"title\\": \\"\\"}", '
+            '"Door": "p09/door/haso228jk.01", '
+            '"ConfigDevice": "p09/nxsconfigserver/haso228jk", '
+            '"DynamicComponents": true, '
+            '"AppendEntry": false, '
+            '"MntGrp": "mg_test01", '
+            '"WriterDevice": "p00/nxsdatawriter/haso228", '
+            '"OptionalComponents": "[\\"slit5\\"]", '
+            '"ComponentSelection": '
+            '"{\\"lmbd01\\": true, \\"lmbd02\\": false}", '
+            '"DefaultDynamicPath": '
+            '"/$var.entryname#\'scan\'$var.serialno:NXentry/'
+            'NXinstrument/collection"}',
+            '{"DataSourceSelection": '
+            '"{\\"exp_c01\\": true, \\"exp_c02\\": true, '
+            '\\"exp_c03\\": true, \\"exp_c04\\": true}", '
+            '"DataSourcePreselection": '
+            '"{\\"exp_mot04\\": true, \\"exp_mot03\\": true, '
+            '\\"exp_mot05\\": true, \\"exp_mot06\\": true, '
+            '\\"nexdatas_configuration\\": false}", '
+            '"ComponentPreselection": '
+            '"{\\"beamtime_id\\": true, \\"slit2\\": true, '
+            '\\"slit1\\": true, \\"slit3\\": true}", '
+            '"ComponentSelection": '
+            '"{\\"lmbd01\\": true, \\"lmbd02\\": true, '
+            '\\"lmbd03\\": true, \\"lmbd04\\": true}", '
+            '"OrderedChannels": '
+            '"['
+            '\\"exp_c03\\", \\"exp_c02\\", '
+            '\\"lmbd04\\", \\"lmbd03\\", '
+            '\\"exp_mot06\\", \\"exp_mot04\\", '
+            '\\"slit2\\", \\"slit1\\" '
+            ']", '
+            '"DefaultDynamicPath": '
+            '"/$var.entryname#\'scan\'$var.serialno:NXentry/'
+            'NXinstrument/collection"}'
         ]
 
         header = None
@@ -7774,6 +7825,42 @@ For more help:
             ],
             [
                 ["Detector Components:", "pilatus"]
+            ],
+            [
+                ["Timer(s):", "exp_t01"],
+                ["Pool/Dynamic Detector Components:", "exp_c01, exp_c02"],
+                ["Detector Components:", "lmbd01"],
+                ["Descriptive Components:", "beamtime_id, slit2"],
+                ["Descriptive Dynamic Components:", 'exp_mot04'],
+                ["User Data:",
+                 "{\"sample_name\": \"\", \"chemical_formula\": \"\", "
+                 "\"title\": \"\"}"],
+                ["AppendEntry:", "False"],
+                ["ConfigDevice:", "p09/nxsconfigserver/haso228jk"],
+                ["WriterDevice:", "p00/nxsdatawriter/haso228"],
+                ["Door:", "p09/door/haso228jk.01"],
+                ["DynamicComponents:", "True"],
+                ["ComponentsFromMntGrp:", "False"],
+                ["DefaultDynamicLinks:", "True"],
+                ["DefaultDynamicPath:",
+                 "/$var.entryname#'scan'$var.serialno:NXentry/"
+                 "NXinstrument/collection"],
+                ["Unplotted Components:", "exp_c01"],
+                ["OptionalComponents:", "slit5"],
+                ["ConfigVariables:", "{}"]
+            ],
+            [
+                ["Pool/Dynamic Detector Components:",
+                 "exp_c03, exp_c02, exp_c01, exp_c04"],
+                ["Detector Components:",
+                 "lmbd04, lmbd03, lmbd01, lmbd02"],
+                ["Descriptive Components:",
+                 "slit2, slit1, beamtime_id, slit3"],
+                ["Descriptive Dynamic Components:",
+                 'exp_mot06, exp_mot04, exp_mot03, exp_mot05'],
+                ["DefaultDynamicPath:",
+                 "/$var.entryname#'scan'$var.serialno:NXentry/"
+                 "NXinstrument/collection"]
             ],
         ]
         dsnp = len(xds)
@@ -7811,6 +7898,7 @@ For more help:
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
                 self.assertEqual('', er)
+                # print(vl)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
                 self.assertEqual(len(doc), 1)

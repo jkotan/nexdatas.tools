@@ -783,6 +783,8 @@ class TableDictTools(object):
             'OptionalComponents': ('list', None),
             'DefaultDynamicPath': ('str', None),
         }
+        self.orderpar = 'OrderedChannels'
+        self.__order = []
 
         self.typemethods = {
             'str': self._getstr,
@@ -816,7 +818,14 @@ class TableDictTools(object):
         dvl = json.loads(value)
         svalue = ""
         if dvl:
-            svalue = ", ".join([key for key in dvl.keys() if dvl[key]])
+            lst = [key for key in dvl.keys() if dvl[key]]
+            if self.__order:
+                lst1 = [el for el in self.__order if el in lst]
+                lst1.extend(sorted(list(set(lst) - set(lst1))))
+                lst = lst1
+            else:
+                lst = sorted(lst)
+            svalue = ", ".join(lst)
         sep = ":" if name != " " else name
         return ["%s%s %s%s" % (name, sep, space, svalue)]
 
@@ -851,12 +860,6 @@ class TableDictTools(object):
              for hd in self.headers
              if self.headertypenames[hd][1]]
         )
-        # self.maxvaluesize = 0
-        # for desc in self.__description:
-        #     for hd in self.headers:
-        #         if hd in desc.keys():
-        #             if self.maxvaluesize < len(desc[hd]):
-        #                 self.maxvaluesize = len(desc[hd])
         lst = [""]
 
         if self.title is not None:
@@ -866,6 +869,10 @@ class TableDictTools(object):
         tb = len(lst)
         lst.append("")
         for desc in self.__description:
+            if self.orderpar in desc.keys():
+                self.__order = json.loads(desc[self.orderpar])
+            else:
+                self.__order = []
             for hd in self.headers:
                 if hd in desc.keys():
                     htp, name = self.headertypenames[hd]
