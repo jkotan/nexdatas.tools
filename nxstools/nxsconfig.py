@@ -730,11 +730,9 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
-    def geometryCmd(self, ds, args, md, pr):
+    def geometryCmd(self, args, md, pr):
         """ provides geometry info for given elements
 
-        :param ds: flag set True for datasources
-        :type ds: :obj:`bool`
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
         :param md: flag set True for mandatory components
@@ -753,9 +751,7 @@ class ConfigServer(object):
             "trans_offset",
             "depends_on",
         ]
-        if ds:
-            return []
-        elif not md:
+        if not md:
             return self.__describeComponents(args, cpheaders, private=pr)
         else:
             return self.__describeConfiguration(args, cpheaders)
@@ -1424,9 +1420,6 @@ class Geometry(Runner):
         parser = self._parser
         parser.add_argument("-s", "--server", dest="server",
                             help=("configuration server device name"))
-        parser.add_argument("-d", "--datasources", action="store_true",
-                            default=False, dest="datasources",
-                            help="perform operation for datasources")
         parser.add_argument("-m", "--mandatory", action="store_true",
                             default=False, dest="mandatory",
                             help="make use mandatory components")
@@ -1447,7 +1440,7 @@ class Geometry(Runner):
         """
         cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.geometryCmd(
-            options.datasources, options.args, options.mandatory,
+            options.args, options.mandatory,
             options.private))
         return string
 
