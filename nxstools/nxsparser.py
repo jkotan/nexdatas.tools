@@ -785,7 +785,7 @@ class TableDictTools(object):
         }
         self.orderpar = 'OrderedChannels'
         self.__order = []
-        
+
         self.typemethods = {
             'str': self._getstr,
             'list': self._getlist,
