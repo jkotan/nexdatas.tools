@@ -7759,7 +7759,7 @@ For more help:
             '{"ComponentSelection": "{\\"pilatus\\": true}"}',
             '{"UnplottedComponents": "[\\"exp_c01\\"]", '
             '"DataSourceSelection": "{\\"exp_c01\\": true, '
-            '\\"exp_c02\\": true, \\"exp_c03\\": false}", '
+            '\\"exp_c02\\": false, \\"exp_c03\\": false}", '
             '"DataSourcePreselection": '
             '"{\\"exp_mot04\\": true, \\"exp_mot03\\": false, '
             '\\"nexdatas_configuration\\": false}", '
@@ -7805,7 +7805,7 @@ For more help:
             ],
             [
                 ["Timer(s):", "exp_t01"],
-                ["Pool/Dynamic Detector Components:", "exp_c01, exp_c02"],
+                ["Pool/Dynamic Detector Components:", "exp_c01"],
                 ["Detector Components:", "lmbd01"],
                 ["Descriptive Components:", "beamtime_id, slit2"],
                 ["Descriptive Dynamic Components:", 'exp_mot04'],
