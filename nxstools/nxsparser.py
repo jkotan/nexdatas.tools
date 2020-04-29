@@ -823,6 +823,8 @@ class TableDictTools(object):
                 lst1 = [el for el in self.__order if el in lst]
                 lst1.extend(sorted(list(set(lst) - set(lst1))))
                 lst = lst1
+            else:
+                lst = sorted(lst)
             svalue = ", ".join(lst)
         sep = ":" if name != " " else name
         return ["%s%s %s%s" % (name, sep, space, svalue)]
