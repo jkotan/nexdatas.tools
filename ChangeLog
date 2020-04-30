@@ -1,5 +1,6 @@
-2020-04-29 Jan Kotanski <jankotan@gmail.com>
+2020-04-30 Jan Kotanski <jankotan@gmail.com>
 	* add order to output of nxsconfig info -r
+	* skip attributes for nxsconfig geometry
 	* remove -d from nxsconfig geometry
 	* tagged as v2.71.1
 

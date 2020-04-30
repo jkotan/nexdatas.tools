@@ -33,7 +33,7 @@ Micro QBPM       23    43.5     3
             </dimensions>
             </attribute>
           </field>
-          <field depebds_on="$(dependsony)" units="mm" type="NX_FLOAT64" name="$(yname)">
+          <field depends_on="$(dependsony)" units="mm" type="NX_FLOAT64" name="$(yname)">
             <strategy mode="INIT"/>$datasources.$(y)
             <attribute type="NX_CHAR" name="transformation_type">translation<strategy mode="INIT"/>
             </attribute>

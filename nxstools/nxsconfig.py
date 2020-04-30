@@ -543,7 +543,7 @@ class ConfigServer(object):
         return description
 
     def __describeComponents(self, args, headers=None, nonone=None,
-                             private=False):
+                             private=False, attrs=True):
         """ provides description of components
 
         :param args: list of item names
@@ -554,6 +554,8 @@ class ConfigServer(object):
         :type nonone: :obj:`list` <:obj:`str`>
         :param private: flag set True for components starting with '__'
         :type private: :obj:`bool`
+        :param attrs: flag set True for parsing attributes
+        :type attrs: :obj:`bool`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -608,7 +610,8 @@ class ConfigServer(object):
 
             for i, xmls in enumerate(cpxmls):
                 parameters = ParserTools.parseFields(xmls)
-                parameters.extend(ParserTools.parseAttributes(xmls))
+                if attrs:
+                    parameters.extend(ParserTools.parseAttributes(xmls))
                 parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
                 if dargs[i] in deps:
@@ -752,7 +755,8 @@ class ConfigServer(object):
             "depends_on",
         ]
         if not md:
-            return self.__describeComponents(args, cpheaders, private=pr)
+            return self.__describeComponents(args, cpheaders, private=pr,
+                                             attrs=False)
         else:
             return self.__describeConfiguration(args, cpheaders)
 
