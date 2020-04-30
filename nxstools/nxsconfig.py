@@ -763,7 +763,7 @@ class ConfigServer(object):
                                              attrs=False)
         else:
             return self.__describeConfiguration(args, cpheaders,
-                                             attrs=False)
+                                                attrs=False)
 
     def dataCmd(self, args):
         """ provides varaible values
