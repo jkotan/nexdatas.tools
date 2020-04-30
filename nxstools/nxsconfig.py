@@ -543,7 +543,7 @@ class ConfigServer(object):
         return description
 
     def __describeComponents(self, args, headers=None, nonone=None,
-                             private=False):
+                             private=False, attrs=True):
         """ provides description of components
 
         :param args: list of item names
@@ -554,6 +554,8 @@ class ConfigServer(object):
         :type nonone: :obj:`list` <:obj:`str`>
         :param private: flag set True for components starting with '__'
         :type private: :obj:`bool`
+        :param attrs: flag set True for parsing attributes
+        :type attrs: :obj:`bool`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -608,7 +610,8 @@ class ConfigServer(object):
 
             for i, xmls in enumerate(cpxmls):
                 parameters = ParserTools.parseFields(xmls)
-                parameters.extend(ParserTools.parseAttributes(xmls))
+                if attrs:
+                    parameters.extend(ParserTools.parseAttributes(xmls))
                 parameters.extend(ParserTools.parseLinks(xmls))
                 ttools = TableTools(parameters, nonone)
                 if dargs[i] in deps:
@@ -627,7 +630,8 @@ class ConfigServer(object):
             return ""
         return description
 
-    def __describeConfiguration(self, args, headers=None, nonone=None):
+    def __describeConfiguration(self, args, headers=None, nonone=None,
+                                attrs=True):
         """ provides description of final configuration
 
         :param args: list of item names
@@ -636,6 +640,8 @@ class ConfigServer(object):
         :type headers: :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
         :type nonone: :obj:`list` <:obj:`str`>
+        :param attrs: flag set True for parsing attributes
+        :type attrs: :obj:`bool`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -660,7 +666,8 @@ class ConfigServer(object):
         xmls = str(self._cnfServer.XMLString).strip()
         if xmls:
             description.extend(ParserTools.parseFields(xmls))
-            description.extend(ParserTools.parseAttributes(xmls))
+            if attrs:
+                description.extend(ParserTools.parseAttributes(xmls))
             description.extend(ParserTools.parseLinks(xmls))
         if not description:
             sys.stderr.write(
@@ -730,11 +737,9 @@ class ConfigServer(object):
         else:
             return self.__describeConfiguration(args, cpheaders, nonone)
 
-    def geometryCmd(self, ds, args, md, pr):
+    def geometryCmd(self, args, md, pr):
         """ provides geometry info for given elements
 
-        :param ds: flag set True for datasources
-        :type ds: :obj:`bool`
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
         :param md: flag set True for mandatory components
@@ -753,12 +758,12 @@ class ConfigServer(object):
             "trans_offset",
             "depends_on",
         ]
-        if ds:
-            return []
-        elif not md:
-            return self.__describeComponents(args, cpheaders, private=pr)
+        if not md:
+            return self.__describeComponents(args, cpheaders, private=pr,
+                                             attrs=False)
         else:
-            return self.__describeConfiguration(args, cpheaders)
+            return self.__describeConfiguration(args, cpheaders,
+                                                attrs=False)
 
     def dataCmd(self, args):
         """ provides varaible values
@@ -1424,9 +1429,6 @@ class Geometry(Runner):
         parser = self._parser
         parser.add_argument("-s", "--server", dest="server",
                             help=("configuration server device name"))
-        parser.add_argument("-d", "--datasources", action="store_true",
-                            default=False, dest="datasources",
-                            help="perform operation for datasources")
         parser.add_argument("-m", "--mandatory", action="store_true",
                             default=False, dest="mandatory",
                             help="make use mandatory components")
@@ -1447,7 +1449,7 @@ class Geometry(Runner):
         """
         cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.geometryCmd(
-            options.datasources, options.args, options.mandatory,
+            options.args, options.mandatory,
             options.private))
         return string
 
