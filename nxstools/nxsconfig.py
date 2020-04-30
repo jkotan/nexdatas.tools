@@ -630,7 +630,8 @@ class ConfigServer(object):
             return ""
         return description
 
-    def __describeConfiguration(self, args, headers=None, nonone=None):
+    def __describeConfiguration(self, args, headers=None, nonone=None,
+                                attrs=True):
         """ provides description of final configuration
 
         :param args: list of item names
@@ -639,6 +640,8 @@ class ConfigServer(object):
         :type headers: :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
         :type nonone: :obj:`list` <:obj:`str`>
+        :param attrs: flag set True for parsing attributes
+        :type attrs: :obj:`bool`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -663,7 +666,8 @@ class ConfigServer(object):
         xmls = str(self._cnfServer.XMLString).strip()
         if xmls:
             description.extend(ParserTools.parseFields(xmls))
-            description.extend(ParserTools.parseAttributes(xmls))
+            if attrs:
+                description.extend(ParserTools.parseAttributes(xmls))
             description.extend(ParserTools.parseLinks(xmls))
         if not description:
             sys.stderr.write(
@@ -758,7 +762,8 @@ class ConfigServer(object):
             return self.__describeComponents(args, cpheaders, private=pr,
                                              attrs=False)
         else:
-            return self.__describeConfiguration(args, cpheaders)
+            return self.__describeConfiguration(args, cpheaders,
+                                             attrs=False)
 
     def dataCmd(self, args):
         """ provides varaible values
