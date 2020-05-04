@@ -211,7 +211,11 @@ For more help:
             rix = [int(el)
                    for el in np.argsort([el[0] for el in result])]
             tix = [int(el)
-                   for el in np.argsort([str(el[0][0][0]) for el in tbody])]
+                   for el in np.argsort([
+                           (str(el[0][0][0])
+                            if '@' not in str(el[0][0][0])
+                            else str(el[0][0][0][0]))
+                           for el in tbody])]
         else:
             rix = range(len(result))
             tix = rix
@@ -223,10 +227,17 @@ For more help:
                     self.assertEqual(tbody[tix[i]][j].tagname, 'entry')
                     self.assertEqual(
                         tbody[tix[i]][j][0].tagname, 'paragraph')
-                    self.assertEqual(
-                        tbody[tix[i]][j][0][0].tagname, '#text')
-                    self.assertEqual(
-                        str(tbody[tix[i]][j][0][0]), result[rix[i]][j])
+                    if result[rix[i]][j] and '@' in result[rix[i]][j]:
+                        self.assertEqual(
+                            tbody[tix[i]][j][0][0].tagname, 'reference')
+                        self.assertEqual(len(tbody[tix[i]][j][0][0]), 1)
+                        self.assertEqual(
+                            str(tbody[tix[i]][j][0][0][0]), result[rix[i]][j])
+                    else:
+                        self.assertEqual(
+                            tbody[tix[i]][j][0][0].tagname, '#text')
+                        self.assertEqual(
+                            str(tbody[tix[i]][j][0][0]), result[rix[i]][j])
                 else:
                     self.assertTrue(result[rix[i]][j] is None)
 
@@ -8132,7 +8143,7 @@ For more help:
             "</datasource>"
             "</field>"
             "<field type='NX_CHAR' name='depends_on'>"
-            "transformations/yoffset'<strategy mode='INIT'/>"
+            "transformations/yoffset<strategy mode='INIT'/>"
             "</field>"
             "<group name='transformations' type='NXtransformations'>"
             "<field depends_on='rot' name='yoffset'  "
@@ -8175,7 +8186,7 @@ For more help:
             "</datasource>"
             "</field>"
             "<field type='NX_CHAR' name='depends_on'>"
-            "transformations/y'<strategy mode='INIT'/>"
+            "transformations/y<strategy mode='INIT'/>"
             "</field>"
             "<group name='transformations' type='NXtransformations'>"
             "<field type='NX_FLOAT' depends_on='x' name='y' units='mm' "
@@ -8212,7 +8223,7 @@ For more help:
                 ["entry/instrument/slit2/y_gap",
                  "ygap", "mm", None, None, None, None],
                 ["entry/instrument/slit2/depends_on",
-                 None, None, None, None, None, "[transformations/yoffset']"],
+                 None, None, None, None, None, "[transformations/yoffset]"],
                 ["entry/instrument/slit2/transformations/yoffset",
                  "y_offset", "m", "translation", "0 1 0",
                  "2.3 0.3 3.4", "rot"],
@@ -8226,7 +8237,7 @@ For more help:
                 ["entry/instrument/pinhole/diameter",
                  "phdiameter", "mm", None, None, None, None],
                 ["entry/instrument/pinhole/depends_on",
-                 None, None, None, None, None, "[transformations/y']"],
+                 None, None, None, None, None, "[transformations/y]"],
                 ["entry/instrument/pinhole/transformations/y",
                  "phy", "mm", "translation", "0 1 0", None, "x"],
                 ["entry/instrument/pinhole/transformations/x",
@@ -8281,6 +8292,738 @@ For more help:
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
                 self.checkRSTTable(section, header, result[ni], sort=True)
+        el.close()
+
+    def test_describe_datasources(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+
+        odsname = "mcs_test_datasource"
+        avds = el.availableDataSources()
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>",
+        ]
+
+        header = '<thead><row>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '</row></thead>'
+        dsname = []
+        for i in range(len(xds)):
+            dsname.append(odsname + '_%s' % i)
+            while dsname[i] in avds:
+                dsname[i] = dsname[i] + '_%s' % i
+
+        result = [
+            [
+                ["CLIENT", "motor_1"]
+            ],
+            [
+                ["CLIENT", "motor_2"]
+            ],
+            [
+                ["TANGO",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position"]
+            ],
+            [
+                ["PYEVAL", None]
+            ],
+            [
+                ["DB", None]
+            ],
+        ]
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            ('nxsconfig describe -d -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe -d --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --datasources -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --datasources --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(dsname):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "DataSource: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_describe_components(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='data' type='NXdata'>"
+            "<field name='slit1' type='NX_FLOAT' units='mm'>"
+            "<datasource name='sl1right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='slit2' type='NXslit'>"
+            "<field name='y_gap' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='ygap' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/yoffset<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field depends_on='rot' name='yoffset'  "
+            "type='NX_FLOAT64' units='m' >"
+            "<attribute type='NX_CHAR' name='transformation_type'>"
+            "translation<strategy mode='INIT'/></attribute>"
+            "<attribute type='NX_FLOAT64' name='vector'>0 1 0"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<attribute type='NX_FLOAT64' name='offset'>2.3 0.3 3.4"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<datasource name='y_offset' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' />"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "<field type='NX_FLOAT' name='rot' units='deg' "
+            "transformation_type='rotation' vector='0 1 0' >"
+            "4.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='pinhole' type='NXpinhole'>"
+            "<field name='diameter' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='phdiameter' type='CLIENT'>"
+            "<record name='ph_diameter'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/y<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field type='NX_FLOAT' depends_on='x' name='y' units='mm' "
+            "transformation_type='translation' vector='0 1 0' >"
+            "<strategy mode='STEP' />"
+            "<datasource name='phy' type='CLIENT'>"
+            "<record name='ph_y'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_FLOAT' name='x' units='mm' "
+            "transformation_type='translation' vector='1 0 0' >"
+            "14.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>nexus_path</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>units</paragraph></entry>' \
+            '<entry><paragraph>depends_on</paragraph></entry>' \
+            '<entry><paragraph>trans_type</paragraph></entry>' \
+            '<entry><paragraph>trans_vector</paragraph></entry>' \
+            '<entry><paragraph>trans_offset</paragraph></entry>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '<entry><paragraph>value</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["entry/data/slit1",
+                 "NX_FLOAT", "INIT", None, "mm",
+                 None, None, None, None,
+                 "sl1right", "CLIENT", "motor_1", None],
+            ],
+            [
+                ["entry/instrument/slit2/y_gap",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 None, None, None, None,
+                 "ygap", "CLIENT", "motor_2", None],
+                ["entry/instrument/slit2/depends_on",
+                 "NX_CHAR", "INIT", None, None,
+                 "[transformations/yoffset]", None, None, None,
+                 None, None, None, "transformations/yoffset"],
+                ["entry/instrument/slit2/transformations/yoffset",
+                 "NX_FLOAT64", "INIT", None, "m",
+                 "rot", "translation", "0 1 0", "2.3 0.3 3.4",
+                 "y_offset", "TANGO",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position", None],
+                ["entry/instrument/slit2/transformations/rot",
+                 "NX_FLOAT", "INIT", None, "deg",
+                 None, "rotation", "0 1 0",  None,
+                 None, None, None, "4.5"],
+                ["entry/instrument/slit2/transformations/"
+                 "yoffset@transformation_type",
+                 "NX_CHAR", "INIT", None, None,
+                 None, "translation", None, None,
+                 None, None, None, "translation"],
+                ["entry/instrument/slit2/transformations/yoffset@vector",
+                 "NX_FLOAT64", "INIT", "[3]", None,
+                 None, None, "0 1 0", None,
+                 None, None, None, "0 1 0"],
+                ["entry/instrument/slit2/transformations/yoffset@offset",
+                 "NX_FLOAT64", "INIT", "[3]", None,
+                 None, None, None, "2.3 0.3 3.4",
+                 None, None, None, "2.3 0.3 3.4"],
+            ],
+            [
+                ["entry/instrument/pinhole/diameter",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 None, None, None, None,
+                 "phdiameter", "CLIENT", "ph_diameter", None],
+                ["entry/instrument/pinhole/depends_on",
+                 "NX_CHAR", "INIT",  None, None,
+                 "[transformations/y]", None, None, None,
+                 None, None, None, "transformations/y"],
+                ["entry/instrument/pinhole/transformations/y",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 "x", "translation", "0 1 0", None,
+                 "phy", "CLIENT", "ph_y", None],
+                ["entry/instrument/pinhole/transformations/x",
+                 "NX_FLOAT", "INIT", None, "mm",
+                 None, "translation", "1 0 0", None,
+                 None, None, None, "14.5"],
+            ],
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig describe -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_describe_components_mandatory(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='data' type='NXdata'>"
+            "<field name='slit1' type='NX_FLOAT' units='mm'>"
+            "<datasource name='sl1right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='slit2' type='NXslit'>"
+            "<field name='y_gap' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='ygap' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/yoffset<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field depends_on='rot' name='yoffset'  "
+            "type='NX_FLOAT64' units='m' >"
+            "<attribute type='NX_CHAR' name='transformation_type'>"
+            "translation<strategy mode='INIT'/></attribute>"
+            "<attribute type='NX_FLOAT64' name='vector'>0 1 0"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<attribute type='NX_FLOAT64' name='offset'>2.3 0.3 3.4"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<datasource name='y_offset' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' />"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "<field type='NX_FLOAT' name='rot' units='deg' "
+            "transformation_type='rotation' vector='0 1 0' >"
+            "4.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='pinhole' type='NXpinhole'>"
+            "<field name='diameter' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='phdiameter' type='CLIENT'>"
+            "<record name='ph_diameter'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/y<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field type='NX_FLOAT' depends_on='x' name='y' units='mm' "
+            "transformation_type='translation' vector='0 1 0' >"
+            "<strategy mode='STEP' />"
+            "<datasource name='phy' type='CLIENT'>"
+            "<record name='ph_y'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_FLOAT' name='x' units='mm' "
+            "transformation_type='translation' vector='1 0 0' >"
+            "14.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>nexus_path</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>units</paragraph></entry>' \
+            '<entry><paragraph>depends_on</paragraph></entry>' \
+            '<entry><paragraph>trans_type</paragraph></entry>' \
+            '<entry><paragraph>trans_vector</paragraph></entry>' \
+            '<entry><paragraph>trans_offset</paragraph></entry>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '<entry><paragraph>value</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["entry/data/slit1",
+                 "NX_FLOAT", "INIT", None, "mm",
+                 None, None, None, None,
+                 "sl1right", "CLIENT", "motor_1", None],
+                ["entry/instrument/slit2/transformations/yoffset@offset",
+                 "NX_FLOAT64", "INIT", "[3]", None,
+                 None, None, None, "2.3 0.3 3.4",
+                 None, None, None, "2.3 0.3 3.4"],
+                ["entry/instrument/slit2/transformations/yoffset",
+                 "NX_FLOAT64", "INIT", None, "m",
+                 "rot", "translation", "0 1 0", "2.3 0.3 3.4",
+                 "y_offset", "TANGO",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position", None],
+                ["entry/instrument/slit2/y_gap",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 None, None, None, None,
+                 "ygap", "CLIENT", "motor_2", None],
+                ["entry/instrument/slit2/depends_on",
+                 "NX_CHAR", "INIT", None, None,
+                 "[transformations/yoffset]", None, None, None,
+                 None, None, None, "transformations/yoffset"],
+                ["entry/instrument/slit2/transformations/rot",
+                 "NX_FLOAT", "INIT", None, "deg",
+                 None, "rotation", "0 1 0",  None,
+                 None, None, None, "4.5"],
+                ["entry/instrument/slit2/transformations/"
+                 "yoffset@transformation_type",
+                 "NX_CHAR", "INIT", None, None,
+                 None, "translation", None, None,
+                 None, None, None, "translation"],
+                ["entry/instrument/slit2/transformations/yoffset@vector",
+                 "NX_FLOAT64", "INIT", "[3]", None,
+                 None, None, "0 1 0", None,
+                 None, None, None, "0 1 0"],
+            ],
+            [
+                ["entry/data/slit1",
+                 "NX_FLOAT", "INIT", None, "mm",
+                 None, None, None, None,
+                 "sl1right", "CLIENT", "motor_1", None],
+                ["entry/instrument/pinhole/diameter",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 None, None, None, None,
+                 "phdiameter", "CLIENT", "ph_diameter", None],
+                ["entry/instrument/pinhole/depends_on",
+                 "NX_CHAR", "INIT",  None, None,
+                 "[transformations/y]", None, None, None,
+                 None, None, None, "transformations/y"],
+                ["entry/instrument/pinhole/transformations/y",
+                 "NX_FLOAT", "STEP", None, "mm",
+                 "x", "translation", "0 1 0", None,
+                 "phy", "CLIENT", "ph_y", None],
+                ["entry/instrument/pinhole/transformations/x",
+                 "NX_FLOAT", "INIT", None, "mm",
+                 None, "translation", "1 0 0", None,
+                 None, None, None, "14.5"],
+            ],
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+#        print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+        self.assertEqual(el.setMandatoryComponents([name[0]]), None)
+
+        commands = [
+            ('nxsconfig describe -m -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe -m --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --mandatory -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --mandatory --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name[1:]):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                self.checkRSTTable(section, header, result[ni], sort=True)
+        el.close()
+
+    def test_describe_components_external(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+        avds = el.availableDataSources()
+
+        oname = "mcs_test_component"
+        odsname = "mcs_test_datasource"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_FLOAT'>"
+            "$datasources.%s"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<field name='data'>"
+            "<strategy mode='STEP'/>"
+            "$datasources.%s"
+            "</field>"
+            "<field name='data2'>"
+            "$datasources.%s"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data'>"
+            "$datasources.%s"
+            "<dimensions rank='1'>"
+            "<dim index='0'  value='20'/>"
+            "</dimensions>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition><field name='data' type='NX_CHAR'>"
+            "$datasources.%s"
+            "<dimensions rank='2' />"
+            "<strategy mode='FINAL'/>"
+            "</field>"
+            "</definition>"
+        ]
+        xds = [
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>",
+            "<datasource name='%s' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>",
+            "<datasource name='%s' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' "
+            "encoding='LIMA_VIDEO_IMAGE'/>"
+            "<record name='Position'/>"
+            "</datasource>",
+            "<datasource name='%s' type='PYEVAL'>"
+            "<result>ds.result = 25.6"
+            "</result>"
+            "</datasource>",
+            "<datasource name='%s' type='DB'>"
+            "<database dbname='mydb' dbtype='PGSQL'/>"
+            "<query format='IMAGE'>SELECT * from weather limit 3"
+            "</query>"
+            "</datasource>",
+        ]
+
+        header = '<thead><row>' \
+            '<entry><paragraph>nexus_path</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>shape</paragraph></entry>' \
+            '<entry><paragraph>units</paragraph></entry>' \
+            '<entry><paragraph>depends_on</paragraph></entry>' \
+            '<entry><paragraph>trans_type</paragraph></entry>' \
+            '<entry><paragraph>trans_vector</paragraph></entry>' \
+            '<entry><paragraph>trans_offset</paragraph></entry>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>source_type</paragraph></entry>' \
+            '<entry><paragraph>source</paragraph></entry>' \
+            '<entry><paragraph>value</paragraph></entry>' \
+            '</row></thead>'
+
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+
+        dsname = []
+        for i in range(len(xds)):
+
+            dsname.append(odsname + '_%s' % i)
+            while dsname[i] in avds:
+                dsname[i] = dsname[i] + '_%s' % i
+        dss = {
+            name[0]: [dsname[0]],
+            name[1]: [dsname[1], dsname[2]],
+            name[2]: [dsname[3]],
+            name[3]: [dsname[4]],
+        }
+
+        result = [
+            [
+                ["data", "NX_FLOAT", "INIT",
+                 None, None, None, None, None, None,
+                 dsname[0], "CLIENT", "motor_1", None],
+            ],
+            [
+                ["data", None, "STEP",
+                 None, None, None, None, None, None,
+                 dsname[1], "CLIENT", "motor_2", None],
+                ["data2", None, "FINAL",
+                 None, None, None, None, None, None,
+                 dsname[2], "TANGO",
+                 "haso.desy.de:10000/p09/motor/exp.01/Position", None],
+            ],
+            [
+                ["data", None, "INIT",
+                 "[20]", None, None, None, None, None,
+                 dsname[3], "PYEVAL", None, None],
+            ],
+            [
+                ["data", "NX_CHAR", "FINAL",
+                 "['*', '*']", None, None, None, None, None,
+                 dsname[4], "DB", None, None],
+            ],
+        ]
+        for i in range(np):
+            self.setXML(el, xml[i] % tuple(dss[name[i]]))
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        dsnp = len(xds)
+        for i in range(dsnp):
+            self.setXML(el, xds[i] % dsname[i])
+            self.assertEqual(el.storeDataSource(dsname[i]), None)
+            self.__ds.append(dsname[i])
+
+        commands = [
+            ('nxsconfig describe -s %s'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --server %s'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
         el.close()
 
 
