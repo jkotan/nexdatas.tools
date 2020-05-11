@@ -1141,6 +1141,8 @@ For more help:
 
                 print(vl)
                 self.assertEqual('', er)
+                el.XMLSettings = self._scanXml % fname
+                el.openEntry()
                 el.closeEntry()
                 el.closeFile()
 
