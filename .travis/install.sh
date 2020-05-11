@@ -29,13 +29,13 @@ docker exec -it --user root ndts service tango-starter restart
 
 if [ $2 = "2" ]; then
     echo "install python-pytango ..."
-    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python-pytango python-fabio python-argcomplete python-setuptools'
+    docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python-pytango python-fabio python-argcomplete python-setuptools python-nxswriter'
 else
     echo "install python3-pytango ..."
     if [ $1 = "ubuntu20.04" ]; then
-	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-fabio python3-argcomplete python3-setuptools'
+	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-fabio python3-argcomplete python3-setuptools python3-nxswriter'
     else
-	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete python3-setuptools'
+	docker exec -it --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete python3-setuptools python3-nxswriter'
     fi
 fi
 if [ $? -ne "0" ]
