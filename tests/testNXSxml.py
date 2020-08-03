@@ -188,7 +188,7 @@ def main():
       diffractometer""")
     d = NDimensions(f, "1")
     d.dim("1", "100")
-    f.setText(" ".join([str(ll) for ll in range(100)]))
+    f.setText(" ".join([str(il) for il in range(100)]))
     f = NField(de, "rotation_angle", "NX_FLOAT")
     f.setText("0.0")
     f = NField(de, "x_pixel_size", "NX_FLOAT")
