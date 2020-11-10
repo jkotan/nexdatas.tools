@@ -1,3 +1,7 @@
+2020-11-10 Jan Kotanski <jankotan@gmail.com>
+	* fix double start/stop server in nxsetup
+	* tagged as v2.71.2
+
 2020-04-30 Jan Kotanski <jankotan@gmail.com>
 	* add order to output of nxsconfig info -r
 	* skip attributes for nxsconfig geometry

@@ -527,12 +527,11 @@ class SetUp(object):
                 except Exception:
                     pass
                 if servers:
-                    for vl in servers:
+                    for vl in set(servers):
                         svl = vl.split('\t')[0]
                         if name.startswith("NXSRecSelector") \
                                 and svl.startswith("NXSRecSelector"):
                             self._changeLevel(svl, 4)
-
                         if (started and svl in started) or not restart:
                             if '/' in name:
                                 cname = svl
@@ -620,7 +619,7 @@ class SetUp(object):
                 except Exception:
                     pass
                 if servers:
-                    for vl in servers:
+                    for vl in set(servers):
                         svl = vl.split('\t')[0]
                         if started and svl in started:
                             if '/' in name:
