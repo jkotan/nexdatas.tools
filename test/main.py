@@ -171,8 +171,8 @@ if H5CPP_AVAILABLE:
     import FileWriterH5Cpp_test
     import NXSCollectH5Cpp_test
     import NXSFileInfoH5Cpp_test
-if PNI_AVAILABLE and H5PY_AVAILABLE:
-    import FileWriterPNIH5PY_test
+# if PNI_AVAILABLE and H5PY_AVAILABLE:
+#     import FileWriterPNIH5PY_test
 if H5PY_AVAILABLE and H5CPP_AVAILABLE:
     import FileWriterH5CppH5PY_test
 

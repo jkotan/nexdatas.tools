@@ -294,7 +294,6 @@ class H5CppWriterTest(unittest.TestCase):
         finally:
             os.remove(self._fname)
 
-
     # default createfile test
     # \brief It tests default settings
     def test_pnifile(self):
