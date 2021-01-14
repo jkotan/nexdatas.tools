@@ -17,7 +17,7 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-""" Provides pni file writer """
+""" Provides h5cpp file writer """
 
 import math
 import os
@@ -220,6 +220,51 @@ def open_file(filename, readonly=False, libver=None, swmr=False):
     return H5CppFile(h5cpp.file.open(filename, flag, fapl), filename)
 
 
+def is_image_file_supported():
+    """ provides if loading of image files are supported
+
+    :retruns: if loading of image files are supported
+    :rtype: :obj:`bool`
+    """
+    return hasattr(h5cpp.file, "from_buffer") and \
+        hasattr(h5cpp.file, "ImageFlags")
+
+
+def load_file(membuffer, filename=None, readonly=False, **pars):
+    """ load a file from memory byte buffer
+
+    :param membuffer: memory buffer
+    :type membuffer: :obj:`bytes` or :obj:`io.BytesIO`
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param readonly: readonly flag
+    :type readonly: :obj:`bool`
+    :param pars: parameters
+    :type pars: :obj:`dict` < :obj:`str`, :obj:`str`>
+    :returns: file object
+    :rtype: :class:`H5PYFile`
+    """
+    if not is_image_file_supported():
+        raise Exception(
+            "Loading a file from a memory buffer not supported")
+    if type(membuffer).__name__ == "ndarray":
+        npdata = np.array(membuffer[:], dtype="uint8")
+    else:
+        if hasattr(membuffer, "getbuffer"):
+            membuffer = membuffer.getbuffer()
+        elif hasattr(membuffer, "getvalue"):
+            membuffer = membuffer.getvalue()
+        try:
+            npdata = np.frombuffer(membuffer[:], dtype=np.uint8)
+        except Exception:
+            npdata = np.fromstring(membuffer[:], dtype=np.uint8)
+    if readonly:
+        flag = h5cpp.file.ImageFlags.READONLY
+    else:
+        flag = h5cpp.file.ImageFlags.READWRITE
+    return H5CppFile(h5cpp.file.from_buffer(npdata, flag), filename)
+
+
 def create_file(filename, overwrite=False, libver=None, swmr=None):
     """ create a new file
 
@@ -326,7 +371,7 @@ class H5CppFile(filewriter.FTFile):
     def __init__(self, h5object, filename):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param filename:  file name
         :type filename: :obj:`str`
@@ -431,7 +476,7 @@ class H5CppGroup(filewriter.FTGroup):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: tree parent
         :type tparent: :obj:`FTObject`
@@ -625,7 +670,7 @@ class H5CppGroup(filewriter.FTGroup):
     def names(self):
         """ read the child names
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`list` <`str`>
         """
         return [
@@ -690,7 +735,7 @@ class H5CppField(filewriter.FTField):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -760,7 +805,7 @@ class H5CppField(filewriter.FTField):
     def read(self):
         """ read the field value
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
         if self.dtype in ['string', b'string']:
@@ -784,7 +829,7 @@ class H5CppField(filewriter.FTField):
     def write(self, o):
         """ write the field value
 
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
         self._h5object.write(o)
@@ -794,7 +839,7 @@ class H5CppField(filewriter.FTField):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
         if self.shape == (1,) and t == 0:
@@ -810,7 +855,7 @@ class H5CppField(filewriter.FTField):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
         if self.shape == (1,) and t == 0:
@@ -977,7 +1022,7 @@ class H5CppLink(filewriter.FTLink):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -1079,7 +1124,7 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -1159,6 +1204,14 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         return H5CppAttribute(
             self._h5object.__getitem__(name), self.parent)
 
+    def names(self):
+        """ key values
+
+        :returns: attribute names
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return [att.name for att in self._h5object]
+
     def close(self):
         """ close attribure manager
         """
@@ -1188,7 +1241,7 @@ class H5CppAttribute(filewriter.FTAttribute):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
