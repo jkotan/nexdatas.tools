@@ -28,6 +28,7 @@ import binascii
 import string
 import h5py
 import time
+import io
 
 import nxstools.filewriter as FileWriter
 import nxstools.h5pywriter as H5PYWriter
@@ -44,6 +45,11 @@ if int(H5PYMAJOR) > 1 or (int(H5PYMAJOR) == 1 and int(H5PYMINOR) > 4):
     SWMR = True
 else:
     SWMR = False
+
+if int(H5PYMAJOR) > 3 or (int(H5PYMAJOR) == 2 and int(H5PYMINOR) >= 9):
+    MEMBUF = True
+else:
+    MEMBUF = False
 
 
 # if 64-bit machione
@@ -83,8 +89,8 @@ class testwriter(object):
         self.params.append([target, parent, name])
         return self.result
 
-    def deflate_filter(self):
-        self.commands.append("deflate_filter")
+    def data_filter(self):
+        self.commands.append("data_filter")
         self.params.append([])
         return self.result
 
@@ -244,6 +250,64 @@ class H5PYWriterTest(unittest.TestCase):
 
     # default createfile test
     # \brief It tests default settings
+    def test_default_loadfile(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._fname = '%s/%s%s.h5' % (os.getcwd(),
+                                      self.__class__.__name__, fun)
+        try:
+            fl = H5PYWriter.create_file(self._fname)
+            fl.close()
+            fl = H5PYWriter.create_file(self._fname, True)
+            fl.close()
+
+            fl = H5PYWriter.open_file(self._fname, readonly=True)
+            f = fl.root()
+            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(
+                f.attributes["file_name"][...],
+                self._fname)
+            for at in f.attributes:
+                print("%s %s %s" % (at.name, at.read(), at.dtype))
+                at.close()
+            self.assertTrue(f.attributes["NX_class"][...], "NXroot")
+            self.assertEqual(f.size, 0)
+            f.close()
+            fl.close()
+
+            with open(self._fname, "rb") as fh:
+                buf = io.BytesIO(fh.read())
+
+            if not H5PYWriter.is_image_file_supported():
+                self.myAssertRaise(
+                    Exception, H5PYWriter.load_file, buf, self._fname)
+            else:
+                fl = H5PYWriter.load_file(buf, self._fname, readonly=True)
+                f = fl.root()
+                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(
+                    f.attributes["file_name"][...], self._fname)
+                for at in f.attributes:
+                    print("%s %s %s" % (at.name, at.dtype, at.read()))
+                self.assertTrue(f.attributes["NX_class"][...], "NXroot")
+                self.assertEqual(f.size, 0)
+                fl.close()
+                fl.reopen()
+                self.assertEqual(6, len(f.attributes))
+                for at in f.attributes:
+                    print("%s %s %s" % (at.name, at.read(), at.dtype))
+                self.assertEqual(
+                    f.attributes["file_name"][...],
+                    self._fname)
+                self.assertTrue(f.attributes["NX_class"][...], "NXroot")
+                self.assertEqual(f.size, 0)
+                fl.close()
+
+        finally:
+            os.remove(self._fname)
+
+    # default createfile test
+    # \brief It tests default settings
     def test_h5pyfile(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -337,10 +401,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -920,10 +984,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -1121,6 +1185,7 @@ class H5PYWriterTest(unittest.TestCase):
             self.assertEqual(fl.parent, None)
             self.assertEqual(fl.readonly, False)
 
+            self.assertEqual(fl.default_field(), None)
             fl.close()
 
             fl.reopen(True)
@@ -1173,10 +1238,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -1422,10 +1487,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -1691,10 +1756,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -2010,10 +2075,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = True
 
@@ -2069,8 +2134,8 @@ class H5PYWriterTest(unittest.TestCase):
                 det = ins.create_group("detector", "NXdetector")
                 entry.create_group("data", "NXdata")
 
-                df0 = H5PYWriter.deflate_filter()
-                df1 = H5PYWriter.deflate_filter()
+                df0 = H5PYWriter.data_filter()
+                df1 = H5PYWriter.data_filter()
                 df1.filterid = 32008
                 df1.options = (0, 2)
                 df2 = H5PYWriter.data_filter()
@@ -2131,11 +2196,11 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.H5PYDataFilter()
-            df1 = H5PYWriter.H5PYDataFilter()
+            df0 = H5PYWriter.H5PYDeflate()
+            df1 = H5PYWriter.H5PYDeflate()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
-            df2 = H5PYWriter.H5PYDataFilter()
+            df2 = H5PYWriter.data_filter()
+            df2 = H5PYWriter.H5PYDeflate()
             df2.rate = 4
             df2.shuffle = True
 
@@ -2189,10 +2254,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -2334,6 +2399,7 @@ class H5PYWriterTest(unittest.TestCase):
             self.assertEqual(fl.parent, None)
             self.assertEqual(fl.readonly, False)
 
+            self.assertEqual(fl.default_field().name, "lkfloatvec")
             fl.close()
 
             fl.reopen(True)
@@ -2386,10 +2452,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -2845,10 +2911,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -3121,10 +3187,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 
@@ -3438,10 +3504,10 @@ class H5PYWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5PYWriter.deflate_filter()
-            df1 = H5PYWriter.deflate_filter()
+            df0 = H5PYWriter.data_filter()
+            df1 = H5PYWriter.data_filter()
             df1.rate = 2
-            df2 = H5PYWriter.deflate_filter()
+            df2 = H5PYWriter.data_filter()
             df2.rate = 4
             df2.shuffle = 6
 

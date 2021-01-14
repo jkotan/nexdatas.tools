@@ -1,3 +1,9 @@
+2021-01-16 Jan Kotanski <jankotan@gmail.com>
+	* add h5cppwriter.load_file()
+	* add h5pywriter.load_file()
+	* add fileywriter.default_field()
+	* tagged as v2.72.0
+
 2020-11-10 Jan Kotanski <jankotan@gmail.com>
 	* fix double start/stop server in nxsetup
 	* tagged as v2.71.2

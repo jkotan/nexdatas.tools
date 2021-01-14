@@ -23,9 +23,18 @@ import h5py
 import numpy as np
 import os
 import sys
+import io
 
 from . import filewriter
 # from .Types import nptype
+
+try:
+    sver = h5py.__version__.split(".", 2)
+    h5maj = int(sver[0])
+    h5min = int(sver[1])
+    h5ver = h5maj * 1000 + h5min
+except Exception:
+    h5ver = 1000
 
 
 if sys.version_info > (3,):
@@ -45,6 +54,42 @@ def nptype(dtype):
     if str(dtype) in ['string', b'string']:
         return 'str'
     return dtype
+
+
+def is_image_file_supported():
+    """ provides if loading of image files are supported
+
+    :retruns: if loading of image files are supported
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 2009
+
+
+def load_file(membuffer, filename=None, readonly=False, **pars):
+    """ load a file from memory byte buffer
+
+    :param membuffer: memory buffer
+    :type membuffer: :obj:`bytes` or :obj:`io.BytesIO`
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param readonly: readonly flag
+    :type readonly: :obj:`bool`
+    :param pars: parameters
+    :type pars: :obj:`dict` < :obj:`str`, :obj:`str`>
+    :returns: file object
+    :rtype: :class:`H5PYFile`
+    """
+    if not is_image_file_supported():
+        raise Exception("Loading a file from a memory buffer not supported")
+    if not hasattr(membuffer, 'read') or not hasattr(membuffer, 'seek'):
+        if hasattr(membuffer, "tobytes"):
+            membuffer = membuffer.tobytes()
+        membuffer = io.BytesIO(membuffer)
+    if readonly:
+        fobj = h5py.File(membuffer, "r", **pars)
+    else:
+        fobj = h5py.File(membuffer, "r+", **pars)
+    return H5PYFile(fobj, filename)
 
 
 def open_file(filename, readonly=False, **pars):
@@ -121,7 +166,7 @@ def get_links(parent):
     :type parent: :class:`FTObject`
     :returns: list of link objects
     :returns: link object
-    :rtype: :obj: `list` <:class:`PNILink`>
+    :rtype: :obj: `list` <:class:`H5PYLink`>
     """
 
     return [H5PYLink(
@@ -149,7 +194,7 @@ class H5PYFile(filewriter.FTFile):
     def __init__(self, h5object, filename):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param filename:  file name
         :type filename: :obj:`str`
@@ -248,7 +293,7 @@ class H5PYGroup(filewriter.FTGroup):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -460,7 +505,7 @@ class H5PYGroup(filewriter.FTGroup):
     def names(self):
         """ read the child names
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`list` <`str`>
         """
         return list(self._h5object.keys())
@@ -495,7 +540,7 @@ class H5PYField(filewriter.FTField):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -554,7 +599,7 @@ class H5PYField(filewriter.FTField):
     def read(self):
         """ read the field value
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
         fl = self._h5object[...]
@@ -566,7 +611,7 @@ class H5PYField(filewriter.FTField):
     def write(self, o):
         """ write the field value
 
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
         self._h5object[...] = o
@@ -576,7 +621,7 @@ class H5PYField(filewriter.FTField):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
         if isinstance(o, np.ndarray):
@@ -598,7 +643,7 @@ class H5PYField(filewriter.FTField):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
         fl = self._h5object.__getitem__(t)
@@ -665,7 +710,7 @@ class H5PYLink(filewriter.FTLink):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -787,7 +832,7 @@ class H5PYAttributeManager(filewriter.FTAttributeManager):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -903,6 +948,14 @@ class H5PYAttributeManager(filewriter.FTAttributeManager):
         """
         return H5PYAttribute((self._h5object, name), self.parent)
 
+    def names(self):
+        """ key values
+
+        :returns: attribute names
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return self._h5object.keys()
+
     def reopen(self):
         """ reopen field
         """
@@ -932,7 +985,7 @@ class H5PYAttribute(filewriter.FTAttribute):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
