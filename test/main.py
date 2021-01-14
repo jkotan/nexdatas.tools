@@ -171,10 +171,10 @@ if H5CPP_AVAILABLE:
     import FileWriterH5Cpp_test
     import NXSCollectH5Cpp_test
     import NXSFileInfoH5Cpp_test
-if PNI_AVAILABLE and H5PY_AVAILABLE:
-    import FileWriterPNIH5PY_test
-# if PNI_AVAILABLE and H5CPP_AVAILABLE:
-#     import FileWriterPNIH5Cpp_test
+# if PNI_AVAILABLE and H5PY_AVAILABLE:
+#     import FileWriterPNIH5PY_test
+if H5PY_AVAILABLE and H5CPP_AVAILABLE:
+    import FileWriterH5CppH5PY_test
 
 if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
     import NXSCollect_test
@@ -312,10 +312,10 @@ def main():
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
                 NXSFileInfoH5Cpp_test))
-    if PNI_AVAILABLE and H5PY_AVAILABLE:
+    if H5CPP_AVAILABLE and H5PY_AVAILABLE:
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
-                FileWriterPNIH5PY_test))
+                FileWriterH5CppH5PY_test))
 
     if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
         suite.addTests(
