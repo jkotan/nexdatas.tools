@@ -66,6 +66,7 @@ def load_file(membuffer, filename=None, readonly=False, **pars):
     raise Exception(
         "Loading a file from a memory buffer not supported")
 
+
 def create_file(filename, overwrite=False, libver=None):
     """ create a new file
 
@@ -714,7 +715,7 @@ class PNIAttributeManager(filewriter.FTAttributeManager):
         """
         return [att.name for att in self._h5object]
 
-    
+
 class PNIAttribute(filewriter.FTAttribute):
 
     """ file tree attribute
