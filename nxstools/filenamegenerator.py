@@ -90,7 +90,7 @@ class FilenameGenerator(object):
         """
 
         (file_format, start_index_str, stop_index_str) = \
-            file_template.split(":")
+            file_template.rsplit(":", 2)
         stop_index = None
         if stop_index_str is not None:
             stop_index = long(stop_index_str)
