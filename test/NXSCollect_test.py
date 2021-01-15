@@ -96,6 +96,7 @@ class NXSCollectTest(unittest.TestCase):
     # \param methodName name of the test method
     def __init__(self, methodName):
         unittest.TestCase.__init__(self, methodName)
+        # self.maxDiff = None
 
         self.helperror = "Error: too few arguments\n"
 
