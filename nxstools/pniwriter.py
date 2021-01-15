@@ -40,6 +40,33 @@ def open_file(filename, readonly=False, libver=None):
     return PNIFile(nx.open_file(filename, readonly), filename)
 
 
+def is_image_file_supported():
+    """ provides if loading of image files are supported
+
+    :retruns: if loading of image files are supported
+    :rtype: :obj:`bool`
+    """
+    return False
+
+
+def load_file(membuffer, filename=None, readonly=False, **pars):
+    """ load a file from memory byte buffer
+
+    :param membuffer: memory buffer
+    :type membuffer: :obj:`bytes` or :obj:`io.BytesIO`
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param readonly: readonly flag
+    :type readonly: :obj:`bool`
+    :param pars: parameters
+    :type pars: :obj:`dict` < :obj:`str`, :obj:`str`>
+    :returns: file object
+    :rtype: :class:`H5PYFile`
+    """
+    raise Exception(
+        "Loading a file from a memory buffer not supported")
+
+
 def create_file(filename, overwrite=False, libver=None):
     """ create a new file
 
@@ -231,7 +258,7 @@ class PNIGroup(filewriter.FTGroup):
 
     def create_group(self, n, nxclass=""):
         """ open a file tree element
-
+s
         :param n: group name
         :type n: :obj:`str`
         :param nxclass: group type
@@ -679,6 +706,14 @@ class PNIAttributeManager(filewriter.FTAttributeManager):
         :rtype: :obj:`bool`
         """
         return self.parent.is_valid
+
+    def names(self):
+        """ key values
+
+        :returns: attribute names
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return [att.name for att in self._h5object]
 
 
 class PNIAttribute(filewriter.FTAttribute):

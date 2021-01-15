@@ -126,7 +126,7 @@ class Collector(object):
         self.__testmode = testmode
         self.__storeold = storeold
         self.__tempfilename = None
-        self.__filepattern = re.compile("[^:]+:\\d+:\\d+")
+        self.__filepattern = re.compile(".+:\\d+:\\d+")
         self.__nxsfile = None
         self.__break = False
         self.__fullfilename = None
@@ -264,8 +264,8 @@ class Collector(object):
         try:
             idata = None
 
-            fl = open(filename, "rb")
-            idata = numpy.fromfile(fl, dtype=dtype)
+            with open(filename, "rb") as fl:
+                idata = numpy.fromfile(fl, dtype=dtype)
             if shape:
                 idata = idata.reshape(shape)
             dtype = idata.dtype.__str__()
@@ -311,11 +311,13 @@ class Collector(object):
 
             return None, None, None
 
-    def _loadh5data(self, filename):
+    def _loadh5data(self, filename, path=None):
         """ loads image from hdf5 file
 
         :param filename: hdf5 image file name
         :type filename: :obj:`str`
+        :param path: hdf5 field path
+        :type path: :obj:`str`
         :returns: (image data, image data type, image shape)
         :rtype: (:class:`numpy.ndarray`, :obj:`str`, :obj:`list` <:obj:`int`>)
         """
@@ -324,8 +326,22 @@ class Collector(object):
             shape = None
             nxsfile = filewriter.open_file(
                 filename, readonly=True, writer=self.__wrmodule)
-            root = nxsfile.root()
-            image = root.open("data")
+            if path:
+                root = nxsfile.root()
+                parent = root
+                nodes = path.split("/")
+                for nd in nodes:
+                    if nd in parent.names():
+                        parent = parent.open(nd)
+                    else:
+                        raise Exception(
+                            "Error: path %s in % cannot be open" % (path, nd))
+                image = parent
+            else:
+                image = nxsfile.default_field()
+            if image is None:
+                root = nxsfile.root()
+                image = root.open("data")
             idata = image.read()
             if image is not None:
                 idata = image[...]
@@ -360,8 +376,8 @@ class Collector(object):
         """ creates a field in nexus file
 
         :param node: parent hdf5 node
-        :type node: :class:`pni.io.nx.h5.nxgroup` or \
-                    :class:`pni.io.nx.h5.nxlink`
+        :type node: :class:`filewriter.FTGroup` or \
+                    :class:`filewriter.FTLink`
         :param fieldname: field name
         :type fieldname: :obj:`str`
         :param dtype: field data type
@@ -373,7 +389,7 @@ class Collector(object):
         :param fieldcompression: field compression rate
         :type fieldcompression: :obj:`int`
         :returns: hdf5 field node
-        :rtype: :class:`pni.io.nx.h5.nxfield`
+        :rtype: :class:`filewriter.FTField`
         """
         field = None
         if fieldname in node.names():
@@ -406,8 +422,8 @@ class Collector(object):
         :param files: a list of file strings
         :type files: :obj:`list` <:obj:`str`>
         :param node: hdf5 parent node
-        :type node: :class:`pni.io.nx.h5.nxgroup` or \
-                    :class:`pni.io.nx.h5.nxlink`
+        :type node: :class:`filewriter.FTGroup` or \
+                    :class:`filewriter.FTLink`
         :param fieldname: field name
         :type fieldname: :obj:`str`
         :param fieldattrs: dictionary with field attributes
@@ -430,21 +446,32 @@ class Collector(object):
             for fname in inputfiles():
                 if self.__break:
                     break
-                fname = self._findfile(fname, node.name)
+                npath = None
+                if not datatype and \
+                   ".h5://" in fname or ".nxs://" in fname:
+                    fname, npath = fname.split("://", 1)
+                if not self.__testmode or node is not None:
+                    fname = self._findfile(fname, node.name)
                 if not fname:
                     continue
                 if datatype:
                     data, dtype, shape = self._loadrawimage(
                         fname, datatype, shape)
-                elif not fname.endswith(".h5"):
-                    data, dtype, shape = self._loadimage(fname)
+                elif fname.endswith(".h5") or fname.endswith(".nxs"):
+                    try:
+                        data, dtype, shape = self._loadh5data(fname, npath)
+                    except Exception as e:
+                        print(str(e))
+                        data, dtype, shape = self._loadimage(fname)
                 else:
-                    data, dtype, shape = self._loadh5data(fname)
+                    data, dtype, shape = self._loadimage(fname)
+
                 if data is not None:
                     if field is None:
-                        field = self._getfield(
-                            node, fieldname, dtype, shape,
-                            fieldattrs, fieldcompression)
+                        if not self.__testmode or node is not None:
+                            field = self._getfield(
+                                node, fieldname, dtype, shape,
+                                fieldattrs, fieldcompression)
 
                     if field and ind == field.shape[0]:
                         if not self.__testmode:
@@ -460,8 +487,8 @@ class Collector(object):
         by hdf5 postrun fields bellow hdf5 parent node
 
         :param parent: hdf5 parent node
-        :type parent: :class:`pni.io.nx.h5.nxgroup` or \
-                      :class:`pni.io.nx.h5.nxlink`
+        :type parent: :class:`filewriter.FTGroup` or \
+                      :class:`filewriter.FTLink`
         :param collection: if parent is of NXcollection type
         :type collection: :obj:`bool`
         """
@@ -515,11 +542,65 @@ class Collector(object):
                                 coll = True
                     self._inspect(child, coll)
 
-    def collect(self):
+    def _add(self, root, path, inputfiles, fieldtype=None, fieldshape=None):
+        """appends specific data if path and inputfiles are given
+
+        :param path: nexus path of the data field
+        :type path: :obj:`str`
+        :param inputfiles: a list of file strings
+        :type inputfiles: :obj:`list` <:obj:`str`>
+        :param datatype: field data type
+        :type datatype: :obj:`str`
+        :param shape: field shape
+        :type shape: :obj:`list` <:obj:`int` >
+        """
+        groups = path.split("/")
+        parent = root
+        tgr = ""
+        for gr in groups[:-1]:
+            if gr:
+                if ":" in gr:
+                    gr, tgr = gr.split(":", 1)
+                if parent is not None and gr in parent.names():
+                    parent = parent.open(gr)
+                else:
+                    if not tgr:
+                        tgr = "NX" + gr
+                    if not self.__testmode:
+                        parent = parent.create_group(gr, tgr)
+                    else:
+                        parent = None
+                    # raise Exception(
+                    #     "Error: path %s in % cannot be open" % (path, gr))
+
+        fieldname = groups[-1]
+        if parent:
+            print("populate: %s/%s with %s" %
+                  (parent.path, fieldname, inputfiles))
+        else:
+            print("populate: %s/%s with %s" %
+                  (path, fieldname, inputfiles))
+        fieldcompression = self.__compression
+        fieldattrs = {}
+        self._collectimages(
+            inputfiles, parent, fieldname, fieldattrs,
+            fieldcompression, fieldtype, fieldshape)
+
+    def collect(self, path=None, inputfiles=None, datatype=None, shape=None):
         """ creates a temporary file,
         collects the all image files defined by hdf5
         postrun fields of NXcollection groups and renames the temporary file
         to the origin one if the action was successful
+        or appends specific data if path and inputfiles are given
+
+        :param path: nexus path of the data field
+        :type path: :obj:`str`
+        :param inputfiles: a list of file strings
+        :type inputfiles: :obj:`list` <:obj:`str`>
+        :param datatype: field data type
+        :type datatype: :obj:`str`
+        :param shape: field shape
+        :type shape: :obj:`list` <:obj:`int` >
         """
         self._createtmpfile()
         try:
@@ -532,7 +613,10 @@ class Collector(object):
                 # print self.__fullfilename
             except Exception:
                 pass
-            self._inspect(root)
+            if path and inputfiles:
+                self._add(root, path, inputfiles, datatype, shape)
+            else:
+                self._inspect(root)
             self.__nxsfile.close()
             if self.__storeold:
                 self._storeoldfile()
@@ -562,10 +646,35 @@ class Execute(Runner):
         parser = self._parser
         parser.add_argument(
             "-c", "--compression", dest="compression",
-            action="store", type=str, default=2,
+            action="store", type=str, default="2",
             help="deflate compression rate from 0 to 9 (default: 2)"
             " or <filterid>:opt1,opt2,..."
             " e.g.  -c 32008:0,2  for bitshuffle with lz4")
+        parser.add_argument(
+            "-p", "--path", dest="path",
+            action="store", type=str, default=None,
+            help="nexus path for the output field, e.g."
+            " /scan/instrument/pilatus/data")
+        parser.add_argument(
+            "-i", "--input_files", dest="inputfiles",
+            action="store", type=str, default=None,
+            help="input data files defined with a pattern "
+            "or separated by ',' e.g."
+            "'scan_%%05d.tif:0:100'")
+        parser.add_argument(
+            "--separator", dest="separator",
+            action="store", type=str, default=",",
+            help="input data files separator (default: ',')")
+        parser.add_argument(
+            "--dtype", dest="datatype",
+            action="store", type=str, default=None,
+            help="datatype of input data - only for raw data,"
+            " e.g. 'uint8'")
+        parser.add_argument(
+            "--shape", dest="shape",
+            action="store", type=str, default=None,
+            help="shape of input data - only for raw data,"
+            " e.g. '[4096,2048]'")
         parser.add_argument(
             "-s", "--skip_missing", action="store_true",
             default=False, dest="skipmissing",
@@ -637,13 +746,40 @@ class Execute(Runner):
             sys.stderr.flush()
             parser.print_help()
             sys.exit(255)
+        if (options.path and not options.inputfiles):
+            sys.stderr.write(
+                "nxscollect: --input_files argument is missing")
+            parser.print_help()
+            sys.exit(255)
+        if (not options.path and options.inputfiles):
+            sys.stderr.write(
+                "nxscollect: --path argument is missing")
+            parser.print_help()
+            sys.exit(255)
+        inputfiles = None
+        if options.inputfiles:
+            if options.separator:
+                inputfiles = options.inputfiles.split(options.separator)
+            else:
+                inputfiles = [options.inputfiles]
+
+        shape = None
+        if options.shape:
+            try:
+                shape = json.loads(options.shape)
+            except Exception:
+                sys.stderr.write(
+                    "nxscollect: shape is not readable")
+                parser.print_help()
+                sys.exit(255)
 
         # configuration server
         for nxsfile in nexusfiles:
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
                 not options.replaceold, False, writer=writer)
-            collector.collect()
+            collector.collect(options.path, inputfiles,
+                              options.datatype, shape)
 
 
 class Test(Execute):
@@ -699,13 +835,40 @@ class Test(Execute):
                              % writer)
             parser.print_help()
             sys.exit(255)
+        if (options.path and not options.inputfiles):
+            sys.stderr.write(
+                "nxscollect: --input_files argument is missing")
+            parser.print_help()
+            sys.exit(255)
+        if (not options.path and options.inputfiles):
+            sys.stderr.write(
+                "nxscollect: --path argument is missing")
+            parser.print_help()
+            sys.exit(255)
+        inputfiles = None
+        if options.inputfiles:
+            if options.separator:
+                inputfiles = options.inputfiles.split(options.separator)
+            else:
+                inputfiles = [options.inputfiles]
+
+        shape = None
+        if options.shape:
+            try:
+                shape = json.loads(options.shape)
+            except Exception:
+                sys.stderr.write(
+                    "nxscollect: shape is not readable")
+                parser.print_help()
+                sys.exit(255)
 
         # configuration server
         for nxsfile in nexusfiles:
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
                 not options.replaceold, True, writer=writer)
-            collector.collect()
+            collector.collect(options.path, inputfiles,
+                              options.datatype, shape)
 
 
 def _supportoldcommands():
