@@ -117,19 +117,13 @@ class Linker(object):
         self.__wrmodule = None
         if writer and writer.lower() in WRITERS.keys():
             self.__wrmodule = WRITERS[writer.lower()]
-        self.__siginfo = dict(
-            (signal.__dict__[sname], sname)
-            for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
-
-        for sig in self.__siginfo.keys():
-            signal.signal(sig, self._signalhandler)
 
     def link(self):
         """ creates NeXus link
         """
         # self._createtmpfile()
         try:
-            filename, path = self.__nexuspath.split(":/")
+            filename, path = self.__nexuspath[0].split(":/")
             self.__nxsfile = filewriter.open_file(
                 filename, readonly=False,
                 writer=self.__wrmodule)
@@ -774,7 +768,7 @@ class Link(Runner):
             sys.exit(255)
 
         # configuration server
-        linker = Link(
+        linker = Linker(
             nexuspath, options.target, options.name, writer=writer)
         linker.link()
 
