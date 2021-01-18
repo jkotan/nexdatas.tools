@@ -98,6 +98,66 @@ def getcompression(compression):
         return
 
 
+class Link(object):
+
+    """ Create external and internal links of NeXus files
+    """
+
+    def __init__(self, nexuspath, target, name=None, writer=None):
+        """ The constructor creates the collector object
+
+        :param nexuspath: the nexus file name and nexus path
+        :type nexuspath: :obj:`str`
+        :param target: the nexus file name and nexus path
+        :type target: :obj:`str`
+        """
+        self.__nexuspath = nexuspath
+        self.__target = target
+        self.__name = name
+        self.__wrmodule = None
+        if writer and writer.lower() in WRITERS.keys():
+            self.__wrmodule = WRITERS[writer.lower()]
+        self.__siginfo = dict(
+            (signal.__dict__[sname], sname)
+            for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
+
+        for sig in self.__siginfo.keys():
+            signal.signal(sig, self._signalhandler)
+
+    def link(self):
+        """ creates NeXus link
+        """
+        # self._createtmpfile()
+        try:
+            filename, path = nexuspath.split(":/")
+            self.__nxsfile = filewriter.open_file(
+                filename, readonly=False,
+                writer=self.__wrmodule)
+            root = self.__nxsfile.root()
+            groups = path.split("/")
+            parent = root
+            tgr = ""
+            for gr in groups:
+                if gr:
+                    if ":" in gr:
+                        gr, tgr = gr.split(":", 1)
+                    if parent is not None and gr in parent.names():
+                        parent = parent.open(gr)
+                    else:
+                        if not tgr:
+                            tgr = "NX" + gr
+                        parent = parent.create_group(gr, tgr)
+
+            filewriter.link(self.__target, parent, self.__name)
+
+            # if self.__storeold:
+            #     self._storeoldfile()
+            #     shutil.move(self.__tempfilename, self.__nexusfilename)
+        except Exception as e:
+            print(str(e))
+            # os.remove(self.__tempfilename)
+
+
 class Collector(object):
 
     """ Collector merge images of external file-formats
@@ -626,6 +686,98 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
+class Link(Runner):
+
+    """ Execute runner
+    """
+
+    #: (:obj:`str`) command description
+    description = "create external link"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxscollect link -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "       nxscollect link -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-n", "--name", dest="name",
+            action="store", type=str, default=None,
+            help="link name")
+        parser.add_argument(
+            "-t", "--target", dest="target",
+            action="store", type=str, default=None,
+            help="link target with the file name if external")
+        parser.add_argument(
+            "-s", "--skip_missing", action="store_true",
+            default=False, dest="skipmissing",
+            help="skip missing files")
+        parser.add_argument(
+            "-r", "--replace_nexus_file", action="store_true",
+            default=False, dest="replaceold",
+            help="if it is set the old file is not copied into "
+            "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader/writer")
+        parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader/writer")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+
+    def postauto(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument('args', metavar='nexus_file',
+                            type=str, nargs=1,
+                            help='nexus files with the nexus directory to place the link')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        nexuspath = options.args
+
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif options.pni:
+            writer = "pni"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        elif "h5py" in WRITERS.keys():
+            writer = "h5py"
+        else:
+            writer = "pni"
+
+        if (options.pni and options.h5py and options.h5cpp) or \
+           writer not in WRITERS.keys():
+            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            parser.print_help()
+            sys.exit(255)
+
+        # configuration server
+        linker = Link(
+            nexuspath, options.target, options.name, writer=writer)
+        linker.link()
+
+
 class Execute(Runner):
 
     """ Execute runner
@@ -901,6 +1053,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.cmdrunners = [
         ('execute', Execute),
+        ('link', Link),
         ('test', Test)
     ]
     runners = parser.createSubParsers()
