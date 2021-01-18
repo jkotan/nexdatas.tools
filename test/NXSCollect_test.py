@@ -100,16 +100,15 @@ class NXSCollectTest(unittest.TestCase):
 
         self.helperror = "Error: too few arguments\n"
 
-        self.helpinfo = """usage: nxscollect [-h] {execute,test} ...
+        self.helpinfo = """usage: nxscollect [-h] {append,link} ...
 
   Command-line tool to merge images of external file-formats """ + \
             """into the master NeXus file
 
 positional arguments:
-  {execute,test}  sub-command help
-    execute       execute the collection process
-    test          execute the process in the test mode without changing any
-                  files
+  {append,link}  sub-command help
+    append       append images to the master file
+    link         create an external or internal link in the master file
 
 optional arguments:
   -h, --help      show this help message and exit
@@ -229,8 +228,8 @@ For more help:
                              "".join(vl.split()))
             self.assertEqual('', er)
 
-    def test_execute_test_emptyfile(self):
-        """ test nxsconfig execute empty file
+    def test_append_test_emptyfile(self):
+        """ test nxsconfig append empty file
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -238,15 +237,15 @@ For more help:
         filename = 'testcollect.nxs'
 
         commands = [
-            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute %s -s -r %s' %
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -277,31 +276,31 @@ For more help:
         finally:
             os.remove(filename)
 
-    def test_execute_test_nofile(self):
-        """ test nxsconfig execute empty file
+    def test_append_test_nofile(self):
+        """ test nxsconfig append empty file
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute -s %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append -s %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute -s %s -r %s' %
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append -s %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -330,31 +329,31 @@ For more help:
             self.assertEqual('', er)
             self.assertEqual('', vl)
 
-    def test_execute_test_file_withdata(self):
-        """ test nxsconfig execute file with data field
+    def test_append_test_file_withdata(self):
+        """ test nxsconfig append file with data field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute %s -s  %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s  %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -s  %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s  %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute %s -s -r %s' %
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -394,23 +393,23 @@ For more help:
         finally:
             os.remove(filename)
 
-    def test_execute_test_file_withpostrun_nofile(self):
-        """ test nxsconfig execute file with data field
+    def test_append_test_file_withpostrun_nofile(self):
+        """ test nxsconfig append file with data field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute -r %s %s' %
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append -r %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x -r %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test -r %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t -r %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test -r %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test -r %s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -452,21 +451,21 @@ For more help:
         finally:
             os.remove(filename)
 
-    def test_execute_file_withpostrun_tif(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_withpostrun_tif(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -549,40 +548,40 @@ For more help:
             os.remove('./test1_00004.tif')
             os.remove('./test1_00005.tif')
 
-    def test_execute_file_withpostrun_tif_pilatus300k_comp(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_withpostrun_tif_pilatus300k_comp(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s -c1  %s' %
              (filename, self.flags)).split(),
-            ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -c2 %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -c4 %s' %
+            ('nxscollect append  %s -r -c4 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s -c6 %s' %
+            ('nxscollect append  %s -s -c6 %s' %
              (filename, self.flags)).split(),
 
             ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s -c8 %s' %
+            ('nxscollect append  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
         extra_commands = [
-            ('nxscollect execute  %s -r -s -c32008:0,2 %s' %
+            ('nxscollect append  %s -r -s -c32008:0,2 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
@@ -684,17 +683,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_tif_pilatus300k_skip(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_withpostrun_tif_pilatus300k_skip(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -798,17 +797,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_tif_pilatus300k_wait(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_withpostrun_tif_pilatus300k_wait(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -935,17 +934,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_tif_pilatus300k_missing(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_withpostrun_tif_pilatus300k_missing(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
         ]
 
@@ -1028,21 +1027,21 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_cbf(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_cbf(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -1124,38 +1123,38 @@ For more help:
             os.remove('./test1_00004.cbf')
             os.remove('./test1_00005.cbf')
 
-    def test_execute_file_withpostrun_cbf_pilatus300k_comp(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_cbf_pilatus300k_comp(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -c2 %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -c2 %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -c4 %s' %
+            ('nxscollect append  %s -r -c4 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s -c6 %s' %
+            ('nxscollect append  %s -s -c6 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s -c8 %s' %
+            ('nxscollect append  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
         ]
         extra_commands = [
-            ('nxscollect execute  %s -r -s -c32008:0,2 %s' %
+            ('nxscollect append  %s -r -s -c32008:0,2 %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
@@ -1257,17 +1256,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_cbf_pilatus300k_skip(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_cbf_pilatus300k_skip(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -1371,17 +1370,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_cbf_pilatus300k_wait(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_cbf_pilatus300k_wait(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -1508,17 +1507,17 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_cbf_pilatus300k_missing(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_cbf_pilatus300k_missing(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
         ]
 
@@ -1601,8 +1600,8 @@ For more help:
             if dircreated:
                 shutil.rmtree("./testcollect")
 
-    def test_execute_file_withpostrun_raw(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_raw(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1626,13 +1625,13 @@ For more help:
         }
 
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -1719,8 +1718,8 @@ For more help:
                 for i in range(6):
                     os.remove("rawtest1_%05d.dat" % i)
 
-    def test_execute_file_withpostrun_h5(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_withpostrun_h5(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1744,13 +1743,13 @@ For more help:
         }
 
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -1839,8 +1838,8 @@ For more help:
                 for i in range(6):
                     os.remove("h5test1_%05d.h5" % i)
 
-    def test_execute_file_parameters_tif(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_parameters_tif(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1849,19 +1848,19 @@ For more help:
         ifiles = 'test1_%05d.tif:0:5'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s' %
+            ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s' %
+            ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
@@ -1947,8 +1946,8 @@ For more help:
             os.remove('./test1_00004.tif')
             os.remove('./test1_00005.tif')
 
-    def test_execute_file_parameters_tif_list(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_parameters_tif_list(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -1958,19 +1957,19 @@ For more help:
             'test1_00003.tif,test1_00004.tif,test1_00005.tif'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s' %
+            ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s' %
+            ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
@@ -2056,8 +2055,8 @@ For more help:
             os.remove('./test1_00004.tif')
             os.remove('./test1_00005.tif')
 
-    def test_execute_file_parameters_tif_list_sep(self):
-        """ test nxsconfig execute file with a tif postrun field
+    def test_append_file_parameters_tif_list_sep(self):
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2067,21 +2066,21 @@ For more help:
             'test1_00003.tif:test1_00004.tif:test1_00005.tif'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s --separator :' %
+            ('nxscollect append  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s --separator :' %
+            ('nxscollect append  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s'
@@ -2169,8 +2168,8 @@ For more help:
             os.remove('./test1_00004.tif')
             os.remove('./test1_00005.tif')
 
-    def test_execute_file_parameters_cbf(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_cbf(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2179,19 +2178,19 @@ For more help:
         ifiles = 'test1_%05d.cbf:0:5'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s' %
+            ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s' %
+            ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
@@ -2277,8 +2276,8 @@ For more help:
             os.remove('./test1_00004.cbf')
             os.remove('./test1_00005.cbf')
 
-    def test_execute_file_parameters_cbf_list(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_cbf_list(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2288,19 +2287,19 @@ For more help:
             'test1_00003.cbf,test1_00004.cbf,test1_00005.cbf'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s' %
+            ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s' %
+            ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
@@ -2386,8 +2385,8 @@ For more help:
             os.remove('./test1_00004.cbf')
             os.remove('./test1_00005.cbf')
 
-    def test_execute_file_parameters_cbf_list_sep(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_cbf_list_sep(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2397,21 +2396,21 @@ For more help:
             'test1_00003.cbf:test1_00004.cbf:test1_00005.cbf'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect execute  %s %s -i %s -p %s --separator :' %
+            ('nxscollect append  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r %s -i %s -p %s --separator :' %
+            ('nxscollect append  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect execute  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r -s %s --input_files %s --path %s'
@@ -2499,8 +2498,8 @@ For more help:
             os.remove('./test1_00004.cbf')
             os.remove('./test1_00005.cbf')
 
-    def test_execute_file_parameters_raw(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_raw(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2524,13 +2523,13 @@ For more help:
         }
 
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -2619,8 +2618,8 @@ For more help:
                 for i in range(6):
                     os.remove("rawtest1_%05d.dat" % i)
 
-    def test_execute_file_parameters_nxs(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_nxs(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2644,13 +2643,13 @@ For more help:
         }
 
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -2765,8 +2764,8 @@ For more help:
                 for i in range(6):
                     os.remove("h5test1_%05d.nxs" % i)
 
-    def test_execute_file_parameters_nxs_path(self):
-        """ test nxsconfig execute file with a cbf postrun field
+    def test_append_file_parameters_nxs_path(self):
+        """ test nxsconfig append file with a cbf postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -2790,13 +2789,13 @@ For more help:
         }
 
         commands = [
-            ('nxscollect execute  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect execute  %s -r -s %s' %
+            ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
@@ -2909,15 +2908,15 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -2994,15 +2993,15 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3090,11 +3089,11 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3183,11 +3182,11 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3297,10 +3296,10 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3380,15 +3379,15 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3464,15 +3463,15 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3561,11 +3560,11 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3653,11 +3652,11 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3770,10 +3769,10 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3869,15 +3868,15 @@ For more help:
         }
 
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -3977,15 +3976,15 @@ For more help:
         }
 
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -4063,7 +4062,7 @@ For more help:
                     os.remove("h5test1_%05d.h5" % i)
 
     def test_test_file_parameters_tif(self):
-        """ test nxsconfig execute file with a tif postrun field
+        """ test nxsconfig append file with a tif postrun field
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -4072,21 +4071,21 @@ For more help:
         ifiles = 'test1_%05d.tif:0:5'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s' %
+            ('nxscollect append --test  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s' %
+            ('nxscollect append --test %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s' %
+            ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4169,21 +4168,21 @@ For more help:
             'test1_00003.tif,test1_00004.tif,test1_00005.tif'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s' %
+            ('nxscollect append --test  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s' %
+            ('nxscollect append --test %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s' %
+            ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4266,24 +4265,24 @@ For more help:
             'test1_00003.tif:test1_00004.tif:test1_00005.tif'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s --separator :' %
+            ('nxscollect append --test  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s --separator :' %
+            ('nxscollect append --test %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s --separator :' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s --separator :' %
+            ('nxscollect append --test %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -4365,21 +4364,21 @@ For more help:
         ifiles = 'test1_%05d.cbf:0:5'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s' %
+            ('nxscollect append --test  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s' %
+            ('nxscollect append --test %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s' %
+            ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4462,21 +4461,21 @@ For more help:
             'test1_00003.cbf,test1_00004.cbf,test1_00005.cbf'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s' %
+            ('nxscollect append --test  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s' %
+            ('nxscollect append --test %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s' %
+            ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4559,24 +4558,24 @@ For more help:
             'test1_00003.cbf:test1_00004.cbf:test1_00005.cbf'
         path = '/entry12345/instrument/pilatus300k/data'
         commands = [
-            ('nxscollect test  %s %s -i %s -p %s --separator :' %
+            ('nxscollect append --test  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s %s -i %s --path %s --separator :' %
+            ('nxscollect append --test %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r %s -i %s -p %s --separator :' %
+            ('nxscollect append --test  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r %s -i %s --path %s --separator :' %
+            ('nxscollect append --test %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -t %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -4674,21 +4673,21 @@ For more help:
         }
 
         commands = [
-            ('nxscollect test  %s %s' %
+            ('nxscollect append --test  %s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' %
+            ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' %
+            ('nxscollect append --test  %s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' %
+            ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect test   %s -s %s' %
+            ('nxscollect append --test   %s -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' %
+            ('nxscollect append --test %s -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' %
+            ('nxscollect append --test %s -r -s %s' %
              (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
@@ -4788,15 +4787,15 @@ For more help:
         }
 
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -4925,15 +4924,15 @@ For more help:
         }
 
         commands = [
-            ('nxscollect test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -t %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect test  %s -r -s %s' %
+            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -t %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
