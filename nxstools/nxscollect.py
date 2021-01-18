@@ -98,7 +98,7 @@ def getcompression(compression):
         return
 
 
-class Link(object):
+class Linker(object):
 
     """ Create external and internal links of NeXus files
     """
@@ -129,7 +129,7 @@ class Link(object):
         """
         # self._createtmpfile()
         try:
-            filename, path = nexuspath.split(":/")
+            filename, path = self.__nexuspath.split(":/")
             self.__nxsfile = filewriter.open_file(
                 filename, readonly=False,
                 writer=self.__wrmodule)
@@ -738,9 +738,10 @@ class Link(Runner):
         """ creates parser
         """
         parser = self._parser
-        parser.add_argument('args', metavar='nexus_file',
-                            type=str, nargs=1,
-                            help='nexus files with the nexus directory to place the link')
+        parser.add_argument(
+            'args', metavar='nexus_file',
+            type=str, nargs=1,
+            help='nexus files with the nexus directory to place the link')
 
     def run(self, options):
         """ the main program function
