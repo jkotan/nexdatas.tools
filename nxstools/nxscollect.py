@@ -103,24 +103,32 @@ class Linker(object):
     """ Create external and internal links of NeXus files
     """
 
-    def __init__(self, nexuspath, target, name=None,
-                 testmode=False, writer=None):
+    def __init__(self, nexusfilepath, target, name=None,
+                 storeold=False, testmode=False, writer=None):
         """ The constructor creates the collector object
 
-        :param nexuspath: the nexus file name and nexus path
-        :type nexuspath: :obj:`str`
+        :param nexusfilepath: the nexus file name and nexus path
+        :type nexusfilepath: :obj:`str`
         :param target: the nexus file name and nexus path
         :type target: :obj:`str`
+        :param storeold: if backup the input file
+        :type storeold: :obj:`bool`
         :param testmode: if run in a test mode
         :type testmode: :obj:`bool`
         :param writer: the writer module
         :type writer: :obj:`str`
         """
-        self.__nexuspath = nexuspath
         self.__target = target
         self.__name = name
+        if not name:
+            self.__name = target.split("/")[-1]
         self.__testmode = testmode
+        self.__storeold = storeold
         self.__wrmodule = None
+        self.__nexuspath = None
+        self.__nexusfilename, self.__nexuspath = \
+            nexusfilepath.split(":/")
+
         if writer and writer.lower() in WRITERS.keys():
             self.__wrmodule = WRITERS[writer.lower()]
         self.__siginfo = dict(
@@ -140,14 +148,30 @@ class Linker(object):
             self.__break = True
             print("terminated by %s" % self.__siginfo[sig])
 
+    def _createtmpfile(self):
+        """ creates temporary file
+        """
+        self.__tempfilename = self.__nexusfilename + ".__nxscollect_temp__"
+        while os.path.exists(self.__tempfilename):
+            self.__tempfilename += "_"
+        shutil.copy2(self.__nexusfilename, self.__tempfilename)
+
+    def _storeoldfile(self):
+        """ makes back up of the input file
+        """
+        temp = self.__nexusfilename + ".__nxscollect_old__"
+        while os.path.exists(temp):
+            temp += "_"
+        shutil.move(self.__nexusfilename, temp)
+
     def link(self):
         """ creates NeXus link
         """
-        # self._createtmpfile()
+        self._createtmpfile()
+        path = self.__nexuspath
         try:
-            filename, path = self.__nexuspath[0].split(":/")
             self.__nxsfile = filewriter.open_file(
-                filename, readonly=False,
+                self.__tempfilename, readonly=False,
                 writer=self.__wrmodule)
             root = self.__nxsfile.root()
             groups = path.split("/")
@@ -168,20 +192,21 @@ class Linker(object):
                             parent = None
 
             if parent:
-                print("link: target %s at %s as %s" %
-                      (self.__target, parent.path, self.__name))
+                print("link: target %s at %s://%s as %s" %
+                      (self.__target, self.__nexusfilename,
+                       parent.path, self.__name))
             else:
                 print("link: target %s at %s as %s" %
                       (self.__target, path, self.__name))
             if not self.__testmode:
                 filewriter.link(self.__target, parent, self.__name)
 
-            # if self.__storeold:
-            #     self._storeoldfile()
-            #     shutil.move(self.__tempfilename, self.__nexusfilename)
+            if self.__storeold:
+                self._storeoldfile()
+            shutil.move(self.__tempfilename, self.__nexusfilename)
         except Exception as e:
             print(str(e))
-            # os.remove(self.__tempfilename)
+            os.remove(self.__tempfilename)
 
 
 class Collector(object):
@@ -203,10 +228,10 @@ class Collector(object):
         :type skipmissing: :obj:`bool`
         :param storeold: if backup the input file
         :type storeold: :obj:`bool`
-        :param writer: the writer module
-        :type writer: :obj:`str`
         :param testmode: if run in a test mode
         :type testmode: :obj:`bool`
+        :param writer: the writer module
+        :type writer: :obj:`str`
         """
         self.__nexusfilename = nexusfilename
         self.__compression = compression
@@ -724,8 +749,9 @@ class Link(Runner):
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxscollect link -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
-        + "       nxscollect link -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
+        + "       nxscollect link " \
+        + "/tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda " \
+        + "--name data --target /lambda.nxs://entry/data/data \n\n" \
         + "\n"
 
     def create(self):
@@ -741,14 +767,14 @@ class Link(Runner):
             action="store", type=str, default=None,
             help="link target with the file name if external")
         parser.add_argument(
-            "-s", "--skip_missing", action="store_true",
-            default=False, dest="skipmissing",
-            help="skip missing files")
-        parser.add_argument(
             "-r", "--replace_nexus_file", action="store_true",
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--test", action="store_true",
+            default=False, dest="testmode",
+            help="execute in the test mode")
         parser.add_argument(
             "--pni", action="store_true",
             default=False, dest="pni",
@@ -767,8 +793,8 @@ class Link(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            'args', metavar='nexus_file',
-            type=str, nargs=1,
+            'args', metavar='nexus_file_path',
+            type=str, nargs='?',
             help='nexus files with the nexus directory to place the link')
 
     def run(self, options):
@@ -778,7 +804,12 @@ class Link(Runner):
         :type options: :class:`argparse.Namespace`
         """
         parser = self._parser
-        nexuspath = options.args
+        nexusfilepath = options.args
+
+        if not nexusfilepath or not nexusfilepath[0]:
+            parser.print_help()
+            print("")
+            sys.exit(0)
 
         if options.h5cpp:
             writer = "h5cpp"
@@ -803,7 +834,8 @@ class Link(Runner):
 
         # configuration server
         linker = Linker(
-            nexuspath, options.target, options.name, writer=writer)
+            nexusfilepath, options.target, options.name,
+            not options.replaceold, options.testmode, writer=writer)
         linker.link()
 
 
@@ -862,14 +894,14 @@ class Execute(Runner):
             default=False, dest="skipmissing",
             help="skip missing files")
         parser.add_argument(
-            "--test", action="store_true",
-            default=False, dest="testmode",
-            help="execute in the test mode")
-        parser.add_argument(
             "-r", "--replace_nexus_file", action="store_true",
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--test", action="store_true",
+            default=False, dest="testmode",
+            help="execute in the test mode")
         parser.add_argument(
             "--pni", action="store_true",
             default=False, dest="pni",

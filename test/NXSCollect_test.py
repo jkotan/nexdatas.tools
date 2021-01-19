@@ -239,13 +239,17 @@ For more help:
         commands = [
             ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -286,21 +290,29 @@ For more help:
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append -s %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append -s %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -339,21 +351,31 @@ For more help:
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append %s -s  %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append %s -s  %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s  %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s  %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' %
+             (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s -r %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -403,13 +425,17 @@ For more help:
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect -x %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append -r %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect -x -r %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test -r %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test -r %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test -r %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test -r %s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -2908,15 +2934,22 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -2993,15 +3026,22 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3089,11 +3129,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3182,11 +3225,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3296,10 +3342,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3379,15 +3429,22 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3463,15 +3520,22 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3560,11 +3624,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3652,11 +3719,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3769,10 +3839,14 @@ For more help:
 
         filename = 'testcollect.nxs'
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -3868,15 +3942,22 @@ For more help:
         }
 
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -3976,15 +4057,22 @@ For more help:
         }
 
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -4085,8 +4173,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+             % (filename, self.flags, ifiles, path)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -4182,8 +4270,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+             % (filename, self.flags, ifiles, path)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -4271,8 +4359,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r %s -i %s --path %s --separator :' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
+             % (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
@@ -4378,8 +4466,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+             % (filename, self.flags, ifiles, path)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -4475,8 +4563,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+             % (filename, self.flags, ifiles, path)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -4564,8 +4652,8 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r %s -i %s --path %s --separator :' %
-             (filename, self.flags, ifiles, path)).split(),
+            ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
+             % (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test  %s -s %s --input_files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
@@ -4787,15 +4875,22 @@ For more help:
         }
 
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -4924,15 +5019,22 @@ For more help:
         }
 
         commands = [
-            ('nxscollect append --test  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect append --test %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test  %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test  %s -s %s' %
+             (filename, self.flags)).split(),
+            ('nxscollect append --test %s -s %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append --test  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect append --test %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append --test %s -r -s %s' %
+             (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -5025,6 +5127,231 @@ For more help:
                 pass
                 for i in range(6):
                     os.remove("h5test1_%05d.nxs" % i)
+
+    def test_link_external_nxs(self):
+        """ test nxsconfig append file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int": [-123, "NX_INT", "int64", (1,)],
+        }
+
+        commands = [
+            ('nxscollect link %s' % (self.flags)).split(),
+            ('nxscollect link -r %s' % (self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        for k in attrs.keys():
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+
+            attrs[k][0] = np.array(
+                [[attrs[k][0] * self.__rnd.randint(0, 3)
+                  for c in range(mlen[1])]
+                 for i in range(mlen[0])],
+                dtype=attrs[k][2]
+                )
+            try:
+                fl = filewriter.create_file("h5test1_00001.nxs")
+                rt = fl.root()
+
+                entry = rt.create_group("entry345", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                shp = attrs[k][0].shape
+                data = dt.create_field("data", attrs[k][2], shp, shp)
+                data.write(attrs[k][0])
+                data.close()
+
+                dt.close()
+                entry.close()
+                fl.close()
+
+                for cmd in commands:
+                    nxsfile = filewriter.create_file(
+                        filename, overwrite=True)
+                    rt = nxsfile.root()
+                    entry = rt.create_group("entry12345", "NXentry")
+                    ins = entry.create_group("instrument", "NXinstrument")
+                    # det = ins.create_group("pilatus300k", "NXdetector")
+                    entry.create_group("data", "NXdata")
+                    # col = det.create_group("collection", "NXcollection")
+                    # postrun = col.create_field("postrun", "string")
+                    # postrun.write("h5test1_%05d.h5:0:5")
+                    nxsfile.close()
+
+                    pcmd = cmd
+                    pcmd.extend(
+                        ['%s://entry12345/instrument/pilatus300k:NXdetector'
+                         % filename])
+                    pcmd.extend(["--target",
+                                 "h5test1_00001.nxs://entry345/data/data"])
+                    pcmd.extend(["--name", "data"])
+
+                    print(pcmd)
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = pcmd
+                    nxscollect.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    svl = vl.split("\n")
+                    if len(svl) != 2:
+                        print(svl)
+                    self.assertEqual(len(svl), 2)
+                    self.assertTrue(
+                        svl[0],
+                        "populate: /entry12345:NXentry/"
+                        "instrument:NXinstrument/pilatus300k:NXdetector"
+                        "/data with ['test1_%05d.cbf:0:5']")
+                    print(svl)
+                    self.assertTrue(svl[0].startswith('link: '))
+                    self.assertTrue('h5test1_00001.nxs://' in svl[0])
+
+                    if '-r' not in cmd:
+                        os.remove("%s.__nxscollect_old__" % filename)
+                    nxsfile = filewriter.open_file(filename, readonly=True)
+                    rt = nxsfile.root()
+                    entry = rt.open("entry12345")
+                    ins = entry.open("instrument")
+                    det = ins.open("pilatus300k")
+                    dt = det.open("data")
+                    buffer = dt.read()
+                    self.assertEqual(buffer.shape, attrs[k][0].shape)
+                    fimage = attrs[k][0]
+                    image = buffer[:, :]
+                    self.assertTrue((image == fimage).all())
+                    nxsfile.close()
+                    os.remove(filename)
+                    print("REMOVE")
+
+            finally:
+                os.remove("h5test1_00001.nxs")
+
+    def test_link_external_nxs_noname(self):
+        """ test nxsconfig append file with a cbf postrun field
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int": [-123, "NX_INT", "int64", (1,)],
+        }
+
+        commands = [
+            ('nxscollect link %s' % (self.flags)).split(),
+            ('nxscollect link -r %s' % (self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        for k in attrs.keys():
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+
+            attrs[k][0] = np.array(
+                [[attrs[k][0] * self.__rnd.randint(0, 3)
+                  for c in range(mlen[1])]
+                 for i in range(mlen[0])],
+                dtype=attrs[k][2]
+                )
+            try:
+                fl = filewriter.create_file("h5test1_00001.nxs")
+                rt = fl.root()
+
+                entry = rt.create_group("entry345", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                shp = attrs[k][0].shape
+                data = dt.create_field("data", attrs[k][2], shp, shp)
+                data.write(attrs[k][0])
+                data.close()
+
+                dt.close()
+                entry.close()
+                fl.close()
+
+                for cmd in commands:
+                    nxsfile = filewriter.create_file(
+                        filename, overwrite=True)
+                    rt = nxsfile.root()
+                    entry = rt.create_group("entry12345", "NXentry")
+                    ins = entry.create_group("instrument", "NXinstrument")
+                    # det = ins.create_group("pilatus300k", "NXdetector")
+                    entry.create_group("data", "NXdata")
+                    # col = det.create_group("collection", "NXcollection")
+                    # postrun = col.create_field("postrun", "string")
+                    # postrun.write("h5test1_%05d.h5:0:5")
+                    nxsfile.close()
+
+                    pcmd = cmd
+                    pcmd.extend(
+                        ['%s://entry12345/instrument/pilatus300k:NXdetector'
+                         % filename])
+                    pcmd.extend(["--target",
+                                 "h5test1_00001.nxs://entry345/data/data"])
+
+                    print(pcmd)
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = pcmd
+                    nxscollect.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    svl = vl.split("\n")
+                    if len(svl) != 2:
+                        print(svl)
+                    self.assertEqual(len(svl), 2)
+                    self.assertTrue(
+                        svl[0],
+                        "populate: /entry12345:NXentry/"
+                        "instrument:NXinstrument/pilatus300k:NXdetector"
+                        "/data with ['test1_%05d.cbf:0:5']")
+                    print(svl)
+                    self.assertTrue(svl[0].startswith('link: '))
+                    self.assertTrue('h5test1_00001.nxs://' in svl[0])
+
+                    if '-r' not in cmd:
+                        os.remove("%s.__nxscollect_old__" % filename)
+                    nxsfile = filewriter.open_file(filename, readonly=True)
+                    rt = nxsfile.root()
+                    entry = rt.open("entry12345")
+                    ins = entry.open("instrument")
+                    det = ins.open("pilatus300k")
+                    dt = det.open("data")
+                    buffer = dt.read()
+                    self.assertEqual(buffer.shape, attrs[k][0].shape)
+                    fimage = attrs[k][0]
+                    image = buffer[:, :]
+                    self.assertTrue((image == fimage).all())
+                    nxsfile.close()
+                    os.remove(filename)
+                    print("REMOVE")
+
+            finally:
+                os.remove("h5test1_00001.nxs")
 
 
 if __name__ == '__main__':
