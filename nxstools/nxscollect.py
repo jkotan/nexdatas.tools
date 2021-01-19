@@ -98,6 +98,117 @@ def getcompression(compression):
         return
 
 
+class Linker(object):
+
+    """ Create external and internal links of NeXus files
+    """
+
+    def __init__(self, nexusfilepath, target, name=None,
+                 storeold=False, testmode=False, writer=None):
+        """ The constructor creates the collector object
+
+        :param nexusfilepath: the nexus file name and nexus path
+        :type nexusfilepath: :obj:`str`
+        :param target: the nexus file name and nexus path
+        :type target: :obj:`str`
+        :param storeold: if backup the input file
+        :type storeold: :obj:`bool`
+        :param testmode: if run in a test mode
+        :type testmode: :obj:`bool`
+        :param writer: the writer module
+        :type writer: :obj:`str`
+        """
+        self.__target = target
+        self.__name = name
+        if not name:
+            self.__name = target.split("/")[-1]
+        self.__testmode = testmode
+        self.__storeold = storeold
+        self.__wrmodule = None
+        self.__nexuspath = None
+        self.__nexusfilename, self.__nexuspath = \
+            nexusfilepath.split(":/")
+
+        if writer and writer.lower() in WRITERS.keys():
+            self.__wrmodule = WRITERS[writer.lower()]
+        self.__siginfo = dict(
+            (signal.__dict__[sname], sname)
+            for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
+
+        for sig in self.__siginfo.keys():
+            signal.signal(sig, self._signalhandler)
+
+    def _signalhandler(self, sig, _):
+        """ signal handler
+
+        :param sig: signal name, i.e. 'SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'
+        :type sig: :obj:`str`
+        """
+        if sig in self.__siginfo.keys():
+            self.__break = True
+            print("terminated by %s" % self.__siginfo[sig])
+
+    def _createtmpfile(self):
+        """ creates temporary file
+        """
+        self.__tempfilename = self.__nexusfilename + ".__nxscollect_temp__"
+        while os.path.exists(self.__tempfilename):
+            self.__tempfilename += "_"
+        shutil.copy2(self.__nexusfilename, self.__tempfilename)
+
+    def _storeoldfile(self):
+        """ makes back up of the input file
+        """
+        temp = self.__nexusfilename + ".__nxscollect_old__"
+        while os.path.exists(temp):
+            temp += "_"
+        shutil.move(self.__nexusfilename, temp)
+
+    def link(self):
+        """ creates NeXus link
+        """
+        self._createtmpfile()
+        path = self.__nexuspath
+        try:
+            self.__nxsfile = filewriter.open_file(
+                self.__tempfilename, readonly=False,
+                writer=self.__wrmodule)
+            root = self.__nxsfile.root()
+            groups = path.split("/")
+            parent = root
+            tgr = ""
+            for gr in groups:
+                if gr:
+                    if ":" in gr:
+                        gr, tgr = gr.split(":", 1)
+                    if parent is not None and gr in parent.names():
+                        parent = parent.open(gr)
+                    else:
+                        if not tgr:
+                            tgr = "NX" + gr
+                        if not self.__testmode:
+                            parent = parent.create_group(gr, tgr)
+                        else:
+                            parent = None
+
+            if parent:
+                print("link: target %s at %s://%s as %s" %
+                      (self.__target, self.__nexusfilename,
+                       parent.path, self.__name))
+            else:
+                print("link: target %s at %s as %s" %
+                      (self.__target, path, self.__name))
+            if not self.__testmode:
+                filewriter.link(self.__target, parent, self.__name)
+
+            if self.__storeold:
+                self._storeoldfile()
+            shutil.move(self.__tempfilename, self.__nexusfilename)
+        except Exception as e:
+            print(str(e))
+            os.remove(self.__tempfilename)
+
+
 class Collector(object):
 
     """ Collector merge images of external file-formats
@@ -119,6 +230,8 @@ class Collector(object):
         :type storeold: :obj:`bool`
         :param testmode: if run in a test mode
         :type testmode: :obj:`bool`
+        :param writer: the writer module
+        :type writer: :obj:`str`
         """
         self.__nexusfilename = nexusfilename
         self.__compression = compression
@@ -626,18 +739,119 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
+class Link(Runner):
+
+    """ Execute runner
+    """
+
+    #: (:obj:`str`) command description
+    description = "create an external or internal link in the master file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxscollect link " \
+        + "/tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda " \
+        + "--name data --target /lambda.nxs://entry/data/data \n\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-n", "--name", dest="name",
+            action="store", type=str, default=None,
+            help="link name")
+        parser.add_argument(
+            "-t", "--target", dest="target",
+            action="store", type=str, default=None,
+            help="link target with the file name if external")
+        parser.add_argument(
+            "-r", "--replace_nexus_file", action="store_true",
+            default=False, dest="replaceold",
+            help="if it is set the old file is not copied into "
+            "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--test", action="store_true",
+            default=False, dest="testmode",
+            help="execute in the test mode")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader/writer")
+        parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader/writer")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+
+    def postauto(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            'args', metavar='nexus_file_path',
+            type=str, nargs='?',
+            help='nexus files with the nexus directory to place the link')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        nexusfilepath = options.args
+
+        if not nexusfilepath or not nexusfilepath[0]:
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif options.pni:
+            writer = "pni"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        elif "h5py" in WRITERS.keys():
+            writer = "h5py"
+        else:
+            writer = "pni"
+
+        if (options.pni and options.h5py and options.h5cpp) or \
+           writer not in WRITERS.keys():
+            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            parser.print_help()
+            sys.exit(255)
+
+        # configuration server
+        linker = Linker(
+            nexusfilepath, options.target, options.name,
+            not options.replaceold, options.testmode, writer=writer)
+        linker.link()
+
+
 class Execute(Runner):
 
     """ Execute runner
     """
 
     #: (:obj:`str`) command description
-    description = "execute the collection process"
+    description = "append images to the master file"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxscollect execute -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
-        + "       nxscollect execute -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
+        + "       nxscollect append -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "       nxscollect append -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
+        + "       nxscollect append --test /tmp/gpfs/raw/scan_234.nxs \n\n" \
         + "\n"
 
     def create(self):
@@ -684,6 +898,10 @@ class Execute(Runner):
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--test", action="store_true",
+            default=False, dest="testmode",
+            help="execute in the test mode")
         parser.add_argument(
             "--pni", action="store_true",
             default=False, dest="pni",
@@ -777,96 +995,7 @@ class Execute(Runner):
         for nxsfile in nexusfiles:
             collector = Collector(
                 nxsfile, options.compression, options.skipmissing,
-                not options.replaceold, False, writer=writer)
-            collector.collect(options.path, inputfiles,
-                              options.datatype, shape)
-
-
-class Test(Execute):
-
-    """ Test runner"""
-
-    #: (:obj:`str`) command description
-    description = "execute the process in the test mode " \
-                  + "without changing any files"
-    #: (:obj:`str`) command epilog
-    epilog = "" \
-        + " examples:\n" \
-        + "       nxscollect test /tmp/gpfs/raw/scan_234.nxs \n\n" \
-        + "\n"
-
-    def run(self, options):
-        """ the main program function
-
-        :param options: parser options
-        :type options: :class:`argparse.Namespace`
-        """
-        parser = self._parser
-        nexusfiles = options.args
-
-        try:
-            getcompression(options.compression)
-        except Exception as e:
-            print(str(e))
-            parser.print_help()
-            print("")
-            sys.exit(0)
-
-        if not nexusfiles or not nexusfiles[0]:
-            parser.print_help()
-            print("")
-            sys.exit(0)
-
-        if options.h5cpp:
-            writer = "h5cpp"
-        elif options.h5py:
-            writer = "h5py"
-        elif options.pni:
-            writer = "pni"
-        elif "h5cpp" in WRITERS.keys():
-            writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
-        else:
-            writer = "pni"
-        if (options.pni and options.h5py and options.h5cpp) or \
-           writer not in WRITERS.keys():
-            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
-                             % writer)
-            parser.print_help()
-            sys.exit(255)
-        if (options.path and not options.inputfiles):
-            sys.stderr.write(
-                "nxscollect: --input_files argument is missing")
-            parser.print_help()
-            sys.exit(255)
-        if (not options.path and options.inputfiles):
-            sys.stderr.write(
-                "nxscollect: --path argument is missing")
-            parser.print_help()
-            sys.exit(255)
-        inputfiles = None
-        if options.inputfiles:
-            if options.separator:
-                inputfiles = options.inputfiles.split(options.separator)
-            else:
-                inputfiles = [options.inputfiles]
-
-        shape = None
-        if options.shape:
-            try:
-                shape = json.loads(options.shape)
-            except Exception:
-                sys.stderr.write(
-                    "nxscollect: shape is not readable")
-                parser.print_help()
-                sys.exit(255)
-
-        # configuration server
-        for nxsfile in nexusfiles:
-            collector = Collector(
-                nxsfile, options.compression, options.skipmissing,
-                not options.replaceold, True, writer=writer)
+                not options.replaceold, options.testmode, writer=writer)
             collector.collect(options.path, inputfiles,
                               options.datatype, shape)
 
@@ -876,10 +1005,9 @@ def _supportoldcommands():
     """
 
     oldnew = {
-        '-x': 'execute',
-        '--execute': 'execute',
-        '-t': 'test',
-        '--test': 'test',
+        '-x': 'append',
+        '--execute': 'append',
+        'execute': 'append',
     }
 
     if sys.argv and len(sys.argv) > 1:
@@ -900,8 +1028,8 @@ def main():
         description=description, epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.cmdrunners = [
-        ('execute', Execute),
-        ('test', Test)
+        ('append', Execute),
+        ('link', Link)
     ]
     runners = parser.createSubParsers()
 
