@@ -519,11 +519,20 @@ class Collector(object):
                         cfilter = filewriter.data_filter(node)
                         cfilter.filterid = opts[0]
                         cfilter.options = tuple(opts[1:])
+                if len(shape) == 2:
+                    nshape = [0, shape[0], shape[1]]
+                    nchunk = [1, shape[0], shape[1]]
+                elif len(shape) == 3:
+                    nshape = [0, shape[0], shape[1], shape[2]]
+                    nchunk = [1, shape[0], shape[1], shape[2]]
+                else:
+                    nshape = [0, shape[0]]
+                    nchunk = [1, shape[0]]
                 field = node.create_field(
                     fieldname,
                     dtype,
-                    shape=[0, shape[0], shape[1]],
-                    chunk=[1, shape[0], shape[1]],
+                    shape=nshape,
+                    chunk=nchunk,
                     dfilter=cfilter)
                 self._addattr(field, fieldattrs)
             return field
@@ -580,18 +589,26 @@ class Collector(object):
                     data, dtype, shape = self._loadimage(fname)
 
                 if data is not None:
+                    ishape = shape
+                    nrim = 1
+                    if len(shape) == 3:
+                        ishape = [shape[1], shape[2]]
+                        nrim = shape[0]
                     if field is None:
                         if not self.__testmode or node is not None:
                             field = self._getfield(
-                                node, fieldname, dtype, shape,
+                                node, fieldname, dtype, ishape,
                                 fieldattrs, fieldcompression)
-
                     if field and ind == field.shape[0]:
                         if not self.__testmode:
-                            field.grow(0, 1)
-                            field[-1, ...] = data
+                            if nrim == 1:
+                                field.grow(0, 1)
+                                field[-1, ...] = data
+                            else:
+                                field.grow(0, nrim)
+                                field[field.shape[0]-nrim:, ...] = data
                         print(" * append %s " % (fname))
-                    ind += 1
+                    ind += nrim
                     if not self.__testmode:
                         self.__nxsfile.flush()
 
