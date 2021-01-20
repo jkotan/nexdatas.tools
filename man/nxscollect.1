@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Apr 28, 2020" "2.71" "NXSTools"
+.TH "NXSCOLLECT" "1" "Jan 20, 2021" "2.72" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -32,21 +32,28 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 ..
 .SH DESCRIPTION
 .sp
-The nxsconfig is  a command\-line tool dedicated to collect detector images of external formats into the NeXus master file.  The images to collect should be denoted by postrun fields inside NXcollection groups.
+The nxscollect is  a command\-line tool dedicated to collect detector images.
+.sp
+The append sub\-commnand adds images of external formats into the NeXus master file.
+The images to collect should be denoted by postrun fields inside NXcollection groups or given by command\-line parameters.
 .SH SYNOPSIS
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxscollect [execute|test] [<options>] <command> <main_nexus_file>
+        nxscollect append [\-h] [\-c COMPRESSION] [\-p PATH] [\-i INPUTFILES]
+                       [\-\-separator SEPARATOR] [\-\-dtype DATATYPE]
+                       [\-\-shape SHAPE] [\-s] [\-r] [\-\-test] [\-\-pni] [\-\-h5py]
+                       [\-\-h5cpp]
+                       [nexus_file [nexus_file ...]]
+
+
+nexus_file            nexus files to be collected
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.sp
-execute               execute the collecting process
-test                  exceute the process in test mode without changing any files
 .INDENT 0.0
 .TP
 .B Options:
@@ -55,8 +62,29 @@ test                  exceute the process in test mode without changing any file
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPRESSION\fP,\fB \ \-\-compression\fB= COMPRESSION
-deflate compression rate from 0 to 9 (default: 2)
+.BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
+deflate compression rate from 0 to 9 (default: 2) or
+<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
+bitshuffle with lz4
+.TP
+.BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
+nexus path for the output field, e.g.
+/scan/instrument/pilatus/data
+.TP
+.BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
+input data files defined with a pattern or separated
+by ‘,’ e.g.’scan_%05d.tif:0:100’
+.TP
+.BI \-\-separator \ SEPARATOR
+input data files separator (default: ‘,’)
+.TP
+.BI \-\-dtype \ DATATYPE
+datatype of input data \- only for raw data, e.g.
+‘uint8’
+.TP
+.BI \-\-shape \ SHAPE
+shape of input data \- only for raw data, e.g.
+‘[4096,2048]’
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -64,6 +92,9 @@ skip missing files
 .B \-r\fP,\fB  \-\-replace_nexus_file
 if it is set the old file is not copied into a file
 with .__nxscollect__old__* extension
+.TP
+.B \-\-test
+execute in the test mode
 .TP
 .B \-\-pni
 use pni module as a nexus reader/writer
@@ -81,7 +112,70 @@ use h5cpp module as a nexus reader/writer
 .sp
 .nf
 .ft C
-nxscollect \-x \-c1 /tmp/gpfs/raw/scan_234.nxs
+nxscollect append \-c1 /tmp/gpfs/raw/scan_234.nxs
+
+nxscollect append \-c32008:0,2 /ramdisk/scan_123.nxs
+
+nxscollect append \-\-test /tmp/gpfs/raw/scan_234.nxs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
+.SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+        nxscollect link [\-h] [\-n NAME] [\-t TARGET] [\-r] [\-\-test] [\-\-pni]
+                     [\-\-h5py] [\-\-h5cpp]
+                     [nexus_file_path]
+
+nexus_file_path       nexus files with the nexus directory to place the link
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-n \ NAME\fP,\fB \ \-\-name \ NAME
+link name
+.TP
+.BI \-t \ TARGET\fP,\fB \ \-\-target \ TARGET
+link target with the file name if external
+.TP
+.B \-r\fP,\fB  \-\-replace_nexus_file
+if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension
+.TP
+.B \-\-test
+execute in the test mode
+.TP
+.B \-\-pni
+use pni module as a nexus reader/writer
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader/writer
+.TP
+.B \-\-h5cpp
+use h5cpp module as a nexus reader
+.UNINDENT
+.UNINDENT
+.SH EXAMPLE
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target /lambda.nxs://entry/data/data
 .ft P
 .fi
 .UNINDENT
