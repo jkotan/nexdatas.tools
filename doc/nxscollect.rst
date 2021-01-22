@@ -11,9 +11,11 @@ The nxscollect is  a command-line tool dedicated to collect detector images.
 The append sub-commnand adds images of external formats into the NeXus master file.
 The images to collect should be denoted by postrun fields inside NXcollection groups or given by command-line parameters.
 
+The link sub-commnand creates external or internal link in the NeXus master file to NeXus data files.
 
-Synopsis
---------
+
+Synopsis nxscollect append
+--------------------------
 
 .. code:: bash
 
@@ -52,9 +54,8 @@ Options:
   --h5py                use h5py module as a nexus reader/writer
   --h5cpp               use h5cpp module as a nexus reader/writer
 
-
-Example
--------
+Examples nxscollect append
+--------------------------
 
 .. code:: bash
 
@@ -64,12 +65,11 @@ Example
 
        nxscollect append --test /tmp/gpfs/raw/scan_234.nxs
 
+       nxscollect append /tmp/gpfs/raw/scan_234.nxs --path /scan/instrument/pilatus/data  --inputfiles 'scan_%05d.tif:0:100'
+  
 
-The link sub-commnand creates external or internal link in the NeXus master file to NeXus data files.
-
-
-Synopsis
---------
+Synopsis nxscollect link
+------------------------
 
 .. code:: bash
 
@@ -92,11 +92,11 @@ Options:
   --h5py                use h5py module as a nexus reader/writer
   --h5cpp               use h5cpp module as a nexus reader
 
+  
 
-
-Example
--------
+Example nxscollect link
+-----------------------
 
 .. code:: bash
-
-	  nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda --name data --target /lambda.nxs://entry/data/data
+       
+       nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda --name data --target lambda.nxs://entry/data/data

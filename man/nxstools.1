@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Jan 20, 2021" "2.72" "NXSTools"
+.TH "NXSTOOLS" "1" "Jan 22, 2021" "2.72" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -227,7 +227,9 @@ The nxscollect is  a command\-line tool dedicated to collect detector images.
 .sp
 The append sub\-commnand adds images of external formats into the NeXus master file.
 The images to collect should be denoted by postrun fields inside NXcollection groups or given by command\-line parameters.
-.SS Synopsis
+.sp
+The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
+.SS Synopsis nxscollect append
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -297,7 +299,7 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
-.SS Example
+.SS Examples nxscollect append
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -308,13 +310,13 @@ nxscollect append \-c1 /tmp/gpfs/raw/scan_234.nxs
 nxscollect append \-c32008:0,2 /ramdisk/scan_123.nxs
 
 nxscollect append \-\-test /tmp/gpfs/raw/scan_234.nxs
+
+nxscollect append /tmp/gpfs/raw/scan_234.nxs \-\-path /scan/instrument/pilatus/data  \-\-inputfiles \(aqscan_%05d.tif:0:100\(aq
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.sp
-The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
-.SS Synopsis
+.SS Synopsis nxscollect link
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -360,13 +362,13 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
-.SS Example
+.SS Example nxscollect link
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target /lambda.nxs://entry/data/data
+nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target lambda.nxs://entry/data/data
 .ft P
 .fi
 .UNINDENT
@@ -4240,7 +4242,7 @@ abstract method
 .INDENT 0.0
 .TP
 .B exception nxstools.nxscreator.CPExistsException
-Bases: \fI\%Exception\fP
+Bases: \fI\%exceptions.Exception\fP
 .sp
 Component already exists exception
 .UNINDENT
@@ -4365,7 +4367,7 @@ constructor
 .INDENT 0.0
 .TP
 .B exception nxstools.nxscreator.DSExistsException
-Bases: \fI\%Exception\fP
+Bases: \fI\%exceptions.Exception\fP
 .sp
 DataSource already exists exception
 .UNINDENT
@@ -4739,7 +4741,7 @@ creates a tango datasource xml and stores it in DB or filesytem
 .INDENT 0.0
 .TP
 .B exception nxstools.nxscreator.WrongParameterError
-Bases: \fI\%Exception\fP
+Bases: \fI\%exceptions.Exception\fP
 .sp
 wrong parameter exception
 .UNINDENT
@@ -4975,7 +4977,7 @@ NeXus tool argumen parser
 .INDENT 0.0
 .TP
 .B exception nxstools.nxsargparser.ErrorException
-Bases: \fI\%Exception\fP
+Bases: \fI\%exceptions.Exception\fP
 .sp
 error parser exception
 .UNINDENT

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Jan 20, 2021" "2.72" "NXSTools"
+.TH "NXSCOLLECT" "1" "Jan 22, 2021" "2.72" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -36,7 +36,9 @@ The nxscollect is  a command\-line tool dedicated to collect detector images.
 .sp
 The append sub\-commnand adds images of external formats into the NeXus master file.
 The images to collect should be denoted by postrun fields inside NXcollection groups or given by command\-line parameters.
-.SH SYNOPSIS
+.sp
+The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
+.SH SYNOPSIS NXSCOLLECT APPEND
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -106,7 +108,7 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
-.SH EXAMPLE
+.SH EXAMPLES NXSCOLLECT APPEND
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -117,13 +119,13 @@ nxscollect append \-c1 /tmp/gpfs/raw/scan_234.nxs
 nxscollect append \-c32008:0,2 /ramdisk/scan_123.nxs
 
 nxscollect append \-\-test /tmp/gpfs/raw/scan_234.nxs
+
+nxscollect append /tmp/gpfs/raw/scan_234.nxs \-\-path /scan/instrument/pilatus/data  \-\-inputfiles \(aqscan_%05d.tif:0:100\(aq
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.sp
-The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
-.SH SYNOPSIS
+.SH SYNOPSIS NXSCOLLECT LINK
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -169,13 +171,13 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
-.SH EXAMPLE
+.SH EXAMPLE NXSCOLLECT LINK
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target /lambda.nxs://entry/data/data
+nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target lambda.nxs://entry/data/data
 .ft P
 .fi
 .UNINDENT
