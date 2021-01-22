@@ -66,7 +66,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
@@ -75,18 +75,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by ‘,’ e.g.’scan_%05d.tif:0:100’
+by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: ‘,’)
+input data files separator (default: \(aq,\(aq)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-‘uint8’
+\(aquint8\(aq
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-‘[4096,2048]’
+\(aq[4096,2048]\(aq
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
