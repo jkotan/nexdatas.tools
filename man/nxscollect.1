@@ -178,6 +178,8 @@ use h5cpp module as a nexus reader
 .nf
 .ft C
 nxscollect link scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target lambda.nxs://entry/data/data
+
+nxscollect link scan_123.nxs://entry:NXentry/instrument/eiger:NXdetector  \-\-target eiger.nxs://entry/data/data
 .ft P
 .fi
 .UNINDENT

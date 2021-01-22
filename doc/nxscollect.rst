@@ -14,8 +14,8 @@ The images to collect should be denoted by postrun fields inside NXcollection gr
 The link sub-commnand creates external or internal link in the NeXus master file to NeXus data files.
 
 
-Synopsis nxscollect append
---------------------------
+Synopsis for nxscollect append
+------------------------------
 
 .. code:: bash
 
@@ -54,8 +54,8 @@ Options:
   --h5py                use h5py module as a nexus reader/writer
   --h5cpp               use h5cpp module as a nexus reader/writer
 
-Examples nxscollect append
---------------------------
+Examples of nxscollect append
+-----------------------------
 
 .. code:: bash
 
@@ -68,8 +68,8 @@ Examples nxscollect append
        nxscollect append scan_234.nxs --path /scan/instrument/pilatus/data  --inputfiles 'scan_%05d.tif:0:100'
   
 
-Synopsis nxscollect link
-------------------------
+Synopsis for nxscollect link
+----------------------------
 
 .. code:: bash
 
@@ -94,8 +94,8 @@ Options:
 
   
 
-Example nxscollect link
------------------------
+Examples of nxscollect link
+---------------------------
 
 .. code:: bash
        
