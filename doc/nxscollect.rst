@@ -65,7 +65,7 @@ Examples nxscollect append
 
        nxscollect append --test /tmp/gpfs/raw/scan_234.nxs
 
-       nxscollect append /tmp/gpfs/raw/scan_234.nxs --path /scan/instrument/pilatus/data  --inputfiles 'scan_%05d.tif:0:100'
+       nxscollect append scan_234.nxs --path /scan/instrument/pilatus/data  --inputfiles 'scan_%05d.tif:0:100'
   
 
 Synopsis nxscollect link
@@ -99,4 +99,7 @@ Example nxscollect link
 
 .. code:: bash
        
-       nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda --name data --target lambda.nxs://entry/data/data
+       nxscollect link scan_234.nxs://entry/instrument/lambda --name data --target lambda.nxs://entry/data/data
+
+       nxscollect link scan_123.nxs://entry:NXentry/instrument/eiger:NXdetector  --target eiger.nxs://entry/data/data
+       
