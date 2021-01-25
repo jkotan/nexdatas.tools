@@ -619,12 +619,13 @@ class H5CppGroup(filewriter.FTGroup):
         """
         dcpl = h5cpp.property.DatasetCreationList()
         if fillvalue:
-            if hasattr(dcpl, "fill_value"):
+            if hasattr(dcpl, "set_fill_value"):
                 if isinstance(fillvalue, np.ndarray):
-                    dcpl.fill_value = fillvalue
+                    dcpl.set_fill_value(
+                        fillvalue[0], pTh[str(fillvalue.dtype)])
                 else:
-                    dcpl.fill_value = np.array(
-                        [fillvalue], dtype=layout.dtype)
+                    dcpl.set_fill_value(
+                        fillvalue, pTh[_tostr(layout.dtype)])
         shape = layout.shape or [1]
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape),
