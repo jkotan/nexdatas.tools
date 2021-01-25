@@ -363,6 +363,44 @@ def data_filter():
 deflate_filter = data_filter
 
 
+def external_field(filename, fieldpath, shape,
+                   dtype=None, maxshape=None):
+    """ create external field for VDS
+
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param fieldpath: nexus field path
+    :type fieldpath: :obj:`str`
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: external field object
+    :rtype: :class:`H5CppExternalField`
+    """
+    return H5CppExternalField(
+        filename, fieldpath, shape, dtype, maxshape)
+
+
+def virtual_field_layout(shape, dtype=None, maxshape=None):
+    """ creates a virtual field layout for a VDS file
+
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: virtual layout
+    :rtype: :class:`H5CppVirtualFieldLayout`
+    """
+    return H5CppVirtualFieldLayout(
+        h5cpp.property.VirtualDataMaps(),
+        shape, dtype, maxshape)
+
+
 class H5CppFile(filewriter.FTFile):
 
     """ file tree file
@@ -569,6 +607,34 @@ class H5CppGroup(filewriter.FTGroup):
                 "NX_class", pTh["unicode"]).write(unicode(nxclass))
         return H5CppGroup(gr, self)
 
+    def create_virtual_field(self, name, layout, fillvalue=None):
+        """ creates a virtual filed tres element
+
+        :param name: group name
+        :type name: :obj:`str`
+        :param layout: virual field layout
+        :type layout: :class:`H5CppFieldLayout`
+        :param fillvalue:  fill value
+        :type fillvalue: :obj:`int` or :class:`np.ndarray`
+        """
+        dcpl = h5cpp.property.DatasetCreationList()
+        if fillvalue:
+            if hasattr(dcpl, "fill_value"):
+                if isinstance(fillvalue, np.ndarray):
+                    dcpl.fill_value = fillvalue
+                else:
+                    dcpl.fill_value = np.array(
+                        [fillvalue], dtype=layout.dtype)
+        shape = layout.shape or [1]
+        dataspace = h5cpp.dataspace.Simple(
+            tuple(shape),
+            tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
+
+        return H5CppField(h5cpp.node.VirtualDataset(
+            self._h5object, h5cpp.Path(name),
+            pTh[_tostr(layout.dtype)], dataspace,
+            layout._h5object, dcpl=dcpl), self)
+
     def create_field(self, name, type_code,
                      shape=None, chunk=None, dfilter=None):
         """ open a file tree element
@@ -605,15 +671,10 @@ class H5CppGroup(filewriter.FTGroup):
             chunk = [(dm if dm != 0 else 1) for dm in shape]
         dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
         dcpl.chunk = tuple(chunk)
-        field = h5cpp.node.Dataset(
+        return H5CppField(h5cpp.node.Dataset(
             self._h5object, h5cpp.Path(name),
             pTh[_tostr(type_code)], dataspace,
-            dcpl=dcpl)
-
-        fld = H5CppField(field, self)
-        # if type_code == "bool":
-        #     fld.boolflag = True
-        return fld
+            dcpl=dcpl), self)
 
     @property
     def size(self):
@@ -1112,8 +1173,94 @@ class H5CppDataFilter(filewriter.FTDataFilter):
     """
 
 
+class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
+
+    """ virtual field layout """
+
+    def __init__(self, h5object, shape, dtype=None, maxshape=None):
+        """ constructor
+
+        :param h5object: h5 object
+        :type h5object: :obj:`any`
+        :param shape: shape
+        :type shape: :obj:`list` < :obj:`int` >
+        :param dtype: attribute type
+        :type dtype: :obj:`str`
+        :param maxshape: shape
+        :type maxshape: :obj:`list` < :obj:`int` >
+        """
+        filewriter.FTVitualFieldLayout.__init__(self, h5object)
+        #: (:obj:`list` < :obj:`int` >) shape
+        self._shape = shape
+        # : (:obj:`str`): data type
+        self._dtype = dtype
+        #: (:obj:`list` < :obj:`int` >) maximal shape
+        self._maxshape = maxshape
+
+    def __setitem__(self, key, source):
+        """ add external field to layout
+
+        :param key: slide
+        :type key: :obj:`tuple`
+        :param source: external field
+        :type source: :class:`H5PYExternalField`
+        """
+        self.add(key, source._h5object)
+
+    def add(self, key, source):
+        """ add external field to layout
+
+        :param key: slide
+        :type key: :obj:`tuple`
+        :param source: external field
+        :type source: :class:`H5PYExternalField`
+        """
+
+        selection = _slice2selection(key, self.shape)
+        lds = h5cpp.dataspace.Simple(tuple(self.shape))
+        lview = h5cpp.dataspace.View(lds, selection)
+        eview = h5cpp.dataspace.View(
+            h5cpp.dataspace.Simple(tuple(source._shape)))
+        fname = source._filename
+        path = h5cpp.Path(source._fieldpath)
+        self._h5object.add(h5cpp.property.VirtualDataMap(
+            lview, fname, path, eview))
+
+
+class H5CppExternalField(filewriter.FTExternalField):
+
+    """ external field for VDS """
+
+    def __init__(self, filename, fieldpath, shape, dtype=None, maxshape=None):
+        """ constructor
+
+        :param filename: file name
+        :type filename: :obj:`str`
+        :param fieldpath: nexus field path
+        :type fieldpath: :obj:`str`
+        :param shape: shape
+        :type shape: :obj:`list` < :obj:`int` >
+        :param dtype: attribute type
+        :type dtype: :obj:`str`
+        :param maxshape: shape
+        :type maxshape: :obj:`list` < :obj:`int` >
+        """
+        filewriter.FTExternalField.__init__(self, None)
+        #: (:obj:`str`) directory and file name
+        self._filename = filename
+        #: (:obj:`str`) nexus field path
+        self._fieldpath = fieldpath
+        #: (:obj:`list` < :obj:`int` >) shape
+        self._shape = shape
+        # : (:obj:`str`): data type
+        self._dtype = dtype
+        #: (:obj:`list` < :obj:`int` >) maximal shape
+        self._maxshape = maxshape
+
+
 class H5CppDeflate(H5CppDataFilter):
-    pass
+
+    """ deflate filter """
 
 
 class H5CppAttributeManager(filewriter.FTAttributeManager):

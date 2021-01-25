@@ -186,6 +186,43 @@ def data_filter():
 deflate_filter = data_filter
 
 
+def external_field(filename, fieldpath, shape,
+                   dtype=None, maxshape=None):
+    """ create external field for VDS
+
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param fieldpath: nexus field path
+    :type fieldpath: :obj:`str`
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: external field object
+    :rtype: :class:`FTExternalField`
+    """
+    return H5PYExternalField(
+        h5py.VirtualSource(filename, fieldpath, shape, dtype, maxshape))
+
+
+def virtual_field_layout(shape, dtype=None, maxshape=None):
+    """ creates a virtual field layout for a VDS file
+
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: virtual layout
+    :rtype: :class:`FTVirtualFieldLayout`
+    """
+    return H5PYVirtualFieldLayout(
+        h5py.VirtualLayout(shape, dtype, maxshape))
+
+
 class H5PYFile(filewriter.FTFile):
 
     """ file tree file
@@ -414,12 +451,27 @@ class H5PYGroup(filewriter.FTGroup):
             grp.attrs["NX_class"] = unicode(nxclass)
         return H5PYGroup(grp, self)
 
+    def create_virtual_field(self, name, layout, fillvalue=None):
+        """ creates a virtual filed tres element
+
+        :param name: group name
+        :type name: :obj:`str`
+        :param layout: virual field layout
+        :type layout: :class:`H5PYFieldLayout`
+        :param fillvalue:  fill value
+        :type fillvalue: :obj:`int`
+        """
+        return H5PYField(
+            self._h5object.create_virtual_dataset(
+                name, layout._h5object, fillvalue),
+            self)
+
     def create_field(self, name, type_code,
                      shape=None, chunk=None, dfilter=None):
-        """ open a file tree element
+        """ creates a field tree element
 
-        :param n: group name
-        :type n: :obj:`str`
+        :param name: group name
+        :type name: :obj:`str`
         :param type_code: nexus field type
         :type type_code: :obj:`str`
         :param shape: shape
@@ -534,7 +586,7 @@ class H5PYGroup(filewriter.FTGroup):
 
 class H5PYField(filewriter.FTField):
 
-    """ file tree file
+    """ file writer field
     """
 
     def __init__(self, h5object, tparent=None):
@@ -818,6 +870,36 @@ class H5PYDataFilter(filewriter.FTDataFilter):
 
     """ file tree data filter
     """
+
+
+class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
+
+    """ virtual field layout """
+
+    def __setitem__(self, key, source):
+        """ add external field to layout
+
+        :param key: slide
+        :type key: :obj:`tuple`
+        :param source: external field
+        :type source: :class:`H5PYExternalField`
+        """
+        self._h5object.__setitem__(key, source._h5object)
+
+    def add(self, key, source):
+        """ add external field to layout
+
+        :param key: slide
+        :type key: :obj:`tuple`
+        :param source: external field
+        :type source: :class:`H5PYExternalField`
+        """
+        self._h5object.__setitem__(key, source._h5object)
+
+
+class H5PYExternalField(filewriter.FTExternalField):
+
+    """ external field for VDS """
 
 
 class H5PYDeflate(H5PYDataFilter):
