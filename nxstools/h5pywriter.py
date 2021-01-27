@@ -203,8 +203,11 @@ def external_field(filename, fieldpath, shape,
     :returns: external field object
     :rtype: :class:`FTExternalField`
     """
+    maxshape = maxshape or [h5py.h5s.UNLIMITED for _ in shape]
+    # maxshape = maxshape or shape
     return H5PYExternalField(
-        h5py.VirtualSource(filename, fieldpath, shape, dtype, maxshape))
+        h5py.VirtualSource(filename, fieldpath,
+                           tuple(shape), dtype, tuple(maxshape or [])))
 
 
 def virtual_field_layout(shape, dtype=None, maxshape=None):
@@ -219,8 +222,11 @@ def virtual_field_layout(shape, dtype=None, maxshape=None):
     :returns: virtual layout
     :rtype: :class:`FTVirtualFieldLayout`
     """
+    maxshape = maxshape or [h5py.h5s.UNLIMITED for _ in shape]
+    # maxshape = maxshape or [None for _ in shape]
+    # maxshape = maxshape or shape
     return H5PYVirtualFieldLayout(
-        h5py.VirtualLayout(shape, dtype, maxshape))
+        h5py.VirtualLayout(tuple(shape), dtype, tuple(maxshape or [])))
 
 
 class H5PYFile(filewriter.FTFile):

@@ -91,7 +91,7 @@ def _slice2selection(t, shape):
             return h5cpp.dataspace.Hyperslab(
                 offset=(start,),
                 count=int(math.ceil((stop - start) / float(t.step))),
-                stride=(t.step - 1,))
+                stride=(t.step,))
     elif isinstance(t, (int, long)):
         return h5cpp.dataspace.Hyperslab(
             offset=(t,), block=(1,))
@@ -129,7 +129,7 @@ def _slice2selection(t, shape):
                     count.append(
                         int(math.ceil(
                             (stop - start) / float(tel.step))))
-                    stride.append(tel.step - 1)
+                    stride.append(tel.step)
             elif tel is Ellipsis:
                 esize = len(shape) - len(t) + 1
                 for jt in range(esize):
@@ -1190,13 +1190,13 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :param maxshape: shape
         :type maxshape: :obj:`list` < :obj:`int` >
         """
-        filewriter.FTVitualFieldLayout.__init__(self, h5object)
+        filewriter.FTVirtualFieldLayout.__init__(self, h5object)
         #: (:obj:`list` < :obj:`int` >) shape
-        self._shape = shape
+        self.shape = shape
         # : (:obj:`str`): data type
-        self._dtype = dtype
+        self.dtype = dtype
         #: (:obj:`list` < :obj:`int` >) maximal shape
-        self._maxshape = maxshape
+        self.maxshape = maxshape
 
     def __setitem__(self, key, source):
         """ add external field to layout
@@ -1206,7 +1206,7 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :param source: external field
         :type source: :class:`H5PYExternalField`
         """
-        self.add(key, source._h5object)
+        self.add(key, source)
 
     def add(self, key, source):
         """ add external field to layout
@@ -1221,9 +1221,9 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         lds = h5cpp.dataspace.Simple(tuple(self.shape))
         lview = h5cpp.dataspace.View(lds, selection)
         eview = h5cpp.dataspace.View(
-            h5cpp.dataspace.Simple(tuple(source._shape)))
-        fname = source._filename
-        path = h5cpp.Path(source._fieldpath)
+            h5cpp.dataspace.Simple(tuple(source.shape)))
+        fname = source.filename
+        path = h5cpp.Path(source.fieldpath)
         self._h5object.add(h5cpp.property.VirtualDataMap(
             lview, fname, path, eview))
 
@@ -1248,15 +1248,15 @@ class H5CppExternalField(filewriter.FTExternalField):
         """
         filewriter.FTExternalField.__init__(self, None)
         #: (:obj:`str`) directory and file name
-        self._filename = filename
+        self.filename = filename
         #: (:obj:`str`) nexus field path
-        self._fieldpath = fieldpath
+        self.fieldpath = fieldpath
         #: (:obj:`list` < :obj:`int` >) shape
-        self._shape = shape
+        self.shape = shape
         # : (:obj:`str`): data type
-        self._dtype = dtype
+        self.dtype = dtype
         #: (:obj:`list` < :obj:`int` >) maximal shape
-        self._maxshape = maxshape
+        self.maxshape = maxshape
 
 
 class H5CppDeflate(H5CppDataFilter):

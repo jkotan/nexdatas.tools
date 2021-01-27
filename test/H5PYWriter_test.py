@@ -3813,6 +3813,293 @@ class H5PYWriterTest(unittest.TestCase):
         finally:
             os.remove(self._fname)
 
+    def test_h5py_vitualfield_image_concatinate(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._fname = '%s/%s%s.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname1 = '%s/%s%s_1.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname2 = '%s/%s%s_2.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname3 = '%s/%s%s_3.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        try:
+            vl = [[[self.__rnd.randint(1, 1600) for _ in range(20)]
+                   for _ in range(10)]
+                  for _ in range(30)]
+
+            fl = H5PYWriter.create_file(fname1, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry1", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[n][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(fname2, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry2", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[n + 10][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(fname3, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry3", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[n + 20][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry123", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+
+            ef1 = H5PYWriter.external_field(
+                fname1, "/entry1/data/data", [10, 10, 20], "uint32")
+            ef2 = H5PYWriter.external_field(
+                fname2, "/entry2/data/data", [10, 10, 20], "uint32")
+            ef3 = H5PYWriter.external_field(
+                fname3, "/entry3/data/data", [10, 10, 20], "uint32")
+
+            vfl = H5PYWriter.virtual_field_layout([30, 10, 20], "uint32")
+            vfl[0:10, :, :] = ef1
+            vfl[10:20, :, :] = ef2
+            vfl[20:30, :, :] = ef3
+
+            intimage = dt.create_virtual_field("data", vfl)
+            rw = intimage.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+
+            dt.close()
+            entry.close()
+            fl.close()
+
+        finally:
+            os.remove(fname1)
+            os.remove(fname2)
+            os.remove(fname3)
+            os.remove(self._fname)
+
+    def test_h5py_vitualfield_image_interleaving(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._fname = '%s/%s%s.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname1 = '%s/%s%s_1.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname2 = '%s/%s%s_2.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname3 = '%s/%s%s_3.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        try:
+            vl = [[[self.__rnd.randint(1, 1600) for _ in range(20)]
+                   for _ in range(10)]
+                  for _ in range(30)]
+
+            fl = H5PYWriter.create_file(fname1, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry1", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[3 * n][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(fname2, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry2", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[3 * n + 1][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(fname3, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry3", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "uint32", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[3 * n + 2][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry123", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+
+            ef1 = H5PYWriter.external_field(
+                fname1, "/entry1/data/data", [10, 10, 20], "uint32")
+            ef2 = H5PYWriter.external_field(
+                fname2, "/entry2/data/data", [10, 10, 20], "uint32")
+            ef3 = H5PYWriter.external_field(
+                fname3, "/entry3/data/data", [10, 10, 20], "uint32")
+
+            vfl = H5PYWriter.virtual_field_layout([30, 10, 20], "uint32")
+            vfl[0:28:3, :, :] = ef1
+            vfl[1:29:3, :, :] = ef2
+            vfl[2:30:3, :, :] = ef3
+
+            intimage = dt.create_virtual_field("data", vfl)
+            rw = intimage.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+
+            dt.close()
+            entry.close()
+            fl.close()
+
+        finally:
+            os.remove(fname1)
+            os.remove(fname2)
+            os.remove(fname3)
+            os.remove(self._fname)
+
+    def test_h5py_vitualfield_image_gap(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        self._fname = '%s/%s%s.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname1 = '%s/%s%s_1.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+        fname3 = '%s/%s%s_3.h5' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        try:
+            vl = [[[self.__rnd.randint(1, 1600) for _ in range(20)]
+                   for _ in range(10)]
+                  for _ in range(30)]
+            mone = [[[-1 for _ in range(20)]
+                     for _ in range(10)]
+                    for _ in range(10)]
+
+            fl = H5PYWriter.create_file(fname1, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry1", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "int16", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[n][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(fname3, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry3", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            intimage = dt.create_field(
+                "data", "int16", [10, 10, 20], [1, 10, 20])
+            vv = [[[vl[n + 20][j][i] for i in range(20)]
+                   for j in range(10)] for n in range(10)]
+            intimage[...] = vv
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vv[i])
+            intimage.close()
+            dt.close()
+            entry.close()
+            fl.close()
+
+            fl = H5PYWriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group("entry123", "NXentry")
+            dt = entry.create_group("data", "NXdata")
+
+            ef1 = H5PYWriter.external_field(
+                fname1, "/entry1/data/data", [10, 10, 20], "int16")
+            ef3 = H5PYWriter.external_field(
+                fname3, "/entry3/data/data", [10, 10, 20], "int16")
+
+            vfl = H5PYWriter.virtual_field_layout([30, 10, 20], "int16")
+            vfl[0:10, :, :] = ef1
+            vfl[20:30, :, :] = ef3
+
+            intimage = dt.create_virtual_field("data", vfl, fillvalue=-1)
+            rw = intimage.read()
+            for i in range(10):
+                self.myAssertImage(rw[i], vl[i])
+            for i in range(10, 20):
+                self.myAssertImage(rw[i], mone[i - 10])
+            for i in range(20, 30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+
+            dt.close()
+            entry.close()
+            fl.close()
+
+        finally:
+            os.remove(fname1)
+            os.remove(fname3)
+            os.remove(self._fname)
+
 
 if __name__ == '__main__':
     unittest.main()
