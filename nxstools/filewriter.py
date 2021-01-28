@@ -81,6 +81,31 @@ def create_file(filename, overwrite=False, **pars):
     return fl
 
 
+def load_file(membuffer, filename=None, readonly=False, **pars):
+    """ load a file from memory byte buffer
+
+    :param membuffer: memory buffer
+    :type membuffer: :obj:`bytes` or :obj:`io.BytesIO`
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param readonly: readonly flag
+    :type readonly: :obj:`bool`
+    :param pars: parameters
+    :type pars: :obj:`dict` < :obj:`str`, :obj:`str`>
+    :returns: file objects
+    :rtype: :class:`H5PYFile` or :class:`H5CppFile`
+    """
+    if 'writer' in pars.keys():
+        wr = pars.pop('writer')
+    else:
+        with writerlock:
+            wr = writer
+    fl = wr.load_file(membuffer, filename, readonly, **pars)
+    if hasattr(fl, "writer"):
+        fl.writer = wr
+    return fl
+
+
 def link(target, parent, name):
     """ create link
 
@@ -312,7 +337,7 @@ class FTObject(object):
     def h5object(self):
         """ provide object of native library
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
         return self._h5object
@@ -349,7 +374,7 @@ class FTFile(FTObject):
     def __init__(self, h5object, filename):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param filename:  file name
         :type filename: :obj:`str`
@@ -490,7 +515,7 @@ class FTGroup(FTObject):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -587,7 +612,7 @@ class FTGroup(FTObject):
     def names(self):
         """ read the child names
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`list` <`str`>
         """
 
@@ -604,7 +629,7 @@ class FTVirtualFieldLayout(FTObject):
     def __init__(self, h5object=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         """
         FTObject.__init__(self, h5object)
@@ -637,7 +662,7 @@ class FTExternalField(FTObject):
     def __init__(self, h5object=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         """
         FTObject.__init__(self, h5object)
@@ -651,7 +676,7 @@ class FTField(FTObject):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -685,14 +710,14 @@ class FTField(FTObject):
     def read(self):
         """ read the field value
 
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
 
     def write(self, o):
         """ write the field value
 
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
 
@@ -701,7 +726,7 @@ class FTField(FTObject):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :param o: pni object
+        :param o: h5 object
         :type o: :obj:`any`
         """
 
@@ -710,7 +735,7 @@ class FTField(FTObject):
 
         :param t: slice tuple
         :type t: :obj:`tuple`
-        :returns: pni object
+        :returns: h5 object
         :rtype: :obj:`any`
         """
 
@@ -752,7 +777,7 @@ class FTLink(FTObject):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -788,7 +813,7 @@ class FTDataFilter(FTObject):
     def __init__(self, h5object=None, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -893,7 +918,7 @@ class FTAttributeManager(FTObject):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
@@ -931,6 +956,13 @@ class FTAttributeManager(FTObject):
         :rtype: :class:`FTAtribute`
         """
 
+    def names(self):
+        """ key values
+
+        :returns: attribute names
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+
     def reopen(self):
         """ reopen attribute
         """
@@ -945,7 +977,7 @@ class FTAttribute(FTObject):
     def __init__(self, h5object, tparent=None):
         """ constructor
 
-        :param h5object: pni object
+        :param h5object: h5 object
         :type h5object: :obj:`any`
         :param tparent: treee parent
         :type tparent: :obj:`FTObject`
