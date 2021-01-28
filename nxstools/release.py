@@ -21,4 +21,3 @@
 
 #: (:obj:`str`) package version
 __version__ = "2.73.0"
-
