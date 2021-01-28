@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Jan 20, 2021" "2.72" "NXSTools"
+.TH "NXSCOLLECT" "1" "Jan 22, 2021" "2.72" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -36,7 +36,9 @@ The nxscollect is  a command\-line tool dedicated to collect detector images.
 .sp
 The append sub\-commnand adds images of external formats into the NeXus master file.
 The images to collect should be denoted by postrun fields inside NXcollection groups or given by command\-line parameters.
-.SH SYNOPSIS
+.sp
+The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
+.SH SYNOPSIS FOR NXSCOLLECT APPEND
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -64,7 +66,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
@@ -73,18 +75,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by ‘,’ e.g.’scan_%05d.tif:0:100’
+by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: ‘,’)
+input data files separator (default: \(aq,\(aq)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-‘uint8’
+\(aquint8\(aq
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-‘[4096,2048]’
+\(aq[4096,2048]\(aq
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -106,7 +108,7 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader/writer
 .UNINDENT
 .UNINDENT
-.SH EXAMPLE
+.SH EXAMPLES OF NXSCOLLECT APPEND
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -117,13 +119,13 @@ nxscollect append \-c1 /tmp/gpfs/raw/scan_234.nxs
 nxscollect append \-c32008:0,2 /ramdisk/scan_123.nxs
 
 nxscollect append \-\-test /tmp/gpfs/raw/scan_234.nxs
+
+nxscollect append scan_234.nxs \-\-path /scan/instrument/pilatus/data  \-\-inputfiles \(aqscan_%05d.tif:0:100\(aq
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.sp
-The link sub\-commnand creates external or internal link in the NeXus master file to NeXus data files.
-.SH SYNOPSIS
+.SH SYNOPSIS FOR NXSCOLLECT LINK
 .INDENT 0.0
 .INDENT 3.5
 .sp
@@ -169,13 +171,15 @@ use h5py module as a nexus reader/writer
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
-.SH EXAMPLE
+.SH EXAMPLES OF NXSCOLLECT LINK
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-nxscollect link /tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target /lambda.nxs://entry/data/data
+nxscollect link scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target lambda.nxs://entry/data/data
+
+nxscollect link scan_123.nxs://entry:NXentry/instrument/eiger:NXdetector  \-\-target eiger.nxs://entry/data/data
 .ft P
 .fi
 .UNINDENT
