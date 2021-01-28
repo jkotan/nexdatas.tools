@@ -49,6 +49,15 @@ def is_image_file_supported():
     return False
 
 
+def is_vds_supported():
+    """ provides if vds are supported
+
+    :retruns: if vds are supported
+    :rtype: :obj:`bool`
+    """
+    return False
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 

@@ -4496,6 +4496,11 @@ class H5CppWriterTest(unittest.TestCase):
     def test_h5cpp_vitualfield_image_concatinate(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if not H5CppWriter.is_vds_supported():
+            self.myAssertRaise(
+                Exception, H5CppWriter.virtual_field_layout, [100])
+            print("Skip the test")
+            return
         self._fname = '%s/%s%s.h5' % (
             os.getcwd(), self.__class__.__name__, fun)
         fname1 = '%s/%s%s_1.h5' % (
@@ -4597,6 +4602,11 @@ class H5CppWriterTest(unittest.TestCase):
     def test_h5cpp_vitualfield_image_interleaving(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if not H5CppWriter.is_vds_supported():
+            self.myAssertRaise(
+                Exception, H5CppWriter.virtual_field_layout, [100])
+            print("Skip the test")
+            return
         self._fname = '%s/%s%s.h5' % (
             os.getcwd(), self.__class__.__name__, fun)
         fname1 = '%s/%s%s_1.h5' % (
@@ -4698,6 +4708,11 @@ class H5CppWriterTest(unittest.TestCase):
     def test_h5cpp_vitualfield_image_gap(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if not H5CppWriter.is_vds_supported():
+            self.myAssertRaise(
+                Exception, H5CppWriter.virtual_field_layout, [100])
+            print("Skip the test")
+            return
         self._fname = '%s/%s%s.h5' % (
             os.getcwd(), self.__class__.__name__, fun)
         fname1 = '%s/%s%s_1.h5' % (

@@ -65,6 +65,15 @@ def is_image_file_supported():
     return h5ver >= 2009
 
 
+def is_vds_supported():
+    """ provides if VDS are supported
+
+    :retruns: if VDS are supported
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 2009
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
@@ -203,8 +212,9 @@ def external_field(filename, fieldpath, shape,
     :returns: external field object
     :rtype: :class:`FTExternalField`
     """
-    maxshape = maxshape or [h5py.h5s.UNLIMITED for _ in shape]
-    # maxshape = maxshape or shape
+    if not is_vds_supported():
+        raise Exception("VDS not supported")
+    maxshape = maxshape or [None for _ in shape]
     return H5PYExternalField(
         h5py.VirtualSource(filename, fieldpath,
                            tuple(shape), dtype, tuple(maxshape or [])))
@@ -222,9 +232,9 @@ def virtual_field_layout(shape, dtype=None, maxshape=None):
     :returns: virtual layout
     :rtype: :class:`FTVirtualFieldLayout`
     """
-    maxshape = maxshape or [h5py.h5s.UNLIMITED for _ in shape]
-    # maxshape = maxshape or [None for _ in shape]
-    # maxshape = maxshape or shape
+    if not is_vds_supported():
+        raise Exception("VDS not supported")
+    maxshape = maxshape or [None for _ in shape]
     return H5PYVirtualFieldLayout(
         h5py.VirtualLayout(tuple(shape), dtype, tuple(maxshape or [])))
 
@@ -467,6 +477,8 @@ class H5PYGroup(filewriter.FTGroup):
         :param fillvalue:  fill value
         :type fillvalue: :obj:`int`
         """
+        if not is_vds_supported():
+            raise Exception("VDS not supported")
         return H5PYField(
             self._h5object.create_virtual_dataset(
                 name, layout._h5object, fillvalue),

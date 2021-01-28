@@ -230,6 +230,16 @@ def is_image_file_supported():
         hasattr(h5cpp.file, "ImageFlags")
 
 
+def is_vds_supported():
+    """ provides if vds are supported
+
+    :retruns: if vds are supported
+    :rtype: :obj:`bool`
+    """
+    return hasattr(h5cpp.property, "VirtualDataMaps") and \
+        hasattr(h5cpp.property, "VirtualDataMaps")
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
@@ -396,6 +406,8 @@ def virtual_field_layout(shape, dtype=None, maxshape=None):
     :returns: virtual layout
     :rtype: :class:`H5CppVirtualFieldLayout`
     """
+    if not is_vds_supported():
+        raise Exception("VDS not supported")
     return H5CppVirtualFieldLayout(
         h5cpp.property.VirtualDataMaps(),
         shape, dtype, maxshape)
@@ -617,6 +629,8 @@ class H5CppGroup(filewriter.FTGroup):
         :param fillvalue:  fill value
         :type fillvalue: :obj:`int` or :class:`np.ndarray`
         """
+        if not is_vds_supported():
+            raise Exception("VDS not supported")
         dcpl = h5cpp.property.DatasetCreationList()
         if fillvalue:
             if hasattr(dcpl, "set_fill_value"):
@@ -626,6 +640,9 @@ class H5CppGroup(filewriter.FTGroup):
                 else:
                     dcpl.set_fill_value(
                         fillvalue, pTh[_tostr(layout.dtype)])
+            else:
+                raise Exception("VDS fill_value not supported")
+
         shape = layout.shape or [1]
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape),
