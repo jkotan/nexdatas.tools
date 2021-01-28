@@ -49,6 +49,15 @@ def is_image_file_supported():
     return False
 
 
+def is_vds_supported():
+    """ provides if vds are supported
+
+    :retruns: if vds are supported
+    :rtype: :obj:`bool`
+    """
+    return False
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
@@ -125,6 +134,41 @@ def data_filter():
 
 
 deflate_filter = data_filter
+
+
+def external_field(filename, fieldpath, shape,
+                   dtype=None, maxshape=None):
+    """ create external field for VDS
+
+    :param filename: file name
+    :type filename: :obj:`str`
+    :param fieldpath: nexus field path
+    :type fieldpath: :obj:`str`
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: external field object
+    :rtype: :class:`PNIExternalField`
+    """
+    raise Exception("VDS is not supported in PNI package")
+
+
+def virtual_field_layout(shape, dtype=None, maxshape=None):
+    """ creates a virtual field layout for a VDS file
+
+    :param shape: shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :param dtype: attribute type
+    :type dtype: :obj:`str`
+    :param maxshape: shape
+    :type maxshape: :obj:`list` < :obj:`int` >
+    :returns: virtual layout
+    :rtype: :class:`PNIVirtualFieldLayout`
+    """
+    raise Exception("VDS is not supported in PNI package")
 
 
 class PNIFile(filewriter.FTFile):
@@ -267,6 +311,18 @@ s
         :rtype: :class:`PNIGroup`
         """
         return PNIGroup(self._h5object.create_group(n, nxclass), self)
+
+    def create_virtual_field(self, name, layout, fillvalue=None):
+        """ creates a virtual filed tres element
+
+        :param name: group name
+        :type name: :obj:`str`
+        :param layout: virual field layout
+        :type layout: :class:`H5PYFieldLayout`
+        :param fillvalue:  fill value
+        :type fillvalue: :obj:`int`
+        """
+        raise Exception("VDS is not supported in PNI package")
 
     def create_field(self, name, type_code,
                      shape=None, chunk=None, dfilter=None):
@@ -620,6 +676,16 @@ class PNIDataFilter(filewriter.FTDataFilter):
 
     """ file tree deflate
     """
+
+
+class PNIVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
+
+    """ virtual field layout """
+
+
+class PNIExternalField(filewriter.FTExternalField):
+
+    """ external field for VDS """
 
 
 class PNIDeflate(PNIDataFilter):
