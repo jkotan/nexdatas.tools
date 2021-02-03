@@ -756,19 +756,19 @@ class Collector(object):
             os.remove(self.__tempfilename)
 
 
-class Link(Runner):
+class VDS(Runner):
 
     """ Execute runner
     """
 
     #: (:obj:`str`) command description
-    description = "create an external or internal link in the master file"
+    description = "create a virual dataset in the master file"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxscollect link " \
-        + "/tmp/gpfs/raw/scan_234.nxs://entry/instrument/lambda " \
-        + "--name data --target /lambda.nxs://entry/data/data \n\n" \
+        + "       nxscollect vds " \
+        + "scan_234.nxs://entry/instrument/lambda/data " \
+        + "--external-fields lambda.nxs://entry/data/data \n\n" \
         + "\n"
 
     def create(self):
@@ -784,7 +784,110 @@ class Link(Runner):
             action="store", type=str, default=None,
             help="link target with the file name if external")
         parser.add_argument(
-            "-r", "--replace_nexus_file", action="store_true",
+            "-r", "--replace-nexus-file", action="store_true",
+            default=False, dest="replaceold",
+            help="if it is set the old file is not copied into "
+            "a file with .__nxscollect__old__* extension")
+        parser.add_argument(
+            "--test", action="store_true",
+            default=False, dest="testmode",
+            help="execute in the test mode")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader/writer")
+        parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader/writer")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+
+    def postauto(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            'args', metavar='nexus_file_path_field',
+            type=str, nargs='?',
+            help='nexus files with the nexus directory and a field name '
+            'to create VDS')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        parser = self._parser
+        nexusfilepath = options.args
+
+        if not nexusfilepath or not nexusfilepath[0]:
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif options.pni:
+            writer = "pni"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        elif "h5py" in WRITERS.keys():
+            writer = "h5py"
+        else:
+            writer = "pni"
+
+        if (options.pni and options.h5py and options.h5cpp) or \
+           writer not in WRITERS.keys():
+            sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            parser.print_help()
+            sys.exit(255)
+
+        # configuration server
+        linker = Linker(
+            nexusfilepath, options.target, options.name,
+            not options.replaceold, options.testmode, writer=writer)
+        linker.link()
+
+
+class Link(Runner):
+
+    """ Execute runner
+    """
+
+    #: (:obj:`str`) command description
+    description = "create an external or internal link in the master file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxscollect link " \
+        + "scan_234.nxs://entry/instrument/lambda " \
+        + "--name data --target scan_234/lambda.nxs://entry/data/data \n\n" \
+        + "scan_234.nxs://entry/instrument/eiger:NXdetector " \
+        + "  --target scan_234/eiger.nxs://entry/data/data \n\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument(
+            "-n", "--name", dest="name",
+            action="store", type=str, default=None,
+            help="link name")
+        parser.add_argument(
+            "-t", "--target", dest="target",
+            action="store", type=str, default=None,
+            help="link target with the file name if external")
+        parser.add_argument(
+            "-r", "--replace-nexus-file", action="store_true",
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
@@ -869,6 +972,9 @@ class Execute(Runner):
         + "       nxscollect append -c1 /tmp/gpfs/raw/scan_234.nxs \n\n" \
         + "       nxscollect append -c32008:0,2 /ramdisk/scan_123.nxs \n\n" \
         + "       nxscollect append --test /tmp/gpfs/raw/scan_234.nxs \n\n" \
+        + "       nxscollect append scan_234.nxs " \
+        + "--path /scan/instrument/pilatus/data  " \
+        + "--input-files 'scan_%05d.tif:0:100' "\
         + "\n"
 
     def create(self):
@@ -887,7 +993,7 @@ class Execute(Runner):
             help="nexus path for the output field, e.g."
             " /scan/instrument/pilatus/data")
         parser.add_argument(
-            "-i", "--input_files", dest="inputfiles",
+            "-i", "--input-files", dest="inputfiles",
             action="store", type=str, default=None,
             help="input data files defined with a pattern "
             "or separated by ',' e.g."
@@ -907,11 +1013,11 @@ class Execute(Runner):
             help="shape of input data - only for raw data,"
             " e.g. '[4096,2048]'")
         parser.add_argument(
-            "-s", "--skip_missing", action="store_true",
+            "-s", "--skip-missing", action="store_true",
             default=False, dest="skipmissing",
             help="skip missing files")
         parser.add_argument(
-            "-r", "--replace_nexus_file", action="store_true",
+            "-r", "--replace-nexus-file", action="store_true",
             default=False, dest="replaceold",
             help="if it is set the old file is not copied into "
             "a file with .__nxscollect__old__* extension")
@@ -983,7 +1089,7 @@ class Execute(Runner):
             sys.exit(255)
         if (options.path and not options.inputfiles):
             sys.stderr.write(
-                "nxscollect: --input_files argument is missing")
+                "nxscollect: --input-files argument is missing")
             parser.print_help()
             sys.exit(255)
         if (not options.path and options.inputfiles):
@@ -1024,12 +1130,20 @@ def _supportoldcommands():
     oldnew = {
         '-x': 'append',
         '--execute': 'append',
+        '--replace_nexus_file': '--replace-nexus-file',
+        '--input_files': '--input-files',
+        '--skip_missing': '--skip-missing',
         'execute': 'append',
     }
 
     if sys.argv and len(sys.argv) > 1:
-        if sys.argv[1] in oldnew.keys():
-            sys.argv[1] = oldnew[sys.argv[1]]
+        for i, arg in enumerate(sys.argv):
+            if i > 0 and arg in oldnew.keys():
+                sys.stderr.write(
+                    "Warning: `%s` is deprecated, "
+                    "please use `%s` instead\n\n"
+                    % (arg, oldnew[arg]))
+                sys.argv[i] = oldnew[arg]
 
 
 def main():
@@ -1047,6 +1161,7 @@ def main():
     parser.cmdrunners = [
         ('append', Execute),
         ('link', Link)
+        # ('vds', VDS)
     ]
     runners = parser.createSubParsers()
 

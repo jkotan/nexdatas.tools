@@ -238,14 +238,12 @@ For more help:
 
         commands = [
             ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
@@ -289,26 +287,22 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append -s %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append -s %s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
@@ -350,28 +344,24 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append %s -s  %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -s  %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append %s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append %s -s -r %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s -s -r %s' %
@@ -424,14 +414,12 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append -r %s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x -r %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test -r %s %s' %
              (filename, self.flags)).split(),
             ('nxscollect append --test -r %s %s' %
@@ -486,14 +474,10 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -583,33 +567,36 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s -c1  %s' %
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s -c1  %s' %
              (filename, self.flags)).split(),
             ('nxscollect append  %s -c2 %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -c3 %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -c4 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -c5 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append  %s -s -c6 %s' %
              (filename, self.flags)).split(),
 
-            ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s -c7 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s -c9' %
+             (filename, self.flags)).split(),
         ]
         extra_commands = [
             ('nxscollect append  %s -r -s -c32008:0,2 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s -c32008:0,2' %
+            ('nxscollect append %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
         if self.externalfilters and H5CPP:
@@ -718,10 +705,10 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -832,10 +819,10 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -969,9 +956,9 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1062,14 +1049,14 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1158,31 +1145,35 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s -c1 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s -c1 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append  %s -c2 %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -c3 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -c3 %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -c4 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -c5 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -c5 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append  %s -s -c6 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -s -c7 %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s -c7 %s' %
+             (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s -c8 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s -c9' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s -c9' %
+             (filename, self.flags)).split(),
         ]
         extra_commands = [
             ('nxscollect append  %s -r -s -c32008:0,2 %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s -c32008:0,2' %
+            ('nxscollect append %s -r -s %s -c32008:0,2' %
              (filename, self.flags)).split(),
         ]
         if self.externalfilters and H5CPP:
@@ -1291,10 +1282,10 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1405,10 +1396,10 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1542,9 +1533,9 @@ For more help:
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -1652,14 +1643,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -1770,14 +1761,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -1876,19 +1867,19 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s' %
+            ('nxscollect append %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s' %
+            ('nxscollect append %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -1985,19 +1976,19 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s' %
+            ('nxscollect append %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s' %
+            ('nxscollect append %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2094,22 +2085,22 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s --separator :' %
+            ('nxscollect append %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
+            ('nxscollect append %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s'
+            ('nxscollect append %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -2206,19 +2197,19 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s' %
+            ('nxscollect append %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s' %
+            ('nxscollect append %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2315,19 +2306,19 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s' %
+            ('nxscollect append %s %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s' %
+            ('nxscollect append %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect append %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2424,22 +2415,22 @@ For more help:
         commands = [
             ('nxscollect append  %s %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s %s -i %s --path %s --separator :' %
+            ('nxscollect append %s %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append  %s -r %s -i %s -p %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
+            ('nxscollect append %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s'
+            ('nxscollect append %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -2550,14 +2541,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -2670,14 +2661,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -2816,14 +2807,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -2970,14 +2961,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -3114,14 +3105,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -3256,14 +3247,14 @@ For more help:
 
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -r %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -s %s' % (filename, self.flags)).split(),
-            ('nxscollect -x %s -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r -s %s' %
              (filename, self.flags)).split(),
-            ('nxscollect -x %s -r -s %s' % (filename, self.flags)).split(),
+            ('nxscollect append %s -r -s %s' % (filename, self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
@@ -4607,13 +4598,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4704,13 +4695,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4801,16 +4792,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
              % (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -4900,13 +4891,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4997,13 +4988,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -5094,16 +5085,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
              % (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
