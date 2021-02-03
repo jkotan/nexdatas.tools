@@ -209,6 +209,117 @@ class Linker(object):
             os.remove(self.__tempfilename)
 
 
+class VirtualDataset(object):
+
+    """ Create external and internal links of NeXus files
+    """
+
+    def __init__(self, nexusfilepath, target, name=None,
+                 storeold=False, testmode=False, writer=None):
+        """ The constructor creates the collector object
+
+        :param nexusfilepath: the nexus file name and nexus path
+        :type nexusfilepath: :obj:`str`
+        :param target: the nexus file name and nexus path
+        :type target: :obj:`str`
+        :param storeold: if backup the input file
+        :type storeold: :obj:`bool`
+        :param testmode: if run in a test mode
+        :type testmode: :obj:`bool`
+        :param writer: the writer module
+        :type writer: :obj:`str`
+        """
+        self.__target = target
+        self.__name = name
+        if not name:
+            self.__name = target.split("/")[-1]
+        self.__testmode = testmode
+        self.__storeold = storeold
+        self.__wrmodule = None
+        self.__nexuspath = None
+        self.__nexusfilename, self.__nexuspath = \
+            nexusfilepath.split(":/")
+
+        if writer and writer.lower() in WRITERS.keys():
+            self.__wrmodule = WRITERS[writer.lower()]
+        self.__siginfo = dict(
+            (signal.__dict__[sname], sname)
+            for sname in ('SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'))
+
+        for sig in self.__siginfo.keys():
+            signal.signal(sig, self._signalhandler)
+
+    def _signalhandler(self, sig, _):
+        """ signal handler
+
+        :param sig: signal name, i.e. 'SIGINT', 'SIGHUP', 'SIGALRM', 'SIGTERM'
+        :type sig: :obj:`str`
+        """
+        if sig in self.__siginfo.keys():
+            self.__break = True
+            print("terminated by %s" % self.__siginfo[sig])
+
+    def _createtmpfile(self):
+        """ creates temporary file
+        """
+        self.__tempfilename = self.__nexusfilename + ".__nxscollect_temp__"
+        while os.path.exists(self.__tempfilename):
+            self.__tempfilename += "_"
+        shutil.copy2(self.__nexusfilename, self.__tempfilename)
+
+    def _storeoldfile(self):
+        """ makes back up of the input file
+        """
+        temp = self.__nexusfilename + ".__nxscollect_old__"
+        while os.path.exists(temp):
+            temp += "_"
+        shutil.move(self.__nexusfilename, temp)
+
+    def create(self):
+        """ creates VDS
+        """
+        self._createtmpfile()
+        path = self.__nexuspath
+        try:
+            self.__nxsfile = filewriter.open_file(
+                self.__tempfilename, readonly=False,
+                writer=self.__wrmodule)
+            root = self.__nxsfile.root()
+            groups = path.split("/")
+            parent = root
+            tgr = ""
+            for gr in groups:
+                if gr:
+                    if ":" in gr:
+                        gr, tgr = gr.split(":", 1)
+                    if parent is not None and gr in parent.names():
+                        parent = parent.open(gr)
+                    else:
+                        if not tgr:
+                            tgr = "NX" + gr
+                        if not self.__testmode:
+                            parent = parent.create_group(gr, tgr)
+                        else:
+                            parent = None
+
+            if parent:
+                print("link: target %s at %s://%s as %s" %
+                      (self.__target, self.__nexusfilename,
+                       parent.path, self.__name))
+            else:
+                print("link: target %s at %s as %s" %
+                      (self.__target, path, self.__name))
+            if not self.__testmode:
+                filewriter.link(self.__target, parent, self.__name)
+
+            if self.__storeold:
+                self._storeoldfile()
+            shutil.move(self.__tempfilename, self.__nexusfilename)
+        except Exception as e:
+            print(str(e))
+            os.remove(self.__tempfilename)
+
+
 class Collector(object):
 
     """ Collector merge images of external file-formats
@@ -768,7 +879,7 @@ class VDS(Runner):
         + " examples:\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/lambda/data " \
-        + "--external-fields 'lambda_%%05d.nxs://entry/data/data:0:3'" \
+        + "--external-fields 'lambda_%05d.nxs://entry/data/data:0:3'" \
         + " --offset ',,;,256,;,512,' \n\n" \
         + "\n"
 
@@ -777,19 +888,108 @@ class VDS(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            "-i", "--external-fields", dest="externalfields",
+            "-e", "--external-fields", dest="externalfields",
             action="store", type=str, default=None,
             help="exteranl fields with their NeXus file paths "
             "defined with a pattern or separated by ',' e.g."
             "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
         parser.add_argument(
-            "-n", "--name", dest="name",
+            "-t", "--dtype", dest="datatype",
             action="store", type=str, default=None,
-            help="link name")
+            help="datatype of the VDS field, e.g. 'uint8'")
         parser.add_argument(
-            "-t", "--target", dest="target",
+            "-s", "--shape", dest="shape",
             action="store", type=str, default=None,
-            help="link target with the file name if external")
+            help="shape of the VDS field, e.g. '[U,4096,2048]' or U,4096,2048"
+            " where U means span along the field'")
+        parser.add_argument(
+            "-f", "--fill-value", dest="fillvalue",
+            action="store", type=str, default=None,
+            help="fill value for the gaps, default is 0")
+        parser.add_argument(
+            "-o", "--offsets", dest="offsets",
+            action="store", type=str, default=None,
+            help="offsets in the VDS layout hyperslab "
+            "for the corresponding external fields  "
+            "with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            "',,;,300,;,600,0' where an empty coordinate means 0")
+        parser.add_argument(
+            "-b", "--blocks", dest="blocks",
+            action="store", type=str, default=None,
+            help="block sizes in the VDS layout hyperslab "
+            "for the corresponding external fields  "
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',256,512;,256,512;,256,512' "
+            "where an empty coordinate means 1")
+        parser.add_argument(
+            "-c", "--counts", dest="counts",
+            action="store", type=str, default=None,
+            help="count numbers in the VDS layout hyperslab"
+            "for the corresponding external fields  "
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',1,1;,1,1;,1,1' "
+            "where an empty coordinate means span along the layout")
+        parser.add_argument(
+            "-d", "--strides", dest="strides",
+            action="store", type=str, default=None,
+            help="stride sizes in the VDS layout hyperslab"
+            "for the corresponding external fields  "
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',,;,,;,,' "
+            "where an empty coordinate means 1")
+        parser.add_argument(
+            "-l", "--slices", dest="slices",
+            action="store", type=str, default=None,
+            help="mapping slices in the VDS layout"
+            "for the corresponding external fields  "
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';'  or spaces e.g."
+            " ':,0:50,: :,50:100,:' "
+            "where U means span along the layout ")
+        parser.add_argument(
+            "-O", "--field-offsets", dest="fieldoffsets",
+            action="store", type=str, default=None,
+            help="offsets in the view hyperslab of external fields"
+            "with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            "',,;,300,;,600,0' where an empty coordinate means 0")
+        parser.add_argument(
+            "-B", "--field-blocks", dest="blocks",
+            action="store", type=str, default=None,
+            help="block sizes in the view hyperslab of external fields"
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',256,512;,256,512;,256,512' "
+            "where an empty coordinate means 1")
+        parser.add_argument(
+            "-C", "--field-counts", dest="fieldcounts",
+            action="store", type=str, default=None,
+            help="count numbers in the view hyperslab of external fields"
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',1,1;,1,1;,1,1' "
+            "where an empty coordinate means span along the layout")
+        parser.add_argument(
+            "-D", "--field-strides", dest="fieldstrides",
+            action="store", type=str, default=None,
+            help="stride sizes numbers in the view hyperslab "
+            "of external fields"
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            " ',,;,,;,,' "
+            "where an empty coordinate means 1")
+        parser.add_argument(
+            "-L", "--field-slices", dest="fieldviewslices",
+            action="store", type=str, default=None,
+            help="view slices of external fields"
+            " with coordinates sepatated by ',' "
+            "and different fields separated by ';'  or spaces e.g."
+            " ':,0:50,: :,0:50,:' "
+            "where U means span along the layout ")
         parser.add_argument(
             "-r", "--replace-nexus-file", action="store_true",
             default=False, dest="replaceold",
@@ -820,7 +1020,7 @@ class VDS(Runner):
             'args', metavar='nexus_file_path_field',
             type=str, nargs='?',
             help='nexus files with the nexus directory and a field name '
-            'to create VDS')
+            'to create the VDS field')
 
     def run(self, options):
         """ the main program function
@@ -858,10 +1058,9 @@ class VDS(Runner):
             sys.exit(255)
 
         # configuration server
-        linker = Linker(
-            nexusfilepath, options.target, options.name,
-            not options.replaceold, options.testmode, writer=writer)
-        linker.link()
+        vds = VirtualDataset(
+            nexusfilepath, options, writer=writer)
+        vds.create()
 
 
 class Link(Runner):
