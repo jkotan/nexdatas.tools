@@ -1,3 +1,8 @@
+2021-02-03 Jan Kotanski <jankotan@gmail.com>
+	* impove tangovimba component
+	* change '_' to '-' in command-line options settings
+	* tagged as v2.74.0
+
 2021-01-28 Jan Kotanski <jankotan@gmail.com>
 	* add support for VDS
 	* add fix slide2selection
