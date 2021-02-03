@@ -1882,13 +1882,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -1991,13 +1991,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2100,16 +2100,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s'
+            ('nxscollect -x %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s'
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -2212,13 +2212,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2321,13 +2321,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s' %
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -2430,16 +2430,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect -x %s -r %s -i %s --path %s --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -s %s --input_files %s --path %s'
+            ('nxscollect -x %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect -x %s -r -s %s --input_files %s --path %s'
+            ('nxscollect -x %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -4607,13 +4607,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4704,13 +4704,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4801,16 +4801,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
              % (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
@@ -4900,13 +4900,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -4997,13 +4997,13 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s' %
+            ('nxscollect append --test %s -s %s --input-files %s --path %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s' %
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              % (filename, self.flags, ifiles, path)).split(),
         ]
 
@@ -5094,16 +5094,16 @@ For more help:
              (filename, self.flags, ifiles, path)).split(),
             ('nxscollect append --test %s -r %s -i %s --path %s --separator :'
              % (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test  %s -r -s %s --input_files %s -p %s'
+            ('nxscollect append --test  %s -r -s %s --input-files %s -p %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
-            ('nxscollect append --test %s -r -s %s --input_files %s --path %s'
+            ('nxscollect append --test %s -r -s %s --input-files %s --path %s'
              ' --separator :' %
              (filename, self.flags, ifiles, path)).split(),
         ]
