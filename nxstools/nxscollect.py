@@ -768,13 +768,20 @@ class VDS(Runner):
         + " examples:\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/lambda/data " \
-        + "--external-fields lambda.nxs://entry/data/data \n\n" \
+        + "--external-fields 'lambda_%%05d.nxs://entry/data/data:0:3'" \
+        + " --offset ',,;,256,;,512,' \n\n" \
         + "\n"
 
     def create(self):
         """ creates parser
         """
         parser = self._parser
+        parser.add_argument(
+            "-i", "--external-fields", dest="externalfields",
+            action="store", type=str, default=None,
+            help="exteranl fields with their NeXus file paths "
+            "defined with a pattern or separated by ',' e.g."
+            "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
         parser.add_argument(
             "-n", "--name", dest="name",
             action="store", type=str, default=None,
@@ -1160,8 +1167,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.cmdrunners = [
         ('append', Execute),
-        ('link', Link)
-        # ('vds', VDS)
+        ('link', Link),
+        ('vds', VDS)
     ]
     runners = parser.createSubParsers()
 
