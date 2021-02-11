@@ -3621,6 +3621,7 @@ For more help:
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
+                print(svl)
                 self.assertEqual(len(svl), 4)
                 self.assertTrue(
                     svl[0],

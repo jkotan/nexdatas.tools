@@ -178,12 +178,19 @@ class NXSFileParser(object):
             anames = [at.name for at in attrs]
             for key, vl in self.attrdesc.items():
                 if vl[0] in anames:
-                    desc[key] = vl[1](filewriter.first(attrs[vl[0]][...]))
+                    desc[key] = vl[1](filewriter.first(attrs[vl[0]].read()))
         if node.name in self.valuestostore and node.is_valid:
-            vl = node[...]
-            while (not isinstance(vl, str) and
-                   hasattr(vl, "__len__") and len(vl) == 1):
-                vl = vl[0]
+            vl = node.read()
+            cont = True
+            while cont:
+                try:
+                    if not isinstance(vl, str) and \
+                       (hasattr(vl, "__len__") and len(vl) == 1):
+                        vl = vl[0]
+                    else:
+                        cont = False
+                except Exception:
+                    cont = False
             desc["value"] = vl
 
         self.description.append(desc)

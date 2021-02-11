@@ -560,7 +560,6 @@ class Collector(object):
         fieldname = fieldname or "data"
         field = None
         ind = 0
-
         for filestr in files:
             if self.__break:
                 break
@@ -587,7 +586,6 @@ class Collector(object):
                         data, dtype, shape = self._loadimage(fname)
                 else:
                     data, dtype, shape = self._loadimage(fname)
-
                 if data is not None:
                     ishape = shape
                     nrim = 1
@@ -626,7 +624,9 @@ class Collector(object):
             if collection:
                 if "postrun" in parent.names():
                     inputfiles = parent.open("postrun")
-                    files = inputfiles[...]
+                    files = inputfiles.read()
+                    if hasattr(files, "tolist"):
+                        files = files.tolist()
                     if isinstance(files, (str, unicode)):
                         files = [files]
                     fieldname = "data"
@@ -636,20 +636,19 @@ class Collector(object):
                     fieldcompression = None
                     for at in inputfiles.attributes:
                         if at.name == "fieldname":
-                            fieldname = at[...]
+                            fieldname = at.read()
                         elif at.name == "fieldcompression":
-                            fieldcompression = at[...]
+                            fieldcompression = at.read()
                         elif at.name == "fielddtype":
-                            fielddtype = at[...]
+                            fielddtype = at.read()
                         elif at.name == "fieldshape":
-                            fieldshape = json.loads(at[...])
+                            fieldshape = json.loads(at.read())
                         elif at.name.startswith("fieldattr_"):
                             atname = at.name[10:]
                             if atname:
                                 fieldattrs[atname] = (
-                                    at[...], at.dtype, at.shape
+                                    at.read(), at.dtype, at.shape
                                 )
-
                     print("populate: %s/%s with %s" % (
                         parent.parent.path, fieldname, files))
                     if fieldcompression is None:
@@ -667,7 +666,7 @@ class Collector(object):
                 if hasattr(child, "attributes"):
                     for at in child.attributes:
                         if at.name == "NX_class":
-                            gtype = at[...]
+                            gtype = at.read()
                             if gtype == 'NXcollection':
                                 coll = True
                     self._inspect(child, coll)
@@ -739,7 +738,7 @@ class Collector(object):
                 writer=self.__wrmodule)
             root = self.__nxsfile.root()
             try:
-                self.__fullfilename = root.attributes['file_name'][...]
+                self.__fullfilename = root.attributes['file_name'].read()
                 # print self.__fullfilename
             except Exception:
                 pass

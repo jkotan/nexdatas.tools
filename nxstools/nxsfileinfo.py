@@ -144,7 +144,7 @@ class General(Runner):
             at = entry.attributes["NX_class"]
         except Exception:
             pass
-        if at and at[...] == 'NXentry':
+        if at and at.read() == 'NXentry':
             # description.append(None)
             # value = filewriter.first(value)
             key = "Scan entry:"
@@ -152,14 +152,15 @@ class General(Runner):
             # description.append({key: "Scan entry:", value: entry.name})
             # description.append(None)
             try:
-                vl = filewriter.first(entry.open("title")[...])
+                vl = filewriter.first(entry.open("title").read())
                 description.append(
                     {key: "Title:", value: vl})
             except Exception:
                 sys.stderr.write("nxsfileinfo: title cannot be found\n")
                 sys.stderr.flush()
             try:
-                vl = filewriter.first(entry.open("experiment_identifier")[...])
+                vl = filewriter.first(
+                    entry.open("experiment_identifier").read())
                 description.append(
                     {key: "Experiment identifier:",
                      value: vl})
@@ -170,9 +171,9 @@ class General(Runner):
             for ins in entry:
                 if isinstance(ins, filewriter.FTGroup):
                     iat = ins.attributes["NX_class"]
-                    if iat and iat[...] == 'NXinstrument':
+                    if iat and iat.read() == 'NXinstrument':
                         try:
-                            vl = filewriter.first(ins.open("name")[...])
+                            vl = filewriter.first(ins.open("name").read())
                             description.append({
                                 key: "Instrument name:",
                                 value: vl})
@@ -183,7 +184,8 @@ class General(Runner):
                             sys.stderr.flush()
                         try:
                             vl = filewriter.first(
-                                ins.open("name").attributes["short_name"][...])
+                                ins.open("name").attributes[
+                                    "short_name"].read())
                             description.append({
                                 key: "Instrument short name:",
                                 value: vl
@@ -197,10 +199,10 @@ class General(Runner):
                         for sr in ins:
                             if isinstance(sr, filewriter.FTGroup):
                                 sat = sr.attributes["NX_class"]
-                                if sat and sat[...] == 'NXsource':
+                                if sat and sat.read() == 'NXsource':
                                     try:
                                         vl = filewriter.first(
-                                            sr.open("name")[...])
+                                            sr.open("name").read())
                                         description.append({
                                             key: "Source name:",
                                             value: vl})
@@ -212,7 +214,7 @@ class General(Runner):
                                     try:
                                         vl = filewriter.first(
                                             sr.open("name").attributes[
-                                                "short_name"][...])
+                                                "short_name"].read())
                                         description.append({
                                             key: "Source short name:",
                                             value: vl})
@@ -221,9 +223,9 @@ class General(Runner):
                                             "nxsfileinfo: source short name"
                                             " cannot be found\n")
                                         sys.stderr.flush()
-                    elif iat and iat[...] == 'NXsample':
+                    elif iat and iat.read() == 'NXsample':
                         try:
-                            vl = filewriter.first(ins.open("name")[...])
+                            vl = filewriter.first(ins.open("name").read())
                             description.append({
                                 key: "Sample name:",
                                 value: vl})
@@ -233,7 +235,7 @@ class General(Runner):
                             sys.stderr.flush()
                         try:
                             vl = filewriter.first(
-                                ins.open("chemical_formula")[...])
+                                ins.open("chemical_formula").read())
                             description.append({
                                 key: "Sample formula:",
                                 value: vl})
@@ -243,13 +245,13 @@ class General(Runner):
                                 " be found\n")
                             sys.stderr.flush()
             try:
-                vl = filewriter.first(entry.open("start_time")[...])
+                vl = filewriter.first(entry.open("start_time").read())
                 description.append({key: "Start time:", value: vl})
             except Exception:
                 sys.stderr.write("nxsfileinfo: start time cannot be found\n")
                 sys.stderr.flush()
             try:
-                vl = filewriter.first(entry.open("end_time")[...])
+                vl = filewriter.first(entry.open("end_time").read())
                 description.append({key: "End time:",
                                     value: vl})
             except Exception:
@@ -261,7 +263,7 @@ class General(Runner):
                 attr = pn.attributes
                 names = [att.name for att in attr]
                 if "scan_command" in names:
-                    scommand = filewriter.first(attr["scan_command"][...])
+                    scommand = filewriter.first(attr["scan_command"].read())
                     pname = "%s (%s)" % (pname, scommand)
                 description.append({key: "Program:", value: pname})
         return [key, value]
@@ -279,7 +281,7 @@ class General(Runner):
 
         names = [at.name for at in attr]
         fname = filewriter.first(
-            (attr["file_name"][...]
+            (attr["file_name"].read()
              if "file_name" in names else " ") or " ")
         title = "File name: '%s'" % fname
 

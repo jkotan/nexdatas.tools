@@ -360,10 +360,12 @@ def first(array):
     :returns: first element of the array
     :type array: :obj:`any`
     """
-    if isinstance(array, numpy.ndarray) and len(array) == 1:
-        return array[0]
-    else:
-        return array
+    try:
+        if isinstance(array, numpy.ndarray) and len(array) == 1:
+            return array[0]
+    except Exception:
+        pass
+    return array
 
 
 class FTFile(FTObject):
