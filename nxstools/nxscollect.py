@@ -636,13 +636,14 @@ class Collector(object):
                     fieldcompression = None
                     for at in inputfiles.attributes:
                         if at.name == "fieldname":
-                            fieldname = at.read()
+                            fieldname = filewriter.first(at.read())
                         elif at.name == "fieldcompression":
-                            fieldcompression = at.read()
+                            fieldcompression = filewriter.first(at.read())
                         elif at.name == "fielddtype":
-                            fielddtype = at.read()
+                            fielddtype = filewriter.first(at.read())
                         elif at.name == "fieldshape":
-                            fieldshape = json.loads(at.read())
+                            fieldshape = json.loads(
+                                filewriter.first(at.read()))
                         elif at.name.startswith("fieldattr_"):
                             atname = at.name[10:]
                             if atname:
@@ -666,7 +667,7 @@ class Collector(object):
                 if hasattr(child, "attributes"):
                     for at in child.attributes:
                         if at.name == "NX_class":
-                            gtype = at.read()
+                            gtype = filewriter.first(at.read())
                             if gtype == 'NXcollection':
                                 coll = True
                     self._inspect(child, coll)
@@ -738,7 +739,8 @@ class Collector(object):
                 writer=self.__wrmodule)
             root = self.__nxsfile.root()
             try:
-                self.__fullfilename = root.attributes['file_name'].read()
+                self.__fullfilename = filewriter.first(
+                    root.attributes['file_name'].read())
                 # print self.__fullfilename
             except Exception:
                 pass

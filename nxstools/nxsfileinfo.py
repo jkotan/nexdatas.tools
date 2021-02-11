@@ -144,7 +144,7 @@ class General(Runner):
             at = entry.attributes["NX_class"]
         except Exception:
             pass
-        if at and at.read() == 'NXentry':
+        if at and filewriter.first(at.read()) == 'NXentry':
             # description.append(None)
             # value = filewriter.first(value)
             key = "Scan entry:"
@@ -171,7 +171,7 @@ class General(Runner):
             for ins in entry:
                 if isinstance(ins, filewriter.FTGroup):
                     iat = ins.attributes["NX_class"]
-                    if iat and iat.read() == 'NXinstrument':
+                    if iat and filewriter.first(iat.read()) == 'NXinstrument':
                         try:
                             vl = filewriter.first(ins.open("name").read())
                             description.append({
@@ -199,7 +199,8 @@ class General(Runner):
                         for sr in ins:
                             if isinstance(sr, filewriter.FTGroup):
                                 sat = sr.attributes["NX_class"]
-                                if sat and sat.read() == 'NXsource':
+                                if sat and filewriter.first(sat.read()) \
+                                   == 'NXsource':
                                     try:
                                         vl = filewriter.first(
                                             sr.open("name").read())
@@ -223,7 +224,7 @@ class General(Runner):
                                             "nxsfileinfo: source short name"
                                             " cannot be found\n")
                                         sys.stderr.flush()
-                    elif iat and iat.read() == 'NXsample':
+                    elif iat and filewriter.first(iat.read()) == 'NXsample':
                         try:
                             vl = filewriter.first(ins.open("name").read())
                             description.append({
