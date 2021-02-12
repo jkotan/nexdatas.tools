@@ -30,11 +30,6 @@ from . import filewriter
 
 WRITERS = {}
 try:
-    from . import pniwriter
-    WRITERS["pni"] = pniwriter
-except Exception:
-    pass
-try:
     from . import h5pywriter
     WRITERS["h5py"] = h5pywriter
 except Exception:
@@ -64,10 +59,6 @@ class General(Runner):
 
         """
         self._parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader")
-        self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader")
@@ -94,15 +85,11 @@ class General(Runner):
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
-        if (options.pni and options.h5py and options.h5cpp) or \
+            writer = "h5py"
+        if (options.h5py and options.h5cpp) or \
            writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
@@ -130,7 +117,7 @@ class General(Runner):
         """ parse entry of nexus file
 
         :param entry: nexus entry node
-        :type entry: :class:`pni.io.nx.h5.nxgroup`
+        :type entry: :class:`filewriter.FTGroup`
         :param description: dict description list
         :type description: :obj:`list` <:obj:`dict` <:obj:`str`, `any` > >
         :return: (key, value) name pair of table headers
@@ -273,7 +260,7 @@ class General(Runner):
         """ show general informations
 
         :param root: nexus file root
-        :type root: class:`pni.io.nx.h5.nxroot`
+        :type root: class:`filewriter.FTGroup`
         """
 
         description = []
@@ -347,10 +334,6 @@ class Field(Runner):
             default=False, dest="source",
             help="show datasource parameters")
         self._parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader")
-        self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader")
@@ -377,15 +360,11 @@ class Field(Runner):
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
-        if (options.pni and options.h5py) or writer not in WRITERS.keys():
+            writer = "h5py"
+        if (options.h5cpp and options.h5py) or writer not in WRITERS.keys():
             sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
                              % writer)
             sys.stderr.flush()
@@ -413,7 +392,7 @@ class Field(Runner):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         :param root: nexus file root
-        :type root: class:`pni.io.nx.h5.nxroot`
+        :type root: class:`filewriter.FTGroup`
         """
         #: (:obj:`list`< :obj:`str`>)   \
         #     parameters which have to exists to be shown

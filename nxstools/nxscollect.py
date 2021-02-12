@@ -45,12 +45,6 @@ else:
 
 WRITERS = {}
 try:
-    from . import pniwriter
-    WRITERS["pni"] = pniwriter
-except Exception:
-    pass
-
-try:
     from . import h5pywriter
     WRITERS["h5py"] = h5pywriter
 except Exception:
@@ -794,10 +788,6 @@ class VDS(Runner):
             default=False, dest="testmode",
             help="execute in the test mode")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
-        parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
@@ -834,16 +824,12 @@ class VDS(Runner):
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
+            writer = "h5py"
 
-        if (options.pni and options.h5py and options.h5cpp) or \
+        if (options.h5py and options.h5cpp) or \
            writer not in WRITERS.keys():
             sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
                              % writer)
@@ -897,10 +883,6 @@ class Link(Runner):
             default=False, dest="testmode",
             help="execute in the test mode")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
-        parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
@@ -936,16 +918,12 @@ class Link(Runner):
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
+            writer = "h5py"
 
-        if (options.pni and options.h5py and options.h5cpp) or \
+        if (options.h5py and options.h5cpp) or \
            writer not in WRITERS.keys():
             sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
                              % writer)
@@ -1027,10 +1005,6 @@ class Execute(Runner):
             default=False, dest="testmode",
             help="execute in the test mode")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
-        parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
@@ -1073,15 +1047,11 @@ class Execute(Runner):
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
-        if (options.pni and options.h5py and options.h5cpp) or \
+            writer = "h5py"
+        if (options.h5py and options.h5cpp) or \
            writer not in WRITERS.keys():
             sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
                              % writer)
@@ -1184,7 +1154,8 @@ def main():
         sys.exit(255)
 
     if not WRITERS:
-        sys.stderr.write("nxsfileinfo: Neither h5cpp/pni nor h5py installed\n")
+        sys.stderr.write(
+            "nxsfileinfo: Neither pnineuxs.h5cpp nor h5py installed\n")
         sys.stderr.flush()
         parser.print_help()
         sys.exit(255)

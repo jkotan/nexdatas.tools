@@ -41,15 +41,12 @@ if "__root__" in commonblock.keys():
     if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
         spf = root.stepsperfile
         cfid = root.currentfileid
-    if root.h5object.__class__.__name__ == "nxgroup":
-        import nxstools.pniwriter as nxw
-    elif root.h5object.__class__.__name__ == "File":
+    if root.h5object.__class__.__name__ == "File":
         import nxstools.h5pywriter as nxw
     else:
         import nxstools.h5cppwriter as nxw
 else:
-    root = commonblock["__nxroot__"]
-    import pni.io.nx.h5 as nxw
+    raise("Writer cannot be found")
 en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
 dt = en.open("data")
 ins = en.open("instrument")
@@ -68,6 +65,6 @@ for nbf in range(1, nbfiles+1):
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
     $datasources.$(name)_nbtriggers
-    
+
   </datasource>
 </definition>
