@@ -21,7 +21,7 @@ Synopsis for nxscollect append
 
           nxscollect append [-h] [-c COMPRESSION] [-p PATH] [-i INPUTFILES]
                          [--separator SEPARATOR] [--dtype DATATYPE]
-                         [--shape SHAPE] [-s] [-r] [--test] [--pni] [--h5py]
+                         [--shape SHAPE] [-s] [-r] [--test] [--h5py]
                          [--h5cpp]
                          [nexus_file [nexus_file ...]]
 
@@ -50,7 +50,6 @@ Options:
                         if it is set the old file is not copied into a file
                         with .__nxscollect__old__* extension
   --test                execute in the test mode
-  --pni                 use pni module as a nexus reader/writer
   --h5py                use h5py module as a nexus reader/writer
   --h5cpp               use h5cpp module as a nexus reader/writer
 
@@ -73,7 +72,7 @@ Synopsis for nxscollect link
 
 .. code:: bash
 
-          nxscollect link [-h] [-n NAME] [-t TARGET] [-r] [--test] [--pni]
+          nxscollect link [-h] [-n NAME] [-t TARGET] [-r] [--test]
                        [--h5py] [--h5cpp]
                        [nexus_file_path]
 
@@ -88,7 +87,6 @@ Options:
                         if it is set the old file is not copied into a file
                         with .__nxscollect__old__* extension
   --test                execute in the test mode
-  --pni                 use pni module as a nexus reader/writer
   --h5py                use h5py module as a nexus reader/writer
   --h5cpp               use h5cpp module as a nexus reader
 

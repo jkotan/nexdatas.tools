@@ -113,7 +113,7 @@ class NXSFileParser(object):
         """ constructor
 
         :param root: nexus root node
-        :type root: :class:`pni.io.nx.h5.nxroot`
+        :type root: :class:`filewriter.FTGroup`
         """
 
         #: (:obj:`list` <:obj:`dict` <:obj:`str`, `any`> >) \
@@ -157,11 +157,10 @@ class NXSFileParser(object):
         """adds the node into the description list
 
         :param node: nexus node
-        :type node: :class:`pni.io.nx.h5.nxfield` or \
-                    :class:`pni.io.nx.h5.nxgroup` or \
-                    :class:`pni.io.nx.h5.nxlink` or \
-                    :class:`pni.io.nx.h5.nxattribute` or \
-                    :class:`pni.io.nx.h5.nxroot`
+        :type node: :class:`filewriter.FTField` or \
+                    :class:`filewriter.FTLink` or \
+                    :class:`filewriter.FTAttribute` or \
+                    :class:`filewriter.FTGroup`
         :param path: path of the link target or `None`
         :type path: :obj:`str`
         """
@@ -207,11 +206,10 @@ class NXSFileParser(object):
         """parses the node and add it into the description list
 
         :param node: nexus node
-        :type node: :class:`pni.io.nx.h5.nxfield` or \
-                    :class:`pni.io.nx.h5.nxgroup` or \
-                    :class:`pni.io.nx.h5.nxlink` or \
-                    :class:`pni.io.nx.h5.nxattribute` or \
-                    :class:`pni.io.nx.h5.nxroot`
+        :type node: :class:`filewriter.FTField` or \
+                    :class:`filewriter.FTLink` or \
+                    :class:`filewriter.FTAttribute` or \
+                    :class:`filewriter.FTGroup`
         :param path: path of the link target or `None`
         :type path: :obj:`str`
         """
