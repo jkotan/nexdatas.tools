@@ -2787,7 +2787,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(
                 atstrscalar.path, '/entry12345:NXentry@atstrscalar')
             self.assertEqual(atstrscalar.dtype, 'string')
-            self.assertEqual(atstrscalar.shape, (1,))
+            self.assertEqual(atstrscalar.shape, ())
             self.assertEqual(atstrscalar.is_valid, True)
             self.assertEqual(atstrscalar.read(), '')
             self.assertEqual(atstrscalar[...], '')
@@ -2939,7 +2939,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(
                 atstrscalar.path, '/entry12345:NXentry@atstrscalar')
             self.assertEqual(atstrscalar.dtype, 'string')
-            self.assertEqual(atstrscalar.shape, (1,))
+            self.assertEqual(atstrscalar.shape, ())
             self.assertEqual(atstrscalar.is_valid, True)
             self.assertEqual(atstrscalar.read(), '')
             self.assertEqual(atstrscalar[...], '')
@@ -3238,7 +3238,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(atintscalar.name, 'atintscalar')
             self.assertEqual(atintscalar.path, '/@atintscalar')
             self.assertEqual(atintscalar.dtype, 'int64')
-            self.assertEqual(atintscalar.shape, (1,))
+            self.assertEqual(atintscalar.shape, ())
             self.assertEqual(atintscalar.is_valid, True)
             self.assertEqual(atintscalar.read(), itvl[0])
             self.assertEqual(atintscalar[...], itvl[0])
@@ -3275,7 +3275,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(
                 atstrscalar.path, '/entry12345:NXentry@atstrscalar')
             self.assertEqual(atstrscalar.dtype, 'string')
-            self.assertEqual(atstrscalar.shape, (1,))
+            self.assertEqual(atstrscalar.shape, ())
             self.assertEqual(atstrscalar.is_valid, True)
             self.assertEqual(atstrscalar.read(), stvl[0])
             self.assertEqual(atstrscalar[...], stvl[0])
@@ -3309,7 +3309,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(atfloatscalar.path,
                              '/entry12345:NXentry/intscalar@atfloatscalar')
             self.assertEqual(atfloatscalar.dtype, 'float64')
-            self.assertEqual(atfloatscalar.shape, (1,))
+            self.assertEqual(atfloatscalar.shape, ())
             self.assertEqual(atfloatscalar.is_valid, True)
             self.assertEqual(atfloatscalar.read(), flvl[0])
             self.assertEqual(atfloatscalar[...], flvl[0])
