@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Feb 03, 2021" "2.74" "NXSTools"
+.TH "NXSTOOLS" "1" "Feb 12, 2021" "3.0" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -237,7 +237,7 @@ The link sub\-commnand creates external or internal link in the NeXus master fil
 .ft C
         nxscollect append [\-h] [\-c COMPRESSION] [\-p PATH] [\-i INPUTFILES]
                        [\-\-separator SEPARATOR] [\-\-dtype DATATYPE]
-                       [\-\-shape SHAPE] [\-s] [\-r] [\-\-test] [\-\-pni] [\-\-h5py]
+                       [\-\-shape SHAPE] [\-s] [\-r] [\-\-test] [\-\-h5py]
                        [\-\-h5cpp]
                        [nexus_file [nexus_file ...]]
 
@@ -289,9 +289,6 @@ with .__nxscollect__old__* extension
 .B \-\-test
 execute in the test mode
 .TP
-.B \-\-pni
-use pni module as a nexus reader/writer
-.TP
 .B \-\-h5py
 use h5py module as a nexus reader/writer
 .TP
@@ -322,7 +319,7 @@ nxscollect append scan_234.nxs \-\-path /scan/instrument/pilatus/data  \-\-input
 .sp
 .nf
 .ft C
-        nxscollect link [\-h] [\-n NAME] [\-t TARGET] [\-r] [\-\-test] [\-\-pni]
+        nxscollect link [\-h] [\-n NAME] [\-t TARGET] [\-r] [\-\-test]
                      [\-\-h5py] [\-\-h5cpp]
                      [nexus_file_path]
 
@@ -351,9 +348,6 @@ with .__nxscollect__old__* extension
 .TP
 .B \-\-test
 execute in the test mode
-.TP
-.B \-\-pni
-use pni module as a nexus reader/writer
 .TP
 .B \-\-h5py
 use h5py module as a nexus reader/writer
@@ -1362,9 +1356,6 @@ nxsfileinfo general <nexus_file_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B \-\-pni
-use pni module as a nexus reader
-.TP
 .B \-\-h5py
 use h5py module as a nexus reader
 .TP
@@ -1419,9 +1410,6 @@ show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/de
 .TP
 .B \-s\fP,\fB  \-\-source
 show datasource parameters
-.TP
-.B \-\-pni
-use pni module as a nexus reader
 .TP
 .B \-\-h5py
 use h5py module as a nexus reader
@@ -4854,7 +4842,7 @@ the main function
 .IP \(bu 2
 \fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .IP \(bu 2
-\fBroot\fP (class:\fIpni.io.nx.h5.nxroot\fP) – nexus file root
+\fBroot\fP (class:\fIfilewriter.FTGroup\fP) – nexus file root
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4896,7 +4884,7 @@ parse entry of nexus file
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBentry\fP (\fBpni.io.nx.h5.nxgroup\fP) – nexus entry node
+\fBentry\fP (\fBfilewriter.FTGroup\fP) – nexus entry node
 .IP \(bu 2
 \fBdescription\fP (\fI\%list\fP <\fI\%dict\fP <\fI\%str\fP, \fIany\fP > >) – dict description list
 .UNINDENT
@@ -4936,7 +4924,7 @@ show general informations
 .INDENT 7.0
 .TP
 .B Parameters
-\fBroot\fP (class:\fIpni.io.nx.h5.nxroot\fP) – nexus file root
+\fBroot\fP (class:\fIfilewriter.FTGroup\fP) – nexus file root
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4959,7 +4947,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBroot\fP (\fBpni.io.nx.h5.nxroot\fP) – nexus root node
+\fBroot\fP (\fBfilewriter.FTGroup\fP) – nexus root node
 .UNINDENT
 .INDENT 7.0
 .TP
