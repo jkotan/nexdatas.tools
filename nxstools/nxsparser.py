@@ -48,6 +48,8 @@ def _tostr(text):
     :returns: text in str type
     :rtype: :obj:`str`
     """
+    if hasattr(text, "tostring"):
+        text = text.tostring()
     if isinstance(text, str):
         return text
     elif sys.version_info > (3,):

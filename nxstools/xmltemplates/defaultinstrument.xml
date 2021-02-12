@@ -36,6 +36,7 @@ The beamtime ID at DESY is an 8 digit number.R</doc>
         <strategy mode="INIT"/>$datasources.nexdatas_version</attribute>
       <attribute type="NX_CHAR" name="configuration">
         <strategy mode="INIT"/>$datasources.nexdatas_configuration</attribute>
+      <strategy mode="INIT"/>
     </field>
     <field type="NX_CHAR" name="title">
       <strategy mode="INIT"/>$datasources.title</field>
