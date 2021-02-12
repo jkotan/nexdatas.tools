@@ -512,12 +512,17 @@ class H5PYGroup(filewriter.FTGroup):
         :returns: file tree field
         :rtype: :class:`H5PYField`
         """
-        shape = shape or [1]
-        mshape = [None for _ in shape] or (None,)
         if type_code in ['string', b'string']:
             type_code = h5py.special_dtype(vlen=unicode)
             # type_code = h5py.special_dtype(vlen=unicode)
             # type_code = h5py.special_dtype(vlen=bytes)
+        if type_code == h5py.special_dtype(vlen=unicode) and \
+           shape is None and chunk is None:
+            return H5PYField(
+                self._h5object.create_dataset(name, (), type_code), self)
+
+        shape = shape or [1]
+        mshape = [None for _ in shape] or (None,)
         if dfilter:
             if dfilter.filterid == 1:
                 f = H5PYField(
@@ -674,8 +679,11 @@ class H5PYField(filewriter.FTField):
         :type dim: :obj:`int`
         """
         shape = list(self._h5object.shape)
-        shape[dim] += ext
-        return self._h5object.resize(shape)
+        if shape:
+            shape[dim] += ext
+            return self._h5object.resize(shape)
+        else:
+            return self._h5object
 
     def read(self):
         """ read the field value

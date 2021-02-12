@@ -42,6 +42,7 @@ try:
 except ImportError:
     from . import nxsextrasp00
 
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -57,6 +58,8 @@ if sys.version_info > (3,):
     unicode = str
     long = int
 
+if "nxsextrasp00" not in sys.modules:
+    sys.modules["nxsextrasp00"] = nxsextrasp00
 
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
@@ -861,6 +864,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '      <attribute name="configuration" type="NX_CHAR">\n'
                      '        <strategy mode="INIT" />'
                      '$datasources.nexdatas_configuration</attribute>\n'
+                     '      <strategy mode="INIT"/>\n'
                      '    </field>\n'
                      '    <field name="title" type="NX_CHAR">\n'
                      '      <strategy mode="INIT" />$datasources.title'
@@ -1018,6 +1022,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '      <attribute name="configuration" type="NX_CHAR">\n'
                      '        <strategy mode="INIT" />'
                      '$datasources.nexdatas_configuration</attribute>\n'
+                     '      <strategy mode="INIT"/>\n'
                      '    </field>\n'
                      '    <field name="title" type="NX_CHAR">\n'
                      '      <strategy mode="INIT" />$datasources.title'

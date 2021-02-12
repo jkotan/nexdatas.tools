@@ -38,6 +38,7 @@ try:
         __import__("pni.nx.h5")
     # if module pni avalable
     PNI_AVAILABLE = True
+    PNI_AVAILABLE = False
 except ImportError as e:
     PNI_AVAILABLE = False
     print("pni is not available: %s" % e)

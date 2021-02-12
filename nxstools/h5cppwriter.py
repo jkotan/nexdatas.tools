@@ -711,29 +711,36 @@ class H5CppGroup(filewriter.FTGroup):
         :rtype: :class:`H5CppField`
         """
         dcpl = h5cpp.property.DatasetCreationList()
-        shape = shape or [1]
-        dataspace = h5cpp.dataspace.Simple(
-            tuple(shape),
-            tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
-        if dfilter:
-            if dfilter.filterid == 1:
-                h5object = dfilter.h5object
-                h5object.level = dfilter.rate
-            else:
-                h5object = h5cpp.filter.ExternalFilter(
-                    dfilter.filterid, list(dfilter.options))
-            h5object(dcpl)
-            if dfilter.shuffle:
-                sfilter = h5cpp.filter.Shuffle()
-                sfilter(dcpl)
-        if chunk is None and shape is not None:
-            chunk = [(dm if dm != 0 else 1) for dm in shape]
-        dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
-        dcpl.chunk = tuple(chunk)
-        return H5CppField(h5cpp.node.Dataset(
-            self._h5object, h5cpp.Path(name),
-            pTh[_tostr(type_code)], dataspace,
-            dcpl=dcpl), self)
+        if type_code in ["str", "unicode", "string"] and \
+           shape is None and chunk is None:
+            dataspace = h5cpp.dataspace.Scalar()
+            return H5CppField(h5cpp.node.Dataset(
+                self._h5object, h5cpp.Path(name),
+                pTh[_tostr(type_code)], dataspace,
+                dcpl=dcpl), self)
+        else:
+            shape = shape or [1]
+            dataspace = h5cpp.dataspace.Simple(
+                tuple(shape), tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
+            if dfilter:
+                if dfilter.filterid == 1:
+                    h5object = dfilter.h5object
+                    h5object.level = dfilter.rate
+                else:
+                    h5object = h5cpp.filter.ExternalFilter(
+                        dfilter.filterid, list(dfilter.options))
+                h5object(dcpl)
+                if dfilter.shuffle:
+                    sfilter = h5cpp.filter.Shuffle()
+                    sfilter(dcpl)
+            if chunk is None and shape is not None:
+                chunk = [(dm if dm != 0 else 1) for dm in shape]
+            dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
+            dcpl.chunk = tuple(chunk)
+            return H5CppField(h5cpp.node.Dataset(
+                self._h5object, h5cpp.Path(name),
+                pTh[_tostr(type_code)], dataspace,
+                dcpl=dcpl), self)
 
     @property
     def size(self):
@@ -920,7 +927,8 @@ class H5CppField(filewriter.FTField):
         :param dim: size of the grow
         :type dim: :obj:`int`
         """
-        self._h5object.extent(dim, ext)
+        if self._h5object.dataspace.type != h5cpp.dataspace.Type.SCALAR:
+            self._h5object.extent(dim, ext)
 
     def read(self):
         """ read the field value
@@ -1121,6 +1129,8 @@ class H5CppField(filewriter.FTField):
         """
         if hasattr(self._h5object.dataspace, "current_dimensions"):
             return self._h5object.dataspace.current_dimensions
+        if self._h5object.dataspace.type == h5cpp.dataspace.Type.SCALAR:
+            return ()
         else:
             return (1,)
 
@@ -1676,7 +1686,7 @@ class H5CppAttribute(filewriter.FTAttribute):
         if hasattr(self._h5object.dataspace, "current_dimensions"):
             return self._h5object.dataspace.current_dimensions
         if self._h5object.dataspace.type == h5cpp.dataspace.Type.SCALAR:
-            return None
+            return ()
         else:
             return (1,)
 

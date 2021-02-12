@@ -836,11 +836,11 @@ For more help:
                         ["/entry12345/data", None, None])
                     self.checkRow(
                         rows[2],
-                        ["/entry12345/end_time", "string", "[1]"])
+                        ["/entry12345/end_time", "string", "[]"])
                     self.checkRow(
                         rows[3],
                         ["/entry12345/experiment_identifier",
-                         "string", "[1]"])
+                         "string", "[]"])
                     self.checkRow(
                         rows[4],
                         ["/entry12345/instrument", None, None])
@@ -856,26 +856,26 @@ For more help:
                     self.checkRow(
                         rows[7],
                         ["/entry12345/instrument/name",
-                         "string", "[1]"]
+                         "string", "[]"]
                     )
                     self.checkRow(rows[8],
                                   ["/entry12345/sample", None, None])
                     self.checkRow(
                         rows[9],
                         ["/entry12345/sample/chemical_formula",
-                         "string", "[1]"]
+                         "string", "[]"]
                     )
                     self.checkRow(
                         rows[10],
                         ["/entry12345/sample/name",
-                         "string", "[1]"]
+                         "string", "[]"]
                     )
                     self.checkRow(
                         rows[11],
-                        ["/entry12345/start_time", "string", "[1]"])
+                        ["/entry12345/start_time", "string", "[]"])
                     self.checkRow(
                         rows[12],
-                        ["/entry12345/title", "string", "[1]"])
+                        ["/entry12345/title", "string", "[]"])
 
             finally:
                 os.remove(filename)
@@ -1067,13 +1067,13 @@ For more help:
                 self.checkRow(
                     rows[8],
                     ["/entry12345/sample/depends_on", None, None,
-                     "string", "[1]",
+                     "string", "[]",
                      "transformations/phi"]
                 )
                 self.checkRow(
                     rows[9],
                     ["/entry12345/sample/name", None, None,
-                     "string", "[1]", None]
+                     "string", "[]", None]
                 )
                 self.checkRow(
                     rows[10],
@@ -1771,12 +1771,12 @@ For more help:
                 self.checkRow(
                     rows[8],
                     ["/entry12345/sample/depends_on", None,
-                     "[1]", "string", None]
+                     "[]", "string", None]
                 )
                 self.checkRow(
                     rows[9],
                     ["/entry12345/sample/name", None,
-                     "[1]", "string", None]
+                     "[]", "string", None]
                 )
                 self.checkRow(
                     rows[10],
@@ -1989,13 +1989,13 @@ For more help:
                 self.checkRow(
                     rows[8],
                     ["/entry12345/sample/depends_on", None, None,
-                     "string", "[1]",
+                     "string", "[]",
                      None]
                 )
                 self.checkRow(
                     rows[9],
                     ["/entry12345/sample/name", None, None,
-                     "string", "[1]", None]
+                     "string", "[]", None]
                 )
                 self.checkRow(
                     rows[10],
