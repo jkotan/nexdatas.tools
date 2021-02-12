@@ -63,6 +63,97 @@ except Exception:
     pass
 
 
+def filegenerator(filestr, pattern=None):
+    """ provides file name generator from file string
+
+    :param filestr: file string
+    :type: filestr: :obj:`str`
+    :returns: file name generator or a list of file names
+    :rtype: :class:`methodinstance`
+    """
+    if pattern is None:
+        pattern = re.compile(".+:\\d+:\\d+")
+    if pattern.match(filestr):
+        return FilenameGenerator.from_slice(filestr)
+    else:
+        def _files():
+            return [filestr]
+        return _files
+
+
+def splitcoords(crdstr):
+    """ splits coordinate string
+
+    :param crdstr: cordinate string
+    :type crdstr: cordinate string
+    :returns: a list ofr coordinates in tuples
+    :rtype: :obj:`list` <:obj:`tuple` < :obj:`int` >>
+    """
+    if crdstr is None:
+        return []
+    crds = []
+    scrds = crdstr.replace(';', ' ').replace(':', ' ').split(" ")
+    for crd in scrds:
+        scds = crd.split(",")
+        nc = []
+        for cd in scds:
+            nc.append(crdtoint(cd))
+        crds.append(tuple(nc))
+    return crds
+
+
+def crdtoint(crd):
+    """ convert coorinate to int or  None or Unlimited """
+    if crd in ["u", "U"]:
+        crd = filewriter.unlimited()
+    elif crd in ["", "None", "null"]:
+        crd = None
+    else:
+        try:
+            crd = int(crd)
+        except Exception as e:
+            print(str(e))
+            sys.stderr.write(
+                "Warning: wrong coordinate %s. Converted to None\n")
+            crd = None
+    return crd
+
+
+def splitslices(crdstr):
+    """ splits coordinate string
+
+    :param crdstr: cordinate string
+    :type crdstr: cordinate string
+    :returns: a list ofr coordinates in tuples
+    :rtype: :obj:`list` <:obj:`tuple` < :obj:`int` >>
+    """
+    crds = []
+    if crdstr is None:
+        return []
+    scrds = crdstr.replace(';', ' ').split(" ")
+    for crd in scrds:
+        scds = crd.split(",")
+        nc = []
+        for cd in scds:
+            start = None
+            stop = None
+            step = None
+            sls = cd.split(":")
+            if len(sls) == 1:
+                stop = crdtoint(sls[0])
+            if len(sls) == 2:
+                start = crdtoint(sls[0])
+                stop = crdtoint(sls[1])
+            if len(sls) > 2:
+                start = crdtoint(sls[0])
+                stop = crdtoint(sls[1])
+                step = crdtoint(sls[2])
+
+            nc.append(slice(start, stop, step))
+        crds.append(tuple(nc))
+    return crds
+
+
 def getcompression(compression):
     """ converts compression string to a deflate level parameter
         or list with [filterid, opt1, opt2, ...]
@@ -209,32 +300,160 @@ class Linker(object):
             os.remove(self.__tempfilename)
 
 
+class ExternalField(object):
+
+    """ external field map
+    """
+    def __init__(self, filename, path,
+                 shape=None, hyperslab=None, maxshape=None):
+
+        #: :obj:`str` file name
+        self.filename = filename
+        #: :obj:`str` nexus field path with its name
+        self.path = path
+        #: :obj:`list` <:obj:`int`> field shape
+        self.shape = shape
+        #: :obj:`list` <:obj:`int`> field maximal shape
+        self.maxshape = maxshape
+        #: :class:`filewriter.FTHyperslab` field hyperslab or slices
+        self.hyperslab = hyperslab or filewriter.FTHyperslab()
+        #: :obj:`list` <:obj:`slice`>
+        self.slices = None
+
+
+class LayoutField(object):
+
+    def __init__(self, field, hyperslab=None):
+
+        #: :class:`filewriter.FTHyperslab` layout hyperslab or slices
+        self.hyperslab = hyperslab or filewriter.FTHyperslab()
+        #: :obj:`list` <:obj:`slice`>
+        self.slices = None
+        #: :class:`ExternalField` external field object
+        self.field = field
+
+
+class LayoutFields(list):
+
+    def __init__(self, exfieldpaths='', exfieldshapes='', separator=','):
+
+        if separator:
+            files = exfieldpaths.split(separator)
+        else:
+            files = [exfieldpaths]
+
+        for filestr in files:
+            inputfiles = filegenerator(filestr)
+            for fc in inputfiles():
+
+                fnph = fc.split(":/")
+                ph = "/data"
+                if len(fnph) > 0:
+                    fn = fnph[0]
+                    if len(fnph) > 1:
+                        ph = fnph[1]
+                    efd = ExternalField(fn, ph)
+                    lfd = LayoutField(efd)
+                    self.append(lfd)
+
+        shapes = splitcoords(exfieldshapes)
+        for i, lfd in enumerate(self):
+            if i < len(shapes):
+                lfd.field.shape = shapes[i]
+
+    def add_field_hyperslabs(self, offsets, blocks, counts, strides):
+        offs = splitcoords(offsets)
+        blks = splitcoords(blocks)
+        cnts = splitcoords(counts)
+        stds = splitcoords(strides)
+
+        for i, lfd in enumerate(self):
+            if i < len(offs):
+                lfd.field.hyperslab.offset = offs[i]
+        for i, lfd in enumerate(self):
+            if i < len(blks):
+                lfd.field.hyperslab.offset = blks[i]
+        for i, lfd in enumerate(self):
+            if i < len(cnts):
+                lfd.field.hyperslab.offset = cnts[i]
+        for i, lfd in enumerate(self):
+            if i < len(stds):
+                lfd.field.hyperslab.offset = stds[i]
+
+    def add_layout_hyperslabs(self, offsets, blocks, counts, strides):
+        offs = splitcoords(offsets)
+        blks = splitcoords(blocks)
+        cnts = splitcoords(counts)
+        stds = splitcoords(strides)
+
+        for i, lfd in enumerate(self):
+            if i < len(offs):
+                lfd.hyperslab.offset = offs[i]
+        for i, lfd in enumerate(self):
+            if i < len(blks):
+                lfd.hyperslab.offset = blks[i]
+        for i, lfd in enumerate(self):
+            if i < len(cnts):
+                lfd.hyperslab.offset = cnts[i]
+        for i, lfd in enumerate(self):
+            if i < len(stds):
+                lfd.hyperslab.offset = stds[i]
+
+    def add_layout_slices(self, slices):
+        slices = splitslices(slices)
+        for i, lfd in enumerate(self):
+            if i < len(slices):
+                lfd.slices = slices[i]
+
+    def add_field_slices(self, slices):
+        slices = splitslices(slices)
+        for i, lfd in enumerate(self):
+            if i < len(slices):
+                lfd.field.slices = slices[i]
+
+
 class VirtualDataset(object):
 
-    """ Create external and internal links of NeXus files
+    """ Create virtual dataset in the master NeXus files
     """
 
-    def __init__(self, nexusfilepath, target, name=None,
-                 storeold=False, testmode=False, writer=None):
+    def __init__(self, nexusfilepath, options, writer=None):
         """ The constructor creates the collector object
 
         :param nexusfilepath: the nexus file name and nexus path
         :type nexusfilepath: :obj:`str`
-        :param target: the nexus file name and nexus path
-        :type target: :obj:`str`
-        :param storeold: if backup the input file
-        :type storeold: :obj:`bool`
-        :param testmode: if run in a test mode
-        :type testmode: :obj:`bool`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
         :param writer: the writer module
         :type writer: :obj:`str`
         """
-        self.__target = target
-        self.__name = name
-        if not name:
-            self.__name = target.split("/")[-1]
-        self.__testmode = testmode
-        self.__storeold = storeold
+
+        self.__ltfields = LayoutFields(
+            options.externalfields,
+            options.fieldshapes,
+            options.separator)
+        self.__ltfields.add_field_hyperslabs(
+            options.fieldoffsets, options.fieldblocks,
+            options.fieldcounts, options.fieldstrides)
+
+        self.__ltfields.add_field_slices(options.fieldslices)
+        self.__ltfields.add_layout_hyperslabs(
+            options.offsets, options.blocks,
+            options.counts, options.strides)
+        self.__ltfields.add_layout_slices(options.slices)
+
+        self.__dtype = options.dtype
+        shape = options.shape
+        if shape.startswith("[") and shape.endswith("]"):
+            shape = shape[1:-1]
+        shape = splitcoords(shape)
+        self.__shape = shape[0] if shape else []
+        self.__maxshape = None
+        self.__fillvalue = options.fillvalue
+
+        self.__storeold = not options.replaceold
+        self.__testmode = options.testmode
+
         self.__wrmodule = None
         self.__nexuspath = None
         self.__nexusfilename, self.__nexuspath = \
@@ -278,6 +497,7 @@ class VirtualDataset(object):
     def create(self):
         """ creates VDS
         """
+
         self._createtmpfile()
         path = self.__nexuspath
         try:
@@ -285,10 +505,11 @@ class VirtualDataset(object):
                 self.__tempfilename, readonly=False,
                 writer=self.__wrmodule)
             root = self.__nxsfile.root()
-            groups = path.split("/")
+            groups = path.split("/") or ["data"]
             parent = root
             tgr = ""
-            for gr in groups:
+            fieldname = groups[-1] or "data"
+            for gr in groups[:-1]:
                 if gr:
                     if ":" in gr:
                         gr, tgr = gr.split(":", 1)
@@ -302,16 +523,18 @@ class VirtualDataset(object):
                         else:
                             parent = None
 
-            if parent:
-                print("link: target %s at %s://%s as %s" %
-                      (self.__target, self.__nexusfilename,
-                       parent.path, self.__name))
-            else:
-                print("link: target %s at %s as %s" %
-                      (self.__target, path, self.__name))
+            filewriter.module = self.__wrmodule
+            layout = filewriter.virtual_field_layout(
+                self.__shape, self.__dtype, self.__maxshape, parent)
+            for flm in self.__ltfields:
+                efield = filewriter.external_field(
+                    flm.field.filename, flm.field.path, flm.field.shape,
+                    flm.field.maxshape, parent=parent)
+                layout.add(flm.hyperslab, efield, flm.field.hyperslab)
             if not self.__testmode:
-                filewriter.link(self.__target, parent, self.__name)
-
+                fd = parent.create_virtual_field(fieldname, layout,
+                                                 self.__fillvalue or 0)
+                fd.close()
             if self.__storeold:
                 self._storeoldfile()
             shutil.move(self.__tempfilename, self.__nexusfilename)
@@ -389,21 +612,6 @@ class Collector(object):
         while os.path.exists(temp):
             temp += "_"
         shutil.move(self.__nexusfilename, temp)
-
-    def _filegenerator(self, filestr):
-        """ provides file name generator from file string
-
-        :param filestr: file string
-        :type: filestr: :obj:`str`
-        :returns: file name generator or a list of file names
-        :rtype: :class:`methodinstance`
-        """
-        if self.__filepattern.match(filestr):
-            return FilenameGenerator.from_slice(filestr)
-        else:
-            def _files():
-                return [filestr]
-            return _files
 
     @classmethod
     def _absolutefilename(cls, filename, masterfile):
@@ -675,7 +883,7 @@ class Collector(object):
         for filestr in files:
             if self.__break:
                 break
-            inputfiles = self._filegenerator(filestr)
+            inputfiles = filegenerator(filestr, self.__filepattern)
             for fname in inputfiles():
                 if self.__break:
                     break
@@ -894,7 +1102,11 @@ class VDS(Runner):
             "defined with a pattern or separated by ',' e.g."
             "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
         parser.add_argument(
-            "-t", "--dtype", dest="datatype",
+            "--separator", dest="separator",
+            action="store", type=str, default=",",
+            help="input data files separator (default: ',')")
+        parser.add_argument(
+            "-t", "--dtype", dest="dtype",
             action="store", type=str, default=None,
             help="datatype of the VDS field, e.g. 'uint8'")
         parser.add_argument(
@@ -951,6 +1163,13 @@ class VDS(Runner):
             " ':,0:50,: :,50:100,:' "
             "where U means span along the layout ")
         parser.add_argument(
+            "-S", "--field-shapes", dest="fieldshapes",
+            action="store", type=str, default=None,
+            help="field shapes"
+            "with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            "',,;,300,;,600,0'")
+        parser.add_argument(
             "-O", "--field-offsets", dest="fieldoffsets",
             action="store", type=str, default=None,
             help="offsets in the view hyperslab of external fields"
@@ -958,7 +1177,7 @@ class VDS(Runner):
             "and different fields separated by ';', ':' or spaces e.g."
             "',,;,300,;,600,0' where an empty coordinate means 0")
         parser.add_argument(
-            "-B", "--field-blocks", dest="blocks",
+            "-B", "--field-blocks", dest="fieldblocks",
             action="store", type=str, default=None,
             help="block sizes in the view hyperslab of external fields"
             " with coordinates sepatated by ',' "
@@ -983,7 +1202,7 @@ class VDS(Runner):
             " ',,;,,;,,' "
             "where an empty coordinate means 1")
         parser.add_argument(
-            "-L", "--field-slices", dest="fieldviewslices",
+            "-L", "--field-slices", dest="fieldslices",
             action="store", type=str, default=None,
             help="view slices of external fields"
             " with coordinates sepatated by ',' "
@@ -999,18 +1218,18 @@ class VDS(Runner):
             "--test", action="store_true",
             default=False, dest="testmode",
             help="execute in the test mode")
+        # parser.add_argument(
+        #     "--pni", action="store_true",
+        #     default=False, dest="pni",
+        #     help="use pni module as a nexus reader/writer")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
         parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
-        self._parser.add_argument(
-            "--h5cpp", action="store_true",
-            default=False, dest="h5cpp",
-            help="use h5cpp module as a nexus reader")
 
     def postauto(self):
         """ creates parser
@@ -1036,20 +1255,28 @@ class VDS(Runner):
             print("")
             sys.exit(0)
 
+        if options.externalfields is None:
+            sys.stderr.write("nxscollect: external fields are missing\n")
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
+        if options.shape is None:
+            sys.stderr.write("nxscollect: shape is missing\n")
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
         if options.h5cpp:
             writer = "h5cpp"
         elif options.h5py:
             writer = "h5py"
-        elif options.pni:
-            writer = "pni"
         elif "h5cpp" in WRITERS.keys():
             writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            writer = "h5py"
         else:
-            writer = "pni"
+            writer = "h5py"
 
-        if (options.pni and options.h5py and options.h5cpp) or \
+        if (options.h5py and options.h5cpp) or \
            writer not in WRITERS.keys():
             sys.stderr.write("nxscollect: Writer '%s' cannot be opened\n"
                              % writer)
@@ -1102,17 +1329,17 @@ class Link(Runner):
             default=False, dest="testmode",
             help="execute in the test mode")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
         parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
-        self._parser.add_argument(
-            "--h5cpp", action="store_true",
-            default=False, dest="h5cpp",
-            help="use h5cpp module as a nexus reader")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader/writer")
 
     def postauto(self):
         """ creates parser
@@ -1232,17 +1459,17 @@ class Execute(Runner):
             default=False, dest="testmode",
             help="execute in the test mode")
         parser.add_argument(
-            "--pni", action="store_true",
-            default=False, dest="pni",
-            help="use pni module as a nexus reader/writer")
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
         parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
             help="use h5py module as a nexus reader/writer")
-        self._parser.add_argument(
-            "--h5cpp", action="store_true",
-            default=False, dest="h5cpp",
-            help="use h5cpp module as a nexus reader")
+        parser.add_argument(
+            "--pni", action="store_true",
+            default=False, dest="pni",
+            help="use pni module as a nexus reader/writer")
 
     def postauto(self):
         """ creates parser
@@ -1389,7 +1616,7 @@ def main():
         sys.exit(255)
 
     if not WRITERS:
-        sys.stderr.write("nxsfileinfo: Neither h5cpp/pni nor h5py installed\n")
+        sys.stderr.write("nxscollect: Neither h5cpp/pni nor h5py installed\n")
         sys.stderr.flush()
         parser.print_help()
         sys.exit(255)

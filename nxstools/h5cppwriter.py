@@ -75,8 +75,38 @@ def _slice2selection(t, shape):
     :returns: hyperslab selection
     :rtype: :class:`h5cpp.dataspace.Hyperslab`
     """
+
     if t is Ellipsis:
         return None
+    elif isinstance(t, filewriter.FTHyperslab):
+        offset = t.offset or []
+        block = t.block or []
+        count = t.count or []
+        stride = t.stride or []
+        for dm, sz in enumerate(shape):
+            if len(offset) > dm:
+                if offset[dm] is None:
+                    offset[dm] = 0
+            else:
+                offset.append(0)
+            if len(block) > dm:
+                if block[dm] is None:
+                    block[dm] = 1
+            else:
+                block.append(1)
+            if len(count) > dm:
+                if count[dm] is None:
+                    count[dm] = sz
+            else:
+                count.append(sz)
+            if len(stride) > dm:
+                if stride[dm] is None:
+                    stride[dm] = 1
+            else:
+                block.append(1)
+        return h5cpp.dataspace.Hyperslab(
+            offset=offset, block=block, count=count, stride=stride)
+
     elif isinstance(t, slice):
         start = t.start or 0
         stop = t.stop or shape[0]
@@ -183,6 +213,17 @@ hTp = {
     h5cpp.datatype.kFloat64: "float64",
     h5cpp.datatype.kFloat32: "float32",
 }
+
+
+def unlimited(parent=None):
+    """ return dataspace UNLIMITED variable for the current writer module
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns:  dataspace UNLIMITED variable
+    :rtype: :class:`h5cpp.dataspace.UNLIMITED`
+    """
+    return h5cpp.dataspace.UNLIMITED
 
 
 def open_file(filename, readonly=False, libver=None, swmr=False):
@@ -619,10 +660,10 @@ class H5CppGroup(filewriter.FTGroup):
                 "NX_class", pTh["unicode"]).write(unicode(nxclass))
         return H5CppGroup(gr, self)
 
-    def create_virtual_field(self, name, layout, fillvalue=None):
+    def create_virtual_field(self, name, layout, fillvalue=0):
         """ creates a virtual filed tres element
 
-        :param name: group name
+        :param name: field name
         :type name: :obj:`str`
         :param layout: virual field layout
         :type layout: :class:`H5CppFieldLayout`
@@ -632,7 +673,7 @@ class H5CppGroup(filewriter.FTGroup):
         if not is_vds_supported():
             raise Exception("VDS not supported")
         dcpl = h5cpp.property.DatasetCreationList()
-        if fillvalue:
+        if fillvalue is not None:
             if hasattr(dcpl, "set_fill_value"):
                 if isinstance(fillvalue, np.ndarray):
                     dcpl.set_fill_value(
@@ -647,7 +688,6 @@ class H5CppGroup(filewriter.FTGroup):
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape),
             tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
-
         return H5CppField(h5cpp.node.VirtualDataset(
             self._h5object, h5cpp.Path(name),
             pTh[_tostr(layout.dtype)], dataspace,
@@ -673,7 +713,8 @@ class H5CppGroup(filewriter.FTGroup):
         dcpl = h5cpp.property.DatasetCreationList()
         shape = shape or [1]
         dataspace = h5cpp.dataspace.Simple(
-            tuple(shape), tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
+            tuple(shape),
+            tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
         if dfilter:
             if dfilter.filterid == 1:
                 h5object = dfilter.h5object
@@ -1225,20 +1266,28 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         """
         self.add(key, source)
 
-    def add(self, key, source):
+    def add(self, key, source, sourcekey=None):
         """ add external field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
         :param source: external field
         :type source: :class:`H5PYExternalField`
+        :param sourcekey: slide or selection
+        :type sourcekey: :obj:`tuple`
         """
-
         selection = _slice2selection(key, self.shape)
         lds = h5cpp.dataspace.Simple(tuple(self.shape))
-        lview = h5cpp.dataspace.View(lds, selection)
-        eview = h5cpp.dataspace.View(
-            h5cpp.dataspace.Simple(tuple(source.shape)))
+        if selection is not None:
+            lview = h5cpp.dataspace.View(lds, selection)
+        else:
+            lview = h5cpp.dataspace.View(lds)
+        sds = h5cpp.dataspace.Simple(tuple(source.shape))
+        if sourcekey is not None:
+            srcsel = _slice2selection(sourcekey, source.shape)
+            eview = h5cpp.dataspace.View(sds, srcsel)
+        else:
+            eview = h5cpp.dataspace.View(sds)
         fname = source.filename
         path = h5cpp.Path(source.fieldpath)
         self._h5object.add(h5cpp.property.VirtualDataMap(
@@ -1626,6 +1675,8 @@ class H5CppAttribute(filewriter.FTAttribute):
         """
         if hasattr(self._h5object.dataspace, "current_dimensions"):
             return self._h5object.dataspace.current_dimensions
+        if self._h5object.dataspace.type == h5cpp.dataspace.Type.SCALAR:
+            return None
         else:
             return (1,)
 

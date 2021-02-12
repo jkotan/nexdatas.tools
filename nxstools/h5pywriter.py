@@ -74,6 +74,17 @@ def is_vds_supported():
     return h5ver >= 2009
 
 
+def unlimited(parent=None):
+    """ return dataspace UNLIMITED variable for the current writer module
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns:  dataspace UNLIMITED variable
+    :rtype: :class:`h5py.UNLIMITED`
+    """
+    return h5py.UNLIMITED
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
@@ -904,15 +915,20 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         """
         self._h5object.__setitem__(key, source._h5object)
 
-    def add(self, key, source):
+    def add(self, key, source, sourcekey=None):
         """ add external field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
         :param source: external field
         :type source: :class:`H5PYExternalField`
+        :param sourcekey: slide or selection
+        :type sourcekey: :obj:`tuple`
         """
-        self._h5object.__setitem__(key, source._h5object)
+        if sourcekey is not None:
+            self._h5object.__setitem__(key, source._h5object[sourcekey])
+        else:
+            self._h5object.__setitem__(key, source._h5object)
 
 
 class H5PYExternalField(filewriter.FTExternalField):

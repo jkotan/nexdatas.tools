@@ -58,6 +58,17 @@ def is_vds_supported():
     return False
 
 
+def unlimited(parent=None):
+    """ return dataspace UNLIMITED variable for the current writer module
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns:  dataspace UNLIMITED variable
+    :rtype: :class:`h5cpp.dataspace.UNLIMITED`
+    """
+    raise Exception("UNLIMITED variable not supported in PNI")
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
