@@ -52,11 +52,6 @@ if sys.version_info > (3,):
     long = int
 
 WRITERS = {}
-try:
-    from nxstools import pniwriter
-    WRITERS["pni"] = pniwriter
-except Exception:
-    pass
 
 try:
     from nxstools import h5pywriter
@@ -134,10 +129,8 @@ For more help:
 
         if "h5cpp" in WRITERS.keys():
             self.writer = "h5cpp"
-        elif "h5py" in WRITERS.keys():
-            self.writer = "h5py"
         else:
-            self.writer = "pni"
+            self.writer = "h5py"
 
         self.flags = ""
         self.externalfilters = True

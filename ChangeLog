@@ -1,4 +1,8 @@
-2021-02-11 Jan Kotanski <jankotan@gmail.com>
+2021-02-12 Jan Kotanski <jankotan@gmail.com>
+	* h5pywriter.shape returns () for SCALAR attributes
+	* tagged as v3.0.1
+
+2021-02-12 Jan Kotanski <jankotan@gmail.com>
 	* store strings as SCALAR by default
 	* remove support for pni
 	* h5*writer.shape returns () for SCALAR fields

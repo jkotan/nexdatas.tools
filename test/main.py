@@ -25,27 +25,15 @@ import sys
 
 try:
     __import__("PyTango")
-    # if module PyTango avalable
+    # if module PyTango available
     PYTANGO_AVAILABLE = True
 except ImportError as e:
     PYTANGO_AVAILABLE = False
     print("PyTango is not available: %s" % e)
 
 try:
-    try:
-        __import__("pni.io.nx.h5")
-    except Exception:
-        __import__("pni.nx.h5")
-    # if module pni avalable
-    PNI_AVAILABLE = True
-    PNI_AVAILABLE = False
-except ImportError as e:
-    PNI_AVAILABLE = False
-    print("pni is not available: %s" % e)
-
-try:
     __import__("h5py")
-    # if module pni avalable
+    # if module h5py available
     H5PY_AVAILABLE = True
 except ImportError as e:
     H5PY_AVAILABLE = False
@@ -53,7 +41,7 @@ except ImportError as e:
 
 try:
     __import__("pninexus.h5cpp")
-    # if module pni avalable
+    # if module pninexus.h5cpp available
     H5CPP_AVAILABLE = True
 except ImportError as e:
     H5CPP_AVAILABLE = False
@@ -67,12 +55,8 @@ import unittest
 
 import NXSTools_test
 
-if not PNI_AVAILABLE and not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
-    raise Exception("Please install h5py, h5cpp or pni")
-
-# if PNI_AVAILABLE:
-# if H5PY_AVAILABLE:
-# if PNI_AVAILABLE and H5PY_AVAILABLE:
+if not H5PY_AVAILABLE and not H5CPP_AVAILABLE:
+    raise Exception("Please install h5py or pninexus.h5cpp")
 
 
 # list of available databases
@@ -157,11 +141,6 @@ except Exception:
 
 # db = PyTango.Database()
 
-if PNI_AVAILABLE:
-    import FileWriter_test
-    import PNIWriter_test
-    import NXSCollectPNI_test
-    import NXSFileInfoPNI_test
 if H5PY_AVAILABLE:
     import H5PYWriter_test
     import FileWriterH5PY_test
@@ -172,12 +151,10 @@ if H5CPP_AVAILABLE:
     import FileWriterH5Cpp_test
     import NXSCollectH5Cpp_test
     import NXSFileInfoH5Cpp_test
-# if PNI_AVAILABLE and H5PY_AVAILABLE:
-#     import FileWriterPNIH5PY_test
 if H5PY_AVAILABLE and H5CPP_AVAILABLE:
     import FileWriterH5CppH5PY_test
 
-if H5CPP_AVAILABLE or H5PY_AVAILABLE or H5CPP_AVAILABLE:
+if H5CPP_AVAILABLE or H5PY_AVAILABLE:
     import NXSCollect_test
     import NXSFileInfo_test
 
@@ -274,18 +251,6 @@ def main():
 
     # test suit
     suite = unittest.TestSuite()
-
-    if PNI_AVAILABLE:
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(FileWriter_test))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(PNIWriter_test))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(
-                NXSCollectPNI_test))
-        suite.addTests(
-            unittest.defaultTestLoader.loadTestsFromModule(
-                NXSFileInfoPNI_test))
 
     if H5PY_AVAILABLE:
         suite.addTests(

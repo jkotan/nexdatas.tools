@@ -1270,9 +1270,9 @@ class H5PYAttribute(filewriter.FTAttribute):
         :rtype: :obj:`list` < :obj:`int` >
         """
         if hasattr(self._h5object[0][self.name], "shape"):
-            return self._h5object[0][self.name].shape or (1,)
+            return self._h5object[0][self.name].shape
         else:
-            return (1,)
+            return ()
 
     def reopen(self):
         """ reopen attribute
