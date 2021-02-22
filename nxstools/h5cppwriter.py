@@ -302,9 +302,12 @@ def create_file(filename, overwrite=False, libver=None, swmr=None):
     attrs = rt.attributes
     attrs.create("file_time", pTh["unicode"]).write(
         unicode(H5CppFile.currenttime()))
-    attrs.create("HDF5_version", pTh["unicode"]).write(u"")
+    hdf5ver = u""
+    if hasattr(h5cpp, "current_library_version"):
+        hdf5ver = h5cpp.current_library_version()
+    attrs.create("HDF5_Version", pTh["unicode"]).write(hdf5ver)
     attrs.create("NX_class", pTh["unicode"]).write(u"NXroot")
-    attrs.create("NeXus_version", pTh["unicode"]).write(u"4.3.0")
+    # attrs.create("NeXus_version", pTh["unicode"]).write(u"4.3.0")
     attrs.create("file_name", pTh["unicode"]).write(unicode(filename))
     attrs.create("file_update_time", pTh["unicode"]).write(
         unicode(H5CppFile.currenttime()))
