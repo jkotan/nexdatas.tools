@@ -749,9 +749,8 @@ class XMLFile(object):
 
         :brief: It opens XML file, calls prettyPrint and closes the XML file
         """
-        myfile = open(self.fname, "w")
-        myfile.write(self.prettyPrint(self.elem))
-        myfile.close()
+        with open(self.fname, "w") as myfile:
+            myfile.write(self.prettyPrint(self.elem))
 
 
 def main():

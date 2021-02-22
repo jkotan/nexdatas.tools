@@ -972,7 +972,8 @@ class Set(Runner):
         local_user = None
         args = options.args or []
         if os.path.isfile('/home/etc/local_user'):
-            local_user = open('/home/etc/local_user').readline()
+            with open('/home/etc/local_user') as fl:
+                local_user = fl.readline()
         elif _hostname in knownHosts.keys():
             local_user = knownHosts["user"]
 
@@ -1360,7 +1361,8 @@ def main():
     if _hostname in knownHosts.keys():
         local_user = None
         if os.path.isfile('/home/etc/local_user'):
-            local_user = open('/home/etc/local_user').readline()
+            with open('/home/etc/local_user') as fl:
+                local_user = fl.readline()
         elif _hostname in knownHosts.keys():
             local_user = knownHosts["user"]
         epilog += "\n\n  (%s is known: -b %s -m %s -u %s -d %s )" % (

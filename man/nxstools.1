@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Feb 12, 2021" "3.0" "NXSTools"
+.TH "NXSTOOLS" "1" "Feb 22, 2021" "3.1" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1737,6 +1737,84 @@ the main program function
 .UNINDENT
 .INDENT 0.0
 .TP
+.B class nxstools.nxscollect.ExternalField(filename, path, shape=None, hyperslab=None, maxshape=None)
+Bases: \fI\%object\fP
+.sp
+external field map
+.INDENT 7.0
+.TP
+.B filename = None
+\fI\%str\fP file name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B hyperslab = None
+\fBfilewriter.FTHyperslab\fP field hyperslab or slices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B maxshape = None
+\fI\%list\fP <\fI\%int\fP> field maximal shape
+.UNINDENT
+.INDENT 7.0
+.TP
+.B path = None
+\fI\%str\fP nexus field path with its name
+.UNINDENT
+.INDENT 7.0
+.TP
+.B shape = None
+\fI\%list\fP <\fI\%int\fP> field shape
+.UNINDENT
+.INDENT 7.0
+.TP
+.B slices = None
+\fI\%list\fP <\fI\%slice\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscollect.LayoutField(field, hyperslab=None)
+Bases: \fI\%object\fP
+.INDENT 7.0
+.TP
+.B field = None
+\fI\%ExternalField\fP external field object
+.UNINDENT
+.INDENT 7.0
+.TP
+.B hyperslab = None
+\fBfilewriter.FTHyperslab\fP layout hyperslab or slices
+.UNINDENT
+.INDENT 7.0
+.TP
+.B slices = None
+\fI\%list\fP <\fI\%slice\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscollect.LayoutFields(exfieldpaths=\(aq\(aq, exfieldshapes=\(aq\(aq, separator=\(aq, \(aq)
+Bases: \fI\%list\fP
+.INDENT 7.0
+.TP
+.B add_field_hyperslabs(offsets, blocks, counts, strides)
+.UNINDENT
+.INDENT 7.0
+.TP
+.B add_field_slices(slices)
+.UNINDENT
+.INDENT 7.0
+.TP
+.B add_layout_hyperslabs(offsets, blocks, counts, strides)
+.UNINDENT
+.INDENT 7.0
+.TP
+.B add_layout_slices(slices)
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
 .B class nxstools.nxscollect.Link(parser)
 Bases: \fI\%nxstools.nxsargparser.Runner\fP
 .sp
@@ -1834,7 +1912,7 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
-.B epilog = \(aq examples:\en       nxscollect vds scan_234.nxs://entry/instrument/lambda/data \-\-external\-fields lambda.nxs://entry/data/data \en\en\en\(aq
+.B epilog = " examples:\en       nxscollect vds scan_234.nxs://entry/instrument/lambda/data \-\-external\-fields \(aqlambda_%05d.nxs://entry/data/data:0:3\(aq \-\-offset \(aq,,;,256,;,512,\(aq \en\en\en"
 (\fI\%str\fP) command epilog
 .UNINDENT
 .INDENT 7.0
@@ -1851,6 +1929,56 @@ the main program function
 .B Parameters
 \fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxscollect.VirtualDataset(nexusfilepath, options, writer=None)
+Bases: \fI\%object\fP
+.sp
+Create virtual dataset in the master NeXus files
+.sp
+The constructor creates the collector object
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBnexusfilepath\fP (\fI\%str\fP) – the nexus file name and nexus path
+.IP \(bu 2
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
+.IP \(bu 2
+\fBwriter\fP (\fI\%str\fP) – the writer module
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B create()
+creates VDS
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.crdtoint(crd)
+convert coorinate to int or  None or Unlimited
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.filegenerator(filestr, pattern=None)
+provides file name generator from file string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBfilestr\fP – file string
+.TP
+.B Type
+filestr: \fI\%str\fP
+.TP
+.B Returns
+file name generator or a list of file names
+.TP
+.B Return type
+\fBmethodinstance\fP
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -1878,6 +2006,38 @@ or list with [filterid, opt1, opt2, …]
 .TP
 .B nxstools.nxscollect.main()
 the main program function
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.splitcoords(crdstr)
+splits coordinate string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcrdstr\fP (\fIcordinate string\fP) – cordinate string
+.TP
+.B Returns
+a list ofr coordinates in tuples
+.TP
+.B Return type
+\fI\%list\fP <\fI\%tuple\fP < \fI\%int\fP >>
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxscollect.splitslices(crdstr)
+splits coordinate string
+.INDENT 7.0
+.TP
+.B Parameters
+\fBcrdstr\fP (\fIcordinate string\fP) – cordinate string
+.TP
+.B Returns
+a list ofr coordinates in tuples
+.TP
+.B Return type
+\fI\%list\fP <\fI\%tuple\fP < \fI\%int\fP >>
+.UNINDENT
 .UNINDENT
 .SS nxstools.nxsconfig module
 .sp
