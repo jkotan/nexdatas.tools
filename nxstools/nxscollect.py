@@ -1569,7 +1569,7 @@ def main():
     parser.cmdrunners = [
         ('append', Execute),
         ('link', Link),
-        ('vds', VDS)
+        # ('vds', VDS)
     ]
     runners = parser.createSubParsers()
 
