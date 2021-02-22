@@ -43,7 +43,7 @@ then
     exit -1
 fi
 
-if [[ $1 -ne "debian8" ]]; then
+if [ $1 -ne "debian8" ]; then
     if [ $2 = "2" ]; then
 	echo "install python-whichcraft"
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-whichcraft'
