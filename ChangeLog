@@ -1,3 +1,11 @@
+2021-02-22 Jan Kotanski <jankotan@gmail.com>
+	* HDF5_version changed to HDF5_Version
+	* NeXus_version removed
+	* qbpm template used with NXmonitor group
+	* adds VDS implementation in h5 filewriters
+	* call open() with with
+	* tagged as v3.1.0
+
 2021-02-12 Jan Kotanski <jankotan@gmail.com>
 	* h5pywriter.shape returns () for SCALAR attributes
 	* tagged as v3.0.1

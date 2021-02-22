@@ -135,15 +135,13 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         pass
 
     def getds(self, name):
-        fl = open("%s/%s.ds.xml" % (self.directory, name), 'r')
-        xml = fl.read()
-        fl.close()
+        with open("%s/%s.ds.xml" % (self.directory, name), 'r') as fl:
+            xml = fl.read()
         return xml
 
     def getcp(self, name):
-        fl = open("%s/%s.xml" % (self.directory, name), 'r')
-        xml = fl.read()
-        fl.close()
+        with open("%s/%s.xml" % (self.directory, name), 'r') as fl:
+            xml = fl.read()
         return xml
 
     def deleteds(self, name):

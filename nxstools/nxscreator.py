@@ -969,11 +969,10 @@ class PoolDSCreator(Creator):
                     storeDataSource(dsname, dsxml, server)
         else:
             for dsname, dsxml in self.datasources.items():
-                myfile = open("%s/%s%s.ds.xml" % (
-                    self.options.directory,
-                    self.options.file, dsname), "w")
-                myfile.write(dsxml)
-                myfile.close()
+                with open("%s/%s%s.ds.xml" % (
+                        self.options.directory,
+                        self.options.file, dsname), "w") as myfile:
+                    myfile.write(dsxml)
 
     def __createDevice(self, name, source, clientlike=True):
         """  create Device from name source and chtype
@@ -1131,11 +1130,10 @@ class OnlineDSCreator(Creator):
                     storeDataSource(dsname, dsxml, server)
         else:
             for dsname, dsxml in self.datasources.items():
-                myfile = open("%s/%s%s.ds.xml" % (
-                    self.options.directory,
-                    self.options.file, dsname), "w")
-                myfile.write(dsxml)
-                myfile.close()
+                with open("%s/%s%s.ds.xml" % (
+                        self.options.directory,
+                        self.options.file, dsname), "w") as myfile:
+                    myfile.write(dsxml)
 
     def createXMLs(self):
         """ creates datasource xmls of all online.xml simple devices
@@ -1312,17 +1310,15 @@ class CPCreator(Creator):
                 storeComponent(cpname, cpxml, server, mand)
         else:
             for dsname, dsxml in self.datasources.items():
-                myfile = open("%s/%s%s.ds.xml" % (
-                    self.options.directory,
-                    self.options.file, dsname), "w")
-                myfile.write(dsxml)
-                myfile.close()
+                with open("%s/%s%s.ds.xml" % (
+                        self.options.directory,
+                        self.options.file, dsname), "w") as myfile:
+                    myfile.write(dsxml)
             for cpname, cpxml in self.components.items():
-                myfile = open("%s/%s%s.xml" % (
-                    self.options.directory,
-                    self.options.file, cpname), "w")
-                myfile.write(cpxml)
-                myfile.close()
+                with open("%s/%s%s.xml" % (
+                        self.options.directory,
+                        self.options.file, cpname), "w") as myfile:
+                    myfile.write(cpxml)
 
     @classmethod
     def _replaceName(cls, filename, cpname, module=None):
