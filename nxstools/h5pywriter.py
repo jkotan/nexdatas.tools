@@ -144,9 +144,9 @@ def create_file(filename, overwrite=False, **pars):
     """
     fl = h5py.File(filename, "w" if overwrite else "w-", **pars)
     fl.attrs["file_time"] = unicode(H5PYFile.currenttime())
-    fl.attrs["HDF5_version"] = u""
+    fl.attrs["HDF5_Version"] = str(h5py.version.hdf5_version)
     fl.attrs["NX_class"] = u"NXroot"
-    fl.attrs["NeXus_version"] = u"4.3.0"
+    # fl.attrs["NeXus_version"] = u"4.3.0"
     fl.attrs["file_name"] = unicode(filename)
     fl.attrs["file_update_time"] = unicode(H5PYFile.currenttime())
     return H5PYFile(fl, filename)
