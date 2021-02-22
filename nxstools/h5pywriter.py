@@ -74,6 +74,17 @@ def is_vds_supported():
     return h5ver >= 2009
 
 
+def unlimited(parent=None):
+    """ return dataspace UNLIMITED variable for the current writer module
+
+    :param parent: parent object
+    :type parent: :class:`FTObject`
+    :returns:  dataspace UNLIMITED variable
+    :rtype: :class:`h5py.UNLIMITED`
+    """
+    return h5py.UNLIMITED
+
+
 def load_file(membuffer, filename=None, readonly=False, **pars):
     """ load a file from memory byte buffer
 
@@ -133,9 +144,9 @@ def create_file(filename, overwrite=False, **pars):
     """
     fl = h5py.File(filename, "w" if overwrite else "w-", **pars)
     fl.attrs["file_time"] = unicode(H5PYFile.currenttime())
-    fl.attrs["HDF5_version"] = u""
+    fl.attrs["HDF5_Version"] = str(h5py.version.hdf5_version)
     fl.attrs["NX_class"] = u"NXroot"
-    fl.attrs["NeXus_version"] = u"4.3.0"
+    # fl.attrs["NeXus_version"] = u"4.3.0"
     fl.attrs["file_name"] = unicode(filename)
     fl.attrs["file_update_time"] = unicode(H5PYFile.currenttime())
     return H5PYFile(fl, filename)
@@ -912,15 +923,20 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         """
         self._h5object.__setitem__(key, source._h5object)
 
-    def add(self, key, source):
+    def add(self, key, source, sourcekey=None):
         """ add external field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
         :param source: external field
         :type source: :class:`H5PYExternalField`
+        :param sourcekey: slide or selection
+        :type sourcekey: :obj:`tuple`
         """
-        self._h5object.__setitem__(key, source._h5object)
+        if sourcekey is not None:
+            self._h5object.__setitem__(key, source._h5object[sourcekey])
+        else:
+            self._h5object.__setitem__(key, source._h5object)
 
 
 class H5PYExternalField(filewriter.FTExternalField):
