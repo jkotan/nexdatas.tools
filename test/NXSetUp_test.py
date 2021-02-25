@@ -521,9 +521,11 @@ For more help:
                             pass
                     setup = nxsetup.SetUp()
                     setup.waitServerNotRunning(
-                        cfsvname, cfdvname,  adminproxy, verbose=False)
+                        cfsvname, cfdvname,  adminproxy, verbose=False,
+                        waitforproc=False)
                     setup.waitServerNotRunning(
-                        dwsvname, dwdvname, adminproxy, verbose=False)
+                        dwsvname, dwdvname, adminproxy, verbose=False,
+                        waitforproc=False)
                     setup.waitServerNotRunning(
                         rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -660,9 +662,11 @@ For more help:
                                 pass
                         setup = nxsetup.SetUp()
                         setup.waitServerNotRunning(
-                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                            cfsvname, cfdvname,  adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
-                            dwsvname, dwdvname, adminproxy, verbose=False)
+                            dwsvname, dwdvname, adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
                             rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -812,9 +816,11 @@ For more help:
                                 pass
                         setup = nxsetup.SetUp()
                         setup.waitServerNotRunning(
-                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                            cfsvname, cfdvname,  adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
-                            dwsvname, dwdvname, adminproxy, verbose=False)
+                            dwsvname, dwdvname, adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
                             rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -1086,9 +1092,11 @@ For more help:
                                 pass
                         setup = nxsetup.SetUp()
                         setup.waitServerNotRunning(
-                            cfsvname, cfdvname,  adminproxy, verbose=False)
+                            cfsvname, cfdvname,  adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
-                            dwsvname, dwdvname, adminproxy, verbose=False)
+                            dwsvname, dwdvname, adminproxy, verbose=False,
+                            waitforproc=False)
                         setup.waitServerNotRunning(
                             rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -1240,9 +1248,11 @@ For more help:
                                     pass
                             setup = nxsetup.SetUp()
                             setup.waitServerNotRunning(
-                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                                cfsvname, cfdvname,  adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
-                                dwsvname, dwdvname, adminproxy, verbose=False)
+                                dwsvname, dwdvname, adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
                                 rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -1392,9 +1402,11 @@ For more help:
                                     pass
                             setup = nxsetup.SetUp()
                             setup.waitServerNotRunning(
-                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                                cfsvname, cfdvname,  adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
-                                dwsvname, dwdvname, adminproxy, verbose=False)
+                                dwsvname, dwdvname, adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
                                 rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -1534,7 +1546,8 @@ For more help:
                                     pass
                             setup = nxsetup.SetUp()
                             setup.waitServerNotRunning(
-                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                                cfsvname, cfdvname,  adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
                                 dwsvname, dwdvname, adminproxy, verbose=False)
 
@@ -1839,9 +1852,11 @@ For more help:
                                     pass
                             setup = nxsetup.SetUp()
                             setup.waitServerNotRunning(
-                                cfsvname, cfdvname,  adminproxy, verbose=False)
+                                cfsvname, cfdvname,  adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
-                                dwsvname, dwdvname, adminproxy, verbose=False)
+                                dwsvname, dwdvname, adminproxy, verbose=False,
+                                waitforproc=False)
                             setup.waitServerNotRunning(
                                 rssvname, rsdvname, adminproxy, verbose=False)
 
@@ -2120,9 +2135,14 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = set(rservers)
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -2405,9 +2425,14 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = set(rservers)
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -2657,9 +2682,14 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = set(rservers)
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -2900,9 +2930,14 @@ For more help:
                     except Exception:
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = list(set(rservers))
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -2970,10 +3005,15 @@ For more help:
                     ("TestServer/%s" % cnf["instance"], cnf["device"]))
 
             setup = nxsetup.SetUp()
+
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 if not skiptest:
                     # time.sleep(5)
@@ -3055,9 +3095,14 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = set(rservers)
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -3121,10 +3166,14 @@ For more help:
                     ("TestServer/%s" % cnf["instance"], cnf["device"]))
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 slservers = []
                 print("\nTEST STOP")
@@ -3231,9 +3280,14 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                for svname, dvname in set(rservers):
+                sservers = set(rservers)
+                waitforproc = False
+                for svname, dvname in sservers:
+                    if dvname == sservers[-1][1]:
+                        waitforproc = True
                     setup.waitServerNotRunning(
-                        svname, dvname, adminproxy, verbose=False)
+                        svname, dvname, adminproxy, verbose=False,
+                        waitforproc=waitforproc)
 
     # comp_available test
     # \brief It tests XMLConfigurator
@@ -3391,7 +3445,7 @@ For more help:
                 adp = PyTango.DeviceProxy(admin)
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
-                                        msdv2,  adp)
+                                        msdv2,  adp, waitforproc=False)
                 setup.waitServerRunning("MacroServer/%s" % ins1,
                                         msdv1,  adp)
                 newpath = os.path.abspath(
@@ -3508,7 +3562,7 @@ For more help:
                 adp = PyTango.DeviceProxy(admin)
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
-                                        msdv2,  adp)
+                                        msdv2,  adp, waitforproc=False)
                 setup.waitServerRunning("MacroServer/%s" % ins1,
                                         msdv1,  adp)
 
@@ -3808,9 +3862,12 @@ For more help:
 
             setup = nxsetup.SetUp()
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -3941,10 +3998,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4067,10 +4128,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4189,10 +4254,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4320,10 +4389,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4454,9 +4527,12 @@ For more help:
 
             setup = nxsetup.SetUp()
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4578,10 +4654,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4699,10 +4779,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 for cnf in cnfs:
                     self.assertEqual(
@@ -4829,10 +4913,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 svpids = {}
                 for cnf in cnfs:
@@ -4965,10 +5053,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 svpids = {}
                 for cnf in cnfs:
@@ -5093,10 +5185,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 svpids = {}
                 for cnf in cnfs:
@@ -5218,10 +5314,14 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
+                if cnf == cnfs[-1]:
+                    waitforproc = True
                 setup.waitServerRunning(
                     "TestServer/%s" % cnf["instance"],
-                    cnf["device"], adminproxy)
+                    cnf["device"], adminproxy,
+                    waitforproc=waitforproc)
             try:
                 svpids = {}
                 for cnf in cnfs:

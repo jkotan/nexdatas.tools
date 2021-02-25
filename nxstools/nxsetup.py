@@ -446,7 +446,7 @@ class SetUp(object):
                 found = True
             cnt += 1
         if waitforproc:
-            time.sleep(1)
+            time.sleep(1.5)
         return found
 
     def waitServerRunning(self, server=None, device=None,
@@ -507,7 +507,7 @@ class SetUp(object):
                 found = False
             cnt += 1
         if waitforproc:
-            time.sleep(1)
+            time.sleep(1.5)
         return found
 
     def restartServer(self, name, host=None, level=None, restart=True):
