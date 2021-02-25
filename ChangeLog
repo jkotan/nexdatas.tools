@@ -1,3 +1,7 @@
+2021-02-25 Jan Kotanski <jankotan@gmail.com>
+	* avoid caching tango.Except and tango.DevError
+	* tagged as v3.1.1
+
 2021-02-22 Jan Kotanski <jankotan@gmail.com>
 	* HDF5_version changed to HDF5_Version
 	* NeXus_version removed

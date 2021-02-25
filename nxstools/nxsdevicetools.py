@@ -229,7 +229,7 @@ def openServer(device):
     try:
         #: configuration server proxy
         cnfServer = PyTango.DeviceProxy(device)
-    except (PyTango.DevFailed, PyTango.Except, PyTango.DevError):
+    except PyTango.DevFailed:
         found = True
 
     if found:
@@ -244,7 +244,7 @@ def openServer(device):
         try:
             if cnfServer.state() != PyTango.DevState.RUNNING:
                 found = True
-        except (PyTango.DevFailed, PyTango.Except, PyTango.DevError):
+        except PyTango.DevFailed:
             time.sleep(0.01)
             found = False
         cnt += 1
