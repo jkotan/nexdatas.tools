@@ -2135,7 +2135,7 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                sservers = set(rservers)
+                sservers = list(set(rservers))
                 waitforproc = False
                 for svname, dvname in sservers:
                     if dvname == sservers[-1][1]:
@@ -2425,7 +2425,7 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                sservers = set(rservers)
+                sservers = list(set(rservers))
                 waitforproc = False
                 for svname, dvname in sservers:
                     if dvname == sservers[-1][1]:
@@ -2682,7 +2682,7 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                sservers = set(rservers)
+                sservers = list(set(rservers))
                 waitforproc = False
                 for svname, dvname in sservers:
                     if dvname == sservers[-1][1]:
@@ -3095,7 +3095,7 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                sservers = set(rservers)
+                sservers = list(set(rservers))
                 waitforproc = False
                 for svname, dvname in sservers:
                     if dvname == sservers[-1][1]:
@@ -3280,7 +3280,7 @@ For more help:
                         # print(str(e))
                         pass
                 setup = nxsetup.SetUp()
-                sservers = set(rservers)
+                sservers = list(set(rservers))
                 waitforproc = False
                 for svname, dvname in sservers:
                     if dvname == sservers[-1][1]:
@@ -3861,6 +3861,7 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
                 if cnf == cnfs[-1]:
                     waitforproc = True
@@ -4526,6 +4527,7 @@ For more help:
                     cnf["device"], {cnf["oldname"]: cnf["value"]})
 
             setup = nxsetup.SetUp()
+            waitforproc = False
             for cnf in cnfs:
                 if cnf == cnfs[-1]:
                     waitforproc = True
