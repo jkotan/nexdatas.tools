@@ -1,5 +1,6 @@
 2021-02-25 Jan Kotanski <jankotan@gmail.com>
 	* avoid caching tango.Except and tango.DevError
+	* add waitforproc parameter for waitServer[Not]Running()
 	* tagged as v3.1.1
 
 2021-02-22 Jan Kotanski <jankotan@gmail.com>
