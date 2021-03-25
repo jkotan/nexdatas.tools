@@ -91,7 +91,7 @@ def splitcoords(crdstr):
         scds = crd.split(",")
         nc = []
         for cd in scds:
-            nc.append(crdtoint(cd))
+            nc.append(crdtoint(cd.strip()))
         crds.append(tuple(nc))
     return crds
 
@@ -349,7 +349,6 @@ class LayoutFields(list):
                     efd = ExternalField(fn, ph)
                     lfd = LayoutField(efd)
                     self.append(lfd)
-
         shapes = splitcoords(exfieldshapes)
         for i, lfd in enumerate(self):
             if i < len(shapes):
@@ -421,7 +420,6 @@ class VirtualDataset(object):
         :param writer: the writer module
         :type writer: :obj:`str`
         """
-
         self.__ltfields = LayoutFields(
             options.externalfields,
             options.fieldshapes,
@@ -516,7 +514,6 @@ class VirtualDataset(object):
                             parent = parent.create_group(gr, tgr)
                         else:
                             parent = None
-
             filewriter.module = self.__wrmodule
             layout = filewriter.virtual_field_layout(
                 self.__shape, self.__dtype, self.__maxshape, parent)
@@ -525,10 +522,14 @@ class VirtualDataset(object):
                     flm.field.filename, flm.field.path, flm.field.shape,
                     flm.field.maxshape, parent=parent)
                 layout.add(flm.hyperslab, efield, flm.field.hyperslab)
+                print("vdstarget: %s from %s with %s at %s" %
+                      (flm.field.filename, flm.field.path,
+                       flm.field.shape, fieldname))
             if not self.__testmode:
                 fd = parent.create_virtual_field(fieldname, layout,
                                                  self.__fillvalue or 0)
                 fd.close()
+
             if self.__storeold:
                 self._storeoldfile()
             shutil.move(self.__tempfilename, self.__nexusfilename)
