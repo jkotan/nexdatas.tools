@@ -359,7 +359,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = H5PYWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             self.assertEqual(
                 f.attributes["file_name"][...],
                 self._fname)
@@ -370,7 +370,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             self.assertEqual(
                 f.attributes["file_name"][...],
                 self._fname)
@@ -378,7 +378,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertEqual(f.size, 0)
             fl.close()
             fl.reopen()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -824,7 +824,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = H5PYWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1409,7 +1409,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = H5PYWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1674,7 +1674,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1933,7 +1933,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2214,7 +2214,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = H5PYWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2544,7 +2544,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2717,7 +2717,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5py.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -2731,7 +2731,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             atstrspec = attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -3094,7 +3094,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            #            self.assertEqual(6, len(f.attributes))
+            #            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -3195,7 +3195,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5py.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -3214,7 +3214,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -3393,7 +3393,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            #            self.assertEqual(6, len(f.attributes))
+            #            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -3494,7 +3494,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5py.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -3512,7 +3512,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             atstrspec = attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -3736,7 +3736,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            #            self.assertEqual(6, len(f.attributes))
+            #            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -3837,7 +3837,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5py.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -3856,7 +3856,7 @@ class FileWriterH5PYTest(unittest.TestCase):
             attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -4087,7 +4087,7 @@ class FileWriterH5PYTest(unittest.TestCase):
 
             fl = FileWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            #            self.assertEqual(6, len(f.attributes))
+            #            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))

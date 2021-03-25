@@ -390,7 +390,8 @@ class SetUp(object):
 
     def waitServerNotRunning(self, server=None, device=None,
                              adminproxy=None,
-                             maxcnt=1000, verbose=True):
+                             maxcnt=1000, verbose=True,
+                             waitforproc=True):
         """  wait until device is exported and server is running
 
         :param server: server name, check if running when not None
@@ -403,6 +404,8 @@ class SetUp(object):
         :type maxcnt: :obj:`int`
         :param verbose: verbose mode
         :type verbose: :obj:`bool`
+        :param waitforproc: wait for process list update
+        :type waitforporc: :obj:`bool`
         :returns: True if server is running
         :rtype: :obj:`bool`
         """
@@ -442,11 +445,14 @@ class SetUp(object):
                 time.sleep(0.01)
                 found = True
             cnt += 1
+        if waitforproc:
+            time.sleep(1.5)
         return found
 
     def waitServerRunning(self, server=None, device=None,
                           adminproxy=None,
-                          maxcnt=1000, verbose=True):
+                          maxcnt=1000, verbose=True,
+                          waitforproc=True):
         """  wait until device is exported and server is running
 
         :param server: server name, check if running when not None
@@ -459,6 +465,8 @@ class SetUp(object):
         :type maxcnt: :obj:`int`
         :param verbose: verbose mode
         :type verbose: :obj:`bool`
+        :param waitforproc: wait for process list update
+        :type waitforporc: :obj:`bool`
         :returns: True if server is running
         :rtype: :obj:`bool`
         """
@@ -498,6 +506,8 @@ class SetUp(object):
                 time.sleep(0.01)
                 found = False
             cnt += 1
+        if waitforproc:
+            time.sleep(1.5)
         return found
 
     def restartServer(self, name, host=None, level=None, restart=True):
@@ -972,7 +982,8 @@ class Set(Runner):
         local_user = None
         args = options.args or []
         if os.path.isfile('/home/etc/local_user'):
-            local_user = open('/home/etc/local_user').readline()
+            with open('/home/etc/local_user') as fl:
+                local_user = fl.readline()
         elif _hostname in knownHosts.keys():
             local_user = knownHosts["user"]
 
@@ -1360,7 +1371,8 @@ def main():
     if _hostname in knownHosts.keys():
         local_user = None
         if os.path.isfile('/home/etc/local_user'):
-            local_user = open('/home/etc/local_user').readline()
+            with open('/home/etc/local_user') as fl:
+                local_user = fl.readline()
         elif _hostname in knownHosts.keys():
             local_user = knownHosts["user"]
         epilog += "\n\n  (%s is known: -b %s -m %s -u %s -d %s )" % (

@@ -184,7 +184,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = h5cpp.file.open(self._fname)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             for at in f.attributes:
                 print(at.name), at.read(), at.datatype
                 at.close()
@@ -198,7 +198,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print(at)
@@ -213,7 +213,7 @@ class H5CppWriterTest(unittest.TestCase):
             fl.close()
 
             fl.reopen()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             for at in f.attributes:
                 print(at)
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -251,7 +251,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             self.assertEqual(
                 f.attributes["file_name"][...],
                 self._fname)
@@ -272,7 +272,7 @@ class H5CppWriterTest(unittest.TestCase):
             else:
                 fl = H5CppWriter.load_file(buf, self._fname, readonly=True)
                 f = fl.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(
                     f.attributes["file_name"][...], self._fname)
                 for at in f.attributes:
@@ -281,7 +281,7 @@ class H5CppWriterTest(unittest.TestCase):
                 self.assertEqual(f.size, 0)
                 fl.close()
                 fl.reopen()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 for at in f.attributes:
                     print("%s %s %s" % (at.name, at.read(), at.dtype))
                 self.assertEqual(
@@ -317,9 +317,9 @@ class H5CppWriterTest(unittest.TestCase):
             attrs = rt.attributes
             attrs.create("file_time", "string").write(
                 unicode(H5CppWriter.H5CppFile.currenttime()))
-            attrs.create("HDF5_version", "string").write(u"")
+            attrs.create("HDF5_Version", "string").write(u"")
             attrs.create("NX_class", "string").write(u"NXroot")
-            attrs.create("NeXus_version", "string").write(u"4.3.0")
+            # attrs.create("NeXus_version", "string").write(u"4.3.0")
             attrs.create("file_name", "string").write(
                 unicode(self._fname))
             attrs.create("file_update_time", "string").write(
@@ -394,7 +394,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1023,7 +1023,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1318,7 +1318,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1610,7 +1610,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -1912,7 +1912,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2265,7 +2265,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2674,7 +2674,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-            self.assertEqual(6, len(f.attributes))
+            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -2759,7 +2759,7 @@ class H5CppWriterTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5cpp._attribute.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -2773,7 +2773,7 @@ class H5CppWriterTest(unittest.TestCase):
             atstrspec = attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -3315,7 +3315,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-#            self.assertEqual(6, len(f.attributes))
+#            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -3401,7 +3401,7 @@ class H5CppWriterTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5cpp._attribute.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -3415,7 +3415,7 @@ class H5CppWriterTest(unittest.TestCase):
             attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -3657,7 +3657,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-#            self.assertEqual(6, len(f.attributes))
+#            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -3770,7 +3770,7 @@ class H5CppWriterTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5cpp._attribute.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -3784,7 +3784,7 @@ class H5CppWriterTest(unittest.TestCase):
             atstrspec = attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -4087,7 +4087,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-#            self.assertEqual(6, len(f.attributes))
+#            self.assertEqual(5, len(f.attributes))
             # atts = []
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
@@ -4173,7 +4173,7 @@ class H5CppWriterTest(unittest.TestCase):
             self.assertTrue(
                 isinstance(attr2.h5object, h5cpp._attribute.AttributeManager))
 
-            self.assertEqual(len(attr0), 6)
+            self.assertEqual(len(attr0), 5)
             self.assertEqual(len(attr1), 1)
             self.assertEqual(len(attr2), 0)
 
@@ -4187,7 +4187,7 @@ class H5CppWriterTest(unittest.TestCase):
             attr2.create("atstrspec", "string", [4])
             atintimage = attr2.create("atintimage", "int32", [3, 2])
 
-            self.assertEqual(len(attr0), 9)
+            self.assertEqual(len(attr0), 8)
             self.assertEqual(len(attr1), 4)
             self.assertEqual(len(attr2), 3)
 
@@ -4479,7 +4479,7 @@ class H5CppWriterTest(unittest.TestCase):
 
             fl = H5CppWriter.open_file(self._fname, readonly=True)
             f = fl.root()
-#            self.assertEqual(6, len(f.attributes))
+#            self.assertEqual(5, len(f.attributes))
             for at in f.attributes:
                 print("%s %s %s" % (at.name, at.read(), at.dtype))
             self.assertEqual(

@@ -337,7 +337,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 1)
@@ -417,7 +417,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 1)
@@ -505,7 +505,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)
@@ -826,7 +826,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)
@@ -1150,7 +1150,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)
@@ -1477,7 +1477,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)
@@ -1811,7 +1811,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)
@@ -2145,7 +2145,7 @@ For more help:
                 FileWriter.writer = H5CppWriter
                 f = FileWriter.open_file(fname, readonly=True)
                 f = f.root()
-                self.assertEqual(6, len(f.attributes))
+                self.assertEqual(5, len(f.attributes))
                 self.assertEqual(f.attributes["file_name"][...], fname)
                 self.assertTrue(f.attributes["NX_class"][...], "NXroot")
                 self.assertEqual(f.size, 2)

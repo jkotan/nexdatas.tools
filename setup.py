@@ -56,7 +56,8 @@ def read(fname):
     :param fname: file name
     :type fname: :obj:`str`
     """
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    with open(os.path.join(os.path.dirname(__file__), fname)) as fl:
+        return fl.read()
 
 
 class TestCommand(Command):
