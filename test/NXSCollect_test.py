@@ -95,18 +95,19 @@ class NXSCollectTest(unittest.TestCase):
 
         self.helperror = "Error: too few arguments\n"
 
-        self.helpinfo = """usage: nxscollect [-h] {append,link} ...
+        self.helpinfo = """usage: nxscollect [-h] {append,link,vds} ...
 
   Command-line tool to merge images of external file-formats """ + \
             """into the master NeXus file
 
 positional arguments:
-  {append,link}  sub-command help
-    append       append images to the master file
-    link         create an external or internal link in the master file
+  {append,link,vds}  sub-command help
+    append           append images to the master file
+    link             create an external or internal link in the master file
+    vds              create a virual dataset in the master file
 
 optional arguments:
-  -h, --help      show this help message and exit
+  -h, --help         show this help message and exit
 
 For more help:
   nxscollect <sub-command> -h
