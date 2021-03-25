@@ -5865,14 +5865,9 @@ For more help:
                     svl = vl.split("\n")
                     if len(svl) != 2:
                         print(svl)
+                    print(svl)
                     self.assertEqual(len(svl), 2)
                     self.assertEqual('', er)
-                    self.assertTrue(
-                        svl[0],
-                        "populate: /entry12345:NXentry/"
-                        "instrument:NXinstrument/pilatus300k:NXdetector"
-                        "/data with ['test1_%05d.cbf:0:5']")
-                    # print(svl)
                     self.assertTrue(svl[0].startswith('vdstarget: '))
                     self.assertTrue('h5test1_00001.nxs' in svl[0])
 
