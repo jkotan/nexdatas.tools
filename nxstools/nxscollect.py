@@ -88,6 +88,8 @@ def splitcoords(crdstr):
     crds = []
     scrds = crdstr.replace(';', ' ').replace(':', ' ').split(" ")
     for crd in scrds:
+        if crd.startswith("[") and crd.endswith("]"):
+            crd = crd[1:-1]
         scds = crd.split(",")
         nc = []
         for cd in scds:
@@ -489,7 +491,6 @@ class VirtualDataset(object):
     def create(self):
         """ creates VDS
         """
-
         self._createtmpfile()
         path = self.__nexuspath
         try:
