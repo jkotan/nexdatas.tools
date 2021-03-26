@@ -5792,10 +5792,6 @@ For more help:
         commands = [
             ('nxscollect vds %s' % (self.flags)).split(),
             ('nxscollect vds -r %s' % (self.flags)).split(),
-            ('nxscollect vds --h5cpp %s' % (self.flags)).split(),
-            ('nxscollect vds --h5cpp -r %s' % (self.flags)).split(),
-            ('nxscollect vds --h5py %s' % (self.flags)).split(),
-            ('nxscollect vds --h5py -r %s' % (self.flags)).split(),
         ]
         wrmodule = WRITERS[self.writer]
         filewriter.writer = wrmodule
