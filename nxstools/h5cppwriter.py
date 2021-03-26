@@ -103,7 +103,7 @@ def _slice2selection(t, shape):
                 if stride[dm] is None:
                     stride[dm] = 1
             else:
-                block.append(1)
+                stride.append(1)
         return h5cpp.dataspace.Hyperslab(
             offset=offset, block=block, count=count, stride=stride)
 
