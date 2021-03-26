@@ -5783,6 +5783,11 @@ For more help:
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if self.writer == "h5py":
+            import nxstools.h5pywriter as H5PYWriter
+            if not H5PYWriter.is_vds_supported():
+                print("VDS not supported: skipping the test")
+                return
 
         filename = 'testcollect.nxs'
         attrs = {
