@@ -43,6 +43,113 @@ else:
     bytes = str
 
 
+def _slice2selection(t, shape):
+    """ converts slice(s) to selection
+
+    :param t: slice tuple
+    :type t: :obj:`tuple`
+    :return shape: field shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :returns: hyperslab selection
+    :rtype: :class:`h5cpp.dataspace.Hyperslab`
+    """
+
+    if isinstance(t, filewriter.FTHyperslab):
+        offset = t.offset or []
+        block = t.block or []
+        count = t.count or []
+        stride = t.stride or []
+        slices = []
+        for dm, sz in enumerate(shape):
+            if len(offset) > dm:
+                if offset[dm] is None:
+                    offset[dm] = 0
+            else:
+                offset.append(0)
+            if len(block) > dm:
+                if block[dm] is None:
+                    block[dm] = 1
+            else:
+                block.append(1)
+            if len(count) > dm:
+                if count[dm] is None:
+                    count[dm] = sz
+            else:
+                count.append(sz)
+            if len(stride) > dm:
+                if stride[dm] is None:
+                    stride[dm] = 1
+            else:
+                block.append(1)
+            slices.append(
+                h5py.MultiBlockSlice(
+                    start=offset[dm], count=count[dm],
+                    stride=stride[dm], block=block[dm]))
+        return tuple(slices)
+    return t
+
+
+def _selection2slice(t, shape):
+    """ converts selection to slice(s)
+
+    :param t: slice tuple
+    :type t: :obj:`tuple`
+    :return shape: field shape
+    :type shape: :obj:`list` < :obj:`int` >
+    :returns: tuple of slices
+    :rtype: :obj:`tuple`<>
+    """
+    if isinstance(t, filewriter.FTHyperslab):
+        offset = t.offset or []
+        block = t.block or []
+        count = t.count or []
+        stride = t.stride or []
+        slices = []
+        for dm, sz in enumerate(shape):
+            if len(offset) > dm:
+                if offset[dm] is None:
+                    offset[dm] = 0
+            else:
+                offset.append(0)
+            if len(block) > dm:
+                if block[dm] is None:
+                    block[dm] = 1
+            else:
+                block.append(1)
+            if len(count) > dm:
+                if count[dm] is None:
+                    count[dm] = sz
+            else:
+                count.append(sz)
+            if len(stride) > dm:
+                if stride[dm] is None:
+                    stride[dm] = 1
+            else:
+                block.append(1)
+            if len(stride) > dm:
+                if stride[dm] is None:
+                    stride[dm] = 1
+            else:
+                stride.append(1)
+            if block[dm] == 1 and count[dm] == 1 and stride[dm] == 1:
+                slices.append(offset[dm])
+            elif stride[dm] == 1:
+                slices.append(slice(
+                    offset[dm], offset[dm] + block[dm] * count[dm], None))
+            elif stride[dm] != 1 and block[dm] == 1:
+                slices.append(slice(offset[dm],
+                                    offset[dm] + count[dm] * stride[dm],
+                                    stride[dm]))
+            elif stride[dm] != 1 and count[dm] == 1:
+                slices.append(slice(offset[dm],
+                                    offset[dm] + block[dm] * stride[dm],
+                                    stride[dm]))
+            else:
+                slices.append(Ellipsis)
+        return tuple(slices)
+    return t
+
+
 def nptype(dtype):
     """ converts to numpy types
 
@@ -72,6 +179,15 @@ def is_vds_supported():
     :rtype: :obj:`bool`
     """
     return h5ver >= 2009
+
+
+def is_mbs_supported():
+    """ provides if MultiBlockSlice are supported
+
+    :retruns: if MultiBlockSlice are supported
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 3000
 
 
 def unlimited(parent=None):
@@ -226,9 +342,10 @@ def external_field(filename, fieldpath, shape,
     if not is_vds_supported():
         raise Exception("VDS not supported")
     maxshape = maxshape or [None for _ in shape]
-    return H5PYExternalField(
-        h5py.VirtualSource(filename, fieldpath,
-                           tuple(shape), dtype, tuple(maxshape or [])))
+    vs = h5py.VirtualSource(
+        filename, fieldpath,
+        tuple(shape), dtype, tuple(maxshape or []))
+    return H5PYExternalField(vs, tuple(shape or []))
 
 
 def virtual_field_layout(shape, dtype=None, maxshape=None):
@@ -247,7 +364,9 @@ def virtual_field_layout(shape, dtype=None, maxshape=None):
         raise Exception("VDS not supported")
     maxshape = maxshape or [None for _ in shape]
     return H5PYVirtualFieldLayout(
-        h5py.VirtualLayout(tuple(shape), dtype, tuple(maxshape or [])))
+        h5py.VirtualLayout(tuple(shape), dtype, tuple(maxshape or [])),
+        tuple(shape)
+    )
 
 
 class H5PYFile(filewriter.FTFile):
@@ -913,6 +1032,18 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
 
     """ virtual field layout """
 
+    def __init__(self, h5object, shape):
+        """ constructor
+
+        :param h5object: h5 object
+        :type h5object: :obj:`any`
+        :param shape: shape
+        :type shape: :obj:`list` < :obj:`int` >
+        """
+        filewriter.FTVirtualFieldLayout.__init__(self, h5object)
+        #: (:obj:`list` < :obj:`int` >) shape
+        self.shape = shape
+
     def __setitem__(self, key, source):
         """ add external field to layout
 
@@ -921,6 +1052,7 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :param source: external field
         :type source: :class:`H5PYExternalField`
         """
+        #: (:obj:`list` < :obj:`int` >) shape
         self._h5object.__setitem__(key, source._h5object)
 
     def add(self, key, source, sourcekey=None):
@@ -933,7 +1065,15 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :param sourcekey: slide or selection
         :type sourcekey: :obj:`tuple`
         """
+        if is_mbs_supported():
+            key = _slice2selection(key, self.shape)
+        else:
+            key = _selection2slice(key, self.shape)
         if sourcekey is not None:
+            if is_mbs_supported():
+                sourcekey = _slice2selection(sourcekey, source.shape)
+            else:
+                sourcekey = _selection2slice(sourcekey, source.shape)
             self._h5object.__setitem__(key, source._h5object[sourcekey])
         else:
             self._h5object.__setitem__(key, source._h5object)
@@ -942,6 +1082,18 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
 class H5PYExternalField(filewriter.FTExternalField):
 
     """ external field for VDS """
+
+    def __init__(self, h5object, shape):
+        """ constructor
+
+        :param h5object: h5 object
+        :type h5object: :obj:`any`
+        :param shape: shape
+        :type shape: :obj:`list` < :obj:`int` >
+        """
+        filewriter.FTExternalField.__init__(self, h5object)
+        #: (:obj:`list` < :obj:`int` >) shape
+        self.shape = shape
 
 
 class H5PYDeflate(H5PYDataFilter):
