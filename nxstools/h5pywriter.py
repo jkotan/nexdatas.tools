@@ -322,9 +322,9 @@ def data_filter():
 deflate_filter = data_filter
 
 
-def external_field(filename, fieldpath, shape,
-                   dtype=None, maxshape=None):
-    """ create external field for VDS
+def target_field_view(filename, fieldpath, shape,
+                      dtype=None, maxshape=None):
+    """ create target field view for VDS
 
     :param filename: file name
     :type filename: :obj:`str`
@@ -336,16 +336,17 @@ def external_field(filename, fieldpath, shape,
     :type dtype: :obj:`str`
     :param maxshape: shape
     :type maxshape: :obj:`list` < :obj:`int` >
-    :returns: external field object
-    :rtype: :class:`FTExternalField`
+    :returns: target field view object
+    :rtype: :class:`FTTargetFieldView`
     """
     if not is_vds_supported():
         raise Exception("VDS not supported")
-    maxshape = maxshape or [None for _ in shape]
+    if shape:
+        maxshape = maxshape or [None for _ in shape]
     vs = h5py.VirtualSource(
         filename, fieldpath,
-        tuple(shape), dtype, tuple(maxshape or []))
-    return H5PYExternalField(vs, tuple(shape or []))
+        tuple(shape or []), dtype, tuple(maxshape or []))
+    return H5PYTargetFieldView(vs, tuple(shape or []))
 
 
 def virtual_field_layout(shape, dtype=None, maxshape=None):
@@ -1045,31 +1046,39 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         self.shape = shape
 
     def __setitem__(self, key, source):
-        """ add external field to layout
+        """ add target field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`H5PYExternalField`
+        :param source: target field view
+        :type source: :class:`H5PYTargetFieldView`
         """
         #: (:obj:`list` < :obj:`int` >) shape
         self._h5object.__setitem__(key, source._h5object)
 
-    def add(self, key, source, sourcekey=None):
-        """ add external field to layout
+    def add(self, key, source, sourcekey=None, shape=None):
+        """ add target field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`H5PYExternalField`
+        :param source: target field view
+        :type source: :class:`H5PYTargetFieldView`
         :param sourcekey: slide or selection
         :type sourcekey: :obj:`tuple`
+        :param shape: target shape in the layout
+        :type shape: :obj:`tuple`
         """
+        if shape is None:
+            shape = list(source.shape or [])
+            if hasattr(key, "__len__"):
+                size = len(key)
+                while len(shape) < size:
+                    shape.insert(0, 1)
         if is_mbs_supported():
-            key = _slice2selection(key, self.shape)
+            key = _slice2selection(key, tuple(shape))
         else:
-            key = _selection2slice(key, self.shape)
-        if sourcekey is not None:
+            key = _selection2slice(key, tuple(shape))
+        if sourcekey is not None and sourcekey != filewriter.FTHyperslab():
             if is_mbs_supported():
                 sourcekey = _slice2selection(sourcekey, source.shape)
             else:
@@ -1079,9 +1088,9 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
             self._h5object.__setitem__(key, source._h5object)
 
 
-class H5PYExternalField(filewriter.FTExternalField):
+class H5PYTargetFieldView(filewriter.FTTargetFieldView):
 
-    """ external field for VDS """
+    """ target field view for VDS """
 
     def __init__(self, h5object, shape):
         """ constructor
@@ -1091,7 +1100,7 @@ class H5PYExternalField(filewriter.FTExternalField):
         :param shape: shape
         :type shape: :obj:`list` < :obj:`int` >
         """
-        filewriter.FTExternalField.__init__(self, h5object)
+        filewriter.FTTargetFieldView.__init__(self, h5object)
         #: (:obj:`list` < :obj:`int` >) shape
         self.shape = shape
 

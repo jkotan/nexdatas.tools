@@ -1216,16 +1216,16 @@ For more help:
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxscollect.main()
-
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
-
                 self.assertEqual('', er)
                 self.assertTrue(vl)
                 svl = vl.split("\n")
+                if len(svl) != 8:
+                    print(svl)
                 self.assertEqual(len(svl), 8)
                 self.assertTrue(
                     svl[0],
@@ -5803,7 +5803,7 @@ For more help:
         for k in attrs.keys():
             mlen = [self.__rnd.randint(10, 200),
                     self.__rnd.randint(10, 200)]
-
+            print(mlen)
             attrs[k][0] = np.array(
                 [[attrs[k][0] * self.__rnd.randint(0, 3)
                   for c in range(mlen[1])]
@@ -5842,11 +5842,11 @@ For more help:
                     pcmd.extend(
                         ['%s://entry12345/instrument/pilatus300k:NXdetector/'
                          'data' % filename])
-                    pcmd.extend(["--external-fields",
+                    pcmd.extend(["--target-fields",
                                  "h5test1_00001.nxs://entry345/data/data"])
                     pcmd.extend(["--shape",
                                  "%s" % ','.join([str(s) for s in shp])])
-                    pcmd.extend(["--field-shapes",
+                    pcmd.extend(["--shapes",
                                  "%s" % ','.join([str(s) for s in shp])])
                     pcmd.extend(["--dtype",
                                  "%s" % attrs[k][2]])
@@ -5873,7 +5873,7 @@ For more help:
                     print(svl)
                     self.assertEqual(len(svl), 2)
                     self.assertEqual('', er)
-                    self.assertTrue(svl[0].startswith('vdstarget: '))
+                    self.assertTrue(svl[0].startswith('vds: '))
                     self.assertTrue('h5test1_00001.nxs' in svl[0])
 
                     if '-r' not in cmd:
@@ -5894,6 +5894,273 @@ For more help:
 
             finally:
                 os.remove("h5test1_00001.nxs")
+
+    def test_vds_concatinate(self):
+        """ test nxscollect vds
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if self.writer == "h5py":
+            import nxstools.h5pywriter as H5PYWriter
+            if not H5PYWriter.is_vds_supported():
+                print("VDS not supported: skipping the test")
+                return
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int1": [-123, "NX_INT", "int64", (1,)],
+            "int2": [12, "NX_INT", "int64", (1,)],
+            "int3": [52, "NX_INT", "int64", (1,)],
+        }
+
+        commands = [
+            ('nxscollect vds %s' % (self.flags)).split(),
+            ('nxscollect vds -r %s' % (self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        try:
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+            # print(mlen)
+            for i, k in enumerate(attrs.keys()):
+                attrs[k][0] = np.array(
+                    [[attrs[k][0] * self.__rnd.randint(0, 3)
+                      for c in range(mlen[1])]
+                     for i in range(mlen[0])],
+                    dtype=attrs[k][2]
+                )
+                fl = filewriter.create_file("eh5test1_%05d.nxs" % (i + 1))
+                rt = fl.root()
+
+                entry = rt.create_group("entry345", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                shp = attrs[k][0].shape
+                data = dt.create_field("data", attrs[k][2], shp, shp)
+                data.write(attrs[k][0])
+                data.close()
+
+                dt.close()
+                entry.close()
+                fl.close()
+
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                # det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                # col = det.create_group("collection", "NXcollection")
+                # postrun = col.create_field("postrun", "string")
+                # postrun.write("h5test1_%05d.h5:0:5")
+                nxsfile.close()
+
+                pcmd = cmd
+                pcmd.extend(
+                    ['%s://entry12345/instrument/pilatus300k:NXdetector/'
+                     'data' % filename])
+                tfields = ",".join(
+                    ["eh5test1_%05d.nxs://entry345/data/data" %
+                     (i + 1) for i in range(len(attrs))])
+                pcmd.extend(["--target-fields", "%s" % tfields])
+                pcmd.extend(["--shape",
+                             "%s,%s" % (shp[0] * len(attrs), shp[1])])
+                pcmd.extend(["--dtype",
+                             "%s" % attrs["int1"][2]])
+                tshapes = ";".join(
+                    [("%s,%s" % (shp[0], shp[1])) for _ in range(len(attrs))])
+                pcmd.extend(["--shapes", "%s" % tshapes])
+                offsets = ";".join(
+                    [('%s,%s' % (shp[0] * i, 0)) for i in range(len(attrs))])
+
+                pcmd.extend(["--offsets", "%s" % offsets])
+                # print(pcmd)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = pcmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                if len(svl) != 2:
+                    print(svl)
+                print(svl)
+                self.assertEqual(len(svl), 4)
+                self.assertEqual('', er)
+                self.assertTrue(svl[0].startswith('vds: '))
+                self.assertTrue('h5test1_0000' in svl[0])
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                dt = det.open("data")
+                ibuffer = dt.read()
+                # print(attrs["int1"][0].shape)
+                # print(ibuffer.shape)
+                tshape = (attrs["int1"][0].shape[0] * len(attrs),
+                          attrs["int1"][0].shape[1])
+
+                self.assertEqual(ibuffer.shape, tshape)
+                fimage = np.concatenate(
+                    (attrs["int1"][0], attrs["int2"][0], attrs["int3"][0]))
+                image = ibuffer[:, :]
+                self.assertTrue((image == fimage).all())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove("eh5test1_00001.nxs")
+            os.remove("eh5test1_00002.nxs")
+            os.remove("eh5test1_00003.nxs")
+
+    def test_vds_append(self):
+        """ test nxscollect vds
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if self.writer == "h5py":
+            import nxstools.h5pywriter as H5PYWriter
+            if not H5PYWriter.is_vds_supported():
+                print("VDS not supported: skipping the test")
+                return
+
+        filename = 'testcollect.nxs'
+        attrs = {
+            "int1": [-123, "NX_INT", "int64", (1,)],
+            "int2": [12, "NX_INT", "int64", (1,)],
+            "int3": [52, "NX_INT", "int64", (1,)],
+        }
+
+        commands = [
+            ('nxscollect vds %s' % (self.flags)).split(),
+            ('nxscollect vds -r %s' % (self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        try:
+            mlen = [self.__rnd.randint(10, 200),
+                    self.__rnd.randint(10, 200)]
+            # print(mlen)
+            for i, k in enumerate(attrs.keys()):
+                attrs[k][0] = np.array(
+                    [[attrs[k][0] * self.__rnd.randint(0, 3)
+                      for c in range(mlen[1])]
+                     for i in range(mlen[0])],
+                    dtype=attrs[k][2]
+                )
+                fl = filewriter.create_file("eh5test1_%05d.nxs" % (i + 1))
+                rt = fl.root()
+
+                entry = rt.create_group("entry345", "NXentry")
+                dt = entry.create_group("data", "NXdata")
+                shp = attrs[k][0].shape
+                data = dt.create_field("data", attrs[k][2], shp, shp)
+                data.write(attrs[k][0])
+                data.close()
+
+                dt.close()
+                entry.close()
+                fl.close()
+
+            for cmd in commands:
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                # det = ins.create_group("pilatus300k", "NXdetector")
+                entry.create_group("data", "NXdata")
+                # col = det.create_group("collection", "NXcollection")
+                # postrun = col.create_field("postrun", "string")
+                # postrun.write("h5test1_%05d.h5:0:5")
+                nxsfile.close()
+
+                pcmd = cmd
+                pcmd.extend(
+                    ['%s://entry12345/instrument/pilatus300k:NXdetector/'
+                     'data' % filename])
+                tfields = ",".join(
+                    ["eh5test1_%05d.nxs://entry345/data/data" %
+                     (i + 1) for i in range(len(attrs))])
+                pcmd.extend(["--target-fields", "%s" % tfields])
+                pcmd.extend(["--shape",
+                             "%s,%s,%s" % (len(attrs), shp[0], shp[1])])
+                pcmd.extend(["--dtype",
+                             "%s" % attrs["int1"][2]])
+                tshapes = ";".join(
+                    [("1,%s,%s" % (shp[0], shp[1]))
+                     for _ in range(len(attrs))])
+                pcmd.extend(["--shapes", "%s" % tshapes])
+                offsets = ";".join(
+                    [('%s,0,0' % i) for i in range(len(attrs))])
+
+                pcmd.extend(["--offsets", "%s" % offsets])
+                # print(pcmd)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = pcmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                # print(er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                if len(svl) != 2:
+                    print(svl)
+                print(svl)
+                self.assertEqual(len(svl), 4)
+                self.assertEqual('', er)
+                self.assertTrue(svl[0].startswith('vds: '))
+                self.assertTrue('h5test1_0000' in svl[0])
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                dt = det.open("data")
+                ibuffer = dt.read()
+                tshape = (len(attrs),
+                          attrs["int1"][0].shape[0],
+                          attrs["int1"][0].shape[1])
+
+                self.assertEqual(ibuffer.shape, tshape)
+                image = ibuffer[:, :, :]
+                self.assertTrue((image[0, :, :] == attrs["int1"][0]).all())
+                self.assertTrue((image[1, :, :] == attrs["int2"][0]).all())
+                self.assertTrue((image[2, :, :] == attrs["int3"][0]).all())
+                nxsfile.close()
+                os.remove(filename)
+
+        finally:
+            os.remove("eh5test1_00001.nxs")
+            os.remove("eh5test1_00002.nxs")
+            os.remove("eh5test1_00003.nxs")
 
 
 if __name__ == '__main__':

@@ -213,9 +213,9 @@ def unlimited(parent=None):
     return wr.unlimited()
 
 
-def external_field(filename, fieldpath, shape,
-                   dtype=None, maxshape=None, parent=None):
-    """ create external field for VDS
+def target_field_view(filename, fieldpath, shape,
+                      dtype=None, maxshape=None, parent=None):
+    """ create target field view for VDS
 
     :param filename: file name
     :type filename: :obj:`str`
@@ -229,8 +229,8 @@ def external_field(filename, fieldpath, shape,
     :type maxshape: :obj:`list` < :obj:`int` >
     :param parent: parent object
     :type parent: :class:`FTObject`
-    :returns: external field object
-    :rtype: :class:`FTExternalField`
+    :returns: target field object
+    :rtype: :class:`FTTargetFieldView`
     """
     node = parent
     wr = None
@@ -246,8 +246,8 @@ def external_field(filename, fieldpath, shape,
     if not wr:
         with writerlock:
             wr = writer
-    return wr.external_field(filename, fieldpath, shape,
-                             dtype, maxshape)
+    return wr.target_field_view(filename, fieldpath, shape,
+                                dtype, maxshape)
 
 
 def virtual_field_layout(shape, dtype=None, maxshape=None, parent=None):
@@ -300,6 +300,22 @@ class FTHyperslab(object):
         self.block = block
         self.count = count
         self.stride = stride
+
+    def __eq__(self, other):
+        return hasattr(other, 'offset') and \
+            hasattr(other, 'block') and \
+            hasattr(other, 'count') and \
+            hasattr(other, 'stride') and \
+            self.offset == other.offset and \
+            self.block == other.block and \
+            self.count == other.count and \
+            self.stride == other.stride
+
+    def __len__(self):
+        return max(len(self.offset or []),
+                   len(self.block or []),
+                   len(self.count or []),
+                   len(self.stride or []))
 
 
 class FTObject(object):
@@ -672,31 +688,31 @@ class FTVirtualFieldLayout(FTObject):
         FTObject.__init__(self, h5object)
 
     def __setitem__(self, key, source):
-        """ add external field to layout
+        """ add target field view to layout
 
         :param key: slide or selection
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`FTExternalField`
+        :param source: target field view
+        :type source: :class:`FTTargetFieldView`
         """
         self._h5object.__setitem__(key, source._h5object)
 
     def add(self, key, source, sourcekey=None):
-        """ add external field to layout
+        """ add target field to layout
 
         :param key: slide or selection
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`FTExternalField`
+        :param source: target field
+        :type source: :class:`FTTargetFieldView`
         :param sourcekey: slide or selection
         :type sourcekey: :obj:`tuple`
         """
         self._h5object.add(key, source, sourcekey)
 
 
-class FTExternalField(FTObject):
+class FTTargetFieldView(FTObject):
 
-    """ external field for VDS"""
+    """ target field view for VDS"""
 
     def __init__(self, h5object=None):
         """ constructor

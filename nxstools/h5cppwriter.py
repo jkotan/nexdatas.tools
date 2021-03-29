@@ -79,10 +79,10 @@ def _slice2selection(t, shape):
     if t is Ellipsis:
         return None
     elif isinstance(t, filewriter.FTHyperslab):
-        offset = t.offset or []
-        block = t.block or []
-        count = t.count or []
-        stride = t.stride or []
+        offset = list(t.offset or [])
+        block = list(t.block or [])
+        count = list(t.count or [])
+        stride = list(t.stride or [])
         for dm, sz in enumerate(shape):
             if len(offset) > dm:
                 if offset[dm] is None:
@@ -104,6 +104,7 @@ def _slice2selection(t, shape):
                     stride[dm] = 1
             else:
                 stride.append(1)
+        # print("Hyperslab %s %s %s %s" % (offset, block, count, stride))
         return h5cpp.dataspace.Hyperslab(
             offset=offset, block=block, count=count, stride=stride)
 
@@ -417,9 +418,9 @@ def data_filter():
 deflate_filter = data_filter
 
 
-def external_field(filename, fieldpath, shape,
-                   dtype=None, maxshape=None):
-    """ create external field for VDS
+def target_field_view(filename, fieldpath, shape,
+                      dtype=None, maxshape=None):
+    """ create target field view for VDS
 
     :param filename: file name
     :type filename: :obj:`str`
@@ -431,10 +432,10 @@ def external_field(filename, fieldpath, shape,
     :type dtype: :obj:`str`
     :param maxshape: shape
     :type maxshape: :obj:`list` < :obj:`int` >
-    :returns: external field object
-    :rtype: :class:`H5CppExternalField`
+    :returns: target field view object
+    :rtype: :class:`H5CppTargetFieldView`
     """
-    return H5CppExternalField(
+    return H5CppTargetFieldView(
         filename, fieldpath, shape, dtype, maxshape)
 
 
@@ -691,10 +692,11 @@ class H5CppGroup(filewriter.FTGroup):
         dataspace = h5cpp.dataspace.Simple(
             tuple(shape),
             tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
-        return H5CppField(h5cpp.node.VirtualDataset(
+        vf = h5cpp.node.VirtualDataset(
             self._h5object, h5cpp.Path(name),
             pTh[_tostr(layout.dtype)], dataspace,
-            layout._h5object, dcpl=dcpl), self)
+            layout._h5object, dcpl=dcpl)
+        return H5CppField(vf, self)
 
     def create_field(self, name, type_code,
                      shape=None, chunk=None, dfilter=None):
@@ -1270,33 +1272,42 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         self.maxshape = maxshape
 
     def __setitem__(self, key, source):
-        """ add external field to layout
+        """ add target field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`H5PYExternalField`
+        :param source: target field view
+        :type source: :class:`H5PYTargetFieldView`
         """
         self.add(key, source)
 
-    def add(self, key, source, sourcekey=None):
-        """ add external field to layout
+    def add(self, key, source, sourcekey=None, shape=None):
+        """ add target field to layout
 
         :param key: slide
         :type key: :obj:`tuple`
-        :param source: external field
-        :type source: :class:`H5PYExternalField`
+        :param source: target field view
+        :type source: :class:`H5PYTargetFieldView`
         :param sourcekey: slide or selection
         :type sourcekey: :obj:`tuple`
+        :param shape: target shape in the layout
+        :type shape: :obj:`tuple`
         """
-        selection = _slice2selection(key, self.shape)
-        lds = h5cpp.dataspace.Simple(tuple(self.shape))
-        if selection is not None:
+
+        if shape is None:
+            shape = list(source.shape or [])
+            if hasattr(key, "__len__"):
+                size = len(key)
+                while len(shape) < size:
+                    shape.insert(0, 1)
+        lds = h5cpp.dataspace.Simple(tuple(shape))
+        if key is not None and key != filewriter.FTHyperslab():
+            selection = _slice2selection(key, shape)
             lview = h5cpp.dataspace.View(lds, selection)
         else:
             lview = h5cpp.dataspace.View(lds)
-        sds = h5cpp.dataspace.Simple(tuple(source.shape))
-        if sourcekey is not None:
+        sds = h5cpp.dataspace.Simple(tuple(shape))
+        if sourcekey is not None and sourcekey != filewriter.FTHyperslab():
             srcsel = _slice2selection(sourcekey, source.shape)
             eview = h5cpp.dataspace.View(sds, srcsel)
         else:
@@ -1307,9 +1318,9 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
             lview, fname, path, eview))
 
 
-class H5CppExternalField(filewriter.FTExternalField):
+class H5CppTargetFieldView(filewriter.FTTargetFieldView):
 
-    """ external field for VDS """
+    """ target field for VDS """
 
     def __init__(self, filename, fieldpath, shape, dtype=None, maxshape=None):
         """ constructor
@@ -1325,7 +1336,7 @@ class H5CppExternalField(filewriter.FTExternalField):
         :param maxshape: shape
         :type maxshape: :obj:`list` < :obj:`int` >
         """
-        filewriter.FTExternalField.__init__(self, None)
+        filewriter.FTTargetFieldView.__init__(self, None)
         #: (:obj:`str`) directory and file name
         self.filename = filename
         #: (:obj:`str`) nexus field path
