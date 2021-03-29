@@ -228,7 +228,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
 
         commands = [
             ('nxscollect append %s -r %s' % (filename, self.flags)).split(),
@@ -278,7 +279,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
@@ -335,7 +337,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         commands = [
             ('nxscollect append %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
@@ -405,7 +408,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect append --test %s %s' %
@@ -465,7 +469,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
             ('nxscollect append  %s -r %s' % (filename, self.flags)).split(),
@@ -558,6 +563,8 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         filename = 'testcollect.nxs'
         commands = [
             ('nxscollect append  %s %s' % (filename, self.flags)).split(),
@@ -1780,7 +1787,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.h5" % i, )
+                    fl = filewriter.create_file("h5test1_%05d.h5" % i,
+                                                overwrite=True)
                     rt = fl.root()
                     shp = attrs[k][0][i].shape
                     data = rt.create_field("data", attrs[k][2], shp, shp)
@@ -2680,7 +2688,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
 
                     at = rt.attributes.create("default", "string")
@@ -2828,7 +2837,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
 
                     at = rt.attributes.create("default", "string")
@@ -2978,7 +2988,8 @@ For more help:
             )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
 
                     at = rt.attributes.create("default", "string")
@@ -3123,7 +3134,8 @@ For more help:
                 dtype=attrs[k][2]
                 )
             try:
-                fl = filewriter.create_file("h5test1_00001.nxs")
+                fl = filewriter.create_file("h5test1_00001.nxs",
+                                            overwrite=True)
                 rt = fl.root()
 
                 at = rt.attributes.create("default", "string")
@@ -3266,7 +3278,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
                     entry = rt.create_group("entry345", "NXentry")
 
@@ -4516,7 +4529,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.h5" % i, )
+                    fl = filewriter.create_file("h5test1_%05d.h5" % i,
+                                                overwrite=True)
                     rt = fl.root()
                     shp = attrs[k][0][i].shape
                     data = rt.create_field("data", attrs[k][2], shp, shp)
@@ -5334,7 +5348,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
 
                     at = rt.attributes.create("default", "string")
@@ -5478,7 +5493,8 @@ For more help:
                 )
             try:
                 for i in range(6):
-                    fl = filewriter.create_file("h5test1_%05d.nxs" % i)
+                    fl = filewriter.create_file("h5test1_%05d.nxs" % i,
+                                                overwrite=True)
                     rt = fl.root()
                     entry = rt.create_group("entry345", "NXentry")
 
@@ -5583,7 +5599,8 @@ For more help:
                 dtype=attrs[k][2]
                 )
             try:
-                fl = filewriter.create_file("h5test1_00001.nxs")
+                fl = filewriter.create_file("h5test1_00001.nxs",
+                                            overwrite=True)
                 rt = fl.root()
 
                 entry = rt.create_group("entry345", "NXentry")
@@ -5695,7 +5712,8 @@ For more help:
                 dtype=attrs[k][2]
                 )
             try:
-                fl = filewriter.create_file("h5test1_00001.nxs")
+                fl = filewriter.create_file("h5test1_00001.nxs",
+                                            overwrite=True)
                 rt = fl.root()
 
                 entry = rt.create_group("entry345", "NXentry")
@@ -5790,6 +5808,8 @@ For more help:
                 return
 
         filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         attrs = {
             "int": [-123, "NX_INT", "int64", (1,)],
         }
@@ -5811,7 +5831,8 @@ For more help:
                 dtype=attrs[k][2]
                 )
             try:
-                fl = filewriter.create_file("h5test1_00001.nxs")
+                fl = filewriter.create_file("h5test1_00001.nxs",
+                                            overwrite=True)
                 rt = fl.root()
 
                 entry = rt.create_group("entry345", "NXentry")
@@ -5907,6 +5928,8 @@ For more help:
                 return
 
         filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         attrs = {
             "int1": [-123, "NX_INT", "int64", (1,)],
             "int2": [12, "NX_INT", "int64", (1,)],
@@ -5923,14 +5946,15 @@ For more help:
             mlen = [self.__rnd.randint(10, 200),
                     self.__rnd.randint(10, 200)]
             # print(mlen)
-            for i, k in enumerate(attrs.keys()):
+            for ii, k in enumerate(sorted(attrs.keys())):
                 attrs[k][0] = np.array(
                     [[attrs[k][0] * self.__rnd.randint(0, 3)
                       for c in range(mlen[1])]
                      for i in range(mlen[0])],
                     dtype=attrs[k][2]
                 )
-                fl = filewriter.create_file("eh5test1_%05d.nxs" % (i + 1))
+                fl = filewriter.create_file("eh5test1_%05d.nxs" % (ii + 1),
+                                            overwrite=True)
                 rt = fl.root()
 
                 entry = rt.create_group("entry345", "NXentry")
@@ -6039,7 +6063,9 @@ For more help:
                 print("VDS not supported: skipping the test")
                 return
 
-        filename = 'testcollect.nxs'
+        # filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
         attrs = {
             "int1": [-123, "NX_INT", "int64", (1,)],
             "int2": [12, "NX_INT", "int64", (1,)],
@@ -6056,14 +6082,15 @@ For more help:
             mlen = [self.__rnd.randint(10, 200),
                     self.__rnd.randint(10, 200)]
             # print(mlen)
-            for i, k in enumerate(attrs.keys()):
+            for ii, k in enumerate(sorted(attrs.keys())):
                 attrs[k][0] = np.array(
                     [[attrs[k][0] * self.__rnd.randint(0, 3)
                       for c in range(mlen[1])]
                      for i in range(mlen[0])],
                     dtype=attrs[k][2]
                 )
-                fl = filewriter.create_file("eh5test1_%05d.nxs" % (i + 1))
+                fl = filewriter.create_file("eh5test1_%05d.nxs" % (ii + 1),
+                                            overwrite=True)
                 rt = fl.root()
 
                 entry = rt.create_group("entry345", "NXentry")

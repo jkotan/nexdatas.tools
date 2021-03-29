@@ -4571,11 +4571,11 @@ class H5CppWriterTest(unittest.TestCase):
             entry = rt.create_group("entry123", "NXentry")
             dt = entry.create_group("data", "NXdata")
 
-            ef1 = H5CppWriter.external_field(
+            ef1 = H5CppWriter.target_field_view(
                 fname1, "/entry1/data/data", [10, 10, 20], "uint32")
-            ef2 = H5CppWriter.external_field(
+            ef2 = H5CppWriter.target_field_view(
                 fname2, "/entry2/data/data", [10, 10, 20], "uint32")
-            ef3 = H5CppWriter.external_field(
+            ef3 = H5CppWriter.target_field_view(
                 fname3, "/entry3/data/data", [10, 10, 20], "uint32")
 
             vfl = H5CppWriter.virtual_field_layout([30, 10, 20], "uint32")
@@ -4677,11 +4677,11 @@ class H5CppWriterTest(unittest.TestCase):
             entry = rt.create_group("entry123", "NXentry")
             dt = entry.create_group("data", "NXdata")
 
-            ef1 = H5CppWriter.external_field(
+            ef1 = H5CppWriter.target_field_view(
                 fname1, "/entry1/data/data", [10, 10, 20], "uint32")
-            ef2 = H5CppWriter.external_field(
+            ef2 = H5CppWriter.target_field_view(
                 fname2, "/entry2/data/data", [10, 10, 20], "uint32")
-            ef3 = H5CppWriter.external_field(
+            ef3 = H5CppWriter.target_field_view(
                 fname3, "/entry3/data/data", [10, 10, 20], "uint32")
 
             vfl = H5CppWriter.virtual_field_layout([30, 10, 20], "uint32")
@@ -4767,9 +4767,9 @@ class H5CppWriterTest(unittest.TestCase):
             entry = rt.create_group("entry123", "NXentry")
             dt = entry.create_group("data", "NXdata")
 
-            ef1 = H5CppWriter.external_field(
+            ef1 = H5CppWriter.target_field_view(
                 fname1, "/entry1/data/data", [10, 10, 20], "int16")
-            ef3 = H5CppWriter.external_field(
+            ef3 = H5CppWriter.target_field_view(
                 fname3, "/entry3/data/data", [10, 10, 20], "int16")
 
             vfl = H5CppWriter.virtual_field_layout([30, 10, 20], "int16")

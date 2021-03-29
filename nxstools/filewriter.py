@@ -311,6 +311,9 @@ class FTHyperslab(object):
             self.count == other.count and \
             self.stride == other.stride
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def __len__(self):
         return max(len(self.offset or []),
                    len(self.block or []),
