@@ -1334,6 +1334,12 @@ class VDS(Runner):
             print("")
             sys.exit(0)
 
+        if options.shapes is None:
+            sys.stderr.write("nxscollect: shapes is missing\n")
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
         if options.h5cpp:
             writer = "h5cpp"
         elif options.h5py:

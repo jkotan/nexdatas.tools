@@ -6382,8 +6382,6 @@ For more help:
             imnr = len(list(attrs.keys()))
             lsh = list(mlen)
             lsh[0] = imnr * lsh[0]
-            print(lsh[0])
-            print(imnr)
             lsh = tuple(lsh)
 
             # print(mlen)
@@ -6443,9 +6441,7 @@ For more help:
                 pcmd.extend(
                     ['%s://entry12345/instrument/pilatus300k:NXdetector/'
                      'data' % filename])
-                tfields = ",".join(
-                    ["eh5test1_%05d.nxs://entry345/data/data" %
-                     (i + 1) for i in range(len(attrs))])
+                tfields = "eh5test1_%05d.nxs://entry345/data/data:1:4"
                 pcmd.extend(["--target-fields", "%s" % tfields])
                 pcmd.extend(["--shape",
                              "%s,%s,%s" % (lsh[0], lsh[1], lsh[2])])
@@ -6456,10 +6452,10 @@ For more help:
                      for _ in range(len(attrs))])
                 pcmd.extend(["--shapes", "%s" % tshapes])
                 offsets = ";".join(
-                    [('%s,0,0' % i) for i in range(imnr)])
+                    [('%s,,' % i) for i in range(imnr)])
                 pcmd.extend(["--offsets", "%s" % offsets])
                 strides = ";".join(
-                    [('4,1,1') for _ in range(imnr)])
+                    [('4,,') for _ in range(imnr)])
                 pcmd.extend(["--strides", "%s" % strides])
 
                 # print(pcmd)

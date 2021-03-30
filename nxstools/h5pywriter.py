@@ -53,12 +53,11 @@ def _slice2selection(t, shape):
     :returns: hyperslab selection
     :rtype: :class:`h5cpp.dataspace.Hyperslab`
     """
-
     if isinstance(t, filewriter.FTHyperslab):
-        offset = t.offset or []
-        block = t.block or []
-        count = t.count or []
-        stride = t.stride or []
+        offset = list(t.offset or [])
+        block = list(t.block or [])
+        count = list(t.count or [])
+        stride = list(t.stride or [])
         slices = []
         for dm, sz in enumerate(shape):
             if len(offset) > dm:
@@ -100,10 +99,10 @@ def _selection2slice(t, shape):
     :rtype: :obj:`tuple`<>
     """
     if isinstance(t, filewriter.FTHyperslab):
-        offset = t.offset or []
-        block = t.block or []
-        count = t.count or []
-        stride = t.stride or []
+        offset = list(t.offset or [])
+        block = list(t.block or [])
+        count = list(t.count or [])
+        stride = list(t.stride or [])
         slices = []
         for dm, sz in enumerate(shape):
             if len(offset) > dm:
