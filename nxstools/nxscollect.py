@@ -57,6 +57,44 @@ except Exception:
     pass
 
 
+pTc = {
+    "long": long,
+    "str": str,
+    "unicode": unicode,
+    "bool": bool,
+    "int": int,
+    "int64": int,
+    "int32": int,
+    "int16": int,
+    "int8": int,
+    "uint": int,
+    "uint64": int,
+    "uint32": int,
+    "uint16": int,
+    "uint8": int,
+    "float": float,
+    "float64": float,
+    "float32": float,
+    "string": str,
+}
+
+
+def _tostr(text):
+    """ converts text  to str type
+
+    :param text: text
+    :type text: :obj:`bytes` or :obj:`unicode`
+    :returns: text in str type
+    :rtype: :obj:`str`
+    """
+    if isinstance(text, str):
+        return text
+    elif sys.version_info > (3,):
+        return str(text, "utf8")
+    else:
+        return str(text)
+
+
 def filegenerator(filestr, pattern=None):
     """ provides file name generator from file string
 
@@ -543,8 +581,8 @@ class VirtualDataset(object):
                           (flm.target.filename, flm.target.path,
                            flm.target.shape, path, fieldname))
             if not self.__testmode:
-                fd = parent.create_virtual_field(fieldname, layout,
-                                                 self.__fillvalue or 0)
+                fillvalue = pTc[_tostr(self.__dtype)](self.__fillvalue or 0)
+                fd = parent.create_virtual_field(fieldname, layout, fillvalue)
                 fd.close()
 
             if self.__storeold:
