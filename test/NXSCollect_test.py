@@ -6441,7 +6441,7 @@ For more help:
                 pcmd.extend(
                     ['%s://entry12345/instrument/pilatus300k:NXdetector/'
                      'data' % filename])
-                tfields = "eh5test1_%05d.nxs://entry345/data/data:1:4"
+                tfields = "eh5test1_%05d.nxs://entry345/data/data:1:5"
                 pcmd.extend(["--target-fields", "%s" % tfields])
                 pcmd.extend(["--shape",
                              "%s,%s,%s" % (lsh[0], lsh[1], lsh[2])])

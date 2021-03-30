@@ -1151,7 +1151,7 @@ class VDS(Runner):
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/lambda/data " \
         + "--target-fields 'lambda_%05d.nxs://entry/data/data:0:3'" \
-        + " --offsets ',,;,256,;,512,' \n\n" \
+        + " --offsets ',,;,256,;,512, --shape ' \n\n" \
         + "\n"
 
     def create(self):
