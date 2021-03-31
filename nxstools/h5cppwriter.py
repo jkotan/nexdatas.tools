@@ -76,23 +76,33 @@ def unlimited_selection(sel, shape):
     :rtype: :obj:`list` <:obj:`bool`>
     """
     res = None
-    if hasattr(sel, "count"):
+    if isinstance(sel, tuple):
+        res = []
+        for sl in sel:
+            if hasattr(sl, "stop"):
+                res.append(
+                    True if sl.stop in [unlimited()]
+                    else False)
+            elif hasattr(sl, "count"):
+                res.append(
+                    True if sl.count in [unlimited()]
+                    else False)
+            else:
+                res.append(
+                    True if sl in [unlimited()]
+                    else False)
+
+    elif hasattr(sel, "count"):
         res = []
         for ct in sel.count():
             res.append(
-                True if ct in [h5cpp.dataspace.UNLIMITED]
-                else False)
-    elif isinstance(sel, tuple):
-        res = []
-        for sl in sel:
-            res.append(
-                True if sl.stop in [h5cpp.dataspace.UNLIMITED]
+                True if ct in [unlimited()]
                 else False)
     elif isinstance(sel, slice):
-        res = [True if sel.stop in [h5cpp.dataspace.UNLIMITED]
+        res = [True if sel.stop in [unlimited()]
                else False]
 
-    elif sel in [h5cpp.dataspace.UNLIMITED]:
+    elif sel in [unlimited()]:
         res = [True]
     lsh = len(shape)
     lct = len(res)

@@ -106,9 +106,13 @@ def unlimited_selection(sel, shape):
                 res.append(
                     True if sl.stop in [unlimited()]
                     else False)
-            else:
+            elif hasattr(sl, "count"):
                 res.append(
                     True if sl.count in [unlimited()]
+                    else False)
+            else:
+                res.append(
+                    True if sl in [unlimited()]
                     else False)
 
     elif hasattr(sel, "count"):
