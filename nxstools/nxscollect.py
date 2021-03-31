@@ -1153,7 +1153,11 @@ class VDS(Runner):
         + "scan_234.nxs://entry/instrument/lambda/data " \
         + "--target-fields 'lambda_%05d.nxs://entry/data/data:0:2'" \
         + " --offsets ',,;,256,;,512, --shape '100,300,762' " \
-        + " --shapes '100,300,250:100,300,250:100,300,250' \n\n" \
+        + " --shapes '100,300,250:100,300,250:100,300,250'  -f 1 \n\n" \
+        + "\n" \
+        + "           - creates VDS of three nexus files" \
+        + " merged in their second dimension" \
+        + " and separated with a gap of 1 values\n" \
         + "\n"
 
     def create(self):

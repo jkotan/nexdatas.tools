@@ -251,7 +251,7 @@ def is_mbs_supported():
     return h5ver >= 3000
 
 
-def is_vds_unlimited_supported():
+def is_unlimited_vds_supported():
     """ provides if unlimited vds are supported
 
     :retruns: if unlimited vds are supported

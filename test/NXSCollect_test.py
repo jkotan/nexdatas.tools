@@ -6512,7 +6512,7 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
         if self.writer == "h5py":
             import nxstools.h5pywriter as H5PYWriter
-            if not H5PYWriter.is_vds_unlimited_supported():
+            if not H5PYWriter.is_unlimited_vds_supported():
                 print("VDS not supported: skipping the test")
                 return
 
