@@ -65,6 +65,55 @@ def _tostr(text):
         return str(text)
 
 
+def unlimited_selection(sel, shape):
+    """ checks if hyperslab is unlimited
+
+    :param sel: hyperslab selection
+    :type sel: :class:`filewriter.FTHyperslab`
+    :param shape: give shape
+    :type shape: :obj:`list`
+    :returns: if hyperslab is unlimited list
+    :rtype: :obj:`list` <:obj:`bool`>
+    """
+    res = None
+    if hasattr(sel, "count"):
+        res = []
+        for ct in sel.count():
+            res.append(
+                True if ct in [h5cpp.dataspace.UNLIMITED]
+                else False)
+    elif isinstance(sel, tuple):
+        res = []
+        for sl in sel:
+            res.append(
+                True if sl.stop in [h5cpp.dataspace.UNLIMITED]
+                else False)
+    elif isinstance(sel, slice):
+        res = [True if sel.stop in [h5cpp.dataspace.UNLIMITED]
+               else False]
+
+    elif sel in [h5cpp.dataspace.UNLIMITED]:
+        res = [True]
+    lsh = len(shape)
+    lct = len(res)
+    ln = max(lsh, lct)
+    if res and any(t is True for t in res):
+        offset = [0 for _ in range(ln)]
+        block = [1 for _ in range(ln)]
+        stride = [1 for _ in range(ln)]
+        count = list(shape)
+        while lct > len(count):
+            count.append(1)
+        for si in range(lct):
+            if res[si]:
+                count[si] = h5cpp.dataspace.UNLIMITED
+        # print("Hyperslab %s %s %s %s" % (offset, block, count, stride))
+        return h5cpp.dataspace.Hyperslab(
+            offset=offset, block=block, count=count, stride=stride)
+    else:
+        return None
+
+
 def _slice2selection(t, shape):
     """ converts slice(s) to selection
 
@@ -75,7 +124,6 @@ def _slice2selection(t, shape):
     :returns: hyperslab selection
     :rtype: :class:`h5cpp.dataspace.Hyperslab`
     """
-
     if t is Ellipsis:
         return None
     elif isinstance(t, filewriter.FTHyperslab):
@@ -170,6 +218,7 @@ def _slice2selection(t, shape):
                     stride.append(1)
                     if jt < esize - 1:
                         it += 1
+        # print("Hyperslab %s %s %s %s" % (offset, block, count, stride))
         if len(offset):
             return h5cpp.dataspace.Hyperslab(
                 offset=offset, block=block, count=count, stride=stride)
@@ -280,6 +329,15 @@ def is_vds_supported():
     """
     return hasattr(h5cpp.property, "VirtualDataMaps") and \
         hasattr(h5cpp.property, "VirtualDataMaps")
+
+
+def is_unlimited_vds_supported():
+    """ provides if unlimited vds are supported
+
+    :retruns: if unlimited vds are supported
+    :rtype: :obj:`bool`
+    """
+    return is_vds_supported()
 
 
 def load_file(membuffer, filename=None, readonly=False, **pars):
@@ -1293,7 +1351,6 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         :param shape: target shape in the layout
         :type shape: :obj:`tuple`
         """
-
         if shape is None:
             shape = list(source.shape or [])
             if hasattr(key, "__len__"):
@@ -1301,6 +1358,7 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
                 while len(shape) < size:
                     shape.insert(0, 1)
         lds = h5cpp.dataspace.Simple(tuple(shape))
+        selection = None
         if key is not None and key != filewriter.FTHyperslab():
             selection = _slice2selection(key, shape)
             lview = h5cpp.dataspace.View(lds, selection)
@@ -1310,6 +1368,12 @@ class H5CppVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
         if sourcekey is not None and sourcekey != filewriter.FTHyperslab():
             srcsel = _slice2selection(sourcekey, source.shape)
             eview = h5cpp.dataspace.View(sds, srcsel)
+        elif selection is not None:
+            usel = unlimited_selection(selection, shape)
+            if usel is not None:
+                eview = h5cpp.dataspace.View(sds, usel)
+            else:
+                eview = h5cpp.dataspace.View(sds)
         else:
             eview = h5cpp.dataspace.View(sds)
         fname = source.filename

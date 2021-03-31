@@ -477,6 +477,7 @@ class VirtualDataset(object):
 
         if options.targetslices:
             self.__ltfields.add_target_slices(options.targetslices)
+
         self.__ltfields.add_layout_hyperslabs(
             options.offsets, options.blocks,
             options.counts, options.strides)

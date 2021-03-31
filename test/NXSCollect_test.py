@@ -6505,6 +6505,224 @@ For more help:
             os.remove("eh5test1_00003.nxs")
             os.remove("eh5test1_00004.nxs")
 
+    def test_vds_append_unlimited(self):
+        """ test nxscollect vds
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        if self.writer == "h5py":
+            import nxstools.h5pywriter as H5PYWriter
+            if not H5PYWriter.is_vds_unlimited_supported():
+                print("VDS not supported: skipping the test")
+                return
+
+        # filename = 'testcollect.nxs'
+        filename = '%s/%s%s.nxs' % (os.getcwd(),
+                                    self.__class__.__name__, fun)
+        attrs = {
+            "int1": [-123, "NX_INT", "int64", (1,), 3],
+            "int2": [12, "NX_INT", "int64", (1,), -2],
+        }
+
+        fval = 1
+        commands = [
+            ('nxscollect vds -f %s %s' % (fval, self.flags)).split(),
+            # second command hangs on reading vds
+            ('nxscollect vds -r -f %s %s' % (fval, self.flags)).split(),
+        ]
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+        mlen = [self.__rnd.randint(3, 10),
+                self.__rnd.randint(3, 10),
+                self.__rnd.randint(3, 10)]
+        imnr = len(list(attrs.keys()))
+        lsh = list(mlen)
+        lsh[1] = imnr * lsh[1]
+        lsh = tuple(lsh)
+        for ck, cmd in enumerate(commands):
+            filename = '%s/%s%s_%s.nxs' % (
+                os.getcwd(),
+                self.__class__.__name__, fun, ck)
+
+            filenames = []
+            try:
+                for ii, k in enumerate(sorted(attrs.keys())):
+                    attrs[k][0] = np.array(
+                        [[[self.__rnd.randint(0, 3)
+                           for j in range(mlen[2])]
+                          for c in range(mlen[1])]
+                         for i in range(mlen[0])],
+                        dtype=attrs[k][2]
+                    )
+                    filenames.append(
+                        "eh5test1_%05d_%s.nxs" % (ii + 1, ck))
+                    fl = filewriter.create_file(filenames[-1],
+                                                overwrite=True)
+                    rt = fl.root()
+
+                    entry = rt.create_group("entry345", "NXentry")
+                    dt = entry.create_group("data", "NXdata")
+                    shp = attrs[k][0].shape
+                    chk = list(shp)
+                    chk[0] = 1
+                    chk = tuple(chk)
+                    data = dt.create_field("data", attrs[k][2], shp, chk)
+                    data.write(attrs[k][0])
+                    data.close()
+                    dt.close()
+                    entry.close()
+                    fl.close()
+
+                nxsfile = filewriter.create_file(
+                    filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                dt = entry.create_group("data", "NXdata")
+                dt.close()
+                ins.close()
+                entry.close()
+                rt.close()
+                nxsfile.close()
+
+                pcmd = cmd
+                pcmd.extend(
+                    ['%s://entry12345/instrument/pilatus300k:NXdetector/'
+                     'data' % filename])
+                tfields = ",".join(
+                    ["%s://entry345/data/data" %
+                     (filenames[i]) for i in range(len(attrs))])
+                pcmd.extend(["--target-fields", "%s" % tfields])
+                pcmd.extend(["--shape",
+                             "%s,%s,%s" % (lsh[0], lsh[1], lsh[2])])
+                pcmd.extend(["--dtype",
+                             "%s" % attrs["int1"][2]])
+                tshapes = ";".join(
+                    [("%s,%s,%s" % (shp[0], shp[1], shp[2]))
+                     for _ in range(len(attrs))])
+                pcmd.extend(["--shapes", "%s" % tshapes])
+                offsets = ";".join(
+                    [('0,%s,0' % (i*(mlen[1])))
+                     for i in range(len(attrs))])
+                pcmd.extend(["--offsets", "%s" % offsets])
+                counts = ";".join(
+                    ['U,,' for i in range(len(attrs))])
+                pcmd.extend(["--counts", "%s" % counts])
+
+                # print(pcmd)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = pcmd
+                nxscollect.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                # print(er)
+                self.assertTrue(vl)
+                svl = vl.split("\n")
+                if len(svl) != 3:
+                    print(svl)
+                print(svl)
+                self.assertEqual(len(svl), 3)
+                self.assertEqual('', er)
+                self.assertTrue(svl[0].startswith('vds: '))
+                self.assertTrue('h5test1_0000' in svl[0])
+
+                if '-r' not in cmd:
+                    os.remove("%s.__nxscollect_old__" % filename)
+                nxsfile = filewriter.open_file(
+                    filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                dat = det.open("data")
+
+                self.assertEqual(dat.shape, lsh)
+                fimage = np.concatenate(
+                    (attrs["int1"][0],
+                     attrs["int2"][0]), 1)
+
+                # second times read hangs
+                # ibuffer = dat.read()
+
+                image = dat[:, :, :]
+                self.assertTrue(np.array_equal(image, fimage))
+
+                dat.close()
+                ins.close()
+                entry.close()
+                rt.close()
+                nxsfile.close()
+
+                for ii, k in enumerate(sorted(attrs.keys())):
+                    attrs[k][4] = np.array(
+                        [[[self.__rnd.randint(0, 30)
+                           for j in range(mlen[2])]
+                          for c in range(mlen[1])]
+                         for i in range(mlen[0])],
+                        dtype=attrs[k][2]
+                    )
+                    fl = filewriter.open_file(
+                        filenames[ii],
+                        readonly=False)
+                    rt = fl.root()
+
+                    entry = rt.open("entry345")
+                    dt = entry.open("data")
+                    shp = attrs[k][4].shape
+                    chk = list(shp)
+                    chk[0] = 1
+                    chk = tuple(chk)
+                    data = dt.open("data")
+                    data.grow(0, shp[0])
+                    data[shp[0]:, :, :] = attrs[k][4]
+                    data.close()
+
+                    dt.close()
+                    entry.close()
+                    fl.close()
+
+                nxsfile = filewriter.open_file(filename, readonly=True)
+                rt = nxsfile.root()
+                entry = rt.open("entry12345")
+                ins = entry.open("instrument")
+                det = ins.open("pilatus300k")
+                dat = det.open("data")
+                ibuffer = dat.read()
+
+                self.assertEqual(ibuffer.shape,
+                                 (2 * lsh[0], lsh[1], lsh[2]))
+                image = ibuffer[:, :, :]
+                fimage1 = np.concatenate(
+                    (
+                        attrs["int1"][0],
+                        attrs["int2"][0],
+                    ), 1)
+                fimage2 = np.concatenate(
+                    (
+                        attrs["int1"][4],
+                        attrs["int2"][4],
+                    ), 1)
+                fimage = np.concatenate((fimage1, fimage2), 0)
+                self.assertTrue((image == fimage).all())
+                dat.close()
+                ins.close()
+                entry.close()
+                rt.close()
+
+            finally:
+                os.remove(filename)
+                for fn in filenames:
+                    os.remove(fn)
+
 
 if __name__ == '__main__':
     unittest.main()

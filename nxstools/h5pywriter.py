@@ -79,13 +79,75 @@ def _slice2selection(t, shape):
                 if stride[dm] is None:
                     stride[dm] = 1
             else:
-                block.append(1)
+                stride.append(1)
             slices.append(
                 h5py.MultiBlockSlice(
                     start=offset[dm], count=count[dm],
                     stride=stride[dm], block=block[dm]))
         return tuple(slices)
     return t
+
+
+def unlimited_selection(sel, shape):
+    """ checks if hyperslab is unlimited
+
+    :param sel: hyperslab selection
+    :type sel: :class:`filewriter.FTHyperslab`
+    :param shape: give shape
+    :type shape: :obj:`list`
+    :returns: if hyperslab is unlimited list
+    :rtype: :obj:`list` <:obj:`bool`>
+    """
+    res = None
+    if isinstance(sel, tuple):
+        res = []
+        for sl in sel:
+            if hasattr(sl, "stop"):
+                res.append(
+                    True if sl.stop in [unlimited()]
+                    else False)
+            else:
+                res.append(
+                    True if sl.count in [unlimited()]
+                    else False)
+
+    elif hasattr(sel, "count"):
+        res = []
+        for ct in sel.count():
+            res.append(
+                True if ct in [unlimited()]
+                else False)
+    elif isinstance(sel, slice):
+        res = [True if sel.stop in [unlimited()]
+               else False]
+
+    elif sel in [unlimited()]:
+        res = [True]
+    lsh = len(shape)
+    lct = len(res)
+    ln = max(lsh, lct)
+    if res and any(t is True for t in res):
+        slices = []
+        for ii in range(ln):
+            offset = 0
+            # block = 1
+            # stride = 1
+            if ii < lsh:
+                count = shape[ii]
+            else:
+                count = 1
+            if ii < lct and res[ii]:
+                count = unlimited()
+            # print("Hyperslab %s %s %s %s" % (offset, block, count, stride))
+            slices.append(
+                slice(offset, count, None)
+                # h5py.MultiBlockSlice(
+                #     start=offset, count=count,
+                #     stride=stride, block=block)
+            )
+        return tuple(slices)
+    else:
+        return None
 
 
 def _selection2slice(t, shape):
@@ -189,15 +251,27 @@ def is_mbs_supported():
     return h5ver >= 3000
 
 
+def is_vds_unlimited_supported():
+    """ provides if unlimited vds are supported
+
+    :retruns: if unlimited vds are supported
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 3000
+
+
 def unlimited(parent=None):
     """ return dataspace UNLIMITED variable for the current writer module
 
     :param parent: parent object
     :type parent: :class:`FTObject`
     :returns:  dataspace UNLIMITED variable
-    :rtype: :class:`h5py.UNLIMITED`
+    :rtype: :class:`h5py.h5s.UNLIMITED`
     """
-    return h5py.UNLIMITED
+    try:
+        return h5py.h5s.UNLIMITED
+    except Exception:
+        return h5py.UNLIMITED
 
 
 def load_file(membuffer, filename=None, readonly=False, **pars):
@@ -1073,16 +1147,22 @@ class H5PYVirtualFieldLayout(filewriter.FTVirtualFieldLayout):
                 size = len(key)
                 while len(shape) < size:
                     shape.insert(0, 1)
-        if is_mbs_supported():
-            key = _slice2selection(key, tuple(shape))
-        else:
-            key = _selection2slice(key, tuple(shape))
+        # # if is_mbs_supported():
+        #     key = _slice2selection(key, tuple(shape))
+        # else:
+        key = _selection2slice(key, tuple(shape))
         if sourcekey is not None and sourcekey != filewriter.FTHyperslab():
             if is_mbs_supported():
                 sourcekey = _slice2selection(sourcekey, source.shape)
             else:
                 sourcekey = _selection2slice(sourcekey, source.shape)
             self._h5object.__setitem__(key, source._h5object[sourcekey])
+        elif key is not None:
+            usel = unlimited_selection(key, shape)
+            if usel is not None:
+                self._h5object[key] = source._h5object[usel]
+            else:
+                self._h5object.__setitem__(key, source._h5object)
         else:
             self._h5object.__setitem__(key, source._h5object)
 
