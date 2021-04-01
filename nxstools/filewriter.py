@@ -293,15 +293,33 @@ def setwriter(wr):
 
 
 class FTHyperslab(object):
+    """ hyperslab class """
 
     def __init__(self, offset=None, block=None, count=None, stride=None):
+        """ constructor
 
+        :param offset: a list of offsets
+        :type offset: :tuple:`int`
+        :param block: a list of blocks
+        :type block: :tuple:`int`
+        :param count: a list of counts
+        :type count: :tuple:`int`
+        :param stride: a list of strides
+        :type stride: :tuple:`int`
+        """
         self.offset = offset
         self.block = block
         self.count = count
         self.stride = stride
 
     def __eq__(self, other):
+        """ compares hyporslabs
+
+        :param other: hyperslab to compare
+        :type other: :class:`FTHyperslab`
+        :returns: if they are equal
+        :rtype: :obj:`bool`
+        """
         return hasattr(other, 'offset') and \
             hasattr(other, 'block') and \
             hasattr(other, 'count') and \
@@ -312,9 +330,20 @@ class FTHyperslab(object):
             self.stride == other.stride
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        """ compares hyporslabs
+
+        :param other: hyperslab to compare
+        :type other: :class:`FTHyperslab`
+        :returns: if they are not equal
+        :rtype: :obj:`bool`
+        """
 
     def __len__(self):
+        """ dimension length of hyperslab
+
+        :returns: dimension length of hyperslab
+        :rtype: :obj:`int`
+        """
         return max(len(self.offset or []),
                    len(self.block or []),
                    len(self.count or []),
@@ -498,6 +527,11 @@ class FTFile(FTObject):
         return str(starttime.strftime(fmt))
 
     def default_field(self):
+        """ field pointed by default attributes
+
+        :returns: field pointed by default attributes
+        :rtype: :class:`FTField`
+        """
         node = self.root()
         searching = True
         while searching:

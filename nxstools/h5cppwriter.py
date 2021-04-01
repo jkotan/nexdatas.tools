@@ -1265,6 +1265,13 @@ class H5CppLink(filewriter.FTLink):
 
     @classmethod
     def getfilename(cls, obj):
+        """ provides a filename from h5 node
+
+        :param obj: h5 node
+        :type obj: :class:`FTObject`
+        :returns: file name
+        :rtype: :obj:`str`
+        """
         filename = ""
         while not filename:
             par = obj.parent

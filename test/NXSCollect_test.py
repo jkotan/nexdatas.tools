@@ -6597,15 +6597,15 @@ For more help:
                              "%s,%s,%s" % (lsh[0], lsh[1], lsh[2])])
                 pcmd.extend(["--dtype",
                              "%s" % attrs["int1"][2]])
-                tshapes = ";".join(
-                    [("%s,%s,%s" % (shp[0], shp[1], shp[2]))
+                tshapes = ":".join(
+                    [(",%s," % (shp[1]))
                      for _ in range(len(attrs))])
                 pcmd.extend(["--shapes", "%s" % tshapes])
-                offsets = ";".join(
+                offsets = ":".join(
                     [('0,%s,0' % (i*(mlen[1])))
                      for i in range(len(attrs))])
                 pcmd.extend(["--offsets", "%s" % offsets])
-                counts = ";".join(
+                counts = ":".join(
                     ['U,,' for i in range(len(attrs))])
                 pcmd.extend(["--counts", "%s" % counts])
 
