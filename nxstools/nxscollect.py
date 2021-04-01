@@ -57,6 +57,44 @@ except Exception:
     pass
 
 
+pTc = {
+    "long": long,
+    "str": str,
+    "unicode": unicode,
+    "bool": bool,
+    "int": int,
+    "int64": int,
+    "int32": int,
+    "int16": int,
+    "int8": int,
+    "uint": int,
+    "uint64": int,
+    "uint32": int,
+    "uint16": int,
+    "uint8": int,
+    "float": float,
+    "float64": float,
+    "float32": float,
+    "string": str,
+}
+
+
+def _tostr(text):
+    """ converts text  to str type
+
+    :param text: text
+    :type text: :obj:`bytes` or :obj:`unicode`
+    :returns: text in str type
+    :rtype: :obj:`str`
+    """
+    if isinstance(text, str):
+        return text
+    elif sys.version_info > (3,):
+        return str(text, "utf8")
+    else:
+        return str(text)
+
+
 def filegenerator(filestr, pattern=None):
     """ provides file name generator from file string
 
@@ -88,16 +126,24 @@ def splitcoords(crdstr):
     crds = []
     scrds = crdstr.replace(';', ' ').replace(':', ' ').split(" ")
     for crd in scrds:
+        if crd.startswith("[") and crd.endswith("]"):
+            crd = crd[1:-1]
         scds = crd.split(",")
         nc = []
         for cd in scds:
-            nc.append(crdtoint(cd))
+            nc.append(crdtoint(cd.strip()))
         crds.append(tuple(nc))
     return crds
 
 
 def crdtoint(crd):
-    """ convert coorinate to int or  None or Unlimited """
+    """ convert coorinate to int or  None or Unlimited
+
+    :param crd: cordinate as string
+    :type crd: cordinate as string
+    :returns: converted coordinate
+    :rtype: :obj:`int`
+    """
     if crd in ["u", "U"]:
         crd = filewriter.unlimited()
     elif crd in ["", "None", "null"]:
@@ -294,12 +340,25 @@ class Linker(object):
             os.remove(self.__tempfilename)
 
 
-class ExternalField(object):
+class TargetFieldView(object):
 
-    """ external field map
+    """ target field map
     """
     def __init__(self, filename, path,
                  shape=None, hyperslab=None, maxshape=None):
+        """ constructor
+
+        :param filename: file name
+        :type filename: :obj:`str`
+        :param path: nexus field path with its name
+        :type path: :obj:`str`
+        :param shape: field shape
+        :type shape:  :obj:`list` <:obj:`int`>
+        :param hyperslab: field hyperslab or slices
+        :type hyperslab: :class:`filewriter.FTHyperslab`
+        :param maxshape: maximal field shape
+        :type maxshape:  :obj:`list` <:obj:`int`>
+        """
 
         #: :obj:`str` file name
         self.filename = filename
@@ -317,19 +376,42 @@ class ExternalField(object):
 
 class LayoutField(object):
 
-    def __init__(self, field, hyperslab=None):
+    def __init__(self, target, hyperslab=None):
+
+        """ constructor
+
+        :param hyperslab: target field object
+        :type hyperslab: :class:`TargetFieldView`
+        :param hyperslab: field hyperslab or slices
+        :type hyperslab: :class:`filewriter.FTHyperslab`
+        """
 
         #: :class:`filewriter.FTHyperslab` layout hyperslab or slices
         self.hyperslab = hyperslab or filewriter.FTHyperslab()
         #: :obj:`list` <:obj:`slice`>
         self.slices = None
-        #: :class:`ExternalField` external field object
-        self.field = field
+        #: :class:`TargetFieldView` target field object
+        self.target = target
+        #: :obj:`tuple` vds shape in layout
+        self.shape = []
 
 
-class LayoutFields(list):
+class TargetFieldsLayout(list):
 
-    def __init__(self, exfieldpaths='', exfieldshapes='', separator=','):
+    def __init__(self, exfieldpaths='', exfieldshapes='', shapes=None,
+                 separator=','):
+
+        """ constructor
+
+        :param exfieldpaths: target field paths
+        :type exfieldpaths: :obj:`str`
+        :param exfieldshapes: target field shapes
+        :type exfieldshapes: :obj:`str`
+        :param shapes: target field shapes
+        :type shapes: :obj:`list`<:obj:`tuple`<:obj:`int`> >
+        :param exfieldpaths: separator of field path strings
+        :type exfieldpaths: :obj:`str`
+        """
 
         if separator:
             files = exfieldpaths.split(separator)
@@ -339,23 +421,37 @@ class LayoutFields(list):
         for filestr in files:
             inputfiles = filegenerator(filestr)
             for fc in inputfiles():
-
                 fnph = fc.split(":/")
                 ph = "/data"
                 if len(fnph) > 0:
                     fn = fnph[0]
                     if len(fnph) > 1:
                         ph = fnph[1]
-                    efd = ExternalField(fn, ph)
+                    efd = TargetFieldView(fn, ph)
                     lfd = LayoutField(efd)
                     self.append(lfd)
+        efshapes = splitcoords(exfieldshapes)
 
-        shapes = splitcoords(exfieldshapes)
         for i, lfd in enumerate(self):
+            if i < len(efshapes):
+                lfd.target.shape = efshapes[i]
             if i < len(shapes):
-                lfd.field.shape = shapes[i]
+                lfd.shape = shapes[i]
+                # print(lfd.shape)
 
-    def add_field_hyperslabs(self, offsets, blocks, counts, strides):
+    def add_target_hyperslabs(self, offsets, blocks, counts, strides):
+        """ add target hyperslabs
+
+        :param offsets: target offsets
+        :type offsets: :obj:`str`
+        :param blocks: target blocks
+        :type blocks: :obj:`str`
+        :param counts: target counts
+        :type counts: :obj:`str`
+        :param strides: target strides
+        :type strides: :obj:`str`
+        """
+
         offs = splitcoords(offsets)
         blks = splitcoords(blocks)
         cnts = splitcoords(counts)
@@ -363,18 +459,29 @@ class LayoutFields(list):
 
         for i, lfd in enumerate(self):
             if i < len(offs):
-                lfd.field.hyperslab.offset = offs[i]
+                lfd.target.hyperslab.offset = offs[i]
         for i, lfd in enumerate(self):
             if i < len(blks):
-                lfd.field.hyperslab.offset = blks[i]
+                lfd.target.hyperslab.block = blks[i]
         for i, lfd in enumerate(self):
             if i < len(cnts):
-                lfd.field.hyperslab.offset = cnts[i]
+                lfd.target.hyperslab.count = cnts[i]
         for i, lfd in enumerate(self):
             if i < len(stds):
-                lfd.field.hyperslab.offset = stds[i]
+                lfd.target.hyperslab.stride = stds[i]
 
     def add_layout_hyperslabs(self, offsets, blocks, counts, strides):
+        """ add layout hyperslabs
+
+        :param offsets: layout offsets
+        :type offsets: :obj:`str`
+        :param blocks: layout blocks
+        :type blocks: :obj:`str`
+        :param counts: layout counts
+        :type counts: :obj:`str`
+        :param strides: layout strides
+        :type strides: :obj:`str`
+        """
         offs = splitcoords(offsets)
         blks = splitcoords(blocks)
         cnts = splitcoords(counts)
@@ -385,25 +492,35 @@ class LayoutFields(list):
                 lfd.hyperslab.offset = offs[i]
         for i, lfd in enumerate(self):
             if i < len(blks):
-                lfd.hyperslab.offset = blks[i]
+                lfd.hyperslab.block = blks[i]
         for i, lfd in enumerate(self):
             if i < len(cnts):
-                lfd.hyperslab.offset = cnts[i]
+                lfd.hyperslab.count = cnts[i]
         for i, lfd in enumerate(self):
             if i < len(stds):
-                lfd.hyperslab.offset = stds[i]
+                lfd.hyperslab.stride = stds[i]
 
     def add_layout_slices(self, slices):
+        """ add layout slices
+
+        :param slices: layout slices
+        :type slices: :obj:`str`
+        """
         slices = splitslices(slices)
         for i, lfd in enumerate(self):
             if i < len(slices):
                 lfd.slices = slices[i]
 
-    def add_field_slices(self, slices):
+    def add_target_slices(self, slices):
+        """ add taget slices
+
+        :param slices: target slices
+        :type slices: :obj:`str`
+        """
         slices = splitslices(slices)
         for i, lfd in enumerate(self):
             if i < len(slices):
-                lfd.field.slices = slices[i]
+                lfd.target.slices = slices[i]
 
 
 class VirtualDataset(object):
@@ -421,27 +538,24 @@ class VirtualDataset(object):
         :param writer: the writer module
         :type writer: :obj:`str`
         """
-
-        self.__ltfields = LayoutFields(
-            options.externalfields,
-            options.fieldshapes,
-            options.separator)
-        self.__ltfields.add_field_hyperslabs(
-            options.fieldoffsets, options.fieldblocks,
-            options.fieldcounts, options.fieldstrides)
-
-        self.__ltfields.add_field_slices(options.fieldslices)
-        self.__ltfields.add_layout_hyperslabs(
-            options.offsets, options.blocks,
-            options.counts, options.strides)
-        self.__ltfields.add_layout_slices(options.slices)
-
-        self.__dtype = options.dtype
         shape = options.shape
         if shape.startswith("[") and shape.endswith("]"):
             shape = shape[1:-1]
         shape = splitcoords(shape)
         self.__shape = shape[0] if shape else []
+        self.__shapes = splitcoords(options.shapes)
+        if self.__shape:
+            for si, sh in enumerate(self.__shapes):
+                changed = False
+                lsh = list(sh)
+                for di, dm in enumerate(lsh):
+                    if dm is None:
+                        lsh[di] = self.__shape[di]
+                        changed = True
+                if changed:
+                    self.__shapes[si] = tuple(lsh)
+        self.__dtype = options.dtype
+
         self.__maxshape = None
         self.__fillvalue = options.fillvalue
 
@@ -452,6 +566,25 @@ class VirtualDataset(object):
         self.__nexuspath = None
         self.__nexusfilename, self.__nexuspath = \
             nexusfilepath.split(":/")
+
+        self.__ltfields = TargetFieldsLayout(
+            options.targetfields,
+            options.targetshapes,
+            self.__shapes,
+            options.separator
+        )
+        self.__ltfields.add_target_hyperslabs(
+            options.targetoffsets, options.targetblocks,
+            options.targetcounts, options.targetstrides)
+
+        if options.targetslices:
+            self.__ltfields.add_target_slices(options.targetslices)
+
+        self.__ltfields.add_layout_hyperslabs(
+            options.offsets, options.blocks,
+            options.counts, options.strides)
+        if options.slices:
+            self.__ltfields.add_layout_slices(options.slices)
 
         if writer and writer.lower() in WRITERS.keys():
             self.__wrmodule = WRITERS[writer.lower()]
@@ -491,7 +624,6 @@ class VirtualDataset(object):
     def create(self):
         """ creates VDS
         """
-
         self._createtmpfile()
         path = self.__nexuspath
         try:
@@ -516,19 +648,29 @@ class VirtualDataset(object):
                             parent = parent.create_group(gr, tgr)
                         else:
                             parent = None
-
             filewriter.module = self.__wrmodule
             layout = filewriter.virtual_field_layout(
                 self.__shape, self.__dtype, self.__maxshape, parent)
             for flm in self.__ltfields:
-                efield = filewriter.external_field(
-                    flm.field.filename, flm.field.path, flm.field.shape,
-                    flm.field.maxshape, parent=parent)
-                layout.add(flm.hyperslab, efield, flm.field.hyperslab)
+                efield = filewriter.target_field_view(
+                    flm.target.filename, flm.target.path,
+                    flm.target.shape or flm.shape,
+                    flm.target.maxshape, parent=parent)
+                layout.add(flm.hyperslab, efield, flm.target.hyperslab,
+                           flm.shape)
+                if parent:
+                    print("vds: target %s://%s %s at %s/%s" %
+                          (flm.target.filename, flm.target.path,
+                           flm.target.shape, parent.path, fieldname))
+                else:
+                    print("vds: target %s://%s %s at %s/%s" %
+                          (flm.target.filename, flm.target.path,
+                           flm.target.shape, path, fieldname))
             if not self.__testmode:
-                fd = parent.create_virtual_field(fieldname, layout,
-                                                 self.__fillvalue or 0)
+                fillvalue = pTc[_tostr(self.__dtype)](self.__fillvalue or 0)
+                fd = parent.create_virtual_field(fieldname, layout, fillvalue)
                 fd.close()
+
             if self.__storeold:
                 self._storeoldfile()
             shutil.move(self.__tempfilename, self.__nexusfilename)
@@ -721,6 +863,17 @@ class Collector(object):
             dtype = None
             shape = None
             idata = None
+            # filter fabio bugs
+            import warnings
+            warnings.filterwarnings(
+                "ignore", message="numpy.dtype size changed")
+            warnings.filterwarnings(
+                "ignore", message="numpy.ufunc size changed")
+            warnings.filterwarnings(
+                "ignore",
+                message="can't resolve package from __spec__ "
+                "or __package__,")
+
             image = fabio.open(filename)
             if image:
                 idata = image.data[...]
@@ -729,6 +882,7 @@ class Collector(object):
                 return idata, dtype, shape
             else:
                 raise Exception("Cannot open a file %s" % filename)
+            sys.stderr.write("L3\n")
         except Exception:
             if not self.__skipmissing:
                 raise Exception("Cannot open a file %s" % filename)
@@ -1079,11 +1233,46 @@ class VDS(Runner):
     description = "create a virual dataset in the master file"
     #: (:obj:`str`) command epilog
     epilog = "" \
-        + " examples:\n" \
+        + " examples:\n\n" \
+        + "       nxscollect vds " \
+        + "scan_234.nxs://entry/instrument/eiger/data " \
+        + "--target-fields 'eiger_%05d.nxs://entry/data/data:1:10'" \
+        + " --shape '1000,2048,1024' " \
+        + "--shapes '100,,:100,,:100,,:100,,:100,,:100,,:100,," \
+        + ":100,,:100,,:100,,'  " \
+        + " --offsets '0,,:100,,:200,,:300,,:400,,:500,," \
+        + ":600,,:700,,:800,,:900,,' \n\n" \
+        + "\n" \
+        + "           - creates VDS (shape [1000,2048,1024]) of" \
+        " ten nexus files (shape [100,2048,1024])" \
+        + " merged in their first dimension\n" \
+        + "\n\n\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/lambda/data " \
-        + "--external-fields 'lambda_%05d.nxs://entry/data/data:0:3'" \
-        + " --offset ',,;,256,;,512,' \n\n" \
+        + "--target-fields 'lambda_%05d.nxs://entry/data/data:0:2'" \
+        + " --shape '100,300,762' --shapes ',,250:,,250:,,250'  " \
+        + " --offsets ',,:,,256:,,512'  --counts 'U,,:U,,:U,,' -f 1 \n\n" \
+        + "\n" \
+        + "           - creates VDS (shape [100,300,762]) of" \
+        " three nexus files (shape [100,300,250])" \
+        + " merged in their third dimension,\n" \
+        + "               separated with a 6 pixel gap of 1 values" \
+        + " and unlimited first dimension\n" \
+        + "\n\n\n" \
+        + "       nxscollect vds " \
+        + "scan_234.nxs://entry/instrument/percival/data " \
+        + "--target-fields 'percival_%05d.nxs://entry/data/data:1:4'" \
+        + " --shape '4000,1600,2000' " \
+        + "--shapes '1000,,:1000,,:1000,,:1000,,'  " \
+        + " --offsets '0,,:1,,:2,,:3,,'  --counts 'U,,:U,,:U,,:U,,'" \
+        + " --strides '4,,:4,,:4,,:4,,' \n\n" \
+        + "\n" \
+        + "           - creates VDS (shape [1000,1600,2000]) of" \
+        " three nexus files (shape [1000,1600,2000])\n" \
+        + "                merged in their the first dimension " \
+        + "with interlaying frames\n" \
+        + "                and unlimited first dimension\n" \
+        + "\n\n" \
         + "\n"
 
     def create(self):
@@ -1091,9 +1280,9 @@ class VDS(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            "-e", "--external-fields", dest="externalfields",
+            "-e", "--target-fields", dest="targetfields",
             action="store", type=str, default=None,
-            help="exteranl fields with their NeXus file paths "
+            help="external fields with their NeXus file paths "
             "defined with a pattern or separated by ',' e.g."
             "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
         parser.add_argument(
@@ -1114,10 +1303,18 @@ class VDS(Runner):
             action="store", type=str, default=None,
             help="fill value for the gaps, default is 0")
         parser.add_argument(
+            "-p", "--shapes", dest="shapes",
+            action="store", type=str, default=None,
+            help="shapes in the VDS layout hyperslab "
+            "for the corresponding target fields  "
+            "with coordinates sepatated by ',' "
+            "and different fields separated by ';', ':' or spaces e.g."
+            "',,;,300,;,600,0' where an empty coordinate means 0")
+        parser.add_argument(
             "-o", "--offsets", dest="offsets",
             action="store", type=str, default=None,
             help="offsets in the VDS layout hyperslab "
-            "for the corresponding external fields  "
+            "for the corresponding target fields  "
             "with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             "',,;,300,;,600,0' where an empty coordinate means 0")
@@ -1125,7 +1322,7 @@ class VDS(Runner):
             "-b", "--blocks", dest="blocks",
             action="store", type=str, default=None,
             help="block sizes in the VDS layout hyperslab "
-            "for the corresponding external fields  "
+            "for the corresponding target fields  "
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',256,512;,256,512;,256,512' "
@@ -1134,7 +1331,7 @@ class VDS(Runner):
             "-c", "--counts", dest="counts",
             action="store", type=str, default=None,
             help="count numbers in the VDS layout hyperslab"
-            "for the corresponding external fields  "
+            "for the corresponding target fields  "
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',1,1;,1,1;,1,1' "
@@ -1143,7 +1340,7 @@ class VDS(Runner):
             "-d", "--strides", dest="strides",
             action="store", type=str, default=None,
             help="stride sizes in the VDS layout hyperslab"
-            "for the corresponding external fields  "
+            "for the corresponding target fields  "
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',,;,,;,,' "
@@ -1152,54 +1349,54 @@ class VDS(Runner):
             "-l", "--slices", dest="slices",
             action="store", type=str, default=None,
             help="mapping slices in the VDS layout"
-            "for the corresponding external fields  "
+            "for the corresponding target fields  "
             " with coordinates sepatated by ',' "
             "and different fields separated by ';'  or spaces e.g."
             " ':,0:50,: :,50:100,:' "
             "where U means span along the layout ")
         parser.add_argument(
-            "-S", "--field-shapes", dest="fieldshapes",
+            "-P", "--target-shapes", dest="targetshapes",
             action="store", type=str, default=None,
-            help="field shapes"
+            help="field shapes "
             "with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             "',,;,300,;,600,0'")
         parser.add_argument(
-            "-O", "--field-offsets", dest="fieldoffsets",
+            "-O", "--target-offsets", dest="targetoffsets",
             action="store", type=str, default=None,
-            help="offsets in the view hyperslab of external fields"
+            help="offsets in the view hyperslab of target fields"
             "with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             "',,;,300,;,600,0' where an empty coordinate means 0")
         parser.add_argument(
-            "-B", "--field-blocks", dest="fieldblocks",
+            "-B", "--target-blocks", dest="targetblocks",
             action="store", type=str, default=None,
-            help="block sizes in the view hyperslab of external fields"
+            help="block sizes in the view hyperslab of target fields"
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',256,512;,256,512;,256,512' "
             "where an empty coordinate means 1")
         parser.add_argument(
-            "-C", "--field-counts", dest="fieldcounts",
+            "-C", "--target-counts", dest="targetcounts",
             action="store", type=str, default=None,
-            help="count numbers in the view hyperslab of external fields"
+            help="count numbers in the view hyperslab of target fields"
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',1,1;,1,1;,1,1' "
             "where an empty coordinate means span along the layout")
         parser.add_argument(
-            "-D", "--field-strides", dest="fieldstrides",
+            "-D", "--target-strides", dest="targetstrides",
             action="store", type=str, default=None,
             help="stride sizes numbers in the view hyperslab "
-            "of external fields"
+            "of target fields"
             " with coordinates sepatated by ',' "
             "and different fields separated by ';', ':' or spaces e.g."
             " ',,;,,;,,' "
             "where an empty coordinate means 1")
         parser.add_argument(
-            "-L", "--field-slices", dest="fieldslices",
+            "-L", "--target-slices", dest="targetslices",
             action="store", type=str, default=None,
-            help="view slices of external fields"
+            help="view slices of target fields"
             " with coordinates sepatated by ',' "
             "and different fields separated by ';'  or spaces e.g."
             " ':,0:50,: :,0:50,:' "
@@ -1246,14 +1443,20 @@ class VDS(Runner):
             print("")
             sys.exit(0)
 
-        if options.externalfields is None:
-            sys.stderr.write("nxscollect: external fields are missing\n")
+        if options.targetfields is None:
+            sys.stderr.write("nxscollect: target fields are missing\n")
             parser.print_help()
             print("")
             sys.exit(0)
 
         if options.shape is None:
             sys.stderr.write("nxscollect: shape is missing\n")
+            parser.print_help()
+            print("")
+            sys.exit(0)
+
+        if options.shapes is None:
+            sys.stderr.write("nxscollect: shapes is missing\n")
             parser.print_help()
             print("")
             sys.exit(0)
@@ -1569,7 +1772,7 @@ def main():
     parser.cmdrunners = [
         ('append', Execute),
         ('link', Link),
-        # ('vds', VDS)
+        ('vds', VDS)
     ]
     runners = parser.createSubParsers()
 
