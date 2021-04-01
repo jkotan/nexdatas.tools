@@ -337,6 +337,7 @@ class FTHyperslab(object):
         :returns: if they are not equal
         :rtype: :obj:`bool`
         """
+        return not self.__eq__(other)
 
     def __len__(self):
         """ dimension length of hyperslab
