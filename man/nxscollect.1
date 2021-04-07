@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Feb 22, 2021" "3.1" "NXSTools"
+.TH "NXSCOLLECT" "1" "Apr 07, 2021" "3.2" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -66,7 +66,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
@@ -75,18 +75,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by ‘,’ e.g.’scan_%05d.tif:0:100’
+by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: ‘,’)
+input data files separator (default: \(aq,\(aq)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-‘uint8’
+\(aquint8\(aq
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-‘[4096,2048]’
+\(aq[4096,2048]\(aq
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -174,6 +174,171 @@ use h5cpp module as a nexus reader
 nxscollect link scan_234.nxs://entry/instrument/lambda \-\-name data \-\-target lambda.nxs://entry/data/data
 
 nxscollect link scan_123.nxs://entry:NXentry/instrument/eiger:NXdetector  \-\-target eiger.nxs://entry/data/data
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH SYNOPSIS FOR NXSCOLLECT VDS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscollect vds [\-h] [\-e TARGETFIELDS] [\-\-separator SEPARATOR]
+            [\-t DTYPE] [\-s SHAPE] [\-f FILLVALUE] [\-p SHAPES]
+            [\-o OFFSETS] [\-b BLOCKS] [\-c COUNTS] [\-d STRIDES]
+            [\-l SLICES] [\-P TARGETSHAPES] [\-O TARGETOFFSETS]
+            [\-B TARGETBLOCKS] [\-C TARGETCOUNTS] [\-D TARGETSTRIDES]
+            [\-L TARGETSLICES] [\-r] [\-\-test] [\-\-h5cpp] [\-\-h5py]
+            [nexus_file_path_field]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+create a virual dataset in the master file
+.sp
+nexus_file_path_field    nexus files with the nexus directory and a field name  to create the VDS field
+.sp
+Options:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-e \ TARGETFIELDS\fP,\fB \ \-\-target\-fields \ TARGETFIELDS
+external fields with their NeXus file paths defined
+with a pattern or separated by \(aq,\(aq
+e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
+.TP
+.BI \-\-separator \ SEPARATOR
+input data files separator (default: \(aq,\(aq)
+.TP
+.BI \-t \ DTYPE\fP,\fB \ \-\-dtype \ DTYPE
+datatype of the VDS field, e.g. \(aquint8\(aq
+.TP
+.BI \-s \ SHAPE\fP,\fB \ \-\-shape \ SHAPE
+shape of the VDS field, e.g. \(aq[U,4096,2048]\(aq or
+U,4096,2048 where U means span along the field\(aq
+.TP
+.BI \-f \ FILLVALUE\fP,\fB \ \-\-fill\-value \ FILLVALUE
+fill value for the gaps, default is 0
+.TP
+.BI \-p \ SHAPES\fP,\fB \ \-\-shapes \ SHAPES
+shapes in the VDS layout hyperslab for the
+corresponding target fields with coordinates sepatated
+by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
+spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+means 0
+.TP
+.BI \-o \ OFFSETS\fP,\fB \ \-\-offsets \ OFFSETS
+offsets in the VDS layout hyperslab for the
+corresponding target fields with coordinates sepatated
+by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
+spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+means 0
+.TP
+.BI \-b \ BLOCKS\fP,\fB \ \-\-blocks \ BLOCKS
+block sizes in the VDS layout hyperslab for the
+corresponding target fields with coordinates sepatated
+by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
+spaces e.g. \(aq,256,512;,256,512;,256,512\(aq where an
+empty coordinate means 1
+.TP
+.BI \-c \ COUNTS\fP,\fB \ \-\-counts \ COUNTS
+count numbers in the VDS layout hyperslabfor the
+corresponding target fields with coordinates sepatated
+by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
+spaces e.g. \(aq,1,1;,1,1;,1,1\(aq where an empty coordinate
+means span along the layout
+.TP
+.BI \-d \ STRIDES\fP,\fB \ \-\-strides \ STRIDES
+stride sizes in the VDS layout hyperslabfor the
+corresponding target fields with coordinates sepatated
+by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
+spaces e.g. \(aq,,;,,;,,\(aq where an empty coordinate means
+1
+.TP
+.BI \-l \ SLICES\fP,\fB \ \-\-slices \ SLICES
+mapping slices in the VDS layoutfor the corresponding
+target fields with coordinates sepatated by \(aq,\(aq and
+different fields separated by \(aq;\(aq or spaces e.g.
+\(aq:,0:50,: :,50:100,:\(aq where U means span along the
+layout
+.TP
+.BI \-P \ TARGETSHAPES\fP,\fB \ \-\-target\-shapes \ TARGETSHAPES
+field shapes with coordinates sepatated by \(aq,\(aq and
+different fields separated by \(aq;\(aq, \(aq:\(aq or spaces
+e.g.\(aq,,;,300,;,600,0\(aq
+.TP
+.BI \-O \ TARGETOFFSETS\fP,\fB \ \-\-target\-offsets \ TARGETOFFSETS
+offsets in the view hyperslab of target fieldswith
+coordinates sepatated by \(aq,\(aq and different fields
+separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.\(aq,,;,300,;,600,0\(aq
+where an empty coordinate means 0
+.TP
+.BI \-B \ TARGETBLOCKS\fP,\fB \ \-\-target\-blocks \ TARGETBLOCKS
+block sizes in the view hyperslab of target fields
+with coordinates sepatated by \(aq,\(aq and different fields
+separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.
+\(aq,256,512;,256,512;,256,512\(aq where an empty coordinate
+means 1
+.TP
+.BI \-C \ TARGETCOUNTS\fP,\fB \ \-\-target\-counts \ TARGETCOUNTS
+count numbers in the view hyperslab of target fields
+with coordinates sepatated by \(aq,\(aq and different fields
+separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,1,1;,1,1;,1,1\(aq
+where an empty coordinate means span along the layout
+.TP
+.BI \-D \ TARGETSTRIDES\fP,\fB \ \-\-target\-strides \ TARGETSTRIDES
+stride sizes numbers in the view hyperslab of target
+fields with coordinates sepatated by \(aq,\(aq and different
+fields separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,,;,,;,,\(aq
+where an empty coordinate means 1
+.TP
+.BI \-L \ TARGETSLICES\fP,\fB \ \-\-target\-slices \ TARGETSLICES
+view slices of target fields with coordinates
+sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
+or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
+along the layout
+.TP
+.B \-r\fP,\fB  \-\-replace\-nexus\-file
+if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension
+.TP
+.B \-\-test
+execute in the test mode
+.TP
+.B \-\-h5cpp
+use h5cpp module as a nexus reader
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader/writer
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.SH EXAMPLES OF NXSCOLLECT VDS
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscollect vds scan_234.nxs://entry/instrument/eiger/data \-\-target\-fields \(aqeiger_%05d.nxs://entry/data/data:1:10\(aq \-\-shape \(aq1000,2048,1024\(aq \-\-shapes \(aq100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,\(aq   \-\-offsets \(aq0,,:100,,:200,,:300,,:400,,:500,,:600,,:700,,:800,,:900,,\(aq
+
+    \- creates VDS (shape [1000,2048,1024]) of ten nexus files (shape [100,2048,1024]) merged in their first dimension
+
+nxscollect vds scan_234.nxs://entry/instrument/lambda/data \-\-target\-fields \(aqlambda_%05d.nxs://entry/data/data:0:2\(aq \-\-shape \(aq100,300,762\(aq \-\-shapes \(aq,,250:,,250:,,250\(aq   \-\-offsets \(aq,,:,,256:,,512\(aq  \-\-counts \(aqU,,:U,,:U,,\(aq \-f 1
+
+    \- creates VDS (shape [100,300,762]) of three nexus files (shape [100,300,250]) merged in their third dimension,
+        separated with a 6 pixel gap of 1 values and unlimited first dimension
+
+nxscollect vds scan_234.nxs://entry/instrument/percival/data \-\-target\-fields \(aqpercival_%05d.nxs://entry/data/data:1:4\(aq \-\-shape \(aq4000,1600,2000\(aq \-\-shapes \(aq1000,,:1000,,:1000,,:1000,,\(aq   \-\-offsets \(aq0,,:1,,:2,,:3,,\(aq  \-\-counts \(aqU,,:U,,:U,,:U,,\(aq \-\-strides \(aq4,,:4,,:4,,:4,,\(aq
+
+    \- creates VDS (shape [1000,1600,2000]) of three nexus files (shape [1000,1600,2000])
+         merged in their the first dimension with interlaying frames
+         and unlimited first dimension
 .ft P
 .fi
 .UNINDENT
