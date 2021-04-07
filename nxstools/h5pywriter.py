@@ -263,6 +263,15 @@ def is_unlimited_vds_supported():
     return h5ver >= 3000
 
 
+def is_unlimited_vds_supported():
+    """ provides if unlimited vds are supported
+
+    :retruns: if unlimited vds are supported
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 3000
+
+
 def unlimited(parent=None):
     """ return dataspace UNLIMITED variable for the current writer module
 
