@@ -254,6 +254,7 @@ def is_mbs_supported():
     """
     return h5ver >= 3000
 
+
 def is_unlimited_vds_supported():
     """ provides if unlimited vds are supported
 
@@ -263,10 +264,10 @@ def is_unlimited_vds_supported():
     return h5ver >= 3000
 
 
-def is_unlimited_vds_supported():
-    """ provides if unlimited vds are supported
+def is_strings_as_bytes():
+    """ provides if string read to bytes
 
-    :retruns: if unlimited vds are supported
+    :retruns: if string read to bytes
     :rtype: :obj:`bool`
     """
     return h5ver >= 3000
@@ -898,7 +899,7 @@ class H5PYField(filewriter.FTField):
         fl = self._h5object[...]
         if hasattr(fl, "decode") and not isinstance(fl, unicode):
             fl = fl.decode(encoding="utf-8")
-        if h5ver >= 3000 and hasattr(fl, "astype") and \
+        if is_strings_as_bytes() and hasattr(fl, "astype") and \
            self.dtype in ['string', b'string']:
             try:
                 fl = fl.astype('str')
@@ -948,7 +949,7 @@ class H5PYField(filewriter.FTField):
         fl = self._h5object.__getitem__(t)
         if hasattr(fl, "decode") and not isinstance(fl, unicode):
             fl = fl.decode(encoding="utf-8")
-        if h5ver >= 3000 and hasattr(fl, "astype") and \
+        if is_strings_as_bytes() and hasattr(fl, "astype") and \
            self.dtype in ['string', b'string']:
             try:
                 fl = fl.astype('str')
@@ -1263,8 +1264,11 @@ class H5PYAttributeManager(filewriter.FTAttributeManager):
             if isinstance(shape, list):
                 shape = tuple(shape)
             if dtype in ['string', b'string']:
-                etype = 'str'
                 dtype = h5py.special_dtype(vlen=unicode)
+                if is_strings_as_bytes():
+                    etype = 'str'
+                else:
+                    etype = dtype
                 self._h5object.create(
                     name, np.empty(shape, dtype=etype),
                     shape=shape, dtype=nptype(dtype))
