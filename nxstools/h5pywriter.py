@@ -264,6 +264,15 @@ def is_unlimited_vds_supported():
     return h5ver >= 3000
 
 
+def is_strings_as_bytes():
+    """ provides if string read to bytes
+
+    :retruns: if string read to bytes
+    :rtype: :obj:`bool`
+    """
+    return h5ver >= 3000
+
+
 def unlimited(parent=None):
     """ return dataspace UNLIMITED variable for the current writer module
 
@@ -426,7 +435,7 @@ def target_field_view(filename, fieldpath, shape,
     return H5PYTargetFieldView(vs, tuple(shape or []))
 
 
-def virtual_field_layout(shape, dtype=None, maxshape=None):
+def virtual_field_layout(shape, dtype, maxshape=None):
     """ creates a virtual field layout for a VDS file
 
     :param shape: shape
@@ -711,7 +720,6 @@ class H5PYGroup(filewriter.FTGroup):
         """
         if type_code in ['string', b'string']:
             type_code = h5py.special_dtype(vlen=unicode)
-            # type_code = h5py.special_dtype(vlen=unicode)
             # type_code = h5py.special_dtype(vlen=bytes)
         if type_code == h5py.special_dtype(vlen=unicode) and \
            shape is None and chunk is None:
@@ -890,9 +898,15 @@ class H5PYField(filewriter.FTField):
         """
         fl = self._h5object[...]
         if hasattr(fl, "decode") and not isinstance(fl, unicode):
-            return fl.decode(encoding="utf-8")
-        else:
-            return fl
+            fl = fl.decode(encoding="utf-8")
+        if is_strings_as_bytes() and hasattr(fl, "astype") and \
+           self.dtype in ['string', b'string']:
+            try:
+                fl = fl.astype('str')
+            except Exception:
+                # print(str(e))
+                pass
+        return fl
 
     def write(self, o):
         """ write the field value
@@ -934,9 +948,15 @@ class H5PYField(filewriter.FTField):
         """
         fl = self._h5object.__getitem__(t)
         if hasattr(fl, "decode") and not isinstance(fl, unicode):
-            return fl.decode(encoding="utf-8")
-        else:
-            return fl
+            fl = fl.decode(encoding="utf-8")
+        if is_strings_as_bytes() and hasattr(fl, "astype") and \
+           self.dtype in ['string', b'string']:
+            try:
+                fl = fl.astype('str')
+            except Exception:
+                # print(str(e))
+                pass
+        return fl
 
     @property
     def is_valid(self):
@@ -1245,12 +1265,17 @@ class H5PYAttributeManager(filewriter.FTAttributeManager):
                 shape = tuple(shape)
             if dtype in ['string', b'string']:
                 dtype = h5py.special_dtype(vlen=unicode)
+                if is_strings_as_bytes():
+                    etype = 'str'
+                else:
+                    etype = dtype
                 self._h5object.create(
-                    name, np.empty(shape, dtype=dtype),
-                    shape, nptype(dtype))
+                    name, np.empty(shape, dtype=etype),
+                    shape=shape, dtype=nptype(dtype))
             else:
                 self._h5object.create(
-                    name, np.zeros(shape, dtype=dtype), shape, dtype)
+                    name, np.zeros(shape, dtype=dtype),
+                    shape, dtype)
         else:
             if dtype in ['string', b'string']:
                 dtype = h5py.special_dtype(vlen=unicode)

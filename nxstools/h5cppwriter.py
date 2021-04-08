@@ -507,7 +507,7 @@ def target_field_view(filename, fieldpath, shape,
         filename, fieldpath, shape, dtype, maxshape)
 
 
-def virtual_field_layout(shape, dtype=None, maxshape=None):
+def virtual_field_layout(shape, dtype, maxshape=None):
     """ creates a virtual field layout for a VDS file
 
     :param shape: shape

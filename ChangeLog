@@ -1,3 +1,8 @@
+2021-04-07 Jan Kotanski <jankotan@gmail.com>
+	* add support got h5py >= 3.0.0
+	* add nxscollect vds command line tool
+	* tagged as v3.2.0
+
 2021-02-25 Jan Kotanski <jankotan@gmail.com>
 	* avoid caching tango.Except and tango.DevError
 	* add waitforproc parameter for waitServer[Not]Running()
