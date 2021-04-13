@@ -1434,8 +1434,8 @@ class CompareOnlineDS(object):
                 dv.sardanahostname = self._getChildText(
                     device, "sardanahostname")
                 if name not in dct.keys():
-                    dct[name] = []
-                dct[name].append(dv)
+                    dct[dv.sardananame or name] = []
+                dct[dv.sardananame or name].append(dv)
         return dct
 
     def compare(self):
