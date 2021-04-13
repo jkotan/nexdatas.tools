@@ -233,10 +233,12 @@ class NXSCreateCompareTest(unittest.TestCase):
                 self.assertEqual(lines[13], "")
                 self.assertTrue(
                     lines[2].startswith(
-                        "Additional devices in file1 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname))
                 self.assertTrue(
                     lines[6].startswith(
-                        "Additional devices in file2 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname))
                 self.assertTrue(
                     lines[10].startswith(
                         "Diffrences in the common part:"))
@@ -391,10 +393,12 @@ class NXSCreateCompareTest(unittest.TestCase):
                 self.assertTrue(lines[0].startswith("Comparing:"))
                 self.assertTrue(
                     lines[1].startswith(
-                        "Additional devices in file1 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname1))
                 self.assertTrue(
                     lines[3].startswith(
-                        "Additional devices in file2 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname2))
                 self.assertTrue(
                     lines[5].startswith(
                         "Diffrences in the common part:"))
@@ -403,12 +407,17 @@ class NXSCreateCompareTest(unittest.TestCase):
                 second = eval(lines[4])
                 common = eval(lines[6])
                 self.myAssertDict(
-                    first, {'my_test_vfcadc': [None]})
+                    first,
+                    {'mot01': ['my_exp_mot01'],
+                     'my_test_vfcadc': ['my_test_vfcadc']}
+                )
                 self.myAssertDict(
                     second,
-                    {'my_test_tip850adc': [None],
-                     'my_test_tip830': [None],
-                     'my_test_tip850dac': [None]})
+                    {'mot_01': ['my_exp_mot01'],
+                     'my_test_tip830': ['my_test_tip830'],
+                     'my_test_tip850adc': ['my_test_tip850adc'],
+                     'my_test_tip850dac': ['my_test_tip850dac']}
+                )
                 self.myAssertDict(
                     common,
                     {
@@ -421,9 +430,6 @@ class NXSCreateCompareTest(unittest.TestCase):
                                 ('p09/motor/exp.04', 'p09/motor/exp.02')
                             }
                         ],
-                        'my_exp_mot01': [
-                            {'sardananame': ('mot01', 'mot_01')}
-                        ]
                     }
                 )
 
@@ -491,7 +497,7 @@ class NXSCreateCompareTest(unittest.TestCase):
         xml2 = """<?xml version="1.0"?>
 <hw>
 <device>
- <name>my_exp_mot01</name>
+ <name>my_exp_mot_01</name>
  <type>stepping_motor</type>
  <module>oms58</module>
  <device>p09/Motor/exp.01</device>
@@ -500,7 +506,7 @@ class NXSCreateCompareTest(unittest.TestCase):
  <controller>oms58_exp</controller>
  <channel>1</channel>
  <rootdevicename>p09/motor/exp</rootdevicename>
- <sardananame>mot_01</sardananame>
+ <sardananame>mot01</sardananame>
 </device>
 <device>
  <name>my_exp_mot02</name>
@@ -572,10 +578,12 @@ class NXSCreateCompareTest(unittest.TestCase):
                 self.assertTrue(lines[0].startswith("Comparing:"))
                 self.assertTrue(
                     lines[1].startswith(
-                        "Additional devices in file1 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname1))
                 self.assertTrue(
                     lines[3].startswith(
-                        "Additional devices in file2 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname2))
                 self.assertTrue(
                     lines[5].startswith(
                         "Diffrences in the common part:"))
@@ -584,17 +592,18 @@ class NXSCreateCompareTest(unittest.TestCase):
                 second = eval(lines[4])
                 common = eval(lines[6])
                 self.myAssertDict(
-                    first, {'my_test_vfcadc': [None]})
+                    first,
+                    {'my_test_vfcadc': ['my_test_vfcadc']})
                 self.myAssertDict(
                     second,
-                    {'my_test_tip850adc': [None],
-                     'my_test_tip830': [None],
-                     'my_test_tip850dac': [None]})
+                    {'my_test_tip830': ['my_test_tip830'],
+                     'my_test_tip850adc': ['my_test_tip850adc'],
+                     'my_test_tip850dac': ['my_test_tip850dac']})
                 self.myAssertDict(
                     common,
-                    {'my_exp_mot01':
-                     [{'sardananame': ('mot01', 'mot_01'),
-                       'tdevice': ('P09/motor/exp.01', 'p09/Motor/exp.01')}],
+                    {'mot01': [{'name': ('my_exp_mot01', 'my_exp_mot_01'),
+                                'tdevice':
+                                ('P09/motor/exp.01', 'p09/Motor/exp.01')}],
                      'my_exp_mot02':
                      [{'tdevice': ('P09/motor/exp.04', 'p09/motor/Exp.02')}],
                      'my_exp_mot03':
@@ -751,10 +760,12 @@ class NXSCreateCompareTest(unittest.TestCase):
                 self.assertTrue(lines[0].startswith("Comparing:"))
                 self.assertTrue(
                     lines[1].startswith(
-                        "Additional devices in file1 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname1))
                 self.assertTrue(
                     lines[3].startswith(
-                        "Additional devices in file2 {name: sardananame} :"))
+                        "Additional devices in '%s' {alias: [name]} :"
+                        % fname2))
                 self.assertTrue(
                     lines[5].startswith(
                         "Diffrences in the common part:"))
@@ -764,14 +775,16 @@ class NXSCreateCompareTest(unittest.TestCase):
                 common = eval(lines[6])
                 self.myAssertDict(
                     first,
-                    {'My_exp_mot01': ['mot01'], 'my_test_vfcadc': [None]}
+                    {'mot01': ['My_exp_mot01'],
+                     'my_test_vfcadc': ['my_test_vfcadc']}
                 )
                 self.myAssertDict(
                     second,
-                    {'My_test_tip850adc': [None],
-                     'my_exp_mot01': ['mot_01'],
-                     'my_test_tip830': [None],
-                     'my_test_tip850dac': [None]})
+                    {'My_test_tip850adc': ['My_test_tip850adc'],
+                     'mot_01': ['my_exp_mot01'],
+                     'my_test_tip830': ['my_test_tip830'],
+                     'my_test_tip850dac': ['my_test_tip850dac']}
+                    )
                 self.myAssertDict(
                     common,
                     {'my_exp_mot02':

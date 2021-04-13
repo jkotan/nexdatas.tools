@@ -1295,11 +1295,26 @@ class ClientDS(Runner):
             sys.exit(255)
 
 
+def _supportoldcommands():
+    """ replace the old command names to the new ones
+    """
+
+    oldnew = {
+        'compare': 'cmp_onlinexml',
+    }
+
+    if sys.argv and len(sys.argv) > 1:
+        if sys.argv[1] in oldnew.keys():
+            sys.argv[1] = oldnew[sys.argv[1]]
+
+
 def main():
     """ the main program function
     """
     description = " Command-line tool for creating NXSConfigServer" \
                   + " configuration of Nexus Files"
+
+    # _supportoldcommands()
 
     epilog = 'For more help:\n  nxscreate <sub-command> -h'
     parser = NXSArgParser(

@@ -1446,13 +1446,13 @@ class CompareOnlineDS(object):
         common = sorted(set(dct1.keys()) & set(dct2.keys()))
         d1md2 = sorted(set(dct1.keys()) - set(dct2.keys()))
         d2md1 = sorted(set(dct2.keys()) - set(dct1.keys()))
-        addd1 = dict((str(k), [(str(dv.sardananame)
-                                if dv.sardananame else dv.sardananame)
-                               for dv in dct1[k]])
+        addd1 = dict((str(k),
+                      [(str(dv.name) if dv.name else dv.name)
+                       for dv in dct1[k]])
                      for k in d1md2)
-        addd2 = dict((str(k), [(str(dv.sardananame)
-                                if dv.sardananame else dv.sardananame)
-                               for dv in dct2[k]])
+        addd2 = dict((str(k),
+                      [(str(dv.name) if dv.name else dv.name)
+                       for dv in dct2[k]])
                      for k in d2md1)
         diff = {}
         for name in common:
@@ -1474,15 +1474,13 @@ class CompareOnlineDS(object):
                 for i1, dv in enumerate(dct1[name]):
                     if l1[i1]:
                         addd1[str(name)].append(
-                            str(dv.sardananame)
-                            if dv.sardananame else dv.sardananame)
+                            (str(dv.name) if dv.name else dv.name))
             elif True not in l1 and True in l2:
                 addd2[str(name)] = []
                 for i2, dv in enumerate(dct2[name]):
                     if l2[i2]:
                         addd2[str(name)].append(
-                            str(dv.sardananame)
-                            if dv.sardananame else dv.sardananame)
+                            (str(dv.name) if dv.name else dv.name))
             if True in l1 or True in l2:
                 diff[str(name)] = []
                 for i1, dv1 in enumerate(dct1[name]):
@@ -1492,9 +1490,11 @@ class CompareOnlineDS(object):
 
         if self._printouts:
             import pprint
-            print("Additional devices in file1 {name: sardananame} :\n")
+            print("Additional devices in '%s' {alias: [name]} :\n"
+                  % self.args[0])
             pprint.pprint(addd1)
-            print("\nAdditional devices in file2 {name: sardananame} :\n")
+            print("\nAdditional devices in '%s' {alias: [name]} :\n"
+                  % self.args[1])
             pprint.pprint(addd2)
             print("\nDiffrences in the common part:\n")
             pprint.pprint(diff)
