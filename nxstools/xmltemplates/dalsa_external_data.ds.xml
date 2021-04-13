@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_external_data">
+    <result name="result">
+ds.result = ""
+try:
+    filestartnum = int(ds.$(name)_filestartnum)
+except Exception:
+    filestartnum = 0
+
+if ds.$(name)_fileprefix  and ds.$(name)_filepostfix:
+    postfix = str(ds.$(name)_filepostfix)
+    if not postfix.startswith("."):
+        postfix = "." + postfix
+    if postfix in [".nxs", ".nx"]:
+        prefix = str(ds.$(name)_fileprefix)
+        if not prefix.endswith("_"):
+            prefix = prefix + "_"
+        if "$var.filename":
+            ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
+
+        ds.result += "$(name)/" + prefix + "%06i" % filestartnum + postfix + "://entry/$(__insname__)/detector"</result>
+ $datasources.$(name)_filedir
+ $datasources.$(name)_fileprefix
+ $datasources.$(name)_filepostfix
+ $datasources.$(name)_filestartnum
+ $datasources.$(name)_filesaving</datasource>
+</definition>
