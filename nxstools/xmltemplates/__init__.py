@@ -1466,6 +1466,9 @@ moduleTemplateFiles = {
     'tangovimba': ['tangovimba.xml',
                    'tangovimba_nxdata.ds.xml',
                    'tangovimba_external_data.ds.xml'],
+    'tangodalsa': ['tangodalsa.xml',
+                   'tangodalsa_nxdata.ds.xml',
+                   'tangodalsa_external_data.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_nxdata.ds.xml',
                  'lambda2m_m2_nxdata.ds.xml',
@@ -1696,5 +1699,16 @@ moduleMultiAttributes = {
         'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
         'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
+    ],
+    'tangodalsa': [
+        'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
+        'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
+        'FramesReceived', 'FrameRate', 'FramesPerNXFile', 'NXFileCompression',
+        'TurboMode', 'ImageEnc', 'ViewingMode',
+        'ThrashedBuffers', 'FramesToAcquire',
+        'AcquisitionFrameCount', 'AcquisitionFrameMode', 'ExtendedExposure',
+        'Height', 'LinearityEqualizer', 'NrExposedFrames', 'NrOffsetFrames',
+        'Offset', 'PixelFormat', 'ReadOutMode', 'Standby', 'SumScheme',
+        'TriggerMode', 'Width'
     ],
 }
