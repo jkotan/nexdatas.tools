@@ -1701,14 +1701,15 @@ moduleMultiAttributes = {
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
     ],
     'dalsa': [
-        'BinComment', 'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving',
-        'FileStartNum', 'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving', 'FileStartNum',
+        'TriggerMode', 'Width', 'Height', 'ExtendedExposure',
+        'BinComment',
+        'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
         'FramesReceived', 'FrameRate', 'FramesPerNXFile', 'NXFileCompression',
         'TurboMode', 'ImageEnc', 'ViewingMode',
         'ThrashedBuffers', 'FramesToAcquire',
-        'AcquisitionFrameCount', 'AcquisitionFrameMode', 'ExtendedExposure',
-        'Height', 'LinearityEqualizer', 'NrExposedFrames', 'NrOffsetFrames',
-        'Offset', 'PixelFormat', 'ReadOutMode', 'Standby', 'SumScheme',
-        'TriggerMode', 'Width'
+        'AcquisitionFrameCount', 'AcquisitionFrameMode',
+        'LinearityEqualizer', 'NrExposedFrames', 'NrOffsetFrames',
+        'Offset', 'PixelFormat', 'ReadOutMode', 'Standby', 'SumScheme'
     ],
 }

@@ -19,7 +19,7 @@ if ds.$(name)_fileprefix  and ds.$(name)_filepostfix:
         if "$var.filename":
             ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
 
-        ds.result += "$(name)/" + prefix + "%06i" % filestartnum + postfix + "://entry/$(__insname__)/detector"</result>
+        ds.result += "$(name)/" + prefix + "%06i" % filestartnum + postfix + "://entry/instrument/detector"</result>
  $datasources.$(name)_filedir
  $datasources.$(name)_fileprefix
  $datasources.$(name)_filepostfix

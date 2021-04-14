@@ -6,6 +6,16 @@
         <field type="NX_CHAR" name="layout">area<strategy mode="INIT"/>
         </field>
         <field type="NX_CHAR" name="description">$(name)</field>
+        <field units="s" type="NX_FLOAT64" name="count_time">
+          <strategy mode="FINAL"/>$datasources.$(name)_extendedexposure</field>
+        <group type="NXcollection" name="collection">
+          <field type="NX_INT16" name="trigger_mode">
+            <strategy mode="FINAL"/>$datasources.$(name)_triggermode</field>
+          <field type="NX_UINT64" name="width">
+            <strategy mode="FINAL"/>$datasources.$(name)_width</field>
+          <field type="NX_UINT64" name="height">
+            <strategy mode="FINAL"/>$datasources.$(name)_height</field>
+	</group>
         <group type="NXcollection" name="collection_extra">
           <field type="NX_BOOLEAN" name="file_saving">
             <strategy mode="FINAL"/>$datasources.$(name)_filesaving</field>

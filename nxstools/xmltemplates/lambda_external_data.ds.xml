@@ -17,9 +17,9 @@ if ds.$(name)_saveallimages:
                 spf = root.stepsperfile
                 cfid = root.currentfileid
     if spf > 0 and cfid > 0:
-        ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "_part%05d." % (cfid - 1) + str(ds.$(name)_filepostfix) + "://entry/$(__insname__)/detector"
+        ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "_part%05d." % (cfid - 1) + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"
     else:
-        ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + "://entry/$(__insname__)/detector"</result>
+        ds.result += "$(name)/" + str(ds.$(name)_savefilename) + "." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
  $datasources.$(name)_savefilename
  $datasources.$(name)_saveallimages
  $datasources.$(name)_framesperfile
