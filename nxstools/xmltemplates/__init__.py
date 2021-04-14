@@ -1708,7 +1708,7 @@ moduleMultiAttributes = {
         'FramesReceived', 'FrameRate', 'FramesPerNXFile', 'NXFileCompression',
         'TurboMode', 'ImageEnc', 'ViewingMode',
         'ThrashedBuffers', 'FramesToAcquire',
-        'AcquisitionFrameCount', 'AcquisitionFrameMode',
+        'AcquisitionFrameCount', 'AcquisitionMode', 'AcquisitionFrameMode',
         'LinearityEqualizer', 'NrExposedFrames', 'NrOffsetFrames',
         'Offset', 'PixelFormat', 'ReadOutMode', 'Standby', 'SumScheme'
     ],
