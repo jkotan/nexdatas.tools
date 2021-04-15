@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsxml &#8212; NXSTools 3.0.0 documentation</title>
+    <title>nxstools.nxsxml &#8212; NXSTools 3.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -58,6 +58,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-append">Examples of nxscollect append</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-link">Synopsis for nxscollect link</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-link">Examples of nxscollect link</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-vds">Synopsis for nxscollect vds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-vds">Examples of nxscollect vds</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsconfig.html">nxsconfig</a><ul>
@@ -920,9 +922,8 @@
 
 <span class="sd">        :brief: It opens XML file, calls prettyPrint and closes the XML file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-        <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="p">))</span>
-        <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+            <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prettyPrint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elem</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsxml.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>

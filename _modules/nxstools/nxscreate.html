@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreate &#8212; NXSTools 3.0.0 documentation</title>
+    <title>nxstools.nxscreate &#8212; NXSTools 3.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -58,6 +58,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-append">Examples of nxscollect append</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-link">Synopsis for nxscollect link</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-link">Examples of nxscollect link</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-vds">Synopsis for nxscollect vds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-vds">Examples of nxscollect vds</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsconfig.html">nxsconfig</a><ul>
@@ -1466,11 +1468,26 @@
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span></div></div>
 
 
+<span class="k">def</span> <span class="nf">_supportoldcommands</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; replace the old command names to the new ones</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">oldnew</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;compare&#39;</span><span class="p">:</span> <span class="s1">&#39;cmp_onlinexml&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">oldnew</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">oldnew</span><span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; the main program function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot; Command-line tool for creating NXSConfigServer&quot;</span> \
                   <span class="o">+</span> <span class="s2">&quot; configuration of Nexus Files&quot;</span>
+
+    <span class="c1"># _supportoldcommands()</span>
 
     <span class="n">epilog</span> <span class="o">=</span> <span class="s1">&#39;For more help:</span><span class="se">\n</span><span class="s1">  nxscreate &lt;sub-command&gt; -h&#39;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">NXSArgParser</span><span class="p">(</span>

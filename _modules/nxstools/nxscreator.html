@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.0.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.3.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.3</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -58,6 +58,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-append">Examples of nxscollect append</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-link">Synopsis for nxscollect link</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-link">Examples of nxscollect link</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#synopsis-for-nxscollect-vds">Synopsis for nxscollect vds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscollect.html#examples-of-nxscollect-vds">Examples of nxscollect vds</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsconfig.html">nxsconfig</a><ul>
@@ -1140,11 +1142,10 @@
                     <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+                    <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__createDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">clientlike</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;  create Device from name source and chtype</span>
@@ -1302,11 +1303,10 @@
                     <span class="n">storeDataSource</span><span class="p">(</span><span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+                    <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="OnlineDSCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineDSCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates datasource xmls of all online.xml simple devices</span>
@@ -1483,17 +1483,15 @@
                 <span class="n">storeComponent</span><span class="p">(</span><span class="n">cpname</span><span class="p">,</span> <span class="n">cpxml</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">mand</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">dsname</span><span class="p">,</span> <span class="n">dsxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.ds.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">dsname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+                    <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dsxml</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">cpxml</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">cpname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cpxml</span><span class="p">)</span>
-                <span class="n">myfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s%s</span><span class="s2">.xml&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">cpname</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+                    <span class="n">myfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cpxml</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_replaceName</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1609,8 +1607,8 @@
                 <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
                     <span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardanahostname&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">dct</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                    <span class="n">dct</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="ow">or</span> <span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">dct</span><span class="p">[</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="ow">or</span> <span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dct</span>
 
 <div class="viewcode-block" id="CompareOnlineDS.compare"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.CompareOnlineDS.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1621,13 +1619,13 @@
         <span class="n">common</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="n">d1md2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="n">d2md1</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dct2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dct1</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
-        <span class="n">addd1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                               <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct1</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+        <span class="n">addd1</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+                      <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct1</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
                      <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d1md2</span><span class="p">)</span>
-        <span class="n">addd2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                               <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct2</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+        <span class="n">addd2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span>
+                      <span class="p">[(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">dv</span> <span class="ow">in</span> <span class="n">dct2</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
                      <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">d2md1</span><span class="p">)</span>
         <span class="n">diff</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">common</span><span class="p">:</span>
@@ -1649,15 +1647,13 @@
                 <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">dv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
                     <span class="k">if</span> <span class="n">l1</span><span class="p">[</span><span class="n">i1</span><span class="p">]:</span>
                         <span class="n">addd1</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                            <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
             <span class="k">elif</span> <span class="kc">True</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">l1</span> <span class="ow">and</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
                 <span class="n">addd2</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i2</span><span class="p">,</span> <span class="n">dv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct2</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
                     <span class="k">if</span> <span class="n">l2</span><span class="p">[</span><span class="n">i2</span><span class="p">]:</span>
                         <span class="n">addd2</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span><span class="p">)</span>
+                            <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
             <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">l1</span> <span class="ow">or</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
                 <span class="n">diff</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i1</span><span class="p">,</span> <span class="n">dv1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dct1</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
@@ -1667,9 +1663,11 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_printouts</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">pprint</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Additional devices in file1 {name: sardananame} :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Additional devices in &#39;</span><span class="si">%s</span><span class="s2">&#39; {alias: [name]} :</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd1</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Additional devices in file2 {name: sardananame} :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Additional devices in &#39;</span><span class="si">%s</span><span class="s2">&#39; {alias: [name]} :</span><span class="se">\n</span><span class="s2">&quot;</span>
+                  <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">addd2</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Diffrences in the common part:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span></div></div>
