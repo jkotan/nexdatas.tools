@@ -1,6 +1,8 @@
-2021-04-14 Jan Kotanski <jankotan@gmail.com>
+2021-04-16 Jan Kotanski <jankotan@gmail.com>
 	* add checks for duplicated sardana names
 	* add dalsa template component
+	* fix instrument group names of nexus paths to external links
+	* add missing --dtype to 'nxscollect vds' examples
 	* tagged as v3.3.0
 
 2021-04-07 Jan Kotanski <jankotan@gmail.com>

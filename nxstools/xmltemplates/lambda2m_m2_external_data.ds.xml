@@ -6,7 +6,7 @@ ds.result = ""
 if ds.$(name)_saveallimages:
     if "$var.filename":
         ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
-    ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "_m2." + str(ds.$(name)_filepostfix) + "://entry/$(__insname__)/detector"</result>
+    ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "_m2." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
  $datasources.$(name)_saveallimages
  $datasources.$(name)_savefilename
  $datasources.$(name)_filepostfix</datasource>

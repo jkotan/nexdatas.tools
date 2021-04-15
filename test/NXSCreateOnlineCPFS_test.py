@@ -38,6 +38,7 @@ try:
 except ImportError:
     from . import nxsextrasp00
 
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -1576,11 +1577,11 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '        ds.result += "mylmbd/" + str('
                      'ds.mylmbd_savefilename) + "_part%05d." % (cfid - 1) '
                      '+ str(ds.mylmbd_filepostfix) + '
-                     '"://entry/myinstrument/detector"\n'
+                     '"://entry/instrument/detector"\n'
                      '    else:\n'
                      '        ds.result += "mylmbd/" + str('
                      'ds.mylmbd_savefilename) + "." + str('
-                     'ds.mylmbd_filepostfix) + "://entry/myinstrument/'
+                     'ds.mylmbd_filepostfix) + "://entry/instrument/'
                      'detector"</result>\n'
                      ' $datasources.mylmbd_savefilename\n'
                      ' $datasources.mylmbd_saveallimages\n'

@@ -1236,9 +1236,9 @@ class VDS(Runner):
         + " examples:\n\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/eiger/data " \
-        + "--target-fields 'eiger_%05d.nxs://entry/data/data:1:10'" \
-        + " --shape '1000,2048,1024' " \
-        + "--shapes '100,,:100,,:100,,:100,,:100,,:100,,:100,," \
+        + " --shape '1000,2048,1024' --dtype uint32 " \
+        + " --target-fields 'eiger_%05d.nxs://entry/data/data:1:10'" \
+        + " --shapes '100,,:100,,:100,,:100,,:100,,:100,,:100,," \
         + ":100,,:100,,:100,,'  " \
         + " --offsets '0,,:100,,:200,,:300,,:400,,:500,," \
         + ":600,,:700,,:800,,:900,,' \n\n" \
@@ -1249,8 +1249,9 @@ class VDS(Runner):
         + "\n\n\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/lambda/data " \
-        + "--target-fields 'lambda_%05d.nxs://entry/data/data:0:2'" \
-        + " --shape '100,300,762' --shapes ',,250:,,250:,,250'  " \
+        + " --shape '100,300,762' --dtype uint32 " \
+        + " --target-fields 'lambda_%05d.nxs://entry/data/data:0:2'" \
+        + " --shapes ',,250:,,250:,,250'  " \
         + " --offsets ',,:,,256:,,512'  --counts 'U,,:U,,:U,,' -f 1 \n\n" \
         + "\n" \
         + "           - creates VDS (shape [100,300,762]) of" \
@@ -1261,9 +1262,9 @@ class VDS(Runner):
         + "\n\n\n" \
         + "       nxscollect vds " \
         + "scan_234.nxs://entry/instrument/percival/data " \
-        + "--target-fields 'percival_%05d.nxs://entry/data/data:1:4'" \
-        + " --shape '4000,1600,2000' " \
-        + "--shapes '1000,,:1000,,:1000,,:1000,,'  " \
+        + " --shape '4000,1600,2000' --dtype int16 " \
+        + " --target-fields 'percival_%05d.nxs://entry/data/data:1:4'" \
+        + " --shapes '1000,,:1000,,:1000,,:1000,,'  " \
         + " --offsets '0,,:1,,:2,,:3,,'  --counts 'U,,:U,,:U,,:U,,'" \
         + " --strides '4,,:4,,:4,,:4,,' \n\n" \
         + "\n" \
@@ -1280,16 +1281,6 @@ class VDS(Runner):
         """
         parser = self._parser
         parser.add_argument(
-            "-e", "--target-fields", dest="targetfields",
-            action="store", type=str, default=None,
-            help="external fields with their NeXus file paths "
-            "defined with a pattern or separated by ',' e.g."
-            "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
-        parser.add_argument(
-            "--separator", dest="separator",
-            action="store", type=str, default=",",
-            help="input data files separator (default: ',')")
-        parser.add_argument(
             "-t", "--dtype", dest="dtype",
             action="store", type=str, default=None,
             help="datatype of the VDS field, e.g. 'uint8'")
@@ -1302,6 +1293,16 @@ class VDS(Runner):
             "-f", "--fill-value", dest="fillvalue",
             action="store", type=str, default=None,
             help="fill value for the gaps, default is 0")
+        parser.add_argument(
+            "-e", "--target-fields", dest="targetfields",
+            action="store", type=str, default=None,
+            help="external fields with their NeXus file paths "
+            "defined with a pattern or separated by ',' e.g."
+            "'scan_123/lambda_%%05d.nxs://entry/data/data:0:3'")
+        parser.add_argument(
+            "--separator", dest="separator",
+            action="store", type=str, default=",",
+            help="input data files separator (default: ',')")
         parser.add_argument(
             "-p", "--shapes", dest="shapes",
             action="store", type=str, default=None,
