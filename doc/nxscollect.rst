@@ -123,12 +123,6 @@ nexus_file_path_field    nexus files with the nexus directory and a field name  
 Options:
 
   -h, --help            show this help message and exit
-  -e TARGETFIELDS, --target-fields TARGETFIELDS
-                        external fields with their NeXus file paths defined
-                        with a pattern or separated by ','
-                        e.g.'scan_123/lambda_%05d.nxs://entry/data/data:0:3'
-  --separator SEPARATOR
-                        input data files separator (default: ',')
   -t DTYPE, --dtype DTYPE
                         datatype of the VDS field, e.g. 'uint8'
   -s SHAPE, --shape SHAPE
@@ -136,6 +130,12 @@ Options:
                         U,4096,2048 where U means span along the field'
   -f FILLVALUE, --fill-value FILLVALUE
                         fill value for the gaps, default is 0
+  -e TARGETFIELDS, --target-fields TARGETFIELDS
+                        external fields with their NeXus file paths defined
+                        with a pattern or separated by ','
+                        e.g.'scan_123/lambda_%05d.nxs://entry/data/data:0:3'
+  --separator SEPARATOR
+                        input data files separator (default: ',')
   -p SHAPES, --shapes SHAPES
                         shapes in the VDS layout hyperslab for the
                         corresponding target fields with coordinates sepatated
@@ -216,16 +216,16 @@ Examples of nxscollect vds
 
 .. code:: bash
 
-       nxscollect vds scan_234.nxs://entry/instrument/eiger/data --target-fields 'eiger_%05d.nxs://entry/data/data:1:10' --shape '1000,2048,1024' --shapes '100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,'   --offsets '0,,:100,,:200,,:300,,:400,,:500,,:600,,:700,,:800,,:900,,'
+       nxscollect vds scan_234.nxs://entry/instrument/eiger/data  --shape '1000,2048,1024' --dtype uint32 --target-fields 'eiger_%05d.nxs://entry/data/data:1:10' --shapes '100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,'   --offsets '0,,:100,,:200,,:300,,:400,,:500,,:600,,:700,,:800,,:900,,'
 
            - creates VDS (shape [1000,2048,1024]) of ten nexus files (shape [100,2048,1024]) merged in their first dimension
 
-       nxscollect vds scan_234.nxs://entry/instrument/lambda/data --target-fields 'lambda_%05d.nxs://entry/data/data:0:2' --shape '100,300,762' --shapes ',,250:,,250:,,250'   --offsets ',,:,,256:,,512'  --counts 'U,,:U,,:U,,' -f 1
+       nxscollect vds scan_234.nxs://entry/instrument/lambda/data  --shape '100,300,762'  --dtype uint32 --target-fields 'lambda_%05d.nxs://entry/data/data:0:2' --shapes ',,250:,,250:,,250'   --offsets ',,:,,256:,,512'  --counts 'U,,:U,,:U,,' -f 1
 
            - creates VDS (shape [100,300,762]) of three nexus files (shape [100,300,250]) merged in their third dimension,
                separated with a 6 pixel gap of 1 values and unlimited first dimension
 
-       nxscollect vds scan_234.nxs://entry/instrument/percival/data --target-fields 'percival_%05d.nxs://entry/data/data:1:4' --shape '4000,1600,2000' --shapes '1000,,:1000,,:1000,,:1000,,'   --offsets '0,,:1,,:2,,:3,,'  --counts 'U,,:U,,:U,,:U,,' --strides '4,,:4,,:4,,:4,,'
+       nxscollect vds scan_234.nxs://entry/instrument/percival/data  --shape '4000,1600,2000' --dtype int16 --target-fields 'percival_%05d.nxs://entry/data/data:1:4' --shapes '1000,,:1000,,:1000,,:1000,,'   --offsets '0,,:1,,:2,,:3,,'  --counts 'U,,:U,,:U,,:U,,' --strides '4,,:4,,:4,,:4,,'
 
            - creates VDS (shape [1000,1600,2000]) of three nexus files (shape [1000,1600,2000])
                 merged in their the first dimension with interlaying frames
