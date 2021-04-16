@@ -1616,7 +1616,10 @@ class OnlineCPCreator(CPCreator):
                                   "type not defined"
                                   % (dv.name, dv.module, dv.dtype))
                         continue
-                    module = self._getModuleName(dv)
+                    if self.options.cptype:
+                        module = self.options.cptype
+                    else:
+                        module = self._getModuleName(dv)
                     if module:
                         if module.lower() in \
                            self.xmlpackage.moduleMultiAttributes.keys():
