@@ -1,3 +1,7 @@
+2021-04-19 Jan Kotanski <jankotan@gmail.com>
+	* add --type option to nxscreate onlinecp
+	* tagged as v3.4.0
+
 2021-04-16 Jan Kotanski <jankotan@gmail.com>
 	* add checks for duplicated sardana names
 	* add dalsa template component

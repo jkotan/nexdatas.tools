@@ -161,7 +161,6 @@ class TangoDS(Runner):
             "-t", "--port",
             help="tango host port",
             dest="port", default="10000")
-
         parser.add_argument(
             "-b", "--database", action="store_true",
             default=False, dest="database",
@@ -724,6 +723,9 @@ class OnlineCP(Runner):
                             "Configuration Server database")
         parser.add_argument("-r", "--server", dest="server",
                             help="configuration server device name")
+        parser.add_argument("-t", "--type",
+                            help="component type",
+                            dest="cptype", default="")
         parser.add_argument("-n", "--nolower", action="store_false",
                             default=True, dest="lower",
                             help="do not change aliases into lower case")

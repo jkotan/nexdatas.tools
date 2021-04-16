@@ -1881,8 +1881,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 <device>
  <name>MyMarccd</name>
  <type>type_tango</type>
- <module>marccd</module>
- <device>p09/marccd/exp.01</device>
+ <module>mard</module>
+ <device>p09/mard/exp.01</device>
  <control>tango</control>
  <hostname>haso000:10000</hostname>
  <controller>oms58_exp</controller>
@@ -1894,9 +1894,9 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
         args = [
             [
                 [
-                    ('nxscreate onlinecp -c MyMarccd -n '
+                    ('nxscreate onlinecp -c MyMarccd -t marccd -n '
                      ' %s %s ' % (fname,  self.flags)).split(),
-                    ('nxscreate onlinecp --component MyMarccd '
+                    ('nxscreate onlinecp --component MyMarccd --type marccd'
                      ' --nolower '
                      ' %s %s ' % (fname,  self.flags)).split(),
                 ],
@@ -1956,7 +1956,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
                      '<definition>\n'
                      '  <datasource type="TANGO" name="MyMarccd_frameshift">\n'
-                     '    <device name="p09/marccd/exp.01" '
+                     '    <device name="p09/mard/exp.01" '
                      'member="attribute" hostname="haso000" '
                      'port="10000" group="mymarccd_"/>\n'
                      '    <record name="FrameShift"/>\n'
@@ -1986,7 +1986,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '  <datasource type="TANGO"'
                      ' name="MyMarccd_savingdirectory"'
                      '>\n'
-                     '    <device name="p09/marccd/exp.01" '
+                     '    <device name="p09/mard/exp.01" '
                      'member="attribute" hostname="haso000" '
                      'port="10000" group="mymarccd_"/>\n'
                      '    <record name="SavingDirectory"/>\n'
@@ -1997,7 +1997,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource type="TANGO" name="MyMarccd_savingpostfix"'
                      '>\n'
-                     '    <device name="p09/marccd/exp.01" '
+                     '    <device name="p09/mard/exp.01" '
                      'member="attribute" hostname="haso000" '
                      'port="10000" group="mymarccd_"/>\n'
                      '    <record name="SavingPostfix"/>\n'
@@ -2008,7 +2008,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource type="TANGO" name="MyMarccd_savingprefix"'
                      '>\n'
-                     '    <device name="p09/marccd/exp.01" '
+                     '    <device name="p09/mard/exp.01" '
                      'member="attribute" hostname="haso000" '
                      'port="10000" group="mymarccd_"/>\n'
                      '    <record name="SavingPrefix"/>\n'
