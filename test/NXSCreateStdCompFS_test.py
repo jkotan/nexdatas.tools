@@ -376,7 +376,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         types = [
-            "absorber",             # +
+            # "absorber",           # +-
             # "beamstop",           # +
             # "beamtimeid",         #
             # "chcut",              #
@@ -384,6 +384,81 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
             "collect3",             # +
             "common2",              #
             "common3",              #
+            # "datasignal",         #
+            # "dcm",                #
+            # "default",            # +
+            # "defaultinstrument",  # .
+            # "defaultsample",      # .
+            # "empty",              #
+            # "keithley",           #
+            # "maia",               #
+            # "maiadimension",      #
+            # "maiaflux",           #
+            # "pinhole",            #
+            # "pointdet",           #
+            # "qbpm",               #
+            # "samplehkl",          #
+            # "slit",               #
+            # "source",             # +
+            # "undulator"           #
+        ]
+
+        args = [
+            ('nxscreate stdcomp %s -c cptest -t ' % self.flags).split(),
+            ('nxscreate stdcomp %s --component cptest --type '
+             % self.flags).split(),
+        ]
+
+        totest = []
+        try:
+            for tp in types:
+                for arg in args:
+                    cp = "cptest"
+                    skip = False
+                    if self.cpexists(cp):
+                        skip = True
+                    if not skip:
+                        totest.append(cp)
+
+                        cmd = list(arg)
+                        cmd.append(tp)
+                        # print(tp)
+                        vl, er, txt = self.runtestexcept(cmd, SystemExit)
+                        if er:
+                            self.assertEqual(
+                                "Info: NeXus hasn't been setup yet. \n\n", er)
+                        else:
+                            self.assertEqual('', er)
+                        self.assertTrue(vl)
+                        # print(txt)
+                        lines = vl.split("\n")
+                        # self.assertEqual(lines[0], "OUTPUT DIR: .")
+                        self.assertEqual(lines[-1], "")
+                        self.assertTrue("MISSING" in vl)
+                        self.assertTrue("WARNING: " in vl)
+                        self.assertTrue(" cannot be created without " in vl)
+                        if self.cpexists(cp):
+                            self.deletecp(cp)
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
+    def test_stdcomp_missing_mand_parameters(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        types = [
+            "absorber",             # +-
+            # "beamstop",           # +
+            # "beamtimeid",         #
+            # "chcut",              #
+            # "collect2",           # +
+            # "collect3",           # +
+            # "common2",            #
+            # "common3",            #
             # "datasignal",         #
             # "dcm",                #
             # "default",            # +
@@ -424,7 +499,6 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         cmd.append(tp)
                         # print(tp)
                         vl, er = self.runtest(cmd)
-
                         if er:
                             self.assertEqual(
                                 "Info: NeXus hasn't been setup yet. \n\n", er)
@@ -1500,7 +1574,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                         cmd = list(arg)
                         cmd.append(tp)
                         # print(tp)
-                        vl, er = self.runtest(cmd)
+                        vl, er, txt = self.runtestexcept(cmd, SystemExit)
 
                         lines = vl.split("\n")
                         # self.assertEqual(lines[0], "OUTPUT DIR: .")

@@ -822,6 +822,8 @@ class OnlineCP(Runner):
         else:
             lst = creator.listcomponents()
             print("\nPOSSIBLE COMPONENTS: \n   %s" % " ".join(list(lst)))
+            lst = creator.listcomponenttypes()
+            print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(list(lst)))
 
 
 class StdComp(Runner):

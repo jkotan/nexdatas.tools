@@ -1576,6 +1576,14 @@ class OnlineCPCreator(CPCreator):
                         cpnames.add(dv.name)
         return cpnames
 
+    def listcomponenttypes(self):
+        """ provides a list of standard component types
+
+        :returns: list of standard component types
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return list(sorted(self.xmlpackage.moduleTemplateFiles.keys()))
+
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
         """
@@ -1740,7 +1748,7 @@ class StandardCPCreator(CPCreator):
         :returns: list of standard component types
         :rtype: :obj:`list` <:obj:`str`>
         """
-        return list(self.xmlpackage.standardComponentVariables.keys())
+        return list(sorted(self.xmlpackage.standardComponentVariables.keys()))
 
     def listcomponentvariables(self):
         """ provides a list of standard component types
