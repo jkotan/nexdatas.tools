@@ -799,14 +799,15 @@ class OnlineCP(Runner):
                 sys.exit(0)
 
         args = [options.args] if options.args else []
-        if not len(args) and os.path.isfile('/online_dir/online.xml'):
-            args = ['/online_dir/online.xml']
+        if not options.component or not options.device or not options.cptype:
+            if not len(args) and os.path.isfile('/online_dir/online.xml'):
+                args = ['/online_dir/online.xml']
 
-        if not len(args):
-            parser.print_help()
-            sys.exit(255)
+            if not len(args):
+                parser.print_help()
+                sys.exit(255)
 
-        print("INPUT: %s" % args[0])
+            print("INPUT: %s" % args[0])
         if options.database:
             print("SERVER: %s" % options.server)
         else:
