@@ -296,6 +296,12 @@ Options:
                         <inputFile>
   -r SERVER, --server=SERVER
                         configuration server device name
+  -t CPTYPE, --type CPTYPE
+                        component type
+  -v DEVICE, --device DEVICE
+                        device, i.e. p09/pilatus300k/01
+  -u HOST, --host HOST  tango host name
+  -w PORT, --port PORT  tango host port
   -n, --nolower         do not change aliases into lower case
   -o, --overwrite       overwrite existing component
   -b, --database        store datasources in Configuration Server database
@@ -309,6 +315,8 @@ Options:
                         xml template package
   -y ENTRYNAME, --entryname ENTRYNAME
                         entry group name (prefix)
+  -i INSNAME, --insname INSNAME
+                        instrument group name
 
 Example
 """""""
@@ -319,6 +327,8 @@ Example
 	  nxscreate onlinecp -c lambda
 	  nxscreate onlinecp -c pilatus -b
 	  nxscreate onlinecp -c lambda -d /home/user/xmldir/
+	  nxscreate onlinecp -c lmbd -t lambda -b
+	  nxscreate onlinecp -c lmbd -t lambda -v p00/lmbd/1 -u haso000 -w 10000 -b
 
 
 nxscreate stdcomp

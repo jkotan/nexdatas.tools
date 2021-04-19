@@ -707,7 +707,22 @@ class OnlineCP(Runner):
         + "       nxscreate onlinecp -c lambda -d /home/user/xmldir/ \n" \
         + "\n" \
         + "           - create the 'lambda' component and its datasources\n" \
-        + "               in the '/home/user/xmldir/' directory\n"
+        + "               in the '/home/user/xmldir/' directory\n"\
+        + "\n"\
+        + "       nxscreate onlinecp -c lmbd -t lambda -b \n" \
+        + "\n" \
+        + "           - create the 'lmbd' component of 'lambda' type " \
+        + "and its datasources\n" \
+        + "               in the NXSConfigServer database\n"\
+        + "\n"\
+        + "\n"\
+        + "       nxscreate onlinecp -c lmbd -t lambda  -v p00/lmbd/1 " \
+        + "-u haso000 -w 10000 -b \n" \
+        + "\n" \
+        + "           - create the 'lmbd' component of 'lambda' type " \
+        + "and its datasources without online.xml\n" \
+        + "               in the NXSConfigServer database\n"\
+        + "\n"
 
     def create(self):
         """ creates parser
@@ -726,6 +741,15 @@ class OnlineCP(Runner):
         parser.add_argument("-t", "--type",
                             help="component type",
                             dest="cptype", default="")
+        parser.add_argument("-v", "--device",
+                            help="device, i.e. p09/pilatus300k/01",
+                            dest="device", default="")
+        parser.add_argument("-u", "--host",
+                            help="tango host name",
+                            dest="host", default="")
+        parser.add_argument("-w", "--port",
+                            help="tango host port",
+                            dest="port", default="")
         parser.add_argument("-n", "--nolower", action="store_false",
                             default=True, dest="lower",
                             help="do not change aliases into lower case")
@@ -775,14 +799,15 @@ class OnlineCP(Runner):
                 sys.exit(0)
 
         args = [options.args] if options.args else []
-        if not len(args) and os.path.isfile('/online_dir/online.xml'):
-            args = ['/online_dir/online.xml']
+        if not options.component or not options.device or not options.cptype:
+            if not len(args) and os.path.isfile('/online_dir/online.xml'):
+                args = ['/online_dir/online.xml']
 
-        if not len(args):
-            parser.print_help()
-            sys.exit(255)
+            if not len(args):
+                parser.print_help()
+                sys.exit(255)
 
-        print("INPUT: %s" % args[0])
+            print("INPUT: %s" % args[0])
         if options.database:
             print("SERVER: %s" % options.server)
         else:
@@ -798,6 +823,8 @@ class OnlineCP(Runner):
         else:
             lst = creator.listcomponents()
             print("\nPOSSIBLE COMPONENTS: \n   %s" % " ".join(list(lst)))
+            lst = creator.listcomponenttypes()
+            print("\nPOSSIBLE COMPONENT TYPES: \n   %s" % " ".join(list(lst)))
 
 
 class StdComp(Runner):

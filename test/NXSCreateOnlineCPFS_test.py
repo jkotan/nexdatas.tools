@@ -312,11 +312,22 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                 #     self.assertEqual('', er)
                 self.assertTrue(vl)
                 lines = vl.split("\n")
-                self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
+                self.assertEqual(lines[-6], "POSSIBLE COMPONENTS: ")
+                self.assertEqual(
+                    lines[-5].split(),
+                    [])
+                self.assertEqual(lines[-4], "")
+                self.assertEqual(lines[-3],
+                                 "POSSIBLE COMPONENT TYPES: ")
                 self.assertEqual(
                     lines[-2].split(),
-                    [])
-                self.assertEqual(lines[-1], "")
+                    ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                     "limaccd", "limaccds", "marccd", "mca_xia",
+                     "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                     "pedetector", "perkinelmer",
+                     "perkinelmerdetector", "pilatus", "pilatus100k",
+                     "pilatus1m", "pilatus2m", "pilatus300k",
+                     "pilatus6m", "tangovimba"])
         finally:
             os.remove(fname)
 
@@ -403,9 +414,20 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                             self.assertEqual('', er)
                         self.assertTrue(vl)
                         lines = vl.split("\n")
-                        self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
+                        self.assertEqual(lines[-6], "POSSIBLE COMPONENTS: ")
                         self.assertEqual(
-                            lines[-2].split(), [ds])
+                            lines[-5].split(), [ds])
+                        self.assertEqual(lines[-3],
+                                         "POSSIBLE COMPONENT TYPES: ")
+                        self.assertEqual(
+                            lines[-2].split(),
+                            ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                             "limaccd", "limaccds", "marccd", "mca_xia",
+                             "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                             "pedetector", "perkinelmer",
+                             "perkinelmerdetector", "pilatus", "pilatus100k",
+                             "pilatus1m", "pilatus2m", "pilatus300k",
+                             "pilatus6m", "tangovimba"])
                 finally:
                     os.remove(fname)
         finally:
@@ -462,9 +484,20 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                 self.assertEqual('', er)
             self.assertTrue(vl)
             lines = vl.split("\n")
-            self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
+            self.assertEqual(lines[-6], "POSSIBLE COMPONENTS: ")
             self.assertEqual(
-                sorted(lines[-2].split()), sorted(dss))
+                sorted(lines[-5].split()), sorted(dss))
+            self.assertEqual(lines[-3],
+                             "POSSIBLE COMPONENT TYPES: ")
+            self.assertEqual(
+                lines[-2].split(),
+                ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                 "limaccd", "limaccds", "marccd", "mca_xia",
+                 "mythen", "mythen2", "pco", "pco4000", "pcoedge",
+                 "pedetector", "perkinelmer",
+                 "perkinelmerdetector", "pilatus", "pilatus100k",
+                 "pilatus1m", "pilatus2m", "pilatus300k",
+                 "pilatus6m", "tangovimba"])
         finally:
             os.remove(fname)
 
@@ -2024,6 +2057,165 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
 
         self.checkxmls(args, fname)
 
+    def test_onlinecp_marccd_wo_online(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.xml' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        xml = """<?xml version="1.0"?>
+<hw>
+<device>
+ <name>MyMarccd</name>
+ <type>type_tango</type>
+ <module>mard</module>
+ <device>p09/mard/exp.01</device>
+ <control>tango</control>
+ <hostname>haso000:10000</hostname>
+ <controller>oms58_exp</controller>
+ <channel>1</channel>
+ <rootdevicename>p09/motor/exp</rootdevicename>
+</device>
+</hw>
+"""
+        args = [
+            [
+                [
+                    ('nxscreate onlinecp -c MyMarccd -t marccd -n '
+                     '-v p09/mard/exp.01 -u haso000 -w 10000'
+                     ' %s ' % (self.flags)).split(),
+                    ('nxscreate onlinecp --component MyMarccd --type marccd'
+                     ' -v p09/mard/exp.01 -u haso000 -w 10000 '
+                     ' --nolower '
+                     ' %s ' % (self.flags)).split(),
+                ],
+                [
+                    ['MyMarccd'],
+                    ['MyMarccd_frameshift',
+                     'MyMarccd_postrun',
+                     'MyMarccd_savingdirectory',
+                     'MyMarccd_savingpostfix',
+                     'MyMarccd_savingprefix'],
+                ],
+                [
+                    ['<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <group type="NXentry" name="$var.entryname#\'scan\''
+                     '$var.serialno">\n'
+                     '    <group type="NXinstrument" name="instrument">\n'
+                     '      <group type="NXdetector" name="MyMarccd">\n'
+                     '        <field type="NX_CHAR" name="layout">area'
+                     '</field>\n'
+                     '        <field type="NX_CHAR" name="description">'
+                     'MyMarccd</field>\n'
+                     '        <group type="NXcollection" name="collection">\n'
+                     '          <field units="s" type="NX_FLOAT64" '
+                     'name="frame_shift">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_frameshift</field>\n'
+                     '          <field type="NX_CHAR" name="postrun">'
+                     '$datasources.MyMarccd_postrun<strategy mode="STEP"/>\n'
+                     '          </field>\n'
+                     '          <field type="NX_CHAR" name="file_dir">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingdirectory</field>\n'
+                     '          <field type="NX_CHAR" name="file_prefix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingprefix</field>\n'
+                     '          <field type="NX_CHAR" name="file_postfix">\n'
+                     '            <strategy mode="FINAL"/>'
+                     '$datasources.MyMarccd_savingpostfix</field>\n'
+                     '          <field type="NX_UINT" name="signal">1'
+                     '</field>\n'
+                     '        </group>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="x_pixel_size">80</field>\n'
+                     '        <field units="um" type="NX_FLOAT64" '
+                     'name="y_pixel_size">80</field>\n'
+                     '      </group>\n'
+                     '    </group>\n'
+                     '    <group type="NXdata" name="data">\n'
+                     '      <link target="/$var.entryname#\'scan\''
+                     '$var.serialno:NXentry/instrument/MyMarccd:NXdetector/'
+                     'data" name="MyMarccd"/>\n'
+                     '    </group>\n'
+                     '  </group>\n'
+                     '</definition>\n'
+                     ''],
+                    ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="TANGO" name="MyMarccd_frameshift">\n'
+                     '    <device name="p09/mard/exp.01" '
+                     'member="attribute" hostname="haso000" '
+                     'port="10000" group="mymarccd_"/>\n'
+                     '    <record name="FrameShift"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="MyMarccd_postrun">\n'
+                     '    <result name="result">\n'
+                     'unixdir = str(ds.MyMarccd_savingdirectory).replace('
+                     '"\\\\","/")\n'
+                     'if len(unixdir)> 1 and unixdir[1] == ":":\n'
+                     '    unixdir = "/data" + unixdir[2:]\n'
+                     'if unixdir and unixdir[-1] == "/":\n'
+                     ' unixdir = unixdir[:-1]\n'
+                     'ds.result = "" + unixdir + "/" + str('
+                     'ds.MyMarccd_savingprefix) + "." + str('
+                     'ds.MyMarccd_savingpostfix) </result>\n'
+                     ' $datasources.MyMarccd_savingdirectory\n'
+                     ' $datasources.MyMarccd_savingpostfix\n'
+                     ' $datasources.MyMarccd_savingprefix</datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="TANGO"'
+                     ' name="MyMarccd_savingdirectory"'
+                     '>\n'
+                     '    <device name="p09/mard/exp.01" '
+                     'member="attribute" hostname="haso000" '
+                     'port="10000" group="mymarccd_"/>\n'
+                     '    <record name="SavingDirectory"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="TANGO" name="MyMarccd_savingpostfix"'
+                     '>\n'
+                     '    <device name="p09/mard/exp.01" '
+                     'member="attribute" hostname="haso000" '
+                     'port="10000" group="mymarccd_"/>\n'
+                     '    <record name="SavingPostfix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'
+                     '',
+                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="TANGO" name="MyMarccd_savingprefix"'
+                     '>\n'
+                     '    <device name="p09/mard/exp.01" '
+                     'member="attribute" hostname="haso000" '
+                     'port="10000" group="mymarccd_"/>\n'
+                     '    <record name="SavingPrefix"/>\n'
+                     '  </datasource>\n'
+                     '</definition>\n'],
+                ],
+            ],
+        ]
+        if os.path.isfile(fname):
+            raise Exception("Test file %s exists" % fname)
+        with open(fname, "w") as fl:
+            fl.write(xml)
+
+        self.checkxmls(args, fname)
+
     def test_onlinecp_mcaxia_overwrite_false(self):
         """ test nxsccreate stdcomp file system
         """
@@ -2547,9 +2739,13 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                             self.assertEqual('', er)
                         self.assertTrue(vl)
                         lines = vl.split("\n")
-                        self.assertEqual(lines[-3], "POSSIBLE COMPONENTS: ")
+                        self.assertEqual(lines[-6], "POSSIBLE COMPONENTS: ")
                         self.assertEqual(
-                            lines[-2].split(), [ds])
+                            lines[-5].split(), [ds])
+                        self.assertEqual(lines[-3],
+                                         "POSSIBLE COMPONENT TYPES: ")
+                        self.assertEqual(
+                            lines[-2].split(), ["mymca"])
                 finally:
                     os.remove(fname)
         finally:

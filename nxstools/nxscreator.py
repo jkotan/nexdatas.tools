@@ -1287,9 +1287,6 @@ class CPCreator(Creator):
                     raise CPExistsException(
                         "Component '%s' already exists." % cpname)
         elif not self.options.overwrite:
-            print(self.options.overwrite)
-            print(self.options.file)
-            print(cpname)
             existing = self._componentFilesExist(
                 [cpname], self.options.file, self.options.directory)
             if existing:
@@ -1297,6 +1294,9 @@ class CPCreator(Creator):
                     "Component files '%s' already exist." % existing)
 
         self.createXMLs()
+        if not self.datasources and not self.components:
+            raise CPExistsException(
+                "Warning: Component %s cannot be created" % cpname)
         server = self.options.server
         if hasattr(self.options, "database") and \
            self.options.database:
@@ -1576,36 +1576,69 @@ class OnlineCPCreator(CPCreator):
                         cpnames.add(dv.name)
         return cpnames
 
+    def listcomponenttypes(self):
+        """ provides a list of standard component types
+
+        :returns: list of standard component types
+        :rtype: :obj:`list` <:obj:`str`>
+        """
+        return list(sorted(self.xmlpackage.moduleTemplateFiles.keys()))
+
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
         """
         self.datasources = {}
         self.components = {}
-        hw = etree.parse(self.args[0],
-                         parser=XMLParser(collect_ids=False)).getroot()
-        if hw.tag != 'hw':
-            hw = hw.find('hw')
+        if self.options.component and self.options.cptype and \
+           self.options.device:
+            hw = [None]
+        else:
+            hw = etree.parse(
+                self.args[0],
+                parser=XMLParser(collect_ids=False)).getroot()
+            if hw.tag != 'hw':
+                hw = hw.find('hw')
         cpname = self.options.component
         tangohost = getServerTangoHost(
             self.options.external or self.options.server)
         for device in hw:
-            if device.tag == 'device':
-                dvname = self._getChildText(device, "name")
-                sardananame = self._getChildText(device, "sardananame")
-                name = sardananame or dvname
+            if device is None or device.tag == 'device':
+                if device is None:
+                    name = cpname
+                else:
+                    dvname = self._getChildText(device, "name")
+                    sardananame = self._getChildText(
+                        device, "sardananame")
+                    name = sardananame or dvname
                 if self.options.lower:
                     name = name.lower()
                     cpname = cpname.lower()
                 if name == cpname:
                     dv = Device()
                     dv.name = name
-                    dv.dtype = self._getChildText(device, "type")
-                    dv.module = self._getChildText(device, "module")
-                    dv.tdevice = self._getChildText(device, "device")
-                    dv.hostname = self._getChildText(device, "hostname")
-                    dv.sardananame = self._getChildText(device, "sardananame")
-                    dv.sardanahostname = self._getChildText(
-                        device, "sardanahostname")
+                    dv.dtype = self.options.cptype or \
+                        self._getChildText(device, "type")
+                    dv.module = self.options.cptype or \
+                        self._getChildText(device, "module")
+                    dv.tdevice = self.options.device or \
+                        self._getChildText(device, "device")
+                    hostname = None
+                    if self.options.host:
+                        host = self.options.host
+                        port = self.options.port \
+                            if self.options.port else "10000"
+                        hostname = "%s:%s" % (host, port)
+                    if hostname is None and device is None:
+                        hostname = tangohost
+                    if hostname is not None:
+                        dv.hostname = hostname
+                    if hostname is None and device is not None:
+                        dv.hostname = self._getChildText(device, "hostname")
+                    if device is not None:
+                        dv.sardananame = \
+                            self._getChildText(device, "sardananame")
+                        dv.sardanahostname = self._getChildText(
+                            device, "sardanahostname")
 
                     dv.findDevice(tangohost)
                     try:
@@ -1715,7 +1748,7 @@ class StandardCPCreator(CPCreator):
         :returns: list of standard component types
         :rtype: :obj:`list` <:obj:`str`>
         """
-        return list(self.xmlpackage.standardComponentVariables.keys())
+        return list(sorted(self.xmlpackage.standardComponentVariables.keys()))
 
     def listcomponentvariables(self):
         """ provides a list of standard component types
