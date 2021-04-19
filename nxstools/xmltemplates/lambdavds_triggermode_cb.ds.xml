@@ -1,0 +1,80 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_triggermode_cb">
+    <result name="result">
+import PyTango
+
+hostname = "$(hostname)"
+device = "$(device)"
+host, port = hostname.split(":")
+port = int(10000)
+edb = PyTango.Database(host, port)
+
+writer = None
+
+triggermode = ds.$(name)_triggermode
+framesperfile = ds.$(name)_framesperfile
+framenumbers = ds.$(name)_framenumbers
+height = ds.$(name)_height
+width = ds.$(name)_width
+opmode = ds.$(name)_opmode
+dtm = {1: "int8", 6: "int8", 12: "int16", 24: "int32"}
+try:
+    dtype = dtm[opmode]
+except Exception:
+    dtype = "int32"
+shape = [framenumbers, height, width]
+
+ds.result = triggermode.lower()
+if ds.$(name)_saveallimages:
+    if "$var.filename":
+        path = ("$var.filename").split("/")[-1].split(".")[0] + "/"
+    else:
+        path = ""
+    if framenumbers > 0:
+        nbfiles = (framenumbers - 1) // framesperfile + 1
+        lastfilenbframes = framenumbers - (nbfiles - 1) * framesperfile
+    else:
+        nbfiles = 0
+        lastfilenbframes = 0
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise("Writer cannot be found")
+    en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
+    dt = en.open("data")
+    ins = en.open("instrument")
+    det = ins.open("$(name)")
+    if nbfiles > 0:
+        npath = "/entry/instrument/detector"
+        vfl = nxw.virtual_field_layout([framenumbers, height, width], dtype)
+        for nbf in range(0, nbfiles):
+            if framenumbers > framesperfile and framesperfile > 10:
+                connector = "_part%05d." % nbf
+            else:
+                connector = "."
+            filename = path + "$(name)/" + str(ds.$(name)_savefilename) + connector + str(ds.$(name)_filepostfix)
+            ln = framesperfile if nbf + 1 != nbfiles else lastfilenbframes
+            ef = nxw.target_field_view(
+                filename, "/entry/instrument/detector",
+                [ln, height, width], dtype)
+            vfl[(nbf * framesperfile):(nbf * framesperfile + ln), :, :] = ef
+        det.create_virtual_field("data", vfl)
+
+    </result>
+    $datasources.$(name)_triggermode
+    $datasources.$(name)_opmode
+    $datasources.$(name)_savefilename
+    $datasources.$(name)_saveallimages
+    $datasources.$(name)_framesperfile
+    $datasources.$(name)_framenumbers
+    $datasources.$(name)_filepostfix
+    $datasources.$(name)_height
+    $datasources.$(name)_width
+  </datasource>
+</definition>

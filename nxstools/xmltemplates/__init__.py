@@ -1463,6 +1463,9 @@ moduleTemplateFiles = {
     'lambda': ['lambda.xml',
                'lambda_nxdata.ds.xml',
                'lambda_external_data.ds.xml'],
+    'lambdavds': ['lambdavds.xml',
+                  'lambdavds_nxdata.ds.xml',
+                  'lambdavds_triggermode_cbgit rm .ds.xml'],
     'tangovimba': ['tangovimba.xml',
                    'tangovimba_nxdata.ds.xml',
                    'tangovimba_external_data.ds.xml'],
@@ -1648,7 +1651,17 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'FramesPerFile'
+        'LiveLastImageData', 'FramesPerFile', 'OpMode'
+    ],
+    'lambdavds': [
+        'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
+        'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
+        'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
+        'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode',
+        'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
+        'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
+        'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
+        'LiveLastImageData', 'FramesPerFile', 'OpMode'
     ],
     'lambda2m': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
@@ -1658,7 +1671,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData'
+        'LiveLastImageData', 'OpMode'
     ],
     'pedetector': [
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
