@@ -1465,7 +1465,7 @@ moduleTemplateFiles = {
                'lambda_external_data.ds.xml'],
     'lambdavds': ['lambdavds.xml',
                   'lambdavds_nxdata.ds.xml',
-                  'lambdavds_triggermode_cbgit rm .ds.xml'],
+                  'lambdavds_triggermode_cb.ds.xml'],
     'tangovimba': ['tangovimba.xml',
                    'tangovimba_nxdata.ds.xml',
                    'tangovimba_external_data.ds.xml'],
