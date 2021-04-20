@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "Apr 15, 2021" "3.3" "NXSTools"
+.TH "NXSCREATE" "1" "Apr 20, 2021" "3.4" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -66,7 +66,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -103,7 +103,7 @@ datasource prefix, i.e. counter (useful for avoiding duplicated datasource names
 store datasources in Configuration Server database
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
@@ -143,11 +143,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -241,11 +241,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -279,7 +279,7 @@ tango host port
 store datasources in Configuration Server database
 .TP
 .B \-n\fP,\fB  \-\-no\-group
-don\(aqt create common group with a name of datasource
+don’t create common group with a name of datasource
 prefix
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
@@ -321,7 +321,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -399,7 +399,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <channel> is \(aqALL\(aq
+default <channel> is ‘ALL’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -470,15 +470,15 @@ nxscreate onlinecp [options] inputFile
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-c <component>\(aq: show a list of possible components
+without ‘\-c <component>’: show a list of possible components
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -496,6 +496,18 @@ component namerelated to the device name from
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
+.TP
+.BI \-t \ CPTYPE\fP,\fB \ \-\-type \ CPTYPE
+component type
+.TP
+.BI \-v \ DEVICE\fP,\fB \ \-\-device \ DEVICE
+device, i.e. p09/pilatus300k/01
+.TP
+.BI \-u \ HOST\fP,\fB \ \-\-host \ HOST
+tango host name
+.TP
+.BI \-w \ PORT\fP,\fB \ \-\-port \ PORT
+tango host port
 .TP
 .B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
@@ -520,6 +532,9 @@ xml template package
 .TP
 .BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
+.TP
+.BI \-i \ INSNAME\fP,\fB \ \-\-insname \ INSNAME
+instrument group name
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -532,6 +547,8 @@ nxscreate onlinecp
 nxscreate onlinecp \-c lambda
 nxscreate onlinecp \-c pilatus \-b
 nxscreate onlinecp \-c lambda \-d /home/user/xmldir/
+nxscreate onlinecp \-c lmbd \-t lambda \-b
+nxscreate onlinecp \-c lmbd \-t lambda \-v p00/lmbd/1 \-u haso000 \-w 10000 \-b
 .ft P
 .fi
 .UNINDENT
@@ -553,17 +570,17 @@ nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-t <type>\(aq: show a list of possible component types
+without ‘\-t <type>’: show a list of possible component types
 .IP \(bu 2
-with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
+with ‘\-t <type>  and without \-c <component>: show a list of component variables for the given component type
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-[name1 value1 [name2 value2] ...] sequence  defines component variable values
+[name1 value1 [name2 value2] …] sequence  defines component variable values
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -644,7 +661,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -654,7 +671,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
+default <nexuspath> is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -710,7 +727,7 @@ configuration server device name
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -744,7 +761,7 @@ nxscreate compare [\-h] [\-n] online_file [online_file]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
+default: second <online_file> is ‘/online_dir/online.xml’ if only file is given
 .UNINDENT
 .INDENT 0.0
 .TP
