@@ -1,0 +1,13 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_framenumbers_cb">
+    <result name="result">
+ds.result = ds.$(name)_framenumbers
+if "$(name)_framenumbers" not in commonblock:
+    commonblock["$(name)_framenumbers"] = [int(ds.$(name)_framenumbers)]
+else:
+    commonblock["$(name)_framenumbers"].append(int(ds.$(name)_framenumbers))
+    </result>
+    $datasources.$(name)_framenumbers
+  </datasource>
+</definition>

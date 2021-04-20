@@ -1,0 +1,102 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_triggermode_cb">
+    <result name="result">
+ds.result = ds.$(name)_triggermode
+
+if ds.$(name)_saveallimages:
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+    filenames = []
+    framesnumbers = []
+    if "$(name)_savefilename" in commonblock:
+        filenames = commonblock["$(name)_savefilename"]
+    if "$(name)_framenumbers" in commonblock:
+        framesnumbers = commonblock["$(name)_framenumbers"]
+    fln = min(len(framesnumbers), len(filenames))
+
+
+    filesframes = []
+    lastfile = None
+    totalframenumbers = 0
+    for fi in range(fln):
+        if lastfile != filenames[fi]:
+            filesframes.append((filenames[fi], framesnumbers[fi]))
+            lastfile = filenames[fi]
+            totalframenumbers += framesnumbers[fi]
+
+    framesperfile = ds.$(name)_framesperfile
+    height = ds.$(name)_height
+    width = ds.$(name)_width
+    opmode = ds.$(name)_opmode
+
+    dtm = {1: "int8", 6: "int8", 12: "int16", 24: "int32"}
+    try:
+        dtype = dtm[opmode]
+    except Exception:
+        dtype = "int32"
+
+    shape = [totalframenumbers, height, width]
+
+
+    if "$var.filename":
+        path = ("$var.filename").split("/")[-1].split(".")[0] + "/"
+    else:
+        path = ""
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise("Writer cannot be found")
+
+    en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
+    dt = en.open("data")
+    ins = en.open("instrument")
+    det = ins.open("$(name)")
+    npath = "/entry/instrument/detector/data"
+
+    vfl = nxw.virtual_field_layout([totalframenumbers, height, width], dtype)
+
+
+    foffset = 0
+    for savefilename, framenumbers in filesframes:
+
+        if framenumbers > 0 and framesperfile > 10:
+            nbfiles = (framenumbers - 1) // framesperfile + 1
+            lastfilenbframes = framenumbers - (nbfiles - 1) * framesperfile
+        elif framenumbers > 0:
+            nbfiles = 1
+            lastfilenbframes = framenumbers
+        else:
+            nbfiles = 0
+            lastfilenbframes = 0
+
+        if nbfiles > 0:
+            for nbf in range(0, nbfiles):
+                if framenumbers > framesperfile and framesperfile > 10:
+                    connector = "_part%05d." % nbf
+                else:
+                    connector = "."
+                filename = path + "$(name)/" + str(savefilename) + connector + str(ds.$(name)_filepostfix)
+                ln = framesperfile if nbf + 1 != nbfiles else lastfilenbframes
+                ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
+                vfl[(foffset + nbf * framesperfile):(foffset + nbf * framesperfile + ln), :, :] = ef
+            foffset += framenumbers
+    det.create_virtual_field("data", vfl)
+
+    </result>
+    $datasources.$(name)_triggermode
+    $datasources.$(name)_opmode
+    $datasources.$(name)_savefilename
+    $datasources.$(name)_saveallimages
+    $datasources.$(name)_framesperfile
+    $datasources.$(name)_framenumbers
+    $datasources.$(name)_filepostfix
+    $datasources.$(name)_height
+    $datasources.$(name)_width
+  </datasource>
+</definition>
