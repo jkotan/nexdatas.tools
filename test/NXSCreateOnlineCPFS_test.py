@@ -377,7 +377,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'perkinelmerdetector',  #
             'limaccd',              #
             'lambda2m',             #
-            'lambdavds',            # ?
+            'lambdavds',            #
             'limaccds',             #
             'lambda'                # +
         ]
