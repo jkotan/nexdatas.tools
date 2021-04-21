@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.3.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.4.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.3</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.4</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1460,9 +1460,6 @@
                     <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
                         <span class="s2">&quot;Component &#39;</span><span class="si">%s</span><span class="s2">&#39; already exists.&quot;</span> <span class="o">%</span> <span class="n">cpname</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">overwrite</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">cpname</span><span class="p">)</span>
             <span class="n">existing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_componentFilesExist</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">cpname</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">existing</span><span class="p">:</span>
@@ -1470,6 +1467,9 @@
                     <span class="s2">&quot;Component files &#39;</span><span class="si">%s</span><span class="s2">&#39; already exist.&quot;</span> <span class="o">%</span> <span class="n">existing</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">createXMLs</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CPExistsException</span><span class="p">(</span>
+                <span class="s2">&quot;Warning: Component </span><span class="si">%s</span><span class="s2"> cannot be created&quot;</span> <span class="o">%</span> <span class="n">cpname</span><span class="p">)</span>
         <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;database&quot;</span><span class="p">)</span> <span class="ow">and</span> \
            <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
@@ -1749,36 +1749,69 @@
                         <span class="n">cpnames</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cpnames</span></div>
 
+<div class="viewcode-block" id="OnlineCPCreator.listcomponenttypes"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.listcomponenttypes">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponenttypes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
+
+<span class="sd">        :returns: list of standard component types</span>
+<span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleTemplateFiles</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
+
 <div class="viewcode-block" id="OnlineCPCreator.createXMLs"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.OnlineCPCreator.createXMLs">[docs]</a>    <span class="k">def</span> <span class="nf">createXMLs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates component xmls of all online.xml complex devices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                         <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
-            <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">component</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span> <span class="ow">and</span> \
+           <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hw</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">parser</span><span class="o">=</span><span class="n">XMLParser</span><span class="p">(</span><span class="n">collect_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">hw</span><span class="o">.</span><span class="n">tag</span> <span class="o">!=</span> <span class="s1">&#39;hw&#39;</span><span class="p">:</span>
+                <span class="n">hw</span> <span class="o">=</span> <span class="n">hw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;hw&#39;</span><span class="p">)</span>
         <span class="n">cpname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">component</span>
         <span class="n">tangohost</span> <span class="o">=</span> <span class="n">getServerTangoHost</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">external</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">hw</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
-                <span class="n">dvname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
-                <span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">sardananame</span> <span class="ow">or</span> <span class="n">dvname</span>
+            <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">device</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;device&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">cpname</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dvname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                    <span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                        <span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">sardananame</span> <span class="ow">or</span> <span class="n">dvname</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                     <span class="n">cpname</span> <span class="o">=</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">cpname</span><span class="p">:</span>
                     <span class="n">dv</span> <span class="o">=</span> <span class="n">Device</span><span class="p">()</span>
                     <span class="n">dv</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;module&quot;</span><span class="p">)</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">)</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;hostname&quot;</span><span class="p">)</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
-                    <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
-                        <span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardanahostname&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span> <span class="ow">or</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span> <span class="ow">or</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;module&quot;</span><span class="p">)</span>
+                    <span class="n">dv</span><span class="o">.</span><span class="n">tdevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">device</span> <span class="ow">or</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="n">hostname</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">host</span><span class="p">:</span>
+                        <span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">host</span>
+                        <span class="n">port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span> \
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">port</span> <span class="k">else</span> <span class="s2">&quot;10000&quot;</span>
+                        <span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">hostname</span> <span class="o">=</span> <span class="n">tangohost</span>
+                    <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">hostname</span>
+                    <span class="k">if</span> <span class="n">hostname</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;hostname&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">sardananame</span> <span class="o">=</span> \
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardananame&quot;</span><span class="p">)</span>
+                        <span class="n">dv</span><span class="o">.</span><span class="n">sardanahostname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getChildText</span><span class="p">(</span>
+                            <span class="n">device</span><span class="p">,</span> <span class="s2">&quot;sardanahostname&quot;</span><span class="p">)</span>
 
                     <span class="n">dv</span><span class="o">.</span><span class="n">findDevice</span><span class="p">(</span><span class="n">tangohost</span><span class="p">)</span>
                     <span class="k">try</span><span class="p">:</span>
@@ -1789,7 +1822,10 @@
                                   <span class="s2">&quot;type not defined&quot;</span>
                                   <span class="o">%</span> <span class="p">(</span><span class="n">dv</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">dv</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
                         <span class="k">continue</span>
-                    <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getModuleName</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span><span class="p">:</span>
+                        <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">cptype</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getModuleName</span><span class="p">(</span><span class="n">dv</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> \
                            <span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">moduleMultiAttributes</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -1885,7 +1921,7 @@
 <span class="sd">        :returns: list of standard component types</span>
 <span class="sd">        :rtype: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xmlpackage</span><span class="o">.</span><span class="n">standardComponentVariables</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span></div>
 
 <div class="viewcode-block" id="StandardCPCreator.listcomponentvariables"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.StandardCPCreator.listcomponentvariables">[docs]</a>    <span class="k">def</span> <span class="nf">listcomponentvariables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides a list of standard component types</span>
