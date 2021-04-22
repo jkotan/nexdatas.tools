@@ -5,6 +5,8 @@
 ds.result = ""
 try:
     filestartnum = int(ds.$(name)_filestartnum)
+    if filestartnum > 0:
+        filestartnum -= 1
 except Exception:
     filestartnum = 0
 

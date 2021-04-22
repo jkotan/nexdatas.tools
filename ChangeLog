@@ -1,3 +1,7 @@
+2021-04-22 Jan Kotanski <jankotan@gmail.com>
+	* fix file number in the dalsa component link
+	* tagged as v3.4.1
+
 2021-04-19 Jan Kotanski <jankotan@gmail.com>
 	* add --type option to nxscreate onlinecp
 	* add --device --port --host options to nxscreate onlinecp
