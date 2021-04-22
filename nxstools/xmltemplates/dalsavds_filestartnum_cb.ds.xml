@@ -1,0 +1,18 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_filestartnum_cb">
+    <result name="result">
+try:
+    filestartnum = int(ds.$(name)_filestartnum)
+except Exception:
+    filestartnum = 0
+ds.result = filestartnum
+
+if "$(name)_filestartnum" not in commonblock:
+    commonblock["$(name)_filestartnum"] = [filestartnum]
+else:
+    commonblock["$(name)_filestartnum"].append(filestartnum)
+    </result>
+    $datasources.$(name)_filestartnum
+  </datasource>
+</definition>

@@ -1474,6 +1474,9 @@ moduleTemplateFiles = {
     'dalsa': ['dalsa.xml',
               'dalsa_nxdata.ds.xml',
               'dalsa_external_data.ds.xml'],
+    'dalsavds': ['dalsavds.xml',
+                 'dalsavds_nxdata.ds.xml',
+                 'dalsavds_external_data.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_nxdata.ds.xml',
                  'lambda2m_m2_nxdata.ds.xml',
@@ -1716,6 +1719,18 @@ moduleMultiAttributes = {
         'MaxLoad', 'ReadMode', 'TuneMode', 'ViewingMode'
     ],
     'dalsa': [
+        'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving', 'FileStartNum',
+        'TriggerMode', 'Width', 'Height', 'ExtendedExposure',
+        'BinComment',
+        'FramesProcessed', 'Image16', 'Image8', 'ImageRaw',
+        'FramesReceived', 'FrameRate', 'FramesPerNXFile', 'NXFileCompression',
+        'TurboMode', 'ImageEnc', 'ViewingMode',
+        'ThrashedBuffers', 'FramesToAcquire',
+        'AcquisitionFrameCount', 'AcquisitionMode', 'AcquisitionFrameMode',
+        'LinearityEqualizer', 'NrExposedFrames', 'NrOffsetFrames',
+        'Offset', 'PixelFormat', 'ReadOutMode', 'Standby', 'SumScheme'
+    ],
+    'dalsavds': [
         'FileDir', 'FilePostfix', 'FilePrefix', 'FileSaving', 'FileStartNum',
         'TriggerMode', 'Width', 'Height', 'ExtendedExposure',
         'BinComment',
