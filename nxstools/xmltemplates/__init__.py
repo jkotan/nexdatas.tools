@@ -1283,7 +1283,7 @@ standardComponentVariables = {
             'default': 'detector',
             'doc': "list of devices (string)"
         },
-        'dettype': {
+        'datatype': {
             'default': 'NX_UINT32',
             'doc': "list of devices (string)"
         },
