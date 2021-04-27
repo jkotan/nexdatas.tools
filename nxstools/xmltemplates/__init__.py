@@ -1274,6 +1274,20 @@ standardComponentVariables = {
             'doc': "second optional detasource name MANDATORY (datasource)"
         }
     },
+    'detectorlive': {
+        'detectordata': {
+            'default': None,
+            'doc': "detector live data (datasource)"
+        },
+        'detname': {
+            'default': 'detector',
+            'doc': "list of devices (string)"
+        },
+        'dettype': {
+            'default': 'NX_UINT32',
+            'doc': "list of devices (string)"
+        },
+    },
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
@@ -1368,6 +1382,9 @@ standardComponentTemplateFiles = {
     ],
     'common3': [
         'common3_common.ds.xml',
+    ],
+    'detectorlive': [
+        'detectorlive.xml',
     ],
     'msnsar': [
         'msnsar_env.ds.xml',
