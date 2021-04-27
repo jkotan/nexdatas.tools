@@ -13,10 +13,10 @@ if ds.$(name)_filesaving:
         filestartnumbers = commonblock["$(name)_filestartnum"]
     fln = len(filestartnumbers)
 
-    lastfile = None
+    lastfilenumber = filestartnumbers[-1] if filestartnumbers else 0
+
     totalframenumbers = 0
     framespernxfile = ds.$(name)_framespernxfile
-
 
     height = ds.$(name)_height
     width = ds.$(name)_width
@@ -33,20 +33,26 @@ if ds.$(name)_filesaving:
     nbfiles = 0
     if mode in ["MultiFrame"]:
         totalframenumbers = fln * framecount
-        if framespernxfile < 1 or framespernxfile >  framecount:
+        if 1 > framespernxfile or framespernxfile > framecount:
             filesizes = [framecount for _ in range(fln)]
             nbfiles = len(filesizes)
         else:
             nbfiles = (framecount + 1) // framspernxfile + 1
             lastfilenbframes = framecount % framspernxfile
+
     elif mode in ["SingleFrame"]:
         totalframenumbers = fln
         filesizes = [1 for _ in range(fln)]
         nbfiles = len(filesizes)
     elif mode in ["Continuous"]:
-            
-            
-    
+        totalframenumbers = fln
+        if 1 > framespernxfile or framespernxfile > fln:
+            filesizes = [fln for _ in range(fln)]
+            nbfiles = len(filesizes)
+        else:
+            nbfiles = (fln + 1) // framspernxfile + 1
+            lastfilenbframes = fln % framspernxfile
+
     dtm = {
         "Mono8": "uint8",
         "Mono8Signed": "int8",
@@ -66,13 +72,13 @@ if ds.$(name)_filesaving:
         "BayerGB12": "uint16",
         "BayerBG12": "uint16",
     }
+
     try:
         dtype = dtm[pixelformat]
     except Exception:
         dtype = "uint8"
 
     shape = [totalframenumbers, height, width]
-
 
     if "$var.filename":
         path = ("$var.filename").split("/")[-1].split(".")[0] + "/"
@@ -96,45 +102,27 @@ if ds.$(name)_filesaving:
 
     vfl = nxw.virtual_field_layout([totalframenumbers, height, width], dtype)
 
-
-    foffset = 0
-    for savefilename, framenumbers in filesframes:
-
-        if framenumbers > 0 and framesperfile > 10:
-            nbfiles = (framenumbers - 1) // framesperfile + 1
-            lastfilenbframes = framenumbers - (nbfiles - 1) * framesperfile
-        elif framenumbers > 0:
-            nbfiles = 1
-            lastfilenbframes = framenumbers
-        else:
-            nbfiles = 0
-            lastfilenbframes = 0
-
-        if nbfiles > 0:
-            for nbf in range(0, nbfiles):
-                if framenumbers > framesperfile and framesperfile > 10:
-                    connector = "_part%05d." % nbf
-                else:
-                    connector = "."
-                filename = path + "$(name)/" + str(savefilename) + connector + str(ds.$(name)_filepostfix)
-                ln = framesperfile if nbf + 1 != nbfiles else lastfilenbframes
-                ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
-                vfl[(foffset + nbf * framesperfile):(foffset + nbf * framesperfile + ln), :, :] = ef
-            foffset += framenumbers
+    firstfilenumber = lastfilenumber - nbfiles
+    if nbfiles > 0:
+        for nbf in range(firstfilenumber, lastfilenumber):
+            connector = "_%05d." % nbf
+            filename = path + "$(name)/" + str(fileprefix) + connector + str(ds.$(name)_filepostfix)
+            ln = framespernxfile if nbf + 1 != lastfilenumber  else lastfilenbframes
+            ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
+            vfl[(nbf * framespernxfile):(nbf * framespernxfile + ln), :, :] = ef
     det.create_virtual_field("data", vfl)
 
     </result>
-    $datasources.$(name)_filedir
-    $datasources.$(name)_fileprefix
-    $datasources.$(name)_filepostfix
-    $datasources.$(name)_filestartnum
-    $datasources.$(name)_filesaving
-    $datasources.$(name)_triggermode
-    $datasources.$(name)_framespernxfile
-    $datasources.$(name)_pixelformat
-    $datasources.$(name)_height
-    $datasources.$(name)_width 
-    $datasources.$(name)_acquisitionmode
-    $datasources.$(name)_acquisitionframecount
-  </datasource>
+ $datasources.$(name)_filedir
+ $datasources.$(name)_fileprefix
+ $datasources.$(name)_filepostfix
+ $datasources.$(name)_filestartnum
+ $datasources.$(name)_filesaving
+ $datasources.$(name)_triggermode
+ $datasources.$(name)_framespernxfile
+ $datasources.$(name)_pixelformat
+ $datasources.$(name)_height
+ $datasources.$(name)_width
+ $datasources.$(name)_acquisitionmode
+ $datasources.$(name)_acquisitionframecount</datasource>
 </definition>

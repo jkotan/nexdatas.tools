@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <definition>
-  <datasource type="PYEVAL" name="$(name)_triggermode_cb">
+  <datasource name="$(name)_triggermode_cb" type="PYEVAL">
     <result name="result">
 ds.result = ds.$(name)_triggermode
 
@@ -14,7 +14,6 @@ if ds.$(name)_saveallimages:
     if "$(name)_framenumbers" in commonblock:
         framesnumbers = commonblock["$(name)_framenumbers"]
     fln = min(len(framesnumbers), len(filenames))
-
 
     filesframes = []
     lastfile = None
@@ -89,14 +88,13 @@ if ds.$(name)_saveallimages:
     det.create_virtual_field("data", vfl)
 
     </result>
-    $datasources.$(name)_triggermode
-    $datasources.$(name)_opmode
-    $datasources.$(name)_savefilename
-    $datasources.$(name)_saveallimages
-    $datasources.$(name)_framesperfile
-    $datasources.$(name)_framenumbers
-    $datasources.$(name)_filepostfix
-    $datasources.$(name)_height
-    $datasources.$(name)_width
-  </datasource>
+ $datasources.$(name)_triggermode
+ $datasources.$(name)_opmode
+ $datasources.$(name)_savefilename
+ $datasources.$(name)_saveallimages
+ $datasources.$(name)_framesperfile
+ $datasources.$(name)_framenumbers
+ $datasources.$(name)_filepostfix
+ $datasources.$(name)_height
+ $datasources.$(name)_width</datasource>
 </definition>
