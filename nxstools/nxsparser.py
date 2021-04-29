@@ -350,7 +350,6 @@ class ParserTools(object):
         """
         res = {}
         exclude = exclude or []
-        print("NODe", node)
         for name in node.attrib.keys():
             if name not in exclude:
                 res[name] = node.attrib[name]
