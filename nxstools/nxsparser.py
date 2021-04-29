@@ -269,6 +269,49 @@ class ParserTools(object):
         return name
 
     @classmethod
+    def __getFullPath(cls, node):
+        """ provides node path
+
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
+        :returns: node path
+        :rtype: :obj:`str`
+        """
+        name = cls.__getAttr(node, "name")
+        if not name:
+            return ""
+        attr = False
+        while node.getparent() is not None:
+            onode = node
+            field = False
+            node = node.getparent()
+            if onode.tag == "attribute":
+                attr = True
+            else:
+                attr = False
+            if onode.tag == "field":
+                field = True
+            else:
+                field = False
+            if node.tag not in ["group", "field"]:
+                return name
+            else:
+                gname = cls.__getAttr(node, "name")
+                nxtype = cls.__getAttr(node, "type")
+                if not gname:
+                    if len(nxtype) > 2:
+                        gname = nxtype[2:]
+                if attr:
+                    name = gname + "@" + name
+                elif not field and nxtype:
+                    name = "%s:%s/%s" % (gname, nxtype, name)
+                else:
+                    name = gname + "/" + name
+
+                attr = False
+        return name
+
+    @classmethod
     def __getAttr(cls, node, name, tag=False):
         """ provides value of attirbute
 
@@ -295,6 +338,23 @@ class ParserTools(object):
             return text
         else:
             return None
+
+    @classmethod
+    def __getAllAttr(cls, node, exclude=None):
+        """ provides value of attirbute
+
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
+        :returns: attribute dictionary
+        :rtype: :obj:<:obj:`str`, :obj:`any`>
+        """
+        res = {}
+        exclude = exclude or []
+        print("NODe", node)
+        for name in node.attrib.keys():
+            if name not in exclude:
+                res[name] = node.attrib[name]
+        return res
 
     @classmethod
     def __getShape(cls, node):
@@ -378,8 +438,11 @@ class ParserTools(object):
                 troffset = cls.__getAttr(nd, "offset", True)
                 trdependson = cls.__getAttr(nd, "depends_on", True)
                 nxpath = cls.__getPath(nd)
+                fullnxpath = cls.__getFullPath(nd)
                 dnodes = cls.__getChildrenByTagName(nd, "dimensions")
                 shape = cls.__getShape(dnodes[0]) if dnodes else None
+                docnodes = cls.__getChildrenByTagName(nd, "doc")
+                doc = cls._getPureText((docnodes[0])) if docnodes else None
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
                 strategy = cls.__getAttr(stnodes[0], "mode") \
                     if stnodes else None
@@ -387,6 +450,7 @@ class ParserTools(object):
                 sfdinfo = {
                     "strategy": strategy,
                     "nexus_path": nxpath,
+                    "full_nexus_path": fullnxpath,
                 }
                 fdinfo = {
                     "nexus_type": nxtype,
@@ -396,9 +460,12 @@ class ParserTools(object):
                     "trans_vector": trvector,
                     "trans_offset": troffset,
                     "depends_on": trdependson,
-                    "value": value
+                    "value": value,
+                    "doc": doc
                 }
                 fdinfo.update(sfdinfo)
+                otherinfo = cls.__getAllAttr(nd, list(fdinfo.keys()))
+                fdinfo.update(otherinfo)
                 dss = cls.__getDataSources(nd, direct=True)
                 if dss:
                     for ds in dss:
@@ -589,7 +656,7 @@ class TableTools(object):
             'source_name',
             'source_type',
             'source',
-            'value',
+            'value'
         ]
         #: (:obj:`str`) table title
         self.title = None

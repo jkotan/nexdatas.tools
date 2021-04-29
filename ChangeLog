@@ -1,6 +1,9 @@
 2021-04-29 Jan Kotanski <jankotan@gmail.com>
 	* add selection of column headers in nxsconfig describe
 	* fix nxsparser when no link target defined
+	* add doc column in nxsconfig describe
+	* add doc full_nexus_path column in nxsconfig describe
+	* add columns with usr defined attributes in nxsconfig describe
 	* tagged as v3.6.0
 
 2021-04-28 Jan Kotanski <jankotan@gmail.com>
