@@ -680,7 +680,7 @@ class ConfigServer(object):
             ttools.headers = headers
         return ttools.generateList()
 
-    def describeCmd(self, ds, args, md, pr):
+    def describeCmd(self, ds, args, md, pr, headers=None):
         """ provides description of configuration elements
 
         :param ds: flag set True for datasources
@@ -691,16 +691,24 @@ class ConfigServer(object):
         :type md: :obj:`bool`
         :param pr: flag set True for private components
         :type pr: :obj:`bool`
+        :param pr: column headers
+        :type pr: :obj:`str`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
 
         """
-        if ds:
-            return self.__describeDataSources(args)
-        elif not md:
-            return self.__describeComponents(args, private=pr)
+        if headers:
+            headers = str(headers).split(',')
         else:
-            return self.__describeConfiguration(args)
+            headers = None
+        if ds:
+            return self.__describeDataSources(args, headers)
+        elif not md:
+            return self.__describeComponents(
+                args, headers, private=pr)
+        else:
+            return self.__describeConfiguration(
+                args, headers)
 
     def infoCmd(self, ds, args, md, pr, profiles):
         """ Provides info for given elements
@@ -1336,6 +1344,14 @@ class Describe(Runner):
         parser.add_argument("-m", "--mandatory", action="store_true",
                             default=False, dest="mandatory",
                             help="make use mandatory components")
+        self._parser.add_argument(
+            "-c", "--columns",
+            help="names of column to be shown (separated by commas "
+            "without spaces). The possible names are: "
+            "depends_on, dtype, full_path, nexus_path, nexus_type, shape,"
+            " source, source_name, source_type, strategy, trans_type, "
+            "trans_offset, trans_vector, units, value",
+            dest="headers", default="")
         parser.add_argument("-p", "--private", action="store_true",
                             default=False, dest="private",
                             help="make use private components,"
@@ -1354,7 +1370,7 @@ class Describe(Runner):
         cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.describeCmd(
             options.datasources, options.args, options.mandatory,
-            options.private))
+            options.private, options.headers))
         return string
 
 
