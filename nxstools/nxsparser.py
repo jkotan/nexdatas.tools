@@ -534,7 +534,7 @@ class ParserTools(object):
                                     taglist.append(sds)
                 else:
                     taglist.append(fdinfo)
-                    if target.strip():
+                    if target and target.strip():
                         fdinfo2 = dict(fdinfo)
                         fdinfo2["nexus_path"] = "\\-> %s" % target
                         taglist.append(fdinfo2)

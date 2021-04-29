@@ -1,3 +1,7 @@
+2021-04-29 Jan Kotanski <jankotan@gmail.com>
+	* fix nxsparser when no link target defined
+	* tagged as v3.5.1
+
 2021-04-28 Jan Kotanski <jankotan@gmail.com>
 	* add detector livedata component template
 	* tagged as v3.5.0
