@@ -1,6 +1,7 @@
 2021-04-29 Jan Kotanski <jankotan@gmail.com>
+	* add selection of column headers in nxsconfig describe
 	* fix nxsparser when no link target defined
-	* tagged as v3.5.1
+	* tagged as v3.6.0
 
 2021-04-28 Jan Kotanski <jankotan@gmail.com>
 	* add detector livedata component template
