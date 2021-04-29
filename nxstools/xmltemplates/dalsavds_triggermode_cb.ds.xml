@@ -11,7 +11,10 @@ if ds.$(name)_filesaving:
     framestartnumbers = []
     if "$(name)_filestartnum" in commonblock:
         filestartnumbers = commonblock["$(name)_filestartnum"]
-    fln = len(filestartnumbers)
+    if "$(name)_nrexposedframes" in commonblock:
+        nrexposedframes = commonblock["$(name)_nrexposedframes"]
+    flen = len(filestartnumbers)
+    frlen = nrexposedframes[-1] if nrexposedframes else 0
 
     lastfilenumber = filestartnumbers[-1] if filestartnumbers else 0
 
@@ -32,26 +35,29 @@ if ds.$(name)_filesaving:
     totalframenumbers = []
     nbfiles = 0
     if mode in ["MultiFrame"]:
-        totalframenumbers = fln * framecount
+        totalframenumbers = flen * framecount
         if 1 > framespernxfile or framespernxfile > framecount:
-            filesizes = [framecount for _ in range(fln)]
+            filesizes = [framecount] * (flen)
             nbfiles = len(filesizes)
+            lastfilenbframes = nbfiles
         else:
-            nbfiles = (framecount + 1) // framspernxfile + 1
-            lastfilenbframes = framecount % framspernxfile
+            nbfiles = (framecount + 1) // framespernxfile + 1
+            lastfilenbframes = framecount % framespernxfile
 
     elif mode in ["SingleFrame"]:
-        totalframenumbers = fln
-        filesizes = [1 for _ in range(fln)]
+        totalframenumbers = flen
+        filesizes = [1 for _ in range(flen)]
         nbfiles = len(filesizes)
+        lastfilenbframes = nbfiles
     elif mode in ["Continuous"]:
-        totalframenumbers = fln
-        if 1 > framespernxfile or framespernxfile > fln:
-            filesizes = [fln for _ in range(fln)]
+        totalframenumbers = flen
+        if 1 > framespernxfile or framespernxfile > flen:
+            filesizes = [flen]
             nbfiles = len(filesizes)
+            lastfilenbframes = flen
         else:
-            nbfiles = (fln + 1) // framspernxfile + 1
-            lastfilenbframes = fln % framspernxfile
+            nbfiles = (flen + 1) // framespernxfile + 1
+            lastfilenbframes = flen % framespernxfile
 
     dtm = {
         "Mono8": "uint8",
@@ -107,7 +113,7 @@ if ds.$(name)_filesaving:
         for nbf in range(firstfilenumber, lastfilenumber):
             connector = "_%05d." % nbf
             filename = path + "$(name)/" + str(fileprefix) + connector + str(ds.$(name)_filepostfix)
-            ln = framespernxfile if nbf + 1 != lastfilenumber  else lastfilenbframes
+            ln = framespernxfile if nbf + 1 != lastfilenumber else lastfilenbframes
             ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
             vfl[(nbf * framespernxfile):(nbf * framespernxfile + ln), :, :] = ef
     det.create_virtual_field("data", vfl)
