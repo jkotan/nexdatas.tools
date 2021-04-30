@@ -22,6 +22,7 @@
 import sys
 import json
 import xml.etree.ElementTree as et
+import lxml.etree
 from lxml.etree import XMLParser
 
 
@@ -70,6 +71,68 @@ def _toxml(node):
     if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
         xml = str(xml[38:])
         return xml
+
+
+class ESRFConverter(object):
+    """ ESRF xml configuration converter """
+
+    def __init__(self):
+        """ constructor """
+
+        self.__allowed_tags = [
+            "group", "field", "link", "attribute", "doc",
+            "strategy", "datasource"]
+
+        self.__amap = {
+            "NX_class": "type",
+            "groupName": "name",
+            "NAPItype": "type",
+            "ref": "target"
+        }
+
+    def convert(self, text):
+        """ converts ESRF xml configuration to nxsdatawriter format
+
+        :param text: input xml string
+        :type text: :obj:`str`
+        :returns: output xml string
+        :rtype: :obj:`str`
+        """
+        tree = _parseString(text)
+        if tree.tag == "definition":
+            definition = tree
+        else:
+            definition = lxml.etree.Element('definition')
+            definition.append(tree)
+        self._convert(tree)
+        return _toxml(definition)
+
+    def _convert(self, tree):
+        """ converts ESRF xml etree configuration to nxsdatawriter format
+
+        :param tree: etree Element node
+        :type tree: :class:`lxml.etree.Element`
+        """
+        if tree.tag not in self.__allowed_tags:
+            if "name" not in tree.attrib.keys():
+                tree.attrib["name"] = tree.tag
+                tree.tag = "field"
+        for ikey, okey in self.__amap.items():
+            if ikey in tree.attrib.keys() \
+               and okey not in tree.attrib.keys():
+                tree.attrib[okey] = tree.attrib.pop(ikey)
+        if 'ESRF_description' in tree.attrib.keys():
+            text = tree.attrib.pop('ESRF_description')
+            doc = lxml.etree.Element('doc')
+            doc.text = text
+            tree.append(doc)
+        if 'record' in tree.attrib.keys():
+            text = tree.attrib.pop('record')
+            mode = lxml.etree.Element("strategy")
+            mode.attrib["mode"] = text.upper()
+            tree.append(mode)
+        for tr in tree:
+            self._convert(tr)
 
 
 class ParserTools(object):

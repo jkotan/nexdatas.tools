@@ -23,7 +23,7 @@ import sys
 import os
 import argparse
 import json
-from .nxsparser import ParserTools, TableTools, TableDictTools
+from .nxsparser import ParserTools, TableTools, TableDictTools, ESRFConverter
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
 #: (:obj:`bool`) True if PyTango available
@@ -365,7 +365,7 @@ class ConfigServer(object):
         return []
 
     def uploadCmd(self, ds, args, force=False, profiles=False, directory='.',
-                  mandatory=False):
+                  mandatory=False, external=None):
         """ upload the DB items from files
 
         :param ds: flag set True for datasources
@@ -380,6 +380,8 @@ class ConfigServer(object):
         :type directory: :obj:`str`
         :param mandatory: mandatory flag
         :type mandatory: :obj:`bool`
+        :param external: external import type
+        :type external: :obj:`str`
         :returns: list of XML items
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -417,6 +419,8 @@ class ConfigServer(object):
                 name = os.path.join(directory, "%s.xml" % ar)
                 with open(name, 'r') as fl:
                     txt = fl.read()
+                if external and external.lower() == "esrf":
+                    txt = ESRFConverter().convert(txt)
                 self._cnfServer.XMLString = txt
                 self._cnfServer.StoreComponent(ar)
                 if mandatory:
@@ -988,6 +992,9 @@ class Upload(Runner):
         parser.add_argument("-i", "--directory", dest="directory",
                             default=".",
                             help=("input file directory, default: '.'"))
+        parser.add_argument("-e", "--external", dest="external",
+                            default="",
+                            help=("external format of xml, e.g. 'esrf'"))
         parser.add_argument('args', metavar='name', type=str, nargs='*',
                             help='names of components, datasources '
                             'or profiles')
@@ -1003,7 +1010,8 @@ class Upload(Runner):
         cnfserver = ConfigServer(options.server, False)
         string = cnfserver.char.join(cnfserver.uploadCmd(
             options.datasources, options.args, options.force,
-            options.profiles, options.directory, options.mandatory
+            options.profiles, options.directory, options.mandatory,
+            options.external
         ))
         return string
 
