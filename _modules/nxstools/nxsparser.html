@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsparser &#8212; NXSTools 3.4.0 documentation</title>
+    <title>nxstools.nxsparser &#8212; NXSTools 3.6.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.4</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.6</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -194,7 +194,9 @@
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">fnmatch</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">et</span>
+<span class="kn">import</span> <span class="nn">lxml.etree</span>
 <span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="k">import</span> <span class="n">XMLParser</span>
 
 
@@ -243,6 +245,68 @@
     <span class="k">if</span> <span class="n">xml</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf8&#39;?&gt;&quot;</span><span class="p">):</span>
         <span class="n">xml</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml</span><span class="p">[</span><span class="mi">38</span><span class="p">:])</span>
         <span class="k">return</span> <span class="n">xml</span>
+
+
+<div class="viewcode-block" id="ESRFConverter"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsparser.ESRFConverter">[docs]</a><span class="k">class</span> <span class="nc">ESRFConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; ESRF xml configuration converter &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; constructor &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__allowed_tags</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strategy&quot;</span><span class="p">,</span> <span class="s2">&quot;datasource&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__amap</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;NX_class&quot;</span><span class="p">:</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;groupName&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;NAPItype&quot;</span><span class="p">:</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ref&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="ESRFConverter.convert"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsparser.ESRFConverter.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; converts ESRF xml configuration to nxsdatawriter format</span>
+
+<span class="sd">        :param text: input xml string</span>
+<span class="sd">        :type text: :obj:`str`</span>
+<span class="sd">        :returns: output xml string</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">_parseString</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;definition&quot;</span><span class="p">:</span>
+            <span class="n">definition</span> <span class="o">=</span> <span class="n">tree</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">definition</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;definition&#39;</span><span class="p">)</span>
+            <span class="n">definition</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_toxml</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; converts ESRF xml etree configuration to nxsdatawriter format</span>
+
+<span class="sd">        :param tree: etree Element node</span>
+<span class="sd">        :type tree: :class:`lxml.etree.Element`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__allowed_tags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">tag</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;field&quot;</span>
+        <span class="k">for</span> <span class="n">ikey</span><span class="p">,</span> <span class="n">okey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__amap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">ikey</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> \
+               <span class="ow">and</span> <span class="n">okey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">okey</span><span class="p">]</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">ikey</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;ESRF_description&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ESRF_description&#39;</span><span class="p">)</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s1">&#39;doc&#39;</span><span class="p">)</span>
+            <span class="n">doc</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;record&#39;</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;record&#39;</span><span class="p">)</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
+            <span class="n">mode</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="n">tree</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ParserTools"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsparser.ParserTools">[docs]</a><span class="k">class</span> <span class="nc">ParserTools</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -442,6 +506,49 @@
         <span class="k">return</span> <span class="n">name</span>
 
     <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__getFullPath</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides node path</span>
+
+<span class="sd">        :param node: etree node</span>
+<span class="sd">        :type node: :class:`lxml.etree.Element`</span>
+<span class="sd">        :returns: node path</span>
+<span class="sd">        :rtype: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">onode</span> <span class="o">=</span> <span class="n">node</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">onode</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;attribute&quot;</span><span class="p">:</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">onode</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">field</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gname</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">nxtype</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">gname</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nxtype</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">gname</span> <span class="o">=</span> <span class="n">nxtype</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">attr</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">gname</span> <span class="o">+</span> <span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">name</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">nxtype</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gname</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">gname</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">name</span>
+
+                <span class="n">attr</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">name</span>
+
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__getAttr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; provides value of attirbute</span>
 
@@ -468,6 +575,22 @@
             <span class="k">return</span> <span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__getAllAttr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; provides value of attirbute</span>
+
+<span class="sd">        :param node: etree node</span>
+<span class="sd">        :type node: :class:`lxml.etree.Element`</span>
+<span class="sd">        :returns: attribute dictionary</span>
+<span class="sd">        :rtype: :obj:&lt;:obj:`str`, :obj:`any`&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="n">exclude</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">res</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__getShape</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
@@ -551,8 +674,11 @@
                 <span class="n">troffset</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="n">trdependson</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;depends_on&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="n">nxpath</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getPath</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
+                <span class="n">fullnxpath</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getFullPath</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
                 <span class="n">dnodes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;dimensions&quot;</span><span class="p">)</span>
                 <span class="n">shape</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getShape</span><span class="p">(</span><span class="n">dnodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">dnodes</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="n">docnodes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;doc&quot;</span><span class="p">)</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_getPureText</span><span class="p">((</span><span class="n">docnodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="k">if</span> <span class="n">docnodes</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">stnodes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
                 <span class="n">strategy</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">stnodes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;mode&quot;</span><span class="p">)</span> \
                     <span class="k">if</span> <span class="n">stnodes</span> <span class="k">else</span> <span class="kc">None</span>
@@ -560,6 +686,7 @@
                 <span class="n">sfdinfo</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s2">&quot;strategy&quot;</span><span class="p">:</span> <span class="n">strategy</span><span class="p">,</span>
                     <span class="s2">&quot;nexus_path&quot;</span><span class="p">:</span> <span class="n">nxpath</span><span class="p">,</span>
+                    <span class="s2">&quot;full_nexus_path&quot;</span><span class="p">:</span> <span class="n">fullnxpath</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="n">fdinfo</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s2">&quot;nexus_type&quot;</span><span class="p">:</span> <span class="n">nxtype</span><span class="p">,</span>
@@ -569,9 +696,12 @@
                     <span class="s2">&quot;trans_vector&quot;</span><span class="p">:</span> <span class="n">trvector</span><span class="p">,</span>
                     <span class="s2">&quot;trans_offset&quot;</span><span class="p">:</span> <span class="n">troffset</span><span class="p">,</span>
                     <span class="s2">&quot;depends_on&quot;</span><span class="p">:</span> <span class="n">trdependson</span><span class="p">,</span>
-                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                    <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="n">doc</span>
                 <span class="p">}</span>
                 <span class="n">fdinfo</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sfdinfo</span><span class="p">)</span>
+                <span class="n">otherinfo</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAllAttr</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">fdinfo</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+                <span class="n">fdinfo</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">otherinfo</span><span class="p">)</span>
                 <span class="n">dss</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getDataSources</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">dss</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dss</span><span class="p">:</span>
@@ -707,7 +837,7 @@
                                     <span class="n">taglist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sds</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">taglist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fdinfo</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">target</span> <span class="ow">and</span> <span class="n">target</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                         <span class="n">fdinfo2</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fdinfo</span><span class="p">)</span>
                         <span class="n">fdinfo2</span><span class="p">[</span><span class="s2">&quot;nexus_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">-&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">target</span>
                         <span class="n">taglist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fdinfo2</span><span class="p">)</span>
@@ -732,13 +862,17 @@
     <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param description: description list</span>
 <span class="sd">        :type description:  :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :param nonone: list of parameters which have to exist to be shown</span>
 <span class="sd">        :type nonone:  :obj:`list` &lt;:obj:`str`&gt;</span>
+<span class="sd">        :param headers: list of output parameters</span>
+<span class="sd">        :type headers: :obj:`list` &lt;:obj:`str`&gt;</span>
+<span class="sd">        :param filters:  filters for first column names</span>
+<span class="sd">        :type filters: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;)</span>
         <span class="c1">#:    list of parameters which have to exist to be shown</span>
@@ -762,23 +896,33 @@
             <span class="s1">&#39;source_name&#39;</span><span class="p">,</span>
             <span class="s1">&#39;source_type&#39;</span><span class="p">,</span>
             <span class="s1">&#39;source&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;value&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;value&#39;</span>
         <span class="p">]</span>
+        <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;) filter list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+        <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+
         <span class="c1">#: (:obj:`str`) table title</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__loadDescription</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadDescription</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__loadDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
+<div class="viewcode-block" id="TableTools.loadDescription"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsparser.TableTools.loadDescription">[docs]</a>    <span class="k">def</span> <span class="nf">loadDescription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; loads description</span>
 
 <span class="sd">        :param description:  description list</span>
 <span class="sd">        :type description:  :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+            <span class="n">hkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">description</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">skip</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nexus_path&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">desc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s1">&#39;depends_on&#39;</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
@@ -790,9 +934,20 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">vl</span><span class="p">:</span>
                     <span class="n">skip</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">skip</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="ow">and</span> <span class="n">hkey</span> <span class="ow">in</span> <span class="n">desc</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">desc</span><span class="p">[</span><span class="n">hkey</span><span class="p">]</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="n">vl</span><span class="p">],</span> <span class="n">df</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                    <span class="n">skip</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">continue</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">skip</span> <span class="ow">and</span> <span class="n">found</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__description</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
-
         <span class="k">for</span> <span class="n">desc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__description</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">desc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -805,7 +960,7 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                         <span class="n">vl</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__hdsizes</span><span class="p">[</span><span class="n">hd</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vl</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">__hdsizes</span><span class="p">[</span><span class="n">hd</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__hdsizes</span><span class="p">[</span><span class="n">hd</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">__toString</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
