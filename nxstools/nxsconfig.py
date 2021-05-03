@@ -643,7 +643,7 @@ class ConfigServer(object):
         return description
 
     def __describeConfiguration(self, args, headers=None, nonone=None,
-                                attrs=True):
+                                attrs=True, filters=None):
         """ provides description of final configuration
 
         :param args: list of item names
@@ -654,6 +654,8 @@ class ConfigServer(object):
         :type nonone: :obj:`list` <:obj:`str`>
         :param attrs: flag set True for parsing attributes
         :type attrs: :obj:`bool`
+        :param filters:  filters for first column names
+        :type filters: :obj:`list` <:obj:`str`>
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
