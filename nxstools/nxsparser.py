@@ -21,6 +21,7 @@
 
 import sys
 import json
+import fnmatch
 import xml.etree.ElementTree as et
 import lxml.etree
 from lxml.etree import XMLParser
@@ -688,13 +689,17 @@ class TableTools(object):
     """ configuration server adapter
     """
 
-    def __init__(self, description, nonone=None):
+    def __init__(self, description, nonone=None, headers=None, filters=None):
         """ constructor
 
         :param description: description list
         :type description:  :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
         :type nonone:  :obj:`list` <:obj:`str`>
+        :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
+        :param filters:  filters for first column names
+        :type filters: :obj:`list` <:obj:`str`>
         """
         #: (:obj:`list` <:obj:`str`>)
         #:    list of parameters which have to exist to be shown
@@ -720,21 +725,31 @@ class TableTools(object):
             'source',
             'value'
         ]
+        #: (:obj:`list` <:obj:`str`>) filter list
+        self.filters = []
+        if headers:
+            self.headers = headers
+        if filters:
+            self.filters = filters
+
         #: (:obj:`str`) table title
         self.title = None
-        self.__loadDescription(description)
+        self.loadDescription(description)
 
-    def __loadDescription(self, description):
+    def loadDescription(self, description):
         """ loads description
 
         :param description:  description list
         :type description:  :obj:`list` <:obj:`str`>
         """
+        if self.headers:
+            hkey = self.headers[0]
         for desc in description:
             if desc is None:
                 self.__description.append(desc)
                 continue
             skip = False
+            found = False
             field = desc.get("nexus_path", "").split('/')[-1]
             value = desc.get("value", "")
             if field == 'depends_on' and value:
@@ -746,9 +761,20 @@ class TableTools(object):
                 if not vl:
                     skip = True
                     break
-            if not skip:
+            if self.filters and hkey in desc.keys():
+                vl = desc[hkey]
+                found = False
+                for df in self.filters:
+                    found = fnmatch.filter([vl], df)
+                    if found:
+                        break
+                if not found:
+                    skip = True
+                    continue
+            elif not self.filters:
+                found = True
+            if not skip and found:
                 self.__description.append(desc)
-
         for desc in self.__description:
             if desc is None:
                 continue

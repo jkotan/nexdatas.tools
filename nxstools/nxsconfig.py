@@ -447,13 +447,15 @@ class ConfigServer(object):
         self._cnfServer.CreateConfiguration(args)
         return self._cnfServer.XMLString
 
-    def __describeDataSources(self, args, headers=None):
+    def __describeDataSources(self, args, headers=None, filters=None):
         """ provides description of datasources
 
         :param args: list of item names
         :type args: :obj:`list` <:obj:`str`>
         :param headers: list of output parameters
         :type headers: :obj:`list` <:obj:`str`>
+        :param filters:  filters for first column names
+        :type filters: :obj:`list` <:obj:`str`>
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -479,9 +481,13 @@ class ConfigServer(object):
             dsxmls = self._cnfServer.DataSources(args)
             for i, xmls in enumerate(dsxmls):
                 parameters = ParserTools.parseDataSources(xmls)
-                ttools = TableTools(parameters)
+                ttools = TableTools(parameters,
+                                    headers=headers,
+                                    filters=filters)
                 ttools.title = "DataSource: '%s'" % args[i]
                 ttools.headers = headers
+                if filters:
+                    ttools.filters = filters
                 description.extend(ttools.generateList())
         else:
             dsxmls = self._cnfServer.DataSources(dss)
@@ -547,7 +553,7 @@ class ConfigServer(object):
         return description
 
     def __describeComponents(self, args, headers=None, nonone=None,
-                             private=False, attrs=True):
+                             private=False, attrs=True, filters=None):
         """ provides description of components
 
         :param args: list of item names
@@ -560,6 +566,8 @@ class ConfigServer(object):
         :type private: :obj:`bool`
         :param attrs: flag set True for parsing attributes
         :type attrs: :obj:`bool`
+        :param filters:  filters for first column names
+        :type filters: :obj:`list` <:obj:`str`>
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
         """
@@ -617,14 +625,14 @@ class ConfigServer(object):
                 if attrs:
                     parameters.extend(ParserTools.parseAttributes(xmls))
                 parameters.extend(ParserTools.parseLinks(xmls))
-                ttools = TableTools(parameters, nonone)
+                ttools = TableTools(parameters, nonone,
+                                    headers,
+                                    filters)
                 if dargs[i] in deps:
                     ttools.title = "Component: '%s' %s" % (
                         dargs[i], deps[dargs[i]])
                 else:
                     ttools.title = "Component: '%s'" % dargs[i]
-                if headers:
-                    ttools.headers = headers
                 description.extend(ttools.generateList())
         if not description:
             sys.stderr.write(
@@ -679,12 +687,14 @@ class ConfigServer(object):
                 "or -m for mandatory components \n\n")
             sys.stderr.flush()
             return ""
-        ttools = TableTools(description, nonone)
+        ttools = TableTools(description, nonone,
+                            headers=headers,
+                            filters=filters)
         if headers:
             ttools.headers = headers
         return ttools.generateList()
 
-    def describeCmd(self, ds, args, md, pr, headers=None):
+    def describeCmd(self, ds, args, md, pr, headers=None, filters=None):
         """ provides description of configuration elements
 
         :param ds: flag set True for datasources
@@ -697,6 +707,8 @@ class ConfigServer(object):
         :type pr: :obj:`bool`
         :param pr: column headers
         :type pr: :obj:`str`
+        :param filters:  filters for first column names separated by comma
+        :type filters: :obj:`str`
         :returns: list with description
         :rtype: :obj:`list` <:obj:`str`>
 
@@ -705,14 +717,18 @@ class ConfigServer(object):
             headers = str(headers).split(',')
         else:
             headers = None
+        if filters:
+            filters = str(filters).split(',')
+        else:
+            filters = None
         if ds:
-            return self.__describeDataSources(args, headers)
+            return self.__describeDataSources(args, headers, filters=filters)
         elif not md:
             return self.__describeComponents(
-                args, headers, private=pr)
+                args, headers, private=pr, filters=filters)
         else:
             return self.__describeConfiguration(
-                args, headers)
+                args, headers, filters=filters)
 
     def infoCmd(self, ds, args, md, pr, profiles):
         """ Provides info for given elements
@@ -1344,14 +1360,17 @@ class Describe(Runner):
 
         """
         parser = self._parser
-        parser.add_argument("-s", "--server", dest="server",
-                            help=("configuration server device name"))
-        parser.add_argument("-d", "--datasources", action="store_true",
-                            default=False, dest="datasources",
-                            help="perform operation for datasources")
-        parser.add_argument("-m", "--mandatory", action="store_true",
-                            default=False, dest="mandatory",
-                            help="make use mandatory components")
+        parser.add_argument(
+            "-s", "--server", dest="server",
+            help=("configuration server device name"))
+        parser.add_argument(
+            "-d", "--datasources", action="store_true",
+            default=False, dest="datasources",
+            help="perform operation for datasources")
+        parser.add_argument(
+            "-m", "--mandatory", action="store_true",
+            default=False, dest="mandatory",
+            help="make use mandatory components")
         self._parser.add_argument(
             "-c", "--columns",
             help="names of column to be shown (separated by commas "
@@ -1360,12 +1379,19 @@ class Describe(Runner):
             " source, source_name, source_type, strategy, trans_type, "
             "trans_offset, trans_vector, units, value",
             dest="headers", default="")
-        parser.add_argument("-p", "--private", action="store_true",
-                            default=False, dest="private",
-                            help="make use private components,"
-                            " i.e. starting with '__'")
-        parser.add_argument('args', metavar='name', type=str, nargs='*',
-                            help='names of components or datasources')
+        self._parser.add_argument(
+            "-f", "--filters",
+            help="filters on the first column (separated by commas "
+            "without spaces). Default: '*'. E.g. '*:NXsample/*'",
+            dest="filters", default="")
+        parser.add_argument(
+            "-p", "--private", action="store_true",
+            default=False, dest="private",
+            help="make use private components,"
+            " i.e. starting with '__'")
+        parser.add_argument(
+            'args', metavar='name', type=str, nargs='*',
+            help='names of components or datasources')
 
     def run(self, options):
         """ the main program function
@@ -1378,7 +1404,7 @@ class Describe(Runner):
         cnfserver = ConfigServer(options.server)
         string = cnfserver.char.join(cnfserver.describeCmd(
             options.datasources, options.args, options.mandatory,
-            options.private, options.headers))
+            options.private, options.headers, options.filters))
         return string
 
 
