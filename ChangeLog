@@ -5,6 +5,7 @@
 	* add doc full_nexus_path column in nxsconfig describe
 	* add columns with usr defined attributes in nxsconfig describe
 	* add import --external xmls in nxsconfig upload
+	* add --filters option for nxsconfig describe
 	* tagged as v3.6.0
 
 2021-04-28 Jan Kotanski <jankotan@gmail.com>
