@@ -1,5 +1,6 @@
 2021-05-04 Jan Kotanski <jankotan@gmail.com>
-	* add fix for nxsconfig describe all datasources
+	* add fix a bug for nxsconfig describe all datasources
+	* add fix a bug for nxsconfig describe and full_nexus_path
 	* tagged as v3.6.1
 
 2021-05-03 Jan Kotanski <jankotan@gmail.com>
