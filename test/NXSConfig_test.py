@@ -228,11 +228,18 @@ For more help:
                     self.assertEqual(
                         tbody[tix[i]][j][0].tagname, 'paragraph')
                     if result[rix[i]][j] and '@' in result[rix[i]][j]:
-                        self.assertEqual(
-                            tbody[tix[i]][j][0][0].tagname, 'reference')
-                        self.assertEqual(len(tbody[tix[i]][j][0][0]), 1)
-                        self.assertEqual(
-                            str(tbody[tix[i]][j][0][0][0]), result[rix[i]][j])
+                        if tbody[tix[i]][j][0][0].tagname == 'reference':
+                            self.assertEqual(
+                                tbody[tix[i]][j][0][0].tagname, 'reference')
+                            self.assertEqual(len(tbody[tix[i]][j][0][0]), 1)
+                            self.assertEqual(
+                                str(tbody[tix[i]][j][0][0][0]),
+                                result[rix[i]][j])
+                        else:
+                            self.assertEqual(
+                                tbody[tix[i]][j][0][0].tagname, '#text')
+                            self.assertEqual(
+                                str(tbody[tix[i]][j][0][0]), result[rix[i]][j])
                     else:
                         self.assertEqual(
                             tbody[tix[i]][j][0][0].tagname, '#text')
@@ -8719,6 +8726,220 @@ For more help:
                 er = mystderr.getvalue()
                 self.assertEqual('', er)
                 avc3 = vl.strip()
+                doc = self.parseRST(avc3)
+                self.assertEqual(len(doc), 1)
+                section = doc[0]
+                title = "Component: '%s'" % nm
+                self.checkRSTSection(section, title, header, result[ni])
+        el.close()
+
+    def test_describe_components_columns(self):
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        el = self.openConf()
+        man = el.mandatoryComponents()
+        el.unsetMandatoryComponents(man)
+        self.__man += man
+        avc = el.availableComponents()
+
+        oname = "mcs_test_component"
+        self.assertTrue(isinstance(avc, list))
+        xml = [
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='data' type='NXdata'>"
+            "<field name='slit1' type='NX_FLOAT' units='mm'>"
+            "<datasource name='sl1right' type='CLIENT'>"
+            "<record name='motor_1'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "<doc>horizontal position of the right slit</doc>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='slit2' type='NXslit'>"
+            "<field name='y_gap' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='ygap' type='CLIENT'>"
+            "<record name='motor_2'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/yoffset<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field depends_on='rot' name='yoffset'  "
+            "type='NX_FLOAT64' units='m' >"
+            "<attribute type='NX_CHAR' name='transformation_type'>"
+            "translation<strategy mode='INIT'/></attribute>"
+            "<attribute type='NX_FLOAT64' name='vector'>0 1 0"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<attribute type='NX_FLOAT64' name='offset'>2.3 0.3 3.4"
+            "<dimensions rank='1'><dim value='3' index='1'/>"
+            "</dimensions><strategy mode='INIT'/>"
+            "</attribute>"
+            "<datasource name='y_offset' type='TANGO'>"
+            "<device hostname='haso.desy.de' member='attribute' "
+            "name='p09/motor/exp.01' port='10000' />"
+            "<record name='Position'/>"
+            "</datasource>"
+            "<strategy mode='INIT'/>"
+            "</field>"
+            "<field type='NX_FLOAT' name='rot' units='deg' "
+            "transformation_type='rotation' vector='0 1 0' >"
+            "4.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>",
+            "<?xml version='1.0' encoding='utf8'?>"
+            "<definition>"
+            "<group name='entry' type='NXentry'>"
+            "<group name='instrument' type='NXinstrument'>"
+            "<group name='pinhole' type='NXpinhole'>"
+            "<field name='diameter' type='NX_FLOAT' units='mm'>"
+            "<strategy mode='STEP' />"
+            "<datasource name='phdiameter' type='CLIENT'>"
+            "<record name='ph_diameter'/>"
+            "</datasource>"
+            "<doc>pinhole diameter</doc>"
+            "</field>"
+            "<field type='NX_CHAR' name='depends_on'>"
+            "transformations/y<strategy mode='INIT'/>"
+            "</field>"
+            "<group name='transformations' type='NXtransformations'>"
+            "<field type='NX_FLOAT' depends_on='x' name='y' units='mm' "
+            "transformation_type='translation' vector='0 1 0' >"
+            "<strategy mode='STEP' />"
+            "<datasource name='phy' type='CLIENT'>"
+            "<record name='ph_y'/>"
+            "</datasource>"
+            "</field>"
+            "<field type='NX_FLOAT' name='x' units='mm' "
+            "transformation_type='translation' vector='1 0 0' >"
+            "14.5<strategy mode='INIT'/>"
+            "</field>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</group>"
+            "</definition>"
+        ]
+        header = '<thead><row>' \
+            '<entry><paragraph>full_nexus_path</paragraph></entry>' \
+            '<entry><paragraph>nexus_type</paragraph></entry>' \
+            '<entry><paragraph>strategy</paragraph></entry>' \
+            '<entry><paragraph>source_name</paragraph></entry>' \
+            '<entry><paragraph>value</paragraph></entry>' \
+            '<entry><paragraph>doc</paragraph></entry>' \
+            '</row></thead>'
+
+        result = [
+            [
+                ["entry:NXentry/data:NXdata/slit1",
+                 "NX_FLOAT", "INIT",
+                 "sl1right", None,
+                 "horizontal position of the right slit"],
+            ],
+            [
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/y_gap",
+                 "NX_FLOAT", "STEP", "ygap", None, None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/"
+                 "depends_on",
+                 "NX_CHAR", "INIT", None,
+                 "transformations/yoffset",
+                 None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/yoffset",
+                 "NX_FLOAT64", "INIT", "y_offset", None, None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/rot",
+                 "NX_FLOAT", "INIT",
+                 None, "4.5", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/"
+                 "yoffset@transformation_type",
+                 "NX_CHAR", "INIT",
+                 None,  "translation", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/"
+                 "transformations:NXtransformations/yoffset@vector",
+                 "NX_FLOAT64", "INIT",
+                 None, "0 1 0", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/yoffset@offset",
+                 "NX_FLOAT64", "INIT",  None, "2.3 0.3 3.4", None],
+            ],
+            [
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "diameter",
+                 "NX_FLOAT", "STEP", "phdiameter", None, "pinhole diameter"],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "depends_on",
+                 "NX_CHAR", "INIT",  None,
+                 "transformations/y", None],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "transformations:NXtransformations/y",
+                 "NX_FLOAT", "STEP", "phy", None, None],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "transformations:NXtransformations/x",
+                 "NX_FLOAT", "INIT", None, "14.5", None],
+            ],
+        ]
+        np = len(xml)
+        name = []
+        for i in range(np):
+
+            name.append(oname + '_%s' % i)
+            while name[i] in avc:
+                name[i] = name[i] + '_%s' % i
+        # print avc
+
+        for i in range(np):
+            self.setXML(el, xml[i])
+            self.assertEqual(el.storeComponent(name[i]), None)
+            self.__cmps.append(name[i])
+
+        commands = [
+            ('nxsconfig describe -s %s '
+             '-c full_nexus_path,nexus_type,strategy,source_name,value,doc'
+             % self._sv.new_device_info_writer.name).split(),
+            ('nxsconfig describe --server %s'
+             ' --columns full_nexus_path,nexus_type,strategy,source_name,'
+             'value,doc'
+             % self._sv.new_device_info_writer.name).split(),
+        ]
+#        commands = [['nxsconfig', 'list']]
+        for cd in commands:
+            for ni, nm in enumerate(name):
+                cmd = list(cd)
+                cmd.append(nm)
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsconfig.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+                self.assertEqual('', er)
+                avc3 = vl.strip()
+                # print(vl)
                 doc = self.parseRST(avc3)
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
