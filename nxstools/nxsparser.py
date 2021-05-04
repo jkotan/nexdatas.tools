@@ -353,10 +353,6 @@ class ParserTools(object):
                 attr = True
             else:
                 attr = False
-            if onode.tag == "field":
-                field = True
-            else:
-                field = False
             if node.tag not in ["group", "field"]:
                 return name
             else:
@@ -367,7 +363,7 @@ class ParserTools(object):
                         gname = nxtype[2:]
                 if attr:
                     name = gname + "@" + name
-                elif not field and nxtype:
+                elif nxtype:
                     name = "%s:%s/%s" % (gname, nxtype, name)
                 else:
                     name = gname + "/" + name
