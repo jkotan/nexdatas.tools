@@ -1,4 +1,8 @@
-2021-04-29 Jan Kotanski <jankotan@gmail.com>
+2021-05-04 Jan Kotanski <jankotan@gmail.com>
+	* add fix for nxsconfig describe all datasources
+	* tagged as v3.6.1
+
+2021-05-03 Jan Kotanski <jankotan@gmail.com>
 	* add selection of column headers in nxsconfig describe
 	* fix nxsparser when no link target defined
 	* add doc column in nxsconfig describe
