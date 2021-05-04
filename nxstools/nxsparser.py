@@ -571,6 +571,7 @@ class ParserTools(object):
                 troffset = cls.__getAttr(nd, "offset", True)
                 trdependson = cls.__getAttr(nd, "depends_on", True)
                 nxpath = cls.__getPath(nd)
+                fullnxpath = cls.__getFullPath(nd)
                 dnodes = cls.__getChildrenByTagName(nd, "dimensions")
                 shape = cls.__getShape(dnodes[0]) if dnodes else None
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
@@ -579,6 +580,7 @@ class ParserTools(object):
                 sfdinfo = {
                     "strategy": strategy,
                     "nexus_path": nxpath,
+                    "full_nexus_path": fullnxpath,
                 }
                 fdinfo = {
                     "nexus_type": nxtype,
