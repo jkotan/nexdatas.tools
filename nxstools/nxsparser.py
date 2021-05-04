@@ -347,7 +347,6 @@ class ParserTools(object):
         attr = False
         while node.getparent() is not None:
             onode = node
-            field = False
             node = node.getparent()
             if onode.tag == "attribute":
                 attr = True

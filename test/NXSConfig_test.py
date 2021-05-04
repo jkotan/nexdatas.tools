@@ -228,11 +228,18 @@ For more help:
                     self.assertEqual(
                         tbody[tix[i]][j][0].tagname, 'paragraph')
                     if result[rix[i]][j] and '@' in result[rix[i]][j]:
-                        self.assertEqual(
-                            tbody[tix[i]][j][0][0].tagname, 'reference')
-                        self.assertEqual(len(tbody[tix[i]][j][0][0]), 1)
-                        self.assertEqual(
-                            str(tbody[tix[i]][j][0][0][0]), result[rix[i]][j])
+                        if tbody[tix[i]][j][0][0].tagname == 'reference':
+                            self.assertEqual(
+                                tbody[tix[i]][j][0][0].tagname, 'reference')
+                            self.assertEqual(len(tbody[tix[i]][j][0][0]), 1)
+                            self.assertEqual(
+                                str(tbody[tix[i]][j][0][0][0]),
+                                result[rix[i]][j])
+                        else:
+                            self.assertEqual(
+                                tbody[tix[i]][j][0][0].tagname, '#text')
+                            self.assertEqual(
+                                str(tbody[tix[i]][j][0][0]), result[rix[i]][j])
                     else:
                         self.assertEqual(
                             tbody[tix[i]][j][0][0].tagname, '#text')
@@ -8726,7 +8733,6 @@ For more help:
                 self.checkRSTSection(section, title, header, result[ni])
         el.close()
 
-
     def test_describe_components_columns(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -8749,6 +8755,7 @@ For more help:
             "<record name='motor_1'/>"
             "</datasource>"
             "<strategy mode='INIT'/>"
+            "<doc>horizontal position of the right slit</doc>"
             "</field>"
             "</group>"
             "</group>"
@@ -8806,6 +8813,7 @@ For more help:
             "<datasource name='phdiameter' type='CLIENT'>"
             "<record name='ph_diameter'/>"
             "</datasource>"
+            "<doc>pinhole diameter</doc>"
             "</field>"
             "<field type='NX_CHAR' name='depends_on'>"
             "transformations/y<strategy mode='INIT'/>"
@@ -8841,55 +8849,51 @@ For more help:
             [
                 ["entry:NXentry/data:NXdata/slit1",
                  "NX_FLOAT", "INIT",
-                 "sl1right", None, None],
+                 "sl1right", None,
+                 "horizontal position of the right slit"],
             ],
             [
                 ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/y_gap",
-                 "NX_FLOAT", "STEP" "ygap", None, None],
-                ["entry/instrument/slit2/depends_on",
-                 "NX_CHAR", "INIT", None, None,
-                 "[transformations/yoffset]", None, None, None,
-                 None, None, None, "transformations/yoffset"],
-                ["entry/instrument/slit2/transformations/yoffset",
-                 "NX_FLOAT64", "INIT", None, "m",
-                 "rot", "translation", "0 1 0", "2.3 0.3 3.4",
-                 "y_offset", "TANGO",
-                 "haso.desy.de:10000/p09/motor/exp.01/Position", None],
-                ["entry/instrument/slit2/transformations/rot",
-                 "NX_FLOAT", "INIT", None, "deg",
-                 None, "rotation", "0 1 0",  None,
-                 None, None, None, "4.5"],
-                ["entry/instrument/slit2/transformations/"
+                 "NX_FLOAT", "STEP", "ygap", None, None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/"
+                 "depends_on",
+                 "NX_CHAR", "INIT", None,
+                 "transformations/yoffset",
+                 None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/yoffset",
+                 "NX_FLOAT64", "INIT", "y_offset", None, None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/rot",
+                 "NX_FLOAT", "INIT",
+                 None, "4.5", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/"
                  "yoffset@transformation_type",
-                 "NX_CHAR", "INIT", None, None,
-                 None, "translation", None, None,
-                 None, None, None, "translation"],
-                ["entry/instrument/slit2/transformations/yoffset@vector",
-                 "NX_FLOAT64", "INIT", "[3]", None,
-                 None, None, "0 1 0", None,
-                 None, None, None, "0 1 0"],
-                ["entry/instrument/slit2/transformations/yoffset@offset",
-                 "NX_FLOAT64", "INIT", "[3]", None,
-                 None, None, None, "2.3 0.3 3.4",
-                 None, None, None, "2.3 0.3 3.4"],
+                 "NX_CHAR", "INIT",
+                 None,  "translation", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit/"
+                 "transformations:NXtransformations/yoffset@vector",
+                 "NX_FLOAT64", "INIT",
+                 None, "0 1 0", None],
+                ["entry:NXentry/instrument:NXinstrument/slit2:NXslit"
+                 "/transformations:NXtransformations/yoffset@offset",
+                 "NX_FLOAT64", "INIT",  None, "2.3 0.3 3.4", None],
             ],
             [
-                ["entry/instrument/pinhole/diameter",
-                 "NX_FLOAT", "STEP", None, "mm",
-                 None, None, None, None,
-                 "phdiameter", "CLIENT", "ph_diameter", None],
-                ["entry/instrument/pinhole/depends_on",
-                 "NX_CHAR", "INIT",  None, None,
-                 "[transformations/y]", None, None, None,
-                 None, None, None, "transformations/y"],
-                ["entry/instrument/pinhole/transformations/y",
-                 "NX_FLOAT", "STEP", None, "mm",
-                 "x", "translation", "0 1 0", None,
-                 "phy", "CLIENT", "ph_y", None],
-                ["entry/instrument/pinhole/transformations/x",
-                 "NX_FLOAT", "INIT", None, "mm",
-                 None, "translation", "1 0 0", None,
-                 None, None, None, "14.5"],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "diameter",
+                 "NX_FLOAT", "STEP", "phdiameter", None, "pinhole diameter"],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "depends_on",
+                 "NX_CHAR", "INIT",  None,
+                 "transformations/y", None],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "transformations:NXtransformations/y",
+                 "NX_FLOAT", "STEP", "phy", None, None],
+                ["entry:NXentry/instrument:NXinstrument/pinhole:NXpinhole/"
+                 "transformations:NXtransformations/x",
+                 "NX_FLOAT", "INIT", None, "14.5", None],
             ],
         ]
         np = len(xml)
@@ -8899,7 +8903,7 @@ For more help:
             name.append(oname + '_%s' % i)
             while name[i] in avc:
                 name[i] = name[i] + '_%s' % i
-#        print avc
+        # print avc
 
         for i in range(np):
             self.setXML(el, xml[i])
@@ -8911,7 +8915,7 @@ For more help:
              '-c full_nexus_path,nexus_type,strategy,source_name,value,doc'
              % self._sv.new_device_info_writer.name).split(),
             ('nxsconfig describe --server %s'
-             '--columns full_nexus_path,nexus_type,strategy,source_name,'
+             ' --columns full_nexus_path,nexus_type,strategy,source_name,'
              'value,doc'
              % self._sv.new_device_info_writer.name).split(),
         ]
@@ -8935,7 +8939,7 @@ For more help:
                 er = mystderr.getvalue()
                 self.assertEqual('', er)
                 avc3 = vl.strip()
-                print(vl)
+                # print(vl)
                 doc = self.parseRST(avc3)
                 self.assertEqual(len(doc), 1)
                 section = doc[0]
