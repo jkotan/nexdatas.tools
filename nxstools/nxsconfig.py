@@ -485,18 +485,16 @@ class ConfigServer(object):
                                     headers=headers,
                                     filters=filters)
                 ttools.title = "DataSource: '%s'" % args[i]
-                ttools.headers = headers
-                if filters:
-                    ttools.filters = filters
                 description.extend(ttools.generateList())
         else:
             dsxmls = self._cnfServer.DataSources(dss)
             xmls = ParserTools.mergeDefinitions(dsxmls).strip()
             parameters.extend(ParserTools.parseDataSources(xmls))
-            ttools = TableTools(parameters)
-            headers = ["source_name"].extend(headers)
-            if headers:
-                ttools.headers = headers
+            if "source_name" not in headers:
+                headers = ["source_name"].extend(headers)
+            ttools = TableTools(parameters,
+                                headers=headers,
+                                filters=filters)
             description.extend(ttools.generateList())
 
         if not description:
