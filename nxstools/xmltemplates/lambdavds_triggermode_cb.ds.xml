@@ -5,8 +5,9 @@
 from nxstools.pyeval import lambdavds
 ds.result = lambdavds.triggermode_cb(
     commonblock,
-    ds.$(name)_triggermode
-    ds.$(name)_saveallimages
+    $(name),
+    ds.$(name)_triggermode,
+    ds.$(name)_saveallimages,
     ds.$(name)_framesperfile,
     ds.$(name)_height,
     ds.$(name)_width,

@@ -117,7 +117,6 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
                 filesframes.append((filenames[fi], framesnumbers[fi]))
                 lastfile = filenames[fi]
                 totalframenumbers += framesnumbers[fi]
-
         dtm = {1: "int8", 6: "int8", 12: "int16", 24: "int32"}
         try:
             dtype = dtm[opmode]
@@ -139,7 +138,6 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
             raise("Writer cannot be found")
 
         en = root.open(entry_str)
-        en.open("data")
         ins = en.open("instrument")
         det = ins.open(name)
         npath = "/entry/instrument/detector/data"
@@ -149,7 +147,6 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
 
         foffset = 0
         for savefilename, framenumbers in filesframes:
-
             if framenumbers > 0 and framesperfile > 10:
                 nbfiles = (framenumbers - 1) // framesperfile + 1
                 lastfilenbframes = framenumbers - (nbfiles - 1) * framesperfile
