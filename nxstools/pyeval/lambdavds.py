@@ -58,7 +58,7 @@ def framenumbers_cb(commonblock, framenumbers, framenumbers_str):
     return framenumbers
 
 
-def triggermode_cb(commonblock, triggermode, saveallimages,
+def triggermode_cb(commonblock, name, triggermode, saveallimages,
                    framesperfile, height, width, opmode,
                    filepostfix, savefilename_str, framenumbers_str,
                    filename_str, entry_str):
@@ -66,6 +66,8 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param name: component name
+    :type name: :obj:`str`
     :param triggermode:  trigger mode
     :type triggermode: :obj:`int` or :obj:`str`
     :param saveallimages: save all images flag
@@ -139,7 +141,7 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
         en = root.open(entry_str)
         en.open("data")
         ins = en.open("instrument")
-        det = ins.open("$(name)")
+        det = ins.open(name)
         npath = "/entry/instrument/detector/data"
 
         vfl = nxw.virtual_field_layout(
@@ -164,7 +166,7 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
                         connector = "_part%05d." % nbf
                     else:
                         connector = "."
-                    filename = path + "$(name)/" + str(savefilename) \
+                    filename = path + name + "/" + str(savefilename) \
                         + connector + str(filepostfix)
                     ln = framesperfile if nbf + 1 != nbfiles \
                         else lastfilenbframes
