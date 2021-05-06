@@ -19,6 +19,7 @@
 
 """  pyeval helper functions for lambdavds """
 
+
 def savefilename_cb(commonblock, savefilename, savefilename_str):
     """ code for savefilename_cb  datasource
 
@@ -35,7 +36,7 @@ def savefilename_cb(commonblock, savefilename, savefilename_str):
         commonblock[savefilename_str] = [savefilename]
     else:
         commonblock[savefilename_str].append(savefilename)
-    return ds.$(name)_savefilename
+    return savefilename
 
 
 def framenumbers_cb(commonblock, framenumbers, framenumbers_str):
@@ -121,8 +122,6 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
         except Exception:
             dtype = "int32"
 
-        shape = [totalframenumbers, height, width]
-
         if filename_str:
             path = (filename_str).split("/")[-1].split(".")[0] + "/"
         else:
@@ -138,12 +137,13 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
             raise("Writer cannot be found")
 
         en = root.open(entry_str)
-        dt = en.open("data")
+        en.open("data")
         ins = en.open("instrument")
         det = ins.open("$(name)")
         npath = "/entry/instrument/detector/data"
 
-        vfl = nxw.virtual_field_layout([totalframenumbers, height, width], dtype)
+        vfl = nxw.virtual_field_layout(
+            [totalframenumbers, height, width], dtype)
 
         foffset = 0
         for savefilename, framenumbers in filesframes:
@@ -164,10 +164,15 @@ def triggermode_cb(commonblock, triggermode, saveallimages,
                         connector = "_part%05d." % nbf
                     else:
                         connector = "."
-                    filename = path + "$(name)/" + str(savefilename) + connector + str(filepostfix)
-                    ln = framesperfile if nbf + 1 != nbfiles else lastfilenbframes
-                    ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
-                    vfl[(foffset + nbf * framesperfile):(foffset + nbf * framesperfile + ln), :, :] = ef
+                    filename = path + "$(name)/" + str(savefilename) \
+                        + connector + str(filepostfix)
+                    ln = framesperfile if nbf + 1 != nbfiles \
+                        else lastfilenbframes
+                    ef = nxw.target_field_view(
+                        filename, npath, [ln, height, width], dtype)
+                    vfl[
+                        (foffset + nbf * framesperfile):
+                        (foffset + nbf * framesperfile + ln), :, :] = ef
                 foffset += framenumbers
         det.create_virtual_field("data", vfl)
     return triggermode
