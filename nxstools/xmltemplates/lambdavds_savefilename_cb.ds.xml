@@ -2,11 +2,9 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_savefilename_cb">
     <result name="result">
-ds.result = ds.$(name)_savefilename
-if "$(name)_savefilename" not in commonblock:
-    commonblock["$(name)_savefilename"] = [str(ds.$(name)_savefilename)]
-else:
-    commonblock["$(name)_savefilename"].append(str(ds.$(name)_savefilename))
+from nxstools.pyeval import lambdavds
+ds.result = lambdavds.savefilename_cb(
+    commonblock, ds.$(name)_savefilename, "$(name)_savefilename")
     </result>
     $datasources.$(name)_savefilename
   </datasource>
