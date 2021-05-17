@@ -2,66 +2,12 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
-import os
-import socket      
-compath = "$(commissiondir)"
-curpath = "$(currentdir)"
-locpath = "$(localdir)"
-curprefix = "$(currentprefix)"
-curext = "$(currentpostfix)"
-comprefix = "$(commissionprefix)"
-comext = "$(commissionpostfix)"
-
-ds.result = None
-root = commonblock["__nxroot__"]
-if hasattr(root, "filename"):
-    fpath = root.filename
-else:
-    root = commonblock["__root__"]
-    fpath = root.parent.name
-if fpath.startswith(curpath):
-    try: 
-        if os.path.isdir(curpath):
-            btml = [fl for fl in  os.listdir(curpath)
-                    if (fl.startswith(curprefix)
-                        and fl.endswith(curext))]
-        if btml:
-            ds.result = btml[0][len(curprefix):-len(curext)]
-    except:
-        pass
-if not ds.result and fpath.startswith(compath):
-    try: 
-        if os.path.isdir(compath):
-            btml = [fl for fl in  os.listdir(compath)
-                    if (fl.startswith(comprefix)
-                        and fl.endswith(comext))]
-        if btml:
-            ds.result = btml[0][len(comprefix):-len(comext)]
-    except:
-        pass
-if not ds.result:
-    try:
-        dirpath = os.path.dirname(fpath)
-        while dirpath.startswith(locpath):
-            if os.path.isdir(dirpath):
-                btml = [fl for fl in  os.listdir(dirpath)
-                        if (fl.startswith(curprefix)
-                            and fl.endswith(curext))]
-                if btml:
-                    ds.result = btml[0][len(curprefix):-len(curext)]
-                    break
-                else:
-                    btml = [fl for fl in  os.listdir(dirpath)
-                            if (fl.startswith(comprefix)
-                                and fl.endswith(comext))]
-                    if btml:
-                        ds.result = btml[0][len(comprefix):-len(comext)]
-                        break
-            dirpath, tail = os.path.split(dirpath)
-    except:    
-        pass
-if not ds.result:
-    ds.result = "%s_%s@%s" % ("$(shortname)", ds.start_time, socket.gethostname())
+from nxstools.pyeval import beamtimeid
+ds.result = beamtimeid.beamtimeid(
+    commonblock,  ds.start_time, "$(shortname)",
+    "$(commissiondir)", "$(currentdir)", "$(localdir)",
+    "$(currentprefix)", "$(currentpostfix)",
+    "$(commissionprefix)", "$(commissionpostfix)")
     </result>
     $datasources.start_time
   </datasource>

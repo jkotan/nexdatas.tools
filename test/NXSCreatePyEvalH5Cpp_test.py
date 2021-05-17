@@ -26,6 +26,7 @@ import random
 import struct
 import binascii
 import shutil
+import socket
 # import time
 # import threading
 import PyTango
@@ -45,6 +46,11 @@ if sys.version_info > (3,):
 
 # if 64-bit machione
 IS64BIT = (struct.calcsize("P") == 8)
+
+
+class TstRoot(object):
+
+    filename = ""
 
 
 # test fixture
@@ -238,6 +244,145 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             "myfile_24234.nxs",
             "entry1234")
         self.assertEqual(triggermode, result)
+
+    def test_beamtimeid_nodir(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tstroot = TstRoot()
+        commonblock = {"__nxroot__": tstroot}
+        tstroot.filename = "/mypath"
+        start_time = "14:13:12"
+        shortname = "P00"
+        commissiondir = "/testgpfs/commission"
+        currentdir = "/testgpfs/current"
+        localdir = "/testgpfs/local"
+        currentprefix = "/testgpfs"
+        currentpostfix = "current"
+        commissionprefix = "/testgpfs"
+        commissionpostfix = "commission"
+        sgh = socket.gethostname()
+        btid = "%s_%s@%s" % (shortname, start_time, sgh)
+
+        from nxstools.pyeval import beamtimeid
+        result = beamtimeid.beamtimeid(
+            commonblock,  start_time, shortname,
+            commissiondir, currentdir, localdir,
+            currentprefix, currentpostfix,
+            commissionprefix, commissionpostfix)
+        self.assertEqual(btid, result)
+
+    def test_beamtimeid_current(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        cwd = os.getcwd()
+
+        tstroot = TstRoot()
+        commonblock = {"__nxroot__": tstroot}
+        tstroot.filename = "%s/testcurrent/myfile.nxs" % cwd
+        start_time = "14:13:12"
+        shortname = "P00"
+        currentdir = "%s" % cwd
+        currentprefix = "beamtime-metadata-"
+        currentpostfix = ".json"
+        commissiondir = "/testgpfs/commission"
+        commissionprefix = "beam-metadata-"
+        commissionpostfix = ".jsn"
+        localdir = "/testgpfs/local"
+        beamtime = "2342342"
+
+        bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
+        try:
+            open(bfn, 'a').close()
+
+            from nxstools.pyeval import beamtimeid
+            result = beamtimeid.beamtimeid(
+                commonblock,  start_time, shortname,
+                commissiondir, currentdir, localdir,
+                currentprefix, currentpostfix,
+                commissionprefix, commissionpostfix)
+            self.assertEqual(beamtime, result)
+        finally:
+            os.remove(bfn)
+
+    def test_beamtimeid_commission(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        cwd = os.getcwd()
+
+        tstroot = TstRoot()
+        commonblock = {"__nxroot__": tstroot}
+        tstroot.filename = "%s/testcurrent/myfile.nxs" % cwd
+        start_time = "14:13:12"
+        shortname = "P00"
+        currentdir = "/testgpfs/current"
+        currentprefix = "bmtime-metadata-"
+        currentpostfix = ".jsn"
+        commissiondir = "%s" % cwd
+        commissionprefix = "beamtime-metadata-"
+        commissionpostfix = ".json"
+        localdir = "/testgpfs/local"
+        beamtime = "2342342"
+
+        bfn = "%s/%s%s%s" % (
+            cwd, commissionprefix, beamtime, commissionpostfix)
+        try:
+            open(bfn, 'a').close()
+
+            from nxstools.pyeval import beamtimeid
+            result = beamtimeid.beamtimeid(
+                commonblock,  start_time, shortname,
+                commissiondir, currentdir, localdir,
+                currentprefix, currentpostfix,
+                commissionprefix, commissionpostfix)
+            self.assertEqual(beamtime, result)
+        finally:
+            os.remove(bfn)
+
+    def test_beamtimeid_local(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        cwd = os.getcwd()
+
+        tstroot = TstRoot()
+        commonblock = {"__nxroot__": tstroot}
+        tstroot.filename = "%s/testcurrent/myfile.nxs" % cwd
+        start_time = "14:13:12"
+        shortname = "P00"
+        currentdir = "/testgpfs/current"
+        currentprefix = "bmtime-metadata-"
+        currentpostfix = ".jsn"
+        commissiondir = "/testgpfs/"
+        commissionprefix = "beamtime-metadata-"
+        commissionpostfix = ".json"
+        localdir = "%s" % cwd
+        beamtime = "2342342"
+
+        bfn = "%s/%s%s%s" % (
+            cwd, commissionprefix, beamtime, commissionpostfix)
+        try:
+            open(bfn, 'a').close()
+
+            from nxstools.pyeval import beamtimeid
+            result = beamtimeid.beamtimeid(
+                commonblock,  start_time, shortname,
+                commissiondir, currentdir, localdir,
+                currentprefix, currentpostfix,
+                commissionprefix, commissionpostfix)
+            self.assertEqual(beamtime, result)
+        finally:
+            os.remove(bfn)
 
     def test_lambdavds_triggermode_cb_onefile(self):
         """ test nxsccreate stdcomp file system

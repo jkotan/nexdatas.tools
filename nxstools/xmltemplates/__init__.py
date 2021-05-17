@@ -775,7 +775,7 @@ standardComponentVariables = {
             'doc': "beamtime file prefix (string)"
         },
         'currentpostfix': {
-            'default': ".txt",
+            'default': ".json",
             'doc': "beamtime file postfix (string)"
         },
         'commissiondir': {
@@ -787,7 +787,7 @@ standardComponentVariables = {
             'doc': "commission file prefix (string)"
         },
         'commissionpostfix': {
-            'default': ".txt",
+            'default': ".json",
             'doc': "commission file postfix (string)"
         },
     },
