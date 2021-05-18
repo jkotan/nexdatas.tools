@@ -35,7 +35,6 @@ import PyTango
 # from nxstools import nxscreate
 # from nxstools import nxsdevicetools
 
-# import nxstools.filewriter as FileWriter
 import nxstools.h5cppwriter as H5CppWriter
 
 
@@ -683,6 +682,214 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             shutil.rmtree(mainpath,
                           ignore_errors=False, onerror=None)
             os.remove(self._fname)
+
+    def test_signalname_detector(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "lambda"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname)
+            self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_signalname_firstchannel(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "exp_c01"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname)
+            self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_signalname_mgchannels(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "pilatus"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c03"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname)
+            self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_signalname_alphabetic(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "exp_c01"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c03"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "exp_c03"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname)
+            self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
 
 
 if __name__ == '__main__':

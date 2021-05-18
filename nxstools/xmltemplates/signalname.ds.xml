@@ -2,37 +2,14 @@
 <definition>
   <datasource type="PYEVAL" name="signalname">
     <result name="result">
-ds.result = ""
-try:
-    detector = "$var.detector"
-    timers = [ch for ch in str("$var.timers").split(" ") if ch]
-    firstchannel = "$var.firstchannel"
-    mgchannels = [ch for ch in str("$var.mgchannels").split(" ") if ch]
-    root = commonblock["__root__"]
-    nxentry = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
-    nxdata = nxentry.open("data")
-    writer = root.parent.writer
-    links = writer.get_links(nxdata)
-    names = [ch.name for ch in links]
-    if detector in names:
-        ds.result = str(detector)
-    elif firstchannel in names:
-        ds.result = str(firstchannel)
-    elif mgchannels:
-        for ch in mgchannels:
-            if ch in names and ch not in timers:
-                ds.result = str(ch)
-                break
-    if not ds.result:
-        for name in names:
-            fld = nxdata.open(name)
-            if isinstance(fld, filewriter.FTField) and \
-               len(fld.shape) == 1 and fld.shape[0] > 1:
-                ds.result = str(fld.name)
-                break
-    if not ds.result:
-        ds.result = str(names[0])
-except Exception as e:
-    ds.result = str(e)</result>
+from nxstools.pyeval import datasignal
+ds.result = datasignal.signalname(
+    commonblock,
+    "$var.detector",
+    "$var.firstchannel",
+    "$var.timers",
+    "$var.mgchannels",
+    "$var.entryname#'$(__entryname__)'$var.serialno")
+</result>
   </datasource>
 </definition>
