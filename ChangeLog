@@ -1,6 +1,7 @@
 2021-05-17 Jan Kotanski <jankotan@gmail.com>
 	* change default beamtime-metadata postfixes ofr beamtimeid datasource
 	* move beamtimeid implementation to pyeval
+	* move signalname implementation to pyeval
 	* tagged as v3.7.0
 
 2021-05-04 Jan Kotanski <jankotan@gmail.com>
