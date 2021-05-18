@@ -19,6 +19,8 @@
 
 """  pyeval helper functions for datasignal """
 
+from nxstools import filewriter
+
 
 def signalname(commonblock, detector, firstchannel,
                timers, mgchannels, entryname):
@@ -49,7 +51,7 @@ def signalname(commonblock, detector, firstchannel,
         nxdata = nxentry.open("data")
         writer = root.parent.writer
         links = writer.get_links(nxdata)
-        names = [ch.name for ch in links]
+        names = list(sorted([ch.name for ch in links]))
         if detector in names:
             result = str(detector)
         elif firstchannel in names:
