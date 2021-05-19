@@ -40,12 +40,12 @@ def unitcalibration(dcmdevice):
 
 
 def reflection(dcmdevice):
-    """ code for dcm reflection datasource
+    """ code for dcm crystal reflection datasource
 
     :param dcmdevice:  dcm device name
     :type dcmdevice: :obj:`str`
-    :returns: unit calibration
-    :rtype: :obj:`str`
+    :returns: dcm crystal reflection
+    :rtype: :obj:`list` <:obj:`int`>
     """
     dp = tango.DeviceProxy(dcmdevice)
     version = dp.get_property("Version")['Version'][0]
@@ -57,12 +57,12 @@ def reflection(dcmdevice):
 
 
 def crystal(dcmdevice):
-    """ code for dcm reflection datasource
+    """ code for dcm crystal datasource
 
     :param dcmdevice:  dcm device name
     :type dcmdevice: :obj:`str`
-    :returns: unit calibration
-    :rtype: :obj:`str`
+    :returns: dcm crystal
+    :rtype: :obj:`in`
     """
     dp = tango.DeviceProxy(dcmdevice)
     return dp.crystal
