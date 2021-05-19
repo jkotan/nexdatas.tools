@@ -1,6 +1,10 @@
 2021-05-17 Jan Kotanski <jankotan@gmail.com>
-	* change default beamtime-metadata postfixes ofr beamtimeid datasource
+	* change default beamtime-metadata postfixes of beamtimeid datasource
 	* move beamtimeid implementation to pyeval
+	* move absorber implementation to pyeval
+	* move qbpm implementation to pyeval
+	* move mssar nad msnsar implementation to pyeval
+	* move dcm implementation to pyeval
 	* move signalname implementation to pyeval
 	* tagged as v3.7.0
 
