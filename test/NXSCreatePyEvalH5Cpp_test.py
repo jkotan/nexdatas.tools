@@ -891,6 +891,34 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             if os.path.exists(self._fname):
                 os.remove(self._fname)
 
+    def test_absorber_thickness(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        position = 6
+        thicknesslist = "[3.2,23.23,123.4,12345.3]"
+        thl = [0, 23.23, 123.4, 0]
+
+        from nxstools.pyeval import absorber
+        result = absorber.thickness(position, thicknesslist)
+        self.assertEqual(thl, result)
+
+    def test_absorber_foil(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        position = 45
+        foillist = '["Ag", "Ag", "Ag", "Ag", "", "Al", "Al", "Al", "Al"]'
+        thl = ["Ag", "", "Ag", "Ag", "", "Al", "", "", ""]
+
+        from nxstools.pyeval import absorber
+        result = absorber.foil(position, foillist)
+        self.assertEqual(thl, result)
+
 
 if __name__ == '__main__':
     unittest.main()

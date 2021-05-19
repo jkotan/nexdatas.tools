@@ -2,13 +2,8 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_foil">
     <result name="result">
-import json
-foillist = json.loads('$(foillist)')
-position = int(float(ds.$(position)) + 0.5)
-foil = []
-for pos, mat in enumerate(foillist):
-     foil.append(mat if pos &amp; position else "")
-ds.result = foil
+from nxstools.pyeval import absorber
+ds.result = absorber.thickness(ds.$(position), '$(foillist)')      
     </result>
  $datasources.$(position)</datasource>
 </definition>
