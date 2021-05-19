@@ -3,7 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_foil">
     <result name="result">
 from nxstools.pyeval import absorber
-ds.result = absorber.thickness(ds.$(position), '$(foillist)')      
+ds.result = absorber.foil(ds.$(position), '$(foillist)')
     </result>
  $datasources.$(position)</datasource>
 </definition>

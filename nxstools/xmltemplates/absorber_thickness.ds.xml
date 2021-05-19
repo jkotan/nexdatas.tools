@@ -3,7 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_thickness">
     <result name="result">
 from nxstools.pyeval import absorber
-ds.result = absorber.thickness(ds.$(position), '$(thicknesslist)')      
+ds.result = absorber.thickness(ds.$(position), '$(thicknesslist)')
     </result>
  $datasources.$(position)</datasource>
 </definition>
