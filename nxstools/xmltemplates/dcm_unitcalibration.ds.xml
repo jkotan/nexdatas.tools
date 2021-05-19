@@ -1,12 +1,9 @@
 <?xml version='1.0'?>
 <definition>
-  <datasource type="PYEVAL" name="$(name)_reflection">
+  <datasource type="PYEVAL" name="$(name)_unitcalibration">
     <result name="result">
-import PyTango
-dp = PyTango.DeviceProxy("$(dcmdevice)")
-bdv = dp.get_property("BraggDevice")['BraggDevice'][0]
-bdp = PyTango.DeviceProxy(bdv)
-ds.result = bdp.unitcalibration
+from nxstools.pyeval import dcm
+ds.result = dcm.unitcalibration("$(dcmdevice)")
     </result>
   </datasource>
 </definition>
