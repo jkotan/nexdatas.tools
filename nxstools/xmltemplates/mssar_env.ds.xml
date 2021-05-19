@@ -2,15 +2,8 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_env">
     <result name="result">
-import pickle
-import sys
-
-if sys.version_info > (3,):
-    msenv = pickle.loads(ds.$(msenv), encoding='latin1')['new']
-else:
-    msenv = pickle.loads(ds.$(msenv))['new']
-
-ds.result = msenv['$(varname)']
+from nxstools.pyeval import mssar
+ds.result = mssar.mssarenv(ds.$(msenv), '$(varname)')
     </result>
  $datasources.$(msenv)</datasource>
 </definition>

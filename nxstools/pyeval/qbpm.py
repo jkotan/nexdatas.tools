@@ -32,7 +32,6 @@ def foil(position, foildict):
     :returns: absorber foil
     :rtype: :obj:`str`
     """
-    import json
     foilposdict = json.loads(foildict)
     position = float(position)
     mindist = None

@@ -27,6 +27,7 @@ import struct
 import binascii
 import shutil
 import socket
+import pickle
 # import time
 # import threading
 import PyTango
@@ -154,7 +155,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                         self.assertEqual(image1[i][j][k], image2[i][j][k])
 
     def test_lambdavds_savefilename_cb(self):
-        """ test nxsccreate stdcomp file system
+        """ test
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -182,7 +183,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(commonblock["lmbd_savefilename"][1],  sfn2)
 
     def test_lambdavds_framenumbers_cb(self):
-        """ test nxsccreate stdcomp file system
+        """ test
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -212,7 +213,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(commonblock["lmbd_framenumbers"][1],  rfn2)
 
     def test_lambdavds_triggermode_cb_nosave(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -245,7 +246,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(triggermode, result)
 
     def test_beamtimeid_nodir(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -274,7 +275,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(btid, result)
 
     def test_beamtimeid_current(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -310,7 +311,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(bfn)
 
     def test_beamtimeid_commission(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -347,7 +348,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(bfn)
 
     def test_beamtimeid_local(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -384,7 +385,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(bfn)
 
     def test_lambdavds_triggermode_cb_onefile(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -480,7 +481,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(self._fname)
 
     def test_lambdavds_triggermode_cb_singleframe(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -579,7 +580,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(self._fname)
 
     def test_lambdavds_triggermode_cb_splitmode(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -684,7 +685,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             os.remove(self._fname)
 
     def test_signalname_detector(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -736,7 +737,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 os.remove(self._fname)
 
     def test_signalname_firstchannel(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -788,7 +789,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 os.remove(self._fname)
 
     def test_signalname_mgchannels(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -840,7 +841,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 os.remove(self._fname)
 
     def test_signalname_alphabetic(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -892,7 +893,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 os.remove(self._fname)
 
     def test_absorber_thickness(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -906,7 +907,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(thl, result)
 
     def test_absorber_foil(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -920,7 +921,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(thl, result)
 
     def test_qbpm_foil(self):
-        """ test nxsccreate stdcomp file system
+        """
         """
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
@@ -932,6 +933,42 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         from nxstools.pyeval import qbpm
         result = qbpm.foil(position, foildict)
         self.assertEqual(foil, result)
+
+    def test_mssar_env(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        env = {"new": {
+            'NeXusSelectorDevice': 'nxs/nxsrecselector/dellek',
+            'ScanFile': ['sdfsdf.nxs', 'sdfsdf.fio'],
+            'ScanDir': '/tmp'}}
+        penv = pickle.dumps(env)
+        value = "/tmp"
+        varname = "ScanDir"
+
+        from nxstools.pyeval import mssar
+        result = mssar.mssarenv(penv, varname)
+        self.assertEqual(value, result)
+
+    def test_msnsar_env(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        env = {"new": {
+            'NeXusSelectorDevice': 'nxs/nxsrecselector/dellek',
+            'ScanFile': ['sdfsdf.nxs', 'sdfsdf.fio'],
+            'ScanDir': '/tmp'}}
+        penv = pickle.dumps(env)
+        values = 'sdfsdf.fio'
+        varnames = '["ScanFile", 1]'
+
+        from nxstools.pyeval import mssar
+        result = mssar.msnsarenv(penv, varnames)
+        self.assertEqual(values, result)
 
 
 if __name__ == '__main__':

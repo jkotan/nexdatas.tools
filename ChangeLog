@@ -2,6 +2,8 @@
 	* change default beamtime-metadata postfixes of beamtimeid datasource
 	* move beamtimeid implementation to pyeval
 	* move absorber implementation to pyeval
+	* move qbpm implementation to pyeval
+	* move mssar nad msnsar implementation to pyeval
 	* move signalname implementation to pyeval
 	* tagged as v3.7.0
 
