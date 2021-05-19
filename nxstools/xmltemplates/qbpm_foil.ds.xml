@@ -2,21 +2,8 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_foil">
     <result name="result">
-import json
-foilposdict = json.loads('$(foilposdict)')
-position = float(ds.$(foilpos))
-mindist = None
-foil = "None"
-for key, vl in foilposdict.items():
-    if mindist is None:
-        mindist = abs(vl - position)
-        foil = key
-    else:
-        dist = abs(vl - position)
-        if dist &lt; mindist:
-            mindist = dist
-            foil = key
-ds.result = foil
+from nxstools.pyeval import qbpm
+ds.result = qbpm.foil(ds.$(foilpos), '$(foilposdict)')
     </result>
  $datasources.$(foilpos)</datasource>
 </definition>

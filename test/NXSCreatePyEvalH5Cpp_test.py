@@ -919,6 +919,20 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         result = absorber.foil(position, foillist)
         self.assertEqual(thl, result)
 
+    def test_qbpm_foil(self):
+        """ test nxsccreate stdcomp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        position = 25
+        foildict = '{"Ti": 43, "Ni": 23, "Out": 4}'
+        foil = "Ni"
+
+        from nxstools.pyeval import qbpm
+        result = qbpm.foil(position, foildict)
+        self.assertEqual(foil, result)
+
 
 if __name__ == '__main__':
     unittest.main()
