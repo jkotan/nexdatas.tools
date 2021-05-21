@@ -1,5 +1,6 @@
-2021-05-22 Jan Kotanski <jankotan@gmail.com>
+2021-05-21 Jan Kotanski <jankotan@gmail.com>
 	* set default attributes of NXroot and NXdata in the datasignal component
+	* fix missing quotas in lambdavds_triggermode
 	* tagged as v3.8.0
 
 2021-05-17 Jan Kotanski <jankotan@gmail.com>
