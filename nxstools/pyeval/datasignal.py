@@ -23,7 +23,7 @@ from nxstools import filewriter
 
 
 def signalname(commonblock, detector, firstchannel,
-               timers, mgchannels, entryname):
+               timers, mgchannels, entryname, defaultattrs=True):
     """ code for signalname  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -38,6 +38,8 @@ def signalname(commonblock, detector, firstchannel,
     :type mgchannels: :obj:`str`
     :param entryname:  entry group name
     :type entryname: :obj:`str`
+    :param defaultattrs:  set default attributes in NXentry and NXdata
+    :type defaultattrs: :obj:`bool`
     :returns: signal name
     :rtype: :obj:`str`
     """
@@ -47,7 +49,17 @@ def signalname(commonblock, detector, firstchannel,
         timers = [ch for ch in str(timers).split(" ") if ch]
         mgchannels = [ch for ch in str(mgchannels).split(" ") if ch]
         root = commonblock["__root__"]
+        if defaultattrs:
+            attrs = root.attributes
+            at = attrs.create("default", "string", overwrite=True)
+            at.write(entryname)
+            at.close()
         nxentry = root.open(entryname)
+        if defaultattrs:
+            attrs = nxentry.attributes
+            at = attrs.create("default", "string", overwrite=True)
+            at.write("data")
+            at.close()
         nxdata = nxentry.open("data")
         writer = root.parent.writer
         links = writer.get_links(nxdata)

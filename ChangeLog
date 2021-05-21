@@ -1,3 +1,7 @@
+2021-05-22 Jan Kotanski <jankotan@gmail.com>
+	* set default attributes of NXroot and NXdata in the datasignal component
+	* tagged as v3.8.0
+
 2021-05-17 Jan Kotanski <jankotan@gmail.com>
 	* change default beamtime-metadata postfixes of beamtimeid datasource
 	* move beamtimeid implementation to pyeval
