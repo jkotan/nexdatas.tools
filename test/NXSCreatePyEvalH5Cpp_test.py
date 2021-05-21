@@ -726,8 +726,15 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 firstchannel,
                 timers,
                 mgchannels,
-                entryname)
+                entryname,
+                True)
             self.assertEqual(signalname, result)
+            self.assertTrue("default" in rt.attributes.names())
+            endef = rt.attributes["default"][...]
+            self.assertEqual(endef, entryname)
+            self.assertTrue("default" in entry.attributes.names())
+            dtdef = entry.attributes["default"][...]
+            self.assertEqual(dtdef, "data")
 
             dt.close()
             entry.close()
@@ -778,8 +785,12 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 firstchannel,
                 timers,
                 mgchannels,
-                entryname)
+                entryname,
+                False
+            )
             self.assertEqual(signalname, result)
+            self.assertTrue("default" not in rt.attributes.names())
+            self.assertTrue("default" not in entry.attributes.names())
 
             dt.close()
             entry.close()

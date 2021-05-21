@@ -10,7 +10,7 @@ ds.result = datasignal.signalname(
     "$var.timers",
     "$var.mgchannels",
     "$var.entryname#'$(__entryname__)'$var.serialno",
-    False)
+    True)
 </result>
   </datasource>
 </definition>
