@@ -2,9 +2,9 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_savefilename_cb">
     <result name="result">
-from nxstools.pyeval import lambdavds
-ds.result = lambdavds.savefilename_cb(
-    commonblock, ds.$(name)_savefilename, "$(name)_savefilename")
+from nxstools.pyeval import common
+ds.result = common.blockitem_addint(
+    commonblock, "$(name)_savefilename", ds.$(name)_savefilename)
     </result>
     $datasources.$(name)_savefilename
   </datasource>

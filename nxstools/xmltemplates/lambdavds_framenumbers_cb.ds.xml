@@ -2,9 +2,9 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_framenumbers_cb">
     <result name="result">
-from nxstools.pyeval import lambdavds
-ds.result = lambdavds.framenumbers_cb(
-    commonblock, ds.$(name)_framenumbers, "$(name)_framenumbers")
+from nxstools.pyeval import common
+ds.result = common.blockitem_addint(
+    commonblock, "$(name)_framenumbers", ds.$(name)_framenumbers)
     </result>
     $datasources.$(name)_framenumbers
   </datasource>

@@ -212,6 +212,70 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(len(commonblock["lmbd_framenumbers"]), 2)
         self.assertEqual(commonblock["lmbd_framenumbers"][1],  rfn2)
 
+    def test_blockitem_int(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import common
+        commonblock = {}
+
+        sfn1 = "34"
+        sfn2 = 3
+        rfn1 = 34
+        rfn2 = 3
+
+        fn1 = common.blockitem_addint(
+            commonblock, "lmbd2_framenumbers", sfn1)
+        self.assertEqual(fn1, sfn1)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("lmbd2_framenumbers" in commonblock)
+        self.assertEqual(len(commonblock["lmbd2_framenumbers"]), 1)
+        self.assertEqual(commonblock["lmbd2_framenumbers"][0],  rfn1)
+
+        fn2 = common.blockitem_addint(
+            commonblock, "lmbd2_framenumbers", sfn2)
+        self.assertEqual(fn2, sfn2)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("lmbd2_framenumbers" in commonblock)
+        self.assertEqual(len(commonblock["lmbd2_framenumbers"]), 2)
+        self.assertEqual(commonblock["lmbd2_framenumbers"][1],  rfn2)
+        fn2 = common.blockitems_rm(
+            commonblock, ["lmbd2_framenumbers"])
+        self.assertEqual(len(commonblock), 0)
+
+    def test_blockitem(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import common
+        commonblock = {}
+
+        sfn1 = "myfile1"
+        sfn2 = "myfile2"
+
+        fn1 = common.blockitem_add(
+            commonblock, "lmbd_filename", sfn1)
+        self.assertEqual(fn1, sfn1)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("lmbd_filename" in commonblock)
+        self.assertEqual(len(commonblock["lmbd_filename"]), 1)
+        self.assertEqual(commonblock["lmbd_filename"][0],  sfn1)
+
+        fn2 = common.blockitem_add(
+            commonblock, "lmbd_filename", sfn2)
+        self.assertEqual(fn2, sfn2)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("lmbd_filename" in commonblock)
+        self.assertEqual(len(commonblock["lmbd_filename"]), 2)
+        self.assertEqual(commonblock["lmbd_filename"][1],  sfn2)
+        fn2 = common.blockitems_rm(
+            commonblock, ["lmbd_filename"])
+        self.assertEqual(len(commonblock), 0)
+
     def test_lambdavds_triggermode_cb_nosave(self):
         """
         """
