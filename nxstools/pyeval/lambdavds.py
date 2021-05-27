@@ -19,6 +19,11 @@
 
 """  pyeval helper functions for lambdavds """
 
+try:
+    from . import common
+except Exception:
+    import common
+
 
 def savefilename_cb(commonblock, savefilename, savefilename_str):
     """ code for savefilename_cb  datasource
@@ -32,11 +37,8 @@ def savefilename_cb(commonblock, savefilename, savefilename_str):
     :returns:   name of saved file
     :rtype: :obj:`str`
     """
-    if savefilename_str not in commonblock:
-        commonblock[savefilename_str] = [savefilename]
-    else:
-        commonblock[savefilename_str].append(savefilename)
-    return savefilename
+    return common.blockitem_add(
+        commonblock, savefilename_str, savefilename)
 
 
 def framenumbers_cb(commonblock, framenumbers, framenumbers_str):
@@ -51,11 +53,8 @@ def framenumbers_cb(commonblock, framenumbers, framenumbers_str):
     :returns:  number of frames
     :rtype: :obj:`str` or :obj:`int`
     """
-    if framenumbers_str not in commonblock:
-        commonblock[framenumbers_str] = [int(framenumbers)]
-    else:
-        commonblock[framenumbers_str].append(int(framenumbers))
-    return framenumbers
+    return common.blockitem_addint(
+        commonblock, framenumbers_str, framenumbers)
 
 
 def triggermode_cb(commonblock, name, triggermode, saveallimages,

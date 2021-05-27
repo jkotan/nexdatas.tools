@@ -1483,6 +1483,7 @@ moduleTemplateFiles = {
                'lambda_external_data.ds.xml'],
     'lambdavds': ['lambdavds.xml',
                   'lambdavds_nxdata.ds.xml',
+                  'lambdavds_description.ds.xml',
                   'lambdavds_triggermode_cb.ds.xml',
                   'lambdavds_framenumbers_cb.ds.xml',
                   'lambdavds_savefilename_cb.ds.xml'],

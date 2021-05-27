@@ -9,7 +9,8 @@
         </field>
         <field type="NX_CHAR" name="layout">area<strategy mode="INIT"/>
         </field>
-        <field type="NX_CHAR" name="description">$(name)</field>
+        <field type="NX_CHAR" name="description">$datasources.$(name)_description<strategy mode="INIT"/>
+        </field>
         <field units="eV" type="NX_FLOAT32" name="threshold_energy">
           <strategy mode="FINAL"/>$datasources.$(name)_energythreshold</field>
         <group type="NXcollection" name="collection">
