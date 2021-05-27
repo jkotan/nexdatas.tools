@@ -40,19 +40,19 @@ def filestartnum_cb(commonblock, filestartnum, nbframes,
     return filestartnum - nbframes
 
 
-def mxparameters_cb(commonblock, mxparameters, name_str,
-                    entry_str="scan", instrument_str="instrument"):
+def mxparameters_cb(commonblock, mxparameters, name,
+                    entryname="scan", insname="instrument"):
     """ code for mxparameters_cb  datasource
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
     :param mxparameters:  mx parameters string
     :type mxparameters: :obj:`str`
-    :param name_str: detector name
-    :type name_str: :obj:`str`
-    :param entry_str: entry name
-    :type entry_str: :obj:`str`
-    :param instrument_str: instrument name
+    :param name: detector name
+    :type name: :obj:`str`
+    :param entryname: entry name
+    :type entryname: :obj:`str`
+    :param insname: instrument name
     :type instruement_str: :obj:`str`
     :returns: file start number  - number of frames
     :rtype: :obj:`str`
@@ -89,9 +89,9 @@ def mxparameters_cb(commonblock, mxparameters, name_str,
                         [" ".join(pr[1:-1]), pr[-1]])
         if res and "__root__" in commonblock.keys():
             root = commonblock["__root__"]
-            en = root.open(entry_str)
-            ins = en.open(instrument_str)
-            det = ins.open(name_str)
+            en = root.open(entryname)
+            ins = en.open(insname)
+            det = ins.open(name)
             for pname, fname in params.items():
                 if pname in res.keys():
                     val = res[pname]
