@@ -2,12 +2,16 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_m1_external_data">
     <result name="result">
-ds.result = ""
-if ds.$(name)_saveallimages:
-    if "$var.filename":
-        ds.result = ("$var.filename").split("/")[-1].split(".")[0] + "/"
-    ds.result += "$(name)/" +str(ds.$(name)_savefilename) + "_m1." + str(ds.$(name)_filepostfix) + "://entry/instrument/detector"</result>
- $datasources.$(name)_saveallimages
+from nxstools.pyeval import lmbd
+ds.result = lmbd.m2_external_data(
+    commonblock,
+    "$(name)",
+    ds.$(name)_savefilename,
+    ds.$(name)_saveallimages,
+    ds.$(name)_filepostfix,
+    "$var.filename", "m1")
+  </result>
  $datasources.$(name)_savefilename
+ $datasources.$(name)_saveallimages
  $datasources.$(name)_filepostfix</datasource>
 </definition>
