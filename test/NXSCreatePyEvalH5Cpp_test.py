@@ -53,6 +53,13 @@ class TstRoot(object):
     filename = ""
 
 
+class TstRoot2(object):
+
+    filename = ""
+    stepsperfile = 0
+    currentfileid = 0
+
+
 # test fixture
 class NXSCreatePyEvalH5CppTest(unittest.TestCase):
 
@@ -1044,6 +1051,103 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         from nxstools.pyeval import mssar
         result = mssar.msnsarenv(penv, varnames)
         self.assertEqual(values, result)
+
+    def test_lmbd_m2_external_data(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commonblock = {}
+        name = "lmbd"
+        savefilename = "mtest_2342"
+        saveallimages = 1
+        filepostfix = "nxs"
+        filename = "/tmp/scans/mytest_324234.nxs"
+        modulename = "m2"
+        sfn1 = "mytest_324234/lmbd/mtest_2342_m2.nxs:" \
+            "//entry/instrument/detector"
+        sfn2 = "lmbd/mtest_2342_m2.nxs://entry/instrument/detector"
+
+        from nxstools.pyeval import lmbd
+        fn1 = lmbd.m2_external_data(
+            commonblock, name, savefilename, saveallimages,
+            filepostfix, filename, modulename)
+        self.assertEqual(fn1, sfn1)
+        fn1 = lmbd.m2_external_data(
+            commonblock, name, savefilename, False,
+            filepostfix, filename, modulename)
+        self.assertEqual(fn1, "")
+        fn2 = lmbd.m2_external_data(
+            commonblock, name, savefilename, saveallimages,
+            filepostfix, "", modulename)
+        self.assertEqual(fn2, sfn2)
+
+    def test_lmbd_external_data(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        name = "lmbd"
+        savefilename = "mtest_2342"
+        saveallimages = 1
+        filepostfix = "nxs"
+        framesperfile = 40
+        framenumbers = 20
+        filename = "/tmp/scans/mytest_324234.nxs"
+        sfn1 = "mytest_324234/lmbd/mtest_2342.nxs:" \
+            "//entry/instrument/detector"
+        sfn2 = "lmbd/mtest_2342.nxs://entry/instrument/detector"
+        sfn3 = "lmbd/mtest_2342_part00000.nxs://entry/instrument/detector"
+        sfn4 = "mytest_324234/lmbd/mtest_2342_part00002.nxs:" \
+            "//entry/instrument/detector"
+
+        from nxstools.pyeval import lmbd
+        fn1 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn1, sfn1)
+        fn1 = lmbd.external_data(
+            commonblock, name, savefilename, False,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn1, "")
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn2)
+
+        framesperfile = 20
+        framenumbers = 50
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn2)
+
+        framesperfile = 20
+        framenumbers = 50
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn2 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, "")
+        self.assertEqual(fn2, sfn3)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 3
+        filename = "/tmp/scans/mytest_324234.nxs"
+        fn4 = lmbd.external_data(
+            commonblock, name, savefilename, saveallimages,
+            framesperfile, framenumbers,
+            filepostfix, filename)
+        self.assertEqual(fn4, sfn4)
 
 
 if __name__ == '__main__':
