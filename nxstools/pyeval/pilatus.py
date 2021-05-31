@@ -20,26 +20,6 @@
 """  pyeval helper functions for pilatus """
 
 
-def filestartnum_cb(commonblock, filestartnum, nbframes,
-                    filestartnum_str):
-    """ code for filestartnum_cb  datasource
-
-    :param commonblock: commonblock of nxswriter
-    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
-    :param filestartnum:  file start number
-    :type filestartnum: :obj:`int`
-    :param nbframs:  number of frames
-    :type fnbrames: :obj:`int`
-    :param filestartnum_str: name of filestartnum datasource
-    :type filestartnum_str: :obj:`str`
-    :returns: file start number  - number of frames
-    :rtype: :obj:`int`
-    """
-    if filestartnum_str not in commonblock:
-        commonblock[filestartnum_str] = filestartnum - nbframes + 1
-    return filestartnum - nbframes
-
-
 def mxparameters_cb(commonblock, mxparameters, name,
                     entryname="scan", insname="instrument"):
     """ code for mxparameters_cb  datasource
