@@ -1217,6 +1217,30 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             filepostfix, fileprefix, filestartnum_str)
         self.assertEqual(fn1, sfn1)
 
+    def test_marccd_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import marccd
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+
+        savingdirectory = "/tmp/current/"
+        savingprefix = "scan_213123"
+        savingpostfix = "tif"
+        sfn1 = "/tmp/current/scan_213123.tif"
+
+        fn1 = marccd.postrun(
+            commonblock,
+            savingdirectory,
+            savingprefix,
+            savingpostfix)
+
+        self.assertEqual(fn1, sfn1)
+
     def test_mythen_postrun(self):
         """ test
         """

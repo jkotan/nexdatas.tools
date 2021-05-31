@@ -17,45 +17,30 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-"""  pyeval helper functions for mythen """
+"""  pyeval helper functions for marccd """
 
 
 def postrun(commonblock,
-            fileindex,
-            filedir,
-            fileprefix,
-            fileindex_str):
-    """ code for postrun  datasource
+            savingdirectory,
+            savingprefix,
+            savingpostfix):
+    """ code for postrun datasource
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
-    :param fileindex:  file start number
-    :type fileindex: :obj:`int`
-    :param filedir: file directorentry name
-    :type filedir: :obj:`str`
-    :param fileprefix: file prefix
-    :type fileprefix: :obj:`str`
-    :param fileindex_str: fileindex string
-    :type fileindex_str: :obj:`str`
-    :returns: postrun string
+    :param savingdirectory: saving directory
+    :type savingdirectory: :obj:`str`
+    :param savingprefix: saving prefix
+    :type savingprefix: :obj:`str`
+    :param savingpostfix: saving postfix
+    :type savingpostfix: :obj:`str`
+    :returns: name of saved file
     :rtype: :obj:`str`
     """
-    fsn = commonblock[fileindex_str] \
-        if fileindex_str in commonblock.keys() else 1
-    lsn = fileindex - 1
-    unixdir = filedir.replace("\\", "/")
+    unixdir = str(savingdirectory).replace("\\", "/")
     if len(unixdir) > 1 and unixdir[1] == ":":
         unixdir = "/data" + unixdir[2:]
     if unixdir and unixdir[-1] == "/":
         unixdir = unixdir[:-1]
-    if "__root__" in commonblock.keys():
-        root = commonblock["__root__"]
-        if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
-            spf = root.stepsperfile
-            cfid = root.currentfileid
-            if spf > 0 and cfid > 0:
-                lsn = min(fsn + cfid * spf - 1, lsn)
-                fsn = fsn + (cfid - 1) * spf
-    result = "" + unixdir + "/" + fileprefix + "_%d.raw:" + str(fsn) + \
-        ":" + str(lsn)
+    result = "" + unixdir + "/" + str(savingprefix) + "." + str(savingpostfix)
     return result
