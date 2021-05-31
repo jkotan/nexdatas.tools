@@ -3,6 +3,9 @@
 	* add cleaning in lambdavds description
 	* add move lambda datasources to pyeval
 	* add move pilatus datasources to pyeval
+	* add move pco datasources to pyeval
+	* add move pe datasources to pyeval
+	* add move limaccd datasources to pyeval
 	* tagged as v3.9.0
 
 2021-05-21 Jan Kotanski <jankotan@gmail.com>

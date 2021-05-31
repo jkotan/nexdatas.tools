@@ -224,6 +224,17 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         self.assertEqual(len(commonblock["lmbd_framenumbers"]), 2)
         self.assertEqual(commonblock["lmbd_framenumbers"][1],  rfn2)
 
+    def test_common_get_element(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import common
+
+        self.assertEqual(common.get_element([1, 2, 3, 4, 5], 3), 4)
+        self.assertEqual(common.get_element([2, 3, 4, 5], 1), 3)
+
     def test_blockitem_int(self):
         """ test
         """
@@ -287,6 +298,26 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         fn2 = common.blockitems_rm(
             commonblock, ["lmbd_filename"])
         self.assertEqual(len(commonblock), 0)
+
+    def test_common_filestartnum_cb(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import common
+        commonblock = {}
+
+        sfn1 = 3
+        nbn1 = 2
+
+        fn1 = common.filestartnum_cb(
+            commonblock, sfn1, nbn1, "andor_filestartnum")
+        self.assertEqual(fn1, sfn1 - nbn1)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("andor_filestartnum" in commonblock)
+        self.assertEqual(
+            commonblock["andor_filestartnum"], sfn1 - nbn1 + 1)
 
     def test_lambdavds_triggermode_cb_nosave(self):
         """
@@ -1154,6 +1185,38 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             filepostfix, filename)
         self.assertEqual(fn4, sfn4)
 
+    def test_pco_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pco
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        filestartnum = 20
+        filedir = "/tmp/current/"
+        nbframes = 20
+        filepostfix = ".tif"
+        fileprefix = "scan213123_"
+        filestartnum_str = "pco2_filestartnum"
+        commonblock[filestartnum_str] = 1
+
+        sfn1 = "/tmp/current/scan213123_%05d.tif:0:19"
+
+        fn1 = pco.postrun(
+            commonblock, filestartnum, filedir, nbframes,
+            filepostfix, fileprefix, filestartnum_str)
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn1 = pco.postrun(
+            commonblock, filestartnum, filedir, nbframes,
+            filepostfix, fileprefix, filestartnum_str)
+        self.assertEqual(fn1, sfn1)
+
     def test_pilatus_postrun(self):
         """ test
         """
@@ -1360,6 +1423,105 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         finally:
             if tsv1:
                 tsv1.tearDown()
+
+    def test_limaccd_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import limaccd
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+
+        filestartnum_str = "andor_saving_next_number"
+        commonblock[filestartnum_str] = 1
+
+        saving_next_number = 20
+        saving_directory = "/tmp/current/"
+        saving_suffix = ".tif"
+        acq_nb_frames = 20
+        saving_format = "_%05d"
+        saving_prefix = "scan213123"
+
+        sfn1 = "/tmp/current/scan213123_%05d.tif:0:19"
+
+        fn1 = limaccd.postrun(
+            commonblock,
+            saving_next_number, saving_directory, saving_suffix,
+            acq_nb_frames, saving_format, saving_prefix,
+            "andor_saving_next_number")
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn1 = limaccd.postrun(
+            commonblock,
+            saving_next_number, saving_directory, saving_suffix,
+            acq_nb_frames, saving_format, saving_prefix,
+            "andor_saving_next_number")
+        self.assertEqual(fn1, sfn1)
+
+    def test_pe_fileindex_cb(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pe
+        commonblock = {}
+
+        sfn1 = 4
+
+        fn1 = pe.fileindex_cb(
+            commonblock, "pe_fileindex", sfn1)
+        self.assertEqual(fn1, sfn1 - 1)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("pe_fileindex" in commonblock)
+        self.assertEqual(commonblock["pe_fileindex"],  sfn1)
+
+    def test_pe_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pe
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+
+        fileindex_str = "pe_fileindex"
+        commonblock[fileindex_str] = 1
+
+        fileindex = 20
+        outputdirectory = "/tmp/current/"
+        filepattern = "scan213123"
+        filename = ".tif"
+
+        sfn1 = "/tmp/current/scan213123-%05d.tif:0:19"
+
+        fn1 = pe.postrun(
+            commonblock,
+            outputdirectory,
+            filepattern,
+            filename,
+            fileindex,
+            "pe_fileindex")
+
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn1 = pe.postrun(
+            commonblock,
+            outputdirectory,
+            filepattern,
+            filename,
+            fileindex,
+            "pe_fileindex")
+        self.assertEqual(fn1, sfn1)
 
 
 if __name__ == '__main__':

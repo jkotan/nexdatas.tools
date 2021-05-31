@@ -20,6 +20,39 @@
 """  pyeval common helper functions """
 
 
+def get_element(lst, index):
+    """ get list element
+
+    :param lst: list
+    :type lst: :obj:`list` <:obj:`any`>
+    :param index: list index
+    :type index: :obj:`int`
+    :returns: list element
+    :rtype: :obj:`any`
+    """
+    return list(lst)[index]
+
+
+def filestartnum_cb(commonblock, filestartnum, nbframes,
+                    filestartnum_str):
+    """ code for filestartnum_cb  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param filestartnum:  file start number
+    :type filestartnum: :obj:`int`
+    :param nbframs:  number of frames
+    :type fnbrames: :obj:`int`
+    :param filestartnum_str: name of filestartnum datasource
+    :type filestartnum_str: :obj:`str`
+    :returns: file start number  - number of frames
+    :rtype: :obj:`int`
+    """
+    if filestartnum_str not in commonblock:
+        commonblock[filestartnum_str] = filestartnum - nbframes + 1
+    return filestartnum - nbframes
+
+
 def blockitems_rm(commonblock, names):
     """ remove blockitems from commonblock
 
