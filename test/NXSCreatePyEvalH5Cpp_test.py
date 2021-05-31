@@ -38,6 +38,10 @@ import PyTango
 
 import nxstools.h5cppwriter as H5CppWriter
 
+try:
+    import TestServerSetUp
+except ImportError:
+    from . import TestServerSetUp
 
 if sys.version_info > (3,):
     unicode = str
@@ -1253,6 +1257,109 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         finally:
             shutil.rmtree(mainpath,
                           ignore_errors=False, onerror=None)
+
+    def test_dcm_unitcalibration(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        dcmdevice = "ttestp09/testts/t1r228"
+        braggdevice = "ttestp09/testts/t2r228"
+        value = 2187.3755
+
+        try:
+
+            tsv1 = TestServerSetUp.TestServerSetUp(
+                dcmdevice, "MYTESTS1")
+            tsv1.setUp()
+            db = PyTango.Database()
+            db.put_device_property(dcmdevice,
+                                   {'BraggDevice': [braggdevice]})
+            tsv1.dp.Init()
+            tsv2 = TestServerSetUp.TestServerSetUp(
+                braggdevice, "MYTESTS2")
+            tsv2.setUp()
+
+            from nxstools.pyeval import dcm
+            result = dcm.unitcalibration(dcmdevice)
+            self.assertEqual(value, result)
+
+        finally:
+            if tsv1:
+                tsv1.tearDown()
+            if tsv2:
+                tsv2.tearDown()
+
+    def test_dcm_reflection(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        dcmdevice = "ttestp09/testts/t1r228"
+        version = '11'
+
+        try:
+
+            tsv1 = TestServerSetUp.TestServerSetUp(
+                dcmdevice, "MYTESTS1")
+            tsv1.setUp()
+            db = PyTango.Database()
+            db.put_device_property(dcmdevice,
+                                   {'Version': [version]})
+            tsv1.dp.Init()
+            from nxstools.pyeval import dcm
+            tsv1.dp.crystal = 1
+            result = dcm.reflection(dcmdevice)
+            self.assertEqual([2, 2, 0], result)
+            tsv1.dp.crystal = 2
+            result = dcm.reflection(dcmdevice)
+            self.assertEqual([1, 1, 1], result)
+
+            version = "8"
+            db.put_device_property(dcmdevice,
+                                   {'Version': [version]})
+            tsv1.dp.Init()
+            from nxstools.pyeval import dcm
+            tsv1.dp.Crystal = 1
+            result = dcm.reflection(dcmdevice)
+            self.assertEqual([3, 1, 1], result)
+            tsv1.dp.Crystal = 2
+            result = dcm.reflection(dcmdevice)
+            self.assertEqual([1, 1, 1], result)
+
+        finally:
+            if tsv1:
+                tsv1.tearDown()
+
+    def test_dcm_crystal(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        dcmdevice = "ttestp09/testts/t1r228"
+
+        try:
+
+            tsv1 = TestServerSetUp.TestServerSetUp(
+                dcmdevice, "MYTESTS1")
+            tsv1.setUp()
+
+            from nxstools.pyeval import dcm
+            value = 1
+            tsv1.dp.crystal = value
+            result = dcm.crystal(dcmdevice)
+            self.assertEqual(value, result)
+            value = 2
+            tsv1.dp.crystal = value
+            result = dcm.crystal(dcmdevice)
+            self.assertEqual(value, result)
+
+        finally:
+            if tsv1:
+                tsv1.tearDown()
 
 
 if __name__ == '__main__':
