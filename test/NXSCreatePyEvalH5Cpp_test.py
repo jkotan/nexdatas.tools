@@ -1185,6 +1185,38 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             filepostfix, filename)
         self.assertEqual(fn4, sfn4)
 
+    def test_pco_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pco
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        filestartnum = 20
+        filedir = "/tmp/current/"
+        nbframes = 20
+        filepostfix = ".tif"
+        fileprefix = "scan213123_"
+        filestartnum_str = "pco2_filestartnum"
+        commonblock[filestartnum_str] = 1
+
+        sfn1 = "/tmp/current/scan213123_%05d.tif:0:19"
+
+        fn1 = pco.postrun(
+            commonblock, filestartnum, filedir, nbframes,
+            filepostfix, fileprefix, filestartnum_str)
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn1 = pco.postrun(
+            commonblock, filestartnum, filedir, nbframes,
+            filepostfix, fileprefix, filestartnum_str)
+        self.assertEqual(fn1, sfn1)
+
     def test_pilatus_postrun(self):
         """ test
         """
