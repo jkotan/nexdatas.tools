@@ -110,6 +110,8 @@ class TestServer(PyTango.Device_4Impl):
         self.attr_ScalarString = "Hello!"
         self.attr_ScalarEncoded = \
             "UTF8", b"Hello UTF8! Pr\xc3\xb3ba \xe6\xb5\x8b"
+        self.attr_Crystal = 1
+        self.attr_UnitCalibration = 2187.3755
 
         self.attr_SpectrumBoolean = [True, False]
         self.attr_SpectrumUChar = [1, 2]
@@ -377,6 +379,34 @@ class TestServer(PyTango.Device_4Impl):
     def write_ScalarLong(self, attr):
         #    Add your own code here
         self.attr_ScalarLong = attr.get_write_value()
+
+    # -----------------------------------------------------------------
+    #    Read ScalarLong attribute
+    # -----------------------------------------------------------------
+    def read_Crystal(self, attr):
+        #    Add your own code here
+        attr.set_value(self.attr_Crystal)
+
+    # -----------------------------------------------------------------
+    #    Write Crystal attribute
+    # -----------------------------------------------------------------
+    def write_Crystal(self, attr):
+        #    Add your own code here
+        self.attr_Crystal = attr.get_write_value()
+
+    # -----------------------------------------------------------------
+    #    Read ScalarLong attribute
+    # -----------------------------------------------------------------
+    def read_UnitCalibration(self, attr):
+        #    Add your own code here
+        attr.set_value(self.attr_UnitCalibration)
+
+    # -----------------------------------------------------------------
+    #    Write UnitCalibration attribute
+    # -----------------------------------------------------------------
+    def write_UnitCalibration(self, attr):
+        #    Add your own code here
+        self.attr_UnitCalibration = attr.get_write_value()
 
     # -----------------------------------------------------------------
     #    Read ScalarBoolean attribute
@@ -1054,6 +1084,14 @@ class TestServerClass(PyTango.DeviceClass):
             [PyTango.DevVarStringArray,
              "element names",
              []],
+        'BraggDevice':
+            [PyTango.DevVarStringArray,
+             "brag device name",
+             []],
+        'Version':
+            [PyTango.DevVarStringArray,
+             "version",
+             []],
     }
 
     #    Command definitions
@@ -1101,6 +1139,13 @@ class TestServerClass(PyTango.DeviceClass):
 
     #    Attribute definitions
     attr_list = {
+        'Crystal':
+            [[PyTango.DevLong,
+              PyTango.SCALAR,
+              PyTango.READ_WRITE],
+             {
+                 'description': "dcm crystal",
+            }],
         'ScalarLong':
             [[PyTango.DevLong,
               PyTango.SCALAR,
@@ -1156,6 +1201,13 @@ class TestServerClass(PyTango.DeviceClass):
               PyTango.READ_WRITE],
              {
                  'description': "ScalarFloat attribute",
+            }],
+        'UnitCalibration':
+            [[PyTango.DevDouble,
+              PyTango.SCALAR,
+              PyTango.READ_WRITE],
+             {
+                 'description': "UnitCalibration dcm attribute",
             }],
         'ScalarDouble':
             [[PyTango.DevDouble,

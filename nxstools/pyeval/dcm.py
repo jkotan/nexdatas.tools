@@ -31,7 +31,7 @@ def unitcalibration(dcmdevice):
     :param dcmdevice:  dcm device name
     :type dcmdevice: :obj:`str`
     :returns: unit calibration
-    :rtype: :obj:`str`
+    :rtype: :obj:`float`
     """
     dp = tango.DeviceProxy(dcmdevice)
     bdv = dp.get_property("BraggDevice")['BraggDevice'][0]
