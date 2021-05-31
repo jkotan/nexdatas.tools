@@ -1463,6 +1463,66 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             "andor_saving_next_number")
         self.assertEqual(fn1, sfn1)
 
+    def test_pe_fileindex_cb(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pe
+        commonblock = {}
+
+        sfn1 = 4
+
+        fn1 = pe.fileindex_cb(
+            commonblock, "pe_fileindex", sfn1)
+        self.assertEqual(fn1, sfn1 - 1)
+        self.assertEqual(len(commonblock), 1)
+        self.assertTrue("pe_fileindex" in commonblock)
+        self.assertEqual(commonblock["pe_fileindex"],  sfn1)
+
+    def test_pe_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import pe
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+
+        fileindex_str = "pe_fileindex"
+        commonblock[fileindex_str] = 1
+
+        fileindex = 20
+        outputdirectory = "/tmp/current/"
+        filepattern = "scan213123"
+        filename = ".tif"
+
+        sfn1 = "/tmp/current/scan213123-%05d.tif:0:19"
+
+        fn1 = pe.postrun(
+            commonblock,
+            outputdirectory,
+            filepattern,
+            filename,
+            fileindex,
+            "pe_fileindex")
+
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        fn1 = pe.postrun(
+            commonblock,
+            outputdirectory,
+            filepattern,
+            filename,
+            fileindex,
+            "pe_fileindex")
+        self.assertEqual(fn1, sfn1)
+
 
 if __name__ == '__main__':
     unittest.main()

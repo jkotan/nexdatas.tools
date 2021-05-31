@@ -4,6 +4,7 @@
     <result name="result">
 from nxstools.pyeval import pco
 ds.result = pco.postrun(
+    commonblock,
     ds.$(name)_filestartnum,
     ds.$(name)_filedir,
     ds.$(name)_nbframes,
