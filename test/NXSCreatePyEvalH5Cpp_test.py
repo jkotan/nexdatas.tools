@@ -231,11 +231,10 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         from nxstools.pyeval import common
-        commonblock = {}
 
-        self.assertEqual(common.get_element([1,2,3,4,5], 3), 4)
-        self.assertEqual(common.get_element([2,3,4,5], 1), 3)
-        
+        self.assertEqual(common.get_element([1, 2, 3, 4, 5], 3), 4)
+        self.assertEqual(common.get_element([2, 3, 4, 5], 1), 3)
+
     def test_blockitem_int(self):
         """ test
         """
