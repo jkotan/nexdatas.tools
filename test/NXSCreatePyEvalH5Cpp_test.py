@@ -1217,6 +1217,45 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             filepostfix, fileprefix, filestartnum_str)
         self.assertEqual(fn1, sfn1)
 
+    def test_mythen_postrun(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        from nxstools.pyeval import mythen
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        fileindex = 20
+        filedir = "/tmp/current/"
+        fileprefix = "scan213123"
+        fileindex_str = "mythen_fileindex"
+        commonblock[fileindex_str] = 1
+
+        sfn1 = "/tmp/current/scan213123_%d.raw:1:19"
+
+        fn1 = mythen.postrun(
+            commonblock,
+            fileindex,
+            filedir,
+            fileprefix,
+            fileindex_str)
+
+        self.assertEqual(fn1, sfn1)
+
+        tstroot.stepsperfile = 20
+        tstroot.currentfileid = 1
+        self.assertEqual(fn1, sfn1)
+        fn1 = mythen.postrun(
+            commonblock,
+            fileindex,
+            filedir,
+            fileprefix,
+            fileindex_str)
+
+        self.assertEqual(fn1, sfn1)
+
     def test_pilatus_postrun(self):
         """ test
         """
