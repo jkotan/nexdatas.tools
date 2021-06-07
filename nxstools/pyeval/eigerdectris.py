@@ -25,16 +25,11 @@ except Exception:
     import PyTango as tango
 
 
-def triggermode_cb(commonblock, name,
-                   triggermode,
-                   nbimages,
-                   nbtriggers,
-                   hostname,
-                   device,
-                   filename,
-                   stepindex_str,
-                   entryname,
-                   insname):
+def triggermode_cb(commonblock, name, triggermode,
+                   nbimages, hostname, device,
+                   filename, stepindex_str, entryname, insname,
+                   eigerdectris_str="EigerDectris",
+                   eigerfilewriter_str="EigerFileWriter"):
     """ code for triggermode_cb  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -45,8 +40,6 @@ def triggermode_cb(commonblock, name,
     :type triggermode: :obj:`int` or :obj:`str`
     :param nbimages: a number of images
     :type nbimages: :obj:`int`
-    :param nbtriggers: a number of triggers
-    :type nbtriggers: :obj:`int`
     :param hostname: tango host name
     :type hostname: :obj:`str`
     :param device: tango device name
@@ -59,6 +52,10 @@ def triggermode_cb(commonblock, name,
     :type entryname: :obj:`str`
     :param insname: instrument name
     :type insname: :obj:`str`
+    :param eigerdectris_str: eigerdectris string
+    :type eigerdectris_str: :obj:`str`
+    :param eigerfilewriter_str: eigerwriter string
+    :type eigerfilewriter_str: :obj:`str`
     :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
@@ -67,7 +64,7 @@ def triggermode_cb(commonblock, name,
     port = int(port or 10000)
     edb = tango.Database(host, port)
 
-    sl = edb.get_server_list("EigerDectris/*")
+    sl = edb.get_server_list("%s/*" % (eigerdectris_str))
     writer = None
     for ms in sl:
         devserv = edb.get_device_class_list(ms).value_string
@@ -75,7 +72,7 @@ def triggermode_cb(commonblock, name,
             dev = devserv[0::2]
             serv = devserv[1::2]
             for idx, ser in enumerate(serv):
-                if ser == 'EigerFilewriter':
+                if ser == eigerfilewriter_str:
                     writer = dev[idx]
                     break
     wp = tango.DeviceProxy('%s/%s' % (hostname, writer))
@@ -112,14 +109,14 @@ def triggermode_cb(commonblock, name,
             if cfid == nbf:
                 nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
                          det, "data")
-                nxw.link("%s/%s/%s/data" % (entryname, insname, name),
+                nxw.link("/%s/%s/%s/data" % (entryname, insname, name),
                          dt, name)
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
                      col, "data_%06i" % nbf)
         else:
             nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf),
                      col, "data_%06i" % nbf)
-            nxw.link("%s/%s/%s/collection/data_%06i" %
+            nxw.link("/%s/%s/%s/collection/data_%06i" %
                      (entryname, insname, name, nbf), dt,
                      "%s_%06i" % (name, nbf))
     return result

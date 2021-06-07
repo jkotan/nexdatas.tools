@@ -108,9 +108,11 @@ class TestServer(PyTango.Device_4Impl):
         self.attr_ScalarFloat = -1.23
         self.attr_ScalarDouble = 1.233
         self.attr_ScalarString = "Hello!"
+        self.attr_FilenamePattern = "testscan"
         self.attr_ScalarEncoded = \
             "UTF8", b"Hello UTF8! Pr\xc3\xb3ba \xe6\xb5\x8b"
         self.attr_Crystal = 1
+        self.attr_ImagesPerFile = 14
         self.attr_UnitCalibration = 2187.3755
 
         self.attr_SpectrumBoolean = [True, False]
@@ -395,6 +397,20 @@ class TestServer(PyTango.Device_4Impl):
         self.attr_Crystal = attr.get_write_value()
 
     # -----------------------------------------------------------------
+    #    Read Crystal attribute
+    # -----------------------------------------------------------------
+    def read_ImagesPerFile(self, attr):
+        #    Add your own code here
+        attr.set_value(self.attr_ImagesPerFile)
+
+    # -----------------------------------------------------------------
+    #    Write Crystal attribute
+    # -----------------------------------------------------------------
+    def write_ImagesPerFile(self, attr):
+        #    Add your own code here
+        self.attr_ImagesPerFile = attr.get_write_value()
+
+    # -----------------------------------------------------------------
     #    Read UnitCalibration attribute
     # -----------------------------------------------------------------
     def read_UnitCalibration(self, attr):
@@ -538,6 +554,20 @@ class TestServer(PyTango.Device_4Impl):
     def write_ScalarString(self, attr):
         #    Add your own code here
         self.attr_ScalarString = attr.get_write_value()
+
+    # -----------------------------------------------------------------
+    #    Read FilenamePattern attribute
+    # -----------------------------------------------------------------
+    def read_FilenamePattern(self, attr):
+        #    Add your own code here
+        attr.set_value(self.attr_FilenamePattern)
+
+    # -----------------------------------------------------------------
+    #    Write FilenamePattern attribute
+    # -----------------------------------------------------------------
+    def write_FilenamePattern(self, attr):
+        #    Add your own code here
+        self.attr_FilenamePattern = attr.get_write_value()
 
     # -----------------------------------------------------------------
     #    Read ScalarEncoded attribute
@@ -1146,6 +1176,13 @@ class TestServerClass(PyTango.DeviceClass):
              {
                  'description': "dcm crystal",
             }],
+        'ImagesPerFile':
+            [[PyTango.DevLong,
+              PyTango.SCALAR,
+              PyTango.READ_WRITE],
+             {
+                 'description': "image per file",
+            }],
         'ScalarLong':
             [[PyTango.DevLong,
               PyTango.SCALAR,
@@ -1222,6 +1259,13 @@ class TestServerClass(PyTango.DeviceClass):
               PyTango.READ_WRITE],
              {
                  'description': "ScalarString attribute",
+            }],
+        'FilenamePattern':
+            [[PyTango.DevString,
+              PyTango.SCALAR,
+              PyTango.READ_WRITE],
+             {
+                 'description': "FilenamePattern attribute",
             }],
         'ScalarEncoded':
             [[PyTango.DevEncoded,

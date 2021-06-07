@@ -8,17 +8,17 @@ ds.result = eigerdectris.triggermode_cb(
     "$(name)",
     ds.$(name)_triggermode,
     ds.$(name)_nbimages,
-    ds.$(name)_nbtriggers,
     "$(hostname)",
     "$(device)",
     "$var.filename",
     "$(name)_stepindex",
     "$var.entryname#'$(__entryname__)'$var.serialno",
-    "$(__insname__)")
+    "$(__insname__)",
+    "EigerDectris",
+    "EigerFilewriter"
+    )
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
-    $datasources.$(name)_nbtriggers
-
   </datasource>
 </definition>
