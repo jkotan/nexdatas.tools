@@ -10,6 +10,7 @@ ds.result = eigerdectris.triggermode_cb(
     ds.$(name)_nbimages,
     ds.$(name)_nbtriggers,
     "$(hostname)",
+    "$(device)",
     "$var.filename",
     "$(name)_stepindex",
     "$var.entryname#'$(__entryname__)'$var.serialno",
