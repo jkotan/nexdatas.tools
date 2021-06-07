@@ -8,6 +8,8 @@
 	* add move limaccd datasources to pyeval
 	* add move mythen datasources to pyeval
 	* add move marccd datasources to pyeval
+	* add move dalsa datasources to pyeval
+	* add move tangovimba datasources to pyeval
 	* tagged as v3.9.0
 
 2021-05-21 Jan Kotanski <jankotan@gmail.com>
