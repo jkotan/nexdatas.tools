@@ -1586,6 +1586,58 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             "pe_fileindex")
         self.assertEqual(fn1, sfn1)
 
+    def test_tangovimba(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        name = "vimba"
+        fileprefix = "scan213123"
+        filepostfix = "nx"
+        filestartnum = 2
+        filename = "/tmp/scans/mytest_324234.nxs"
+
+        sfn1 = "mytest_324234/vimba/scan213123_000002.nx:" \
+            "//entry/instrument/detector"
+        from nxstools.pyeval import tangovimba
+        fn1 = tangovimba.external_data(
+            commonblock,
+            name,
+            fileprefix,
+            filepostfix,
+            filestartnum,
+            filename)
+        self.assertEqual(fn1, sfn1)
+
+    def test_dalsa(self):
+        """ test
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        tstroot = TstRoot2()
+        commonblock = {"__root__": tstroot}
+        name = "dalsa"
+        fileprefix = "scan213123"
+        filepostfix = "nx"
+        filestartnum = 2
+        filename = "/tmp/scans/mytest_324234.nxs"
+
+        sfn1 = "mytest_324234/dalsa/scan213123_000001.nx:" \
+            "//entry/instrument/detector"
+        from nxstools.pyeval import dalsa
+        fn1 = dalsa.external_data(
+            commonblock,
+            name,
+            fileprefix,
+            filepostfix,
+            filestartnum,
+            filename)
+        self.assertEqual(fn1, sfn1)
+
 
 if __name__ == '__main__':
     unittest.main()
