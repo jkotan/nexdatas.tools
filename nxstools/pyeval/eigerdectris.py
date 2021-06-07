@@ -30,7 +30,6 @@ def triggermode_cb(commonblock, name,
                    nbimages,
                    nbtriggers,
                    hostname,
-                   device,
                    filename,
                    stepindex_str,
                    entryname,
@@ -59,7 +58,7 @@ def triggermode_cb(commonblock, name,
     :type entryname: :obj:`str`
     :param insname: instrument name
     :type insname: :obj:`str`
-    :returns:  triggermode
+    :returns: triggermode
     :rtype: :obj:`str` or :obj:`int`
     """
 
