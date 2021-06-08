@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "May 21, 2021" "3.8" "NXSTools"
+.TH "NXSTOOLS" "1" "Jun 08, 2021" "3.9" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -257,7 +257,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
@@ -266,18 +266,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
+by ‘,’ e.g.’scan_%05d.tif:0:100’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-\(aquint8\(aq
+‘uint8’
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-\(aq[4096,2048]\(aq
+‘[4096,2048]’
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -400,99 +400,99 @@ Options:
 show this help message and exit
 .TP
 .BI \-t \ DTYPE\fP,\fB \ \-\-dtype \ DTYPE
-datatype of the VDS field, e.g. \(aquint8\(aq
+datatype of the VDS field, e.g. ‘uint8’
 .TP
 .BI \-s \ SHAPE\fP,\fB \ \-\-shape \ SHAPE
-shape of the VDS field, e.g. \(aq[U,4096,2048]\(aq or
-U,4096,2048 where U means span along the field\(aq
+shape of the VDS field, e.g. ‘[U,4096,2048]’ or
+U,4096,2048 where U means span along the field’
 .TP
 .BI \-f \ FILLVALUE\fP,\fB \ \-\-fill\-value \ FILLVALUE
 fill value for the gaps, default is 0
 .TP
 .BI \-e \ TARGETFIELDS\fP,\fB \ \-\-target\-fields \ TARGETFIELDS
 external fields with their NeXus file paths defined
-with a pattern or separated by \(aq,\(aq
-e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
+with a pattern or separated by ‘,’
+e.g.’scan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-p \ SHAPES\fP,\fB \ \-\-shapes \ SHAPES
 shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-o \ OFFSETS\fP,\fB \ \-\-offsets \ OFFSETS
 offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-b \ BLOCKS\fP,\fB \ \-\-blocks \ BLOCKS
 block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,256,512;,256,512;,256,512\(aq where an
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,256,512;,256,512;,256,512’ where an
 empty coordinate means 1
 .TP
 .BI \-c \ COUNTS\fP,\fB \ \-\-counts \ COUNTS
 count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,1,1;,1,1;,1,1\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,1,1;,1,1;,1,1’ where an empty coordinate
 means span along the layout
 .TP
 .BI \-d \ STRIDES\fP,\fB \ \-\-strides \ STRIDES
 stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,,;,,;,,\(aq where an empty coordinate means
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,,;,,;,,’ where an empty coordinate means
 1
 .TP
 .BI \-l \ SLICES\fP,\fB \ \-\-slices \ SLICES
 mapping slices in the VDS layoutfor the corresponding
-target fields with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq or spaces e.g.
-\(aq:,0:50,: :,50:100,:\(aq where U means span along the
+target fields with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’ or spaces e.g.
+‘:,0:50,: :,50:100,:’ where U means span along the
 layout
 .TP
 .BI \-P \ TARGETSHAPES\fP,\fB \ \-\-target\-shapes \ TARGETSHAPES
-field shapes with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq, \(aq:\(aq or spaces
-e.g.\(aq,,;,300,;,600,0\(aq
+field shapes with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’, ‘:’ or spaces
+e.g.’,,;,300,;,600,0’
 .TP
 .BI \-O \ TARGETOFFSETS\fP,\fB \ \-\-target\-offsets \ TARGETOFFSETS
 offsets in the view hyperslab of target fieldswith
-coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.\(aq,,;,300,;,600,0\(aq
+coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.’,,;,300,;,600,0’
 where an empty coordinate means 0
 .TP
 .BI \-B \ TARGETBLOCKS\fP,\fB \ \-\-target\-blocks \ TARGETBLOCKS
 block sizes in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.
-\(aq,256,512;,256,512;,256,512\(aq where an empty coordinate
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.
+‘,256,512;,256,512;,256,512’ where an empty coordinate
 means 1
 .TP
 .BI \-C \ TARGETCOUNTS\fP,\fB \ \-\-target\-counts \ TARGETCOUNTS
 count numbers in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,1,1;,1,1;,1,1\(aq
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g. ‘,1,1;,1,1;,1,1’
 where an empty coordinate means span along the layout
 .TP
 .BI \-D \ TARGETSTRIDES\fP,\fB \ \-\-target\-strides \ TARGETSTRIDES
 stride sizes numbers in the view hyperslab of target
-fields with coordinates sepatated by \(aq,\(aq and different
-fields separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,,;,,;,,\(aq
+fields with coordinates sepatated by ‘,’ and different
+fields separated by ‘;’, ‘:’ or spaces e.g. ‘,,;,,;,,’
 where an empty coordinate means 1
 .TP
 .BI \-L \ TARGETSLICES\fP,\fB \ \-\-target\-slices \ TARGETSLICES
 view slices of target fields with coordinates
-sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
-or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
+sepatated by ‘,’ and different fields separated by ‘;’
+or spaces e.g. ‘:,0:50,: :,0:50,:’ where U means span
 along the layout
 .TP
 .B \-r\fP,\fB  \-\-replace\-nexus\-file
@@ -567,43 +567,43 @@ list names of available datasources
 .B list \-r [\-s <config_server>] [\-n]
 list names of available profiles
 .TP
-.B show [\-s <config_server>] [\-m] [\-o <dir>] component_name1 component_name2 ...
+.B show [\-s <config_server>] [\-m] [\-o <dir>] component_name1 component_name2 …
 show components with given names
 .TP
-.B show \-d [\-s <config_server>]  [\-o <dir>] dsource_name1 dsource_name2 ...
+.B show \-d [\-s <config_server>]  [\-o <dir>] dsource_name1 dsource_name2 …
 show datasources with given names
 .TP
-.B show \-r [\-s <config_server>]  [\-o <dir>] profile_name1 profile_name2 ...
+.B show \-r [\-s <config_server>]  [\-o <dir>] profile_name1 profile_name2 …
 show profiles with given names
 .TP
-.B upload [\-s <config_server>] [\-m] [\-i <dir>] [\-f] component_name1 component_name2 ...
+.B upload [\-s <config_server>] [\-m] [\-i <dir>] [\-f] component_name1 component_name2 …
 load components from given files
 .TP
-.B upload \-d [\-s <config_server>]  [\-i <dir>] [\-f] dsource_name1 dsource_name2 ...
+.B upload \-d [\-s <config_server>]  [\-i <dir>] [\-f] dsource_name1 dsource_name2 …
 load datasources from given files
 .TP
-.B upload \-r [\-s <config_server>]  [\-i <dir>] [\-f] profile_name1 profile_name2 ...
+.B upload \-r [\-s <config_server>]  [\-i <dir>] [\-f] profile_name1 profile_name2 …
 load profiles from given files
 .TP
-.B get [\-s <config_server>]  [\-n] component_name1 component_name2 ...
+.B get [\-s <config_server>]  [\-n] component_name1 component_name2 …
 get merged configuration of components
 .TP
-.B delete [\-s <config_server>] [\-f] component_name1 component_name2 ...
+.B delete [\-s <config_server>] [\-f] component_name1 component_name2 …
 delete components with given names
 .TP
-.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 ...
+.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 …
 delete datasources with given names
 .TP
-.B delete \-r [\-s <config_server>] [\-f] profile_name1 profile_name2 ...
+.B delete \-r [\-s <config_server>] [\-f] profile_name1 profile_name2 …
 delete profiles with given names
 .TP
-.B sources [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 ...
+.B sources [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 …
 get a list of component datasources
 .TP
-.B components [\-s <config_server>] [\-n] component_name1 component_name2 ...
+.B components [\-s <config_server>] [\-n] component_name1 component_name2 …
 get a list of dependent components
 .TP
-.B variables [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 ...
+.B variables [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 …
 get a list of component variables
 .TP
 .B data [\-s <config_server>] json_data
@@ -618,19 +618,19 @@ get a list of datasource record names
 .B servers [\-s <config_server/host>] [\-n]
 get lists of configuration servers from the current tango host
 .TP
-.B describe [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B describe [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show all parameters of given components
 .TP
-.B describe|info \-d [\-s <config_server>] [\-n] dsource_name1 dsource_name2 ...
+.B describe|info \-d [\-s <config_server>] [\-n] dsource_name1 dsource_name2 …
 show all parameters of given datasources
 .TP
-.B info [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B info [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show source parameters of given components
 .TP
-.B info \-r [\-s <config_server>]  [\-n] profile_name1 profile_name2 ...
+.B info \-r [\-s <config_server>]  [\-n] profile_name1 profile_name2 …
 show general parameters of given profiles
 .TP
-.B geometry [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B geometry [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show transformation parameters of given components
 .UNINDENT
 .TP
@@ -650,7 +650,7 @@ perform operation on datasources
 make use mandatory components as well
 .TP
 .B \-p\fP,\fB  \-\-private
-make use private components, i.e. starting with \(aq__\(aq
+make use private components, i.e. starting with ‘__’
 .TP
 .B \-n\fP,\fB  \-\-no\-newlines
 split result with space characters
@@ -709,7 +709,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -746,7 +746,7 @@ datasource prefix, i.e. counter (useful for avoiding duplicated datasource names
 store datasources in Configuration Server database
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
@@ -786,11 +786,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -884,11 +884,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -922,7 +922,7 @@ tango host port
 store datasources in Configuration Server database
 .TP
 .B \-n\fP,\fB  \-\-no\-group
-don\(aqt create common group with a name of datasource
+don’t create common group with a name of datasource
 prefix
 .TP
 .BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
@@ -964,7 +964,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -1042,7 +1042,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <channel> is \(aqALL\(aq
+default <channel> is ‘ALL’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -1113,15 +1113,15 @@ nxscreate onlinecp [options] inputFile
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-c <component>\(aq: show a list of possible components
+without ‘\-c <component>’: show a list of possible components
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -1213,17 +1213,17 @@ nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-t <type>\(aq: show a list of possible component types
+without ‘\-t <type>’: show a list of possible component types
 .IP \(bu 2
-with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
+with ‘\-t <type>  and without \-c <component>: show a list of component variables for the given component type
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-[name1 value1 [name2 value2] ...] sequence  defines component variable values
+[name1 value1 [name2 value2] …] sequence  defines component variable values
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1304,7 +1304,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -1314,7 +1314,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
+default <nexuspath> is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1370,7 +1370,7 @@ configuration server device name
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1404,7 +1404,7 @@ nxscreate compare [\-h] [\-n] online_file [online_file]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
+default: second <online_file> is ‘/online_dir/online.xml’ if only file is given
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1582,7 +1582,7 @@ show this help message and exit
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
+full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
 .TP
 .BI \-v \ VALUES\fP,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
@@ -1836,17 +1836,17 @@ The constructor creates the collector object
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBnexusfilename\fP (\fI\%str\fP) \-\- the nexus file name
+\fBnexusfilename\fP (\fI\%str\fP) – the nexus file name
 .IP \(bu 2
-\fBcompression\fP (\fI\%int\fP) \-\- compression rate
+\fBcompression\fP (\fI\%int\fP) – compression rate
 .IP \(bu 2
-\fBskipmissing\fP (\fI\%bool\fP) \-\- if skip missing images
+\fBskipmissing\fP (\fI\%bool\fP) – if skip missing images
 .IP \(bu 2
-\fBstoreold\fP (\fI\%bool\fP) \-\- if backup the input file
+\fBstoreold\fP (\fI\%bool\fP) – if backup the input file
 .IP \(bu 2
-\fBtestmode\fP (\fI\%bool\fP) \-\- if run in a test mode
+\fBtestmode\fP (\fI\%bool\fP) – if run in a test mode
 .IP \(bu 2
-\fBwriter\fP (\fI\%str\fP) \-\- the writer module
+\fBwriter\fP (\fI\%str\fP) – the writer module
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -1862,13 +1862,13 @@ or appends specific data if path and inputfiles are given
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBpath\fP (\fI\%str\fP) \-\- nexus path of the data field
+\fBpath\fP (\fI\%str\fP) – nexus path of the data field
 .IP \(bu 2
-\fBinputfiles\fP (\fI\%list\fP <\fI\%str\fP>) \-\- a list of file strings
+\fBinputfiles\fP (\fI\%list\fP <\fI\%str\fP>) – a list of file strings
 .IP \(bu 2
-\fBdatatype\fP (\fI\%str\fP) \-\- field data type
+\fBdatatype\fP (\fI\%str\fP) – field data type
 .IP \(bu 2
-\fBshape\fP (\fI\%list\fP <\fI\%int\fP >) \-\- field shape
+\fBshape\fP (\fI\%list\fP <\fI\%int\fP >) – field shape
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -1884,7 +1884,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -1913,7 +1913,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -1928,9 +1928,9 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBhyperslab\fP (\fBfilewriter.FTHyperslab\fP) \-\- target field object
+\fBhyperslab\fP (\fBfilewriter.FTHyperslab\fP) – target field object
 .IP \(bu 2
-\fBhyperslab\fP \-\- field hyperslab or slices
+\fBhyperslab\fP – field hyperslab or slices
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -1965,7 +1965,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -1994,7 +1994,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -2011,15 +2011,15 @@ The constructor creates the collector object
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBnexusfilepath\fP (\fI\%str\fP) \-\- the nexus file name and nexus path
+\fBnexusfilepath\fP (\fI\%str\fP) – the nexus file name and nexus path
 .IP \(bu 2
-\fBtarget\fP (\fI\%str\fP) \-\- the nexus file name and nexus path
+\fBtarget\fP (\fI\%str\fP) – the nexus file name and nexus path
 .IP \(bu 2
-\fBstoreold\fP (\fI\%bool\fP) \-\- if backup the input file
+\fBstoreold\fP (\fI\%bool\fP) – if backup the input file
 .IP \(bu 2
-\fBtestmode\fP (\fI\%bool\fP) \-\- if run in a test mode
+\fBtestmode\fP (\fI\%bool\fP) – if run in a test mode
 .IP \(bu 2
-\fBwriter\fP (\fI\%str\fP) \-\- the writer module
+\fBwriter\fP (\fI\%str\fP) – the writer module
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -2041,15 +2041,15 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBfilename\fP (\fI\%str\fP) \-\- file name
+\fBfilename\fP (\fI\%str\fP) – file name
 .IP \(bu 2
-\fBpath\fP (\fI\%str\fP) \-\- nexus field path with its name
+\fBpath\fP (\fI\%str\fP) – nexus field path with its name
 .IP \(bu 2
-\fBshape\fP (\fI\%list\fP <\fI\%int\fP>) \-\- field shape
+\fBshape\fP (\fI\%list\fP <\fI\%int\fP>) – field shape
 .IP \(bu 2
-\fBhyperslab\fP (\fBfilewriter.FTHyperslab\fP) \-\- field hyperslab or slices
+\fBhyperslab\fP (\fBfilewriter.FTHyperslab\fP) – field hyperslab or slices
 .IP \(bu 2
-\fBmaxshape\fP (\fI\%list\fP <\fI\%int\fP>) \-\- maximal field shape
+\fBmaxshape\fP (\fI\%list\fP <\fI\%int\fP>) – maximal field shape
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -2094,13 +2094,13 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBexfieldpaths\fP (\fI\%str\fP) \-\- target field paths
+\fBexfieldpaths\fP (\fI\%str\fP) – target field paths
 .IP \(bu 2
-\fBexfieldshapes\fP (\fI\%str\fP) \-\- target field shapes
+\fBexfieldshapes\fP (\fI\%str\fP) – target field shapes
 .IP \(bu 2
-\fBshapes\fP (\fBlist\(ga<:obj:\(gatuple\(ga<:obj:\(gaint\fP> >) \-\- target field shapes
+\fBshapes\fP (\fBlist\(ga<:obj:\(gatuple\(ga<:obj:\(gaint\fP> >) – target field shapes
 .IP \(bu 2
-\fBexfieldpaths\fP \-\- separator of field path strings
+\fBexfieldpaths\fP – separator of field path strings
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -2112,13 +2112,13 @@ add layout hyperslabs
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoffsets\fP (\fI\%str\fP) \-\- layout offsets
+\fBoffsets\fP (\fI\%str\fP) – layout offsets
 .IP \(bu 2
-\fBblocks\fP (\fI\%str\fP) \-\- layout blocks
+\fBblocks\fP (\fI\%str\fP) – layout blocks
 .IP \(bu 2
-\fBcounts\fP (\fI\%str\fP) \-\- layout counts
+\fBcounts\fP (\fI\%str\fP) – layout counts
 .IP \(bu 2
-\fBstrides\fP (\fI\%str\fP) \-\- layout strides
+\fBstrides\fP (\fI\%str\fP) – layout strides
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -2129,7 +2129,7 @@ add layout slices
 .INDENT 7.0
 .TP
 .B Parameters
-\fBslices\fP (\fI\%str\fP) \-\- layout slices
+\fBslices\fP (\fI\%str\fP) – layout slices
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -2141,13 +2141,13 @@ add target hyperslabs
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoffsets\fP (\fI\%str\fP) \-\- target offsets
+\fBoffsets\fP (\fI\%str\fP) – target offsets
 .IP \(bu 2
-\fBblocks\fP (\fI\%str\fP) \-\- target blocks
+\fBblocks\fP (\fI\%str\fP) – target blocks
 .IP \(bu 2
-\fBcounts\fP (\fI\%str\fP) \-\- target counts
+\fBcounts\fP (\fI\%str\fP) – target counts
 .IP \(bu 2
-\fBstrides\fP (\fI\%str\fP) \-\- target strides
+\fBstrides\fP (\fI\%str\fP) – target strides
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -2158,7 +2158,7 @@ add taget slices
 .INDENT 7.0
 .TP
 .B Parameters
-\fBslices\fP (\fI\%str\fP) \-\- target slices
+\fBslices\fP (\fI\%str\fP) – target slices
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -2173,7 +2173,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2202,7 +2202,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -2219,11 +2219,11 @@ The constructor creates the collector object
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBnexusfilepath\fP (\fI\%str\fP) \-\- the nexus file name and nexus path
+\fBnexusfilepath\fP (\fI\%str\fP) – the nexus file name and nexus path
 .IP \(bu 2
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .IP \(bu 2
-\fBwriter\fP (\fI\%str\fP) \-\- the writer module
+\fBwriter\fP (\fI\%str\fP) – the writer module
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -2239,7 +2239,7 @@ convert coorinate to int or  None or Unlimited
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcrd\fP (\fIcordinate as string\fP) \-\- cordinate as string
+\fBcrd\fP (\fIcordinate as string\fP) – cordinate as string
 .TP
 .B Returns
 converted coordinate
@@ -2255,7 +2255,7 @@ provides file name generator from file string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBfilestr\fP \-\- file string
+\fBfilestr\fP – file string
 .TP
 .B Type
 filestr: \fI\%str\fP
@@ -2273,16 +2273,16 @@ file name generator or a list of file names
 .INDENT 7.0
 .TP
 .B converts compression string to a deflate level parameter
-or list with [filterid, opt1, opt2, ...]
+or list with [filterid, opt1, opt2, …]
 .UNINDENT
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcompression\fP (\fI\%str\fP) \-\- compression string
+\fBcompression\fP (\fI\%str\fP) – compression string
 .TP
 .B Returns
 deflate level parameter
-or list with [filterid, opt1, opt2, ...]
+or list with [filterid, opt1, opt2, …]
 .TP
 .B Return type
 \fI\%int\fP or \fI\%list\fP < \fI\%int\fP > or \fINone\fP
@@ -2300,7 +2300,7 @@ splits coordinate string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcrdstr\fP (\fIcordinate string\fP) \-\- cordinate string
+\fBcrdstr\fP (\fIcordinate string\fP) – cordinate string
 .TP
 .B Returns
 a list ofr coordinates in tuples
@@ -2316,7 +2316,7 @@ splits coordinate string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcrdstr\fP (\fIcordinate string\fP) \-\- cordinate string
+\fBcrdstr\fP (\fIcordinate string\fP) – cordinate string
 .TP
 .B Returns
 a list ofr coordinates in tuples
@@ -2339,7 +2339,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2363,7 +2363,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2386,9 +2386,9 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBdevice\fP (\fI\%str\fP) \-\- device name of the configuration server
+\fBdevice\fP (\fI\%str\fP) – device name of the configuration server
 .IP \(bu 2
-\fBnonewline\fP (\fI\%bool\fP) \-\- if the output should not be separated
+\fBnonewline\fP (\fI\%bool\fP) – if the output should not be separated
 by the new line character
 .UNINDENT
 .UNINDENT
@@ -2404,7 +2404,7 @@ lists components of the components
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) – given components
 .TP
 .B Returns
 list of component names
@@ -2420,7 +2420,7 @@ provides varaible values
 .INDENT 7.0
 .TP
 .B Parameters
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .TP
 .B Returns
 JSON with variables
@@ -2438,13 +2438,13 @@ delete the DB items
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBask\fP (\fI\%bool\fP) \-\- ask flag
+\fBask\fP (\fI\%bool\fP) – ask flag
 .IP \(bu 2
-\fBprofiles\fP (\fI\%bool\fP) \-\- flag set True for profiles
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -2463,17 +2463,17 @@ provides description of configuration elements
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+\fBmd\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
-\fBpr\fP (\fI\%str\fP) \-\- flag set True for private components
+\fBpr\fP (\fI\%str\fP) – flag set True for private components
 .IP \(bu 2
-\fBpr\fP \-\- column headers
+\fBpr\fP – column headers
 .IP \(bu 2
-\fBfilters\fP (\fI\%str\fP) \-\- filters for first column names separated by comma
+\fBfilters\fP (\fI\%str\fP) – filters for first column names separated by comma
 .UNINDENT
 .TP
 .B Returns
@@ -2492,11 +2492,11 @@ provides geometry info for given elements
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+\fBmd\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
-\fBpr\fP (\fI\%bool\fP) \-\- flag set True for private components
+\fBpr\fP (\fI\%bool\fP) – flag set True for private components
 .UNINDENT
 .TP
 .B Returns
@@ -2513,7 +2513,7 @@ provides final configuration
 .INDENT 7.0
 .TP
 .B Parameters
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .TP
 .B Returns
 XML configuration string
@@ -2531,15 +2531,15 @@ Provides info for given elements
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBmd\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+\fBmd\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
-\fBpr\fP (\fI\%bool\fP) \-\- flag set True for private components
+\fBpr\fP (\fI\%bool\fP) – flag set True for private components
 .IP \(bu 2
-\fBprofiles\fP (\fI\%bool\fP) \-\- flag set True for profiles
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -2558,13 +2558,13 @@ lists the DB item names
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBmandatory\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+\fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
-\fBprivate\fP (\fI\%bool\fP) \-\- flag set True for components starting with \(aq__\(aq
+\fBprivate\fP (\fI\%bool\fP) – flag set True for components starting with ‘__’
 .IP \(bu 2
-\fBprofiles\fP (\fI\%bool\fP) \-\- flag set True for profiles
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .UNINDENT
 .TP
 .B Returns
@@ -2581,7 +2581,7 @@ provides merged components
 .INDENT 7.0
 .TP
 .B Parameters
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .TP
 .B Returns
 XML configuration string with merged components
@@ -2599,9 +2599,9 @@ lists datasources of the component
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- given component or datasource
+\fBname\fP (\fI\%str\fP) – given component or datasource
 .UNINDENT
 .TP
 .B Returns
@@ -2620,15 +2620,15 @@ shows the DB items
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBmandatory\fP (\fI\%bool\fP) \-\- flag set True for mandatory components
+\fBmandatory\fP (\fI\%bool\fP) – flag set True for mandatory components
 .IP \(bu 2
-\fBprofiles\fP (\fI\%bool\fP) \-\- flag set True for profiles
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .IP \(bu 2
-\fBdirectory\fP (\fI\%str\fP) \-\- output file directory
+\fBdirectory\fP (\fI\%str\fP) – output file directory
 .UNINDENT
 .TP
 .B Returns
@@ -2645,7 +2645,7 @@ lists datasources of the components
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) – given components
 .TP
 .B Returns
 list of datasource names
@@ -2663,19 +2663,19 @@ upload the DB items from files
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBds\fP (\fI\%bool\fP) \-\- flag set True for datasources
+\fBds\fP (\fI\%bool\fP) – flag set True for datasources
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of item names
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP>) – list of item names
 .IP \(bu 2
-\fBforce\fP (\fI\%bool\fP) \-\- force flag
+\fBforce\fP (\fI\%bool\fP) – force flag
 .IP \(bu 2
-\fBprofiles\fP (\fI\%bool\fP) \-\- flag set True for profiles
+\fBprofiles\fP (\fI\%bool\fP) – flag set True for profiles
 .IP \(bu 2
-\fBdirectory\fP (\fI\%str\fP) \-\- input file directory
+\fBdirectory\fP (\fI\%str\fP) – input file directory
 .IP \(bu 2
-\fBmandatory\fP (\fI\%bool\fP) \-\- mandatory flag
+\fBmandatory\fP (\fI\%bool\fP) – mandatory flag
 .IP \(bu 2
-\fBexternal\fP (\fI\%str\fP) \-\- external import type
+\fBexternal\fP (\fI\%str\fP) – external import type
 .UNINDENT
 .TP
 .B Returns
@@ -2692,7 +2692,7 @@ lists variable of the components
 .INDENT 7.0
 .TP
 .B Parameters
-\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) \-\- given components
+\fBcomponents\fP (\fI\%list\fP <\fI\%str\fP>) – given components
 .TP
 .B Returns
 list of datasource names
@@ -2713,7 +2713,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2737,7 +2737,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2758,7 +2758,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2782,7 +2782,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2803,7 +2803,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2827,7 +2827,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2848,7 +2848,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2871,7 +2871,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2892,7 +2892,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2916,7 +2916,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2937,7 +2937,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -2961,7 +2961,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -2982,7 +2982,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3006,7 +3006,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3027,7 +3027,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3051,7 +3051,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3072,7 +3072,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3096,7 +3096,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3117,7 +3117,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3141,7 +3141,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3162,7 +3162,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3186,7 +3186,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3207,7 +3207,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3231,7 +3231,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3252,7 +3252,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3276,7 +3276,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3297,7 +3297,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3321,7 +3321,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3350,7 +3350,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3374,7 +3374,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3389,7 +3389,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3413,7 +3413,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3428,7 +3428,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3457,7 +3457,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3472,7 +3472,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3496,7 +3496,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3511,7 +3511,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3540,7 +3540,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3555,7 +3555,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3584,7 +3584,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3604,7 +3604,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3633,7 +3633,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3648,7 +3648,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3672,7 +3672,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3687,7 +3687,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3711,7 +3711,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -3734,7 +3734,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3757,7 +3757,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3778,7 +3778,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3801,7 +3801,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3822,7 +3822,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdevice\fP (\fI\%str\fP) \-\- device name of configuration server
+\fBdevice\fP (\fI\%str\fP) – device name of configuration server
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3841,7 +3841,7 @@ opens an entry
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlconfig\fP (\fI\%str\fP) \-\- xml configuration string
+\fBxmlconfig\fP (\fI\%str\fP) – xml configuration string
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -3851,7 +3851,7 @@ opens the h5 file
 .INDENT 7.0
 .TP
 .B Parameters
-\fBfilename\fP (\fI\%str\fP) \-\- h5 file name
+\fBfilename\fP (\fI\%str\fP) – h5 file name
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -3861,7 +3861,7 @@ records one step
 .INDENT 7.0
 .TP
 .B Parameters
-\fBjsondata\fP (\fI\%str\fP) \-\- step JSON data
+\fBjsondata\fP (\fI\%str\fP) – step JSON data
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -3871,7 +3871,7 @@ sets the global JSON data
 .INDENT 7.0
 .TP
 .B Parameters
-\fBjsondata\fP (\fI\%str\fP) \-\- global JSON data
+\fBjsondata\fP (\fI\%str\fP) – global JSON data
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -3891,7 +3891,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3914,7 +3914,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3935,7 +3935,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -3963,7 +3963,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -3984,7 +3984,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4007,7 +4007,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -4028,7 +4028,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4051,7 +4051,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -4072,7 +4072,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4095,7 +4095,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -4124,7 +4124,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4153,7 +4153,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4168,7 +4168,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4192,7 +4192,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4207,7 +4207,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4231,7 +4231,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4246,7 +4246,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4270,7 +4270,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4285,7 +4285,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4309,7 +4309,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4330,13 +4330,13 @@ changes property name
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- server name
+\fBserver\fP (\fI\%str\fP) – server name
 .IP \(bu 2
-\fBoldname\fP (\fI\%str\fP) \-\- old property name
+\fBoldname\fP (\fI\%str\fP) – old property name
 .IP \(bu 2
-\fBnewname\fP (\fI\%str\fP) \-\- new property name
+\fBnewname\fP (\fI\%str\fP) – new property name
 .IP \(bu 2
-\fBsclass\fP (\fI\%str\fP) \-\- server class name
+\fBsclass\fP (\fI\%str\fP) – server class name
 .UNINDENT
 .TP
 .B Returns
@@ -4355,13 +4355,13 @@ changes/sets property value
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- server name
+\fBserver\fP (\fI\%str\fP) – server name
 .IP \(bu 2
-\fBnewvalue\fP (\fI\%str\fP) \-\- new property value
+\fBnewvalue\fP (\fI\%str\fP) – new property value
 .IP \(bu 2
-\fBnewname\fP (\fI\%str\fP) \-\- new property name
+\fBnewname\fP (\fI\%str\fP) – new property name
 .IP \(bu 2
-\fBsclass\fP (\fI\%str\fP) \-\- server class name
+\fBsclass\fP (\fI\%str\fP) – server class name
 .UNINDENT
 .TP
 .B Returns
@@ -4380,9 +4380,9 @@ adds a new recorder path
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBpath\fP (\fI\%str\fP) \-\- new recorder path
+\fBpath\fP (\fI\%str\fP) – new recorder path
 .IP \(bu 2
-\fBinstance\fP (\fI\%str\fP) \-\- MacroServer instance name
+\fBinstance\fP (\fI\%str\fP) – MacroServer instance name
 .UNINDENT
 .TP
 .B Returns
@@ -4401,11 +4401,11 @@ creates configuration server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBbeamline\fP (\fI\%str\fP) \-\- beamline name
+\fBbeamline\fP (\fI\%str\fP) – beamline name
 .IP \(bu 2
-\fBmasterhost\fP (\fI\%str\fP) \-\- master host of data writer
+\fBmasterhost\fP (\fI\%str\fP) – master host of data writer
 .IP \(bu 2
-\fBjsonsettings\fP (\fI\%str\fP) \-\- connection settings to DB in json
+\fBjsonsettings\fP (\fI\%str\fP) – connection settings to DB in json
 .UNINDENT
 .TP
 .B Returns
@@ -4424,9 +4424,9 @@ creates data writer
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBbeamline\fP (\fI\%str\fP) \-\- beamline name
+\fBbeamline\fP (\fI\%str\fP) – beamline name
 .IP \(bu 2
-\fBmasterhost\fP (\fI\%str\fP) \-\- master host of data writer
+\fBmasterhost\fP (\fI\%str\fP) – master host of data writer
 .UNINDENT
 .TP
 .B Returns
@@ -4445,13 +4445,13 @@ creates selector server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBbeamline\fP (\fI\%str\fP) \-\- beamline name
+\fBbeamline\fP (\fI\%str\fP) – beamline name
 .IP \(bu 2
-\fBmasterhost\fP (\fI\%str\fP) \-\- master host of data writer
+\fBmasterhost\fP (\fI\%str\fP) – master host of data writer
 .IP \(bu 2
-\fBwriter\fP (\fI\%str\fP) \-\- writer device name
+\fBwriter\fP (\fI\%str\fP) – writer device name
 .IP \(bu 2
-\fBcserver\fP (\fI\%str\fP) \-\- configuration server device name
+\fBcserver\fP (\fI\%str\fP) – configuration server device name
 .UNINDENT
 .TP
 .B Returns
@@ -4478,7 +4478,7 @@ restarts server
 .INDENT 7.0
 .TP
 .B Parameters
-\fBhost\fP (\fI\%str\fP) \-\- server host name
+\fBhost\fP (\fI\%str\fP) – server host name
 .TP
 .B Returns
 starter device name
@@ -4496,13 +4496,13 @@ restarts server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- server name
+\fBname\fP (\fI\%str\fP) – server name
 .IP \(bu 2
-\fBhost\fP (\fI\%str\fP) \-\- server host name
+\fBhost\fP (\fI\%str\fP) – server host name
 .IP \(bu 2
-\fBlevel\fP (\fI\%int\fP) \-\- start up level
+\fBlevel\fP (\fI\%int\fP) – start up level
 .IP \(bu 2
-\fBrestart\fP (\fI\%bool\fP) \-\- if server should be restarted
+\fBrestart\fP (\fI\%bool\fP) – if server should be restarted
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4515,9 +4515,9 @@ restarts server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- server name
+\fBname\fP (\fI\%str\fP) – server name
 .IP \(bu 2
-\fBhost\fP (\fI\%str\fP) \-\- server host name
+\fBhost\fP (\fI\%str\fP) – server host name
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4530,17 +4530,17 @@ wait until device is exported and server is running
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- server name, check if running when not None
+\fBserver\fP (\fI\%str\fP) – server name, check if running when not None
 .IP \(bu 2
-\fBdevice\fP (\fI\%str\fP) \-\- device name, check if exported when not None
+\fBdevice\fP (\fI\%str\fP) – device name, check if exported when not None
 .IP \(bu 2
-\fBadminproxy\fP (\fI\%tango.DeviceProxy\fP) \-\- Starter device proxy
+\fBadminproxy\fP (\fI\%tango.DeviceProxy\fP) – Starter device proxy
 .IP \(bu 2
-\fBmaxcnt\fP (\fI\%int\fP) \-\- maximal waiting time in 10ms
+\fBmaxcnt\fP (\fI\%int\fP) – maximal waiting time in 10ms
 .IP \(bu 2
-\fBverbose\fP (\fI\%bool\fP) \-\- verbose mode
+\fBverbose\fP (\fI\%bool\fP) – verbose mode
 .IP \(bu 2
-\fBwaitforproc\fP \-\- wait for process list update
+\fBwaitforproc\fP – wait for process list update
 .UNINDENT
 .TP
 .B Returns
@@ -4559,17 +4559,17 @@ wait until device is exported and server is running
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- server name, check if running when not None
+\fBserver\fP (\fI\%str\fP) – server name, check if running when not None
 .IP \(bu 2
-\fBdevice\fP (\fI\%str\fP) \-\- device name, check if exported when not None
+\fBdevice\fP (\fI\%str\fP) – device name, check if exported when not None
 .IP \(bu 2
-\fBadminproxy\fP (\fI\%tango.DeviceProxy\fP) \-\- Starter device proxy
+\fBadminproxy\fP (\fI\%tango.DeviceProxy\fP) – Starter device proxy
 .IP \(bu 2
-\fBmaxcnt\fP (\fI\%int\fP) \-\- maximal waiting time in 10ms
+\fBmaxcnt\fP (\fI\%int\fP) – maximal waiting time in 10ms
 .IP \(bu 2
-\fBverbose\fP (\fI\%bool\fP) \-\- verbose mode
+\fBverbose\fP (\fI\%bool\fP) – verbose mode
 .IP \(bu 2
-\fBwaitforproc\fP \-\- wait for process list update
+\fBwaitforproc\fP – wait for process list update
 .UNINDENT
 .TP
 .B Returns
@@ -4596,7 +4596,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4620,7 +4620,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4635,7 +4635,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -4659,7 +4659,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4690,11 +4690,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4749,11 +4749,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4775,11 +4775,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4810,11 +4810,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4836,11 +4836,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4890,9 +4890,9 @@ sets attribute and datasource group of online.xml device
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBtangohost\fP (\fI\%str\fP) \-\- tango host
+\fBtangohost\fP (\fI\%str\fP) – tango host
 .IP \(bu 2
-\fBclientlike\fP (\fI\%bool\fP) \-\- tango motors to be client like
+\fBclientlike\fP (\fI\%bool\fP) – tango motors to be client like
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -4903,7 +4903,7 @@ sets sardana device name and sardana host/port of online.xml device
 .INDENT 7.0
 .TP
 .B Parameters
-\fBtangohost\fP (\fI\%str\fP) \-\- tango host
+\fBtangohost\fP (\fI\%str\fP) – tango host
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -4958,7 +4958,7 @@ sets sardana name
 .INDENT 7.0
 .TP
 .B Parameters
-\fBtolower\fP (\fI\%bool\fP) \-\- If True name in lowercase
+\fBtolower\fP (\fI\%bool\fP) – If True name in lowercase
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5010,11 +5010,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5037,11 +5037,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5089,11 +5089,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5140,11 +5140,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP <\fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5176,11 +5176,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5228,11 +5228,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fBoptparse.Values\fP) \-\- command options
+\fBoptions\fP (\fBoptparse.Values\fP) – command options
 .IP \(bu 2
-\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) \-\- command arguments
+\fBargs\fP (\fI\%list\fP < \fI\%str\fP >) – command arguments
 .IP \(bu 2
-\fBprintouts\fP (\fI\%bool\fP) \-\- if printout is enable
+\fBprintouts\fP (\fI\%bool\fP) – if printout is enable
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5262,7 +5262,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5291,7 +5291,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -5309,9 +5309,9 @@ the main function
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .IP \(bu 2
-\fBroot\fP (class:\fIfilewriter.FTGroup\fP) \-\- nexus file root
+\fBroot\fP (class:\fIfilewriter.FTGroup\fP) – nexus file root
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5327,7 +5327,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5353,9 +5353,9 @@ parse entry of nexus file
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBentry\fP (\fBfilewriter.FTGroup\fP) \-\- nexus entry node
+\fBentry\fP (\fBfilewriter.FTGroup\fP) – nexus entry node
 .IP \(bu 2
-\fBdescription\fP (\fI\%list\fP <\fI\%dict\fP <\fI\%str\fP, \fIany\fP > >) \-\- dict description list
+\fBdescription\fP (\fI\%list\fP <\fI\%dict\fP <\fI\%str\fP, \fIany\fP > >) – dict description list
 .UNINDENT
 .TP
 .B Returns
@@ -5377,7 +5377,7 @@ the main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .TP
 .B Returns
 output information
@@ -5393,7 +5393,7 @@ show general informations
 .INDENT 7.0
 .TP
 .B Parameters
-\fBroot\fP (class:\fIfilewriter.FTGroup\fP) \-\- nexus file root
+\fBroot\fP (class:\fIfilewriter.FTGroup\fP) – nexus file root
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5416,7 +5416,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBroot\fP (\fBfilewriter.FTGroup\fP) \-\- nexus root node
+\fBroot\fP (\fBfilewriter.FTGroup\fP) – nexus root node
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5430,7 +5430,7 @@ converts full_path with NX_classes into nexus_path
 .INDENT 7.0
 .TP
 .B Parameters
-\fBpath\fP (\fI\%str\fP) \-\- nexus full_path
+\fBpath\fP (\fI\%str\fP) – nexus full_path
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5451,7 +5451,7 @@ provides datasource name from datasource xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+\fBxmlstring\fP (\fI\%str\fP) – datasource xml string
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5461,7 +5461,7 @@ provides source from datasource xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+\fBxmlstring\fP (\fI\%str\fP) – datasource xml string
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
@@ -5471,7 +5471,7 @@ provides datasource type from datasource xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlstring\fP (\fI\%str\fP) \-\- datasource xml string
+\fBxmlstring\fP (\fI\%str\fP) – datasource xml string
 .UNINDENT
 .UNINDENT
 .SS nxstools.nxsargparser module
@@ -5495,7 +5495,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBkwargs\fP \-\- \fI\%argparse.ArgumentParser\fP
+\fBkwargs\fP – \fI\%argparse.ArgumentParser\fP
 parameter dictionary
 .UNINDENT
 .INDENT 7.0
@@ -5518,7 +5518,7 @@ error handler
 .INDENT 7.0
 .TP
 .B Parameters
-\fBmessage\fP (\fI\%str\fP) \-\- error message
+\fBmessage\fP (\fI\%str\fP) – error message
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5533,7 +5533,7 @@ parser creator
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparser\fP (\fBNXSFileInfoArgParser\fP) \-\- option parser
+\fBparser\fP (\fBNXSFileInfoArgParser\fP) – option parser
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5562,7 +5562,7 @@ run commandthe main program function
 .INDENT 7.0
 .TP
 .B Parameters
-\fBoptions\fP (\fI\%argparse.Namespace\fP) \-\- parser options
+\fBoptions\fP (\fI\%argparse.Namespace\fP) – parser options
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5584,7 +5584,7 @@ converts ESRF xml configuration to nxsdatawriter format
 .INDENT 7.0
 .TP
 .B Parameters
-\fBtext\fP (\fI\%str\fP) \-\- input xml string
+\fBtext\fP (\fI\%str\fP) – input xml string
 .TP
 .B Returns
 output xml string
@@ -5607,7 +5607,7 @@ fetches record name or query from datasource node
 .INDENT 7.0
 .TP
 .B Parameters
-\fBnode\fP (\fBlxml.etree.Element\fP) \-\- datasource node
+\fBnode\fP (\fBlxml.etree.Element\fP) – datasource node
 .TP
 .B Returns
 record name or query
@@ -5627,7 +5627,7 @@ to one output xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmls\fP (\fI\%list\fP <\fI\%str\fP>) \-\- a list of xml string with definitions
+\fBxmls\fP (\fI\%list\fP <\fI\%str\fP>) – a list of xml string with definitions
 .TP
 .B Returns
 one output xml string
@@ -5643,7 +5643,7 @@ provides datasources and its records from xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlc\fP (\fI\%str\fP) \-\- xml string
+\fBxmlc\fP (\fI\%str\fP) – xml string
 .TP
 .B Returns
 list of datasource descriptions
@@ -5659,7 +5659,7 @@ provides datasources and its records from xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlc\fP (\fI\%str\fP) \-\- xml string
+\fBxmlc\fP (\fI\%str\fP) – xml string
 .TP
 .B Returns
 list of datasource descriptions
@@ -5675,7 +5675,7 @@ provides datasources and its records from xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlc\fP (\fI\%str\fP) \-\- xml string
+\fBxmlc\fP (\fI\%str\fP) – xml string
 .TP
 .B Returns
 list of datasource descriptions
@@ -5691,7 +5691,7 @@ provides datasources and its records from xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlc\fP (\fI\%str\fP) \-\- xml string
+\fBxmlc\fP (\fI\%str\fP) – xml string
 .TP
 .B Returns
 list of datasource descriptions
@@ -5707,7 +5707,7 @@ provides source record from xml string
 .INDENT 7.0
 .TP
 .B Parameters
-\fBxmlc\fP (\fI\%str\fP) \-\- xml string
+\fBxmlc\fP (\fI\%str\fP) – xml string
 .TP
 .B Returns
 source record
@@ -5730,9 +5730,9 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) \-\- description list
+\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) – description list
 .IP \(bu 2
-\fBnonone\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of parameters which have to exist to be shown
+\fBnonone\fP (\fI\%list\fP <\fI\%str\fP>) – list of parameters which have to exist to be shown
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5773,13 +5773,13 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) \-\- description list
+\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) – description list
 .IP \(bu 2
-\fBnonone\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of parameters which have to exist to be shown
+\fBnonone\fP (\fI\%list\fP <\fI\%str\fP>) – list of parameters which have to exist to be shown
 .IP \(bu 2
-\fBheaders\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of output parameters
+\fBheaders\fP (\fI\%list\fP <\fI\%str\fP>) – list of output parameters
 .IP \(bu 2
-\fBfilters\fP (\fI\%list\fP <\fI\%str\fP>) \-\- filters for first column names
+\fBfilters\fP (\fI\%list\fP <\fI\%str\fP>) – filters for first column names
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5812,7 +5812,7 @@ loads description
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) \-\- description list
+\fBdescription\fP (\fI\%list\fP <\fI\%str\fP>) – description list
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5837,11 +5837,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- name attribute
+\fBnameAttr\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBtypeAttr\fP (\fI\%str\fP) \-\- type attribute
+\fBtypeAttr\fP (\fI\%str\fP) – type attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5853,14 +5853,14 @@ sets the attribute strategy
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBmode\fP (\fI\%str\fP) \-\- mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+\fBmode\fP (\fI\%str\fP) – mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
 .IP \(bu 2
-\fBtrigger\fP (\fI\%str\fP) \-\- for asynchronous writting,
+\fBtrigger\fP (\fI\%str\fP) – for asynchronous writting,
 e.g. with different subentries
 .IP \(bu 2
-\fBvalue\fP (\fI\%str\fP) \-\- label for postrun mode
+\fBvalue\fP (\fI\%str\fP) – label for postrun mode
 .IP \(bu 2
-\fBcanfail\fP (\fI\%bool\fP) \-\- can fail strategy flag
+\fBcanfail\fP (\fI\%bool\fP) – can fail strategy flag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5876,7 +5876,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5885,7 +5885,7 @@ adds doc tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdoc\fP (\fI\%str\fP) \-\- doc tag content
+\fBdoc\fP (\fI\%str\fP) – doc tag content
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -5897,9 +5897,9 @@ sets paramters for Client data
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- name of datasource
+\fBname\fP (\fI\%str\fP) – name of datasource
 .IP \(bu 2
-\fBrecordName\fP (\fI\%str\fP) \-\- name of the data object
+\fBrecordName\fP (\fI\%str\fP) – name of the data object
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5912,29 +5912,29 @@ sets parameters of DataBase
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- name of datasource
+\fBname\fP (\fI\%str\fP) – name of datasource
 .IP \(bu 2
-\fBdbname\fP (\fI\%str\fP) \-\- name of used DataBase
+\fBdbname\fP (\fI\%str\fP) – name of used DataBase
 .IP \(bu 2
-\fBquery\fP (\fI\%str\fP) \-\- database query
+\fBquery\fP (\fI\%str\fP) – database query
 .IP \(bu 2
-\fBdbtype\fP (\fI\%str\fP) \-\- type of the database, i.e. MYSQL, PGSQL, ORACLE
+\fBdbtype\fP (\fI\%str\fP) – type of the database, i.e. MYSQL, PGSQL, ORACLE
 .IP \(bu 2
-\fBrank\fP (\fI\%str\fP) \-\- rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
+\fBrank\fP (\fI\%str\fP) – rank of the query output, i.e. SCALAR, SPECTRUM, IMAGE
 .IP \(bu 2
-\fBmycnf\fP (\fI\%str\fP) \-\- MYSQL config file
+\fBmycnf\fP (\fI\%str\fP) – MYSQL config file
 .IP \(bu 2
-\fBuser\fP (\fI\%str\fP) \-\- database user name
+\fBuser\fP (\fI\%str\fP) – database user name
 .IP \(bu 2
-\fBpasswd\fP (\fI\%str\fP) \-\- database user password
+\fBpasswd\fP (\fI\%str\fP) – database user password
 .IP \(bu 2
-\fBdsn\fP (\fI\%str\fP) \-\- DSN string to initialize ORACLE and PGSQL databases
+\fBdsn\fP (\fI\%str\fP) – DSN string to initialize ORACLE and PGSQL databases
 .IP \(bu 2
-\fBmode\fP (\fI\%str\fP) \-\- mode for ORACLE databases, i.e. SYSDBA or SYSOPER
+\fBmode\fP (\fI\%str\fP) – mode for ORACLE databases, i.e. SYSDBA or SYSOPER
 .IP \(bu 2
-\fBhost\fP (\fI\%str\fP) \-\- name of the host
+\fBhost\fP (\fI\%str\fP) – name of the host
 .IP \(bu 2
-\fBport\fP (\fI\%str\fP) \-\- port number
+\fBport\fP (\fI\%str\fP) – port number
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5947,20 +5947,20 @@ sets paramters for Tango device
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- name of datasource
+\fBname\fP (\fI\%str\fP) – name of datasource
 .IP \(bu 2
-\fBdevice\fP (\fI\%str\fP) \-\- device name
+\fBdevice\fP (\fI\%str\fP) – device name
 .IP \(bu 2
-\fBmemberType\fP (\fI\%str\fP) \-\- type of the data object, i.e. attribute,
+\fBmemberType\fP (\fI\%str\fP) – type of the data object, i.e. attribute,
 property, command
 .IP \(bu 2
-\fBrecordName\fP (\fI\%str\fP) \-\- name of the data object
+\fBrecordName\fP (\fI\%str\fP) – name of the data object
 .IP \(bu 2
-\fBhost\fP (\fI\%str\fP) \-\- host name
+\fBhost\fP (\fI\%str\fP) – host name
 .IP \(bu 2
-\fBport\fP (\fI\%str\fP) \-\- port
+\fBport\fP (\fI\%str\fP) – port
 .IP \(bu 2
-\fBencoding\fP (\fI\%str\fP) \-\- encoding of DevEncoded data
+\fBencoding\fP (\fI\%str\fP) – encoding of DevEncoded data
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -5978,17 +5978,17 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBdeviceName\fP (\fI\%str\fP) \-\- tango device name
+\fBdeviceName\fP (\fI\%str\fP) – tango device name
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- name attribute
+\fBnameAttr\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBtypeAttr\fP (\fI\%str\fP) \-\- type attribute
+\fBtypeAttr\fP (\fI\%str\fP) – type attribute
 .IP \(bu 2
-\fBcommands\fP (\fI\%bool\fP) \-\- if we call the commands
+\fBcommands\fP (\fI\%bool\fP) – if we call the commands
 .IP \(bu 2
-\fBblackAttrs\fP (\fI\%list\fP <\fI\%str\fP>) \-\- list of excluded attributes
+\fBblackAttrs\fP (\fI\%list\fP <\fI\%str\fP>) – list of excluded attributes
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6015,11 +6015,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBindexAttr\fP (\fI\%str\fP) \-\- index attribute
+\fBindexAttr\fP (\fI\%str\fP) – index attribute
 .IP \(bu 2
-\fBvalueAttr\fP (\fI\%str\fP) \-\- value attribute
+\fBvalueAttr\fP (\fI\%str\fP) – value attribute
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6036,9 +6036,9 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBrankAttr\fP (\fI\%str\fP) \-\- rank attribute
+\fBrankAttr\fP (\fI\%str\fP) – rank attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6050,9 +6050,9 @@ adds dim tag
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBindexAttr\fP (\fI\%str\fP) \-\- index attribute
+\fBindexAttr\fP (\fI\%str\fP) – index attribute
 .IP \(bu 2
-\fBvalueAttr\fP (\fI\%str\fP) \-\- value attribute
+\fBvalueAttr\fP (\fI\%str\fP) – value attribute
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6076,11 +6076,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- name attribute
+\fBnameAttr\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBtypeAttr\fP (\fI\%str\fP) \-\- type attribute
+\fBtypeAttr\fP (\fI\%str\fP) – type attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6092,11 +6092,11 @@ adds attribute tag
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBattrName\fP (\fI\%str\fP) \-\- name attribute
+\fBattrName\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBattrType\fP (\fI\%str\fP) \-\- type attribute
+\fBattrType\fP (\fI\%str\fP) – type attribute
 .IP \(bu 2
-\fBattrValue\fP (\fI\%str\fP) \-\- content of the attribute tag
+\fBattrValue\fP (\fI\%str\fP) – content of the attribute tag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6107,7 +6107,7 @@ adds doc tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdoc\fP (\fI\%str\fP) \-\- doc tag content
+\fBdoc\fP (\fI\%str\fP) – doc tag content
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6119,22 +6119,22 @@ sets the field strategy
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBmode\fP (\fI\%str\fP) \-\- mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
+\fBmode\fP (\fI\%str\fP) – mode data writing, i.e. INIT, STEP, FINAL, POSTRUN
 .IP \(bu 2
-\fBtrigger\fP (\fI\%str\fP) \-\- for asynchronous writting,
+\fBtrigger\fP (\fI\%str\fP) – for asynchronous writting,
 e.g. with different subentries
 .IP \(bu 2
-\fBvalue\fP (\fI\%str\fP) \-\- label for postrun mode
+\fBvalue\fP (\fI\%str\fP) – label for postrun mode
 .IP \(bu 2
-\fBgrows\fP (\fI\%str\fP) \-\- growing dimension
+\fBgrows\fP (\fI\%str\fP) – growing dimension
 .IP \(bu 2
-\fBcompression\fP (\fI\%str\fP) \-\- flag if compression shuold be applied
+\fBcompression\fP (\fI\%str\fP) – flag if compression shuold be applied
 .IP \(bu 2
-\fBrate\fP (\fI\%str\fP) \-\- compression rate
+\fBrate\fP (\fI\%str\fP) – compression rate
 .IP \(bu 2
-\fBshuffle\fP (\fI\%str\fP) \-\- flag if compression shuffle
+\fBshuffle\fP (\fI\%str\fP) – flag if compression shuffle
 .IP \(bu 2
-\fBcanfail\fP (\fI\%bool\fP) \-\- can fail strategy flag
+\fBcanfail\fP (\fI\%bool\fP) – can fail strategy flag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6145,7 +6145,7 @@ sets the field unit
 .INDENT 7.0
 .TP
 .B Parameters
-\fBunitsAttr\fP (\fI\%str\fP) \-\- the field unit
+\fBunitsAttr\fP (\fI\%str\fP) – the field unit
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6162,11 +6162,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- name attribute
+\fBnameAttr\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBtypeAttr\fP (\fI\%str\fP) \-\- type attribute
+\fBtypeAttr\fP (\fI\%str\fP) – type attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6178,11 +6178,11 @@ adds attribute: tag
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBattrName\fP (\fI\%str\fP) \-\- name attribute
+\fBattrName\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBattrType\fP (\fI\%str\fP) \-\- type attribute
+\fBattrType\fP (\fI\%str\fP) – type attribute
 .IP \(bu 2
-\fBattrValue\fP (\fI\%str\fP) \-\- content of the attribute tag
+\fBattrValue\fP (\fI\%str\fP) – content of the attribute tag
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6193,7 +6193,7 @@ adds doc tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdoc\fP (\fI\%str\fP) \-\- doc tag content
+\fBdoc\fP (\fI\%str\fP) – doc tag content
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6210,11 +6210,11 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- name attribute
+\fBnameAttr\fP (\fI\%str\fP) – name attribute
 .IP \(bu 2
-\fBgTarget\fP (\fI\%str\fP) \-\- target attribute
+\fBgTarget\fP (\fI\%str\fP) – target attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6224,7 +6224,7 @@ adds doc tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdoc\fP (\fI\%str\fP) \-\- doc tag content
+\fBdoc\fP (\fI\%str\fP) – doc tag content
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6241,13 +6241,13 @@ constructor
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBparent\fP (\fI\%NTag\fP) \-\- parent tag element
+\fBparent\fP (\fI\%NTag\fP) – parent tag element
 .IP \(bu 2
-\fBtagName\fP (\fI\%str\fP) \-\- tag name
+\fBtagName\fP (\fI\%str\fP) – tag name
 .IP \(bu 2
-\fBnameAttr\fP (\fI\%str\fP) \-\- value of name attribute
+\fBnameAttr\fP (\fI\%str\fP) – value of name attribute
 .IP \(bu 2
-\fBtypeAttr\fP (\fI\%str\fP) \-\- value of type attribute
+\fBtypeAttr\fP (\fI\%str\fP) – value of type attribute
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6259,9 +6259,9 @@ adds tag attribute
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- attribute name
+\fBname\fP (\fI\%str\fP) – attribute name
 .IP \(bu 2
-\fBvalue\fP (\fI\%str\fP) \-\- attribute value
+\fBvalue\fP (\fI\%str\fP) – attribute value
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6272,7 +6272,7 @@ adds tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBtext\fP (\fI\%str\fP) \-\- tag content
+\fBtext\fP (\fI\%str\fP) – tag content
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6287,7 +6287,7 @@ sets tag content
 .INDENT 7.0
 .TP
 .B Parameters
-\fBtext\fP (\fI\%str\fP) \-\- tag content
+\fBtext\fP (\fI\%str\fP) – tag content
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6302,7 +6302,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBfname\fP (\fI\%str\fP) \-\- XML file name
+\fBfname\fP (\fI\%str\fP) – XML file name
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6331,7 +6331,7 @@ prints pretty XML making use of etree
 .INDENT 7.0
 .TP
 .B Parameters
-\fBetNode\fP (\fBlxml.etree.Element\fP) \-\- node
+\fBetNode\fP (\fBlxml.etree.Element\fP) – node
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6359,7 +6359,7 @@ constructor
 .INDENT 7.0
 .TP
 .B Parameters
-\fBpackagename\fP (\fI\%str\fP) \-\- full package name
+\fBpackagename\fP (\fI\%str\fP) – full package name
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6368,7 +6368,7 @@ load xml template module variables
 .INDENT 7.0
 .TP
 .B Parameters
-\fBpackagename\fP (\fI\%str\fP) \-\- full package name
+\fBpackagename\fP (\fI\%str\fP) – full package name
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6379,7 +6379,7 @@ provides server device name if only one or error in the other case
 .INDENT 7.0
 .TP
 .B Parameters
-\fBname\fP (\fI\%str\fP) \-\- server name
+\fBname\fP (\fI\%str\fP) – server name
 .TP
 .B Returns
 server device name or empty string if error appears
@@ -6400,7 +6400,7 @@ finds class name
 .INDENT 7.0
 .TP
 .B Parameters
-\fBname\fP (\fI\%str\fP) \-\- device name
+\fBname\fP (\fI\%str\fP) – device name
 .TP
 .B Returns
 class name
@@ -6418,11 +6418,11 @@ generates device names
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBprefix\fP (\fI\%str\fP) \-\- device name prefix
+\fBprefix\fP (\fI\%str\fP) – device name prefix
 .IP \(bu 2
-\fBfirst\fP (\fI\%int\fP) \-\- first device index
+\fBfirst\fP (\fI\%int\fP) – first device index
 .IP \(bu 2
-\fBlast\fP (\fI\%int\fP) \-\- last device index
+\fBlast\fP (\fI\%int\fP) – last device index
 .UNINDENT
 .TP
 .B Returns
@@ -6441,11 +6441,11 @@ provides a list of device attributes
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBdevice\fP (\fI\%str\fP) \-\- tango device name
+\fBdevice\fP (\fI\%str\fP) – tango device name
 .IP \(bu 2
-\fBhost\fP (\fI\%str\fP) \-\- device host
+\fBhost\fP (\fI\%str\fP) – device host
 .IP \(bu 2
-\fBport\fP (\fI\%int\fP) \-\- device port
+\fBport\fP (\fI\%int\fP) – device port
 .UNINDENT
 .TP
 .B Returns
@@ -6462,7 +6462,7 @@ provides device class name
 .INDENT 7.0
 .TP
 .B Parameters
-\fBdevicename\fP (\fI\%str\fP) \-\- device name
+\fBdevicename\fP (\fI\%str\fP) – device name
 .TP
 .B Returns
 class name
@@ -6480,9 +6480,9 @@ gets datasource components
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- configuration server
+\fBserver\fP (\fI\%str\fP) – configuration server
 .IP \(bu 2
-\fBverbose\fP (\fI\%bool\fP) \-\- additional printouts
+\fBverbose\fP (\fI\%bool\fP) – additional printouts
 .UNINDENT
 .TP
 .B Returns
@@ -6499,7 +6499,7 @@ fetches the server tango_host:tango_port
 .INDENT 7.0
 .TP
 .B Parameters
-\fBserver\fP (\fI\%str\fP) \-\- tango server
+\fBserver\fP (\fI\%str\fP) – tango server
 .TP
 .B Returns
 tango host
@@ -6515,7 +6515,7 @@ provides server device names
 .INDENT 7.0
 .TP
 .B Parameters
-\fBname\fP (\fI\%str\fP) \-\- server instance name
+\fBname\fP (\fI\%str\fP) – server instance name
 .TP
 .B Returns
 list of the server device names
@@ -6536,7 +6536,7 @@ finds server names
 .INDENT 7.0
 .TP
 .B Parameters
-\fBname\fP (\fI\%str\fP) \-\- server instance name
+\fBname\fP (\fI\%str\fP) – server instance name
 .TP
 .B Returns
 server list
@@ -6553,7 +6553,7 @@ important attributes of modules
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.nxsdevicetools.moduleTemplateFiles = {\(aqdalsa\(aq: [\(aqdalsa.xml\(aq, \(aqdalsa_nxdata.ds.xml\(aq, \(aqdalsa_external_data.ds.xml\(aq], \(aqeigerdectris\(aq: [\(aqeigerdectris.xml\(aq, \(aqeigerdectris_stepindex.ds.xml\(aq, \(aqeigerdectris_description_cb.ds.xml\(aq, \(aqeigerdectris_triggermode_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_nxdata.ds.xml\(aq, \(aqlambda_external_data.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_nxdata.ds.xml\(aq, \(aqlambda2m_m2_nxdata.ds.xml\(aq, \(aqlambda2m_m3_nxdata.ds.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqlambdavds\(aq: [\(aqlambdavds.xml\(aq, \(aqlambdavds_nxdata.ds.xml\(aq, \(aqlambdavds_triggermode_cb.ds.xml\(aq, \(aqlambdavds_framenumbers_cb.ds.xml\(aq, \(aqlambdavds_savefilename_cb.ds.xml\(aq], \(aqlimaccd\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqlimaccds\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqmca_xia\(aq: [\(aqmcaxia.xml\(aq], \(aqmythen\(aq: [\(aqmythen.xml\(aq, \(aqmythen_postrun.ds.xml\(aq, \(aqmythen_filestartnumber.ds.xml\(aq], \(aqmythen2\(aq: [\(aqmythen2.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqtangovimba\(aq: [\(aqtangovimba.xml\(aq, \(aqtangovimba_nxdata.ds.xml\(aq, \(aqtangovimba_external_data.ds.xml\(aq]}
+.B nxstools.nxsdevicetools.moduleTemplateFiles = {\(aqdalsa\(aq: [\(aqdalsa.xml\(aq, \(aqdalsa_nxdata.ds.xml\(aq, \(aqdalsa_external_data.ds.xml\(aq], \(aqeigerdectris\(aq: [\(aqeigerdectris.xml\(aq, \(aqeigerdectris_stepindex.ds.xml\(aq, \(aqeigerdectris_description_cb.ds.xml\(aq, \(aqeigerdectris_triggermode_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_nxdata.ds.xml\(aq, \(aqlambda_external_data.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_nxdata.ds.xml\(aq, \(aqlambda2m_m2_nxdata.ds.xml\(aq, \(aqlambda2m_m3_nxdata.ds.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqlambdavds\(aq: [\(aqlambdavds.xml\(aq, \(aqlambdavds_nxdata.ds.xml\(aq, \(aqlambdavds_description.ds.xml\(aq, \(aqlambdavds_triggermode_cb.ds.xml\(aq, \(aqlambdavds_framenumbers_cb.ds.xml\(aq, \(aqlambdavds_savefilename_cb.ds.xml\(aq], \(aqlimaccd\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqlimaccds\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqmca_xia\(aq: [\(aqmcaxia.xml\(aq], \(aqmythen\(aq: [\(aqmythen.xml\(aq, \(aqmythen_postrun.ds.xml\(aq, \(aqmythen_filestartnumber.ds.xml\(aq], \(aqmythen2\(aq: [\(aqmythen2.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqtangovimba\(aq: [\(aqtangovimba.xml\(aq, \(aqtangovimba_nxdata.ds.xml\(aq, \(aqtangovimba_external_data.ds.xml\(aq]}
 (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
 xml template files of modules
 .UNINDENT
@@ -6574,7 +6574,7 @@ opens connection to the configuration server
 .INDENT 7.0
 .TP
 .B Parameters
-\fBconfiguration\fP (\fI\%str\fP) \-\- server device name
+\fBconfiguration\fP (\fI\%str\fP) – server device name
 .TP
 .B Returns
 configuration server proxy
@@ -6605,13 +6605,13 @@ stores components in Configuration Server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- component name
+\fBname\fP (\fI\%str\fP) – component name
 .IP \(bu 2
-\fBxml\fP (\fI\%str\fP) \-\- component xml string
+\fBxml\fP (\fI\%str\fP) – component xml string
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- configuration server
+\fBserver\fP (\fI\%str\fP) – configuration server
 .IP \(bu 2
-\fBmandatory\fP (\fI\%bool\fP) \-\- set component as mandatory
+\fBmandatory\fP (\fI\%bool\fP) – set component as mandatory
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6624,11 +6624,11 @@ stores datasources in Configuration Server
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBname\fP (\fI\%str\fP) \-\- datasource name
+\fBname\fP (\fI\%str\fP) – datasource name
 .IP \(bu 2
-\fBxml\fP (\fI\%str\fP) \-\- datasource xml string
+\fBxml\fP (\fI\%str\fP) – datasource xml string
 .IP \(bu 2
-\fBserver\fP (\fI\%str\fP) \-\- configuration server
+\fBserver\fP (\fI\%str\fP) – configuration server
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -6680,11 +6680,11 @@ Generator class creating image file names.
 .B Parameters
 .INDENT 7.0
 .IP \(bu 2
-\fBfname_template\fP (\fI\%str\fP) \-\- file name template
+\fBfname_template\fP (\fI\%str\fP) – file name template
 .IP \(bu 2
-\fBstart_index\fP (\fI\%int\fP) \-\- file start index
+\fBstart_index\fP (\fI\%int\fP) – file start index
 .IP \(bu 2
-\fBstop_index\fP (\fI\%int\fP) \-\- file stop index
+\fBstop_index\fP (\fI\%int\fP) – file stop index
 .UNINDENT
 .UNINDENT
 .INDENT 7.0
@@ -6705,7 +6705,7 @@ from a sliced user input
 .INDENT 7.0
 .TP
 .B Parameters
-\fBfile_template\fP (\fI\%str\fP) \-\- file template
+\fBfile_template\fP (\fI\%str\fP) – file template
 .TP
 .B Returns
 filename generator object
@@ -6736,7 +6736,7 @@ important attributes of modules
 .UNINDENT
 .INDENT 0.0
 .TP
-.B nxstools.xmltemplates.moduleTemplateFiles = {\(aqdalsa\(aq: [\(aqdalsa.xml\(aq, \(aqdalsa_nxdata.ds.xml\(aq, \(aqdalsa_external_data.ds.xml\(aq], \(aqeigerdectris\(aq: [\(aqeigerdectris.xml\(aq, \(aqeigerdectris_stepindex.ds.xml\(aq, \(aqeigerdectris_description_cb.ds.xml\(aq, \(aqeigerdectris_triggermode_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_nxdata.ds.xml\(aq, \(aqlambda_external_data.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_nxdata.ds.xml\(aq, \(aqlambda2m_m2_nxdata.ds.xml\(aq, \(aqlambda2m_m3_nxdata.ds.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqlambdavds\(aq: [\(aqlambdavds.xml\(aq, \(aqlambdavds_nxdata.ds.xml\(aq, \(aqlambdavds_triggermode_cb.ds.xml\(aq, \(aqlambdavds_framenumbers_cb.ds.xml\(aq, \(aqlambdavds_savefilename_cb.ds.xml\(aq], \(aqlimaccd\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqlimaccds\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqmca_xia\(aq: [\(aqmcaxia.xml\(aq], \(aqmythen\(aq: [\(aqmythen.xml\(aq, \(aqmythen_postrun.ds.xml\(aq, \(aqmythen_filestartnumber.ds.xml\(aq], \(aqmythen2\(aq: [\(aqmythen2.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqtangovimba\(aq: [\(aqtangovimba.xml\(aq, \(aqtangovimba_nxdata.ds.xml\(aq, \(aqtangovimba_external_data.ds.xml\(aq]}
+.B nxstools.xmltemplates.moduleTemplateFiles = {\(aqdalsa\(aq: [\(aqdalsa.xml\(aq, \(aqdalsa_nxdata.ds.xml\(aq, \(aqdalsa_external_data.ds.xml\(aq], \(aqeigerdectris\(aq: [\(aqeigerdectris.xml\(aq, \(aqeigerdectris_stepindex.ds.xml\(aq, \(aqeigerdectris_description_cb.ds.xml\(aq, \(aqeigerdectris_triggermode_cb.ds.xml\(aq], \(aqlambda\(aq: [\(aqlambda.xml\(aq, \(aqlambda_nxdata.ds.xml\(aq, \(aqlambda_external_data.ds.xml\(aq], \(aqlambda2m\(aq: [\(aqlambda2m.xml\(aq, \(aqlambda2m_m1_nxdata.ds.xml\(aq, \(aqlambda2m_m2_nxdata.ds.xml\(aq, \(aqlambda2m_m3_nxdata.ds.xml\(aq, \(aqlambda2m_m1_external_data.ds.xml\(aq, \(aqlambda2m_m2_external_data.ds.xml\(aq, \(aqlambda2m_m3_external_data.ds.xml\(aq], \(aqlambdavds\(aq: [\(aqlambdavds.xml\(aq, \(aqlambdavds_nxdata.ds.xml\(aq, \(aqlambdavds_description.ds.xml\(aq, \(aqlambdavds_triggermode_cb.ds.xml\(aq, \(aqlambdavds_framenumbers_cb.ds.xml\(aq, \(aqlambdavds_savefilename_cb.ds.xml\(aq], \(aqlimaccd\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqlimaccds\(aq: [\(aqlimaccd.xml\(aq, \(aqlimaccd_postrun.ds.xml\(aq, \(aqlimaccd_xpixelsize.ds.xml\(aq, \(aqlimaccd_ypixelsize.ds.xml\(aq, \(aqlimaccd_description.ds.xml\(aq, \(aqlimaccd_filestartnum_cb.ds.xml\(aq], \(aqmarccd\(aq: [\(aqmarccd.xml\(aq, \(aqmarccd_postrun.ds.xml\(aq], \(aqmca_xia\(aq: [\(aqmcaxia.xml\(aq], \(aqmythen\(aq: [\(aqmythen.xml\(aq, \(aqmythen_postrun.ds.xml\(aq, \(aqmythen_filestartnumber.ds.xml\(aq], \(aqmythen2\(aq: [\(aqmythen2.xml\(aq], \(aqpco\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpco4000\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpcoedge\(aq: [\(aqpco.xml\(aq, \(aqpco_postrun.ds.xml\(aq, \(aqpco_description.ds.xml\(aq, \(aqpco_filestartnum_cb.ds.xml\(aq], \(aqpedetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmer\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqperkinelmerdetector\(aq: [\(aqperkinelmerdetector.xml\(aq, \(aqperkinelmerdetector_postrun.ds.xml\(aq, \(aqperkinelmerdetector_description.ds.xml\(aq, \(aqperkinelmerdetector_fileindex_cb.ds.xml\(aq], \(aqpilatus\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus100k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus100k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus1m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus1m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus2m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus300k\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus300k_description.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqpilatus6m\(aq: [\(aqpilatus.xml\(aq, \(aqpilatus_postrun.ds.xml\(aq, \(aqpilatus_mxparameters_cb.ds.xml\(aq, \(aqpilatus6m_description.ds.xml\(aq, \(aqpilatus_filestartnum_cb.ds.xml\(aq], \(aqtangovimba\(aq: [\(aqtangovimba.xml\(aq, \(aqtangovimba_nxdata.ds.xml\(aq, \(aqtangovimba_external_data.ds.xml\(aq]}
 (\fI\%dict\fP <\fI\%str\fP , \fI\%list\fP <\fI\%str\fP> >)
 xml template files of modules
 .UNINDENT
