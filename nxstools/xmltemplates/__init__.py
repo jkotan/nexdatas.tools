@@ -1493,6 +1493,9 @@ moduleTemplateFiles = {
     'dalsa': ['dalsa.xml',
               'dalsa_nxdata.ds.xml',
               'dalsa_external_data.ds.xml'],
+    'lambdavdsnm': ['lambdavdsnm.xml',
+                    'lambdavdsnm_triggermode_cb.ds.xml',
+                    'lambdavdsnm_nxdata.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_nxdata.ds.xml',
                  'lambda2m_m2_nxdata.ds.xml',
@@ -1672,7 +1675,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'FramesPerFile', 'OpMode'
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
     ],
     'lambdavds': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
@@ -1682,7 +1685,17 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'FramesPerFile', 'OpMode'
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
+    ],
+    'lambdavdsnm': [
+        'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
+        'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
+        'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
+        'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode',
+        'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
+        'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
+        'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
     ],
     'lambda2m': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
@@ -1692,7 +1705,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'OpMode'
+        'LiveLastImageData', 'OpMode', 'Translations'
     ],
     'pedetector': [
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',
