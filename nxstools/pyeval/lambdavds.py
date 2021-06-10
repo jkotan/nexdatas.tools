@@ -78,10 +78,10 @@ def nm_triggermode_cb(commonblock, name, triggermode,
         totalheight = 0
         totalwidth = 0
         totalframenumbers = 0
-        modsize = len(list(modoffsets.keys))
+        modsize = len(list(modoffsets.keys()))
         for offset in modoffsets.values():
             totalframenumbers = max(
-                totalframenumbers, framenumbers + offset[1])
+                totalframenumbers, framenumbers + offset[0])
             totalheight = max(totalheight, height + offset[1])
             totalwidth = max(totalwidth, width + offset[2])
         unlimited = False
