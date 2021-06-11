@@ -324,6 +324,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                     lines[-2].split(),
                     ["dalsa", "eigerdectris", "lambda", "lambda2m",
                      "lambdavds",
+                     "lambdavdsnm",
                      "limaccd", "limaccds", "marccd", "mca_xia",
                      "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                      "pedetector", "perkinelmer",
@@ -379,6 +380,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             'limaccd',              #
             'lambda2m',             #
             'lambdavds',            #
+            'lambdavdsnm',          #
             'limaccds',             #
             'lambda'                # +
         ]
@@ -425,7 +427,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                         self.assertEqual(
                             lines[-2].split(),
                             ["dalsa", "eigerdectris", "lambda", "lambda2m",
-                             "lambdavds",
+                             "lambdavds", "lambdavdsnm",
                              "limaccd", "limaccds", "marccd", "mca_xia",
                              "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                              "pedetector", "perkinelmer",
@@ -496,7 +498,7 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
             self.assertEqual(
                 lines[-2].split(),
                 ["dalsa", "eigerdectris", "lambda", "lambda2m",
-                 "lambdavds",
+                 "lambdavds", "lambdavdsnm",
                  "limaccd", "limaccds", "marccd", "mca_xia",
                  "mythen", "mythen2", "pco", "pco4000", "pcoedge",
                  "pedetector", "perkinelmer",

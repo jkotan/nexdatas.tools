@@ -1746,6 +1746,117 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                           ignore_errors=False, onerror=None)
             os.remove(self._fname)
 
+    def test_lambdavdsnm_triggermode_cb(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "lmbd"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_00000_m%02d.nxs' % (fileprefix, i) for i in range(1, 4)]
+        sfname1 = '%s_00000' % fileprefix
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+        framenumbers = [10, 10, 10]
+
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint32",
+                    [framenumbers[i], 10, 20], [1, 10, 20])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(20)]
+                       for jj in range(10)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "__root__": rt,
+            }
+            triggermode = 0
+            translations = '{"m01":[0,0,0], "m02":[0,12,0], "m03":[0,24,0]}'
+            saveallimages = True
+            height = 10
+            width = 20
+            opmode = 24
+            filepostfix = "nxs"
+            framenumbers = 10
+            savefilename = sfname1
+
+            from nxstools.pyeval import lambdavds
+            result = lambdavds.nm_triggermode_cb(
+                commonblock,
+                "lmbd",
+                triggermode,
+                translations,
+                saveallimages,
+                filepostfix,
+                framenumbers,
+                height,
+                width,
+                opmode,
+                savefilename,
+                filename,
+                entryname,
+                "instrument")
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            fl.flush()
+            rw = images.read()
+            # print(rw)
+            for i in range(10):
+                self.myAssertImage(rw[i, 0:10, 0:20], vl[i])
+            for i in range(10):
+                self.myAssertImage(rw[i, 12:22, 0:20], vl[i + 10])
+            for i in range(10):
+                self.myAssertImage(rw[i, 24:34, 0:20], vl[i + 20])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
 
 if __name__ == '__main__':
     unittest.main()
