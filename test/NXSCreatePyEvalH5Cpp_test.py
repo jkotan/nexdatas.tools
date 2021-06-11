@@ -1765,7 +1765,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         mainpath = "%s_%s" % (mfileprefix, scanid)
         path = "%s_%s/%s" % (mfileprefix, scanid, name)
         self._fname = filename
-        fname1 = ['%s_00000_m%02d.nxs' % (fileprefix, i) for i in range(1,4)]
+        fname1 = ['%s_00000_m%02d.nxs' % (fileprefix, i) for i in range(1, 4)]
         sfname1 = '%s_00000' % fileprefix
         ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
         framenumbers = [10, 10, 10]
@@ -1812,7 +1812,6 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             triggermode = 0
             translations = '{"m01":[0,0,0], "m02":[0,12,0], "m03":[0,24,0]}'
             saveallimages = True
-            framesperfile = 14
             height = 10
             width = 20
             opmode = 24
