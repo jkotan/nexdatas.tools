@@ -80,7 +80,7 @@ def signalname(commonblock, detector, firstchannel,
                    len(fld.shape) == 1 and fld.shape[0] > 1:
                     result = str(fld.name)
                     break
-        if not result:
+        if not result and names:
             result = str(names[0])
     except Exception as e:
         result = str(e)

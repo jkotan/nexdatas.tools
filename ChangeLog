@@ -1,3 +1,9 @@
+2021-06-25 Jan Kotanski <jankotan@gmail.com>
+	* add lambda2mvds component template
+	* fix for datasignal pyeval when no fields in NXdata
+	* fix H5CppVirtualFieldLayout calls when filename is in unicode
+	* tagged as v3.10.0
+
 2021-05-28 Jan Kotanski <jankotan@gmail.com>
 	* add common.blockitem_add, common.blockitem_addint, common.blockitem_rm to pyeval
 	* add cleaning in lambdavds description
