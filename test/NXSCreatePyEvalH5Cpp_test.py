@@ -1010,6 +1010,51 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             if os.path.exists(self._fname):
                 os.remove(self._fname)
 
+    def test_signalname_nofields(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+
+            signalname = ""
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c03"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "exp_c03"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname)
+            self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
     def test_absorber_thickness(self):
         """
         """
