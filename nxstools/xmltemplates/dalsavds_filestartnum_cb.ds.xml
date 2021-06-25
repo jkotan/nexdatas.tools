@@ -2,16 +2,9 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_filestartnum_cb">
     <result name="result">
-try:
-    filestartnum = int(ds.$(name)_filestartnum)
-except Exception:
-    filestartnum = 0
-ds.result = filestartnum
-
-if "$(name)_filestartnum" not in commonblock:
-    commonblock["$(name)_filestartnum"] = [filestartnum]
-else:
-    commonblock["$(name)_filestartnum"].append(filestartnum)
+from nxstools.pyeval import common
+ds.result = common.blockitem_addint_safe(
+    commonblock, "$(name)_filestartnum", ds.$(name)_filestartnum)
     </result>
     $datasources.$(name)_filestartnum
   </datasource>

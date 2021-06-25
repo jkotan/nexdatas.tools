@@ -775,7 +775,7 @@ standardComponentVariables = {
             'doc': "beamtime file prefix (string)"
         },
         'currentpostfix': {
-            'default': ".txt",
+            'default': ".json",
             'doc': "beamtime file postfix (string)"
         },
         'commissiondir': {
@@ -787,7 +787,7 @@ standardComponentVariables = {
             'doc': "commission file prefix (string)"
         },
         'commissionpostfix': {
-            'default': ".txt",
+            'default': ".json",
             'doc': "commission file postfix (string)"
         },
     },
@@ -827,7 +827,7 @@ standardComponentVariables = {
     },
     'datasignal': {
         'signal': {
-            'default': 'signalname',
+            'default': 'defaultsignal',
             'doc': "data signal field name (string)"
         },
         'axes': {
@@ -1325,6 +1325,7 @@ standardComponentTemplateFiles = {
     ],
     'datasignal': [
         'datasignal.xml',
+        'defaultsignal.ds.xml',
         'signal_name.ds.xml',
         'signalname.ds.xml',
         'signal_axes.ds.xml',
@@ -1482,6 +1483,7 @@ moduleTemplateFiles = {
                'lambda_external_data.ds.xml'],
     'lambdavds': ['lambdavds.xml',
                   'lambdavds_nxdata.ds.xml',
+                  'lambdavds_description.ds.xml',
                   'lambdavds_triggermode_cb.ds.xml',
                   'lambdavds_framenumbers_cb.ds.xml',
                   'lambdavds_savefilename_cb.ds.xml'],
@@ -1496,6 +1498,9 @@ moduleTemplateFiles = {
                  'dalsavds_triggermode_cb.ds.xml',
                  'dalsavds_filestartnum_cb.ds.xml',
                  'dalsavds_nrexposedframes_cb.ds.xml'],
+    'lambdavdsnm': ['lambdavdsnm.xml',
+                    'lambdavdsnm_triggermode_cb.ds.xml',
+                    'lambdavdsnm_nxdata.ds.xml'],
     'lambda2m': ['lambda2m.xml',
                  'lambda2m_m1_nxdata.ds.xml',
                  'lambda2m_m2_nxdata.ds.xml',
@@ -1675,7 +1680,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'FramesPerFile', 'OpMode'
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
     ],
     'lambdavds': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
@@ -1685,7 +1690,17 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'FramesPerFile', 'OpMode'
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
+    ],
+    'lambdavdsnm': [
+        'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
+        'EnergyThreshold', 'OperatingMode', 'ConfigFilePath', 'SaveAllImages',
+        'FilePrefix', 'FileStartNum', 'FilePreExt', 'FilePostfix',
+        'SaveFilePath', 'SaveFileName', 'LatestImageNumber', 'LiveMode',
+        'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
+        'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
+        'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
+        'LiveLastImageData', 'FramesPerFile', 'OpMode', 'Translations'
     ],
     'lambda2m': [
         'TriggerMode', 'ShutterTime', 'DelayTime', 'FrameNumbers', 'ThreadNo',
@@ -1695,7 +1710,7 @@ moduleMultiAttributes = {
         'TotalLossFrames', 'CompressorShuffle', 'CompressionRate',
         'CompressionEnabled', 'Layout', 'ShutterTimeMax', 'ShutterTimeMin',
         'Width', 'Height', 'Depth', 'LiveFrameNo', 'DistortionCorrection',
-        'LiveLastImageData', 'OpMode'
+        'LiveLastImageData', 'OpMode', 'Translations'
     ],
     'pedetector': [
         'BinningMode', 'FileIndex', 'ExposureTime', 'SkippedAtStart',

@@ -118,7 +118,7 @@ SETUPDATA = dict(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    packages=["nxstools", "nxstools.xmltemplates"],
+    packages=["nxstools", "nxstools.xmltemplates", "nxstools.pyeval"],
     package_data={'nxstools.xmltemplates': ['*.xml']},
     scripts=[
         'nxsconfig',

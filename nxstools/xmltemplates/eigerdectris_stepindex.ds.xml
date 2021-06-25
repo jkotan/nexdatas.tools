@@ -2,10 +2,9 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_stepindex">
     <result name="result">
-if "$(name)_stepindex" not in commonblock:
-    commonblock["$(name)_stepindex"] = [int(ds.$(name)_nbimages)]
-else:
-    commonblock["$(name)_stepindex"].append(int(ds.$(name)_nbimages))
+from nxstools.pyeval import common
+ds.result = common.blockitem_addint(
+    commonblock, "$(name)_stepindex", ds.$(name)_nbimages)
 ds.result = len(commonblock["$(name)_stepindex"])
     </result>
     $datasources.$(name)_nbimages

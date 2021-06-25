@@ -21,7 +21,9 @@
 
 import sys
 import json
+import fnmatch
 import xml.etree.ElementTree as et
+import lxml.etree
 from lxml.etree import XMLParser
 
 
@@ -70,6 +72,68 @@ def _toxml(node):
     if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
         xml = str(xml[38:])
         return xml
+
+
+class ESRFConverter(object):
+    """ ESRF xml configuration converter """
+
+    def __init__(self):
+        """ constructor """
+
+        self.__allowed_tags = [
+            "group", "field", "link", "attribute", "doc",
+            "strategy", "datasource"]
+
+        self.__amap = {
+            "NX_class": "type",
+            "groupName": "name",
+            "NAPItype": "type",
+            "ref": "target"
+        }
+
+    def convert(self, text):
+        """ converts ESRF xml configuration to nxsdatawriter format
+
+        :param text: input xml string
+        :type text: :obj:`str`
+        :returns: output xml string
+        :rtype: :obj:`str`
+        """
+        tree = _parseString(text)
+        if tree.tag == "definition":
+            definition = tree
+        else:
+            definition = lxml.etree.Element('definition')
+            definition.append(tree)
+        self._convert(tree)
+        return _toxml(definition)
+
+    def _convert(self, tree):
+        """ converts ESRF xml etree configuration to nxsdatawriter format
+
+        :param tree: etree Element node
+        :type tree: :class:`lxml.etree.Element`
+        """
+        if tree.tag not in self.__allowed_tags:
+            if "name" not in tree.attrib.keys():
+                tree.attrib["name"] = tree.tag
+                tree.tag = "field"
+        for ikey, okey in self.__amap.items():
+            if ikey in tree.attrib.keys() \
+               and okey not in tree.attrib.keys():
+                tree.attrib[okey] = tree.attrib.pop(ikey)
+        if 'ESRF_description' in tree.attrib.keys():
+            text = tree.attrib.pop('ESRF_description')
+            doc = lxml.etree.Element('doc')
+            doc.text = text
+            tree.append(doc)
+        if 'record' in tree.attrib.keys():
+            text = tree.attrib.pop('record')
+            mode = lxml.etree.Element("strategy")
+            mode.attrib["mode"] = text.upper()
+            tree.append(mode)
+        for tr in tree:
+            self._convert(tr)
 
 
 class ParserTools(object):
@@ -269,6 +333,44 @@ class ParserTools(object):
         return name
 
     @classmethod
+    def __getFullPath(cls, node):
+        """ provides node path
+
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
+        :returns: node path
+        :rtype: :obj:`str`
+        """
+        name = cls.__getAttr(node, "name")
+        if not name:
+            return ""
+        attr = False
+        while node.getparent() is not None:
+            onode = node
+            node = node.getparent()
+            if onode.tag == "attribute":
+                attr = True
+            else:
+                attr = False
+            if node.tag not in ["group", "field"]:
+                return name
+            else:
+                gname = cls.__getAttr(node, "name")
+                nxtype = cls.__getAttr(node, "type")
+                if not gname:
+                    if len(nxtype) > 2:
+                        gname = nxtype[2:]
+                if attr:
+                    name = gname + "@" + name
+                elif nxtype:
+                    name = "%s:%s/%s" % (gname, nxtype, name)
+                else:
+                    name = gname + "/" + name
+
+                attr = False
+        return name
+
+    @classmethod
     def __getAttr(cls, node, name, tag=False):
         """ provides value of attirbute
 
@@ -295,6 +397,22 @@ class ParserTools(object):
             return text
         else:
             return None
+
+    @classmethod
+    def __getAllAttr(cls, node, exclude=None):
+        """ provides value of attirbute
+
+        :param node: etree node
+        :type node: :class:`lxml.etree.Element`
+        :returns: attribute dictionary
+        :rtype: :obj:<:obj:`str`, :obj:`any`>
+        """
+        res = {}
+        exclude = exclude or []
+        for name in node.attrib.keys():
+            if name not in exclude:
+                res[name] = node.attrib[name]
+        return res
 
     @classmethod
     def __getShape(cls, node):
@@ -378,8 +496,11 @@ class ParserTools(object):
                 troffset = cls.__getAttr(nd, "offset", True)
                 trdependson = cls.__getAttr(nd, "depends_on", True)
                 nxpath = cls.__getPath(nd)
+                fullnxpath = cls.__getFullPath(nd)
                 dnodes = cls.__getChildrenByTagName(nd, "dimensions")
                 shape = cls.__getShape(dnodes[0]) if dnodes else None
+                docnodes = cls.__getChildrenByTagName(nd, "doc")
+                doc = cls._getPureText((docnodes[0])) if docnodes else None
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
                 strategy = cls.__getAttr(stnodes[0], "mode") \
                     if stnodes else None
@@ -387,6 +508,7 @@ class ParserTools(object):
                 sfdinfo = {
                     "strategy": strategy,
                     "nexus_path": nxpath,
+                    "full_nexus_path": fullnxpath,
                 }
                 fdinfo = {
                     "nexus_type": nxtype,
@@ -396,9 +518,12 @@ class ParserTools(object):
                     "trans_vector": trvector,
                     "trans_offset": troffset,
                     "depends_on": trdependson,
-                    "value": value
+                    "value": value,
+                    "doc": doc
                 }
                 fdinfo.update(sfdinfo)
+                otherinfo = cls.__getAllAttr(nd, list(fdinfo.keys()))
+                fdinfo.update(otherinfo)
                 dss = cls.__getDataSources(nd, direct=True)
                 if dss:
                     for ds in dss:
@@ -445,6 +570,7 @@ class ParserTools(object):
                 troffset = cls.__getAttr(nd, "offset", True)
                 trdependson = cls.__getAttr(nd, "depends_on", True)
                 nxpath = cls.__getPath(nd)
+                fullnxpath = cls.__getFullPath(nd)
                 dnodes = cls.__getChildrenByTagName(nd, "dimensions")
                 shape = cls.__getShape(dnodes[0]) if dnodes else None
                 stnodes = cls.__getChildrenByTagName(nd, "strategy")
@@ -453,6 +579,7 @@ class ParserTools(object):
                 sfdinfo = {
                     "strategy": strategy,
                     "nexus_path": nxpath,
+                    "full_nexus_path": fullnxpath,
                 }
                 fdinfo = {
                     "nexus_type": nxtype,
@@ -534,7 +661,7 @@ class ParserTools(object):
                                     taglist.append(sds)
                 else:
                     taglist.append(fdinfo)
-                    if target.strip():
+                    if target and target.strip():
                         fdinfo2 = dict(fdinfo)
                         fdinfo2["nexus_path"] = "\\-> %s" % target
                         taglist.append(fdinfo2)
@@ -559,13 +686,17 @@ class TableTools(object):
     """ configuration server adapter
     """
 
-    def __init__(self, description, nonone=None):
+    def __init__(self, description, nonone=None, headers=None, filters=None):
         """ constructor
 
         :param description: description list
         :type description:  :obj:`list` <:obj:`str`>
         :param nonone: list of parameters which have to exist to be shown
         :type nonone:  :obj:`list` <:obj:`str`>
+        :param headers: list of output parameters
+        :type headers: :obj:`list` <:obj:`str`>
+        :param filters:  filters for first column names
+        :type filters: :obj:`list` <:obj:`str`>
         """
         #: (:obj:`list` <:obj:`str`>)
         #:    list of parameters which have to exist to be shown
@@ -589,23 +720,33 @@ class TableTools(object):
             'source_name',
             'source_type',
             'source',
-            'value',
+            'value'
         ]
+        #: (:obj:`list` <:obj:`str`>) filter list
+        self.filters = []
+        if headers:
+            self.headers = headers
+        if filters:
+            self.filters = filters
+
         #: (:obj:`str`) table title
         self.title = None
-        self.__loadDescription(description)
+        self.loadDescription(description)
 
-    def __loadDescription(self, description):
+    def loadDescription(self, description):
         """ loads description
 
         :param description:  description list
         :type description:  :obj:`list` <:obj:`str`>
         """
+        if self.headers:
+            hkey = self.headers[0]
         for desc in description:
             if desc is None:
                 self.__description.append(desc)
                 continue
             skip = False
+            found = False
             field = desc.get("nexus_path", "").split('/')[-1]
             value = desc.get("value", "")
             if field == 'depends_on' and value:
@@ -617,9 +758,20 @@ class TableTools(object):
                 if not vl:
                     skip = True
                     break
-            if not skip:
+            if self.filters and hkey in desc.keys():
+                vl = desc[hkey]
+                found = False
+                for df in self.filters:
+                    found = fnmatch.filter([vl], df)
+                    if found:
+                        break
+                if not found:
+                    skip = True
+                    continue
+            elif not self.filters:
+                found = True
+            if not skip and found:
                 self.__description.append(desc)
-
         for desc in self.__description:
             if desc is None:
                 continue

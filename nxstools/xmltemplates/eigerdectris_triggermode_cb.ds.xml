@@ -2,69 +2,23 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_triggermode_cb">
     <result name="result">
-import PyTango
-
-hostname = "$(hostname)"
-device = "$(device)"
-host, port = hostname.split(":")
-port = int(10000)
-edb = PyTango.Database(host, port)
-
-sl = edb.get_server_list("EigerDectris/*")
-writer = None
-for ms in sl:
-    devserv = edb.get_device_class_list(ms).value_string
-    if device in devserv:
-        dev = devserv[0::2]
-        serv = devserv[1::2]
-        for idx, ser in enumerate(serv):
-            if ser == 'EigerFilewriter':
-                writer = dev[idx]
-                break
-wp = PyTango.DeviceProxy('%s/%s' % (hostname, writer))
-filepattern = wp.FilenamePattern.split("/")[-1]
-imagesperfile = wp.ImagesPerFile
-if "$var.filename":
-    path = ("$var.filename").split("/")[-1].split(".")[0] + "/"
-else:
-    path = ""
-#path += '%s/%s_master.h5://entry' % ($(name), filepattern)
-path += '%s/%s_' % ("$(name)", filepattern)
-tmode = ds.$(name)_triggermode
-totnbimages = sum(commonblock["$(name)_stepindex"])
-nbfiles = (totnbimages + imagesperfile - 1) // imagesperfile
-ds.result = tmode.lower()
-spf = 0
-cfid = 0
-if "__root__" in commonblock.keys():
-    root = commonblock["__root__"]
-    if hasattr(root, "currentfileid") and hasattr(root, "stepsperfile"):
-        spf = root.stepsperfile
-        cfid = root.currentfileid
-    if root.h5object.__class__.__name__ == "File":
-        import nxstools.h5pywriter as nxw
-    else:
-        import nxstools.h5cppwriter as nxw
-else:
-    raise("Writer cannot be found")
-en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
-dt = en.open("data")
-ins = en.open("instrument")
-det = ins.open("$(name)")
-col = det.open("collection")
-for nbf in range(1, nbfiles+1):
-    if spf > 0  and cfid > 0:
-        if cfid == nbf:
-            nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), det, "data")
-            nxw.link("/$var.entryname#'$(__entryname__)'$var.serialno/$(__insname__)/$(name)/data", dt, "$(name)")
-        nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-    else:
-        nxw.link("%sdata_%06i.h5://entry/data/data" % (path, nbf), col, "data_%06i" % nbf)
-        nxw.link("/$var.entryname#'$(__entryname__)'$var.serialno/$(__insname__)/$(name)/collection/data_%06i" % nbf, dt, "$(name)_%06i" % nbf)
+from nxstools.pyeval import eigerdectris
+ds.result = eigerdectris.triggermode_cb(
+    commonblock,
+    "$(name)",
+    ds.$(name)_triggermode,
+    ds.$(name)_nbimages,
+    "$(hostname)",
+    "$(device)",
+    "$var.filename",
+    "$(name)_stepindex",
+    "$var.entryname#'$(__entryname__)'$var.serialno",
+    "$(__insname__)",
+    "EigerDectris",
+    "EigerFilewriter"
+    )
     </result>
     $datasources.$(name)_triggermode
     $datasources.$(name)_nbimages
-    $datasources.$(name)_nbtriggers
-
   </datasource>
 </definition>

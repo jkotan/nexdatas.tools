@@ -2,12 +2,13 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
-unixdir = str(ds.$(name)_savingdirectory).replace("\\","/")
-if len(unixdir)> 1 and unixdir[1] == ":":
-    unixdir = "/data" + unixdir[2:]
-if unixdir and unixdir[-1] == "/":
- unixdir = unixdir[:-1]
-ds.result = "" + unixdir + "/" + str(ds.$(name)_savingprefix) + "." + str(ds.$(name)_savingpostfix) </result>
+from nxstools.pyeval import marccd
+ds.result = marccd.postrun(
+    commonblock,
+    ds.$(name)_savingdirectory,
+    ds.$(name)_savingprefix,
+    ds.$(name)_savingpostfix)
+</result>
  $datasources.$(name)_savingdirectory
  $datasources.$(name)_savingpostfix
  $datasources.$(name)_savingprefix</datasource>

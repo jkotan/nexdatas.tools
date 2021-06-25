@@ -2,9 +2,12 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_filestartnum_cb">
     <result name="result">
-if "$(name)_filestartnum" not in commonblock:
-    commonblock["$(name)_filestartnum"] = ds.$(name)_filestartnum - ds.$(name)_nbframes + 1
-ds.result = ds.$(name)_filestartnum - ds.$(name)_nbframes</result>
- $datasources.$(name)_filestartnum
- $datasources.$(name)_nbframes</datasource>
+from nxstools.pyeval import common
+ds.result = common.filestartnum_cb(
+    commonblock, ds.$(name)_filestartnum, ds.$(name)_nbframes,
+    "$(name)_filestartnum")
+    </result>
+    $datasources.$(name)_filestartnum
+    $datasources.$(name)_nbframes
+  </datasource>
 </definition>

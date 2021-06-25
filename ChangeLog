@@ -1,3 +1,54 @@
+2021-06-25 Jan Kotanski <jankotan@gmail.com>
+	* add lambda2mvds component template
+	* fix for datasignal pyeval when no fields in NXdata
+	* fix H5CppVirtualFieldLayout calls when filename is in unicode
+	* tagged as v3.10.0
+
+2021-05-28 Jan Kotanski <jankotan@gmail.com>
+	* add common.blockitem_add, common.blockitem_addint, common.blockitem_rm to pyeval
+	* add cleaning in lambdavds description
+	* add move lambda datasources to pyeval
+	* add move pilatus datasources to pyeval
+	* add move pco datasources to pyeval
+	* add move pe datasources to pyeval
+	* add move limaccd datasources to pyeval
+	* add move mythen datasources to pyeval
+	* add move marccd datasources to pyeval
+	* add move dalsa datasources to pyeval
+	* add move tangovimba datasources to pyeval
+	* add move eigerdectris datasources to pyeval
+	* tagged as v3.9.0
+
+2021-05-21 Jan Kotanski <jankotan@gmail.com>
+	* set default attributes of NXroot and NXdata in the datasignal component
+	* fix missing quotas in lambdavds_triggermode
+	* tagged as v3.8.0
+
+2021-05-17 Jan Kotanski <jankotan@gmail.com>
+	* change default beamtime-metadata postfixes of beamtimeid datasource
+	* move beamtimeid implementation to pyeval
+	* move absorber implementation to pyeval
+	* move qbpm implementation to pyeval
+	* move mssar nad msnsar implementation to pyeval
+	* move dcm implementation to pyeval
+	* move signalname implementation to pyeval
+	* tagged as v3.7.0
+
+2021-05-04 Jan Kotanski <jankotan@gmail.com>
+	* add fix a bug for nxsconfig describe all datasources
+	* add fix a bug for nxsconfig describe and full_nexus_path
+	* tagged as v3.6.1
+
+2021-05-03 Jan Kotanski <jankotan@gmail.com>
+	* add selection of column headers in nxsconfig describe
+	* fix nxsparser when no link target defined
+	* add doc column in nxsconfig describe
+	* add doc full_nexus_path column in nxsconfig describe
+	* add columns with usr defined attributes in nxsconfig describe
+	* add import --external xmls in nxsconfig upload
+	* add --filters option for nxsconfig describe
+	* tagged as v3.6.0
+
 2021-04-28 Jan Kotanski <jankotan@gmail.com>
 	* add detector livedata component template
 	* tagged as v3.5.0

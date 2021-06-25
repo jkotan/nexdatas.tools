@@ -2,122 +2,27 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_triggermode_cb">
     <result name="result">
-ds.result = ds.$(name)_triggermode
-
-if ds.$(name)_filesaving:
-    if "__root__" in commonblock.keys():
-        root = commonblock["__root__"]
-    filenames = []
-    framestartnumbers = []
-    if "$(name)_filestartnum" in commonblock:
-        filestartnumbers = commonblock["$(name)_filestartnum"]
-    if "$(name)_nrexposedframes" in commonblock:
-        nrexposedframes = commonblock["$(name)_nrexposedframes"]
-    flen = len(filestartnumbers)
-    frlen = nrexposedframes[-1] if nrexposedframes else 0
-
-    lastfilenumber = filestartnumbers[-1] if filestartnumbers else 0
-
-    totalframenumbers = 0
-    framespernxfile = ds.$(name)_framespernxfile
-
-    height = ds.$(name)_height
-    width = ds.$(name)_width
-
-    fileprefix = ds.$(name)_fileprefix
-    filepostfix = ds.$(name)_filepostfix
-    filestartnum = ds.$(name)_filestartnum
-    triggermode = ds.$(name)_triggermode
-    pixelformat = ds.$(name)_pixelformat
-    mode = ds.$(name)_acquisitionmode
-    framecount = ds.$(name)_acquisitionframecount
-    filesizes = []
-    totalframenumbers = []
-    nbfiles = 0
-    if mode in ["MultiFrame"]:
-        totalframenumbers = flen * framecount
-        if 1 > framespernxfile or framespernxfile > framecount:
-            filesizes = [framecount] * (flen)
-            nbfiles = len(filesizes)
-            lastfilenbframes = nbfiles
-        else:
-            nbfiles = (framecount + 1) // framespernxfile + 1
-            lastfilenbframes = framecount % framespernxfile
-
-    elif mode in ["SingleFrame"]:
-        totalframenumbers = flen
-        filesizes = [1 for _ in range(flen)]
-        nbfiles = len(filesizes)
-        lastfilenbframes = nbfiles
-    elif mode in ["Continuous"]:
-        totalframenumbers = flen
-        if 1 > framespernxfile or framespernxfile > flen:
-            filesizes = [flen]
-            nbfiles = len(filesizes)
-            lastfilenbframes = flen
-        else:
-            nbfiles = (flen + 1) // framespernxfile + 1
-            lastfilenbframes = flen % framespernxfile
-
-    dtm = {
-        "Mono8": "uint8",
-        "Mono8Signed": "int8",
-        "Mono10": "uint16",
-        "Mono12": "uint16",
-        "Mono10Packed": "uint16",
-        "Mono12Packed": "uint16",
-        "Mono14": "uint16",
-        "Mono16": "uint16",
-        "Mono16Signed": "int16",
-        "BayerGR10": "uint16",
-        "BayerRG10": "uint16",
-        "BayerGB10": "uint16",
-        "BayerBG10": "uint16",
-        "BayerGR12": "uint16",
-        "BayerRG12": "uint16",
-        "BayerGB12": "uint16",
-        "BayerBG12": "uint16",
-    }
-
-    try:
-        dtype = dtm[pixelformat]
-    except Exception:
-        dtype = "uint8"
-
-    shape = [totalframenumbers, height, width]
-
-    if "$var.filename":
-        path = ("$var.filename").split("/")[-1].split(".")[0] + "/"
-    else:
-        path = ""
-
-    if "__root__" in commonblock.keys():
-        root = commonblock["__root__"]
-        if root.h5object.__class__.__name__ == "File":
-            import nxstools.h5pywriter as nxw
-        else:
-            import nxstools.h5cppwriter as nxw
-    else:
-        raise("Writer cannot be found")
-
-    en = root.open("$var.entryname#'$(__entryname__)'$var.serialno")
-    dt = en.open("data")
-    ins = en.open("instrument")
-    det = ins.open("$(name)")
-    npath = "/entry/instrument/detector/data"
-
-    vfl = nxw.virtual_field_layout([totalframenumbers, height, width], dtype)
-
-    firstfilenumber = lastfilenumber - nbfiles
-    if nbfiles > 0:
-        for nbf in range(firstfilenumber, lastfilenumber):
-            connector = "_%05d." % nbf
-            filename = path + "$(name)/" + str(fileprefix) + connector + str(ds.$(name)_filepostfix)
-            ln = framespernxfile if nbf + 1 != lastfilenumber else lastfilenbframes
-            ef = nxw.target_field_view(filename, npath, [ln, height, width], dtype)
-            vfl[(nbf * framespernxfile):(nbf * framespernxfile + ln), :, :] = ef
-    det.create_virtual_field("data", vfl)
-
+from nxstools.pyeval import dalsavds
+ds.result =  dalsavds.triggermode(
+    commonblock,
+    "$(name)",
+    ds.$(name)_filedir,
+    ds.$(name)_fileprefix,
+    ds.$(name)_filepostfix,
+    ds.$(name)_filestartnum,
+    ds.$(name)_filesaving,
+    ds.$(name)_triggermode,
+    ds.$(name)_framespernxfile,
+    ds.$(name)_pixelformat,
+    ds.$(name)_height,
+    ds.$(name)_width,
+    ds.$(name)_acquisitionmode,
+    ds.$(name)_acquisitionframecount,
+    "$(name)_filestartnum",
+    "$(name)_nrexposedframes",
+    "$var.filename",
+    "$var.entryname#'$(__entryname__)'$var.serialno",
+    "instrument")
     </result>
  $datasources.$(name)_filedir
  $datasources.$(name)_fileprefix
