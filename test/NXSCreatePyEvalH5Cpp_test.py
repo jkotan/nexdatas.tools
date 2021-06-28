@@ -1953,6 +1953,57 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             insname)
         self.assertEqual(triggermode, result)
 
+    def ttest_dalsavds_triggermode_singleframe(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commonblock = {}
+        name = "dalsa"
+        triggermode = 0
+        filepostfix = "nxs"
+
+        fileprefix = "scan213123"
+        filepostfix = "nx"
+        filestartnum = 2
+        filedir = "/tmp/scans/"
+        filename = "mytest_324234.nxs"
+        entryname = "entry123"
+        insname = "instrument"
+
+        filesaving = False
+        triggermode = "ExtTrigger"
+        framespernxfile = 43
+        pixelformat = "Mono8"
+        height = 2344
+        width = 2143
+        acquisitionmode = "SingleFrame"
+        acquisitionframecount = 43
+
+        from nxstools.pyeval import dalsavds
+        result = dalsavds.triggermode(
+            commonblock,
+            name,
+            filedir,
+            fileprefix,
+            filepostfix,
+            filestartnum,
+            filesaving,
+            triggermode,
+            framespernxfile,
+            pixelformat,
+            height,
+            width,
+            acquisitionmode,
+            acquisitionframecount,
+            "dalsa_filestartnum",
+            "dalsa_nrexposedframes",
+            filename,
+            entryname,
+            insname)
+        self.assertEqual(triggermode, result)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -322,7 +322,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                                  "POSSIBLE COMPONENT TYPES: ")
                 self.assertEqual(
                     lines[-2].split(),
-                    ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                    ["dalsa", "dalsavds",
+                     "eigerdectris", "lambda", "lambda2m",
                      "lambdavds",
                      "lambdavdsnm",
                      "limaccd", "limaccds", "marccd", "mca_xia",
@@ -426,7 +427,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                                          "POSSIBLE COMPONENT TYPES: ")
                         self.assertEqual(
                             lines[-2].split(),
-                            ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                            ["dalsa", "dalsavds",
+                             "eigerdectris", "lambda", "lambda2m",
                              "lambdavds", "lambdavdsnm",
                              "limaccd", "limaccds", "marccd", "mca_xia",
                              "mythen", "mythen2", "pco", "pco4000", "pcoedge",
@@ -497,7 +499,8 @@ class NXSCreateOnlineCPFSTest(unittest.TestCase):
                              "POSSIBLE COMPONENT TYPES: ")
             self.assertEqual(
                 lines[-2].split(),
-                ["dalsa", "eigerdectris", "lambda", "lambda2m",
+                ["dalsa", "dalsavds",
+                 "eigerdectris", "lambda", "lambda2m",
                  "lambdavds", "lambdavdsnm",
                  "limaccd", "limaccds", "marccd", "mca_xia",
                  "mythen", "mythen2", "pco", "pco4000", "pcoedge",

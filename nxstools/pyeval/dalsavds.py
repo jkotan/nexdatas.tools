@@ -99,8 +99,18 @@ def triggermode(commonblock, name,
                 nbfiles = len(filesizes)
                 lastfilenbframes = framecount
             else:
-                nbfiles = (framecount + 1) // framespernxfile + 1
+                fsizes = []
+                filesizes = []
+                nbfiles = 0
+                nfiles = (framecount + 1) // framespernxfile + 1
                 lastfilenbframes = framecount % framespernxfile
+                if nbfiles:
+                    fsizes = [framespernxfile] * (nbfiles - 1)
+                if lastfilenbframes:
+                    fsizes.append(lastfilenbframes)
+                for i in range(nfiles):
+                    filesizes = filesizes + fsizes
+                nbfiles = nfiles * len(fsizes)
 
         elif mode in ["SingleFrame"]:
             totalframenumbers = flen
@@ -116,6 +126,11 @@ def triggermode(commonblock, name,
             else:
                 nbfiles = (flen + 1) // framespernxfile + 1
                 lastfilenbframes = flen % framespernxfile
+                filesizes = []
+                if nbfiles:
+                    filesizes = [framespernxfile] * (nbfiles - 1)
+                if lastfilenbframes:
+                    filesizes.append(lastfilenbframes)
 
         dtm = {
             "Mono8": "uint8",
@@ -157,7 +172,6 @@ def triggermode(commonblock, name,
             raise("Writer cannot be found")
 
         en = root.open(entryname)
-        # dt = en.open("data")
         ins = en.open(insname)
         det = ins.open(name)
         npath = "/entry/instrument/detector/data"
@@ -167,16 +181,18 @@ def triggermode(commonblock, name,
 
         firstfilenumber = lastfilenumber - nbfiles
         if nbfiles > 0:
+            i1 = 0
+            i2 = 0
             for nbf in range(firstfilenumber, lastfilenumber):
+                ln = filesizes[nbf - firstfilenumber]
+                i1 = i2
+                i2 = i2 + ln
                 connector = "_%05d." % nbf
                 filename = path + name + "/" + str(fileprefix) + connector + \
                     str(filepostfix)
-                ln = framespernxfile if nbf + 1 != lastfilenumber \
-                    else lastfilenbframes
                 ef = nxw.target_field_view(
                     filename, npath, [ln, height, width], dtype)
-                vfl[(nbf * framespernxfile):(nbf * framespernxfile + ln),
-                    :, :] = ef
+                vfl[(i1):(i2), :, :] = ef
         det.create_virtual_field("data", vfl)
 
     return result
