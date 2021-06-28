@@ -78,10 +78,10 @@ def triggermode(commonblock, name,
         filestartnumbers = []
         if filestartnum_str in commonblock:
             filestartnumbers = commonblock[filestartnum_str]
-        if nrexposedframes_str in commonblock:
-            nrexposedframes = commonblock[nrexposedframes_str]
+        # if nrexposedframes_str in commonblock:
+        #     nrexposedframes = commonblock[nrexposedframes_str]
         flen = len(filestartnumbers)
-        frlen = nrexposedframes[-1] if nrexposedframes else 0
+        # frlen = nrexposedframes[-1] if nrexposedframes else 0
 
         lastfilenumber = filestartnumbers[-1] if filestartnumbers else 0
 
@@ -97,7 +97,7 @@ def triggermode(commonblock, name,
             if 1 > framespernxfile or framespernxfile > framecount:
                 filesizes = [framecount] * (flen)
                 nbfiles = len(filesizes)
-                lastfilenbframes = nbfiles
+                lastfilenbframes = framecount
             else:
                 nbfiles = (framecount + 1) // framespernxfile + 1
                 lastfilenbframes = framecount % framespernxfile
