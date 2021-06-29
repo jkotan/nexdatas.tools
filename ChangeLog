@@ -1,4 +1,4 @@
-2021-06-25 Jan Kotanski <jankotan@gmail.com>
+2021-06-29 Jan Kotanski <jankotan@gmail.com>
 	* add lambda2mvds component template
 	* add dalsavds component template
 	* fix for datasignal pyeval when no fields in NXdata

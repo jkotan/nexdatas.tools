@@ -78,10 +78,10 @@ def triggermode(commonblock, name,
         filestartnumbers = []
         if filestartnum_str in commonblock:
             filestartnumbers = commonblock[filestartnum_str]
-        # if nrexposedframes_str in commonblock:
-        #     nrexposedframes = commonblock[nrexposedframes_str]
+        if nrexposedframes_str in commonblock:
+            nrexposedframes = commonblock[nrexposedframes_str]
         flen = len(filestartnumbers)
-        # frlen = nrexposedframes[-1] if nrexposedframes else 0
+        frlen = nrexposedframes[-1] if nrexposedframes else 0
 
         lastfilenumber = filestartnumbers[-1] if filestartnumbers else 0
 
@@ -104,8 +104,9 @@ def triggermode(commonblock, name,
                 nbfiles = 0
                 nfiles = (framecount + 1) // framespernxfile + 1
                 lastfilenbframes = framecount % framespernxfile
-                if nbfiles:
-                    fsizes = [framespernxfile] * (nbfiles - 1)
+                print(nfiles)
+                if nfiles:
+                    fsizes = [framespernxfile] * (nfiles - 1)
                 if lastfilenbframes:
                     fsizes.append(lastfilenbframes)
                 for i in range(nfiles):
@@ -118,14 +119,14 @@ def triggermode(commonblock, name,
             nbfiles = len(filesizes)
             lastfilenbframes = nbfiles
         elif mode in ["Continuous"]:
-            totalframenumbers = flen
-            if 1 > framespernxfile or framespernxfile > flen:
-                filesizes = [flen]
+            totalframenumbers = frlen
+            if 1 > framespernxfile or framespernxfile > frlen:
+                filesizes = [frlen]
                 nbfiles = len(filesizes)
-                lastfilenbframes = flen
+                lastfilenbframes = frlen
             else:
-                nbfiles = (flen + 1) // framespernxfile + 1
-                lastfilenbframes = flen % framespernxfile
+                nbfiles = (frlen + 1) // framespernxfile + 1
+                lastfilenbframes = frlen % framespernxfile
                 filesizes = []
                 if nbfiles:
                     filesizes = [framespernxfile] * (nbfiles - 1)
@@ -178,7 +179,6 @@ def triggermode(commonblock, name,
 
         vfl = nxw.virtual_field_layout(
             [totalframenumbers, height, width], dtype)
-
         firstfilenumber = lastfilenumber - nbfiles
         if nbfiles > 0:
             i1 = 0
@@ -192,7 +192,7 @@ def triggermode(commonblock, name,
                     str(filepostfix)
                 ef = nxw.target_field_view(
                     filename, npath, [ln, height, width], dtype)
-                vfl[(i1):(i2), :, :] = ef
+                vfl[i1: i2, :, :] = ef
         det.create_virtual_field("data", vfl)
 
     return result
