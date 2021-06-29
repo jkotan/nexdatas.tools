@@ -1902,6 +1902,650 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                           ignore_errors=False, onerror=None)
             os.remove(self._fname)
 
+    def test_dalsavds_triggermode_nosave(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commonblock = {}
+        name = "dalsa"
+        triggermode = 0
+        filepostfix = "nxs"
+
+        fileprefix = "scan213123"
+        filepostfix = "nx"
+        filestartnum = 2
+        filedir = "/tmp/scans/"
+        filename = "mytest_324234.nxs"
+        entryname = "entry123"
+        insname = "instrument"
+
+        filesaving = False
+        triggermode = "splitmode"
+        framespernxfile = 43
+        pixelformat = "Mono8"
+        height = 2344
+        width = 2143
+        acquisitionmode = "SingleFrame"
+        acquisitionframecount = 43
+
+        from nxstools.pyeval import dalsavds
+        result = dalsavds.triggermode(
+            commonblock,
+            name,
+            filedir,
+            fileprefix,
+            filepostfix,
+            filestartnum,
+            filesaving,
+            triggermode,
+            framespernxfile,
+            pixelformat,
+            height,
+            width,
+            acquisitionmode,
+            acquisitionframecount,
+            "dalsa_filestartnum",
+            "dalsa_nrexposedframes",
+            filename,
+            entryname,
+            insname)
+        self.assertEqual(triggermode, result)
+
+    def test_dalsavds_triggermode_singleframe(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        filepostfix = "nx"
+        filestartnum = 0
+        filedir = "/tmp/scans/"
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "dalsa"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_%05d.nx' % (fileprefix, i)
+                  for i in range(filestartnum, 30 + filestartnum)]
+        # sfname1 = ['%s_%05d' % (fileprefix, i)
+        #            for i in range(filestartnum, 30 + filestartnum)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint16", [1, 10, 20], [1, 10, 20])
+                vv = [[[vl[i][jj][ii] for ii in range(20)]
+                       for jj in range(10)]]
+                intimage[0, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "dalsa_filestartnum": list(range(1, 31)),
+                "dalsa_nrexposedframes": list(range(1, 31)),
+                "__root__": rt,
+            }
+            name = "dalsa"
+            insname = "instrument"
+
+            filesaving = True
+            triggermode = "ExtTrigger"
+            framespernxfile = 40
+            pixelformat = "Mono16"
+            height = 10
+            width = 20
+            acquisitionmode = "SingleFrame"
+            acquisitionframecount = 30
+
+            from nxstools.pyeval import dalsavds
+            result = dalsavds.triggermode(
+                commonblock,
+                name,
+                filedir,
+                fileprefix,
+                filepostfix,
+                filestartnum,
+                filesaving,
+                triggermode,
+                framespernxfile,
+                pixelformat,
+                height,
+                width,
+                acquisitionmode,
+                acquisitionframecount,
+                "dalsa_filestartnum",
+                "dalsa_nrexposedframes",
+                filename,
+                entryname,
+                insname)
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            rw = images.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
+    def test_dalsavds_triggermode_multiframe(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        filepostfix = "nx"
+        filestartnum = 0
+        filedir = "/tmp/scans/"
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "dalsa"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_%05d.nx' % (fileprefix, i)
+                  for i in range(3)]
+        # sfname1 = ['%s_%05d' % (fileprefix, i)
+        #            for i in range(filestartnum, 30 + filestartnum)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+
+        framenumbers = [10, 10, 10]
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint16",
+                    [framenumbers[i], 10, 20], [framenumbers[i], 10, 20])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(20)]
+                       for jj in range(10)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "dalsa_filestartnum": [1, 2, 3],
+                "dalsa_nrexposedframes": [10, 10, 10],
+                "__root__": rt,
+            }
+            name = "dalsa"
+            insname = "instrument"
+
+            filesaving = True
+            triggermode = "ExtTrigger"
+            framespernxfile = 40
+            pixelformat = "Mono16"
+            height = 10
+            width = 20
+            acquisitionmode = "MultiFrame"
+            acquisitionframecount = 10
+
+            from nxstools.pyeval import dalsavds
+            result = dalsavds.triggermode(
+                commonblock,
+                name,
+                filedir,
+                fileprefix,
+                filepostfix,
+                filestartnum,
+                filesaving,
+                triggermode,
+                framespernxfile,
+                pixelformat,
+                height,
+                width,
+                acquisitionmode,
+                acquisitionframecount,
+                "dalsa_filestartnum",
+                "dalsa_nrexposedframes",
+                filename,
+                entryname,
+                insname)
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            rw = images.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
+    def test_dalsavds_triggermode_multiframe_split(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        filepostfix = "nx"
+        filestartnum = 0
+        filedir = "/tmp/scans/"
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "dalsa"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_%05d.nx' % (fileprefix, i)
+                  for i in range(4)]
+        # sfname1 = ['%s_%05d' % (fileprefix, i)
+        #            for i in range(filestartnum, 30 + filestartnum)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+
+        framenumbers = [10, 5, 10, 5]
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+            index = 0
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint16",
+                    [framenumbers[i], 10, 20], [framenumbers[i], 10, 20])
+                vv = [[[vl[index + nn][jj][ii]
+                        for ii in range(20)]
+                       for jj in range(10)]
+                      for nn in range(framenumbers[i])]
+                index += framenumbers[i]
+                intimage[:, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "dalsa_filestartnum": [2, 4],
+                "dalsa_nrexposedframes": [15, 15],
+                "__root__": rt,
+            }
+            name = "dalsa"
+            insname = "instrument"
+
+            filesaving = True
+            triggermode = "ExtTrigger"
+            framespernxfile = 10
+            pixelformat = "Mono16"
+            height = 10
+            width = 20
+            acquisitionmode = "MultiFrame"
+            acquisitionframecount = 15
+
+            from nxstools.pyeval import dalsavds
+            result = dalsavds.triggermode(
+                commonblock,
+                name,
+                filedir,
+                fileprefix,
+                filepostfix,
+                filestartnum,
+                filesaving,
+                triggermode,
+                framespernxfile,
+                pixelformat,
+                height,
+                width,
+                acquisitionmode,
+                acquisitionframecount,
+                "dalsa_filestartnum",
+                "dalsa_nrexposedframes",
+                filename,
+                entryname,
+                insname)
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            rw = images.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
+    def test_dalsavds_triggermode_continuous(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        filepostfix = "nx"
+        filestartnum = 0
+        filedir = "/tmp/scans/"
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "dalsa"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_%05d.nx' % (fileprefix, i)
+                  for i in range(1)]
+        # sfname1 = ['%s_%05d' % (fileprefix, i)
+        #            for i in range(filestartnum, 30 + filestartnum)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+
+        framenumbers = [30]
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint16",
+                    [framenumbers[i], 10, 20], [framenumbers[i], 10, 20])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(20)]
+                       for jj in range(10)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "dalsa_filestartnum": [1],
+                "dalsa_nrexposedframes": [30],
+                "__root__": rt,
+            }
+            name = "dalsa"
+            insname = "instrument"
+
+            filesaving = True
+            triggermode = "ExtTrigger"
+            framespernxfile = 40
+            pixelformat = "Mono16"
+            height = 10
+            width = 20
+            acquisitionmode = "Continuous"
+            acquisitionframecount = 0
+
+            from nxstools.pyeval import dalsavds
+            result = dalsavds.triggermode(
+                commonblock,
+                name,
+                filedir,
+                fileprefix,
+                filepostfix,
+                filestartnum,
+                filesaving,
+                triggermode,
+                framespernxfile,
+                pixelformat,
+                height,
+                width,
+                acquisitionmode,
+                acquisitionframecount,
+                "dalsa_filestartnum",
+                "dalsa_nrexposedframes",
+                filename,
+                entryname,
+                insname)
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            rw = images.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
+    def test_dalsavds_triggermode_continuous_split(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        if not self.fwriter.is_vds_supported():
+            print("Skip the test: VDS not supported")
+            return
+
+        filepostfix = "nx"
+        filestartnum = 0
+        filedir = "/tmp/scans/"
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        fileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+
+        name = "dalsa"
+        filename = "%s_%s.nxs" % (mfileprefix, scanid)
+        mainpath = "%s_%s" % (mfileprefix, scanid)
+        path = "%s_%s/%s" % (mfileprefix, scanid, name)
+        self._fname = filename
+        fname1 = ['%s_%05d.nx' % (fileprefix, i)
+                  for i in range(3)]
+        # sfname1 = ['%s_%05d' % (fileprefix, i)
+        #            for i in range(filestartnum, 30 + filestartnum)]
+        ffname1 = ['%s/%s' % (path, fn) for fn in fname1]
+
+        framenumbers = [14, 14, 2]
+        vl = [[[self._rnd.randint(1, 1600) for _ in range(20)]
+               for _ in range(10)]
+              for _ in range(30)]
+        try:
+            try:
+                os.makedirs(path)
+            except FileExistsError:
+                pass
+            for i, fn in enumerate(ffname1):
+                fl1 = self.fwriter.create_file(fn, overwrite=True)
+                rt = fl1.root()
+                entry = rt.create_group("entry", "NXentry")
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                intimage = det.create_field(
+                    "data", "uint16",
+                    [framenumbers[i], 10, 20], [framenumbers[i], 10, 20])
+                vv = [[[vl[i * framenumbers[0] + nn][jj][ii]
+                        for ii in range(20)]
+                       for jj in range(10)]
+                      for nn in range(framenumbers[i])]
+                intimage[:, :, :] = vv
+                intimage.close()
+                det.close()
+                ins.close()
+                entry.close()
+                fl1.close()
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group(name, "NXdetector")
+
+            commonblock = {
+                "dalsa_filestartnum": [3],
+                "dalsa_nrexposedframes": [30],
+                "__root__": rt,
+            }
+            name = "dalsa"
+            insname = "instrument"
+
+            filesaving = True
+            triggermode = "ExtTrigger"
+            framespernxfile = 14
+            pixelformat = "Mono16"
+            height = 10
+            width = 20
+            acquisitionmode = "Continuous"
+            acquisitionframecount = 0
+
+            from nxstools.pyeval import dalsavds
+            result = dalsavds.triggermode(
+                commonblock,
+                name,
+                filedir,
+                fileprefix,
+                filepostfix,
+                filestartnum,
+                filesaving,
+                triggermode,
+                framespernxfile,
+                pixelformat,
+                height,
+                width,
+                acquisitionmode,
+                acquisitionframecount,
+                "dalsa_filestartnum",
+                "dalsa_nrexposedframes",
+                filename,
+                entryname,
+                insname)
+            self.assertEqual(triggermode, result)
+
+            images = det.open("data")
+            rw = images.read()
+            for i in range(30):
+                self.myAssertImage(rw[i], vl[i])
+            intimage.close()
+            det.close()
+            ins.close()
+            entry.close()
+            fl.close()
+        finally:
+            shutil.rmtree(mainpath,
+                          ignore_errors=False, onerror=None)
+            os.remove(self._fname)
+
 
 if __name__ == '__main__':
     unittest.main()

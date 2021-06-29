@@ -102,3 +102,26 @@ def blockitem_addint(commonblock, name, value):
     else:
         commonblock[name].append(int(value))
     return value
+
+
+def blockitem_addint_safe(commonblock, name, value):
+    """ add block item to commonblock with default 0
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param name: name of block item
+    :type name: :obj:`str`
+    :param value:  item value
+    :type value: :obj:`str`
+    :returns:   item value
+    :rtype: :obj:`str`
+    """
+    try:
+        value = int(value)
+    except Exception:
+        value = 0
+    if name not in commonblock:
+        commonblock[name] = [value]
+    else:
+        commonblock[name].append(value)
+    return value
