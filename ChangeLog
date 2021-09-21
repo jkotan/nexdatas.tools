@@ -1,3 +1,7 @@
+2021-09-21 Jan Kotanski <jankotan@gmail.com>
+	* fix for nxscreate compare when sardana name defined
+	* tagged as v3.10.2
+
 2021-07-29 Jan Kotanski <jankotan@gmail.com>
 	* read timezone from tzlocal if pytz fails
 	* tagged as v3.10.1
