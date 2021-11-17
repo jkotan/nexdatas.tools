@@ -8,8 +8,7 @@ RUN curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-key
 RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian buster main" -y
 RUN apt-get -qq update && apt-get -qq -y dist-upgrade
-RUN apt-get -qq update && apt-get -qq install -y default-mysql-client  python-h5py  python-sphinx  apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libomnithread4-dev libzmq3-dev python-pninexus python-mysqldb python-argcomplete python-tz python-lxml
-RUN apt-get -qq install -y hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4
+RUN apt-get -qq update && apt-get -qq install -y default-mysql-client  python-h5py  python-sphinx  apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libomnithread4-dev libzmq3-dev python-pninexus python-mysqldb python-argcomplete python-tz python-lxml hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 liblog4j1.2-java python-fabio python-whichcraft python-setuptools
 # hdf5-plugins-common
 RUN useradd -ms /bin/bash tango
 RUN  /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive; debconf-set-selections <<< "mysql-server mysql-server/root_password password rootpw"'

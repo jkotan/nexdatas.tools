@@ -25,54 +25,30 @@ docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive
 if [ "$?" != "0" ]; then exit 255; fi
 
 echo "install tango servers"
-docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  tango-starter tango-test liblog4j1.2-java'
+docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  tango-starter tango-test'
 if [ "$?" != "0" ]; then exit 255; fi
 
 docker exec --user root ndts service tango-db restart
 docker exec --user root ndts service tango-starter restart
 
-if [ "$2" = "2" ]; then
-    echo "install python-pytango ..."
-    docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python-pytango python-fabio python-argcomplete python-setuptools python-nxswriter nxswriter'
-else
-    echo "install python3-pytango ..."
-    if [ "$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "debian11" ] ; then
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-fabio python3-argcomplete python3-setuptools python3-nxswriter nxswriter'
-    else
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete python3-setuptools python3-nxswriter nxswriter3'
-    fi
-fi
-if [ "$?" != "0" ]; then exit 255; fi
 
-if [ "$1" != "debian8" ]; then
-    if [ "$2" = "2" ]; then
-	echo "install python-whichcraft"
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-whichcraft'
-    else
-	echo "install python3-whichcraft"
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-whichcraft'
-    fi
-fi
-if [ "$?" != "0" ]; then exit 255; fi
-
-echo "install sardana, taurus and nexdatas"
+echo "install nxsconfigserver"
 docker exec --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  nxsconfigserver-db; sleep 10'
 if [ "$?" != "0" ]; then exit 255; fi
 
 
 if [ "$2" = "2" ]; then
-    docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-nxsconfigserver nxsconfigserver'
+    echo "install python-pytango ..."
+    docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y  python-pytango python-nxswriter nxswriter python-nxsconfigserver nxsconfigserver'
 else
-    if [ "$1" = "ubuntu20.04" ]; then
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver git libhdf5-dev python3-dev cython3'
-	docker exec --user root ndts /bin/sh -c 'git clone -b 2.10.x https://github.com/h5py/h5py h5py'
-	docker exec --user root ndts /bin/sh -c 'cd h5py; python3 setup.py install'
+    echo "install python3-pytango ..."
+    if [ "$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "debian11" ] ; then
+	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-nxswriter nxswriter python3-nxsconfigserver nxsconfigserver'
     else
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver3'
+	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-nxswriter nxswriter3 python3-nxsconfigserver nxsconfigserver3'
     fi
 fi
 if [ "$?" != "0" ]; then exit 255; fi
-
 
 
 if [ "$2" = "2" ]; then
