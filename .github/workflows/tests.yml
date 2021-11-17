@@ -70,6 +70,6 @@ jobs:
           OSYS: ${{ matrix.os }}
         run: .ci/install.sh ${OSYS} 2
       - name: run tests
-        run: .ci/run.sh 2
+        run: .ci/run.sh ${OSYS} 2
       - name: Stop the docker
         run: docker container stop ndts

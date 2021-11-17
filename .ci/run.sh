@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-if [ "$1" = "2" ]; then
+if [ "$2" = "2" ]; then
     echo "run python-nxstools"
     docker exec ndts python test
 else
     echo "run python3-nxstools"
-    docker exec ndts python3 setup.py test
+    if [ "$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "debian11" ] ; then
+	docker exec ndts python3 setup.py test
+    else
+	docker exec ndts python3 test
+    fi
 fi    
 if [ "$?" -ne "0" ]; then exit -1; fi
