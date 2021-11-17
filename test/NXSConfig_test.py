@@ -4353,7 +4353,7 @@ For more help:
                            self._sv.new_device_info_writer.name)).split()
             vl, er = self.runtest(cmd)
             vl = vl.strip()
-            er = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertTrue(not os.path.exists("%s/%s.xml" % (nm, dirname)))
