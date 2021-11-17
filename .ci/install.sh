@@ -22,11 +22,11 @@ else
 fi
 
 docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive; apt-get -qq update; apt-get -qq install -y   tango-db tango-common; sleep 10'
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
 echo "install tango servers"
 docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  tango-starter tango-test liblog4j1.2-java'
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
 docker exec --user root ndts service tango-db restart
 docker exec --user root ndts service tango-starter restart
@@ -42,9 +42,9 @@ else
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-fabio python3-argcomplete python3-setuptools python3-nxswriter nxswriter3'
     fi
 fi
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
-if [ "$1" -ne "debian8" ]; then
+if [ "$1" != "debian8" ]; then
     if [ "$2" = "2" ]; then
 	echo "install python-whichcraft"
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python-whichcraft'
@@ -53,11 +53,11 @@ if [ "$1" -ne "debian8" ]; then
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-whichcraft'
     fi
 fi
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
 echo "install sardana, taurus and nexdatas"
 docker exec --user root ndts /bin/sh -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  nxsconfigserver-db; sleep 10'
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
 
 if [ "$2" = "2" ]; then
@@ -71,7 +71,7 @@ else
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxsconfigserver nxsconfigserver3'
     fi
 fi
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
 
 
 
@@ -84,4 +84,4 @@ else
     docker exec --user root ndts chown -R tango:tango .
     docker exec --user root ndts python3 setup.py -q install
 fi
-if [ "$?" -ne "0" ]; then exit 255; fi
+if [ "$?" != "0" ]; then exit 255; fi
