@@ -1748,7 +1748,8 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             triggermode = "splitmode"
             name = "eiger2"
             nbimages = 30
-            hostname = "localhost:10000"
+            hostname = os.environ.get("TANGO_HOST", "localhost:10000")
+
             device = devicename
             stepindex_str = "eiger2_stepindex"
             insname = "instrument"

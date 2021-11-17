@@ -26,6 +26,7 @@ import random
 import struct
 import binascii
 import time
+import threading
 import PyTango
 from nxstools import nxsdata
 from nxstools import h5cppwriter as H5CppWriter
@@ -196,6 +197,74 @@ For more help:
 
         self._sv = WriterSetUp.WriterSetUp()
 
+    def runtest(self, argv, pipeinput=None):
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+        old_argv = sys.argv
+        sys.argv = argv
+
+        if pipeinput is not None:
+            r, w = os.pipe()
+            new_stdin = mytty(os.fdopen(r, 'r'))
+            old_stdin, sys.stdin = sys.stdin, new_stdin
+            tm = threading.Timer(1., myinput, [w, pipeinput])
+            tm.start()
+        else:
+            old_stdin = sys.stdin
+            sys.stdin = StringIO()
+
+        etxt = None
+        try:
+            nxsdata.main()
+        except Exception as e:
+            etxt = str(e)
+        except SystemExit as e:
+            etxt = str(e)
+        sys.argv = old_argv
+
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+        sys.stdin = old_stdin
+        sys.argv = old_argv
+        vl = mystdout.getvalue()
+        er = mystderr.getvalue()
+        # print(vl)
+        # print(er)
+        if etxt:
+            print(etxt)
+        self.assertTrue(etxt is None)
+        return vl, er
+
+    def runtestexcept(self, argv, exception):
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        old_stdin = sys.stdin
+        sys.stdin = StringIO()
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+
+        old_argv = sys.argv
+        sys.argv = argv
+        try:
+            error = False
+            nxsdata.main()
+        except exception as e:
+            etxt = str(e)
+            error = True
+        self.assertEqual(error, True)
+
+        sys.argv = old_argv
+
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+        sys.stdin = old_stdin
+        sys.argv = old_argv
+        vl = mystdout.getvalue()
+        er = mystderr.getvalue()
+        return vl, er, etxt
+
     # opens config server
     # \param args connection arguments
     # \returns NXSDataWriter instance
@@ -258,20 +327,7 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-        sys.stdout = mystdout = StringIO()
-        sys.stderr = mystderr = StringIO()
-        old_argv = sys.argv
-        sys.argv = ['nxsdata']
-        with self.assertRaises(SystemExit):
-            nxsdata.main()
-
-        sys.argv = old_argv
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
-        vl = mystdout.getvalue()
-        er = mystderr.getvalue()
+        vl, er, et = self.runtestexcept(['nxsdata'], SystemExit)
         self.assertEqual(self.helpinfo, vl)
         self.assertEqual(self.helperror, er)
 
@@ -281,20 +337,7 @@ For more help:
 
         helps = ['-h', '--help']
         for hl in helps:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = ['nxsdata', hl]
-            with self.assertRaises(SystemExit):
-                nxsdata.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er, et = self.runtestexcept(['nxsdata', hl], SystemExit)
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 
@@ -315,19 +358,7 @@ For more help:
         ]
         for cmd in commands:
             try:
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 print(vl)
                 self.assertEqual('', er)
@@ -396,19 +427,7 @@ For more help:
             try:
                 el.fileName = fname
                 el.openFile()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 print(vl)
                 self.assertEqual('', er)
@@ -482,19 +501,7 @@ For more help:
                 el.fileName = fname
                 el.openFile()
                 el.JSONRecord = jdata
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 print(vl)
                 self.assertEqual('', er)
@@ -804,19 +811,7 @@ For more help:
                 el.JSONRecord = jdata
                 el.XMLSettings = self._scanXml % fname
                 el.openEntry()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 print(vl)
                 self.assertEqual('', er)
@@ -1125,19 +1120,7 @@ For more help:
                 el.fileName = fname
                 el.openFile()
                 el.JSONRecord = jdata
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 print(vl)
                 self.assertEqual('', er)
@@ -1454,19 +1437,7 @@ For more help:
                 for jd in jdata:
                     cd = list(cmd)
                     cd.append(jd)
-                    old_stdout = sys.stdout
-                    old_stderr = sys.stderr
-                    sys.stdout = mystdout = StringIO()
-                    sys.stderr = mystderr = StringIO()
-                    old_argv = sys.argv
-                    sys.argv = cd
-                    nxsdata.main()
-
-                    sys.argv = old_argv
-                    sys.stdout = old_stdout
-                    sys.stderr = old_stderr
-                    vl = mystdout.getvalue()
-                    er = mystderr.getvalue()
+                    vl, er = self.runtest(cd)
 
                     print(vl)
                     self.assertEqual('', er)
@@ -1787,19 +1758,7 @@ For more help:
                 for jd in jdata:
                     cd = list(cmd)
                     cd.append(jd)
-                    old_stdout = sys.stdout
-                    old_stderr = sys.stderr
-                    sys.stdout = mystdout = StringIO()
-                    sys.stderr = mystderr = StringIO()
-                    old_argv = sys.argv
-                    sys.argv = cd
-                    nxsdata.main()
-
-                    sys.argv = old_argv
-                    sys.stdout = old_stdout
-                    sys.stderr = old_stderr
-                    vl = mystdout.getvalue()
-                    er = mystderr.getvalue()
+                    vl, er = self.runtest(cd)
 
                     print(vl)
                     self.assertEqual('', er)
@@ -2118,19 +2077,7 @@ For more help:
             try:
                 el.fileName = fname
                 el.openFile()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsdata.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 print(vl)
                 self.assertEqual('', er)
                 el.JSONRecord = jdata[0]

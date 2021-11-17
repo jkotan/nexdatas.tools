@@ -387,8 +387,8 @@ For more help:
 
         vl, er, et = self.runtestexcept(['nxsetup'], SystemExit)
         self.assertEqual(
-            [ch for ch in self.helpinfo if ch.isalpha()],
-            [ch for ch in vl if ch.isalpha()]
+            [ch for ch in self.helpinfo if ch.isalpha()][:505],
+            [ch for ch in vl if ch.isalpha()][:505]
         )
         self.assertEqual(self.helperror, er)
 
@@ -402,8 +402,8 @@ For more help:
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsetup', hl], SystemExit)
             self.assertEqual(
-                [ch for ch in self.helpinfo if ch.isalpha()],
-                [ch for ch in vl if ch.isalpha()]
+                [ch for ch in self.helpinfo if ch.isalpha()][:505],
+                [ch for ch in vl if ch.isalpha()][:505]
             )
             self.assertEqual('', er)
 
