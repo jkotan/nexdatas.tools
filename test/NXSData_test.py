@@ -260,8 +260,10 @@ For more help:
 
         old_stdout = sys.stdout
         old_stderr = sys.stderr
+        old_stdin = sys.stdin
         sys.stdout = mystdout = StringIO()
         sys.stderr = mystderr = StringIO()
+        sys.stdin = mystdin = StringIO()
         old_argv = sys.argv
         sys.argv = ['nxsdata']
         with self.assertRaises(SystemExit):
@@ -270,6 +272,7 @@ For more help:
         sys.argv = old_argv
         sys.stdout = old_stdout
         sys.stderr = old_stderr
+        sys.stdin = old_stdin
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
         self.assertEqual(self.helpinfo, vl)
@@ -283,8 +286,10 @@ For more help:
         for hl in helps:
             old_stdout = sys.stdout
             old_stderr = sys.stderr
+            old_stdin = sys.stdin
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
+            sys.stdin = mystdin = StringIO()
             old_argv = sys.argv
             sys.argv = ['nxsdata', hl]
             with self.assertRaises(SystemExit):
@@ -293,6 +298,7 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+            sys.stdin = old_stdin
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
             self.assertEqual(self.helpinfo[0:-1], vl)
@@ -317,8 +323,10 @@ For more help:
             try:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -326,6 +334,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
@@ -398,8 +407,10 @@ For more help:
                 el.openFile()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -407,6 +418,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
@@ -484,8 +496,10 @@ For more help:
                 el.JSONRecord = jdata
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -493,6 +507,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
@@ -806,8 +821,10 @@ For more help:
                 el.openEntry()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -815,6 +832,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
@@ -1127,8 +1145,10 @@ For more help:
                 el.JSONRecord = jdata
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -1136,6 +1156,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
 
@@ -1456,8 +1477,10 @@ For more help:
                     cd.append(jd)
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
+                    old_stdin = sys.stdin
                     sys.stdout = mystdout = StringIO()
                     sys.stderr = mystderr = StringIO()
+                    sys.stdin = mystdin = StringIO()
                     old_argv = sys.argv
                     sys.argv = cd
                     nxsdata.main()
@@ -1465,6 +1488,7 @@ For more help:
                     sys.argv = old_argv
                     sys.stdout = old_stdout
                     sys.stderr = old_stderr
+                    sys.stdin = old_stdin
                     vl = mystdout.getvalue()
                     er = mystderr.getvalue()
 
@@ -1789,8 +1813,10 @@ For more help:
                     cd.append(jd)
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
+                    old_stdin = sys.stdin
                     sys.stdout = mystdout = StringIO()
                     sys.stderr = mystderr = StringIO()
+                    sys.stdin = mystdin = StringIO()
                     old_argv = sys.argv
                     sys.argv = cd
                     nxsdata.main()
@@ -1798,6 +1824,7 @@ For more help:
                     sys.argv = old_argv
                     sys.stdout = old_stdout
                     sys.stderr = old_stderr
+                    sys.stdin = old_stdin
                     vl = mystdout.getvalue()
                     er = mystderr.getvalue()
 
@@ -2120,8 +2147,10 @@ For more help:
                 el.openFile()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
+                sys.stdin = mystdin = StringIO()
                 old_argv = sys.argv
                 sys.argv = cmd
                 nxsdata.main()
@@ -2129,6 +2158,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue()
                 er = mystderr.getvalue()
                 print(vl)

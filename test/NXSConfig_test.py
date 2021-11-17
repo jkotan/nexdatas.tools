@@ -174,6 +174,64 @@ For more help:
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
 
+    def runtest(self, argv):
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        old_stdin = sys.stdin
+        sys.stdin = mystdin = StringIO()
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+
+        old_argv = sys.argv
+        sys.argv = argv
+        etxt = None
+        try:
+            nxsconfig.main()
+        except Exception as e:
+            etxt = str(e)
+        except SystemExit as e:
+            etxt = str(e)
+        sys.argv = old_argv
+
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+        sys.stdin = old_stdin
+        vl = mystdout.getvalue()
+        er = mystderr.getvalue()
+        # print(vl)
+        # print(er)
+        if etxt:
+            print(etxt)
+        self.assertTrue(etxt is None)
+        return vl, er
+
+    def runtestexcept(self, argv, exception):
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        old_stderr = sys.stdin
+        sys.stdin = mystdin = StringIO()
+        sys.stdout = mystdout = StringIO()
+        sys.stderr = mystderr = StringIO()
+
+        old_argv = sys.argv
+        sys.argv = argv
+        try:
+            error = False
+            nxsconfig.main()
+        except exception as e:
+            etxt = str(e)
+            error = True
+        self.assertEqual(error, True)
+
+        sys.argv = old_argv
+
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
+        sys.stdin = old_stdin
+        vl = mystdout.getvalue()
+        er = mystderr.getvalue()
+        return vl, er, etxt
+
     def parseRST(self, text):
         parser = docutils.parsers.rst.Parser()
         components = (docutils.parsers.rst.Parser,)
@@ -394,8 +452,10 @@ For more help:
 
         old_stdout = sys.stdout
         old_stderr = sys.stderr
+        old_stdin = sys.stdin
         sys.stdout = mystdout = StringIO()
         sys.stderr = mystderr = StringIO()
+        sys.stdin = mystdin = StringIO()
         old_argv = sys.argv
         sys.argv = ['nxsconfig']
         with self.assertRaises(SystemExit):
@@ -404,6 +464,7 @@ For more help:
         sys.argv = old_argv
         sys.stdout = old_stdout
         sys.stderr = old_stderr
+        sys.stdin = old_stdin
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
         self.assertEqual(self.helpinfo, vl)
@@ -417,6 +478,8 @@ For more help:
         for hl in helps:
             old_stdout = sys.stdout
             old_stderr = sys.stderr
+            old_stdin = sys.stdin
+            sys.stdin = mystdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -427,6 +490,7 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+            sys.stdin = old_stdin
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
             self.assertEqual(self.helpinfo[0:-1], vl)
@@ -457,19 +521,8 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
 
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -512,19 +565,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -598,19 +639,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -705,19 +734,7 @@ For more help:
             for nm in names:
                 cd = list(cmd)
                 cd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -804,19 +821,7 @@ For more help:
             for nm in names:
                 cd = list(cmd)
                 cd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -860,19 +865,7 @@ For more help:
         for cmd in commands:
             for i, vr in enumerate(vrs):
                 el.variables = vr
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
 
                 avc3 = vl.strip()
                 self.assertEqual(vr, avc3)
@@ -903,19 +896,7 @@ For more help:
             for i, vr in enumerate(vrs):
                 cd = list(cmd)
                 cd.append(vr)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 rvr = el.variables.strip()
                 self.assertEqual(vr, rvr)
@@ -996,19 +977,7 @@ For more help:
             for i, nm in enumerate(names):
                 cd = list(cmd)
                 cd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -1125,19 +1094,7 @@ For more help:
                 cd = list(cmd)
                 if nm:
                     cd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -1223,19 +1180,7 @@ For more help:
         for cmd in commands:
             cd = list(cmd)
             cd.append(nm)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ')
@@ -1324,19 +1269,7 @@ For more help:
             for nm in names:
                 cd = list(cmd)
                 cd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cd)
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -1397,21 +1330,7 @@ For more help:
             self.assertEqual(el.storeComponent(name2), None)
             self.__cmps.append(name2)
             avc2 = el.availableComponents()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            # vl =
-            mystdout.getvalue()
-            # er =
-            mystderr.getvalue()
+            vl, er = self.runtest(cmd)
             avc3 = el.availableComponents()
             self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
@@ -1454,21 +1373,7 @@ For more help:
             self.assertEqual(el.storeSelection(name2), None)
             self.__cmps.append(name2)
             avc2 = el.availableSelections()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            # vl =
-            mystdout.getvalue()
-            # er =
-            mystderr.getvalue()
+            vl, er = self.runtest(cmd)
             avc3 = el.availableSelections()
             self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
@@ -1518,21 +1423,7 @@ For more help:
             self.assertEqual(el.storeDataSource(name2), None)
             self.__ds.append(name2)
             avc2 = el.availableDataSources()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            # vl =
-            mystdout.getvalue()
-            # er =
-            mystderr.getvalue()
+            vl, er = self.runtest(cmd)
             avc3 = el.availableDataSources()
             self.assertEqual((list(set(avc2) - set(avc3))), [name2])
 
@@ -2232,19 +2123,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -2347,19 +2226,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -2468,19 +2335,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -2573,19 +2428,7 @@ For more help:
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -2677,19 +2520,7 @@ For more help:
              % self._sv.new_device_info_writer.name).split(),
         ]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             if "-n" in cmd or "--no-newlines" in cmd:
                 avc3 = [ec.strip() for ec in vl.split(' ') if ec.strip()]
@@ -2764,19 +2595,8 @@ For more help:
             for nm in cmps.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), cmps[nm])
                 self.assertEqual(er, "")
@@ -2784,19 +2604,9 @@ For more help:
         for scmd in commands:
             nm = name3
             cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -2807,19 +2617,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl.replace(">\n<", "><").replace("> <", "><"),
                              ("%s\n%s" % (cmps[name], cmps[name2])).replace(
@@ -2829,19 +2628,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -2965,19 +2754,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3135,19 +2913,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3248,19 +3015,8 @@ For more help:
             for nm in dsname:
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3340,19 +3096,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3468,19 +3213,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3581,6 +3315,8 @@ For more help:
                     nm, self._sv.new_device_info_writer.name)).split()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -3591,6 +3327,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
 
@@ -3684,19 +3421,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
                     avc3 = [ec.strip() for ec in vl.split(' ')
@@ -3762,19 +3488,8 @@ For more help:
                 cmd = (scmd % (
                     nm,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -3793,19 +3508,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -3891,19 +3595,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -3922,19 +3615,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -4014,19 +3696,8 @@ For more help:
                 cmd = (scmd % (
                     nm,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -4045,19 +3716,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -4151,19 +3811,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -4182,19 +3831,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -4271,19 +3909,8 @@ For more help:
                 cmd = (scmd % (
                     nm,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -4302,19 +3929,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -4405,19 +4021,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), "")
                 self.assertEqual(er, "")
@@ -4436,19 +4041,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(er, "")
@@ -4527,6 +4121,8 @@ For more help:
                     self._sv.new_device_info_writer.name)).split()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -4536,6 +4132,7 @@ For more help:
 
                 sys.argv = old_argv
                 sys.stdout = old_stdout
+                sys.stdin = old_stdin
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
@@ -4587,6 +4184,8 @@ For more help:
                     self._sv.new_device_info_writer.name)).split()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -4597,6 +4196,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertTrue(er)
@@ -4655,6 +4255,8 @@ For more help:
                     self._sv.new_device_info_writer.name)).split()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -4664,6 +4266,7 @@ For more help:
 
                 sys.argv = old_argv
                 sys.stdout = old_stdout
+                sys.stdin = old_stdin
                 sys.stderr = old_stderr
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
@@ -4733,19 +4336,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 with open("%s/%s.xml" % (dirname, nm), "r") as fl:
                     fvl = fl.read()
@@ -4759,19 +4351,9 @@ For more help:
             nm = name3
             cmd = (scmd % (nm, dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = vl.strip()
 
             self.assertEqual(vl, "")
             self.assertTrue(not os.path.exists("%s/%s.xml" % (nm, dirname)))
@@ -4786,19 +4368,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             with open("%s/%s.xml" % (dirname, name), "r") as fl:
                 fvl = fl.read()
@@ -4819,19 +4390,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertTrue(not os.path.exists("%s/%s.xml" % (nm, dirname)))
             self.assertEqual(vl, "")
@@ -4916,19 +4477,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 with open("%s/%s.ds.xml" % (dirname, nm), "r") as fl:
                     fvl = fl.read()
@@ -4942,19 +4492,9 @@ For more help:
             nm = name3
             cmd = (scmd % (nm, dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertTrue(not os.path.exists("%s/%s.ds.xml" % (nm, dirname)))
@@ -4969,19 +4509,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             with open("%s/%s.ds.xml" % (dirname, name), "r") as fl:
                 fvl = fl.read()
@@ -5002,19 +4531,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertTrue(not os.path.exists("%s/%s.ds.xml" % (nm, dirname)))
             self.assertEqual(vl, "")
@@ -5095,19 +4614,8 @@ For more help:
                 cmd = (scmd % (
                     nm, dirname,
                     self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 with open("%s/%s.json" % (dirname, nm), "r") as fl:
                     fvl = fl.read()
@@ -5121,19 +4629,9 @@ For more help:
             nm = name3
             cmd = (scmd % (nm, dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertTrue(not os.path.exists("%s/%s.json" % (nm, dirname)))
@@ -5148,19 +4646,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             with open("%s/%s.json" % (dirname, name), "r") as fl:
                 fvl = fl.read()
@@ -5181,19 +4668,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3), dirname,
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertTrue(not os.path.exists("%s/%s.json" % (nm, dirname)))
             self.assertEqual(vl, "")
@@ -5262,19 +4739,8 @@ For more help:
             for nm in profs.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl.strip(), profs[nm])
                 self.assertEqual(er, "")
@@ -5282,19 +4748,9 @@ For more help:
         for scmd in commands:
             nm = name3
             cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -5305,19 +4761,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl,
                              ("%s\n%s" % (profs[name], profs[name2])))
@@ -5326,19 +4771,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -5407,19 +4842,8 @@ For more help:
             for nm in cmps.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
                 self.assertEqual(vl, cmps[nm])
                 self.assertEqual(er, "")
@@ -5427,19 +4851,9 @@ For more help:
         for scmd in commands:
             nm = name3
             cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -5450,19 +4864,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
 
             self.assertEqual(vl.replace(">\n<", "><").replace("> <", "><"),
                              ("%s\n%s" % (cmps[name], cmps[name2])).replace(
@@ -5472,19 +4875,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -5555,19 +4948,8 @@ For more help:
             for nm in cmps.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
                 el.createConfiguration(man + [nm])
                 cpxml = el.xmlstring
                 cpxml = cpxml.strip("\n")
@@ -5577,19 +4959,9 @@ For more help:
         for scmd in commands:
             nm = name3
             cmd = (scmd % (nm, self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
 
             self.assertEqual(vl, "")
             self.assertEqual(
@@ -5600,19 +4972,8 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name2),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
             el.createConfiguration(man + [name, name2])
             cpxml = el.xmlstring
             cpxml = cpxml.strip("\n")
@@ -5623,19 +4984,9 @@ For more help:
         for scmd in commands:
             cmd = (scmd % ("%s %s" % (name, name3),
                            self._sv.new_device_info_writer.name)).split()
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue().strip()
-            er = mystderr.getvalue().strip()
+            vl, er = self.runtest(cmd)
+            vl = vl.strip()
+            er = er.strip()
             cpxml = cpxml.strip("\n")
 
             self.assertEqual(vl, "")
@@ -5706,6 +5057,8 @@ For more help:
                            self._sv.new_device_info_writer.name)).split()
             old_stdout = sys.stdout
             old_stderr = sys.stderr
+            old_stdin = sys.stdin
+            sys.stdin = mystdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5716,6 +5069,7 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+            sys.stdin = old_stdin
             vl = mystdout.getvalue().strip()
             # er =
             mystderr.getvalue()
@@ -5786,6 +5140,8 @@ For more help:
                            self._sv.new_device_info_writer.name)).split()
             old_stdout = sys.stdout
             old_stderr = sys.stderr
+            old_stdin = sys.stdin
+            sys.stdin = mystdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5796,6 +5152,7 @@ For more help:
             sys.argv = old_argv
             sys.stdout = old_stdout
             sys.stderr = old_stderr
+            sys.stdin = old_stdin
             vl = mystdout.getvalue().strip()
             # er =
             mystderr.getvalue()
@@ -5865,6 +5222,8 @@ For more help:
                            self._sv.new_device_info_writer.name)).split()
             old_stdout = sys.stdout
             old_stderr = sys.stderr
+            old_stdin = sys.stdin
+            sys.stdin = mystdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5874,6 +5233,7 @@ For more help:
 
             sys.argv = old_argv
             sys.stdout = old_stdout
+            sys.stdin = old_stdin
             sys.stderr = old_stderr
             #            el.createConfiguration(man + [name, name2])
             #            cpxml = el.xmlstring
@@ -5957,6 +5317,8 @@ For more help:
                 # print(cmd)
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -5967,6 +5329,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 # print(vl)
@@ -6046,6 +5409,8 @@ For more help:
                     nm, self._sv.new_device_info_writer.name)).split()
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
+                old_stdin = sys.stdin
+                sys.stdin = mystdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -6056,6 +5421,7 @@ For more help:
                 sys.argv = old_argv
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
+                sys.stdin = old_stdin
                 vl = mystdout.getvalue().strip()
                 er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), "")
@@ -6145,22 +5511,13 @@ For more help:
             for nm in cmps.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
 
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
                 el.createConfiguration(man + [nm])
                 cpxml = el.xmlstring
                 cpxml = cpxml.strip("\n")
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+
                 self.assertEqual(vl.strip(), cpxml)
                 self.assertEqual(er.strip(), "")
 
@@ -6240,22 +5597,11 @@ For more help:
             for nm in cmps.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
+                vl, er = self.runtest(cmd)
+                vl = vl.strip()
                 el.createConfiguration(man + [nm, dss[nm]])
                 cpxml = el.xmlstring
                 cpxml = cpxml.strip("\n")
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
                 self.assertEqual(vl.strip(), cpxml)
                 self.assertEqual(er, "")
 
@@ -6288,19 +5634,7 @@ For more help:
         ]
 #        commands = [['nxsconfig', 'list']]
         for cmd in commands:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6350,19 +5684,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6415,19 +5737,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6483,19 +5793,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6557,19 +5855,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend([name, name2])
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6619,19 +5905,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6681,19 +5955,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6747,19 +6009,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6812,19 +6062,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6878,19 +6116,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -6945,19 +6171,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -7013,19 +6227,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -7078,19 +6280,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -7143,19 +6333,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.append(name[1])
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
 
@@ -7201,19 +6379,7 @@ For more help:
         for cd in commands:
             cmd = list(cd)
             cmd.extend(name)
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = cmd
-            nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er = self.runtest(cmd)
 
             avc3 = vl.strip()
             doc = self.parseRST(avc3)
@@ -7340,19 +6506,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -7480,18 +6634,7 @@ For more help:
             for ni, nm in enumerate(name[1:]):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -7642,19 +6785,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -7745,19 +6876,7 @@ For more help:
             for ni, nm in enumerate(dsname):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -7906,19 +7025,7 @@ For more help:
             for ni, nm in enumerate(slname):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 # print(vl)
                 avc3 = vl.strip()
@@ -8093,19 +7200,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 print(vl)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
@@ -8285,18 +7380,7 @@ For more help:
             for ni, nm in enumerate(name[1:]):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -8386,19 +7470,7 @@ For more help:
             for ni, nm in enumerate(dsname):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -8489,19 +7561,7 @@ For more help:
             for ni, nm in enumerate(dsname):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -8711,19 +7771,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -8924,19 +7972,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 # print(vl)
@@ -9148,19 +8184,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -9377,18 +8401,7 @@ For more help:
             for ni, nm in enumerate(name[1:]):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
@@ -9555,19 +8568,7 @@ For more help:
             for ni, nm in enumerate(name):
                 cmd = list(cd)
                 cmd.append(nm)
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd)
                 self.assertEqual('', er)
                 avc3 = vl.strip()
                 doc = self.parseRST(avc3)
