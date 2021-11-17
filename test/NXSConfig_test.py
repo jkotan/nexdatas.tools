@@ -174,16 +174,24 @@ For more help:
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()
 
-    def runtest(self, argv):
+    def runtest(self, argv, pipeinput=None):
         old_stdout = sys.stdout
         old_stderr = sys.stderr
-        old_stdin = sys.stdin
-        sys.stdin = mystdin = StringIO()
         sys.stdout = mystdout = StringIO()
         sys.stderr = mystderr = StringIO()
-
         old_argv = sys.argv
         sys.argv = argv
+
+        if pipeinput is not None:
+            r, w = os.pipe()
+            new_stdin = mytty(os.fdopen(r, 'r'))
+            old_stdin, sys.stdin = sys.stdin, new_stdin
+            tm = threading.Timer(1., myinput, [w, pipeinput])
+            tm.start()
+        else:
+            old_stdin = sys.stdin
+            sys.stdin = StringIO()
+
         etxt = None
         try:
             nxsconfig.main()
@@ -196,6 +204,7 @@ For more help:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
         sys.stdin = old_stdin
+        sys.argv = old_argv
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
         # print(vl)
@@ -208,8 +217,8 @@ For more help:
     def runtestexcept(self, argv, exception):
         old_stdout = sys.stdout
         old_stderr = sys.stderr
-        old_stderr = sys.stdin
-        sys.stdin = mystdin = StringIO()
+        old_stdin = sys.stdin
+        sys.stdin = StringIO()
         sys.stdout = mystdout = StringIO()
         sys.stderr = mystderr = StringIO()
 
@@ -228,6 +237,7 @@ For more help:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
         sys.stdin = old_stdin
+        sys.argv = old_argv
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
         return vl, er, etxt
@@ -450,23 +460,7 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-        old_stdin = sys.stdin
-        sys.stdout = mystdout = StringIO()
-        sys.stderr = mystderr = StringIO()
-        sys.stdin = mystdin = StringIO()
-        old_argv = sys.argv
-        sys.argv = ['nxsconfig']
-        with self.assertRaises(SystemExit):
-            nxsconfig.main()
-
-        sys.argv = old_argv
-        sys.stdout = old_stdout
-        sys.stderr = old_stderr
-        sys.stdin = old_stdin
-        vl = mystdout.getvalue()
-        er = mystderr.getvalue()
+        vl, er, et = self.runtestexcept(['nxsconfig'], SystemExit)
         self.assertEqual(self.helpinfo, vl)
         self.assertEqual(self.helperror, er)
 
@@ -476,23 +470,7 @@ For more help:
 
         helps = ['-h', '--help']
         for hl in helps:
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            old_stdin = sys.stdin
-            sys.stdin = mystdin = StringIO()
-            sys.stdout = mystdout = StringIO()
-            sys.stderr = mystderr = StringIO()
-            old_argv = sys.argv
-            sys.argv = ['nxsconfig', hl]
-            with self.assertRaises(SystemExit):
-                nxsconfig.main()
-
-            sys.argv = old_argv
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-            sys.stdin = old_stdin
-            vl = mystdout.getvalue()
-            er = mystderr.getvalue()
+            vl, er, et = self.runtestexcept(['nxsconfig', hl], SystemExit)
             self.assertEqual(self.helpinfo[0:-1], vl)
             self.assertEqual('', er)
 
@@ -1470,25 +1448,7 @@ For more help:
                 self.assertEqual(el.storeComponent(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableComponents()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                # mystdin =
-                sys.stdin = StringIO()
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er, etxt = self.runtestexcept(cmd, SystemExit)
                 self.assertEqual(vl[:17], 'Remove Component ')
                 self.assertEqual(
                     er,
@@ -1544,25 +1504,7 @@ For more help:
                 self.assertEqual(el.storeDataSource(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableDataSources()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                # mystdin =
-                sys.stdin = StringIO()
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er, etxt = self.runtestexcept(cmd, SystemExit)
                 self.assertEqual(vl[:17], 'Remove DataSource')
                 self.assertEqual(
                     er,
@@ -1615,25 +1557,7 @@ For more help:
                 self.assertEqual(el.storeSelection(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableSelections()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                # mystdin =
-                sys.stdin = StringIO()
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er, etxt = self.runtestexcept(cmd, SystemExit)
                 self.assertEqual(vl[:14], 'Remove Profile')
                 self.assertEqual(
                     er,
@@ -1685,26 +1609,7 @@ For more help:
                 self.assertEqual(el.storeComponent(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableComponents()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:17], 'Remove Component ')
                 self.assertEqual('', er)
                 avc3 = el.availableComponents()
@@ -1757,26 +1662,7 @@ For more help:
                 self.assertEqual(el.storeDataSource(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableDataSources()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:17], 'Remove DataSource')
                 self.assertEqual('', er)
                 avc3 = el.availableDataSources()
@@ -1826,26 +1712,7 @@ For more help:
                 self.assertEqual(el.storeSelection(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableSelections()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:14], 'Remove Profile')
                 self.assertEqual('', er)
                 avc3 = el.availableSelections()
@@ -1894,26 +1761,7 @@ For more help:
                 self.assertEqual(el.storeComponent(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableComponents()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:17], 'Remove Component ')
                 self.assertEqual('', er)
                 avc3 = el.availableComponents()
@@ -1966,26 +1814,7 @@ For more help:
                 self.assertEqual(el.storeDataSource(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableDataSources()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:17], 'Remove DataSource')
                 self.assertEqual('', er)
                 avc3 = el.availableDataSources()
@@ -2036,26 +1865,7 @@ For more help:
                 self.assertEqual(el.storeSelection(name2), None)
                 self.__cmps.append(name2)
                 avc2 = el.availableSelections()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                r, w = os.pipe()
-                new_stdin = mytty(os.fdopen(r, 'r'))
-                old_stdin, sys.stdin = sys.stdin, new_stdin
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                tm = threading.Timer(1., myinput, [w, ans])
-                tm.start()
-                nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue()
-                er = mystderr.getvalue()
+                vl, er = self.runtest(cmd, ans)
                 self.assertEqual(vl[:14], 'Remove Profile')
                 self.assertEqual('', er)
                 avc3 = el.availableSelections()
@@ -3313,23 +3123,8 @@ For more help:
             for nm in dss.keys():
                 cmd = (scmd % (
                     nm, self._sv.new_device_info_writer.name)).split()
-                old_stdout = sys.stdout
-                old_stderr = sys.stderr
-                old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
-                sys.stdout = mystdout = StringIO()
-                sys.stderr = mystderr = StringIO()
-                old_argv = sys.argv
-                sys.argv = cmd
-                with self.assertRaises(SystemExit):
-                    nxsconfig.main()
-
-                sys.argv = old_argv
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
-                sys.stdin = old_stdin
-                vl = mystdout.getvalue().strip()
-                er = mystderr.getvalue()
+                vl, er, et = self.runtestexcept(cmd, SystemExit)
+                vl = vl.strip()
 
                 self.assertTrue(er.startswith("Error: Datasource "))
                 self.assertEqual(vl, "")
@@ -4122,7 +3917,7 @@ For more help:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -4185,7 +3980,7 @@ For more help:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -4256,7 +4051,7 @@ For more help:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -5058,7 +4853,7 @@ For more help:
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             old_stdin = sys.stdin
-            sys.stdin = mystdin = StringIO()
+            sys.stdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5141,7 +4936,7 @@ For more help:
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             old_stdin = sys.stdin
-            sys.stdin = mystdin = StringIO()
+            sys.stdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5223,7 +5018,7 @@ For more help:
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             old_stdin = sys.stdin
-            sys.stdin = mystdin = StringIO()
+            sys.stdin = StringIO()
             sys.stdout = mystdout = StringIO()
             sys.stderr = mystderr = StringIO()
             old_argv = sys.argv
@@ -5318,7 +5113,7 @@ For more help:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv
@@ -5410,7 +5205,7 @@ For more help:
                 old_stdout = sys.stdout
                 old_stderr = sys.stderr
                 old_stdin = sys.stdin
-                sys.stdin = mystdin = StringIO()
+                sys.stdin = StringIO()
                 sys.stdout = mystdout = StringIO()
                 sys.stderr = mystderr = StringIO()
                 old_argv = sys.argv

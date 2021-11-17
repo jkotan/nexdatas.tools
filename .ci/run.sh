@@ -5,6 +5,6 @@ if [ "$1" = "2" ]; then
     docker exec ndts python test
 else
     echo "run python3-nxstools"
-    docker exec ndts python3 test
+    docker exec ndts python3 setup.py test
 fi    
 if [ "$?" -ne "0" ]; then exit -1; fi

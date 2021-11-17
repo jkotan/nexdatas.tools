@@ -47,65 +47,54 @@ Extract sources and run
 Debian packages
 """""""""""""""
 
-Debian `stretch`, `jessie` (and `wheezy`)  or Ubuntu `bionic` (and `xenial`) packages can be found in the HDRI repository.
+Debian `bullseye`, `buster`, `stretch`  or Ubuntu `focal`, `bionic` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
 .. code-block:: console
 
 	  $ sudo su
-	  $ wget -q -O - http://repos.pni-hdri.de/debian_repo.pub.gpg | apt-key add -
+	  $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+	  $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
 and then download the corresponding source list
 
 .. code-block:: console
 
 	  $ cd /etc/apt/sources.list.d
-	  $ wget http://repos.pni-hdri.de/stretch-pni-hdri.list
+	  $ wget http://repos.pni-hdri.de/bullseye-pni-hdri.list
 
-For releases (>= 2.61.0) to insall python2 scripts
+To install nxstools scripts
 
 .. code-block:: console
 
 	  $ apt-get update
 	  $ apt-get install nxstools
 
-and for python3 scripts
+or
+	  
+.. code-block:: console
+	  $ apt-get update
+	  $ apt-get install nxstools3
+
+for older python3 releases.
+
+To install only the python3 package
 
 .. code-block:: console
 
 	  $ apt-get update
-	  $ apt-get install nxstools3
+	  $ apt-get install python3-nxstools
 
-
-For older releases
+and for python2
 
 .. code-block:: console
 
 	  $ apt-get update
 	  $ apt-get install python-nxstools
 
-and
-
-.. code-block:: console
-
-	  $ apt-get install python3-nxstools
-
 if exists.
 
-To instal other NexDaTaS packages
-
-.. code-block:: console
-
-	  $ apt-get install python-nxswriter nxsconfigserver-db python-nxsconfigserver nxsconfigtool
-
-and
-
-.. code-block:: console
-
-	  $ apt-get install python-nxsrecselector nxselector python-sardana-nxsrecorder
-
-for Component Selector and Sardana related packages.
 
 From pip
 """"""""
