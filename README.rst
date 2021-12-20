@@ -55,7 +55,7 @@ To install the debian packages, add the PGP repository key
 
 	  $ sudo su
 	  $ curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  \
-	    | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
+	    \| gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
 	  $ chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 
 and then download the corresponding source list
