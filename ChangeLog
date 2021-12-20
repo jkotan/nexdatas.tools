@@ -1,3 +1,7 @@
+2021-12-20 Jan Kotanski <jankotan@gmail.com>
+	* remove delay time from lambda template components
+	* tagged as v3.11.0
+
 2021-09-21 Jan Kotanski <jankotan@gmail.com>
 	* fix for nxscreate compare when sardana name defined
 	* tagged as v3.10.2
