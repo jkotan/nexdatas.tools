@@ -24,7 +24,7 @@ import argparse
 import json
 
 from .nxsparser import TableTools
-from .nxsfileparser import NXSFileParser
+from .nxsfileparser import (NXSFileParser, numpyEncoder)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 
@@ -297,8 +297,10 @@ class Metadata(Runner):
     epilog = "" \
         + " examples:\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs\n" \
-        + "       nxsfileinfo metadata /user/data/myfile.nxs -g\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs -s\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs " \
+        + "-a units,NX_class\n" \
         + "\n"
 
     def create(self):
@@ -310,8 +312,8 @@ class Metadata(Runner):
             help="names of field or group attributes to be show "
             " (separated by commas without spaces). "
             "The  default: 'units,source_name,source_type,source,strategy,"
-            "nexus_type,depends_on,trans_type,trans_vector,trans_offset,"
-            "NX_class'",
+            "type,depends_on,transformation_type,vector,offset,"
+            "NX_class,short_name'",
             dest="attrs", default="")
         self._parser.add_argument(
             "-v", "--values",
@@ -331,6 +333,10 @@ class Metadata(Runner):
             "If name is '' all groups are shown. "
             "The  default: 'NXentry'",
             dest="entryclasses", default="NXentry")
+        self._parser.add_argument(
+            "-s", "--scientific", action="store_true",
+            default=False, dest="scientific",
+            help="store NXentry as scientificMetadata")
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -394,6 +400,7 @@ class Metadata(Runner):
         """
         values = []
         attrs = None
+        entryclasses = []
 
         if options.values:
             values = options.values.split(',')
@@ -406,12 +413,27 @@ class Metadata(Runner):
         nxsparser.valuestostore = values
         nxsparser.group_postfix = options.group_postfix
         nxsparser.entryclasses = entryclasses
+        nxsparser.scientific = options.scientific
         if attrs is not None:
             nxsparser.attrs = attrs
         nxsparser.parseMeta()
 
-        print(json.dumps(
-            json.loads(nxsparser.metadata), sort_keys=True, indent=4))
+        try:
+            if nxsparser.description:
+                if len(nxsparser.description) == 1:
+                    print(json.dumps(
+                        nxsparser.description[0], sort_keys=True, indent=4,
+                        cls=numpyEncoder))
+                else:
+                    print(json.dumps(
+                        nxsparser.description, sort_keys=True, indent=4,
+                        cls=numpyEncoder))
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
 
 
 class Field(Runner):
