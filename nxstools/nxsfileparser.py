@@ -21,11 +21,31 @@
 
 from . import filewriter
 import fnmatch
+import json
 import sys
 import xml.etree.ElementTree as et
+import numpy as np
 from lxml.etree import XMLParser
 
 from nxstools.nxsparser import ParserTools
+
+
+class numpyEncoder(json.JSONEncoder):
+    """ numpy json encoder with list
+    """
+    def default(self, obj):
+        """ default encoder
+
+        :param obj: numpy array object
+        :type obj: :obj:`object` or `any`
+        """
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 
 def getdsname(xmlstring):
@@ -119,10 +139,38 @@ class NXSFileParser(object):
         #: (:obj:`list` <:obj:`dict` <:obj:`str`, `any`> >) \
         #  description list of found nodes
         self.description = []
+        #: (:obj:`str`) metadata JSON dictionary
+        self.metadata = ""
+        #: (:obj:`str`) group postfix
+        self.group_postfix = "Parameters"
+        #: (:obj:`bool`) store NXentries as scientificMetadata
+        self.scientific = False
+        #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary
+        self.__dctmetadata = {}
 
-        #: (<:obj:`dict` <:obj:`str`, \
-        #   [ :obj:`str`, :obj:`types.MethodType` ] >) \
-        #    nexus field attribute show names and their type convertes
+        #: (:obj:`list` <:obj:`str` >) \
+        #    nexus field attribute show names
+        self.attrs = [
+            "units",
+            "type",
+            "depends_on",
+            "transformation_type",
+            "vector",
+            "offset",
+            "NX_class",
+            "name",
+            "short_name",
+            # from nexdatas
+            "source_name",
+            "source_type",
+            "source",
+            "strategy",
+        ]
+        #: (:obj:`list` <:obj:`str` >) \
+        #    nexus field attribute show names
+        self.entryclasses = [
+            "NXentry"
+        ]
         self.attrdesc = {
             "nexus_type": ["type", str],
             "units": ["units", str],
@@ -161,8 +209,8 @@ class NXSFileParser(object):
                     :class:`filewriter.FTLink` or \
                     :class:`filewriter.FTAttribute` or \
                     :class:`filewriter.FTGroup`
-        :param path: path of the link target or `None`
-        :type path: :obj:`str`
+        :param tgpath: target path of the link target or `None`
+        :type tgpath: :obj:`str`
         """
         desc = {}
         path = filewriter.first(node.path)
@@ -210,8 +258,8 @@ class NXSFileParser(object):
                     :class:`filewriter.FTLink` or \
                     :class:`filewriter.FTAttribute` or \
                     :class:`filewriter.FTGroup`
-        :param path: path of the link target or `None`
-        :type path: :obj:`str`
+        :param tgpath: target path of the link target or `None`
+        :type tgpath: :obj:`str`
         """
         self.__addnode(node, tgpath)
         names = []
@@ -228,6 +276,140 @@ class NXSFileParser(object):
 #                pass
             finally:
                 pass
+
+    def __parsemetaentry(self, node, lst):
+        """parses the node and add it into the description list
+
+        :param node: nexus node
+        :type node: :class:`filewriter.FTField` or \
+                    :class:`filewriter.FTLink` or \
+                    :class:`filewriter.FTAttribute` or \
+                    :class:`filewriter.FTGroup`
+        :param lst: metadata list
+        :type lst: :obj:`dict` <:obj:`str`, `any`>
+        """
+        dct = {}
+        name = self.__addmeta(node, dct, self.scientific)
+        names = []
+        if isinstance(node, filewriter.FTGroup):
+            names = [
+                (ch.name,
+                 str(ch.target_path) if hasattr(ch, "target_path") else None)
+                for ch in filewriter.get_links(node)]
+        for nm in names:
+            try:
+                if name in dct.keys():
+                    gr = dct[name]
+                else:
+                    gr = dct[name] = {}
+                ch = node.open(nm[0])
+                self.__parsemeta(ch, gr)
+#            except Exception:
+#                pass
+            finally:
+                pass
+        lst.append(dct)
+
+    def __parsemeta(self, node, dct):
+        """parses the node and add it into the description list
+
+        :param node: nexus node
+        :type node: :class:`filewriter.FTField` or \
+                    :class:`filewriter.FTLink` or \
+                    :class:`filewriter.FTAttribute` or \
+                    :class:`filewriter.FTGroup`
+        :param dct: metadata dictionary
+        :type dct: :obj:`dict` <:obj:`str`, `any`>
+        """
+        self.__addmeta(node, dct)
+        names = []
+        if isinstance(node, filewriter.FTGroup):
+            names = [
+                (ch.name,
+                 str(ch.target_path) if hasattr(ch, "target_path") else None)
+                for ch in filewriter.get_links(node)]
+        for nm in names:
+            try:
+                name = node.name + self.group_postfix
+                if name in dct.keys():
+                    gr = dct[name]
+                else:
+                    gr = dct[name] = {}
+                ch = node.open(nm[0])
+                self.__parsemeta(ch, gr)
+#            except Exception:
+#                pass
+            finally:
+                pass
+
+    def __addmeta(self, node, dct, scientific=False):
+        """adds the node into the description list
+
+        :param node: nexus node
+        :type node: :class:`filewriter.FTField` or \
+                    :class:`filewriter.FTLink` or \
+                    :class:`filewriter.FTAttribute` or \
+                    :class:`filewriter.FTGroup`
+        :param dct: metadata dictionary
+        :type dct: :obj:`dict` <:obj:`str`, `any`>
+        :param scientific: scientific flag
+        :type scientific: :obj:`bool`
+        """
+        desc = {}
+        # path = filewriter.first(node.path)
+        # desc["full_path"] = str(path)
+        # desc["nexus_path"] = str(self.getpath(path))
+        if isinstance(node, filewriter.FTGroup):
+            if scientific:
+                smname = "scientificMetadata"
+                counter = 1
+                while smname in dct.keys():
+                    counter += 1
+                    smname = "scientificMetadata_%s" % counter
+
+                nd = dct[smname] = {"name": node.name}
+            else:
+                smname = node.name + self.group_postfix
+                nd = dct[smname] = {}
+        else:
+            smname = node.name
+            nd = dct[smname] = {}
+        if hasattr(node, "dtype"):
+            desc["dtype"] = str(node.dtype)
+        if hasattr(node, "shape"):
+            desc["shape"] = [int(n) for n in (node.shape or [])]
+        if hasattr(node, "attributes"):
+            attrs = node.attributes
+            anames = [at.name for at in attrs]
+            for key, vl in self.attrdesc.items():
+                if vl[0] in anames and key in self.attrs:
+                    nd[key] = vl[1](filewriter.first(attrs[vl[0]].read()))
+
+            for at in self.attrs:
+                if at in anames:
+                    if at in self.attrs and \
+                       at not in self.attrdesc.keys():
+                        nd[at] = filewriter.first(attrs[at].read())
+
+        if not isinstance(node, filewriter.FTGroup):
+            if (node.name in self.valuestostore and node.is_valid) \
+               or "shape" not in desc \
+               or desc["shape"] in [None, [1], []]:
+                vl = node.read()
+                cont = True
+                while cont:
+                    try:
+                        if not isinstance(vl, str) and \
+                           (hasattr(vl, "__len__") and len(vl) == 1):
+                            vl = vl[0]
+                        else:
+                            cont = False
+                    except Exception:
+                        cont = False
+                nd["value"] = vl
+            if "shape" in desc and desc["shape"] not in [None, [1], []]:
+                nd["shape"] = desc["shape"]
+        return smname
 
     def __filter(self):
         """filters description list
@@ -252,3 +434,19 @@ class NXSFileParser(object):
         """
         self.__parsenode(self.__root)
         self.__filter()
+
+    def parseMeta(self):
+        """parses the file and creates the filtered description list
+
+        """
+        for entry in self.__root:
+            try:
+                at = entry.attributes["NX_class"]
+            except Exception:
+                pass
+            if at and (len(self.entryclasses) == 0 or
+                       filewriter.first(at.read()) in self.entryclasses):
+                self.__parsemetaentry(entry, self.description)
+                # self.metadata = json.dumps(
+                #     self.__dctmetadata, cls=numpyEncoder)
+                # self.__filter()

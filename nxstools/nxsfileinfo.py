@@ -21,9 +21,10 @@
 
 import sys
 import argparse
+import json
 
 from .nxsparser import TableTools
-from .nxsfileparser import NXSFileParser
+from .nxsfileparser import (NXSFileParser, numpyEncoder)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 
@@ -286,6 +287,155 @@ class General(Runner):
             print("")
 
 
+class Metadata(Runner):
+
+    """ Metadata runner"""
+
+    #: (:obj:`str`) command description
+    description = "show metadata information for the nexus file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs -s\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.nxs " \
+        + "-a units,NX_class\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-a", "--attributes",
+            help="names of field or group attributes to be show "
+            " (separated by commas without spaces). "
+            "The  default: 'units,source_name,source_type,source,strategy,"
+            "type,depends_on,transformation_type,vector,offset,"
+            "NX_class,short_name'",
+            dest="attrs", default="")
+        self._parser.add_argument(
+            "-v", "--values",
+            help="field names of more dimensional datasets"
+            " which value should be shown"
+            " (separated by commas without spaces)",
+            dest="values", default="")
+        self._parser.add_argument(
+            "-p", "--group-postfix",
+            help="postfix to be added to NeXus group name. "
+            "The  default: 'Parameters'",
+            dest="group_postfix", default="Parameters")
+        self._parser.add_argument(
+            "-e", "--entry-classes",
+            help="names of entry NX_class to be shown"
+            " (separated by commas without spaces)."
+            "If name is '' all groups are shown. "
+            "The  default: 'NXentry'",
+            dest="entryclasses", default="NXentry")
+        self._parser.add_argument(
+            "-s", "--scientific", action="store_true",
+            default=False, dest="scientific",
+            help="store NXentry as scientificMetadata")
+        self._parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            'args', metavar='nexus_file', type=str, nargs=1,
+            help='new nexus file name')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        else:
+            writer = "h5py"
+        if (options.h5cpp and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+        wrmodule = WRITERS[writer.lower()]
+        try:
+            fl = filewriter.open_file(
+                options.args[0], readonly=True,
+                writer=wrmodule)
+        except Exception:
+            sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                             % options.args[0])
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+        root = fl.root()
+        self.show(root, options)
+        fl.close()
+
+    def show(self, root, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :param root: nexus file root
+        :type root: class:`filewriter.FTGroup`
+        """
+        values = []
+        attrs = None
+        entryclasses = []
+
+        if options.values:
+            values = options.values.split(',')
+        if options.attrs:
+            attrs = options.attrs.split(',')
+        if options.entryclasses:
+            entryclasses = options.entryclasses.split(',')
+
+        nxsparser = NXSFileParser(root)
+        nxsparser.valuestostore = values
+        nxsparser.group_postfix = options.group_postfix
+        nxsparser.entryclasses = entryclasses
+        nxsparser.scientific = options.scientific
+        if attrs is not None:
+            nxsparser.attrs = attrs
+        nxsparser.parseMeta()
+
+        try:
+            if nxsparser.description:
+                if len(nxsparser.description) == 1:
+                    print(json.dumps(
+                        nxsparser.description[0], sort_keys=True, indent=4,
+                        cls=numpyEncoder))
+                else:
+                    print(json.dumps(
+                        nxsparser.description, sort_keys=True, indent=4,
+                        cls=numpyEncoder))
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
 class Field(Runner):
 
     """ Field runner"""
@@ -448,7 +598,9 @@ def main():
         description=description, epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.cmdrunners = [('field', Field),
-                         ('general', General)]
+                         ('general', General),
+                         ('metadata', Metadata),
+                         ]
     runners = parser.createSubParsers()
 
     try:
