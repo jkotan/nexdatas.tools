@@ -310,7 +310,8 @@ class Metadata(Runner):
             help="names of field or group attributes to be show "
             " (separated by commas without spaces). "
             "The  default: 'units,source_name,source_type,source,strategy,"
-            "nexus_type,depends_on,trans_type,trans_vector,trans_offset,NX_class'",
+            "nexus_type,depends_on,trans_type,trans_vector,trans_offset,"
+            "NX_class'",
             dest="attrs", default="")
         self._parser.add_argument(
             "-v", "--values",
@@ -404,7 +405,7 @@ class Metadata(Runner):
         nxsparser = NXSFileParser(root)
         nxsparser.valuestostore = values
         nxsparser.group_postfix = options.group_postfix
-        nxsparser.entryclasses = options.entryclasses
+        nxsparser.entryclasses = entryclasses
         if attrs is not None:
             nxsparser.attrs = attrs
         nxsparser.parseMeta()

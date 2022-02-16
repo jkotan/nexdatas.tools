@@ -396,7 +396,7 @@ class NXSFileParser(object):
                 at = entry.attributes["NX_class"]
             except Exception:
                 pass
-            if at and (len(self.entryclasses) == 0  or
+            if at and (len(self.entryclasses) == 0 or
                        filewriter.first(at.read()) in self.entryclasses):
                 self.__parsemeta(entry, self.__dctmetadata)
                 self.metadata = json.dumps(
