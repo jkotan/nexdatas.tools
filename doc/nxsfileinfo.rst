@@ -65,6 +65,8 @@ Options:
    -g, --geometry        show fields with geometry full_path filters, i.e. *:NXtransformations/*,*/depends_on. It works only when -f is not defined
    -s, --source          show datasource parameters
    --h5py                use h5py module as a nexus reader
+   --h5cpp               use h5cpp module as a nexus reader
+
 
 Example
 """""""
@@ -72,3 +74,42 @@ Example
 .. code:: bash
 
 	  nxsfileinfo field /tmp/saxs_ref1_02.nxs
+          nxsfileinfo field /user/data/myfile.nxs -g
+          nxsfileinfo field /user/data/myfile.nxs -s
+
+nxsfileinfo metadata
+--------------------
+
+It shows metadata of the nexus file.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo metadata <file_name>
+
+Options:
+   -h, --help            show this help message and exit
+   -a ATTRS, --attributes ATTRS
+                        names of field or group attributes to be show (separated by commas without spaces). The default:
+                        'units,source_name,source_type,source,strategy,type,depends_on,transformation_type,vector,offset,NX_class,short_name'
+   -v VALUES, --values VALUES
+                        field names of more dimensional datasets which value should be shown (separated by commas without spaces)
+   -p GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
+                        postfix to be added to NeXus group name. The default: 'Parameters'
+   -e ENTRYCLASSES, --entry-classes ENTRYCLASSES
+                        names of entry NX_class to be shown (separated by commas without spaces).If name is '' all groups are shown. The default: 'NXentry'
+   -s, --scientific      store NXentry as scientificMetadata
+   --h5py                use h5py module as a nexus reader
+   --h5cpp               use h5cpp module as a nexus reader
+
+Example
+"""""""
+
+.. code:: bash
+
+          nxsfileinfo metadata /user/data/myfile.nxs
+          nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'
+          nxsfileinfo metadata /user/data/myfile.nxs -s
+          nxsfileinfo metadata /user/data/myfile.nxs -a units,NX_class
