@@ -438,18 +438,19 @@ class NXSFileParser(object):
             if (node.name in self.valuestostore and node.is_valid) \
                or "shape" not in desc \
                or desc["shape"] in [None, [1], []]:
-                vl = node.read()
-                cont = True
-                while cont:
-                    try:
-                        if not isinstance(vl, str) and \
-                           (hasattr(vl, "__len__") and len(vl) == 1):
-                            vl = vl[0]
-                        else:
+                if hasattr(node, "read"):
+                    vl = node.read()
+                    cont = True
+                    while cont:
+                        try:
+                            if not isinstance(vl, str) and \
+                               (hasattr(vl, "__len__") and len(vl) == 1):
+                                vl = vl[0]
+                            else:
+                                cont = False
+                        except Exception:
                             cont = False
-                    except Exception:
-                        cont = False
-                nd["value"] = vl
+                    nd["value"] = vl
             if "shape" in desc and desc["shape"] not in [None, [1], []]:
                 if "shape" in nd.keys():
                     shp = nd["shape"]
