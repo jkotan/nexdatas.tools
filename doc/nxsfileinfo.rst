@@ -92,8 +92,9 @@ Synopsis
 Options:
    -h, --help            show this help message and exit
    -a ATTRS, --attributes ATTRS
-                        names of field or group attributes to be show (separated by commas without spaces). The default:
-                        'units,source_name,source_type,source,strategy,type,depends_on,transformation_type,vector,offset,NX_class,short_name'
+                        names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
+   -n NATTRS, --hidden-attributes NATTRS
+                        names of field or group attributes to be hidden (separated by commas without spaces). The default: 'nexdatas_source,nexdatas_strategy'
    -v VALUES, --values VALUES
                         field names of more dimensional datasets which value should be shown (separated by commas without spaces)
    -p GROUP_POSTFIX, --group-postfix GROUP_POSTFIX

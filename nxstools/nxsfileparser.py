@@ -150,27 +150,20 @@ class NXSFileParser(object):
 
         #: (:obj:`list` <:obj:`str` >) \
         #    nexus field attribute show names
-        self.attrs = [
-            "units",
-            "type",
-            "depends_on",
-            "transformation_type",
-            "vector",
-            "offset",
-            "NX_class",
-            "name",
-            "short_name",
-            # from nexdatas
-            "source_name",
-            "source_type",
-            "source",
-            "strategy",
+        self.attrs = None
+        #: (:obj:`list` <:obj:`str` >) \
+        #    nexus field attribute hidden names
+        self.hiddenattrs = [
+            "nexdatas_source",
+            "nexdatas_strategy"
         ]
         #: (:obj:`list` <:obj:`str` >) \
         #    nexus field attribute show names
         self.entryclasses = [
             "NXentry"
         ]
+        #: (:obj:`dict` <:obj:`str`, [:obj:`str, `any`] > >) \
+        #  attribute description
         self.attrdesc = {
             "nexus_type": ["type", str],
             "units": ["units", str],
@@ -178,6 +171,14 @@ class NXSFileParser(object):
             "trans_type": ["transformation_type", str],
             "trans_vector": ["vector", str],
             "trans_offset": ["offset", str],
+            "source_name": ["nexdatas_source", getdsname],
+            "source_type": ["nexdatas_source", getdstype],
+            "source": ["nexdatas_source", getdssource],
+            "strategy": ["nexdatas_strategy", str],
+        }
+        #: (:obj:`dict` <:obj:`str`, [:obj:`str, `any`] > >) \
+        #  metadata attribute description
+        self.mattrdesc = {
             "source_name": ["nexdatas_source", getdsname],
             "source_type": ["nexdatas_source", getdstype],
             "source": ["nexdatas_source", getdssource],
@@ -300,6 +301,12 @@ class NXSFileParser(object):
             try:
                 if name in dct.keys():
                     gr = dct[name]
+                    if not isinstance(gr, dict):
+                        nm = name + "_"
+                        while nm in dct.keys():
+                            nm = nm + "_"
+                        dct[nm] = gr
+                        gr = dct[name] = {}
                 else:
                     gr = dct[name] = {}
                 ch = node.open(nm[0])
@@ -333,6 +340,12 @@ class NXSFileParser(object):
                 name = node.name + self.group_postfix
                 if name in dct.keys():
                     gr = dct[name]
+                    if not isinstance(gr, dict):
+                        nm = name + "_"
+                        while nm in dct.keys():
+                            nm = nm + "_"
+                        dct[nm] = gr
+                        gr = dct[name] = {}
                 else:
                     gr = dct[name] = {}
                 ch = node.open(nm[0])
@@ -370,10 +383,29 @@ class NXSFileParser(object):
                 nd = dct[smname] = {"name": node.name}
             else:
                 smname = node.name + self.group_postfix
-                nd = dct[smname] = {}
+
+                if smname in dct.keys():
+                    nd = dct[smname]
+                    if not isinstance(nd, dict):
+                        nm = smname + "_"
+                        while nm in dct.keys():
+                            nm = nm + "_"
+                        dct[nm] = nd
+                        nd = dct[smname] = {}
+                else:
+                    nd = dct[smname] = {}
         else:
             smname = node.name
-            nd = dct[smname] = {}
+            if smname in dct.keys():
+                nd = dct[smname]
+                if not isinstance(nd, dict):
+                    nm = smname + "_"
+                    while nm in dct.keys():
+                        nm = nm + "_"
+                    dct[nm] = nd
+                    nd = dct[smname] = {}
+            else:
+                nd = dct[smname] = {}
         if hasattr(node, "dtype"):
             desc["dtype"] = str(node.dtype)
         if hasattr(node, "shape"):
@@ -381,33 +413,51 @@ class NXSFileParser(object):
         if hasattr(node, "attributes"):
             attrs = node.attributes
             anames = [at.name for at in attrs]
-            for key, vl in self.attrdesc.items():
-                if vl[0] in anames and key in self.attrs:
+            for key, vl in self.mattrdesc.items():
+                if vl[0] in anames and \
+                   (self.attrs is None or key in self.attrs) and \
+                   (self.hiddenattrs is None or key not in self.hiddenattrs):
                     nd[key] = vl[1](filewriter.first(attrs[vl[0]].read()))
 
-            for at in self.attrs:
-                if at in anames:
-                    if at in self.attrs and \
-                       at not in self.attrdesc.keys():
+            if self.attrs is not None:
+                for at in self.attrs:
+                    if at in anames:
+                        if at in self.attrs and \
+                           at not in self.mattrdesc.keys() and \
+                           (self.hiddenattrs is None or
+                                at not in self.hiddenattrs):
+                            nd[at] = filewriter.first(attrs[at].read())
+            else:
+                for at in anames:
+                    if at not in self.mattrdesc.keys() and \
+                       (self.hiddenattrs is None or
+                            at not in self.hiddenattrs):
                         nd[at] = filewriter.first(attrs[at].read())
 
         if not isinstance(node, filewriter.FTGroup):
             if (node.name in self.valuestostore and node.is_valid) \
                or "shape" not in desc \
                or desc["shape"] in [None, [1], []]:
-                vl = node.read()
-                cont = True
-                while cont:
-                    try:
-                        if not isinstance(vl, str) and \
-                           (hasattr(vl, "__len__") and len(vl) == 1):
-                            vl = vl[0]
-                        else:
+                if hasattr(node, "read"):
+                    vl = node.read()
+                    cont = True
+                    while cont:
+                        try:
+                            if not isinstance(vl, str) and \
+                               (hasattr(vl, "__len__") and len(vl) == 1):
+                                vl = vl[0]
+                            else:
+                                cont = False
+                        except Exception:
                             cont = False
-                    except Exception:
-                        cont = False
-                nd["value"] = vl
+                    nd["value"] = vl
             if "shape" in desc and desc["shape"] not in [None, [1], []]:
+                if "shape" in nd.keys():
+                    shp = nd["shape"]
+                    nm = "shape" + "_"
+                    while nm in nd.keys():
+                        nm = nm + "_"
+                    nd[nm] = shp
                 nd["shape"] = desc["shape"]
         return smname
 
@@ -443,10 +493,7 @@ class NXSFileParser(object):
             try:
                 at = entry.attributes["NX_class"]
             except Exception:
-                pass
-            if at and (len(self.entryclasses) == 0 or
-                       filewriter.first(at.read()) in self.entryclasses):
+                at = None
+            if len(self.entryclasses) == 0 or \
+               at and (filewriter.first(at.read()) in self.entryclasses):
                 self.__parsemetaentry(entry, self.description)
-                # self.metadata = json.dumps(
-                #     self.__dctmetadata, cls=numpyEncoder)
-                # self.__filter()
