@@ -311,10 +311,14 @@ class Metadata(Runner):
             "-a", "--attributes",
             help="names of field or group attributes to be show "
             " (separated by commas without spaces). "
-            "The  default: 'units,source_name,source_type,source,strategy,"
-            "type,depends_on,transformation_type,vector,offset,"
-            "NX_class,short_name'",
-            dest="attrs", default="")
+            "The  default takes all attributes",
+            dest="attrs", default=None)
+        self._parser.add_argument(
+            "-n", "--hidden-attributes",
+            help="names of field or group attributes to be hidden "
+            " (separated by commas without spaces). "
+            "The  default: 'nexdatas_source,nexdatas_strategy'",
+            dest="nattrs", default="nexdatas_source,nexdatas_strategy")
         self._parser.add_argument(
             "-v", "--values",
             help="field names of more dimensional datasets"
@@ -404,8 +408,17 @@ class Metadata(Runner):
 
         if options.values:
             values = options.values.split(',')
+
         if options.attrs:
             attrs = options.attrs.split(',')
+        elif options.attrs is not None:
+            attrs = []
+
+        if options.nattrs:
+            nattrs = options.nattrs.split(',')
+        else:
+            nattrs = []
+
         if options.entryclasses:
             entryclasses = options.entryclasses.split(',')
 
@@ -414,8 +427,8 @@ class Metadata(Runner):
         nxsparser.group_postfix = options.group_postfix
         nxsparser.entryclasses = entryclasses
         nxsparser.scientific = options.scientific
-        if attrs is not None:
-            nxsparser.attrs = attrs
+        nxsparser.attrs = attrs
+        nxsparser.hiddenattrs = nattrs
         nxsparser.parseMeta()
 
         try:

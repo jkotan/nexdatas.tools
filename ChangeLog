@@ -1,3 +1,9 @@
+2022-02-25 Jan Kotanski <jankotan@gmail.com>
+	* print all attributes by nxsfileinfo metadata as default
+	* add --hidden-attributes option for nxsfileinfo metadata
+	* fixes for nxsfileinfo metadata subcommand
+	* tagged as v3.13.0
+
 2022-02-16 Jan Kotanski <jankotan@gmail.com>
 	* add nxsfileinfo metadata subcommand
 	* tagged as v3.12.0

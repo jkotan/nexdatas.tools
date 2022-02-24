@@ -2462,6 +2462,7 @@ For more help:
                     self.assertEqual('', er)
                     # print(vl)
                     dct = json.loads(vl)
+                    # print(dct)
                     res = {'scientificMetadata':
                            {'NX_class': 'NXentry',
                             'name': 'entry12345',
@@ -2478,6 +2479,141 @@ For more help:
                                     'value': '%s' % arg[3]}},
                             'sampleParameters': {
                                 'NX_class': 'NXsample',
+                                'chemical_formula': {'value': '%s' % arg[8]},
+                                'name': {'value': '%s' % arg[7]}},
+                            'start_time': {
+                                'value': '%s' % arg[5]},
+                            'title': {'value': '%s' % arg[1]}}}
+                    self.myAssertDict(dct, res)
+            finally:
+                os.remove(filename)
+
+    def test_metadata_hidden_attributes(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "int",
+                ""
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+
+            commands = [
+                ('nxsfileinfo metadata %s %s --scientific '
+                 '-n nexdatas_strategy,nexdatas_source,NX_class'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s --scientific '
+                 '--hidden-attributes'
+                 ' nexdatas_strategy,nexdatas_source,NX_class'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s -s '
+                 '-n nexdatas_strategy,nexdatas_source,NX_class'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s -s --hidden-attributes '
+                 'nexdatas_strategy,nexdatas_source,NX_class'
+                 % (filename, self.flags)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                col = rt.create_group("logs", "NXcollection")
+                col.create_field("log1", "string").write(title)
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for cmd in commands:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    # print(vl)
+                    dct = json.loads(vl)
+                    # print(dct)
+                    res = {'scientificMetadata':
+                           {
+                            'name': 'entry12345',
+                            'dataParameters': {},
+                            'end_time': {'value': '%s' % arg[6]},
+                            'experiment_identifier': {'value': '%s' % arg[2]},
+                            'instrumentParameters': {
+                                'detectorParameters': {
+                                    'intimage': {
+                                        'shape': [0, 30]}},
+                                'name': {
+                                    'short_name': '%s' % arg[4],
+                                    'value': '%s' % arg[3]}},
+                            'sampleParameters': {
                                 'chemical_formula': {'value': '%s' % arg[8]},
                                 'name': {'value': '%s' % arg[7]}},
                             'start_time': {
@@ -2602,6 +2738,100 @@ For more help:
                             }
                            }
 
+                    self.myAssertDict(dct, res)
+            finally:
+                os.remove(filename)
+
+    def test_metadata_duplications(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "int",
+                ""
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+
+            commands = [
+                ('nxsfileinfo metadata %s %s --scientific'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s -s '
+                 % (filename, self.flags)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                entry.create_group("instrument", "NXinstrument")
+                sattr = entry.attributes.create(
+                    "instrumentParameters", "string")
+                sattr.write("duplicated")
+
+                entry.create_field("title", "string").write(title)
+                sattr = entry.attributes.create("title", "string")
+                sattr.write("duplicated")
+
+                nxsfile.close()
+
+                for cmd in commands:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    # print(vl)
+                    dct = json.loads(vl)
+                    res = {'scientificMetadata':
+                           {'NX_class': 'NXentry',
+                            'name': 'entry12345',
+                            'instrumentParameters_': 'duplicated',
+                            'instrumentParameters': {
+                                'NX_class': 'NXinstrument'},
+                            'title_': 'duplicated',
+                            'title': {'value': '%s' % arg[1]}}}
                     self.myAssertDict(dct, res)
             finally:
                 os.remove(filename)
