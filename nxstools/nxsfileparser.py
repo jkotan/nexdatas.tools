@@ -45,6 +45,11 @@ class numpyEncoder(json.JSONEncoder):
             return float(obj)
         elif isinstance(obj, np.ndarray):
             return obj.tolist()
+        elif isinstance(obj, bytes):
+            try:
+                return obj.decode("utf-8")
+            except Exception:
+                return obj.decode()
         return json.JSONEncoder.default(self, obj)
 
 
@@ -228,19 +233,21 @@ class NXSFileParser(object):
                 if vl[0] in anames:
                     desc[key] = vl[1](filewriter.first(attrs[vl[0]].read()))
         if node.name in self.valuestostore and node.is_valid:
-            vl = node.read()
-            cont = True
-            while cont:
-                try:
-                    if not isinstance(vl, str) and \
-                       (hasattr(vl, "__len__") and len(vl) == 1):
-                        vl = vl[0]
-                    else:
+            try:
+                vl = node.read()
+                cont = True
+                while cont:
+                    try:
+                        if not isinstance(vl, str) and \
+                           (hasattr(vl, "__len__") and len(vl) == 1):
+                            vl = vl[0]
+                        else:
+                            cont = False
+                    except Exception:
                         cont = False
-                except Exception:
-                    cont = False
-            desc["value"] = vl
-
+                desc["value"] = vl
+            except Exception:
+                pass
         self.description.append(desc)
         if tgpath:
             fname = self.__root.parent.name
@@ -439,18 +446,21 @@ class NXSFileParser(object):
                or "shape" not in desc \
                or desc["shape"] in [None, [1], []]:
                 if hasattr(node, "read"):
-                    vl = node.read()
-                    cont = True
-                    while cont:
-                        try:
-                            if not isinstance(vl, str) and \
-                               (hasattr(vl, "__len__") and len(vl) == 1):
-                                vl = vl[0]
-                            else:
+                    try:
+                        vl = node.read()
+                        cont = True
+                        while cont:
+                            try:
+                                if not isinstance(vl, str) and \
+                                   (hasattr(vl, "__len__") and len(vl) == 1):
+                                    vl = vl[0]
+                                else:
+                                    cont = False
+                            except Exception:
                                 cont = False
-                        except Exception:
-                            cont = False
-                    nd["value"] = vl
+                        nd["value"] = vl
+                    except Exception:
+                        pass
             if "shape" in desc and desc["shape"] not in [None, [1], []]:
                 if "shape" in nd.keys():
                     shp = nd["shape"]
