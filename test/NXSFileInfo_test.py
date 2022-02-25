@@ -2803,6 +2803,8 @@ For more help:
                 entry.create_field("title", "string").write(title)
                 sattr = entry.attributes.create("title", "string")
                 sattr.write("duplicated")
+                filewriter.link("/entry12345/instrument/detector/intimage",
+                                entry, "missingfield")
 
                 nxsfile.close()
 
@@ -2822,7 +2824,6 @@ For more help:
                     er = mystderr.getvalue()
 
                     self.assertEqual('', er)
-                    # print(vl)
                     dct = json.loads(vl)
                     res = {'scientificMetadata':
                            {'NX_class': 'NXentry',
@@ -2830,6 +2831,7 @@ For more help:
                             'instrumentParameters_': 'duplicated',
                             'instrumentParameters': {
                                 'NX_class': 'NXinstrument'},
+                            'missingfield': {},
                             'title_': 'duplicated',
                             'title': {'value': '%s' % arg[1]}}}
                     self.myAssertDict(dct, res)
