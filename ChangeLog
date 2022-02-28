@@ -1,3 +1,11 @@
+2022-02-28 Jan Kotanski <jankotan@gmail.com>
+	* add --beamtime-meta option for nxsfileinfo metadata
+	* add --scientific-meta option for nxsfileinfo metadata
+	* add --pid option for nxsfileinfo metadata
+	* add --output option for nxsfileinfo metadata
+	* replace --scientific by reverse of --raw-metadata for nxsfileinfo metadata
+	* tagged as v3.14.0
+
 2022-02-25 Jan Kotanski <jankotan@gmail.com>
 	* fix nxsfileinfo metadata crash with h5py
 	* tagged as v3.13.1

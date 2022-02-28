@@ -2120,7 +2120,9 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s'
+                ('nxsfileinfo metadata -r %s %s'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata --raw-metadata %s %s'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2206,10 +2208,17 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -p Group -v intimage' % (
+            ('nxsfileinfo metadata %s %s -r -g Group -v intimage' % (
                 filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s --group-postfix Group -v intimage' % (
-                filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s -r --group-postfix Group '
+             '-v intimage' % (
+                 filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s --raw-metadata -g Group '
+             '-v intimage' % (
+                 filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s  --raw-metadata '
+             '--group-postfix Group -v intimage' % (
+                 filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -2401,14 +2410,14 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --scientific -a units,NX_class'
+                ('nxsfileinfo metadata %s %s -a units,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s --scientific '
+                ('nxsfileinfo metadata %s %s  '
                  '--attributes units,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s -a units,NX_class'
+                ('nxsfileinfo metadata %s %s -a units,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s --attributes units,NX_class'
+                ('nxsfileinfo metadata %s %s --attributes units,NX_class'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2534,18 +2543,12 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --scientific '
+                ('nxsfileinfo metadata %s %s '
                  '-n nexdatas_strategy,nexdatas_source,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s --scientific '
+                ('nxsfileinfo metadata %s %s '
                  '--hidden-attributes'
                  ' nexdatas_strategy,nexdatas_source,NX_class'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s '
-                 '-n nexdatas_strategy,nexdatas_source,NX_class'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s --hidden-attributes '
-                 'nexdatas_strategy,nexdatas_source,NX_class'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2669,14 +2672,10 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --scientific -e NXcollection'
+                ('nxsfileinfo metadata %s %s -e NXcollection'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s --scientific '
+                ('nxsfileinfo metadata %s %s '
                  ' --entry-classes NXcollection'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s  -e NXcollection'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s  --entry-classes NXcollection'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2781,9 +2780,7 @@ For more help:
             title = arg[1]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --scientific'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -s '
+                ('nxsfileinfo metadata %s %s '
                  % (filename, self.flags)).split(),
             ]
 

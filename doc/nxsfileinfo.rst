@@ -97,13 +97,21 @@ Options:
                         names of field or group attributes to be hidden (separated by commas without spaces). The default: 'nexdatas_source,nexdatas_strategy'
    -v VALUES, --values VALUES
                         field names of more dimensional datasets which value should be shown (separated by commas without spaces)
-   -p GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
+   -g GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
                         postfix to be added to NeXus group name. The default: 'Parameters'
    -e ENTRYCLASSES, --entry-classes ENTRYCLASSES
                         names of entry NX_class to be shown (separated by commas without spaces).If name is '' all groups are shown. The default: 'NXentry'
-   -s, --scientific      store NXentry as scientificMetadata
-   --h5py                use h5py module as a nexus reader
-   --h5cpp               use h5cpp module as a nexus reader
+   -r, --raw-metadata    do not store NXentry as scientificMetadata
+   -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
+                        beamtime metadata file
+   -s SCIENTIFICMETA, --scientific-meta SCIENTIFICMETA
+                        scientific metadata file
+   -p PID, --pid PID
+                        dataset pid
+   -o OUTPUT, --output OUTPUT
+                        output scicat metadata file
+   --h5py               use h5py module as a nexus reader
+   --h5cpp              use h5cpp module as a nexus reader
 
 Example
 """""""
