@@ -287,6 +287,170 @@ class General(Runner):
             print("")
 
 
+class BeamtimeLoader(object):
+
+    btmdmap = {
+        "principalInvestigator": "pi.email",
+        # "pid": "beamtimeId",   # ?? is not unique for dataset
+        "owner": "applicant.lastname",
+        "contactEmail": "contact",
+        "sourceFolder": "corePath",
+
+        "endTime": "eventEnd",    # ?? or dataset
+        "ownerEmail": "applicant.email",
+        "description": "title",
+        "createdAt": "generated",
+        "updatedAt": "generated",
+        "proposalId": "proposalId",
+    }
+
+    strcre = {
+        "creationLocation": "/DESY/{facility}/{beamline}",
+        "type": "raw",
+    }
+
+    cre = {
+        "creationTime": [],  # ?? endTime for dataset !!!
+        "ownerGroup": [],  # ??? !!!
+
+        "sampleId": [],  # ???
+        "publisheddateId": [],
+        "accessGroups": [],  # ???
+        "createdBy": [],  # ???
+        "updatedBy": [],  # ???
+        "createdAt": [],  # ???
+        "updatedAt": [],  # ???
+        "isPublished": ["false"],
+        "dataFormat": [],
+        "scientificMetadata": {},
+        "orcidOfOwner": "ORCID of owner https://orcid.org "
+        "if available",
+        "sourceFolderHost": [],
+        "size": [],
+        "packedSize": [],
+        "numberOfFiles": [],
+        "numberOfFilesArchived": [],
+        "validationStatus": [],
+        "keywords": [],
+        "datasetName": [],
+        "classification": [],
+        "license": [],
+        "version": [],
+        "techniques": [],
+        "instrumentId": [],
+        "history": [],
+        "datasetlifecycle": [],
+
+    }
+
+    dr = {
+        "eventStart": [],
+        "beamlineAlias": [],
+        "leader": [],
+        "onlineAnalysis": [],
+        "pi.*": [],
+        "applicant.*": [],
+        "proposalType": [],
+        "users": [],
+    }
+
+    def __init__(self, options):
+        """ loader constructor
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        self.__pid = options.pid
+        dct = {}
+        if options.beamtimemeta:
+            with open(options.beamtimemeta, "r") as fl:
+                # jstr = fl.read()
+                # # print(jstr)
+                dct = json.load(fl)
+        self.__btmeta = dct
+        dct = {}
+        if options.scientificmeta:
+            with open(options.scientificmeta, "r") as fl:
+                jstr = fl.read()
+                # print(jstr)
+                try:
+                    dct = json.loads(jstr)
+                except Exception:
+                    if jstr:
+                        nan = float('nan')    # noqa: F841
+                        dct = eval(jstr)
+                        # mdflatten(dstr, [], dct)
+        if 'scientificMetadata' in dct.keys():
+            self.__scmeta = dct['scientificMetadata']
+        else:
+            self.__scmeta = dct
+        self.__metadata = {}
+
+    def run(self):
+        """ runner for DESY beamtime file parser
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+
+        if self.__btmeta:
+            for sc, ds in self.btmdmap.items():
+                sds = ds.split(".")
+                md = self.__btmeta
+                for sd in sds:
+                    if sd in md:
+                        md = md[sd]
+                    else:
+                        print("%s cannot be found" % ds)
+                        break
+                else:
+                    self.__metadata[sc] = md
+            for sc, vl in self.strcre.items():
+                self.__metadata[sc] = vl.format(**self.__btmeta)
+        if self.__scmeta or self.__btmeta:
+            self.__metadata["scientificMetadata"] = {}
+        if self.__scmeta:
+            self.__metadata["scientificMetadata"].update(self.__scmeta)
+        if self.__btmeta:
+            self.__metadata["scientificMetadata"]["beamtimeId"] = \
+                self.__btmeta["beamtimeId"]
+        if self.__pid:
+            self.__metadata["pid"] = self.__pid
+        # elif "pid" not in self.__metadata.keys():
+        #     self.__metadata["pid"] = str(uuid.uuid4())
+        # print(self.__metadata)
+        return self.__metadata
+
+    def merge(self, metadata):
+        """ update metadata with dictionary
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if not self.__metadata:
+            return metadata
+        elif not metadata:
+            return metadata
+        return dict(self._mergedict(metadata, self.__metadata))
+
+    @classmethod
+    def _mergedict(self, dct1, dct2):
+        for key in set(dct1) | set(dct2):
+            if key in dct1 and key in dct2:
+                if isinstance(dct1[key], dict) and isinstance(dct2[key], dict):
+                    yield (key, dict(self._mergedict(dct1[key], dct2[key])))
+                else:
+                    yield (key, dct2[key])
+            elif key in dct1:
+                yield (key, dct1[key])
+            else:
+                yield (key, dct2[key])
+
+
 class Metadata(Runner):
 
     """ Metadata runner"""
@@ -326,7 +490,7 @@ class Metadata(Runner):
             " (separated by commas without spaces)",
             dest="values", default="")
         self._parser.add_argument(
-            "-p", "--group-postfix",
+            "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
             "The  default: 'Parameters'",
             dest="group_postfix", default="Parameters")
@@ -338,9 +502,21 @@ class Metadata(Runner):
             "The  default: 'NXentry'",
             dest="entryclasses", default="NXentry")
         self._parser.add_argument(
-            "-s", "--scientific", action="store_true",
-            default=False, dest="scientific",
-            help="store NXentry as scientificMetadata")
+            "-r", "--raw-metadata", action="store_true",
+            default=False, dest="rawscientific",
+            help="do not store NXentry as scientificMetadata")
+        self._parser.add_argument(
+            "-b", "--beamtime-meta", dest="beamtimemeta",
+            help=("beamtime metadata file"))
+        self._parser.add_argument(
+            "-s", "--scientific-meta", dest="scientificmeta",
+            help=("scientific metadata file"))
+        self._parser.add_argument(
+            "-p", "--pid", dest="pid",
+            help=("dataset pid"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -426,20 +602,35 @@ class Metadata(Runner):
         nxsparser.valuestostore = values
         nxsparser.group_postfix = options.group_postfix
         nxsparser.entryclasses = entryclasses
-        nxsparser.scientific = options.scientific
+        nxsparser.scientific = not options.rawscientific
         nxsparser.attrs = attrs
         nxsparser.hiddenattrs = nattrs
         nxsparser.parseMeta()
 
+        # print(json.dumps(self.__metadata, sort_keys=True, indent=4))
+        # self.__output = options.output
+        # if self.__output:
+
         try:
             if nxsparser.description:
                 if len(nxsparser.description) == 1:
-                    print(json.dumps(
-                        nxsparser.description[0], sort_keys=True, indent=4,
-                        cls=numpyEncoder))
+                    bl = BeamtimeLoader(options)
+                    bl.run()
+                    result = bl.merge(nxsparser.description[0])
+                else:
+                    result = []
+                    for desc in nxsparser.descirption:
+                        bl = BeamtimeLoader(options)
+                        bl.run()
+                        result.append(bl.merge(desc))
+
+                if options.output:
+                    with open(options.output, "w") as fl:
+                        json.dump(result, fl, sort_keys=True, indent=4,
+                                  cls=numpyEncoder)
                 else:
                     print(json.dumps(
-                        nxsparser.description, sort_keys=True, indent=4,
+                        result, sort_keys=True, indent=4,
                         cls=numpyEncoder))
         except Exception as e:
             sys.stderr.write("nxsfileinfo: '%s'\n"
