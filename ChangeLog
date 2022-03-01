@@ -1,3 +1,7 @@
+2022-03-01 Jan Kotanski <jankotan@gmail.com>
+	* fix auto complition for options of nxsfileinfo metadata
+	* tagged as v3.14.1
+
 2022-02-28 Jan Kotanski <jankotan@gmail.com>
 	* add --beamtime-meta option for nxsfileinfo metadata
 	* add --scientific-meta option for nxsfileinfo metadata
