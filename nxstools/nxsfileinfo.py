@@ -506,17 +506,8 @@ class Metadata(Runner):
             default=False, dest="rawscientific",
             help="do not store NXentry as scientificMetadata")
         self._parser.add_argument(
-            "-b", "--beamtime-meta", dest="beamtimemeta",
-            help=("beamtime metadata file"))
-        self._parser.add_argument(
-            "-s", "--scientific-meta", dest="scientificmeta",
-            help=("scientific metadata file"))
-        self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
-        self._parser.add_argument(
-            "-o", "--output", dest="output",
-            help=("output scicat metadata file"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -528,6 +519,15 @@ class Metadata(Runner):
 
     def postauto(self):
         """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            "-b", "--beamtime-meta", dest="beamtimemeta",
+            help=("beamtime metadata file"))
+        self._parser.add_argument(
+            "-s", "--scientific-meta", dest="scientificmeta",
+            help=("scientific metadata file"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
         self._parser.add_argument(
             'args', metavar='nexus_file', type=str, nargs=1,
             help='new nexus file name')
