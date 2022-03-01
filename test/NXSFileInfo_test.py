@@ -2900,6 +2900,7 @@ For more help:
         }
         '''
         btfname = '%s/beamtime-metadata-12345678.json' % (os.getcwd())
+        ofname = '%s/metadata-12345678.json' % (os.getcwd())
 
         smfile = '''{
           "user_comments": "Awesome comment",
@@ -2949,18 +2950,20 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s -p 13243546 -s %s'
-                 % (filename, self.flags, btfname, smfname)).split(),
+                ('nxsfileinfo metadata %s %s -b %s -p 13243546 -s %s -o %s'
+                 % (filename, self.flags, btfname, smfname, ofname)).split(),
                 ('nxsfileinfo metadata %s %s -p 13243546 '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
-                 % (filename, self.flags, btfname, smfname)).split(),
-                ('nxsfileinfo metadata %s %s -b %s --pid 13243546 -s %s'
-                 % (filename, self.flags, btfname, smfname)).split(),
+                 ' --output %s '
+                 % (filename, self.flags, btfname, smfname, ofname)).split(),
+                ('nxsfileinfo metadata %s %s -b %s --pid 13243546 -s %s -o %s'
+                 % (filename, self.flags, btfname, smfname, ofname)).split(),
                 ('nxsfileinfo metadata %s %s --pid 13243546 '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
-                 % (filename, self.flags, btfname, smfname)).split(),
+                 ' --output %s '
+                 % (filename, self.flags, btfname, smfname, ofname)).split(),
             ]
 
             wrmodule = WRITERS[self.writer]
@@ -3019,8 +3022,10 @@ For more help:
                     er = mystderr.getvalue()
 
                     self.assertEqual('', er)
-                    # print(vl)
-                    dct = json.loads(vl)
+                    self.assertEqual('', vl.strip())
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
                     # print(dct)
                     res = {
                         "contactEmail": "hilarious.hilarious@hilarious.com",
@@ -3093,6 +3098,8 @@ For more help:
                     os.remove(btfname)
                 if os.path.isfile(smfname):
                     os.remove(smfname)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
 
 
 if __name__ == '__main__':
