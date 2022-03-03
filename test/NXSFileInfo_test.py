@@ -2494,7 +2494,7 @@ For more help:
                                 'value': '%s' % arg[5]},
                             'title': {'value': '%s' % arg[1]}
                             },
-                           'creationTime': '%s' % arg[5],
+                           'creationTime': '%s' % arg[6],
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
                            }
@@ -2627,7 +2627,7 @@ For more help:
                             'start_time': {
                                 'value': '%s' % arg[5]},
                             'title': {'value': '%s' % arg[1]}},
-                           'creationTime': '%s' % arg[5],
+                           'creationTime': '%s' % arg[6],
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
                            }
@@ -3101,7 +3101,7 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "updatedAt": "2020-01-20T00:10:00Z",
-                        'creationTime': '%s' % arg[5],
+                        'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
                     }

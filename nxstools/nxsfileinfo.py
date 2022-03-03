@@ -356,7 +356,7 @@ class BeamtimeLoader(object):
 
     copymap = {
         "endTime": "scientificMetadata.end_time.value",
-        "creationTime": "scientificMetadata.start_time.value",
+        "creationTime": "scientificMetadata.end_time.value",
         "description": "scientificMetadata.title.value",
     }
 
