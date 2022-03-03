@@ -3100,6 +3100,7 @@ For more help:
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
+                        "isPublished": False,
                         "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',

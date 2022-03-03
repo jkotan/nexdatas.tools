@@ -307,6 +307,7 @@ class BeamtimeLoader(object):
     strcre = {
         "creationLocation": "/DESY/{facility}/{beamline}",
         "type": "raw",
+        "isPublished": False,
     }
 
     cre = {
@@ -414,7 +415,10 @@ class BeamtimeLoader(object):
                 else:
                     self.__metadata[sc] = md
             for sc, vl in self.strcre.items():
-                self.__metadata[sc] = vl.format(**self.__btmeta)
+                if hasattr(vl, "format"): 
+                    self.__metadata[sc] = vl.format(**self.__btmeta)
+                else:
+                    self.__metadata[sc] = vl
         if self.__scmeta or self.__btmeta:
             self.__metadata["scientificMetadata"] = {}
         if self.__scmeta:
