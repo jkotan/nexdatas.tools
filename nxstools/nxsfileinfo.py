@@ -296,11 +296,11 @@ class BeamtimeLoader(object):
         "contactEmail": "contact",
         "sourceFolder": "corePath",
 
-        "endTime": "eventEnd",    # ?? or dataset
+        "endTime": "eventEnd",    # ?? should be endTime for dataset
         "ownerEmail": "applicant.email",
-        "description": "title",
-        "createdAt": "generated",
-        "updatedAt": "generated",
+        "description": "title",   # ?? should be from dataset
+        "createdAt": "generated",  # ?? should be automatic
+        "updatedAt": "generated",  # ?? should be automatic
         "proposalId": "proposalId",
     }
 
@@ -310,11 +310,11 @@ class BeamtimeLoader(object):
     }
 
     cre = {
-        "creationTime": [],  # ?? endTime for dataset !!!
+        "creationTime": [],  # ?? startTime for dataset !!!
         "ownerGroup": [],  # ??? !!!
 
         "sampleId": [],  # ???
-        "publisheddateId": [],
+        "publisheddataId": [],
         "accessGroups": [],  # ???
         "createdBy": [],  # ???
         "updatedBy": [],  # ???
@@ -352,6 +352,12 @@ class BeamtimeLoader(object):
         "applicant.*": [],
         "proposalType": [],
         "users": [],
+    }
+
+    copymap = {
+        "endTime": "scientificMetadata.end_time.value",
+        "creationTime": "scientificMetadata.start_time.value",
+        "description": "scientificMetadata.title.value",
     }
 
     def __init__(self, options):
@@ -436,6 +442,40 @@ class BeamtimeLoader(object):
         elif not metadata:
             return metadata
         return dict(self._mergedict(metadata, self.__metadata))
+
+    def overwrite(self, metadata, cmap=None):
+        """ overwrite metadata with dictionary
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :param cmap: overwrite dictionary
+        :type cmap: :obj:`dict` <:obj:`str`, :obj:`str`>
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if cmap is None:
+            cmap = self.copymap
+        if metadata:
+            for ts, vs in self.copymap.items():
+                vls = vs.split(".")
+                md = metadata
+                for vl in vls:
+                    if vl in md:
+                        md = md[vl]
+                    else:
+                        break
+                else:
+                    tgs = ts.split(".")
+                    td = metadata
+                    parent = None
+                    for tg in tgs:
+                        parent = td
+                        if tg in td:
+                            td = td[tg]
+                        else:
+                            td = td[tg] = {}
+                    parent[tg] = md
+        return metadata
 
     @classmethod
     def _mergedict(self, dct1, dct2):
@@ -617,12 +657,15 @@ class Metadata(Runner):
                     bl = BeamtimeLoader(options)
                     bl.run()
                     result = bl.merge(nxsparser.description[0])
+                    result = bl.overwrite(result)
                 else:
                     result = []
                     for desc in nxsparser.descirption:
                         bl = BeamtimeLoader(options)
                         bl.run()
-                        result.append(bl.merge(desc))
+                        result = bl.merge(desc)
+                        result = bl.overwrite(result)
+                        result.append(result)
 
                 if options.output:
                     with open(options.output, "w") as fl:

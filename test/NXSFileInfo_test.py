@@ -2492,7 +2492,12 @@ For more help:
                                 'name': {'value': '%s' % arg[7]}},
                             'start_time': {
                                 'value': '%s' % arg[5]},
-                            'title': {'value': '%s' % arg[1]}}}
+                            'title': {'value': '%s' % arg[1]}
+                            },
+                           'creationTime': '%s' % arg[5],
+                           'endTime': '%s' % arg[6],
+                           'description': '%s' % arg[1],
+                           }
                     self.myAssertDict(dct, res)
             finally:
                 os.remove(filename)
@@ -2621,7 +2626,11 @@ For more help:
                                 'name': {'value': '%s' % arg[7]}},
                             'start_time': {
                                 'value': '%s' % arg[5]},
-                            'title': {'value': '%s' % arg[1]}}}
+                            'title': {'value': '%s' % arg[1]}},
+                           'creationTime': '%s' % arg[5],
+                           'endTime': '%s' % arg[6],
+                           'description': '%s' % arg[1],
+                           }
                     self.myAssertDict(dct, res)
             finally:
                 os.remove(filename)
@@ -2830,7 +2839,10 @@ For more help:
                                 'NX_class': 'NXinstrument'},
                             'missingfield': {},
                             'title_': 'duplicated',
-                            'title': {'value': '%s' % arg[1]}}}
+                            'title': {'value': '%s' % arg[1]},
+                            },
+                           'description': '%s' % arg[1],
+                           }
                     self.myAssertDict(dct, res)
             finally:
                 os.remove(filename)
@@ -3032,9 +3044,9 @@ For more help:
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "creationLocation": "/DESY/PETRA III/p01",
-                        "description":
-                        "beautiful-cornflower-wallaby-of-agreement",
-                        "endTime": "2020-01-21T12:37:00Z",
+                        # "description":
+                        # "beautiful-cornflower-wallaby-of-agreement",
+                        # "endTime": "2020-01-21T12:37:00Z",
                         "owner": "famous",
                         "ownerEmail": "cute.cute@cute.com",
                         "principalInvestigator": "robust.robust@robust.com",
@@ -3088,7 +3100,10 @@ For more help:
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
-                        "updatedAt": "2020-01-20T00:10:00Z"
+                        "updatedAt": "2020-01-20T00:10:00Z",
+                        'creationTime': '%s' % arg[5],
+                        'endTime': '2014-02-16T15:17:21+00:00',
+                        'description': '%s' % arg[1],
                     }
                     self.myAssertDict(dct, res)
             finally:

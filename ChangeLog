@@ -1,3 +1,7 @@
+2022-03-03 Jan Kotanski <jankotan@gmail.com>
+	* set endTime, description, startTime from nexus file
+	* tagged as v3.15.0
+
 2022-03-01 Jan Kotanski <jankotan@gmail.com>
 	* fix auto complition for options of nxsfileinfo metadata
 	* tagged as v3.14.1
