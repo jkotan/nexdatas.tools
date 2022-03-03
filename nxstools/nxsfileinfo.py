@@ -415,7 +415,7 @@ class BeamtimeLoader(object):
                 else:
                     self.__metadata[sc] = md
             for sc, vl in self.strcre.items():
-                if hasattr(vl, "format"): 
+                if hasattr(vl, "format"):
                     self.__metadata[sc] = vl.format(**self.__btmeta)
                 else:
                     self.__metadata[sc] = vl
