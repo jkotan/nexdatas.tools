@@ -2681,10 +2681,10 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -e NXcollection'
+                ('nxsfileinfo metadata %s %s --pid 12341234 -e NXcollection'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s '
-                 ' --entry-classes NXcollection'
+                 ' -p 12341234 --entry-classes NXcollection'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2737,14 +2737,16 @@ For more help:
 
                     self.assertEqual('', er)
                     dct = json.loads(vl)
-                    res = {'scientificMetadata':
-                           {"NX_class": "NXcollection",
-                            "log1": {
-                                "value": title
-                            },
-                            "name": "logs"
-                            }
-                           }
+                    res = {
+                        'pid': '12341234',
+                        'scientificMetadata':
+                        {"NX_class": "NXcollection",
+                         "log1": {
+                             "value": title
+                         },
+                         "name": "logs"
+                         }
+                    }
 
                     self.myAssertDict(dct, res)
             finally:
@@ -2962,16 +2964,17 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s -p 13243546 -s %s -o %s'
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u'
                  % (filename, self.flags, btfname, smfname, ofname)).split(),
-                ('nxsfileinfo metadata %s %s -p 13243546 '
+                ('nxsfileinfo metadata %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  % (filename, self.flags, btfname, smfname, ofname)).split(),
-                ('nxsfileinfo metadata %s %s -b %s --pid 13243546 -s %s -o %s'
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s'
+                 ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname, ofname)).split(),
-                ('nxsfileinfo metadata %s %s --pid 13243546 '
+                ('nxsfileinfo metadata %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -3018,7 +3021,7 @@ For more help:
 
                 nxsfile.close()
 
-                for cmd in commands:
+                for kk, cmd in enumerate(commands):
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
                     sys.stdout = mystdout = StringIO()
@@ -3106,7 +3109,12 @@ For more help:
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
                     }
-                    self.myAssertDict(dct, res)
+                    self.myAssertDict(dct, res, skip=["pid"])
+                    if kk % 2:
+                        self.assertEqual(dct["pid"], "16171271/12345")
+                    else:
+                        self.assertTrue(
+                            dct["pid"].startswith("16171271/12345"))
             finally:
                 if os.path.isfile(filename):
                     os.remove(filename)
