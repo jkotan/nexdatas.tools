@@ -100,7 +100,7 @@ Options:
    -g GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
                         postfix to be added to NeXus group name. The default: 'Parameters'
    -e ENTRYCLASSES, --entry-classes ENTRYCLASSES
-                        names of entry NX_class to be shown (separated by commas without spaces).If name is '' all groups are shown. The default: 'NXentry'
+                        names of entry NX_class to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: 'NXentry'
    -r, --raw-metadata    do not store NXentry as scientificMetadata
    -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
                         beamtime metadata file
@@ -108,6 +108,8 @@ Options:
                         scientific metadata file
    -p PID, --pid PID
                         dataset pid
+   -u, --pid-with-uuid
+                        generate pid with uuid
    -o OUTPUT, --output OUTPUT
                         output scicat metadata file
    --h5py               use h5py module as a nexus reader

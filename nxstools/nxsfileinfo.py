@@ -22,6 +22,9 @@
 import sys
 import argparse
 import json
+import uuid
+import os
+import re
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, numpyEncoder)
@@ -428,8 +431,6 @@ class BeamtimeLoader(object):
                 self.__btmeta["beamtimeId"]
         if self.__pid:
             self.__metadata["pid"] = self.__pid
-        # elif "pid" not in self.__metadata.keys():
-        #     self.__metadata["pid"] = str(uuid.uuid4())
         # print(self.__metadata)
         return self.__metadata
 
@@ -494,6 +495,66 @@ class BeamtimeLoader(object):
             else:
                 yield (key, dct2[key])
 
+    def updatepid(self, metadata, filename=None, puuid=False):
+        """ update pid metadata with dictionary
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :param filename: nexus filename
+        :type filename: :obj:`str`
+        :param puuid: pid with uuid
+        :type puuid: :obj:`bool`
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if "pid" not in metadata:
+            beamtimeid = ""
+            if "scientificMetadata" in metadata \
+               and "beamtimeId" in metadata["scientificMetadata"]:
+                beamtimeid = metadata["scientificMetadata"]["beamtimeId"]
+            scanid = ""
+            fsscanid = ""
+            fiscanid = None
+            if filename:
+                fname, fext = os.path.splitext(filename)
+                lfl = fname.split("_")
+                fsscanid = lfl[-1]
+                res = re.search(r'\d+$', fsscanid)
+                fiscanid = int(res.group()) if res else None
+            esscanid = ""
+            eiscanid = None
+            lfl = None
+            if "scientificMetadata" in metadata and \
+               "name" in metadata["scientificMetadata"] and \
+               metadata["scientificMetadata"]["name"]:
+                lfl = metadata["scientificMetadata"]["name"].split("_")
+                esscanid = lfl[-1]
+                res = re.search(r'\d+$', esscanid)
+                eiscanid = int(res.group()) if res else None
+                # if eiscanid:
+                #     print("WWWW:", eiscanid)
+            if fiscanid is not None:
+                scanid = str(fiscanid)
+            elif eiscanid is not None:
+                scanid = str(eiscanid)
+            elif fsscanid and esscanid and esscanid == fsscanid:
+                scanid = esscanid
+            elif fsscanid and esscanid and esscanid != fsscanid:
+                scanid = "%s_%s" % (fsscanid, esscanid)
+            elif fsscanid:
+                scanid = fsscanid
+            else:
+                scanid = esscanid
+            if beamtimeid and scanid:
+                if puuid:
+                    metadata["pid"] = "%s/%s/%s" % \
+                        (beamtimeid, scanid, str(uuid.uuid4()))
+                else:
+                    metadata["pid"] = "%s/%s" % \
+                        (beamtimeid, scanid)
+
+        return metadata
+
 
 class Metadata(Runner):
 
@@ -542,7 +603,7 @@ class Metadata(Runner):
             "-e", "--entry-classes",
             help="names of entry NX_class to be shown"
             " (separated by commas without spaces)."
-            "If name is '' all groups are shown. "
+            " If name is '' all groups are shown. "
             "The  default: 'NXentry'",
             dest="entryclasses", default="NXentry")
         self._parser.add_argument(
@@ -552,6 +613,10 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
+        self._parser.add_argument(
+            "-u", "--pid-with-uuid", action="store_true",
+            default=False, dest="puuid",
+            help=("generate pid with uuid"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -662,6 +727,9 @@ class Metadata(Runner):
                     bl.run()
                     result = bl.merge(nxsparser.description[0])
                     result = bl.overwrite(result)
+                    result = bl.updatepid(
+                        result, options.args[0], options.puuid)
+
                 else:
                     result = []
                     for desc in nxsparser.descirption:
@@ -669,6 +737,8 @@ class Metadata(Runner):
                         bl.run()
                         result = bl.merge(desc)
                         result = bl.overwrite(result)
+                        result = bl.updatepid(
+                            result, options.args[0], options.puuid)
                         result.append(result)
 
                 if options.output:
