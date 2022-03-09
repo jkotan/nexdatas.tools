@@ -2400,6 +2400,8 @@ For more help:
 
         for arg in args:
             filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
             title = arg[1]
             beamtime = arg[2]
             insname = arg[3]
@@ -2410,14 +2412,18 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -a units,NX_class'
+                ('nxsfileinfo metadata %s %s -a units,NX_class '
+                 ' -i 12344321 --pid-with-filename'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s  '
+                 ' --beamtimeid 12344321 '
                  '--attributes units,NX_class'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s -a units,NX_class'
+                 ' --beamtimeid 12344321 -f'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s --attributes units,NX_class'
+                 ' -i 12344321 '
                  % (filename, self.flags)).split(),
             ]
 
@@ -2453,7 +2459,7 @@ For more help:
 
                 nxsfile.close()
 
-                for cmd in commands:
+                for kk, cmd in enumerate(commands):
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
                     sys.stdout = mystdout = StringIO()
@@ -2472,7 +2478,8 @@ For more help:
                     # print(vl)
                     dct = json.loads(vl)
                     # print(dct)
-                    res = {'scientificMetadata':
+                    res = {'pid': '12344321/12345',
+                           'scientificMetadata':
                            {'NX_class': 'NXentry',
                             'name': 'entry12345',
                             'dataParameters': {'NX_class': 'NXdata'},
@@ -2498,7 +2505,13 @@ For more help:
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
                            }
-                    self.myAssertDict(dct, res)
+                    self.myAssertDict(dct, res, skip=['pid'])
+                    if kk % 2:
+                        self.assertEqual(
+                            dct["pid"], "12344321/12345")
+                    else:
+                        self.assertEqual(
+                            dct["pid"], "12344321/%s_12345" % fname)
             finally:
                 os.remove(filename)
 

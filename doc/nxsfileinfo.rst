@@ -102,14 +102,18 @@ Options:
    -e ENTRYCLASSES, --entry-classes ENTRYCLASSES
                         names of entry NX_class to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: 'NXentry'
    -r, --raw-metadata    do not store NXentry as scientificMetadata
+   -p PID, --pid PID
+                        dataset pid
+   -i BEAMTIMEID, --beamtimeid BEAMTIMEID
+                        beamtime id
+   -u, --pid-with-uuid
+                        generate pid with uuid
+   -f, --pid-with-filename
+                        generate pid with file name
    -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
                         beamtime metadata file
    -s SCIENTIFICMETA, --scientific-meta SCIENTIFICMETA
                         scientific metadata file
-   -p PID, --pid PID
-                        dataset pid
-   -u, --pid-with-uuid
-                        generate pid with uuid
    -o OUTPUT, --output OUTPUT
                         output scicat metadata file
    --h5py               use h5py module as a nexus reader

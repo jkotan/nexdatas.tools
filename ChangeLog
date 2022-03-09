@@ -1,6 +1,8 @@
 2022-03-09 Jan Kotanski <jankotan@gmail.com>
 	* set endTime, description, startTime from nexus file
-	* add --pid-with-uuid options for nxsfileinfo
+	* add --pid-with-uuid option for nxsfileinfo
+	* add --pid-with-filename option for nxsfileinfo
+	* add --beamtimeid option for nxsfileinfo
 	* tagged as v3.15.0
 
 2022-03-01 Jan Kotanski <jankotan@gmail.com>

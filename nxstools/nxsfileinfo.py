@@ -495,7 +495,8 @@ class BeamtimeLoader(object):
             else:
                 yield (key, dct2[key])
 
-    def updatepid(self, metadata, filename=None, puuid=False):
+    def updatepid(self, metadata, filename=None, puuid=False, pfname=False,
+                  beamtimeid=None):
         """ update pid metadata with dictionary
 
         :param metadata: metadata dictionary to merge in
@@ -504,19 +505,23 @@ class BeamtimeLoader(object):
         :type filename: :obj:`str`
         :param puuid: pid with uuid
         :type puuid: :obj:`bool`
+        :param pfname: pid with file name
+        :type pfname: :obj:`bool`
         :returns: metadata dictionary
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         if "pid" not in metadata:
-            beamtimeid = ""
-            if "scientificMetadata" in metadata \
+            beamtimeid = beamtimeid or ""
+            if not beamtimeid and "scientificMetadata" in metadata \
                and "beamtimeId" in metadata["scientificMetadata"]:
                 beamtimeid = metadata["scientificMetadata"]["beamtimeId"]
             scanid = ""
             fsscanid = ""
             fiscanid = None
+            fname = ""
             if filename:
-                fname, fext = os.path.splitext(filename)
+                fdir, fname = os.path.split(filename)
+                fname, fext = os.path.splitext(fname)
                 lfl = fname.split("_")
                 fsscanid = lfl[-1]
                 res = re.search(r'\d+$', fsscanid)
@@ -533,7 +538,13 @@ class BeamtimeLoader(object):
                 eiscanid = int(res.group()) if res else None
                 # if eiscanid:
                 #     print("WWWW:", eiscanid)
-            if fiscanid is not None:
+            if pfname and fname and fiscanid is not None:
+                scanid = pfname
+            elif pfname and fname and eiscanid is not None:
+                scanid = "%s_%s" % (fname, eiscanid)
+            elif pfname and fname:
+                scanid = pfname
+            elif fiscanid is not None:
                 scanid = str(fiscanid)
             elif eiscanid is not None:
                 scanid = str(eiscanid)
@@ -614,9 +625,16 @@ class Metadata(Runner):
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
         self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
             "-u", "--pid-with-uuid", action="store_true",
             default=False, dest="puuid",
             help=("generate pid with uuid"))
+        self._parser.add_argument(
+            "-f", "--pid-with-filename", action="store_true",
+            default=False, dest="pfname",
+            help=("generate pid with file name"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -728,7 +746,8 @@ class Metadata(Runner):
                     result = bl.merge(nxsparser.description[0])
                     result = bl.overwrite(result)
                     result = bl.updatepid(
-                        result, options.args[0], options.puuid)
+                        result, options.args[0], options.puuid,
+                        options.pfname, options.beamtimeid)
 
                 else:
                     result = []
@@ -738,7 +757,8 @@ class Metadata(Runner):
                         result = bl.merge(desc)
                         result = bl.overwrite(result)
                         result = bl.updatepid(
-                            result, options.args[0], options.puuid)
+                            result, options.args[0], options.puuid,
+                            options.pfname, options.beamtimeid)
                         result.append(result)
 
                 if options.output:
