@@ -697,13 +697,15 @@ class Metadata(Runner):
         self.show(root, options)
         fl.close()
 
-    def show(self, root, options):
-        """ the main function
+    def metadata(self, root, options):
+        """ get metadata from nexus and beamtime file
 
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         :param root: nexus file root
-        :type root: class:`filewriter.FTGroup`
+        :type root: :class:`filewriter.FTGroup`
+        :returns: nexus file root
+        :rtype: :obj:`str`
         """
         values = []
         attrs = None
@@ -734,41 +736,47 @@ class Metadata(Runner):
         nxsparser.hiddenattrs = nattrs
         nxsparser.parseMeta()
 
-        # print(json.dumps(self.__metadata, sort_keys=True, indent=4))
-        # self.__output = options.output
-        # if self.__output:
+        if nxsparser.description:
+            if len(nxsparser.description) == 1:
+                bl = BeamtimeLoader(options)
+                bl.run()
+                result = bl.merge(nxsparser.description[0])
+                result = bl.overwrite(result)
+                result = bl.updatepid(
+                    result, options.args[0], options.puuid,
+                    options.pfname, options.beamtimeid)
 
-        try:
-            if nxsparser.description:
-                if len(nxsparser.description) == 1:
+            else:
+                result = []
+                for desc in nxsparser.descirption:
                     bl = BeamtimeLoader(options)
                     bl.run()
-                    result = bl.merge(nxsparser.description[0])
+                    result = bl.merge(desc)
                     result = bl.overwrite(result)
                     result = bl.updatepid(
                         result, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
+                    result.append(result)
+            return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
 
-                else:
-                    result = []
-                    for desc in nxsparser.descirption:
-                        bl = BeamtimeLoader(options)
-                        bl.run()
-                        result = bl.merge(desc)
-                        result = bl.overwrite(result)
-                        result = bl.updatepid(
-                            result, options.args[0], options.puuid,
-                            options.pfname, options.beamtimeid)
-                        result.append(result)
+    def show(self, root, options):
+        """ the main function
 
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :param root: nexus file root
+        :type root: :class:`filewriter.FTGroup`
+        """
+        try:
+            metadata = self.metadata(root, options)
+            if metadata:
                 if options.output:
                     with open(options.output, "w") as fl:
-                        json.dump(result, fl, sort_keys=True, indent=4,
-                                  cls=numpyEncoder)
+                        fl.write(metadata)
                 else:
-                    print(json.dumps(
-                        result, sort_keys=True, indent=4,
-                        cls=numpyEncoder))
+                    print(metadata)
         except Exception as e:
             sys.stderr.write("nxsfileinfo: '%s'\n"
                              % str(e))
