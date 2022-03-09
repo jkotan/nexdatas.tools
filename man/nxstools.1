@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Feb 28, 2022" "3.13" "NXSTools"
+.TH "NXSTOOLS" "1" "Mar 09, 2022" "3.15" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1626,19 +1626,28 @@ field names of more dimensional datasets which value should be shown (separated 
 postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
 .BI \-e \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces).If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
 .B \-r\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
+.TP
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+dataset pid
+.TP
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
+beamtime id
+.TP
+.B \-u\fP,\fB  \-\-pid\-with\-uuid
+generate pid with uuid
+.TP
+.B \-f\fP,\fB  \-\-pid\-with\-filename
+generate pid with file name
 .TP
 .BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
 .TP
 .BI \-s \ SCIENTIFICMETA\fR,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
 scientific metadata file
-.TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
-dataset pid
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
@@ -5324,7 +5333,11 @@ loader constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B cre = {\(aqaccessGroups\(aq: [], \(aqclassification\(aq: [], \(aqcreatedAt\(aq: [], \(aqcreatedBy\(aq: [], \(aqcreationTime\(aq: [], \(aqdataFormat\(aq: [], \(aqdatasetName\(aq: [], \(aqdatasetlifecycle\(aq: [], \(aqhistory\(aq: [], \(aqinstrumentId\(aq: [], \(aqisPublished\(aq: [\(aqfalse\(aq], \(aqkeywords\(aq: [], \(aqlicense\(aq: [], \(aqnumberOfFiles\(aq: [], \(aqnumberOfFilesArchived\(aq: [], \(aqorcidOfOwner\(aq: \(aqORCID of owner https://orcid.org if available\(aq, \(aqownerGroup\(aq: [], \(aqpackedSize\(aq: [], \(aqpublisheddateId\(aq: [], \(aqsampleId\(aq: [], \(aqscientificMetadata\(aq: {}, \(aqsize\(aq: [], \(aqsourceFolderHost\(aq: [], \(aqtechniques\(aq: [], \(aqupdatedAt\(aq: [], \(aqupdatedBy\(aq: [], \(aqvalidationStatus\(aq: [], \(aqversion\(aq: []}
+.B copymap = {\(aqcreationTime\(aq: \(aqscientificMetadata.end_time.value\(aq, \(aqdescription\(aq: \(aqscientificMetadata.title.value\(aq, \(aqendTime\(aq: \(aqscientificMetadata.end_time.value\(aq}
+.UNINDENT
+.INDENT 7.0
+.TP
+.B cre = {\(aqaccessGroups\(aq: [], \(aqclassification\(aq: [], \(aqcreatedAt\(aq: [], \(aqcreatedBy\(aq: [], \(aqcreationTime\(aq: [], \(aqdataFormat\(aq: [], \(aqdatasetName\(aq: [], \(aqdatasetlifecycle\(aq: [], \(aqhistory\(aq: [], \(aqinstrumentId\(aq: [], \(aqisPublished\(aq: [\(aqfalse\(aq], \(aqkeywords\(aq: [], \(aqlicense\(aq: [], \(aqnumberOfFiles\(aq: [], \(aqnumberOfFilesArchived\(aq: [], \(aqorcidOfOwner\(aq: \(aqORCID of owner https://orcid.org if available\(aq, \(aqownerGroup\(aq: [], \(aqpackedSize\(aq: [], \(aqpublisheddataId\(aq: [], \(aqsampleId\(aq: [], \(aqscientificMetadata\(aq: {}, \(aqsize\(aq: [], \(aqsourceFolderHost\(aq: [], \(aqtechniques\(aq: [], \(aqupdatedAt\(aq: [], \(aqupdatedBy\(aq: [], \(aqvalidationStatus\(aq: [], \(aqversion\(aq: []}
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5338,6 +5351,27 @@ update metadata with dictionary
 .TP
 .B Parameters
 \fBmetadata\fP (\fI\%dict\fP <\fI\%str\fP, \fIany\fP>) \-\- metadata dictionary to merge in
+.TP
+.B Returns
+metadata dictionary
+.TP
+.B Return type
+\fI\%dict\fP <\fI\%str\fP, \fIany\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B overwrite(metadata, cmap=None)
+overwrite metadata with dictionary
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBmetadata\fP (\fI\%dict\fP <\fI\%str\fP, \fIany\fP>) \-\- metadata dictionary to merge in
+.IP \(bu 2
+\fBcmap\fP (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP>) \-\- overwrite dictionary
+.UNINDENT
 .TP
 .B Returns
 metadata dictionary
@@ -5364,7 +5398,32 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B strcre = {\(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamline}\(aq, \(aqtype\(aq: \(aqraw\(aq}
+.B strcre = {\(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamline}\(aq, \(aqisPublished\(aq: False, \(aqtype\(aq: \(aqraw\(aq}
+.UNINDENT
+.INDENT 7.0
+.TP
+.B updatepid(metadata, filename=None, puuid=False, pfname=False, beamtimeid=None)
+update pid metadata with dictionary
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBmetadata\fP (\fI\%dict\fP <\fI\%str\fP, \fIany\fP>) \-\- metadata dictionary to merge in
+.IP \(bu 2
+\fBfilename\fP (\fI\%str\fP) \-\- nexus filename
+.IP \(bu 2
+\fBpuuid\fP (\fI\%bool\fP) \-\- pid with uuid
+.IP \(bu 2
+\fBpfname\fP (\fI\%bool\fP) \-\- pid with file name
+.UNINDENT
+.TP
+.B Returns
+metadata dictionary
+.TP
+.B Return type
+\fI\%dict\fP <\fI\%str\fP, \fIany\fP>
+.UNINDENT
 .UNINDENT
 .UNINDENT
 .INDENT 0.0

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Feb 28, 2022" "3.13" "NXSTools"
+.TH "NXSFILEINFO" "1" "Mar 09, 2022" "3.15" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -178,19 +178,28 @@ field names of more dimensional datasets which value should be shown (separated 
 postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
 .BI \-e \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces).If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
 .B \-r\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
+.TP
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+dataset pid
+.TP
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
+beamtime id
+.TP
+.B \-u\fP,\fB  \-\-pid\-with\-uuid
+generate pid with uuid
+.TP
+.B \-f\fP,\fB  \-\-pid\-with\-filename
+generate pid with file name
 .TP
 .BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
 .TP
 .BI \-s \ SCIENTIFICMETA\fR,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
 scientific metadata file
-.TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
-dataset pid
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
