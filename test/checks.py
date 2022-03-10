@@ -109,7 +109,6 @@ def checkxmls(utest, xml1, xml2):
     :param xml2: second xml to compare
     :type xml2: :obj:`str`
     """
-
     n1 = et.fromstring(
         xml1,
         parser=XMLParser(collect_ids=False,

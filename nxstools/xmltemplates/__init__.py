@@ -1351,7 +1351,7 @@ standardComponentTemplateFiles = {
         'sample_name.ds.xml',
         'chemical_formula.ds.xml',
         'beamtime_id.ds.xml',
-        'beamtime_fname.ds.xml',
+        'beamtime_filename.ds.xml',
         'start_time.ds.xml',
         'end_time.ds.xml',
         'nexdatas_version.ds.xml',
@@ -1373,7 +1373,7 @@ standardComponentTemplateFiles = {
     'defaultinstrument': [
         'defaultinstrument.xml',
         'beamtime_id.ds.xml',
-        'beamtime_fname.ds.xml',
+        'beamtime_filename.ds.xml',
         'start_time.ds.xml',
         'end_time.ds.xml',
         'nexdatas_version.ds.xml',
