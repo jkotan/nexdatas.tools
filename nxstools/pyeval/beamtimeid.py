@@ -24,7 +24,7 @@ import socket
 
 
 def beamtimeid(commonblock, starttime, shortname, compath, curpath, locpath,
-               curprefix, curext, comprefix, comext):
+               curprefix, curext, comprefix, comext, strip=True):
     """ code for beamtimeid  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -65,7 +65,10 @@ def beamtimeid(commonblock, starttime, shortname, compath, curpath, locpath,
                         if (fl.startswith(curprefix)
                             and fl.endswith(curext))]
             if btml:
-                result = btml[0][len(curprefix):-len(curext)]
+                if strip:
+                    result = btml[0][len(curprefix):-len(curext)]
+                else:
+                    result = os.path.join(os.path.abspath(curpath), btml[0])
         except Exception:
             pass
     if not result and fpath.startswith(compath):
@@ -75,7 +78,10 @@ def beamtimeid(commonblock, starttime, shortname, compath, curpath, locpath,
                         if (fl.startswith(comprefix)
                             and fl.endswith(comext))]
             if btml:
-                result = btml[0][len(comprefix):-len(comext)]
+                if strip:
+                    result = btml[0][len(comprefix):-len(comext)]
+                else:
+                    result = os.path.join(os.path.abspath(compath), btml[0])
         except Exception:
             pass
     if not result:
@@ -94,11 +100,51 @@ def beamtimeid(commonblock, starttime, shortname, compath, curpath, locpath,
                                 if (fl.startswith(comprefix)
                                     and fl.endswith(comext))]
                         if btml:
-                            result = btml[0][len(comprefix):-len(comext)]
+                            if strip:
+                                result = btml[0][len(comprefix):-len(comext)]
+                            else:
+                                result = os.path.join(
+                                    os.path.abspath(locpath), btml[0])
                             break
                 dirpath, tail = os.path.split(dirpath)
         except Exception:
             pass
     if not result:
-        result = "%s_%s@%s" % (shortname, starttime, socket.gethostname())
+        if strip:
+            result = "%s_%s@%s" % (shortname, starttime, socket.gethostname())
+        else:
+            result = ""
     return result
+
+
+def beamtime_filename(commonblock, starttime, shortname,
+                      compath, curpath, locpath,
+                      curprefix, curext, comprefix, comext):
+    """ code for beamtimeid  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param starttime:  start time
+    :type starttime: :obj:`str`
+    :param shortname:  short name of beamline
+    :type shortname: :obj:`str`
+    :param compath:  commission directory
+    :type compath: :obj:`str`
+    :param curpath:  current directory
+    :type curpath: :obj:`str`
+    :param locpath:  local directory
+    :type locpath: :obj:`str`
+    :param curprefix:  current prefix
+    :type curprefix: :obj:`str`
+    :param curext:  current postfix
+    :type curext: :obj:`str`
+    :param comprefix:  commission prefix
+    :type comprefix: :obj:`str`
+    :param comext:  commission postfix
+    :type comext: :obj:`str`
+    :returns:   beamtime id
+    :rtype: :obj:`str`
+    """
+    return beamtimeid(commonblock,
+                      starttime, shortname, compath, curpath, locpath,
+                      curprefix, curext, comprefix, comext, strip=False)

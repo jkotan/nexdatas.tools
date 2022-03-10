@@ -296,7 +296,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                 self.assertEqual(lines[-3], "POSSIBLE COMPONENT TYPES: ")
                 self.assertEqual(
                     lines[-2].split(),
-                    ["absorber", "beamstop", "beamtimeid", "chcut",
+                    ["absorber", "beamstop", "beamtimefname",
+                     "beamtimeid", "chcut",
                      "collect2", "collect3",
                      "collect4", "collect5", "collect6",
                      "common2", "common3",
@@ -855,7 +856,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     ['default', 'defaultinstrument', 'defaultsample'],
                     ['title', 'start_time', 'sample_name',
                      'nexdatas_version', 'nexdatas_configuration',
-                     'end_time', 'chemical_formula', 'beamtime_id']
+                     'end_time', 'chemical_formula', 'beamtime_id',
+                     'beamtime_filename']
                 ],
                 [
                     ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -876,7 +878,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      'Proposal as well as the scientists performing '
                      'the experiment, the local contact, and so on.\n'
                      'The beamtime ID at DESY is an 8 digit number.R</doc>\n'
-                     '      <strategy mode="INIT" />$datasources.beamtime_id'
+                     '      <strategy mode="INIT" />$datasources.beamtime_id\n'
+                     '      <attribute type="NX_CHAR" '
+                     'name="beamtime_filename">'
+                     '        <strategy mode="INIT" />'
+                     '$datasources.beamtime_filename</attribute>\n'
                      '</field>\n'
                      '    <field name="start_time" type="NX_DATE_TIME">\n'
                      '      <doc>time stamp when the experiment has started.'
@@ -1001,6 +1007,13 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource name="beamtime_id" type="CLIENT">\n'
                      '    <record name="beamtime_id" />\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="beamtime_filename">\n'
+                     '    <result name="result">\n'
+                     '    ds.result = ""</result>\n'
                      '  </datasource>\n'
                      '</definition>']
                 ],
@@ -1013,7 +1026,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                     ['default', 'defaultinstrument', 'defaultsample'],
                     ['title', 'start_time', 'sample_name',
                      'nexdatas_version', 'nexdatas_configuration',
-                     'end_time', 'chemical_formula', 'beamtime_id']
+                     'end_time', 'chemical_formula', 'beamtime_id',
+                     'beamtime_filename']
                 ],
                 [
                     ['<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -1034,7 +1048,11 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      'Proposal as well as the scientists performing '
                      'the experiment, the local contact, and so on.\n'
                      'The beamtime ID at DESY is an 8 digit number.R</doc>\n'
-                     '      <strategy mode="INIT" />$datasources.beamtime_id'
+                     '      <strategy mode="INIT" />$datasources.beamtime_id\n'
+                     '      <attribute type="NX_CHAR" '
+                     'name="beamtime_filename">'
+                     '        <strategy mode="INIT" />'
+                     '$datasources.beamtime_filename</attribute>\n'
                      '</field>\n'
                      '    <field name="start_time" type="NX_DATE_TIME">\n'
                      '      <doc>time stamp when the experiment has started.'
@@ -1159,6 +1177,13 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource name="beamtime_id" type="CLIENT">\n'
                      '    <record name="beamtime_id" />\n'
+                     '  </datasource>\n'
+                     '</definition>',
+                     '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                     '<definition>\n'
+                     '  <datasource type="PYEVAL" name="beamtime_filename">\n'
+                     '    <result name="result">\n'
+                     '    ds.result = ""</result>\n'
                      '  </datasource>\n'
                      '</definition>']
                 ],

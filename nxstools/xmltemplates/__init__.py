@@ -791,6 +791,40 @@ standardComponentVariables = {
             'doc': "commission file postfix (string)"
         },
     },
+    'beamtimefname': {
+        'shortname': {
+            'default': "P09",
+            'doc': "beamline short name (string)"
+        },
+        'currentdir': {
+            'default': "/gpfs/current",
+            'doc': "beamtime file directory (string)"
+        },
+        'localdir': {
+            'default': "/gpfs/local",
+            'doc': "local file directory (string)"
+        },
+        'currentprefix': {
+            'default': "beamtime-metadata-",
+            'doc': "beamtime file prefix (string)"
+        },
+        'currentpostfix': {
+            'default': ".json",
+            'doc': "beamtime file postfix (string)"
+        },
+        'commissiondir': {
+            'default': "/gpfs/commissioning",
+            'doc': "commission file directory (string)"
+        },
+        'commissionprefix': {
+            'default': "commissioning-metadata-",
+            'doc': "commission file prefix (string)"
+        },
+        'commissionpostfix': {
+            'default': ".json",
+            'doc': "commission file postfix (string)"
+        },
+    },
     'default': {
         'control': {
             'default': None,
@@ -1305,6 +1339,11 @@ standardComponentTemplateFiles = {
         'beamtimeid.ds.xml',
         'start_time.ds.xml',
     ],
+    'beamtimefname': [
+        'beamtimefname.xml',
+        'beamtimefname.ds.xml',
+        'start_time.ds.xml',
+    ],
     'default': [
         'default.xml',
         'defaultsample.xml',
@@ -1312,6 +1351,7 @@ standardComponentTemplateFiles = {
         'sample_name.ds.xml',
         'chemical_formula.ds.xml',
         'beamtime_id.ds.xml',
+        'beamtime_filename.ds.xml',
         'start_time.ds.xml',
         'end_time.ds.xml',
         'nexdatas_version.ds.xml',
@@ -1333,6 +1373,7 @@ standardComponentTemplateFiles = {
     'defaultinstrument': [
         'defaultinstrument.xml',
         'beamtime_id.ds.xml',
+        'beamtime_filename.ds.xml',
         'start_time.ds.xml',
         'end_time.ds.xml',
         'nexdatas_version.ds.xml',

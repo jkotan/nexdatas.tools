@@ -5,7 +5,10 @@
       <doc>Beamtime ID. From this ID everything else can be derived from the DESY databases including the Proposal as well as the scientists performing the experiment, the local contact, and so on.
 
 The beamtime ID at DESY is an 8 digit number.R</doc>
-      <strategy mode="INIT"/>$datasources.beamtime_id</field>
+      <strategy mode="INIT"/>$datasources.beamtime_id
+      <attribute type="NX_CHAR" name="beamtime_filename">
+        <strategy mode="INIT"/>$datasources.beamtime_filename</attribute>
+    </field>
     <field type="NX_DATE_TIME" name="start_time">
       <doc>time stamp when the experiment has started.</doc>
       <strategy mode="INIT"/>$datasources.start_time</field>
