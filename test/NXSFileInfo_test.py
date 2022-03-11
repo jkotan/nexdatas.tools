@@ -3138,6 +3138,268 @@ For more help:
                 if os.path.isfile(ofname):
                     os.remove(ofname)
 
+    def test_metadata_beamtime_filename(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        beamtimefile = '''{
+        "applicant": {
+          "email": "cute.cute@cute.com",
+          "institute": "Deutsches Elektronen-Synchrotron",
+          "lastname": "famous",
+          "userId": "987654321",
+          "username": "piquant"
+        },
+          "beamline": "p01",
+          "beamlineAlias": "p01",
+          "beamtimeId": "16171271",
+          "contact": "hilarious.hilarious@hilarious.com",
+          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "eventEnd": "2020-01-21T12:37:00Z",
+          "eventStart": "2020-01-20T01:05:00Z",
+          "facility": "PETRA III",
+          "generated": "2020-01-20T00:10:00Z",
+          "leader": {
+          "email": "feathered.feathered@feathered.com",
+          "institute": "debonair",
+          "lastname": "glossy",
+          "userId": "2879",
+          "username": "hairy"
+        },
+        "onlineAnalysis": {
+          "asapoBeamtimeTokenPath": "/shared/asapo_token",
+          "reservedNodes": [
+              "node1",
+              "node2",
+              "node2"
+          ],
+          "slurmReservation": "ponline",
+          "slurmPartition": "45473177",
+          "sshPrivateKeyPath": "shared/rsa-key.pem",
+          "sshPublicKeyPath": "shared/rsa-key.pub",
+          "userAccount": "bttest03"
+        },
+        "pi": {
+          "email": "robust.robust@robust.com",
+          "institute": "nondescript",
+          "lastname": "keen",
+          "userId": "3553",
+          "username": "military"
+        },
+        "proposalId": "65300407",
+        "proposalType": "C",
+        "title": "beautiful-cornflower-wallaby-of-agreement",
+        "unixId": "8362",
+        "users": {
+          "doorDb": [
+          "user1",
+          "user2",
+          "user3"
+          ],
+          "special": []
+        }
+        }
+        '''
+        btfname = '%s/beamtime-metadata-12345678.json' % (os.getcwd())
+        ofname = '%s/metadata-12345678.json' % (os.getcwd())
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "int",
+                ""
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+
+            commands = [
+                ('nxsfileinfo metadata %s %s  -o %s -u'
+                 % (filename, self.flags, ofname)).split(),
+                ('nxsfileinfo metadata %s %s '
+                 ' --output %s '
+                 % (filename, self.flags, ofname)).split(),
+                ('nxsfileinfo metadata %s %s -o %s'
+                 ' --pid-with-uuid'
+                 % (filename, self.flags, ofname)).split(),
+                ('nxsfileinfo metadata %s %s '
+                 ' --output %s '
+                 % (filename, self.flags, ofname)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+                if os.path.isfile(btfname):
+                    raise Exception("Test file %s exists" % btfname)
+                with open(btfname, "w") as fl:
+                    fl.write(beamtimefile)
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                col = rt.create_group("logs", "NXcollection")
+                col.create_field("log1", "string").write(title)
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                ei = entry.create_field(
+                    "experiment_identifier", "string")
+                ei.write(beamtime)
+                eiattr = ei.attributes.create("beamtime_filename", "string")
+                eiattr.write(btfname)
+
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for kk, cmd in enumerate(commands):
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual('', vl.strip())
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
+                    # print(dct)
+                    res = {
+                        "contactEmail": "hilarious.hilarious@hilarious.com",
+                        "createdAt": "2020-01-20T00:10:00Z",
+                        "pid": "13243546",
+                        "creationLocation": "/DESY/PETRA III/p01",
+                        # "description":
+                        # "beautiful-cornflower-wallaby-of-agreement",
+                        # "endTime": "2020-01-21T12:37:00Z",
+                        "owner": "famous",
+                        "ownerEmail": "cute.cute@cute.com",
+                        "principalInvestigator": "robust.robust@robust.com",
+                        "proposalId": "65300407",
+                        "scientificMetadata": {
+                            "NX_class": "NXentry",
+                            "beamtimeId": "16171271",
+                            "dataParameters": {
+                                "NX_class": "NXdata"
+                            },
+                            "end_time": {
+                                "value": '%s' % etime
+                            },
+                            "experiment_identifier": {
+                                "beamtime_filename": '%s' % btfname,
+                                "value": '%s' % arg[2]
+                            },
+                            "instrumentParameters": {
+                                "NX_class": "NXinstrument",
+                                "detectorParameters": {
+                                    "NX_class": "NXdetector",
+                                    "intimage": {
+                                        "shape": [
+                                            0,
+                                            30
+                                        ]
+                                    }
+                                },
+                                "name": {
+                                    "short_name": '%s' % arg[4],
+                                    "value": '%s' % arg[3]
+                                }
+                            },
+                            "name": "entry12345",
+                            "sampleParameters": {
+                                "NX_class": "NXsample",
+                                "chemical_formula": {
+                                    "value": '%s' % arg[8]
+                                },
+                                "name": {
+                                    "value": '%s' % arg[7]
+                                }
+                            },
+                            "start_time": {
+                                "value": '%s' % arg[5]
+                            },
+                            "title": {
+                                "value": '%s' % arg[1]
+                            }
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p01/2020/data/12345678",
+                        "type": "raw",
+                        "isPublished": False,
+                        "updatedAt": "2020-01-20T00:10:00Z",
+                        'creationTime': '%s' % etime,
+                        'endTime': '%s' % etime,
+                        'description': '%s' % arg[1],
+                    }
+                    self.myAssertDict(dct, res, skip=["pid"])
+                    if kk % 2:
+                        self.assertEqual(dct["pid"], "16171271/12345")
+                    else:
+                        self.assertTrue(
+                            dct["pid"].startswith("16171271/12345"))
+            finally:
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                if os.path.isfile(btfname):
+                    os.remove(btfname)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
+
 
 if __name__ == '__main__':
     unittest.main()
