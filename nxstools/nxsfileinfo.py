@@ -426,7 +426,8 @@ class BeamtimeLoader(object):
             self.__metadata["scientificMetadata"] = {}
         if self.__scmeta:
             self.__metadata["scientificMetadata"].update(self.__scmeta)
-        if self.__btmeta:
+        if self.__btmeta and \
+           "beamtimeId" not in self.__metadata["scientificMetadata"]:
             self.__metadata["scientificMetadata"]["beamtimeId"] = \
                 self.__btmeta["beamtimeId"]
         if self.__pid:
@@ -738,9 +739,24 @@ class Metadata(Runner):
 
         if nxsparser.description:
             if len(nxsparser.description) == 1:
+                desc = nxsparser.description[0]
+                if not options.beamtimemeta:
+                    try:
+                        if "scientificMetadata" in desc \
+                           and "experiment_identifier" in \
+                           desc["scientificMetadata"] \
+                           and "beamtime_filename" in \
+                           desc["scientificMetadata"][
+                               "experiment_identifier"]:
+                            options.beamtimemeta = \
+                                desc["scientificMetadata"][
+                                    "experiment_identifier"][
+                                        "beamtime_filename"]
+                    except Exception:
+                        pass
                 bl = BeamtimeLoader(options)
                 bl.run()
-                result = bl.merge(nxsparser.description[0])
+                result = bl.merge(desc)
                 result = bl.overwrite(result)
                 result = bl.updatepid(
                     result, options.args[0], options.puuid,
@@ -749,6 +765,20 @@ class Metadata(Runner):
             else:
                 result = []
                 for desc in nxsparser.descirption:
+                    if not options.beamtimemeta:
+                        try:
+                            if "scientificMetadata" in desc \
+                               and "experimental_identifier" in \
+                               desc["scientificMetadata"] \
+                               and "beamtime_filename" in \
+                               desc["scientificMetadata"][
+                                   "experimental_identifier"]:
+                                options.beamtimemeta = \
+                                    desc["scientificMetadata"][
+                                        "experimental_identifier"][
+                                            "beamtime_filename"]
+                        except Exception:
+                            pass
                     bl = BeamtimeLoader(options)
                     bl.run()
                     result = bl.merge(desc)
