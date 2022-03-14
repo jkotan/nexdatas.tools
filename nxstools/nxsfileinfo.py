@@ -698,7 +698,8 @@ class Metadata(Runner):
         self.show(root, options)
         fl.close()
 
-    def metadata(self, root, options):
+    @classmethod
+    def metadata(cls, root, options):
         """ get metadata from nexus and beamtime file
 
         :param options: parser options
