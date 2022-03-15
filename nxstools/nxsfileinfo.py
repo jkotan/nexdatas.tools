@@ -612,12 +612,19 @@ class Metadata(Runner):
             "The  default: 'Parameters'",
             dest="group_postfix", default="Parameters")
         self._parser.add_argument(
-            "-e", "--entry-classes",
+            "-t", "--entry-classes",
             help="names of entry NX_class to be shown"
             " (separated by commas without spaces)."
             " If name is '' all groups are shown. "
             "The  default: 'NXentry'",
             dest="entryclasses", default="NXentry")
+        self._parser.add_argument(
+            "-e", "--entry-names",
+            help="names of entry groups to be shown"
+            " (separated by commas without spaces)."
+            " If name is '' all groups are shown. "
+            "The  default: ''",
+            dest="entrynames", default="")
         self._parser.add_argument(
             "-r", "--raw-metadata", action="store_true",
             default=False, dest="rawscientific",
@@ -712,6 +719,7 @@ class Metadata(Runner):
         values = []
         attrs = None
         entryclasses = []
+        entrynames = []
 
         if options.values:
             values = options.values.split(',')
@@ -721,18 +729,22 @@ class Metadata(Runner):
         elif options.attrs is not None:
             attrs = []
 
-        if options.nattrs:
+        if options.nattrs not in [None, '', "''", '""']:
             nattrs = options.nattrs.split(',')
         else:
             nattrs = []
 
-        if options.entryclasses:
+        if options.entryclasses not in [None, '', "''", '""']:
             entryclasses = options.entryclasses.split(',')
+
+        if options.entrynames not in [None, '', "''", '""']:
+            entrynames = options.entrynames.split(',')
 
         nxsparser = NXSFileParser(root)
         nxsparser.valuestostore = values
         nxsparser.group_postfix = options.group_postfix
         nxsparser.entryclasses = entryclasses
+        nxsparser.entrynames = entrynames
         nxsparser.scientific = not options.rawscientific
         nxsparser.attrs = attrs
         nxsparser.hiddenattrs = nattrs

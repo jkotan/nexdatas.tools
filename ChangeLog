@@ -1,3 +1,8 @@
+2022-03-15 Jan Kotanski <jankotan@gmail.com>
+	* add --entry-names  option for nxsfileinfo
+	* change -e to -t option for nxsfileinfo
+	* tagged as v3.16.0
+
 2022-03-09 Jan Kotanski <jankotan@gmail.com>
 	* set endTime, description, startTime from nexus file
 	* add --pid-with-uuid option for nxsfileinfo

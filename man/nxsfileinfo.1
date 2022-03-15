@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Mar 09, 2022" "3.15" "NXSTools"
+.TH "NXSFILEINFO" "1" "Mar 15, 2022" "3.16" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -177,8 +177,11 @@ field names of more dimensional datasets which value should be shown (separated 
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
 postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
-.BI \-e \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
+.BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
 names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+.TP
+.BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
+names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
 .B \-r\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
