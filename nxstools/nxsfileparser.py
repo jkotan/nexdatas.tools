@@ -73,7 +73,7 @@ def getdsname(xmlstring):
     else:
         nodes = node.findall(".//datasource")
     dsname = ""
-    if nodes:
+    if nodes and "name" in nodes[0].attrib:
         dsname = nodes[0].attrib["name"]
     return dsname or ""
 

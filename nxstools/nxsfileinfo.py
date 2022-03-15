@@ -777,7 +777,7 @@ class Metadata(Runner):
 
             else:
                 result = []
-                for desc in nxsparser.descirption:
+                for desc in nxsparser.description:
                     if not options.beamtimemeta:
                         try:
                             if "scientificMetadata" in desc \
@@ -794,12 +794,12 @@ class Metadata(Runner):
                             pass
                     bl = BeamtimeLoader(options)
                     bl.run()
-                    result = bl.merge(desc)
-                    result = bl.overwrite(result)
-                    result = bl.updatepid(
-                        result, options.args[0], options.puuid,
+                    rst = bl.merge(desc)
+                    rst = bl.overwrite(rst)
+                    rst = bl.updatepid(
+                        rst, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
-                    result.append(result)
+                    result.append(rst)
             return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
