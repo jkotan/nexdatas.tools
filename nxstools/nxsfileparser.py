@@ -163,9 +163,13 @@ class NXSFileParser(object):
             "nexdatas_strategy"
         ]
         #: (:obj:`list` <:obj:`str` >) \
-        #    nexus field attribute show names
+        #    nexus entry classes to be shown
         self.entryclasses = [
             "NXentry"
+        ]
+        #: (:obj:`list` <:obj:`str` >) \
+        #    nexus entry names to be shown
+        self.entrynames = [
         ]
         #: (:obj:`dict` <:obj:`str`, [:obj:`str, `any`] > >) \
         #  attribute description
@@ -500,10 +504,13 @@ class NXSFileParser(object):
 
         """
         for entry in self.__root:
+            nm = entry.name
             try:
                 at = entry.attributes["NX_class"]
             except Exception:
                 at = None
             if len(self.entryclasses) == 0 or \
                at and (filewriter.first(at.read()) in self.entryclasses):
-                self.__parsemetaentry(entry, self.description)
+                if len(self.entrynames) == 0 or \
+                   (nm and nm in self.entrynames):
+                    self.__parsemetaentry(entry, self.description)

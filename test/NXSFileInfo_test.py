@@ -2694,10 +2694,128 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --pid 12341234 -e NXcollection'
+                ('nxsfileinfo metadata %s %s --pid 12341234 -t NXcollection'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s '
                  ' -p 12341234 --entry-classes NXcollection'
+                 % (filename, self.flags)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                col = rt.create_group("logs", "NXcollection")
+                col.create_field("log1", "string").write(title)
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for cmd in commands:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    dct = json.loads(vl)
+                    res = {
+                        'pid': '12341234',
+                        'scientificMetadata':
+                        {"NX_class": "NXcollection",
+                         "log1": {
+                             "value": title
+                         },
+                         "name": "logs"
+                         }
+                    }
+
+                    self.myAssertDict(dct, res)
+            finally:
+                os.remove(filename)
+
+    def test_metadata_entrynames(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "int",
+                ""
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+
+            commands = [
+                ("nxsfileinfo metadata %s %s --pid 12341234 "
+                 "-e logs --entry-classes \'\'"
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s '
+                 " -p 12341234 --entry-names logs -t \'\'"
                  % (filename, self.flags)).split(),
             ]
 

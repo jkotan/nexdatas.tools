@@ -99,8 +99,10 @@ Options:
                         field names of more dimensional datasets which value should be shown (separated by commas without spaces)
    -g GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
                         postfix to be added to NeXus group name. The default: 'Parameters'
-   -e ENTRYCLASSES, --entry-classes ENTRYCLASSES
+   -t ENTRYCLASSES, --entry-classes ENTRYCLASSES
                         names of entry NX_class to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: 'NXentry'
+   -e ENTRYNAMES, --entry-names ENTRYNAMES
+                        names of entry groups to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: ''
    -r, --raw-metadata    do not store NXentry as scientificMetadata
    -p PID, --pid PID
                         dataset pid

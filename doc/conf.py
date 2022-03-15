@@ -433,9 +433,9 @@ autoclass_content = 'both'
 intersphinx_mapping = {
     'https://nexdatas.github.io/configserver/':None,
     'https://nexdatas.github.io/writer/':None,
-    'http://docs.python.org/2.7/': None,
-    'http://docs.python.org/3.5/': None,
-    'http://docs.scipy.org/doc/scipy/reference': None,
-    'http://docs.scipy.org/doc/numpy': None,
-    'http://pytango.readthedocs.io/en/stable/': None,
+    'https://docs.python.org/2.7/': None,
+    'https://docs.python.org/3.5/': None,
+    'https://docs.scipy.org/doc/scipy/': None,
+    'https://numpy.org/doc/stable': None,
+    'https://pytango.readthedocs.io/en/stable/': None,
 }
