@@ -1,4 +1,9 @@
 2022-03-15 Jan Kotanski <jankotan@gmail.com>
+	* fix nxsfileinfo metadata for datasource without name
+	* fix typos in nxsfileinfo metadata
+	* tagged as v3.16.1
+
+2022-03-15 Jan Kotanski <jankotan@gmail.com>
 	* add --entry-names  option for nxsfileinfo
 	* change -e to -t option for nxsfileinfo
 	* tagged as v3.16.0
