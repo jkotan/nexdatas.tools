@@ -3402,6 +3402,8 @@ For more help:
                 ei.write(beamtime)
                 eiattr = ei.attributes.create("beamtime_filename", "string")
                 eiattr.write(btfname)
+                eiattr = ei.attributes.create("beamtime_valid", "bool")
+                eiattr.write(True)
 
                 entry.create_field("start_time", "string").write(stime)
                 entry.create_field("end_time", "string").write(etime)
@@ -3460,6 +3462,7 @@ For more help:
                             },
                             "experiment_identifier": {
                                 "beamtime_filename": '%s' % btfname,
+                                "beamtime_valid": True,
                                 "value": '%s' % arg[2]
                             },
                             "instrumentParameters": {
