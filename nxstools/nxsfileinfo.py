@@ -539,12 +539,12 @@ class BeamtimeLoader(object):
                 eiscanid = int(res.group()) if res else None
                 # if eiscanid:
                 #     print("WWWW:", eiscanid)
-            if pfname and fname and fiscanid is not None:
-                scanid = pfname
-            elif pfname and fname and eiscanid is not None:
+            if not pfname and fname and fiscanid is not None:
+                scanid = fname
+            elif not pfname and fname and eiscanid is not None:
                 scanid = "%s_%s" % (fname, eiscanid)
-            elif pfname and fname:
-                scanid = pfname
+            elif not pfname and fname:
+                scanid = fname
             elif fiscanid is not None:
                 scanid = str(fiscanid)
             elif eiscanid is not None:
@@ -640,9 +640,9 @@ class Metadata(Runner):
             default=False, dest="puuid",
             help=("generate pid with uuid"))
         self._parser.add_argument(
-            "-f", "--pid-with-filename", action="store_true",
+            "-d", "--pid-without-filename", action="store_true",
             default=False, dest="pfname",
-            help=("generate pid with file name"))
+            help=("generate pid without file name"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
