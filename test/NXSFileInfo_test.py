@@ -2413,14 +2413,14 @@ For more help:
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
-                 ' -i 12344321 --pid-with-filename'
+                 ' -i 12344321 --pid-without-filename'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s  '
                  ' --beamtimeid 12344321 '
                  '--attributes units,NX_class'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s -a units,NX_class'
-                 ' --beamtimeid 12344321 -f'
+                 ' --beamtimeid 12344321 -d'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata %s %s --attributes units,NX_class'
                  ' -i 12344321 '
@@ -2508,10 +2508,10 @@ For more help:
                     self.myAssertDict(dct, res, skip=['pid'])
                     if kk % 2:
                         self.assertEqual(
-                            dct["pid"], "12344321/12345")
+                            dct["pid"], "12344321/%s_12345" % fname)
                     else:
                         self.assertEqual(
-                            dct["pid"], "12344321/%s_12345" % fname)
+                            dct["pid"], "12344321/12345")
             finally:
                 os.remove(filename)
 
@@ -3085,6 +3085,8 @@ For more help:
 
         for arg in args:
             filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
             title = arg[1]
             beamtime = arg[2]
             insname = arg[3]
@@ -3242,10 +3244,12 @@ For more help:
                     }
                     self.myAssertDict(dct, res, skip=["pid"])
                     if kk % 2:
-                        self.assertEqual(dct["pid"], "16171271/12345")
+                        self.assertEqual(dct["pid"],
+                                         "16171271/%s_12345" % fname)
                     else:
                         self.assertTrue(
-                            dct["pid"].startswith("16171271/12345"))
+                            dct["pid"].startswith(
+                                "16171271/%s_12345" % fname))
             finally:
                 if os.path.isfile(filename):
                     os.remove(filename)
@@ -3353,6 +3357,8 @@ For more help:
 
         for arg in args:
             filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
             title = arg[1]
             beamtime = arg[2]
             insname = arg[3]
@@ -3509,10 +3515,12 @@ For more help:
                     }
                     self.myAssertDict(dct, res, skip=["pid"])
                     if kk % 2:
-                        self.assertEqual(dct["pid"], "16171271/12345")
+                        self.assertEqual(
+                            dct["pid"], "16171271/%s_12345" % fname)
                     else:
                         self.assertTrue(
-                            dct["pid"].startswith("16171271/12345"))
+                            dct["pid"].startswith(
+                                "16171271/%s_12345" % fname))
             finally:
                 if os.path.isfile(filename):
                     os.remove(filename)
