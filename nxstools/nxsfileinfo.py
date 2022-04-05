@@ -909,14 +909,17 @@ class OrigDatablock(Runner):
                     break
         return found
 
-    def datafiles(self, relpath, scdir, scfiles, filters=None):
+    def datafiles(self, scanpath, scdir, scfiles, filters=None):
         dtfiles = []
         totsize = 0
         pdc = {'7': 'rwx', '6': 'rw-', '5': 'r-x', '4': 'r--',
                '3': '-wx', '2': '-w-', '1': '--x', '0': '---'}
+        if scdir and scanpath:
+            scdir = os.path.relpath(scdir, scanpath)
         for fl in scfiles:
             rec = {}
-            fpath = os.path.join(relpath, scdir, fl)
+
+            fpath = os.path.join(scanpath, scdir, fl)
             if self.filterout(fpath, filters):
                 continue
             status = os.stat(fpath)
@@ -965,22 +968,23 @@ class OrigDatablock(Runner):
         scanfiles = []
         scandirs = []
         totsize = 0
-        for fl in add:
-            if os.path.isfile(fl):
-                scandir, scanname = os.path.split(fl)
-                flist, tsize = self.datafiles("", scandir, [scanname])
-                dtfiles.extend(flist)
-                totsize += tsize
 
-        scandir, scanname = os.path.split(options.args[0])
-        scandir = scandir or "."
+        scandir, scanname = os.path.split(os.path.abspath(options.args[0]))
         for (dirpath, dirnames, filenames) in os.walk(scandir):
             scanfiles = [f for f in filenames if f.startswith(scanname)]
             scandirs = [f for f in dirnames if f.startswith(scanname)]
             break
-        flist, tsize = self.datafiles("", scandir, scanfiles, skip)
+        flist, tsize = self.datafiles(scandir, "", scanfiles, skip)
         dtfiles.extend(flist)
         totsize += tsize
+
+        for fl in add:
+            if os.path.isfile(fl):
+                ascandir, ascanname = os.path.split(os.path.abspath(fl))
+                flist, tsize = self.datafiles(scandir, ascandir, [ascanname])
+                dtfiles.extend(flist)
+                totsize += tsize
+
         for scdir in scandirs:
             for (dirpath, dirnames, filenames) in os.walk(
                     os.path.join(scandir, scdir)):
