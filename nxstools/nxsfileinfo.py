@@ -24,7 +24,14 @@ import argparse
 import json
 import uuid
 import os
+import stat
 import re
+import time
+import pytz
+import datetime
+import pwd
+import grp
+import fnmatch
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, numpyEncoder)
@@ -713,7 +720,7 @@ class Metadata(Runner):
         :type options: :class:`argparse.Namespace`
         :param root: nexus file root
         :type root: :class:`filewriter.FTGroup`
-        :returns: nexus file root
+        :returns: nexus file root metadata
         :rtype: :obj:`str`
         """
         values = []
@@ -814,6 +821,189 @@ class Metadata(Runner):
         """
         try:
             metadata = self.metadata(root, options)
+            if metadata:
+                if options.output:
+                    with open(options.output, "w") as fl:
+                        fl.write(metadata)
+                else:
+                    print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
+class OrigDatablock(Runner):
+
+    """ OrigDatablock runner"""
+
+    #: (:obj:`str`) command description
+    description = "show information for all scan files"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo origdatablock /user/data/scan_12345\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-p", "--pid", dest="pid",
+            help=("dataset pid"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+        self._parser.add_argument(
+            "-s", "--skip",
+            help="filters for files to be skipped (separated by commas "
+            "without spaces). Default: ''. E.g. '*.pyc,*~'",
+            dest="skip", default="")
+        self._parser.add_argument(
+            "-a", "--add",
+            help="list of filtes to be added (separated by commas "
+            "without spaces). Default: ''. E.g. 'scan1.nxs,scan2.nxs'",
+            dest="add", default="")
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            'args', metavar='scan_name', type=str, nargs=1,
+            help='scan name')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        self.show(options)
+
+    def isotime(self, tme):
+        """ returns current time string
+
+        :returns: current time
+        :rtype: :obj:`str`
+        """
+        tzone = time.tzname[0]
+        try:
+            tz = pytz.timezone(tzone)
+        except Exception:
+            import tzlocal
+            tz = tzlocal.get_localzone()
+        fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
+        starttime = tz.localize(datetime.datetime.fromtimestamp(tme))
+        return str(starttime.strftime(fmt))
+
+    def filterout(self, fpath, filters):
+        found = False
+        if filters:
+            for df in filters:
+                found = fnmatch.filter([fpath], df)
+                if found:
+                    break
+        return found
+
+    def datafiles(self, relpath, scdir, scfiles, filters=None):
+        dtfiles = []
+        totsize = 0
+        pdc = {'7': 'rwx', '6': 'rw-', '5': 'r-x', '4': 'r--',
+               '3': '-wx', '2': '-w-', '1': '--x', '0': '---'}
+        for fl in scfiles:
+            rec = {}
+            fpath = os.path.join(relpath, scdir, fl)
+            if self.filterout(fpath, filters):
+                continue
+            status = os.stat(fpath)
+            prm = str(oct(status.st_mode)[-3:])
+            isdir = 'd' if stat.S_ISDIR(status.st_mode) else '-'
+            islink = 'l' if stat.S_ISLNK(status.st_mode) else isdir
+            perm = islink + ''.join(pdc.get(x, x) for x in prm)
+
+            path = os.path.join(scdir, fl)
+            if path.startswith("./"):
+                path = path[2:]
+            rec["path"] = path
+            rec["size"] = status.st_size
+            rec["time"] = self.isotime(status.st_ctime)
+            try:
+                rec["uid"] = pwd.getpwuid(status.st_uid).pw_name
+            except Exception:
+                rec["uid"] = status.st_uid
+            try:
+                rec["gid"] = grp.getgrgid(status.st_gid).gr_name
+            except Exception:
+                rec["gid"] = status.st_gid
+            rec["perm"] = perm
+            dtfiles.append(rec)
+            totsize += rec["size"]
+        return dtfiles, totsize
+
+    def datablock(self, options):
+        """ dump scan datablock JSON
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        skip = None
+        add = []
+        if options.skip:
+            skip = options.skip.split(',')
+        if options.add:
+            add = options.add.split(',')
+
+        result = {
+        }
+        dtfiles = []
+        scanfiles = []
+        scandirs = []
+        totsize = 0
+        for fl in add:
+            if os.path.isfile(fl):
+                scandir, scanname = os.path.split(fl)
+                flist, tsize = self.datafiles("", scandir, [scanname])
+                dtfiles.extend(flist)
+                totsize += tsize
+
+        scandir, scanname = os.path.split(options.args[0])
+        scandir = scandir or "."
+        for (dirpath, dirnames, filenames) in os.walk(scandir):
+            scanfiles = [f for f in filenames if f.startswith(scanname)]
+            scandirs = [f for f in dirnames if f.startswith(scanname)]
+            break
+        flist, tsize = self.datafiles("", scandir, scanfiles, skip)
+        dtfiles.extend(flist)
+        totsize += tsize
+        for scdir in scandirs:
+            for (dirpath, dirnames, filenames) in os.walk(
+                    os.path.join(scandir, scdir)):
+                flist, tsize = self.datafiles(
+                    scandir, dirpath, filenames, skip)
+                dtfiles.extend(flist)
+                totsize += tsize
+        result["dataFileList"] = dtfiles
+        result["size"] = totsize
+        if options.pid:
+            result["datasetId"] = options.pid
+        return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
+
+    def show(self, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        try:
+            metadata = self.datablock(options)
             if metadata:
                 if options.output:
                     with open(options.output, "w") as fl:
@@ -992,6 +1182,7 @@ def main():
     parser.cmdrunners = [('field', Field),
                          ('general', General),
                          ('metadata', Metadata),
+                         ('origdatablock', OrigDatablock),
                          ]
     runners = parser.createSubParsers()
 
