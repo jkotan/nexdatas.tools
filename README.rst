@@ -29,7 +29,7 @@ Installation
 
 Install the dependencies:
 
-|    PyTango, sphinx
+|    pninexus or h5py, numpy, PyTango, sphinx
 
 From sources
 """"""""""""
