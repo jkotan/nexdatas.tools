@@ -840,7 +840,7 @@ class OrigDatablock(Runner):
     """ OrigDatablock runner"""
 
     #: (:obj:`str`) command description
-    description = "show information for all scan files"
+    description = "show description of all scan files"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
