@@ -1,5 +1,6 @@
-2022-04-03 Jan Kotanski <jankotan@gmail.com>
+2022-04-06 Jan Kotanski <jankotan@gmail.com>
 	* change default by replacing --pid-with-filename by --pid-without-filename
+	* add nxsfileinfo origdatablock sub-command
 	* tagged as v3.17.0
 
 2022-03-16 Jan Kotanski <jankotan@gmail.com>
