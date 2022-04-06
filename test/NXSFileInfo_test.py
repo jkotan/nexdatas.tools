@@ -3675,7 +3675,10 @@ For more help:
             self.assertEqual(dct["size"], 966)
             dfl = dct["dataFileList"]
             self.assertEqual(len(dfl), 3)
-            df = dfl[0]
+            df = None
+            for df in dfl:
+                if df["path"] == 'nxsextrasp00/common4_common.ds.xml':
+                    break
 
             self.assertEqual(
                 df["path"], 'nxsextrasp00/common4_common.ds.xml')
@@ -3686,7 +3689,11 @@ For more help:
             self.assertTrue(isinstance(df["time"], str))
             self.assertTrue(isinstance(df["perm"], str))
 
-            df = dfl[1]
+            for df in dfl:
+                if df["path"] == 'nxsextrasp00/collect4.xml':
+                    break
+
+            #    df = dfl[1]
             self.assertEqual(
                 df["path"], 'nxsextrasp00/collect4.xml')
             self.assertEqual(df["size"], 143)
@@ -3696,7 +3703,11 @@ For more help:
             self.assertTrue(isinstance(df["time"], str))
             self.assertTrue(isinstance(df["perm"], str))
 
-            df = dfl[2]
+            for df in dfl:
+                if df["path"] == 'nxsextrasp00/mymca.xml':
+                    break
+
+            # df = dfl[2]
             self.assertEqual(
                 df["path"], 'nxsextrasp00/mymca.xml')
             self.assertEqual(df["size"], 565)
@@ -3768,7 +3779,10 @@ For more help:
                 self.assertTrue(tst <= ct)
                 self.assertTrue(ct - tst < 1)
 
-                df = dfl[1]
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/common4_common.ds.xml':
+                        break
+                #    df = dfl[1]
                 self.assertEqual(
                     df["path"], 'nxsextrasp00/common4_common.ds.xml')
                 self.assertEqual(df["size"], 258)
@@ -3778,7 +3792,10 @@ For more help:
                 self.assertTrue(isinstance(df["time"], str))
                 self.assertTrue(isinstance(df["perm"], str))
 
-                df = dfl[2]
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/collect4.xml':
+                        break
+                # df = dfl[2]
                 self.assertEqual(
                     df["path"], 'nxsextrasp00/collect4.xml')
                 self.assertEqual(df["size"], 143)
@@ -3788,7 +3805,11 @@ For more help:
                 self.assertTrue(isinstance(df["time"], str))
                 self.assertTrue(isinstance(df["perm"], str))
 
-                df = dfl[3]
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/mymca.xml':
+                        break
+
+                # df = dfl[3]
                 self.assertEqual(
                     df["path"], 'nxsextrasp00/mymca.xml')
                 self.assertEqual(df["size"], 565)
