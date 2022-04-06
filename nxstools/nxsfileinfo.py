@@ -885,9 +885,9 @@ class OrigDatablock(Runner):
         self.show(options)
 
     def isotime(self, tme):
-        """ returns current time string
+        """ returns iso time string
 
-        :returns: current time
+        :returns: iso time
         :rtype: :obj:`str`
         """
         tzone = time.tzname[0]

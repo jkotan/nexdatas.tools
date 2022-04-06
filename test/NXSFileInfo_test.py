@@ -28,6 +28,11 @@ import json
 import binascii
 import docutils.parsers.rst
 import docutils.utils
+import getpass
+import pwd
+from dateutil import parser as duparser
+import time
+import grp
 
 from nxstools import nxsfileinfo
 from nxstools import filewriter
@@ -3529,6 +3534,273 @@ For more help:
                     os.remove(btfname)
                 if os.path.isfile(ofname):
                     os.remove(ofname)
+
+    def test_origdatablock_nofiles(self):
+        """ test nxsfileinfo origdatablock
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        scanname = 'mytestfileinfo'
+
+        commands = [
+            ('nxsfileinfo origdatablock %s' % (scanname)).split(),
+        ]
+
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsfileinfo.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            self.assertEqual('', er)
+            dct = json.loads(vl)
+            res = {
+                "size": 0,
+                "dataFileList": []
+            }
+            self.myAssertDict(dct, res)
+
+    def test_origdatablock_emptyfile(self):
+        """ test nxsfileinfo origdatablock
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        scanname = 'testfile_123456'
+        filename = "%s.nxs" % scanname
+        ofname = '%s/origdatablock-12345678.json' % (os.getcwd())
+
+        commands = [
+            ('nxsfileinfo origdatablock %s -o %s'
+             % (scanname, ofname)).split(),
+            ('nxsfileinfo origdatablock %s --output %s'
+             % (scanname, ofname)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertEqual('', vl.strip())
+                with open(ofname) as of:
+                    dct = json.load(of)
+                # dct = json.loads(vl)
+                self.assertTrue(dct["size"] > 4000)
+                dfl = dct["dataFileList"]
+                self.assertEqual(len(dfl), 1)
+                df = dfl[0]
+
+                self.assertEqual(df["size"], dct["size"])
+                self.assertEqual(df["path"], filename)
+                self.assertEqual(df["uid"], getpass.getuser())
+                self.assertEqual(df["perm"], '-rw-r--r--')
+
+                gid = pwd.getpwnam(getpass.getuser()).pw_gid
+                self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)
+
+                tm = df["time"]
+                tst = duparser.parse(tm).timestamp()
+                ct = time.time()
+                self.assertTrue(tst <= ct)
+                self.assertTrue(ct - tst < 1)
+
+        finally:
+            if os.path.isfile(filename):
+                os.remove(filename)
+            if os.path.isfile(ofname):
+                os.remove(ofname)
+
+    def test_origdatablock_nxsextras(self):
+        """ test nxsfileinfo origdatablock
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        locpath, _ = os.path.split(__file__)
+        scanname = os.path.join(os.path.relpath(locpath), 'nxsextras')
+
+        commands = [
+            ('nxsfileinfo origdatablock %s'
+             " -s *.pyc,*~,*.py" % (scanname)).split(),
+            ('nxsfileinfo origdatablock %s'
+             " --skip *.pyc,*~,*.py" % (scanname)).split(),
+        ]
+
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsfileinfo.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            self.assertEqual('', er)
+            dct = json.loads(vl)
+            self.assertEqual(dct["size"], 966)
+            dfl = dct["dataFileList"]
+            self.assertEqual(len(dfl), 3)
+            df = dfl[0]
+
+            self.assertEqual(
+                df["path"], 'nxsextrasp00/common4_common.ds.xml')
+            self.assertEqual(df["size"], 258)
+
+            self.assertTrue(isinstance(df["uid"], str))
+            self.assertTrue(isinstance(df["gid"], str))
+            self.assertTrue(isinstance(df["time"], str))
+            self.assertTrue(isinstance(df["perm"], str))
+
+            df = dfl[1]
+            self.assertEqual(
+                df["path"], 'nxsextrasp00/collect4.xml')
+            self.assertEqual(df["size"], 143)
+
+            self.assertTrue(isinstance(df["uid"], str))
+            self.assertTrue(isinstance(df["gid"], str))
+            self.assertTrue(isinstance(df["time"], str))
+            self.assertTrue(isinstance(df["perm"], str))
+
+            df = dfl[2]
+            self.assertEqual(
+                df["path"], 'nxsextrasp00/mymca.xml')
+            self.assertEqual(df["size"], 565)
+
+            self.assertTrue(isinstance(df["uid"], str))
+            self.assertTrue(isinstance(df["gid"], str))
+            self.assertTrue(isinstance(df["time"], str))
+            self.assertTrue(isinstance(df["perm"], str))
+
+    def test_origdatablock_nxsextras_add(self):
+        """ test nxsfileinfo origdatablock
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        locpath, _ = os.path.split(__file__)
+        filename = 'testfile_123456.nxs'
+        scanname = os.path.join(os.path.relpath(locpath), 'nxsextras')
+
+        commands = [
+            ('nxsfileinfo origdatablock %s -a %s'
+             " -s *.pyc,*~,*.py" % (scanname, filename)).split(),
+            ('nxsfileinfo origdatablock %s --add %s'
+             " --skip *.pyc,*~,*.py" % (scanname, filename)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                dct = json.loads(vl)
+                self.assertTrue(dct["size"] > 4966)
+                dfl = dct["dataFileList"]
+                self.assertEqual(len(dfl), 4)
+
+                df = dfl[0]
+
+                self.assertTrue(df["size"] < dct["size"])
+                self.assertEqual(df["path"],
+                                 os.path.relpath(filename, locpath))
+                self.assertEqual(df["uid"], getpass.getuser())
+                self.assertEqual(df["perm"], '-rw-r--r--')
+
+                gid = pwd.getpwnam(getpass.getuser()).pw_gid
+                self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)
+
+                tm = df["time"]
+                tst = duparser.parse(tm).timestamp()
+                ct = time.time()
+                self.assertTrue(tst <= ct)
+                self.assertTrue(ct - tst < 1)
+
+                df = dfl[1]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/common4_common.ds.xml')
+                self.assertEqual(df["size"], 258)
+
+                self.assertTrue(isinstance(df["uid"], str))
+                self.assertTrue(isinstance(df["gid"], str))
+                self.assertTrue(isinstance(df["time"], str))
+                self.assertTrue(isinstance(df["perm"], str))
+
+                df = dfl[2]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/collect4.xml')
+                self.assertEqual(df["size"], 143)
+
+                self.assertTrue(isinstance(df["uid"], str))
+                self.assertTrue(isinstance(df["gid"], str))
+                self.assertTrue(isinstance(df["time"], str))
+                self.assertTrue(isinstance(df["perm"], str))
+
+                df = dfl[3]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/mymca.xml')
+                self.assertEqual(df["size"], 565)
+
+                self.assertTrue(isinstance(df["uid"], str))
+                self.assertTrue(isinstance(df["gid"], str))
+                self.assertTrue(isinstance(df["time"], str))
+                self.assertTrue(isinstance(df["perm"], str))
+
+        finally:
+            if os.path.isfile(filename):
+                os.remove(filename)
 
 
 if __name__ == '__main__':
