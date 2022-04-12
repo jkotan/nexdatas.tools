@@ -1,4 +1,8 @@
 2022-04-06 Jan Kotanski <jankotan@gmail.com>
+	* add nxsfileinfo metadata sub-command without nexus file to create metadata template
+	* tagged as v3.18.0
+
+2022-04-06 Jan Kotanski <jankotan@gmail.com>
 	* change default by replacing --pid-with-filename by --pid-without-filename
 	* add nxsfileinfo origdatablock sub-command
 	* tagged as v3.17.0

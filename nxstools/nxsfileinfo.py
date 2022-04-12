@@ -518,6 +518,7 @@ class BeamtimeLoader(object):
         :returns: metadata dictionary
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
+        metadata = metadata or {}
         if "pid" not in metadata:
             beamtimeid = beamtimeid or ""
             if not beamtimeid and "scientificMetadata" in metadata \
@@ -671,7 +672,7 @@ class Metadata(Runner):
             "-o", "--output", dest="output",
             help=("output scicat metadata file"))
         self._parser.add_argument(
-            'args', metavar='nexus_file', type=str, nargs=1,
+            'args', metavar='nexus_file', type=str, nargs="*",
             help='new nexus file name')
 
     def run(self, options):
@@ -696,21 +697,25 @@ class Metadata(Runner):
             sys.stderr.flush()
             self._parser.print_help()
             sys.exit(255)
-        wrmodule = WRITERS[writer.lower()]
-        try:
-            fl = filewriter.open_file(
-                options.args[0], readonly=True,
-                writer=wrmodule)
-        except Exception:
-            sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
-                             % options.args[0])
-            sys.stderr.flush()
-            self._parser.print_help()
-            sys.exit(255)
 
-        root = fl.root()
+        root = None
+        if options.args:
+            wrmodule = WRITERS[writer.lower()]
+            try:
+                fl = filewriter.open_file(
+                    options.args[0], readonly=True,
+                    writer=wrmodule)
+            except Exception:
+                sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                                 % options.args[0])
+                sys.stderr.flush()
+                self._parser.print_help()
+                sys.exit(255)
+
+            root = fl.root()
         self.show(root, options)
-        fl.close()
+        if root is not None:
+            fl.close()
 
     @classmethod
     def metadata(cls, root, options):
@@ -747,17 +752,27 @@ class Metadata(Runner):
         if options.entrynames not in [None, '', "''", '""']:
             entrynames = options.entrynames.split(',')
 
-        nxsparser = NXSFileParser(root)
-        nxsparser.valuestostore = values
-        nxsparser.group_postfix = options.group_postfix
-        nxsparser.entryclasses = entryclasses
-        nxsparser.entrynames = entrynames
-        nxsparser.scientific = not options.rawscientific
-        nxsparser.attrs = attrs
-        nxsparser.hiddenattrs = nattrs
-        nxsparser.parseMeta()
+        result = None
+        nxsparser = None
+        if root is not None:
+            nxsparser = NXSFileParser(root)
+            nxsparser.valuestostore = values
+            nxsparser.group_postfix = options.group_postfix
+            nxsparser.entryclasses = entryclasses
+            nxsparser.entrynames = entrynames
+            nxsparser.scientific = not options.rawscientific
+            nxsparser.attrs = attrs
+            nxsparser.hiddenattrs = nattrs
+            nxsparser.parseMeta()
 
-        if nxsparser.description:
+        if nxsparser is None:
+            bl = BeamtimeLoader(options)
+            result = bl.run()
+            result = bl.overwrite(result)
+            result = bl.updatepid(
+                result, None, options.puuid,
+                options.pfname, options.beamtimeid)
+        elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
                 if not options.beamtimemeta:
@@ -807,6 +822,7 @@ class Metadata(Runner):
                         rst, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
                     result.append(rst)
+        if result is not None:
             return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
