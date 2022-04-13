@@ -3266,6 +3266,165 @@ For more help:
                 if os.path.isfile(ofname):
                     os.remove(ofname)
 
+    def test_beamtime_only(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        beamtimefile = '''{
+        "applicant": {
+          "email": "cute.cute@cute.com",
+          "institute": "Deutsches Elektronen-Synchrotron",
+          "lastname": "famous",
+          "userId": "987654321",
+          "username": "piquant"
+        },
+          "beamline": "p01",
+          "beamlineAlias": "p01",
+          "beamtimeId": "16171271",
+          "contact": "hilarious.hilarious@hilarious.com",
+          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "eventEnd": "2020-01-21T12:37:00Z",
+          "eventStart": "2020-01-20T01:05:00Z",
+          "facility": "PETRA III",
+          "generated": "2020-01-20T00:10:00Z",
+          "leader": {
+          "email": "feathered.feathered@feathered.com",
+          "institute": "debonair",
+          "lastname": "glossy",
+          "userId": "2879",
+          "username": "hairy"
+        },
+        "onlineAnalysis": {
+          "asapoBeamtimeTokenPath": "/shared/asapo_token",
+          "reservedNodes": [
+              "node1",
+              "node2",
+              "node2"
+          ],
+          "slurmReservation": "ponline",
+          "slurmPartition": "45473177",
+          "sshPrivateKeyPath": "shared/rsa-key.pem",
+          "sshPublicKeyPath": "shared/rsa-key.pub",
+          "userAccount": "bttest03"
+        },
+        "pi": {
+          "email": "robust.robust@robust.com",
+          "institute": "nondescript",
+          "lastname": "keen",
+          "userId": "3553",
+          "username": "military"
+        },
+        "proposalId": "65300407",
+        "proposalType": "C",
+        "title": "beautiful-cornflower-wallaby-of-agreement",
+        "unixId": "8362",
+        "users": {
+          "doorDb": [
+          "user1",
+          "user2",
+          "user3"
+          ],
+          "special": []
+        }
+        }
+        '''
+        btfname = '%s/beamtime-metadata-12345678.json' % (os.getcwd())
+        ofname = '%s/metadata-12345678.json' % (os.getcwd())
+
+        smfile = '''{
+          "user_comments": "Awesome comment",
+          "end_time": {"value":"2014-02-16T15:17:21+00:00"}
+        }
+        '''
+
+        smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
+
+        commands = [
+            ('nxsfileinfo metadata %s -b %s  -s %s -o %s -u'
+             % (self.flags, btfname, smfname, ofname)).split(),
+            ('nxsfileinfo metadata %s '
+             ' --beamtime-meta %s '
+             ' --scientific-meta %s '
+             ' --output %s '
+             % (self.flags, btfname, smfname, ofname)).split(),
+            ('nxsfileinfo metadata %s -b %s  -s %s -o %s'
+             ' --pid-with-uuid'
+             % (self.flags, btfname, smfname, ofname)).split(),
+            ('nxsfileinfo metadata %s '
+             ' --beamtime-meta %s '
+             ' --scientific-meta %s '
+             ' --output %s '
+             % (self.flags, btfname, smfname, ofname)).split(),
+        ]
+
+        try:
+            if os.path.isfile(btfname):
+                raise Exception("Test file %s exists" % btfname)
+            with open(btfname, "w") as fl:
+                fl.write(beamtimefile)
+            if os.path.isfile(smfname):
+                raise Exception("Test file %s exists" % smfname)
+            with open(smfname, "w") as fl:
+                fl.write(smfile)
+
+            for kk, cmd in enumerate(commands):
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertEqual('', vl.strip())
+
+                with open(ofname) as of:
+                    dct = json.load(of)
+                # print(dct)
+                res = {
+                    "contactEmail": "hilarious.hilarious@hilarious.com",
+                    "createdAt": "2020-01-20T00:10:00Z",
+                    "creationLocation": "/DESY/PETRA III/p01",
+                    "description":
+                    "beautiful-cornflower-wallaby-of-agreement",
+                    # "endTime": "2020-01-21T12:37:00Z",
+                    "owner": "famous",
+                    "ownerEmail": "cute.cute@cute.com",
+                    "principalInvestigator": "robust.robust@robust.com",
+                    "proposalId": "65300407",
+                    "scientificMetadata": {
+                        "beamtimeId": "16171271",
+                        "user_comments": "Awesome comment",
+                        "end_time": {
+                            "value": "2014-02-16T15:17:21+00:00"
+                        },
+                    },
+                    "sourceFolder":
+                    "/asap3/petra3/gpfs/p01/2020/data/12345678",
+                    "type": "raw",
+                    "isPublished": False,
+                    "updatedAt": "2020-01-20T00:10:00Z",
+                    'creationTime': '2014-02-16T15:17:21+00:00',
+                    'endTime': '2014-02-16T15:17:21+00:00',
+                }
+                self.myAssertDict(dct, res, skip=["pid"])
+        finally:
+            if os.path.isfile(btfname):
+                os.remove(btfname)
+            if os.path.isfile(smfname):
+                os.remove(smfname)
+            if os.path.isfile(ofname):
+                os.remove(ofname)
+
     def test_metadata_beamtime_filename(self):
         """ test nxsconfig execute empty file
         """
