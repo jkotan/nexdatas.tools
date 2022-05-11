@@ -328,7 +328,10 @@ For more help:
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         vl, er, et = self.runtestexcept(['nxsdata'], SystemExit)
-        self.assertEqual(self.helpinfo, vl)
+        self.assertEqual(
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     def test_help(self):
@@ -338,7 +341,10 @@ For more help:
         helps = ['-h', '--help']
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsdata', hl], SystemExit)
-            self.assertEqual(self.helpinfo[0:-1], vl)
+            self.assertEqual(
+                "".join(self.helpinfo.split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
     def test_openfile(self):

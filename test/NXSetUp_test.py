@@ -3316,23 +3316,28 @@ For more help:
                 admin, {"StartDsPath": newstartdspaths})
             adp.Init()
             recorderpaths = self.getProperty(msdv2, "RecorderPath")
-
             pid = self.serverPid("MacroServer/%s" % ins2)
+            # print("PD1:", pid)
             path1 = "/tmp/"
             vl, er = self.runtest(
                 ["nxsetup", "add-recorder-path", path1, "-i", ins2])
+            # print(vl)
             self.assertEqual('', er)
             self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
+            # print("PD2:", self.serverPid("MacroServer/%s" % ins2))
 
             recorderpaths1 = self.getProperty(msdv2, "RecorderPath")
             df1 = list(set(recorderpaths1) - set(recorderpaths))
             self.assertTrue(df1, [path1])
 
             pid = self.serverPid("MacroServer/%s" % ins2)
+            # print("PD3:", pid)
             path2 = "/usr/share/"
             vl, er = self.runtest(
                 ["nxsetup", "add-recorder-path", path2, "--instance", ins2])
+            # print(vl)
             self.assertEqual('', er)
+            # print("PD4:", self.serverPid("MacroServer/%s" % ins2))
             self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
 
             recorderpaths2 = self.getProperty(msdv2, "RecorderPath")
