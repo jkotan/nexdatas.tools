@@ -57,7 +57,7 @@ else
     elif [ "$1" = "ubuntu22.04" ] ; then
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y libtango-dev git libboost-python-dev'
         docker exec --user root ndts /bin/sh -c 'git clone -b v9.3.3 https://gitlab.com/tango-controls/pytango pytango-src'
-        docker exec --user root ndts /bin/sh -c 'cd pytango-src; python3 setup.py install; cd ..'
+        docker exec --user root ndts /bin/sh -c 'cd pytango-src; python3 setup.py install; cd ..; rm -rf pytango-src'
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxswriter nxswriter python3-nxsconfigserver nxsconfigserver'
     else
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-pytango python3-nxswriter nxswriter3 python3-nxsconfigserver nxsconfigserver3'
