@@ -87,7 +87,7 @@ release = IPKG.__version__
 version = ".".join(release.split(".")[:2])
 name = "NXSTools"
 author = "Jan Kotanski, Eugen Wintersberger , Halil Pasic"
-glicense = "GNU GENERAL PUBLIC LICENSE, version 3"
+glicense = "GNU GENERAL PUBLIC LICENSE version 3"
 
 #: metadata for distutils
 SETUPDATA = dict(
