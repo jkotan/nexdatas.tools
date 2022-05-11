@@ -55,7 +55,7 @@ else
     if [ "$1" = "debian10" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ]  || [ "$1" = "debian11" ] ; then
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y   python3-tango python3-nxswriter nxswriter python3-nxsconfigserver nxsconfigserver'
     elif [ "$1" = "ubuntu22.04" ] ; then
-	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y libtango-dev'
+	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y libtango-dev git'
         docker exec --user root ndts /bin/sh -c 'git clone -b v9.3.3 https://gitlab.com/tango-controls/pytango pytango'
         docker exec --user root ndts /bin/sh -c 'cd pytango; python3 setup.py install'
 	docker exec --user root ndts /bin/sh -c 'apt-get -qq update; export DEBIAN_FRONTEND=noninteractive; apt-get -qq install -y python3-nxswriter nxswriter python3-nxsconfigserver nxsconfigserver'
