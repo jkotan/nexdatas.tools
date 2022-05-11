@@ -43,8 +43,7 @@ except Exception:
 
 try:
     import TestPoolSetUp
-except Exception as e:
-    print(str(e))
+except Exception:
     from . import TestPoolSetUp
 
 try:
@@ -312,7 +311,7 @@ For more help:
     def tearDown(self):
         print("tearing down ...")
         self._pool.tearDown()
-        self._ms.tearDown()
+        self._ms.tearDown(True)
 
     def runtest(self, argv):
         old_stdout = sys.stdout
@@ -387,9 +386,9 @@ For more help:
 
         vl, er, et = self.runtestexcept(['nxsetup'], SystemExit)
         self.assertEqual(
-            [ch for ch in self.helpinfo if ch.isalpha()][:505],
-            [ch for ch in vl if ch.isalpha()][:505]
-        )
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     # comp_available test
@@ -402,9 +401,9 @@ For more help:
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsetup', hl], SystemExit)
             self.assertEqual(
-                [ch for ch in self.helpinfo if ch.isalpha()][:505],
-                [ch for ch in vl if ch.isalpha()][:505]
-            )
+                "".join(self.helpinfo.split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
     # comp_available test
@@ -3311,7 +3310,6 @@ For more help:
                                     msdv2,  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
@@ -3638,7 +3636,6 @@ For more help:
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
@@ -3728,7 +3725,6 @@ For more help:
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
