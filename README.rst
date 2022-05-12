@@ -15,12 +15,12 @@ Welcome to nxstools's documentation!
    :target: https://nexdatas.github.io/tools/index.html
    :alt:
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/tools.svg
-                  :target: https://pypi.python.org/pypi/tools
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/nxstools.svg
+                  :target: https://pypi.python.org/pypi/nxstools
                   :alt:
 
-.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/tools.svg
-                     :target: https://pypi.python.org/pypi/tools/
+.. |Python Versions| image:: https://img.shields.io/pypi/pyversions/nxstools.svg
+                     :target: https://pypi.python.org/pypi/nxstools/
                      :alt:
 
 
