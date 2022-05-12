@@ -20,8 +20,10 @@
 # the unittest runner
 #
 
-import main
+# import main
+import main2
 
 
 if __name__ == "__main__":
-    main.main()
+    pass
+    # main.main()
