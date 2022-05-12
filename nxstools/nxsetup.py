@@ -1069,7 +1069,7 @@ class Set(Runner):
         if options.csjson:
             jsonsettings = options.csjson
         else:
-            jsonsettings = '{"host":"localhost","db":"%s",' % options.dbname \
+            jsonsettings = '{"db":"%s",' % options.dbname \
                 + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
                 + ' "use_unicode":true}'
 

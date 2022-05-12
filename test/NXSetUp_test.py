@@ -171,7 +171,7 @@ For more help:
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args = '{"db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
         self.__cmps = []
         self.__ds = []
@@ -181,7 +181,7 @@ For more help:
 
         from os.path import expanduser
         home = expanduser("~")
-        self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
         self.db = PyTango.Database()
@@ -1017,7 +1017,7 @@ For more help:
                 adminproxy = PyTango.DeviceProxy(admin)
             if not os.path.isfile("/home/%s/.my.cnf" % cnf['user']):
                 skiptest = True
-            csjson = '{"host":"localhost","db":"%s",' \
+            csjson = '{"db":"%s",' \
                      '"use_unicode":true,'\
                      '"read_default_file":"/home/%s/.my.cnf"}' % \
                      (cnf['dbname'], cnf['user'])

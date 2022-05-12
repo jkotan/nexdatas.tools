@@ -53,11 +53,11 @@ class NXSCreateStdCompDBTest(
         NXSCreateStdCompFS_test.NXSCreateStdCompFSTest.__init__(
             self, methodName)
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args = '{"db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
         home = expanduser("~")
-        self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
         self._proxy = None
