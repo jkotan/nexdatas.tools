@@ -67,9 +67,10 @@ try:
     # connection arguments to MYSQL DB
     args = {}
     args["db"] = 'tango'
-    args["host"] = 'localhost'
+    # args["host"] = 'localhost'
     args["read_default_file"] = '/etc/mysql/my.cnf'
     # inscance of MySQLdb
+    print(args)
     mydb = MySQLdb.connect(**args)
     mydb.close()
     DB_AVAILABLE.append("MYSQL")
@@ -81,10 +82,12 @@ except Exception as e1:
         # connection arguments to MYSQL DB
         cnffile = '%s/.my.cnf' % home
         args2 = {
-            'host': u'localhost', 'db': u'tango',
+            # 'host': u'localhost',
+            'db': u'tango',
             'read_default_file': '%s/.my.cnf' % home,
             'use_unicode': True}
         # inscance of MySQLdb
+        print(args2)
         mydb = MySQLdb.connect(**args2)
         mydb.close()
         DB_AVAILABLE.append("MYSQL")

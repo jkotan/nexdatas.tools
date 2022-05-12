@@ -127,6 +127,7 @@ For more help:
         self._bint = "int64" if IS64BIT else "int32"
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
+        self.maxDiff = None
 
         if "h5cpp" in WRITERS.keys():
             self.writer = "h5cpp"
@@ -192,8 +193,10 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        self.assertEqual("".join(self.helpinfo.split()),
-                         "".join(vl.split()))
+        self.assertEqual(
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     def test_help(self):
@@ -218,8 +221,10 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
-            self.assertEqual("".join(self.helpinfo[0:-1].split()),
-                             "".join(vl.split()))
+            self.assertEqual(
+                "".join(self.helpinfo[0:-1].split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
     def test_append_test_emptyfile(self):

@@ -112,7 +112,7 @@ For more help:
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args = '{"db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
         self.__cmps = []
         self.__ds = []
@@ -122,7 +122,7 @@ For more help:
 
         from os.path import expanduser
         home = expanduser("~")
-        self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
 
@@ -182,7 +182,10 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        self.assertEqual(self.helpinfo, vl)
+        self.assertEqual(
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     # comp_available tesQt
@@ -207,7 +210,10 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
-            self.assertEqual(self.helpinfo[0:-1], vl)
+            self.assertEqual(
+                "".join(self.helpinfo.split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
 

@@ -75,10 +75,10 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args = '{"db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
-        self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
         self._sv = ServerSetUp.ServerSetUp()

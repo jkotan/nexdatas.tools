@@ -222,7 +222,10 @@ For more help:
         sys.stderr = old_stderr
         vl = mystdout.getvalue()
         er = mystderr.getvalue()
-        self.assertEqual(self.helpinfo, vl)
+        self.assertEqual(
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     def test_help(self):
@@ -247,7 +250,10 @@ For more help:
             sys.stderr = old_stderr
             vl = mystdout.getvalue()
             er = mystderr.getvalue()
-            self.assertEqual(self.helpinfo[0:-1], vl)
+            self.assertEqual(
+                "".join(self.helpinfo.split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
     def test_general_emptyfile(self):
@@ -3781,7 +3787,7 @@ For more help:
                 self.assertEqual(df["size"], dct["size"])
                 self.assertEqual(df["path"], filename)
                 self.assertEqual(df["uid"], getpass.getuser())
-                self.assertEqual(df["perm"], '-rw-r--r--')
+                self.assertTrue(df["perm"] in ['-rw-r--r--', '-rw-rw-r--'])
 
                 gid = pwd.getpwnam(getpass.getuser()).pw_gid
                 self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)
@@ -3928,7 +3934,7 @@ For more help:
                 self.assertEqual(df["path"],
                                  os.path.relpath(filename, locpath))
                 self.assertEqual(df["uid"], getpass.getuser())
-                self.assertEqual(df["perm"], '-rw-r--r--')
+                self.assertTrue(df["perm"] in ['-rw-r--r--', '-rw-rw-r--'])
 
                 gid = pwd.getpwnam(getpass.getuser()).pw_gid
                 self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)

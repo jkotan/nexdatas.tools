@@ -26,6 +26,7 @@ import sys
 import time
 import json
 import argparse
+import subprocess
 
 from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 
@@ -510,6 +511,41 @@ class SetUp(object):
             time.sleep(1.5)
         return found
 
+    def killServer(self, server):
+        sserver = server.split("/")
+        if len(sserver) > 1:
+            sname = sserver[0]
+            instance = sserver[1]
+        if sys.version_info > (3,):
+            with subprocess.Popen(
+                    "ps -ef | grep '%s %s' | grep -v grep"
+                    % (sname, instance),
+                    stdout=subprocess.PIPE, shell=True) as proc:
+
+                pipe = proc.stdout
+                res = str(pipe.read(), "utf8").split("\n")
+                for r in res:
+                    sr = r.split()
+                    if len(sr) > 2:
+                        subprocess.call(
+                            "kill -9 %s" % sr[1], stderr=subprocess.PIPE,
+                            shell=True)
+                pipe.close()
+        else:
+            pipe = subprocess.Popen(
+                "ps -ef | grep '%s %s' | grep -v grep"
+                % (sname, instance),
+                stdout=subprocess.PIPE, shell=True).stdout
+
+            res = str(pipe.read()).split("\n")
+            for r in res:
+                sr = r.split()
+                if len(sr) > 2:
+                    subprocess.call(
+                        "kill -9 %s" % sr[1], stderr=subprocess.PIPE,
+                        shell=True)
+            pipe.close()
+
     def restartServer(self, name, host=None, level=None, restart=True):
         """ restarts server
 
@@ -553,12 +589,15 @@ class SetUp(object):
                                         svl, level, tohigher=False)
                                 if started and svl in started:
                                     try:
+                                        # adminproxy.HardKillServer(svl)
                                         adminproxy.DevStop(svl)
+                                        # self.killServer(svl)
                                     except Exception:
                                         adminproxy.HardKillServer(svl)
                                     problems = self.waitServerNotRunning(
                                         svl, None, adminproxy, verbose=None)
                                     if problems:
+                                        self.killServer(svl)
                                         print("Server Running")
                                     sys.stdout.write("Restarting: %s" % svl)
                                 else:
@@ -1030,7 +1069,7 @@ class Set(Runner):
         if options.csjson:
             jsonsettings = options.csjson
         else:
-            jsonsettings = '{"host":"localhost","db":"%s",' % options.dbname \
+            jsonsettings = '{"db":"%s",' % options.dbname \
                 + ' "read_default_file":"/home/%s/.my.cnf",' % options.user \
                 + ' "use_unicode":true}'
 
@@ -1252,8 +1291,10 @@ class AddRecorderPath(Runner):
             options.instance = "*"
 
         setUp = SetUp()
+        print("RUN")
         if setUp.changeRecorderPath(
                 options.recpath[0], options.instance):
+            print("RUN2")
             if not options.postpone:
                 if options.instance != "*":
                     ms = "MacroServer/%s" % options.instance

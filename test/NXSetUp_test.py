@@ -43,8 +43,7 @@ except Exception:
 
 try:
     import TestPoolSetUp
-except Exception as e:
-    print(str(e))
+except Exception:
     from . import TestPoolSetUp
 
 try:
@@ -172,7 +171,7 @@ For more help:
         self._buint = "uint64" if IS64BIT else "uint32"
         self._bfloat = "float64" if IS64BIT else "float32"
 
-        self.__args = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args = '{"db":"nxsconfig", ' \
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
         self.__cmps = []
         self.__ds = []
@@ -182,7 +181,7 @@ For more help:
 
         from os.path import expanduser
         home = expanduser("~")
-        self.__args2 = '{"host":"localhost", "db":"nxsconfig", ' \
+        self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
         self.db = PyTango.Database()
@@ -312,7 +311,7 @@ For more help:
     def tearDown(self):
         print("tearing down ...")
         self._pool.tearDown()
-        self._ms.tearDown()
+        self._ms.tearDown(True)
 
     def runtest(self, argv):
         old_stdout = sys.stdout
@@ -387,9 +386,9 @@ For more help:
 
         vl, er, et = self.runtestexcept(['nxsetup'], SystemExit)
         self.assertEqual(
-            [ch for ch in self.helpinfo if ch.isalpha()][:505],
-            [ch for ch in vl if ch.isalpha()][:505]
-        )
+            "".join(self.helpinfo.split()).replace(
+                "optionalarguments:", "options:"),
+            "".join(vl.split()).replace("optionalarguments:", "options:"))
         self.assertEqual(self.helperror, er)
 
     # comp_available test
@@ -402,9 +401,9 @@ For more help:
         for hl in helps:
             vl, er, et = self.runtestexcept(['nxsetup', hl], SystemExit)
             self.assertEqual(
-                [ch for ch in self.helpinfo if ch.isalpha()][:505],
-                [ch for ch in vl if ch.isalpha()][:505]
-            )
+                "".join(self.helpinfo.split()).replace(
+                    "optionalarguments:", "options:"),
+                "".join(vl.split()).replace("optionalarguments:", "options:"))
             self.assertEqual('', er)
 
     # comp_available test
@@ -1018,7 +1017,7 @@ For more help:
                 adminproxy = PyTango.DeviceProxy(admin)
             if not os.path.isfile("/home/%s/.my.cnf" % cnf['user']):
                 skiptest = True
-            csjson = '{"host":"localhost","db":"%s",' \
+            csjson = '{"db":"%s",' \
                      '"use_unicode":true,'\
                      '"read_default_file":"/home/%s/.my.cnf"}' % \
                      (cnf['dbname'], cnf['user'])
@@ -3311,30 +3310,34 @@ For more help:
                                     msdv2,  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
                 admin, {"StartDsPath": newstartdspaths})
             adp.Init()
             recorderpaths = self.getProperty(msdv2, "RecorderPath")
-
             pid = self.serverPid("MacroServer/%s" % ins2)
+            # print("PD1:", pid)
             path1 = "/tmp/"
             vl, er = self.runtest(
                 ["nxsetup", "add-recorder-path", path1, "-i", ins2])
+            # print(vl)
             self.assertEqual('', er)
             self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
+            # print("PD2:", self.serverPid("MacroServer/%s" % ins2))
 
             recorderpaths1 = self.getProperty(msdv2, "RecorderPath")
             df1 = list(set(recorderpaths1) - set(recorderpaths))
             self.assertTrue(df1, [path1])
 
             pid = self.serverPid("MacroServer/%s" % ins2)
+            # print("PD3:", pid)
             path2 = "/usr/share/"
             vl, er = self.runtest(
                 ["nxsetup", "add-recorder-path", path2, "--instance", ins2])
+            # print(vl)
             self.assertEqual('', er)
+            # print("PD4:", self.serverPid("MacroServer/%s" % ins2))
             self.assertTrue(self.serverPid("MacroServer/%s" % ins2) != pid)
 
             recorderpaths2 = self.getProperty(msdv2, "RecorderPath")
@@ -3638,7 +3641,6 @@ For more help:
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
@@ -3728,7 +3730,6 @@ For more help:
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
                 os.path.dirname(TestServerSetUp.__file__))
-            print(newpath)
             newstartdspaths = list(startdspaths)
             newstartdspaths.append(newpath)
             self.db.put_device_property(
