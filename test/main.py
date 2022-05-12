@@ -70,6 +70,7 @@ try:
     # args["host"] = 'localhost'
     args["read_default_file"] = '/etc/mysql/my.cnf'
     # inscance of MySQLdb
+    print(args)
     mydb = MySQLdb.connect(**args)
     mydb.close()
     DB_AVAILABLE.append("MYSQL")
@@ -86,6 +87,7 @@ except Exception as e1:
             'read_default_file': '%s/.my.cnf' % home,
             'use_unicode': True}
         # inscance of MySQLdb
+        print(args2)
         mydb = MySQLdb.connect(**args2)
         mydb.close()
         DB_AVAILABLE.append("MYSQL")

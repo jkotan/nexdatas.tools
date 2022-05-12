@@ -69,11 +69,13 @@ if [ "$?" != "0" ]; then exit 255; fi
 if [ "$2" = "2" ]; then
     echo "install python-nxstools"
     docker exec --user root ndts chown -R tango:tango .
-    docker exec --user root ndts python setup.py -q install
+    docker exec  ndts python setup.py build
+    docker exec --user root ndts python setup.py  install
 else
     echo "install python3-nxstools"
     docker exec --user root ndts chown -R tango:tango .
-    docker exec --user root ndts python3 setup.py -q install
+    docker exec  ndts python3 setup.py build
+    docker exec --user root ndts python3 setup.py  install
 fi
 if [ "$?" != "0" ]; then exit 255; fi
 
