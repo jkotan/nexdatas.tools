@@ -15,6 +15,7 @@ else
     docker exec --user root ndts service mysql stop
     if [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "ubuntu21.04" ] || [ "$1" = "ubuntu22.04" ]; then
 	sudo docker exec  --user root ndts /bin/bash -c 'echo -e "[client]\nuser=tango\nhost=127.0.0.1\npassword=rootpw" > /home/tango/.my.cnf'
+	sudo docker exec  --user root ndts /bin/bash -c 'echo -e "[client]\nuser=tango\nhost=127.0.0.1\npassword=rootpw" > /var/lib/tango/.my.cnf'
 	sudo docker exec  --user root ndts /bin/bash -c 'echo -e "[client]\nuser=root\npassword=rootpw" > /root/.my.cnf'
 	# docker exec --user root ndts /bin/bash -c 'mkdir -p /var/lib/mysql'
 	# docker exec --user root ndts /bin/bash -c 'chown mysql:mysql /var/lib/mysql'
