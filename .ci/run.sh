@@ -11,4 +11,4 @@ else
 	docker exec ndts python3 test
     fi
 fi    
-if [ "$?" != "0" ]; then exit -1; fi
+if [ "$?" != "0" ]; then exit 255; fi
