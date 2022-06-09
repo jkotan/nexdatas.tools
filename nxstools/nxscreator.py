@@ -36,6 +36,7 @@ from nxstools.nxsdevicetools import (
     xmlPackageHandler)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
                              NDimensions)
+from nxstools.pyeval.secop import secop_cmd
 
 #: (:obj:`bool`) True if PyTango available
 PYTANGO = False
@@ -48,6 +49,23 @@ except Exception:
 if sys.version_info > (3,):
     basestring = str
     unicode = str
+
+npTn = {"float32": "NX_FLOAT32",
+        "float64": "NX_FLOAT64",
+        "double": "NX_FLOAT64",
+        "float": "NX_FLOAT32",
+        "int64": "NX_INT64",
+        "int32": "NX_INT32",
+        "int16": "NX_INT16",
+        "int8": "NX_INT8",
+        "int": "NX_INT64",
+        "uint64": "NX_UINT64",
+        "uint32": "NX_UINT32",
+        "uint16": "NX_UINT16",
+        "uint8": "NX_UINT8",
+        "uint": "NX_UINT64",
+        "string": "NX_CHAR",
+        "bool": "NX_BOOLEAN"}
 
 
 class CPExistsException(Exception):
@@ -1724,6 +1742,447 @@ class OnlineCPCreator(CPCreator):
                                     self.components[newname] = xml
 
 
+class SECoPCPCreator(CPCreator):
+
+    """ component creator of secop components
+    """
+
+    def __init__(self, options, args, printouts=True):
+        """ constructor
+
+        :param options: command options
+        :type options: :class:`optparse.Values`
+        :param args: command arguments
+        :type args: :obj:`list` < :obj:`str` >
+        :param printouts: if printout is enable
+        :type printouts: :obj:`bool`
+        """
+        CPCreator.__init__(self, options, args, printouts)
+
+    def _printAction(self, name, ds=False):
+        """ prints out information about the performed action
+
+        :param name: component name
+        :type name: :obj:`str`
+        """
+        if self._printouts:
+            if hasattr(self.options, "database") and \
+               self.options.database:
+                print("CREATING '%s' of secop on '%s'" % (
+                    name,
+                    self.options.server))
+            else:
+                ext = ".ds" if ds else ""
+                print("CREATING '%s' of secop in '%s/%s%s%s.xml'" % (
+                    name,
+                    self.options.directory,
+                    self.options.file,
+                    name, ext))
+
+    # def listcomponents(self):
+    #     """ provides a list of components with xml templates
+
+    #     :returns: list of components with xml templates
+    #     :rtype: :obj:`list` <:obj:`str` >
+    #     """
+    #     hw = etree.parse(
+    #         self.args[0],
+    #         parser=XMLParser(collect_ids=False)).getroot()
+    #     if hw.tag != 'hw':
+    #         hw = hw.find('hw')
+    #     cpnames = set()
+    #     for device in hw:
+    #         if device.tag == 'device':
+    #             dvname = self._getChildText(device, "name")
+    #             sardananame = self._getChildText(device, "sardananame")
+    #             name = sardananame or dvname
+    #             if self.options.lower:
+    #                 name = name.lower()
+    #             dv = Device()
+    #             dv.name = name
+    #             dv.dtype = self._getChildText(device, "type")
+    #             dv.module = self._getChildText(device, "module")
+    #             dv.tdevice = self._getChildText(device, "device")
+    #             dv.hostname = self._getChildText(device, "hostname")
+    #             dv.sardananame = self._getChildText(device, "sardananame")
+    #             dv.sardanahostname = self._getChildText(
+    #                 device, "sardanahostname")
+
+    #             module = self._getModuleName(dv)
+    #             if module:
+    #                 if module.lower() in self.xmlpackage.moduleTemplateFiles:
+    #                     cpnames.add(dv.name)
+    #     return cpnames
+
+    def __createSECoPTree(self, df, name, conf, samplename=None, canfail=None):
+        """ create nexus node tree
+
+        :param df: definition parent node
+        :type df: :class:'nxstools.nxsxml.XMLFile'
+        :param name: node name
+        :type name: :obj:`str`
+        :param conf: secop configuration
+        :type conf: :obj:`dict`
+        :param samplename: sample name
+        :type samplename: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
+        """
+        ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
+                    "$(__entryname__)", (self.options.entryname or "scan"))
+        entry = NGroup(df, samplename or ename, "NXentry")
+        sample = NGroup(entry, samplename or "sample", "NXsample")
+        env = NGroup(sample, name or "environment", "NXenvironment")
+        modules = conf.get("modules", {})
+        if 'description' in conf.keys():
+            field = NField(env, 'name', 'NX_CHAR')
+            field.setText("%s" % str(conf['description']))
+            field.setStrategy('INIT')
+        if 'equipment_id' in conf.keys():
+            field = NField(env, 'short_name', 'NX_CHAR')
+            field.setText("%s" % str(conf['equipment_id']))
+            field.setStrategy('INIT')
+        if 'firmware' in conf.keys():
+            field = NField(env, 'type', 'NX_CHAR')
+            field.setText("%s" % str(conf['firmware']))
+            field.setStrategy('INIT')
+        if 'version' in conf.keys():
+            field = NField(env, 'description', 'NX_CHAR')
+            field.setText("%s" % str(conf['version']))
+            field.setStrategy('INIT')
+
+        for mname, mconf in modules.items():
+            if mname:
+                self.__createSECoPSensor(env, mname, mconf, name, canfail)
+
+    def __createSECoPSensor(self, env, name, conf, nodename, canfail=None):
+        """ create nexus node tree
+
+        :param env: definition parent node
+        :type env: :class:'nxstools.nxsxml.XMLFile'
+        :param name: sensor name
+        :type name: :obj:`str`
+        :param conf: secop configuration
+        :type conf: :obj:`dict`
+        :param nodename: node name
+        :type nodename: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
+        """
+        mgr = NGroup(env, name, "NXsensor")
+        if 'description' in conf.keys():
+            field = NField(mgr, 'name', 'NX_CHAR')
+            field.setText("%s" % str(conf['description']).replace(",", "_"))
+            field.setStrategy('INIT')
+            if "temperaturesensor" in conf['description']:
+                field = NField(mgr, 'measurement', 'NX_CHAR')
+                field.setText("temperature")
+                field.setStrategy('INIT')
+
+        if 'implementation' in conf.keys():
+            field = NField(mgr, 'model', 'NX_CHAR')
+            field.setText("%s" % str(conf['implementation']))
+            field.setStrategy('INIT')
+        params = conf.get("accessibles", {})
+        if params:
+            par = NGroup(mgr, "parameters", "NXcollection")
+            for pname, pconf in params.items():
+                if pname:
+                    if pconf.get("description") == "currentvalueofthemodule":
+                        di = pconf.get("datainfo")
+                        if di:
+                            dtype = di.get("type")
+                            nxtype = npTn.get(dtype, "NX_CHAR")
+                            units = di.get("unit")
+                            minval = di.get("min")
+                            maxval = di.get("max")
+                        log = NGroup(mgr, "value_log", "NXlog")
+                        field = NField(log, 'value', nxtype)
+                        dsname = "%s_%s" % (nodename, name)
+                        timedsname = "%s_%s_time" % (nodename, name)
+                        self.createSECoPDS(dsname,
+                                           "read %s:%s" % (name, pname),
+                                           dsname, "[0]")
+                        field.setText("$datasources.%s" % dsname)
+                        if units:
+                            field.setUnits(units)
+                        field.setStrategy('STEP')
+                        field = NField(log, 'time', "NX_FLOAT64")
+                        field.setText(
+                            "$datasources.%s" % timedsname)
+                        self.createSECoPDS(timedsname,
+                                           "read %s:%s" % (name, pname),
+                                           dsname, "[1, 't']")
+                        field.setUnits("s")
+                        field.setStrategy('STEP')
+                        if minval:
+                            field = NField(log, 'minimal_value', nxtype)
+                            field.setStrategy('INIT')
+                            field.setText(str(minval))
+                            if units:
+                                field.setUnits(units)
+                        if maxval:
+                            field = NField(log, 'maximal_value', nxtype)
+                            field.setStrategy('INIT')
+                            field.setText(str(maxval))
+                            if units:
+                                field.setUnits(units)
+                    elif pname == "target":
+                        self.__createSECoPParam(
+                            mgr, "value", pconf, nodename, name, canfail)
+                    else:
+                        self.__createSECoPParam(
+                            par, pname, pconf, nodename, name, canfail)
+
+    def __createSECoPParam(self, par, name, conf, nodename, modname,
+                           canfail=None):
+        """ create nexus node tree
+
+        :param env: definition parent node
+        :type env: :class:'nxstools.nxsxml.XMLFile'
+        :param name: parameter name
+        :type name: :obj:`str`
+        :param conf: secop configuration
+        :type conf: :obj:`dict`
+        :param nodename: node name
+        :type nodename: :obj:`str`
+        :param modname: sensor name
+        :type modname: :obj:`str`
+        :param canfail: can fail strategy flag
+        :type canfail: :obj:`bool`
+        """
+        di = conf.get("datainfo")
+        if di:
+            dtype = di.get("type")
+            if dtype == "command":
+                return
+            nxtype = npTn.get(dtype, "NX_CHAR")
+            units = di.get("unit")
+            minval = di.get("min")
+            maxval = di.get("max")
+        field = NField(par, name, nxtype)
+        field.setText("$datasources.%s_%s_%s" % (nodename, modname, name))
+        field.setStrategy('INIT')
+        if units:
+            field.setUnits(units)
+        if minval:
+            field.addAttr("minimal_value", nxtype, str(minval))
+        if maxval:
+            field.addAttr("maximal_value", nxtype, str(maxval))
+
+    def createXMLs(self):
+        """ creates component xmls of all online.xml complex devices
+        """
+        self.datasources = {}
+        self.components = {}
+        conf = secop_cmd("describe", self.options.host, int(self.options.port))
+        if isinstance(conf, dict):
+            dump = \
+                json.dumps(conf, sort_keys=True, indent=4)
+            print("%s" % dump)
+            cpname = self.options.component
+            df = XMLFile("%s/%s%s.xml" % (
+                self.options.directory,
+                self.options.file, cpname))
+            self.__createSECoPTree(df, cpname, conf, self.options.samplename,
+                                   self.options.canfail)
+            self._printAction(cpname)
+            self.components[cpname] = df.prettyPrint()
+
+    def createSECoPDS(self, dsname, message, group=None, access=None,
+                      host=None, port=None, timeout=None):
+        """ create SECoP datasource
+
+        :param dsname: datasource name
+        :type dsname: :obj:`str`
+        :param message: secop command
+        :type message: :obj:`str`
+        :param group: secop group name
+        :type group: :obj:`str`
+        :param access: secop attribute access list
+        :type access: :obj:`str`
+        :param host: secop host name
+        :type host: :obj:`str`
+        :param port: secop port name
+        :type port: :obj:`str` or :obj:`int`
+        :param port: minimum timeout
+        :type port: :obj:`str` or :obj:`float`
+        """
+        if access is not None and group is not None:
+            module = 'groupsecop'
+        elif group is not None:
+            module = 'secop'
+        else:
+            module = 'simplesecop'
+        if module in self.xmlpackage.standardComponentTemplateFiles:
+            xmlfiles = self.xmlpackage.standardComponentTemplateFiles[module]
+        else:
+            if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
+                xmlfiles = ["%s.xml" % module]
+        params = {}
+
+        host = self.options.host if host is None else host
+        port = self.options.port if port is None else port
+        # timeout = self.options.timeout if timeout is None else timeout
+        if host is not None:
+            params["host"] = host
+        if port is not None:
+            params["port"] = str(port)
+        if message:
+            params["message"] = message
+        if timeout:
+            params["timeout"] = timeout
+        if access:
+            params["access"] = access
+        if self.options.lower:
+            dsname = dsname.lower()
+
+        for xmlfile in xmlfiles:
+            # print(xmlfile)
+            newname = self._replaceName(xmlfile, dsname, module)
+            with open(
+                    '%s/%s' % (
+                        self.xmltemplatepath, xmlfile), "r"
+            ) as content_file:
+                xmlcontent = content_file.read()
+                xml = xmlcontent.replace("$(name)", dsname)
+                missing = []
+                for var, desc in self.xmlpackage.standardComponentVariables[
+                        module].items():
+                    if var in params.keys():
+                        xml = xml.replace("$(%s)" % var, params[var])
+                    elif desc["default"] is not None:
+                        xml = xml.replace("$(%s)" % var, desc["default"])
+                    else:
+                        missing.append(var)
+                if missing:
+                    if sys.version_info > (3,):
+                        root = et.fromstring(
+                            bytes(xml, "UTF-8"),
+                            parser=XMLParser(collect_ids=False))
+                    else:
+                        root = et.fromstring(
+                            xml,
+                            parser=XMLParser(collect_ids=False))
+                    nodes = root.findall(".//attribute")
+                    nodes.extend(root.findall(".//field"))
+                    nodes.extend(root.findall(".//link"))
+                    grnodes = root.findall(".//group")
+                    for node in nodes:
+                        text = self.__getText(node)
+                        for ms in missing:
+                            label = "$(%s)" % ms
+                            if label in text:
+                                parent = node.getparent()
+                                parent.remove(node)
+                                break
+                    for node in grnodes:
+                        text = node.attrib["name"]
+                        if text and "$(" in text:
+                            for ms in missing:
+                                label = "$(%s)" % ms
+                                if label in text:
+                                    parent = node.getparent()
+                                    parent.remove(node)
+                                    break
+                    xml = _simpletoxml(root)
+                    if self._printouts:
+                        print("MISSING %s" % missing)
+                    errors = []
+                    for var in missing:
+                        if "s.$(%s)" % var in xml:
+                            errors.append(var)
+                    if errors:
+                        print(
+                            "WARNING: %s cannot be created without %s"
+                            % (var, errors))
+                        continue
+
+                    for var in missing:
+                        xml = xml.replace("$(%s)" % var, "")
+                    lines = xml.split('\n')
+                    xml = '\n'.join([x for x in lines if len(x.strip())])
+                if xmlfile.endswith(".ds.xml"):
+                    self._printAction(newname, True)
+                    self.datasources[newname] = xml
+                else:
+                    self._printAction(newname)
+                    self.components[newname] = xml
+
+    def create(self):
+        """ creates components of all online.xml complex devices
+        """
+        cpnames = self.args
+        for cpname in cpnames:
+            if hasattr(self.options, "database") and \
+               self.options.database:
+                server = self.options.server
+                if not self.options.overwrite:
+                    if self._areComponentsAvailable(
+                            [cpname], server, self.options.lower):
+                        raise CPExistsException(
+                            "Component '%s' already exists." % cpname)
+            elif not self.options.overwrite:
+                existing = self._componentFilesExist(
+                    [cpname], self.options.file, self.options.directory)
+                if existing:
+                    raise CPExistsException(
+                        "Component files '%s' already exist." % existing)
+
+        self.createXMLs()
+        if not self.datasources and not self.components:
+            raise CPExistsException(
+                "Warning: Components %s cannot be created" % cpnames)
+        server = self.options.server
+        if hasattr(self.options, "database") and \
+           self.options.database:
+            for dsname, dsxml in self.datasources.items():
+                storeDataSource(dsname, dsxml, server)
+            for cpname, cpxml in self.components.items():
+                mand = False
+                if hasattr(self.options, "mandatory") and \
+                   self.options.mandatory:
+                    mand = True
+                storeComponent(cpname, cpxml, server, mand)
+        else:
+            for dsname, dsxml in self.datasources.items():
+                with open("%s/%s%s.ds.xml" % (
+                        self.options.directory,
+                        self.options.file, dsname), "w") as myfile:
+                    myfile.write(dsxml)
+            for cpname, cpxml in self.components.items():
+                print(cpname)
+                with open("%s/%s%s.xml" % (
+                        self.options.directory,
+                        self.options.file, cpname), "w") as myfile:
+                    print("%s/%s%s.xml" % (
+                        self.options.directory,
+                        self.options.file, cpname))
+                    myfile.write(cpxml)
+
+    @classmethod
+    def _replaceName(cls, filename, cpname, module=None):
+        """ replaces name prefix of xml templates files
+
+        :param filename: template filename
+        :type filename: :obj:`str`
+        :param cpname: output prefix
+        :type cpname: :obj:`str`
+        :param module: module name
+        :type module: :obj:`str`
+        :returns: output filename
+        :rtype: :obj:`str`
+        """
+        if filename.endswith(".ds.xml"):
+            filename = filename[:-7]
+        elif filename.endswith(".xml"):
+            filename = filename[:-4]
+        sname = filename.split("_")
+        if not module or module == sname[0]:
+            sname[0] = cpname
+        return "_".join(sname)
+
+
 class StandardCPCreator(CPCreator):
 
     """ component creator of standard templates
@@ -1811,7 +2270,7 @@ class StandardCPCreator(CPCreator):
             if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
                 xmlfiles = ["%s.xml" % module]
         for xmlfile in xmlfiles:
-            print(xmlfile)
+            # print(xmlfile)
             newname = self._replaceName(xmlfile, cpname, module)
             with open(
                     '%s/%s' % (

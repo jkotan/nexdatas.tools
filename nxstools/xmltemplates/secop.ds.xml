@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)">
+    <result name="result">
+from nxstools.pyeval import secop
+from nxswriter import globallock
+ds.result = secop.secop_cmd("$(message)", "$(host)", $(port),  $(timeout), globallock, commonblock)
+    </result>
+  </datasource>
+</definition>
