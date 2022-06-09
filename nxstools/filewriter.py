@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2017 DESY, Jan Kotanski <jkotan@mail.desy.de>

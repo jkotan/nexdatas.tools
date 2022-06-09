@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
@@ -1900,6 +1899,9 @@ class SECoPCPCreator(CPCreator):
                         field = NField(log, 'value', nxtype)
                         dsname = "%s_%s" % (nodename, name)
                         timedsname = "%s_%s_time" % (nodename, name)
+                        if self.options.lower:
+                            dsname = dsname.lower()
+                            timedsname = timedsname.lower()
                         self.createSECoPDS(dsname,
                                            "read %s:%s" % (name, pname),
                                            dsname, "[0]")
@@ -1960,15 +1962,41 @@ class SECoPCPCreator(CPCreator):
             units = di.get("unit")
             minval = di.get("min")
             maxval = di.get("max")
-        field = NField(par, name, nxtype)
-        field.setText("$datasources.%s_%s_%s" % (nodename, modname, name))
-        field.setStrategy('INIT')
+        log = NGroup(par, name, "NXlog")
+        field = NField(log, "value", nxtype)
+        dsname = "$datasources.%s_%s_%s" % (nodename, modname, name)
+        timedsname = "$datasources.%s_%s_%s_time" % (nodename, modname, name)
+        if self.options.lower:
+            dsname = dsname.lower()
+            timedsname = timedsname.lower()
+        field.setText("$datasources.%s" % (dsname))
+        strategy = self.options.paramstrategy
+        self.createSECoPDS(dsname,
+                           "read %s:%s" % (modname, name),
+                           dsname, "[0]")
+        field.setStrategy(strategy)
         if units:
             field.setUnits(units)
+        field = NField(log, 'time', "NX_FLOAT64")
+        field.setText(
+            "$datasources.%s" % timedsname)
+        self.createSECoPDS(timedsname,
+                           "read %s:%s" % (modname, name),
+                           dsname, "[1, 't']")
+        field.setUnits("s")
+        field.setStrategy(strategy)
         if minval:
-            field.addAttr("minimal_value", nxtype, str(minval))
+            field = NField(log, 'minimal_value', nxtype)
+            field.setStrategy('INIT')
+            field.setText(str(minval))
+            if units:
+                field.setUnits(units)
         if maxval:
-            field.addAttr("maximal_value", nxtype, str(maxval))
+            field = NField(log, 'maximal_value', nxtype)
+            field.setStrategy('INIT')
+            field.setText(str(maxval))
+            if units:
+                field.setUnits(units)
 
     def createXMLs(self):
         """ creates component xmls of all online.xml complex devices
@@ -1981,9 +2009,14 @@ class SECoPCPCreator(CPCreator):
                 json.dumps(conf, sort_keys=True, indent=4)
             print("%s" % dump)
             cpname = self.options.component
-            df = XMLFile("%s/%s%s.xml" % (
-                self.options.directory,
-                self.options.file, cpname))
+            if 'description' in conf.keys() and not cpname:
+                cpname = str(conf['description']).replace("[", "").\
+                    replace("]", "_").replace(",", "_")
+            fname = "%s%s.xml" % (self.options.file, cpname)
+            if self.options.lower:
+                fname = fname.lower()
+                cpname = cpname.lower()
+            df = XMLFile("%s/%s" % (self.options.directory, fname))
             self.__createSECoPTree(df, cpname, conf, self.options.samplename,
                                    self.options.canfail)
             self._printAction(cpname)
@@ -2023,7 +2056,8 @@ class SECoPCPCreator(CPCreator):
 
         host = self.options.host if host is None else host
         port = self.options.port if port is None else port
-        # timeout = self.options.timeout if timeout is None else timeout
+        timeout = str(self.options.timeout) \
+            if timeout is None else str(timeout)
         if host is not None:
             params["host"] = host
         if port is not None:
@@ -2034,6 +2068,8 @@ class SECoPCPCreator(CPCreator):
             params["timeout"] = timeout
         if access:
             params["access"] = access
+        if group:
+            params["group"] = group
         if self.options.lower:
             dsname = dsname.lower()
 

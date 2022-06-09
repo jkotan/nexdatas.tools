@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
@@ -1235,6 +1234,15 @@ class SECoPCP(Runner):
                             help="component name" +
                             "secop component name",
                             dest="component", default="")
+        parser.add_argument("-g", "--param-strategy",
+                            help="sensor parameter strategy, "+
+                            "i.e. INIT, STEP or FINAL, " +
+                            "default: STEP",
+                            dest="paramstrategy", default="STEP")
+        parser.add_argument("-m", "--timeout",
+                            help="sensor minimum timeout " +
+                            "default: 0.001",
+                            dest="timeout", default=0.001)
         parser.add_argument("-s", "--sample",
                             help="sample name" +
                             "sample name",

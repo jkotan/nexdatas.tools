@@ -197,6 +197,7 @@ def secop_cmd(cmd, host=None, port=None, timeout=None, commonblock=None):
     :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
     """
     res = None
+    sckt = None
     try:
         try:
             sckt = secop_socket(host, port, commonblock)
@@ -207,7 +208,8 @@ def secop_cmd(cmd, host=None, port=None, timeout=None, commonblock=None):
         if not isinstance(commonblock, dict):
             sckt.close()
     except Exception:
-        sckt.close()
+        if sckt is not None:
+            sckt.close()
     return res
 
 

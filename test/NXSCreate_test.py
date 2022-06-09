@@ -72,13 +72,13 @@ class NXSCreateTest(unittest.TestCase):
         self.helperror = "Error: too few arguments\n"
 
         self.helpinfo = """usage: nxscreate [-h]
-                 {clientds,tangods,deviceds,onlinecp,onlineds,poolds,stdcomp,comp,compare}
+                 {clientds,tangods,deviceds,onlinecp,onlineds,poolds,stdcomp,comp,secopcp,compare}
                  ...
 
  Command-line tool for creating NXSConfigServer configuration of Nexus Files
 
 positional arguments:
-  {clientds,tangods,deviceds,onlinecp,onlineds,poolds,stdcomp,comp,compare}
+  {clientds,tangods,deviceds,onlinecp,onlineds,poolds,stdcomp,comp,secopcp,compare}
                         sub-command help
     clientds            create client datasources
     tangods             create tango datasources
@@ -88,6 +88,7 @@ positional arguments:
     poolds              create datasources from sardana pool device
     stdcomp             create component from the standard templates
     comp                create simple components
+    secopcp             create secop components
     compare             compare two online.xml files
 
 optional arguments:
@@ -117,6 +118,7 @@ For more help:
         self.__cmps = []
         self.__ds = []
         self.__man = []
+        self.maxDiff = None
         self.children = ("record", "doc", "device", "database", "query",
                          "datasource", "result")
 
