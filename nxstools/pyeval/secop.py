@@ -25,6 +25,9 @@ import select
 import threading
 
 
+socketlock = threading.Lock()
+
+
 class SocketHolder(object):
 
     """ socket holder """
@@ -67,11 +70,12 @@ class SecopGroup(object):
         #: (:class:`threading.Lock`) threading lock
         self.lock = threading.Lock()
         #: (:obj:`int`) counter of steps
-        self.counter = -1
+        self.counter = -2
+        #: (:obj:`any`) any data
+        self.__data
 
     def getData(self, cmd, host=None, port=None, timeout=None,
-                access=None,
-                globallock=None, commonblock=None):
+                access=None, commonblock=None):
         """ create a socket end execute the command with the group result
 
         :param counter: counts of scan steps
@@ -87,14 +91,26 @@ class SecopGroup(object):
         :param access: secop group name
         :type access: :obj:`list`< :obj:`str` or :obj:`int`>
                   or :obj:`tuple`< :obj:`str` or :obj:`int`>
-        :param globallock: global lock
-        :type globallock: :class:`threading.Lock`
         :param commonblock: common block
         :type commonblock: :obj:`dict`
         :returns: json string
         :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
         """
-        return
+        counter = commonblock["__stepcounter__"]
+        data = None
+        with self.lock:
+            if counter == self.counter:
+                data = self.data
+            else:
+                data = secop_cmd(cmd, host, port, timeout, commonblock)
+                self.data = data
+                self.counter = counter
+        try:
+            for idx in access:
+                data = data[idx]
+        except Exception:
+            data = None
+        return data
 
 
 def secop_send(cmd, sckt, timeout=None):
@@ -130,16 +146,13 @@ def secop_send(cmd, sckt, timeout=None):
     return argout
 
 
-def secop_socket(host=None, port=None,
-                 globallock=None, commonblock=None):
+def secop_socket(host=None, port=None, commonblock=None):
     """ sends a command, reads the reply and returns a result
 
     :param host: secop host name
     :type host: :obj:`str`
     :param port: secop port name
     :type port: :obj:`int`
-    :param globallock: global lock
-    :type globallock: :class:`threading.Lock`
     :param commonblock: common block
     :type commonblock: :obj:`dict`
     :returns: system socket
@@ -147,11 +160,11 @@ def secop_socket(host=None, port=None,
     """
     host = host or socket.gethostname()
     port = int(port or 5000)
-    if globallock is None or not isinstance(commonblock, dict):
+    if not isinstance(commonblock, dict):
         sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     else:
         name = "secop_%s:%s" % (host, port)
-        with globallock:
+        with socketlock:
             if name in commonblock.keys() and \
                isinstance(commonblock[name], SocketHolder):
                 sckt = commonblock[name].get()
@@ -167,8 +180,7 @@ def secop_socket(host=None, port=None,
     return sckt
 
 
-def secop_cmd(cmd, host=None, port=None, timeout=None,
-              globallock=None, commonblock=None):
+def secop_cmd(cmd, host=None, port=None, timeout=None, commonblock=None):
     """ create a socket end execute the command
 
     :param cmd: command
@@ -179,8 +191,6 @@ def secop_cmd(cmd, host=None, port=None, timeout=None,
     :type port: :obj:`int`
     :param timeout: minial tiemout
     :type timeout: :obj:`float`
-    :param globallock: global lock
-    :type globallock: :class:`threading.Lock`
     :param commonblock: common block
     :type commonblock: :obj:`dict`
     :returns: json string
@@ -189,13 +199,12 @@ def secop_cmd(cmd, host=None, port=None, timeout=None,
     res = None
     try:
         try:
-            sckt = secop_socket(
-                host, port, globallock, commonblock)
+            sckt = secop_socket(host, port, commonblock)
             res = secop_send(cmd, sckt, timeout)
         except Exception:
             sckt = secop_socket(host, port)
             res = secop_send(cmd, sckt, timeout)
-        if globallock is None or not isinstance(commonblock, dict):
+        if not isinstance(commonblock, dict):
             sckt.close()
     except Exception:
         sckt.close()
@@ -203,8 +212,7 @@ def secop_cmd(cmd, host=None, port=None, timeout=None,
 
 
 def secop_group_cmd(cmd, host=None, port=None, timeout=None,
-                    group=None, access=None,
-                    globallock=None, commonblock=None):
+                    group=None, access=None, commonblock=None):
     """ create a socket end execute the command with the group result
 
     :param cmd: command
@@ -220,20 +228,17 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
     :param access: secop group name
     :type access: :obj:`list`< :obj:`str` or :obj:`int`>
                   or :obj:`tuple`< :obj:`str` or :obj:`int`>
-    :param globallock: global lock
-    :type globallock: :class:`threading.Lock`
     :param commonblock: common block
     :type commonblock: :obj:`dict`
     :returns: json string
     :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
     """
     res = None
-    if group is None or access is None or \
-       globallock in None or commonblock is None:
-        return secop_cmd(cmd, host, port, timeout, globallock, commonblock)
+    if group is None or access is None or commonblock is None:
+        return secop_cmd(cmd, host, port, timeout, commonblock)
     name = "_secop_%s" % group
     sgroup = None
-    with globallock:
+    with socketlock:
         if name in commonblock.keys() and \
            isinstance(commonblock[name], SecopGroup):
             sgroup = commonblock[name].get()
@@ -241,6 +246,5 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
             sgroup = SecopGroup(name)
             commonblock[name] = sgroup
 
-    res = sgroup.getData(cmd, host, port, timeout, access,
-                         globallock, commonblock)
+    res = sgroup.getData(cmd, host, port, timeout, access, commonblock)
     return res
