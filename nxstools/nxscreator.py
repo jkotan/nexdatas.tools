@@ -1908,15 +1908,16 @@ class SECoPCPCreator(CPCreator):
                         field.setText("$datasources.%s" % dsname)
                         if units:
                             field.setUnits(units)
-                        field.setStrategy('STEP')
+                        strategy = self.options.strategy
+                        field.setStrategy(strategy)
                         field = NField(log, 'time', "NX_FLOAT64")
                         field.setText(
                             "$datasources.%s" % timedsname)
                         self.createSECoPDS(timedsname,
                                            "read %s:%s" % (name, pname),
-                                           dsname, "[1, 't']")
+                                           dsname, '[1, "t"]')
                         field.setUnits("s")
-                        field.setStrategy('STEP')
+                        field.setStrategy(strategy)
                         if minval:
                             field = NField(log, 'minimal_value', nxtype)
                             field.setStrategy('INIT')
@@ -1929,12 +1930,21 @@ class SECoPCPCreator(CPCreator):
                             field.setText(str(maxval))
                             if units:
                                 field.setUnits(units)
-                    elif pname == "target":
-                        self.__createSECoPParam(
-                            mgr, "value", pconf, nodename, name, canfail)
+                    elif pconf.get("description") == \
+                            "currentstatusofthemodule":
+                        pass
                     else:
                         self.__createSECoPParam(
                             par, pname, pconf, nodename, name, canfail)
+                        if pname == "target":
+                            ename = \
+                                "$var.entryname#'$(__entryname__)'" \
+                                "$var.serialno".replace(
+                                    "$(__entryname__)",
+                                    (self.options.entryname or "scan"))
+                            NLink(mgr, "value",
+                                  "/%s/sample/%s/%s/parameters/target/value" %
+                                  (ename, nodename, name))
 
     def __createSECoPParam(self, par, name, conf, nodename, modname,
                            canfail=None):
@@ -1964,17 +1974,17 @@ class SECoPCPCreator(CPCreator):
             maxval = di.get("max")
         log = NGroup(par, name, "NXlog")
         field = NField(log, "value", nxtype)
-        dsname = "$datasources.%s_%s_%s" % (nodename, modname, name)
-        timedsname = "$datasources.%s_%s_%s_time" % (nodename, modname, name)
+        dsname = "%s_%s_%s" % (nodename, modname, name)
+        timedsname = "%s_%s_%s_time" % (nodename, modname, name)
         if self.options.lower:
             dsname = dsname.lower()
             timedsname = timedsname.lower()
         field.setText("$datasources.%s" % (dsname))
-        strategy = self.options.paramstrategy
+        pstrategy = self.options.paramstrategy
         self.createSECoPDS(dsname,
                            "read %s:%s" % (modname, name),
                            dsname, "[0]")
-        field.setStrategy(strategy)
+        field.setStrategy(pstrategy)
         if units:
             field.setUnits(units)
         field = NField(log, 'time', "NX_FLOAT64")
@@ -1982,9 +1992,9 @@ class SECoPCPCreator(CPCreator):
             "$datasources.%s" % timedsname)
         self.createSECoPDS(timedsname,
                            "read %s:%s" % (modname, name),
-                           dsname, "[1, 't']")
+                           dsname, '[1, "t"]')
         field.setUnits("s")
-        field.setStrategy(strategy)
+        field.setStrategy(pstrategy)
         if minval:
             field = NField(log, 'minimal_value', nxtype)
             field.setStrategy('INIT')
@@ -2046,7 +2056,8 @@ class SECoPCPCreator(CPCreator):
         elif group is not None:
             module = 'secop'
         else:
-            module = 'simplesecop'
+            module = 'singlesecop'
+
         if module in self.xmlpackage.standardComponentTemplateFiles:
             xmlfiles = self.xmlpackage.standardComponentTemplateFiles[module]
         else:

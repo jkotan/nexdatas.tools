@@ -3,7 +3,6 @@
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
 from nxstools.pyeval import secop
-from nxswriter import globallock
 ds.result = secop.secop_cmd("$(message)", "$(host)", $(port),  $(timeout), commonblock)
     </result>
   </datasource>

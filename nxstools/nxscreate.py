@@ -1222,30 +1222,32 @@ class SECoPCP(Runner):
         """ creates parser
         """
         parser = self._parser
-        parser.add_argument(
-            "-o", "--overwrite", action="store_true",
-            default=False, dest="overwrite",
-            help="overwrite existing components")
-        parser.add_argument(
-            "-a", "--can-fail", action="store_true",
-            default=False, dest="canfail",
-            help="can fail strategy flag")
+        parser.add_argument("-o", "--overwrite", action="store_true",
+                            default=False, dest="overwrite",
+                            help="overwrite existing components")
+        parser.add_argument("-a", "--can-fail", action="store_true",
+                            default=False, dest="canfail",
+                            help="can fail strategy flag")
         parser.add_argument("-c", "--component",
                             help="component name" +
                             "secop component name",
                             dest="component", default="")
-        parser.add_argument("-g", "--param-strategy",
-                            help="sensor parameter strategy, "+
+        parser.add_argument("-e", "--param-strategy",
+                            help="sensor parameter strategy, " +
                             "i.e. INIT, STEP or FINAL, " +
-                            "default: STEP",
-                            dest="paramstrategy", default="STEP")
+                            "default: INIT",
+                            dest="paramstrategy", default="INIT")
+        parser.add_argument("-g", "--strategy",
+                            help="sensor value strategy, " +
+                            "i.e. INIT, STEP or FINAL, " +
+                            "default: INIT",
+                            dest="strategy", default="INIT")
         parser.add_argument("-m", "--timeout",
                             help="sensor minimum timeout " +
                             "default: 0.001",
                             dest="timeout", default=0.001)
         parser.add_argument("-s", "--sample",
-                            help="sample name" +
-                            "sample name",
+                            help="sample name",
                             dest="samplename", default="")
         parser.add_argument("-p", "--xml-package", dest="xmlpackage",
                             help="xml template package")
@@ -1253,37 +1255,32 @@ class SECoPCP(Runner):
                             help="entry group name (prefix)", default="scan")
         parser.add_argument("-i", "--insname", dest="insname",
                             help="instrument group name", default="instrument")
-        parser.add_argument(
-            "-d", "--directory",
-            help="output component directory",
-            dest="directory", default=".")
-        parser.add_argument(
-            "-x", "--file-prefix",
-            help="file prefix, i.e. counter",
-            dest="file", default="")
+        parser.add_argument("-d", "--directory",
+                            help="output component directory",
+                            dest="directory", default=".")
+        parser.add_argument("-x", "--file-prefix",
+                            help="file prefix, i.e. counter",
+                            dest="file", default="")
         parser.add_argument("-n", "--nolower", action="store_false",
                             default=True, dest="lower",
                             help="do not change aliases into lower case")
 
-        parser.add_argument(
-            "-b", "--database", action="store_true",
-            default=False, dest="database",
-            help="store components in "
-            "Configuration Server database")
+        parser.add_argument("-b", "--database", action="store_true",
+                            default=False, dest="database",
+                            help="store components in "
+                            "Configuration Server database")
         parser.add_argument("-u", "--host",
                             help="secop host name",
                             dest="host", default="")
         parser.add_argument("-t", "--port",
                             help="secop host port",
                             dest="port", default="5000")
-        parser.add_argument(
-            "-r", "--server", dest="server",
-            help="configuration server device name")
+        parser.add_argument("-r", "--server", dest="server",
+                            help="configuration server device name")
 
-        parser.add_argument(
-            'args', metavar='component_name',
-            type=str, nargs='*',
-            help='component names to be created')
+        parser.add_argument('args', metavar='component_name',
+                            type=str, nargs='*',
+                            help='component names to be created')
 
         return parser
 

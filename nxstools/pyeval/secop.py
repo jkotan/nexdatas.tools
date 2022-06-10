@@ -72,7 +72,7 @@ class SecopGroup(object):
         #: (:obj:`int`) counter of steps
         self.counter = -2
         #: (:obj:`any`) any data
-        self.__data
+        self.__data = None
 
     def getData(self, cmd, host=None, port=None, timeout=None,
                 access=None, commonblock=None):
@@ -96,7 +96,7 @@ class SecopGroup(object):
         :returns: json string
         :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
         """
-        counter = commonblock["__stepcounter__"]
+        counter = commonblock["__counter__"]
         data = None
         with self.lock:
             if counter == self.counter:
@@ -235,18 +235,21 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
     :returns: json string
     :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
     """
-    res = None
-    if group is None or access is None or commonblock is None:
-        return secop_cmd(cmd, host, port, timeout, commonblock)
-    name = "_secop_%s" % group
-    sgroup = None
-    with socketlock:
-        if name in commonblock.keys() and \
-           isinstance(commonblock[name], SecopGroup):
-            sgroup = commonblock[name].get()
-        else:
-            sgroup = SecopGroup(name)
-            commonblock[name] = sgroup
+    try:
+        res = None
+        if group is None or access is None or commonblock is None:
+            return secop_cmd(cmd, host, port, timeout, commonblock)
+        name = "_secop_%s" % group
+        sgroup = None
+        with socketlock:
+            if name in commonblock.keys() and \
+               isinstance(commonblock[name], SecopGroup):
+                sgroup = commonblock[name]
+            else:
+                sgroup = SecopGroup(name)
+                commonblock[name] = sgroup
 
-    res = sgroup.getData(cmd, host, port, timeout, access, commonblock)
+        res = sgroup.getData(cmd, host, port, timeout, access, commonblock)
+    except Exception as e:
+        res = str(e)
     return res
