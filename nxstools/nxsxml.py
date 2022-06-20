@@ -735,7 +735,13 @@ class XMLFile(object):
         :type etNode: :class:`lxml.etree.Element`
         """
         node = etNode if etNode is not None else self.elem
-        xmls = _tostr(
+        if sys.version_info > (3,):
+            xmls = _tostr(
+            lxml.etree.tostring(
+                node, encoding='unicode',
+                method='xml', pretty_print=True))
+        else:
+            xmls = _tostr(
             lxml.etree.tostring(
                 node, encoding='utf8',
                 method='xml', pretty_print=True))

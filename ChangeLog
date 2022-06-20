@@ -1,4 +1,5 @@
-2022-05-12 Jan Kotanski <jankotan@gmail.com>
+2022-06-20 Jan Kotanski <jankotan@gmail.com>
+	* add nxscreate secop subcommand
 	* remove default mysql localhost
 	* add ubuntu 22.04 tests
 	* tagged as v3.19.0

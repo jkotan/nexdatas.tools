@@ -51,7 +51,7 @@ class SocketHolder(object):
     def __del__(self):
         """  socket closer
         """
-        socket.close(self.__sckt)
+        self.__sckt.close()
         self.__sckt = None
 
 
