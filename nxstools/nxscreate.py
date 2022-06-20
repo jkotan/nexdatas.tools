@@ -1203,6 +1203,10 @@ class SECoPCP(Runner):
         + "\n" \
         + " examples:\n" \
         + "\n" \
+        + "       nxscreate secopcp -t \n" \
+        + "\n" \
+        + "           - list all modules of the given node \n" \
+        + "\n" \
         + "       nxscreate secopcp -c temp_node \n" \
         + "\n" \
         + "           - create the all secop components" \
@@ -1210,12 +1214,13 @@ class SECoPCP(Runner):
         + "\n" \
         + "       nxscreate secopcp T -p 5001 -b \n" \
         + "\n" \
-        + "           - create the component for T secop module " \
+        + "           - create the component for the T secop module " \
         + " in the NXSConfigServer database for the node on the port 5000 \n" \
         + "\n" \
         + "       nxscreate secopcp -d /home/user/xmldir/ \n" \
         + "\n" \
-        + "\n" \
+        + "           - create the all secop components" \
+        + " in the given directory\n" \
         + "\n"
 
     def create(self):
@@ -1317,7 +1322,7 @@ class SECoPCP(Runner):
             if options.listmodules:
                 modules = creator.listmodules()
                 if modules:
-                    print("MODULES: %s" % ",".join(modules))
+                    print("MODULES:\n %s" % " ".join(modules))
             else:
                 creator.create()
         except WrongParameterError as e:
