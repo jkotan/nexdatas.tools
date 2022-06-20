@@ -737,14 +737,14 @@ class XMLFile(object):
         node = etNode if etNode is not None else self.elem
         if sys.version_info > (3,):
             xmls = _tostr(
-            lxml.etree.tostring(
-                node, encoding='unicode',
-                method='xml', pretty_print=True))
+                lxml.etree.tostring(
+                    node, encoding='unicode',
+                    method='xml', pretty_print=True))
         else:
             xmls = _tostr(
-            lxml.etree.tostring(
-                node, encoding='utf8',
-                method='xml', pretty_print=True))
+                lxml.etree.tostring(
+                    node, encoding='utf8',
+                    method='xml', pretty_print=True))
         if not xmls.startswith("<?xml"):
             xmls = "<?xml version='1.0' encoding='utf8'?>\n" + xmls
         return xmls
