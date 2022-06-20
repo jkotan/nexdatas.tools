@@ -1222,6 +1222,9 @@ class SECoPCP(Runner):
         """ creates parser
         """
         parser = self._parser
+        parser.add_argument("-l", "--list", action="store_true",
+                            default=False, dest="listmodules",
+                            help="list modules of the given node")
         parser.add_argument("-o", "--overwrite", action="store_true",
                             default=False, dest="overwrite",
                             help="overwrite existing components")
@@ -1303,14 +1306,20 @@ class SECoPCP(Runner):
                 parser.print_help()
                 sys.exit(0)
 
-        if options.database:
-            print("CONFIG SERVER: %s" % options.server)
-        else:
-            print("OUTPUT DIRECTORY: %s" % options.directory)
+        if not options.listmodules:
+            if options.database:
+                print("CONFIG SERVER: %s" % options.server)
+            else:
+                print("OUTPUT DIRECTORY: %s" % options.directory)
 
         creator = SECoPCPCreator(options, args)
         try:
-            creator.create()
+            if options.listmodules:
+                modules = creator.listmodules()
+                if modules:
+                    print("MODULES: %s" % ",".join(modules))
+            else:
+                creator.create()
         except WrongParameterError as e:
             sys.stderr.write(str(e))
             sys.stderr.flush()

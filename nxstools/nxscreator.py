@@ -1784,42 +1784,21 @@ class SECoPCPCreator(CPCreator):
                     self.options.file,
                     name, ext))
 
-    # def listcomponents(self):
-    #     """ provides a list of components with xml templates
+    def listmodules(self):
+        """ provides a list of modules for the secop node
 
-    #     :returns: list of components with xml templates
-    #     :rtype: :obj:`list` <:obj:`str` >
-    #     """
-    #     hw = etree.parse(
-    #         self.args[0],
-    #         parser=XMLParser(collect_ids=False)).getroot()
-    #     if hw.tag != 'hw':
-    #         hw = hw.find('hw')
-    #     cpnames = set()
-    #     for device in hw:
-    #         if device.tag == 'device':
-    #             dvname = self._getChildText(device, "name")
-    #             sardananame = self._getChildText(device, "sardananame")
-    #             name = sardananame or dvname
-    #             if self.options.lower:
-    #                 name = name.lower()
-    #             dv = Device()
-    #             dv.name = name
-    #             dv.dtype = self._getChildText(device, "type")
-    #             dv.module = self._getChildText(device, "module")
-    #             dv.tdevice = self._getChildText(device, "device")
-    #             dv.hostname = self._getChildText(device, "hostname")
-    #             dv.sardananame = self._getChildText(device, "sardananame")
-    #             dv.sardanahostname = self._getChildText(
-    #                 device, "sardanahostname")
+        :returns: list of modules for the secop node
+        :rtype: :obj:`list` <:obj:`str` >
+        """
+        names = []
+        conf = secop_cmd("describe", self.options.host, int(self.options.port))
+        modules = conf.get("modules", {})
+        if modules:
+            names = [mname for mname in modules.keys()]
+        return names
 
-    #             module = self._getModuleName(dv)
-    #             if module:
-    #                 if module.lower() in self.xmlpackage.moduleTemplateFiles:
-    #                     cpnames.add(dv.name)
-    #     return cpnames
-
-    def __createSECoPTree(self, df, name, conf, samplename=None, canfail=None):
+    def __createSECoPTree(self, df, name, conf, samplename=None,
+                          modulenames=None, canfail=None):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -1830,6 +1809,8 @@ class SECoPCPCreator(CPCreator):
         :type conf: :obj:`dict`
         :param samplename: sample name
         :type samplename: :obj:`str`
+        :param modulenames: sample name
+        :type modulenames: :obj:`list` <:obj:`str`>
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
         """
@@ -1858,7 +1839,8 @@ class SECoPCPCreator(CPCreator):
 
         for mname, mconf in modules.items():
             if mname:
-                self.__createSECoPSensor(env, mname, mconf, name, canfail)
+                if not modulenames or mname in modulenames:
+                    self.__createSECoPSensor(env, mname, mconf, name, canfail)
 
     def __createSECoPSensor(self, env, name, conf, nodename, canfail=None):
         """ create nexus node tree
@@ -2019,6 +2001,7 @@ class SECoPCPCreator(CPCreator):
         """
         self.datasources = {}
         self.components = {}
+        cpnames = self.args
         conf = secop_cmd("describe", self.options.host, int(self.options.port))
         if isinstance(conf, dict):
             dump = \
@@ -2034,7 +2017,7 @@ class SECoPCPCreator(CPCreator):
                 cpname = cpname.lower()
             df = XMLFile("%s/%s" % (self.options.directory, fname))
             self.__createSECoPTree(df, cpname, conf, self.options.samplename,
-                                   self.options.canfail)
+                                   cpnames, self.options.canfail)
             self._printAction(cpname)
             self.components[cpname] = df.prettyPrint()
 
