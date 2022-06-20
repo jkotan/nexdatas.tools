@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
@@ -736,10 +735,16 @@ class XMLFile(object):
         :type etNode: :class:`lxml.etree.Element`
         """
         node = etNode if etNode is not None else self.elem
-        xmls = _tostr(
-            lxml.etree.tostring(
-                node, encoding='utf8',
-                method='xml', pretty_print=True))
+        if sys.version_info > (3,):
+            xmls = _tostr(
+                lxml.etree.tostring(
+                    node, encoding='unicode',
+                    method='xml', pretty_print=True))
+        else:
+            xmls = _tostr(
+                lxml.etree.tostring(
+                    node, encoding='utf8',
+                    method='xml', pretty_print=True))
         if not xmls.startswith("<?xml"):
             xmls = "<?xml version='1.0' encoding='utf8'?>\n" + xmls
         return xmls

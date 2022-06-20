@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
@@ -31,7 +30,7 @@ from nxstools.nxsdevicetools import (
 from nxstools.nxscreator import (
     TangoDSCreator, ClientDSCreator, WrongParameterError,
     DeviceDSCreator, OnlineDSCreator, OnlineCPCreator, CPExistsException,
-    DSExistsException,
+    DSExistsException, SECoPCPCreator,
     StandardCPCreator, ComponentCreator, CompareOnlineDS, PoolDSCreator)
 
 
@@ -1188,6 +1187,151 @@ class Comp(Runner):
             sys.exit(255)
 
 
+class SECoPCP(Runner):
+
+    """ secop component runner"""
+    #: (:obj:`str`) command description
+    description = "create secop components"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " * with -b: components are created (without datasources)" \
+        + " in Configuration Server database\n" \
+        + " * without -b: components are created (without datasources)" \
+        + " on the local filesystem in -d <directory> \n" \
+        + " * default: <directory> is '.' \n" \
+        + "            <port> is 5001\n" \
+        + "\n" \
+        + " examples:\n" \
+        + "\n" \
+        + "       nxscreate secopcp -t \n" \
+        + "\n" \
+        + "           - list all modules of the given node \n" \
+        + "\n" \
+        + "       nxscreate secopcp -c temp_node \n" \
+        + "\n" \
+        + "           - create the all secop components" \
+        + " in the local directory for the node on port 5000 \n" \
+        + "\n" \
+        + "       nxscreate secopcp T -p 5001 -b \n" \
+        + "\n" \
+        + "           - create the component for the T secop module " \
+        + " in the NXSConfigServer database for the node on the port 5000 \n" \
+        + "\n" \
+        + "       nxscreate secopcp -d /home/user/xmldir/ \n" \
+        + "\n" \
+        + "           - create the all secop components" \
+        + " in the given directory\n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+        """
+        parser = self._parser
+        parser.add_argument("-l", "--list", action="store_true",
+                            default=False, dest="listmodules",
+                            help="list modules of the given node")
+        parser.add_argument("-o", "--overwrite", action="store_true",
+                            default=False, dest="overwrite",
+                            help="overwrite existing components")
+        parser.add_argument("-a", "--can-fail", action="store_true",
+                            default=False, dest="canfail",
+                            help="can fail strategy flag")
+        parser.add_argument("-c", "--component",
+                            help="component name" +
+                            "secop component name",
+                            dest="component", default="")
+        parser.add_argument("-e", "--param-strategy",
+                            help="sensor parameter strategy, " +
+                            "i.e. INIT, STEP or FINAL, " +
+                            "default: INIT",
+                            dest="paramstrategy", default="INIT")
+        parser.add_argument("-g", "--strategy",
+                            help="sensor value strategy, " +
+                            "i.e. INIT, STEP or FINAL, " +
+                            "default: INIT",
+                            dest="strategy", default="INIT")
+        parser.add_argument("-m", "--timeout",
+                            help="sensor minimum timeout " +
+                            "default: 0.001",
+                            dest="timeout", default=0.001)
+        parser.add_argument("-s", "--sample",
+                            help="sample name",
+                            dest="samplename", default="")
+        parser.add_argument("-p", "--xml-package", dest="xmlpackage",
+                            help="xml template package")
+        parser.add_argument("-y", "--entryname", dest="entryname",
+                            help="entry group name (prefix)", default="scan")
+        parser.add_argument("-i", "--insname", dest="insname",
+                            help="instrument group name", default="instrument")
+        parser.add_argument("-d", "--directory",
+                            help="output component directory",
+                            dest="directory", default=".")
+        parser.add_argument("-x", "--file-prefix",
+                            help="file prefix, i.e. counter",
+                            dest="file", default="")
+        parser.add_argument("-n", "--nolower", action="store_false",
+                            default=True, dest="lower",
+                            help="do not change aliases into lower case")
+
+        parser.add_argument("-b", "--database", action="store_true",
+                            default=False, dest="database",
+                            help="store components in "
+                            "Configuration Server database")
+        parser.add_argument("-u", "--host",
+                            help="secop host name",
+                            dest="host", default="")
+        parser.add_argument("-t", "--port",
+                            help="secop host port",
+                            dest="port", default="5000")
+        parser.add_argument("-r", "--server", dest="server",
+                            help="configuration server device name")
+
+        parser.add_argument('args', metavar='component_name',
+                            type=str, nargs='*',
+                            help='component names to be created')
+
+        return parser
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        args = options.args or []
+        parser = self._parser
+        if options.database and not options.server:
+            if not PYTANGO:
+                sys.stderr.write("Info: No PyTango installed\n")
+                sys.stderr.flush()
+                sys.exit(255)
+
+            options.server = checkServer()
+            if not options.server:
+                parser.print_help()
+                sys.exit(0)
+
+        if not options.listmodules:
+            if options.database:
+                print("CONFIG SERVER: %s" % options.server)
+            else:
+                print("OUTPUT DIRECTORY: %s" % options.directory)
+
+        creator = SECoPCPCreator(options, args)
+        try:
+            if options.listmodules:
+                modules = creator.listmodules()
+                if modules:
+                    print("MODULES:\n %s" % " ".join(modules))
+            else:
+                creator.create()
+        except WrongParameterError as e:
+            sys.stderr.write(str(e))
+            sys.stderr.flush()
+            parser.print_help()
+            sys.exit(255)
+
+
 class ClientDS(Runner):
 
     """ clientds runner"""
@@ -1357,6 +1501,7 @@ def main():
                          ('poolds', PoolDS),
                          ('stdcomp', StdComp),
                          ('comp', Comp),
+                         ('secopcp', SECoPCP),
                          ('compare', Compare)]
     runners = parser.createSubParsers()
 

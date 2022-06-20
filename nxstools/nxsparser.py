@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #   This file is part of nexdatas - Tango Server for NeXus data writer
 #
 #    Copyright (C) 2012-2018 DESY, Jan Kotanski <jkotan@mail.desy.de>
@@ -68,7 +67,10 @@ def _toxml(node):
     :returns: xml content string
     :rtype: :obj:`str`
     """
-    xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
+    if sys.version_info > (3,):
+        xml = _tostr(et.tostring(node, encoding='unicode', method='xml'))
+    else:
+        xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
     if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
         xml = str(xml[38:])
         return xml

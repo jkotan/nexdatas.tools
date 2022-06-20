@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "Mar 15, 2022" "3.16" "NXSTools"
+.TH "NXSCREATE" "1" "Jun 20, 2022" "3.19" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -45,7 +45,7 @@ nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 .UNINDENT
 .UNINDENT
 .sp
-The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.
+The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, poolds, stdcomp, comp, secopcp, compare.
 .SH NXSCREATE CLIENTDS
 .sp
 It creates a set of CLIENT datasources.
@@ -741,6 +741,120 @@ nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
 nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
 nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSCREATE SECOPCP
+.sp
+It creates a  component or components describing modules of the secop node.
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate secopcp [\-h] [\-l] [\-o] [\-a] [\-c COMPONENT] [\-e PARAMSTRATEGY] [\-g STRATEGY] [\-m TIMEOUT] [\-s SAMPLENAME] [\-p XMLPACKAGE] [\-y ENTRYNAME] [\-i INSNAME] [\-d DIRECTORY]
+               [\-x FILE] [\-n] [\-b] [\-u HOST] [\-t PORT] [\-r SERVER]
+               [component_name ...]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.IP \(bu 2
+with \-b: datasources are created in Configuration Server database
+.IP \(bu 2
+without \-b: datasources are created on the local filesystem in \-d <directory>
+.IP \(bu 2
+default <directory> is ‘.’
+.IP \(bu 2
+default <port> is 5000
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.B \-l\fP,\fB  \-\-list
+list modules of the given node
+.TP
+.B \-o\fP,\fB  \-\-overwrite
+overwrite existing components
+.TP
+.B \-a\fP,\fB  \-\-can\-fail
+can fail strategy flag
+.TP
+.BI \-c \ COMPONENT\fR,\fB \ \-\-component \ COMPONENT
+component namesecop component name
+.TP
+.BI \-e \ PARAMSTRATEGY\fR,\fB \ \-\-param\-strategy \ PARAMSTRATEGY
+sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT
+.TP
+.BI \-g \ STRATEGY\fR,\fB \ \-\-strategy \ STRATEGY
+sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT
+.TP
+.BI \-m \ TIMEOUT\fR,\fB \ \-\-timeout \ TIMEOUT
+sensor minimum timeout default: 0.001
+.TP
+.BI \-s \ SAMPLENAME\fR,\fB \ \-\-sample \ SAMPLENAME
+sample name
+.TP
+.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
+xml template package
+.TP
+.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
+entry group name (prefix)
+.TP
+.BI \-i \ INSNAME\fR,\fB \ \-\-insname \ INSNAME
+instrument group name
+.TP
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory \ DIRECTORY
+output component directory
+.TP
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix \ FILE
+file prefix, i.e. counter
+.TP
+.B \-n\fP,\fB  \-\-nolower
+do not change aliases into lower case
+.TP
+.B \-b\fP,\fB  \-\-database
+store components in Configuration Server database
+.TP
+.BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
+secop host name
+.TP
+.BI \-t \ PORT\fR,\fB \ \-\-port \ PORT
+secop host port
+.TP
+.BI \-r \ SERVER\fR,\fB \ \-\-server \ SERVER
+configuration server device name
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxscreate secopcp \-t
+
+    \- list all modules of the given node
+
+nxscreate secopcp \-c temp_node
+
+    \- create the all secop components in the local directory for the node on port 5000
+
+nxscreate secopcp T \-p 5001 \-b
+
+    \- create the component for the T secop module  in the NXSConfigServer database for the node on the port 5000
+
+nxscreate secopcp \-d /home/user/xmldir/
+
+    \- create the all secop components in the given directory
 .ft P
 .fi
 .UNINDENT

@@ -15,7 +15,7 @@ Synopsis
 	  nxscreate  <command> [ <options>]  [<arg1> [<arg2>  ...]]
 
 
-The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, comp.
+The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, poolds, stdcomp, comp, secopcp, compare.
 
 
 nxscreate clientds
@@ -120,7 +120,7 @@ Example
 	   nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
 	   nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
            nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
-           nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t 10000 \ 
+           nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t 10000 \
                              -a BeamCurrent -b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__
 
 
@@ -208,7 +208,7 @@ Options:
   -p XMLPACKAGE, --xml-package=XMLPACKAGE
                         xml template package
   --verbose             printout verbose mode
-			
+
 Example
 """""""
 
@@ -260,11 +260,11 @@ Example
 
 .. code:: bash
 
-           nxscreate poolds -b  
-           nxscreate poolds -b -t 
-           nxscreate poolds -d -s p09/pool/haso228 
-           nxscreate poolds -b Motor CTExpChannel 
-           nxscreate poolds -b mot01 mot03 
+           nxscreate poolds -b
+           nxscreate poolds -b -t
+           nxscreate poolds -d -s p09/pool/haso228
+           nxscreate poolds -b Motor CTExpChannel
+           nxscreate poolds -b mot01 mot03
            nxscreate poolds
 
 
@@ -349,7 +349,7 @@ Synopsis
 - with -b: datasources are created in Configuration Server database
 - without -b: datasources are created on the local filesystem in -d <directory>
 - default <directory> is '.'
-- [name1 value1 [name2 value2] ...] sequence  defines component variable values 
+- [name1 value1 [name2 value2] ...] sequence  defines component variable values
 
 Options:
   -h, --help            show this help message and exit
@@ -374,13 +374,13 @@ Options:
   -y ENTRYNAME, --entryname ENTRYNAME
                         entry group name (prefix)
 
-			
+
 Example
 """""""
 
 .. code:: bash
 
-          nxscreate stdcomp  
+          nxscreate stdcomp
           nxscreate stdcomp -t source
           nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
           nxscreate stdcomp -t default -c default -b -m
@@ -447,6 +447,80 @@ Example
 	  nxscreate comp -n "/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/' -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m
 	  nxscreate comp -n "/\$var.entryname#'scan'\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM
 
+nxscreate secopcp
+-----------------
+
+It creates a  component or components describing modules of the secop node.
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  nxscreate secopcp [-h] [-l] [-o] [-a] [-c COMPONENT] [-e PARAMSTRATEGY] [-g STRATEGY] [-m TIMEOUT] [-s SAMPLENAME] [-p XMLPACKAGE] [-y ENTRYNAME] [-i INSNAME] [-d DIRECTORY]
+                         [-x FILE] [-n] [-b] [-u HOST] [-t PORT] [-r SERVER]
+                         [component_name ...]
+
+- with -b: datasources are created in Configuration Server database
+- without -b: datasources are created on the local filesystem in -d <directory>
+- default <directory> is '.'
+- default <port> is 5000
+
+Options:
+  -h, --help            show this help message and exit
+  -l, --list            list modules of the given node
+  -o, --overwrite       overwrite existing components
+  -a, --can-fail        can fail strategy flag
+  -c COMPONENT, --component COMPONENT
+                        component namesecop component name
+  -e PARAMSTRATEGY, --param-strategy PARAMSTRATEGY
+                        sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT
+  -g STRATEGY, --strategy STRATEGY
+                        sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT
+  -m TIMEOUT, --timeout TIMEOUT
+                        sensor minimum timeout default: 0.001
+  -s SAMPLENAME, --sample SAMPLENAME
+                        sample name
+  -p XMLPACKAGE, --xml-package XMLPACKAGE
+                        xml template package
+  -y ENTRYNAME, --entryname ENTRYNAME
+                        entry group name (prefix)
+  -i INSNAME, --insname INSNAME
+                        instrument group name
+  -d DIRECTORY, --directory DIRECTORY
+                        output component directory
+  -x FILE, --file-prefix FILE
+                        file prefix, i.e. counter
+  -n, --nolower         do not change aliases into lower case
+  -b, --database        store components in Configuration Server database
+  -u HOST, --host HOST  secop host name
+  -t PORT, --port PORT  secop host port
+  -r SERVER, --server SERVER
+                        configuration server device name
+
+
+
+Example
+"""""""
+
+.. code:: bash
+
+       nxscreate secopcp -t
+
+           - list all modules of the given node
+
+       nxscreate secopcp -c temp_node
+
+           - create the all secop components in the local directory for the node on port 5000
+
+       nxscreate secopcp T -p 5001 -b
+
+           - create the component for the T secop module  in the NXSConfigServer database for the node on the port 5000
+
+       nxscreate secopcp -d /home/user/xmldir/
+
+           - create the all secop components in the given directory
+
 
 nxscreate compare
 -----------------
@@ -475,5 +549,5 @@ Example
 
 .. code:: bash
 
-	  nxscreate onlineds /online_dir/online.xml online.xml 
+	  nxscreate onlineds /online_dir/online.xml online.xml
 	  nxscreate compare online.xml

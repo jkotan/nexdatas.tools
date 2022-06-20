@@ -437,5 +437,5 @@ intersphinx_mapping = {
     'https://docs.python.org/3.5/': None,
     'https://docs.scipy.org/doc/scipy/': None,
     'https://numpy.org/doc/stable': None,
-    'https://pytango.readthedocs.io/en/stable/': None,
+    'https://pytango.readthedocs.io/en/latest/': None,
 }

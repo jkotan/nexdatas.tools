@@ -116,6 +116,68 @@ standardComponentVariables = {
             'doc': "throttle enable status for maia (datasource)"
         },
     },
+    'secop': {
+        'host': {
+            'default': None,
+            'doc': "secop host name (string)"
+        },
+        'port': {
+            'default': '5000',
+            'doc': "secop port name (string)"
+        },
+        'message': {
+            'default': None,
+            'doc': "secop command MANDATORY (string)"
+        },
+        'timeout': {
+            'default': '0.0001',
+            'doc': "secop timeout (string)"
+        },
+    },
+    'groupsecop': {
+        'host': {
+            'default': None,
+            'doc': "secop host name (string)"
+        },
+        'port': {
+            'default': '5000',
+            'doc': "secop port name (string)"
+        },
+        'message': {
+            'default': None,
+            'doc': "secop command MANDATORY (string)"
+        },
+        'timeout': {
+            'default': '0.0001',
+            'doc': "secop timeout (string)"
+        },
+        'group': {
+            'default': None,
+            'doc': "secop group name (string)"
+        },
+        'access': {
+            'default': None,
+            'doc': "secop access list (string)"
+        },
+    },
+    'singlesecop': {
+        'host': {
+            'default': None,
+            'doc': "secop host name (string)"
+        },
+        'port': {
+            'default': '5000',
+            'doc': "secop port name (string)"
+        },
+        'message': {
+            'default': None,
+            'doc': "secop command MANDATORY (string)"
+        },
+        'timeout': {
+            'default': '0.0001',
+            'doc': "secop timeout (string)"
+        },
+    },
     'pointdet': {
         'data': {
             'default': None,
@@ -1331,6 +1393,9 @@ standardComponentTemplateFiles = {
         'qbpm_foil.ds.xml',
         'qbpm.xml',
     ],
+    'secop': ['secop.ds.xml'],
+    'singlesecop': ['singlesecop.ds.xml'],
+    'groupsecop': ['groupsecop.ds.xml'],
     'slit': ['slit.xml'],
     'source': ['source.xml'],
     'undulator': ['undulator.xml'],
