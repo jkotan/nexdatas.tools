@@ -1920,7 +1920,9 @@ class SECoPCPCreator(CPCreator):
                                 field.setUnits(units)
                     elif pconf.get("description") == \
                             "currentstatusofthemodule":
-                        pass
+                        self.__createSECoPParam(
+                            par, pname, pconf, nodename, name, canfail,
+                            "[0,0]", "int")
                     else:
                         self.__createSECoPParam(
                             par, pname, pconf, nodename, name, canfail)
@@ -1935,7 +1937,7 @@ class SECoPCPCreator(CPCreator):
                                   (ename, nodename, name))
 
     def __createSECoPParam(self, par, name, conf, nodename, modname,
-                           canfail=None):
+                           canfail=None, access=None, accesstype=None):
         """ create nexus node tree
 
         :param env: definition parent node
@@ -1956,10 +1958,15 @@ class SECoPCPCreator(CPCreator):
             dtype = di.get("type")
             if dtype == "command":
                 return
+            if dtype not in npTn.keys() and not access:
+                return
             nxtype = npTn.get(dtype, "NX_CHAR")
+            if accesstype in npTn.keys():
+                nxtype = npTn.get(accesstype)
             units = di.get("unit")
             minval = di.get("min")
             maxval = di.get("max")
+        access = access or "[0]"
         log = NGroup(par, name, "NXlog")
         field = NField(log, "value", nxtype)
         dsname = "%s_%s_%s" % (nodename, modname, name)
@@ -1971,7 +1978,7 @@ class SECoPCPCreator(CPCreator):
         pstrategy = self.options.paramstrategy
         self.createSECoPDS(dsname,
                            "read %s:%s" % (modname, name),
-                           dsname, "[0]")
+                           dsname, access)
         field.setStrategy(pstrategy)
         if units:
             field.setUnits(units)
