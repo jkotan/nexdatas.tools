@@ -1,3 +1,7 @@
+2022-06-21 Jan Kotanski <jankotan@gmail.com>
+	* fix secopcp status implementation
+	* tagged as v3.19.1
+
 2022-06-20 Jan Kotanski <jankotan@gmail.com>
 	* add nxscreate secop subcommand
 	* remove default mysql localhost
