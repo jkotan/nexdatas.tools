@@ -1791,7 +1791,13 @@ class SECoPCPCreator(CPCreator):
         :rtype: :obj:`list` <:obj:`str` >
         """
         names = []
-        conf = secop_cmd("describe", self.options.host, int(self.options.port))
+        conf = {}
+        if self.options.json:
+            with open(self.options.json) as fl:
+                conf = json.load(fl)
+        else:
+            conf = secop_cmd(
+                "describe", self.options.host, int(self.options.port))
         modules = conf.get("modules", {})
         if modules:
             names = [mname for mname in modules.keys()]
@@ -2009,7 +2015,13 @@ class SECoPCPCreator(CPCreator):
         self.datasources = {}
         self.components = {}
         cpnames = self.args
-        conf = secop_cmd("describe", self.options.host, int(self.options.port))
+        conf = {}
+        if self.options.json:
+            with open(self.options.json) as fl:
+                conf = json.load(fl)
+        else:
+            conf = secop_cmd(
+                "describe", self.options.host, int(self.options.port))
         if isinstance(conf, dict):
             dump = \
                 json.dumps(conf, sort_keys=True, indent=4)
