@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Jun 20, 2022" "3.19" "NXSTools"
-.SH NAME
-nxsfileinfo \- show metadata of the NeXus file
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "NXSFILEINFO" "1" "Jun 21, 2022" "3.20" "NXSTools"
+.SH NAME
+nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
 .sp
 The nxsfileinfo program show metadata from nexus files
@@ -65,13 +65,13 @@ nxsfileinfo general <nexus_file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -105,7 +105,7 @@ Usage: nxsfileinfo field <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-c \ HEADERS\fR,\fB \ \-\-columns\fB= HEADERS
@@ -117,16 +117,16 @@ full_path filters (separated by commas without spaces). Default: ‘*’. E.g. �
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
-.B \-g\fP,\fB  \-\-geometry
+.B  \-g\fP,\fB  \-\-geometry
 show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/depends_on. It works only when \-f is not defined
 .TP
-.B \-s\fP,\fB  \-\-source
+.B  \-s\fP,\fB  \-\-source
 show datasource parameters
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -162,7 +162,7 @@ Usage: nxsfileinfo metadata <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-a \ ATTRS\fR,\fB \ \-\-attributes \ ATTRS
@@ -183,7 +183,7 @@ names of entry NX_class to be shown (separated by commas without spaces). If nam
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
 names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
 .TP
-.B \-r\fP,\fB  \-\-raw\-metadata
+.B  \-r\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
@@ -192,10 +192,10 @@ dataset pid
 .BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.B \-u\fP,\fB  \-\-pid\-with\-uuid
+.B  \-u\fP,\fB  \-\-pid\-with\-uuid
 generate pid with uuid
 .TP
-.B \-f\fP,\fB  \-\-pid\-with\-filename
+.B  \-f\fP,\fB  \-\-pid\-with\-filename
 generate pid with file name
 .TP
 .BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
@@ -207,10 +207,10 @@ scientific metadata file
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT

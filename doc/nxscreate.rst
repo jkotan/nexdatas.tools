@@ -463,7 +463,6 @@ Synopsis
 
 - with -b: datasources are created in Configuration Server database
 - without -b: datasources are created on the local filesystem in -d <directory>
-- default <directory> is '.'
 - default <port> is 5000
 
 Options:
@@ -489,6 +488,8 @@ Options:
                         instrument group name
   -d DIRECTORY, --directory DIRECTORY
                         output component directory
+  -j JSON, --json-file JSON
+                        json configuration file
   -x FILE, --file-prefix FILE
                         file prefix, i.e. counter
   -n, --nolower         do not change aliases into lower case
@@ -505,13 +506,14 @@ Example
 
 .. code:: bash
 
-       nxscreate secopcp -t
+       nxscreate secopcp
+       nxscreate secopcp -l
 
            - list all modules of the given node
 
-       nxscreate secopcp -c temp_node
+       nxscreate secopcp -c temp_node -d . -j secop_node.json
 
-           - create the all secop components in the local directory for the node on port 5000
+           - create the all secop components in the local directory for the node configured with the json file
 
        nxscreate secopcp T -p 5001 -b
 

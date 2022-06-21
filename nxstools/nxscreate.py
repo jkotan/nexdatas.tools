@@ -1203,14 +1203,16 @@ class SECoPCP(Runner):
         + "\n" \
         + " examples:\n" \
         + "\n" \
-        + "       nxscreate secopcp -t \n" \
+        + "       nxscreate secopcp \n" \
+        + "       nxscreate secopcp -l \n" \
         + "\n" \
         + "           - list all modules of the given node \n" \
         + "\n" \
-        + "       nxscreate secopcp -c temp_node \n" \
+        + "       nxscreate secopcp -c temp_node -d . -j secopn_node.json \n" \
         + "\n" \
         + "           - create the all secop components" \
-        + " in the local directory for the node on port 5000 \n" \
+        + " in the local directory for the node configured" \
+        + " with the json file \n" \
         + "\n" \
         + "       nxscreate secopcp T -p 5001 -b \n" \
         + "\n" \
@@ -1265,7 +1267,10 @@ class SECoPCP(Runner):
                             help="instrument group name", default="instrument")
         parser.add_argument("-d", "--directory",
                             help="output component directory",
-                            dest="directory", default=".")
+                            dest="directory")
+        parser.add_argument("-j", "--json-file",
+                            help="json configuration file",
+                            dest="json")
         parser.add_argument("-x", "--file-prefix",
                             help="file prefix, i.e. counter",
                             dest="file", default="")
@@ -1312,7 +1317,9 @@ class SECoPCP(Runner):
                 sys.exit(0)
 
         if not options.listmodules:
-            if options.database:
+            if not options.database and not options.directory:
+                options.listmodules = True
+            elif options.database:
                 print("CONFIG SERVER: %s" % options.server)
             else:
                 print("OUTPUT DIRECTORY: %s" % options.directory)
