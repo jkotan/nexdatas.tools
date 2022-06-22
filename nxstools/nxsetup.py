@@ -89,7 +89,7 @@ knownHosts = {
                    'user': 'p01user', 'dbname': 'nxsconfig'},
     'haspp02ch1a': {'beamline': 'p02', 'masterhost': 'haspp02ch1a',
                     'user': 'p02user', 'dbname': 'nxsconfig'},
-    'haspp021ch1a': {'beamline': 'p02', 'masterhost': 'haspp021ch1a',
+    'haspp021ch1a': {'beamline': 'p021', 'masterhost': 'haspp021ch1a',
                      'user': 'p021user', 'dbname': 'nxsconfig'},
     'haspp02ch1': {'beamline': 'p02', 'masterhost': 'haspp02ch1',
                    'user': 'p02user', 'dbname': 'nxsconfig'},

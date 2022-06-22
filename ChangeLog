@@ -1,4 +1,8 @@
 2022-06-21 Jan Kotanski <jankotan@gmail.com>
+	* change haspp021ch1a tango host
+	* tagged as v3.20.1
+
+2022-06-21 Jan Kotanski <jankotan@gmail.com>
 	* fix secopcp status implementation
 	* create secop components from a json configuration file
 	* tagged as v3.20.0
