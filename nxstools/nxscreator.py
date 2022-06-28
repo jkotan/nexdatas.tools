@@ -67,6 +67,36 @@ npTn = {"float32": "NX_FLOAT32",
         "bool": "NX_BOOLEAN"}
 
 
+dsc2mm = [
+    ("temperaturesensor", "temperature"),
+    ("phsensor", "pH"),
+    ("magneticfieldsensor", "magnetic_field"),
+    ("electricfieldsensor", "electric_field"),
+    ("conductivitysensor", "conductivity"),
+    ("resistancesensor", "resistance"),
+    ("voltagesensor", "voltage"),
+    ("surfacepressuresensor", "surface_pressure"),
+    ("pressuresensor", "pressure"),
+    ("flowsensor", "flow"),
+    ("stresssensor", "stress"),
+    ("strainsensor", "strain"),
+    ("shearsensor", "shear"),
+    ("temperature", "temperature"),
+    ("ph", "pH"),
+    ("magneticfield", "magnetic_field"),
+    ("electricfield", "electric_field"),
+    ("conductivity", "conductivity"),
+    ("resistance", "resistance"),
+    ("voltage", "voltage"),
+    ("surfacepressure", "surface_pressure"),
+    ("pressure", "pressure"),
+    ("flow", "flow"),
+    ("stress", "stress"),
+    ("strain", "strain"),
+    ("shear", "shear"),
+]
+
+
 class CPExistsException(Exception):
 
     """ Component already exists exception
@@ -1867,10 +1897,12 @@ class SECoPCPCreator(CPCreator):
             field = NField(mgr, 'name', 'NX_CHAR')
             field.setText("%s" % str(conf['description']).replace(",", "_"))
             field.setStrategy('INIT')
-            if "temperaturesensor" in conf['description']:
-                field = NField(mgr, 'measurement', 'NX_CHAR')
-                field.setText("temperature")
-                field.setStrategy('INIT')
+            for desc, meas in dsc2mm:
+                if desc in conf['description'].lower():
+                    field = NField(mgr, 'measurement', 'NX_CHAR')
+                    field.setText(meas)
+                    field.setStrategy('INIT')
+                    break
 
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
