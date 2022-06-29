@@ -819,6 +819,8 @@ standardComponentVariables = {
             "If it is  not set it is not created (string)"
         },
     },
+    'starttime': {
+    },
     'beamtimeid': {
         'shortname': {
             'default': "P09",

@@ -42,7 +42,7 @@ def set_start_timestamp(commonblock, isotime=None, name=None):
     """
     name = name or "start_timestamp"
     try:
-        result = parser.parse(isotime)
+        result = parser.parse(isotime).timestamp()
     except Exception:
         result = time.time()
     with timestamplock:
