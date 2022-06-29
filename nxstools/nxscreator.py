@@ -1939,9 +1939,10 @@ class SECoPCPCreator(CPCreator):
                         field = NField(log, 'time', "NX_FLOAT64")
                         field.setText(
                             "$datasources.%s" % timedsname)
-                        self.createSECoPDS(timedsname,
-                                           "read %s:%s" % (name, pname),
-                                           dsname, '[1, "t"]')
+                        at = field.addAttr(
+                            'start', "NX_DATE_TIME",
+                            "$datasources.client_start_time")
+                        at.setStrategy("INIT")
                         field.setUnits("s")
                         field.setStrategy(strategy)
                         if minval:
@@ -2023,9 +2024,9 @@ class SECoPCPCreator(CPCreator):
         field = NField(log, 'time', "NX_FLOAT64")
         field.setText(
             "$datasources.%s" % timedsname)
-        self.createSECoPDS(timedsname,
-                           "read %s:%s" % (modname, name),
-                           dsname, '[1, "t"]')
+        at = field.addAttr(
+            'start', "NX_DATE_TIME", "$datasources.client_start_time")
+        at.setStrategy("INIT")
         field.setUnits("s")
         field.setStrategy(pstrategy)
         if minval:
