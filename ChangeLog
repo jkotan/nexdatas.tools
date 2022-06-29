@@ -1,6 +1,7 @@
 2022-06-29 Jan Kotanski <jankotan@gmail.com>
 	* improve writing the measurement field by nxscreate secopcp
-	* tagged as v3.20.2
+	* add relative timestamp to the secop component
+	* tagged as v3.21.0
 
 2022-06-21 Jan Kotanski <jankotan@gmail.com>
 	* change haspp021ch1a tango host

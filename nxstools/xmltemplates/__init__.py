@@ -819,6 +819,8 @@ standardComponentVariables = {
             "If it is  not set it is not created (string)"
         },
     },
+    'starttime': {
+    },
     'beamtimeid': {
         'shortname': {
             'default': "P09",
@@ -1393,9 +1395,21 @@ standardComponentTemplateFiles = {
         'qbpm_foil.ds.xml',
         'qbpm.xml',
     ],
-    'secop': ['secop.ds.xml'],
-    'singlesecop': ['singlesecop.ds.xml'],
-    'groupsecop': ['groupsecop.ds.xml'],
+    'secop': [
+        'secop.ds.xml',
+        'secop_time.ds.xml',
+        'client_start_time.ds.xml',
+    ],
+    'singlesecop': [
+        'singlesecop.ds.xml',
+        'singlesecop_time.ds.xml',
+        'client_start_time.ds.xml',
+    ],
+    'groupsecop': [
+        'groupsecop.ds.xml',
+        'groupsecop_time.ds.xml',
+        'client_start_time.ds.xml',
+    ],
     'slit': ['slit.xml'],
     'source': ['source.xml'],
     'undulator': ['undulator.xml'],
@@ -1403,6 +1417,12 @@ standardComponentTemplateFiles = {
         'beamtimeid.xml',
         'beamtimeid.ds.xml',
         'start_time.ds.xml',
+    ],
+    'starttime': [
+        'starttime.xml',
+        'starttime.ds.xml',
+        'start_timestamp.ds.xml',
+        'client_start_time.ds.xml',
     ],
     'beamtimefname': [
         'beamtimefname.xml',
