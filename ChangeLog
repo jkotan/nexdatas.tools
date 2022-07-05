@@ -1,5 +1,6 @@
 2022-07-05 Jan Kotanski <jankotan@gmail.com>
 	* add proposal as proposal option for nxsfileinfo metadata
+	* apply fixes proposed by Markus Z.
 	* tagged as v3.22.0
 
 2022-06-29 Jan Kotanski <jankotan@gmail.com>

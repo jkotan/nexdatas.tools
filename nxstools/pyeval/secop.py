@@ -126,7 +126,7 @@ def secop_send(cmd, sckt, timeout=None):
     :rtype: :obj:`dict` <:obj:`str`, :obj:`any`>
     """
     sckt.send((cmd + "\n").encode())
-    buffer = ""
+    sbuffer = ""
     timeout = float(timeout or 0.001)
     for tofactor in [1, 10, 100, 1000, 3000]:
         tout = tofactor * timeout
@@ -135,14 +135,13 @@ def secop_send(cmd, sckt, timeout=None):
                 [sckt], [], [], tout)
             if len(infds) == 0:
                 break
-            buffer = buffer + sckt.recv(1024).decode()
-        lst = buffer.split(' ')
-        com = ''.join(lst[2:]).strip()
+            sbuffer = sbuffer + sckt.recv(1024).decode()
         try:
-            argout = json.loads(com)
+            l1, l2, com = sbuffer.split(' ', 2)
+            argout = json.loads(com.strip())
             break
         except Exception:
-            argout = buffer.strip()
+            argout = sbuffer.strip()
     return argout
 
 
