@@ -54,6 +54,31 @@ npTn = {"double": "NX_FLOAT64",
         "string": "NX_CHAR",
         "bool": "NX_BOOLEAN"}
 
+mnTme = {
+    "temperature": "temperature",
+    "temperature_regulation": "temperature",
+    "magneticfield": "magnetic_field",
+    "electricfield": "electric_field",
+    "pressure": "pressure",
+    "flowrate": "flow",
+
+    # not defined in NeXus yet
+    "humidity": "humidity",
+    "viscosity": "viscosity",
+    "concentration": "concentration",
+    "rotation_z": "rotation_y",
+
+    # not defined in secop yet
+    "ph": "pH",
+    "conductivity": "conductivity",
+    "resistance": "resistance",
+    "voltage": "voltage",
+    "surfacepressure": "surface_pressure",
+    "stress": "stress",
+    "strain": "strain",
+    "shear": "shear",
+  }
+
 
 class CPExistsException(Exception):
 
@@ -1860,6 +1885,8 @@ class SECoPCPCreator(CPCreator):
             if isinstance(meaning, list):
                 if len(meaning) > 0:
                     meaning = meaning[0]
+            if meaning in mnTme.keys():
+                meaning = mnTme[meaning]
             field = NField(mgr, 'measurement', 'NX_CHAR')
             field.setText(meaning)
             field.setStrategy('INIT')
