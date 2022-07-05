@@ -3198,10 +3198,11 @@ For more help:
                         "owner": "famous",
                         "ownerEmail": "cute.cute@cute.com",
                         "principalInvestigator": "robust.robust@robust.com",
-                        "proposalId": "65300407",
+                        "proposalId": "16171271",
                         "scientificMetadata": {
                             "NX_class": "NXentry",
                             "beamtimeId": "16171271",
+                            "DOOR_proposalId": "65300407",
                             "user_comments": "Awesome comment",
                             "dataParameters": {
                                 "NX_class": "NXdata"
@@ -3406,9 +3407,10 @@ For more help:
                     "owner": "famous",
                     "ownerEmail": "cute.cute@cute.com",
                     "principalInvestigator": "robust.robust@robust.com",
-                    "proposalId": "65300407",
+                    "proposalId": "16171271",
                     "scientificMetadata": {
                         "beamtimeId": "16171271",
+                        "DOOR_proposalId": "65300407",
                         "user_comments": "Awesome comment",
                         "end_time": {
                             "value": "2014-02-16T15:17:21+00:00"
@@ -3627,10 +3629,11 @@ For more help:
                         "owner": "famous",
                         "ownerEmail": "cute.cute@cute.com",
                         "principalInvestigator": "robust.robust@robust.com",
-                        "proposalId": "65300407",
+                        "proposalId": "16171271",
                         "scientificMetadata": {
                             "NX_class": "NXentry",
                             "beamtimeId": "16171271",
+                            "DOOR_proposalId": "65300407",
                             "dataParameters": {
                                 "NX_class": "NXdata"
                             },
