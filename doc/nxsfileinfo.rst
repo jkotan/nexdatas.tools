@@ -118,6 +118,8 @@ Options:
                         scientific metadata file
    -o OUTPUT, --output OUTPUT
                         output scicat metadata file
+   --proposal-as-proposal
+                        Store the DESY proposal as the SciCat proposal
    --h5py               use h5py module as a nexus reader
    --h5cpp              use h5cpp module as a nexus reader
 

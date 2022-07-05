@@ -310,7 +310,8 @@ class BeamtimeLoader(object):
         "description": "title",   # ?? should be from dataset
         "createdAt": "generated",  # ?? should be automatic
         "updatedAt": "generated",  # ?? should be automatic
-        "proposalId": "proposalId",
+        # "proposalId": "proposalId",
+        "proposalId": "beamtimeId",
     }
 
     strcre = {
@@ -377,6 +378,7 @@ class BeamtimeLoader(object):
         :type options: :class:`argparse.Namespace`
         """
         self.__pid = options.pid
+        self.__pap = options.pap
         dct = {}
         if options.beamtimemeta:
             with open(options.beamtimemeta, "r") as fl:
@@ -411,6 +413,8 @@ class BeamtimeLoader(object):
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
 
+        if self.__pap:
+            self.btmdmap["proposalId"] = "proposalId"
         if self.__btmeta:
             for sc, ds in self.btmdmap.items():
                 sds = ds.split(".")
@@ -436,6 +440,10 @@ class BeamtimeLoader(object):
            "beamtimeId" not in self.__metadata["scientificMetadata"]:
             self.__metadata["scientificMetadata"]["beamtimeId"] = \
                 self.__btmeta["beamtimeId"]
+        if self.__btmeta and \
+           "DOOR_proposalId" not in self.__metadata["scientificMetadata"]:
+            self.__metadata["scientificMetadata"]["DOOR_proposalId"] = \
+                self.__btmeta["proposalId"]
         if self.__pid:
             self.__metadata["pid"] = self.__pid
         # print(self.__metadata)
@@ -650,6 +658,10 @@ class Metadata(Runner):
             "-d", "--pid-without-filename", action="store_true",
             default=False, dest="pfname",
             help=("generate pid without file name"))
+        self._parser.add_argument(
+            "--proposal-as-proposal", action="store_true",
+            default=False, dest="pap",
+            help=("Store the DESY proposal as the SciCat proposal"))
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
