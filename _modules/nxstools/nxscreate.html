@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreate &#8212; NXSTools 3.6.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nxstools.nxscreate &#8212; NXSTools 3.22.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../../_static/js/jquery-fix.js"></script>
+    <script src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -36,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.22</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -79,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-secopcp">nxscreate secopcp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -171,8 +172,7 @@
     <div class="col-md-12 content">
       
   <h1>Source code for nxstools.nxscreate</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span></span><span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c1">#</span>
 <span class="c1">#    Copyright (C) 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
 <span class="c1">#</span>
@@ -198,13 +198,13 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 
 
-<span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="k">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxsdevicetools</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">checkServer</span><span class="p">,</span> <span class="n">getAttributes</span><span class="p">,</span> <span class="n">getServerTangoHost</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">nxstools.nxscreator</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">nxstools.nxscreator</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">TangoDSCreator</span><span class="p">,</span> <span class="n">ClientDSCreator</span><span class="p">,</span> <span class="n">WrongParameterError</span><span class="p">,</span>
     <span class="n">DeviceDSCreator</span><span class="p">,</span> <span class="n">OnlineDSCreator</span><span class="p">,</span> <span class="n">OnlineCPCreator</span><span class="p">,</span> <span class="n">CPExistsException</span><span class="p">,</span>
-    <span class="n">DSExistsException</span><span class="p">,</span>
+    <span class="n">DSExistsException</span><span class="p">,</span> <span class="n">SECoPCPCreator</span><span class="p">,</span>
     <span class="n">StandardCPCreator</span><span class="p">,</span> <span class="n">ComponentCreator</span><span class="p">,</span> <span class="n">CompareOnlineDS</span><span class="p">,</span> <span class="n">PoolDSCreator</span><span class="p">)</span>
 
 
@@ -1361,6 +1361,158 @@
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span></div></div>
 
 
+<div class="viewcode-block" id="SECoPCP"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP">[docs]</a><span class="k">class</span> <span class="nc">SECoPCP</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; secop component runner&quot;&quot;&quot;</span>
+    <span class="c1">#: (:obj:`str`) command description</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;create secop components&quot;</span>
+    <span class="c1">#: (:obj:`str`) command epilog</span>
+    <span class="n">epilog</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; * with -b: components are created (without datasources)&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; in Configuration Server database</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; * without -b: components are created (without datasources)&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; on the local filesystem in -d &lt;directory&gt; </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; * default: &lt;directory&gt; is &#39;.&#39; </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;            &lt;port&gt; is 5001</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; examples:</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp -l </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;           - list all modules of the given node </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp -c temp_node -d . -j secopn_node.json </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;           - create the all secop components&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; in the local directory for the node configured&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; with the json file </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp T -p 5001 -b </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;           - create the component for the T secop module &quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; in the NXSConfigServer database for the node on the port 5000 </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp -d /home/user/xmldir/ </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;           - create the all secop components&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot; in the given directory</span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="SECoPCP.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; creates parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--list&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;listmodules&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;list modules of the given node&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--overwrite&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;overwrite&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;overwrite existing components&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--can-fail&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;canfail&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;can fail strategy flag&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--component&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;component name&quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;secop component name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--param-strategy&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sensor parameter strategy, &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;i.e. INIT, STEP or FINAL, &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;default: INIT&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;paramstrategy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;INIT&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--strategy&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sensor value strategy, &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;i.e. INIT, STEP or FINAL, &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;default: INIT&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;strategy&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;INIT&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--timeout&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sensor minimum timeout &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;default: 0.001&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--sample&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sample name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;samplename&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;xmlpackage&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;xml template package&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--entryname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;entryname&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;entry group name (prefix)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;scan&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--insname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;insname&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;instrument group name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;instrument&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--directory&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;output component directory&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;directory&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">,</span> <span class="s2">&quot;--json-file&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;json configuration file&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-x&quot;</span><span class="p">,</span> <span class="s2">&quot;--file-prefix&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;file prefix, i.e. counter&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--nolower&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;do not change aliases into lower case&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--database&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;database&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;store components in &quot;</span>
+                            <span class="s2">&quot;Configuration Server database&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="s2">&quot;--host&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;secop host name&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--port&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;secop host port&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;5000&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-r&quot;</span><span class="p">,</span> <span class="s2">&quot;--server&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;configuration server device name&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;args&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;component_name&#39;</span><span class="p">,</span>
+                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;component names to be created&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parser</span></div>
+
+<div class="viewcode-block" id="SECoPCP.run"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.SECoPCP.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; the main program function</span>
+
+<span class="sd">        :param options: parser options</span>
+<span class="sd">        :type options: :class:`argparse.Namespace`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PYTANGO</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Info: No PyTango installed</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+
+            <span class="n">options</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">checkServer</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">listmodules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">listmodules</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">database</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CONFIG SERVER: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">server</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OUTPUT DIRECTORY: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">SECoPCPCreator</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">listmodules</span><span class="p">:</span>
+                <span class="n">modules</span> <span class="o">=</span> <span class="n">creator</span><span class="o">.</span><span class="n">listmodules</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">modules</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MODULES:</span><span class="se">\n</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modules</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">WrongParameterError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span></div></div>
+
+
 <div class="viewcode-block" id="ClientDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreate.ClientDS">[docs]</a><span class="k">class</span> <span class="nc">ClientDS</span><span class="p">(</span><span class="n">Runner</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; clientds runner&quot;&quot;&quot;</span>
@@ -1530,6 +1682,7 @@
                          <span class="p">(</span><span class="s1">&#39;poolds&#39;</span><span class="p">,</span> <span class="n">PoolDS</span><span class="p">),</span>
                          <span class="p">(</span><span class="s1">&#39;stdcomp&#39;</span><span class="p">,</span> <span class="n">StdComp</span><span class="p">),</span>
                          <span class="p">(</span><span class="s1">&#39;comp&#39;</span><span class="p">,</span> <span class="n">Comp</span><span class="p">),</span>
+                         <span class="p">(</span><span class="s1">&#39;secopcp&#39;</span><span class="p">,</span> <span class="n">SECoPCP</span><span class="p">),</span>
                          <span class="p">(</span><span class="s1">&#39;compare&#39;</span><span class="p">,</span> <span class="n">Compare</span><span class="p">)]</span>
     <span class="n">runners</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">createSubParsers</span><span class="p">()</span>
 
@@ -1571,7 +1724,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>

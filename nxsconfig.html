@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxsconfig &#8212; NXSTools 3.6.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>nxsconfig &#8212; NXSTools 3.22.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/js/jquery-1.11.0.min.js"></script>
+    <script src="_static/js/jquery-fix.js"></script>
+    <script src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nxscreate" href="nxscreate.html" />
@@ -38,7 +38,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.22</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -81,6 +81,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-secopcp">nxscreate secopcp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxscreate.html#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
@@ -95,6 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -188,120 +190,110 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="nxsconfig">
+  <section id="nxsconfig">
 <h1>nxsconfig<a class="headerlink" href="#nxsconfig" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="description">
+<section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The nxsconfig program
 is a command-line interface to NXS Configuration Tango Server.
 It allows one to read XML configuration datasources
 and components. It also gives possibility to
 perform the process of component merging.</p>
-</div>
-<div class="section" id="synopsis">
+</section>
+<section id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxsconfig</span> <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="o">&lt;</span><span class="n">config_server</span><span class="o">&gt;</span><span class="p">]</span>  <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name1</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name2</span><span class="o">&gt;</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">name3</span><span class="o">&gt;</span><span class="p">]</span> <span class="o">...</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig &lt;command&gt; <span class="o">[</span>-s &lt;config_server&gt;<span class="o">]</span>  <span class="o">[</span>-d<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">[</span>-m<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> <span class="o">[</span>-p<span class="o">]</span> <span class="o">[</span>&lt;name1&gt;<span class="o">]</span> <span class="o">[</span>&lt;name2&gt;<span class="o">]</span> <span class="o">[</span>&lt;name3&gt;<span class="o">]</span> ...
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Commands:</dt>
-<dd><dl class="first last docutils">
-<dt>list [-s &lt;config_server&gt;] [-m] [-p] [-n]</dt>
-<dd>list names of available components</dd>
-<dt>list -d [-s &lt;config_server&gt;] [-n]</dt>
-<dd>list names of available datasources</dd>
-<dt>list -r [-s &lt;config_server&gt;] [-n]</dt>
-<dd>list names of available profiles</dd>
-<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 …</dt>
-<dd>show components with given names</dd>
-<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 …</dt>
-<dd>show datasources with given names</dd>
-<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 …</dt>
-<dd>show profiles with given names</dd>
-<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 …</dt>
-<dd>load components from given files</dd>
-<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 …</dt>
-<dd>load datasources from given files</dd>
-<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 …</dt>
-<dd>load profiles from given files</dd>
-<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 …</dt>
-<dd>get merged configuration of components</dd>
-<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 …</dt>
-<dd>delete components with given names</dd>
-<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 …</dt>
-<dd>delete datasources with given names</dd>
-<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 …</dt>
-<dd>delete profiles with given names</dd>
-<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt>
-<dd>get a list of component datasources</dd>
-<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 …</dt>
-<dd>get a list of dependent components</dd>
-<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt>
-<dd>get a list of component variables</dd>
-<dt>data [-s &lt;config_server&gt;] json_data</dt>
-<dd>set values of component variables</dd>
-<dt>record [-s &lt;config_server&gt;] [-n] component_name1</dt>
-<dd>get a list of datasource record names from component</dd>
-<dt>record -d [-s &lt;config_server&gt;] [-n] datasource_name1</dt>
-<dd>get a list of datasource record names</dd>
-<dt>servers [-s &lt;config_server/host&gt;] [-n]</dt>
-<dd>get lists of configuration servers from the current tango host</dd>
-<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
-<dd>show all parameters of given components</dd>
-<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 …</dt>
-<dd>show all parameters of given datasources</dd>
-<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
-<dd>show source parameters of given components</dd>
-<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 …</dt>
-<dd>show general parameters of given profiles</dd>
-<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
-<dd>show transformation parameters of given components</dd>
-</dl>
+<dl>
+<dt>Commands:</dt><dd><dl class="simple">
+<dt>list [-s &lt;config_server&gt;] [-m] [-p] [-n]</dt><dd><p>list names of available components</p>
 </dd>
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d</span>, <span class="option">--datasources</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>perform operation on datasources</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>make use mandatory components as well</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></td>
-<td>make use private components, i.e. starting with ‘__’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>split result with space characters</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-f</span>, <span class="option">--force</span></kbd></td>
-<td>do not ask</td></tr>
-</tbody>
-</table>
+<dt>list -d [-s &lt;config_server&gt;] [-n]</dt><dd><p>list names of available datasources</p>
+</dd>
+<dt>list -r [-s &lt;config_server&gt;] [-n]</dt><dd><p>list names of available profiles</p>
+</dd>
+<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 ...</dt><dd><p>show components with given names</p>
+</dd>
+<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 ...</dt><dd><p>show datasources with given names</p>
+</dd>
+<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 ...</dt><dd><p>show profiles with given names</p>
+</dd>
+<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 ...</dt><dd><p>load components from given files</p>
+</dd>
+<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 ...</dt><dd><p>load datasources from given files</p>
+</dd>
+<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 ...</dt><dd><p>load profiles from given files</p>
+</dd>
+<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 ...</dt><dd><p>get merged configuration of components</p>
+</dd>
+<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 ...</dt><dd><p>delete components with given names</p>
+</dd>
+<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 ...</dt><dd><p>delete datasources with given names</p>
+</dd>
+<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 ...</dt><dd><p>delete profiles with given names</p>
+</dd>
+<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of component datasources</p>
+</dd>
+<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of dependent components</p>
+</dd>
+<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt><dd><p>get a list of component variables</p>
+</dd>
+<dt>data [-s &lt;config_server&gt;] json_data</dt><dd><p>set values of component variables</p>
+</dd>
+<dt>record [-s &lt;config_server&gt;] [-n] component_name1</dt><dd><p>get a list of datasource record names from component</p>
+</dd>
+<dt>record -d [-s &lt;config_server&gt;] [-n] datasource_name1</dt><dd><p>get a list of datasource record names</p>
+</dd>
+<dt>servers [-s &lt;config_server/host&gt;] [-n]</dt><dd><p>get lists of configuration servers from the current tango host</p>
+</dd>
+<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show all parameters of given components</p>
+</dd>
+<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 ...</dt><dd><p>show all parameters of given datasources</p>
+</dd>
+<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show source parameters of given components</p>
+</dd>
+<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 ...</dt><dd><p>show general parameters of given profiles</p>
+</dd>
+<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt><dd><p>show transformation parameters of given components</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="example">
+</dd>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-s <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-d</span>, <span class="option">--datasources</span></kbd></dt>
+<dd><p>perform operation on datasources</p>
+</dd>
+<dt><kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></dt>
+<dd><p>make use mandatory components as well</p>
+</dd>
+<dt><kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></dt>
+<dd><p>make use private components, i.e. starting with '__'</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></dt>
+<dd><p>split result with space characters</p>
+</dd>
+<dt><kbd><span class="option">-f</span>, <span class="option">--force</span></kbd></dt>
+<dd><p>do not ask</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxsconfig</span> <span class="nb">list</span> <span class="o">-</span><span class="n">s</span> <span class="n">p02</span><span class="o">/</span><span class="n">xmlconfigserver</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span><span class="mi">01</span> <span class="o">-</span><span class="n">d</span>
-<span class="n">nxsconfig</span> <span class="n">info</span>
-<span class="n">nxsconfig</span> <span class="n">geometry</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsconfig list -s p02/xmlconfigserver/exp.01 -d
+nxsconfig info
+nxsconfig geometry
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -318,7 +310,7 @@ perform the process of component merging.</p>
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>

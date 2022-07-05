@@ -21,7 +21,7 @@ The following commands are available: set, restart, start, stop, move-prop, chan
 nxsetup set
 -----------
 
-.. code:: bash
+.. code::
 
     usage: nxsetup set [-h] [-b BEAMLINE] [-m MASTERHOST] [-u USER] [-d DBNAME]
 		       [-j CSJSON]

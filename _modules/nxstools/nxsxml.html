@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsxml &#8212; NXSTools 3.6.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nxstools.nxsxml &#8212; NXSTools 3.20.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../../_static/js/jquery-fix.js"></script>
+    <script src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -36,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.20</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -79,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-secopcp">nxscreate secopcp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -171,8 +172,7 @@
     <div class="col-md-12 content">
       
   <h1>Source code for nxstools.nxsxml</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span></span><span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c1">#</span>
 <span class="c1">#    Copyright (C) 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
 <span class="c1">#</span>
@@ -227,7 +227,7 @@
 
     <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">tagName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -281,7 +281,7 @@
     <span class="sd">&quot;&quot;&quot; Attribute tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -323,7 +323,7 @@
     <span class="sd">&quot;&quot;&quot; Group tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -372,7 +372,7 @@
     <span class="sd">&quot;&quot;&quot; Link tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">gTarget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">gTarget</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -402,7 +402,7 @@
     <span class="sd">&quot;&quot;&quot; Dimensions tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">rankAttr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">rankAttr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -432,7 +432,7 @@
     <span class="sd">&quot;&quot;&quot; Dim tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">indexAttr</span><span class="p">,</span> <span class="n">valueAttr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -452,7 +452,7 @@
     <span class="sd">&quot;&quot;&quot; Field tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -560,7 +560,7 @@
     <span class="sd">&quot;&quot;&quot; Source tag wrapper</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param parent: parent tag element</span>
@@ -757,7 +757,7 @@
               <span class="s2">&quot;NX_INT32&quot;</span><span class="p">,</span>
               <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">deviceName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">deviceName</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
                  <span class="n">commands</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blackAttrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
@@ -891,7 +891,7 @@
     <span class="sd">&quot;&quot;&quot; XML file object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param fname: XML file name</span>
@@ -909,10 +909,16 @@
 <span class="sd">        :type etNode: :class:`lxml.etree.Element`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">etNode</span> <span class="k">if</span> <span class="n">etNode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">elem</span>
-        <span class="n">xmls</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span>
-            <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span>
-                <span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+            <span class="n">xmls</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span>
+                <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span>
+                    <span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span>
+                    <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xmls</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span>
+                <span class="n">lxml</span><span class="o">.</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span>
+                    <span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+                    <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">xmls</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;?xml&quot;</span><span class="p">):</span>
             <span class="n">xmls</span> <span class="o">=</span> <span class="s2">&quot;&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf8&#39;?&gt;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">xmls</span>
         <span class="k">return</span> <span class="n">xmls</span></div>
@@ -963,7 +969,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>

@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsparser &#8212; NXSTools 3.6.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nxstools.nxsparser &#8212; NXSTools 3.20.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script src="../../_static/js/jquery-fix.js"></script>
+    <script src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -36,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.6</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.20</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -79,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-onlinecp">nxscreate onlinecp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-stdcomp">nxscreate stdcomp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-comp">nxscreate comp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-secopcp">nxscreate secopcp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxscreate.html#nxscreate-compare">nxscreate compare</a></li>
 </ul>
 </li>
@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#synopsis">Synopsis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -171,8 +172,7 @@
     <div class="col-md-12 content">
       
   <h1>Source code for nxstools.nxsparser</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
+<span></span><span class="c1">#   This file is part of nexdatas - Tango Server for NeXus data writer</span>
 <span class="c1">#</span>
 <span class="c1">#    Copyright (C) 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;</span>
 <span class="c1">#</span>
@@ -197,7 +197,7 @@
 <span class="kn">import</span> <span class="nn">fnmatch</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">et</span>
 <span class="kn">import</span> <span class="nn">lxml.etree</span>
-<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="k">import</span> <span class="n">XMLParser</span>
+<span class="kn">from</span> <span class="nn">lxml.etree</span> <span class="kn">import</span> <span class="n">XMLParser</span>
 
 
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
@@ -241,7 +241,10 @@
 <span class="sd">    :returns: xml content string</span>
 <span class="sd">    :rtype: :obj:`str`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">xml</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span><span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span><span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;unicode&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">_tostr</span><span class="p">(</span><span class="n">et</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">xml</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf8&#39;?&gt;&quot;</span><span class="p">):</span>
         <span class="n">xml</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">xml</span><span class="p">[</span><span class="mi">38</span><span class="p">:])</span>
         <span class="k">return</span> <span class="n">xml</span>
@@ -250,7 +253,7 @@
 <div class="viewcode-block" id="ESRFConverter"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsparser.ESRFConverter">[docs]</a><span class="k">class</span> <span class="nc">ESRFConverter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; ESRF xml configuration converter &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">__allowed_tags</span> <span class="o">=</span> <span class="p">[</span>
@@ -520,16 +523,11 @@
         <span class="n">attr</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">while</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">onode</span> <span class="o">=</span> <span class="n">node</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">getparent</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">onode</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;attribute&quot;</span><span class="p">:</span>
                 <span class="n">attr</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">attr</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="n">onode</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span>
-                <span class="n">field</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">field</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">]:</span>
                 <span class="k">return</span> <span class="n">name</span>
             <span class="k">else</span><span class="p">:</span>
@@ -540,7 +538,7 @@
                         <span class="n">gname</span> <span class="o">=</span> <span class="n">nxtype</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
                 <span class="k">if</span> <span class="n">attr</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">gname</span> <span class="o">+</span> <span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">name</span>
-                <span class="k">elif</span> <span class="ow">not</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">nxtype</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">nxtype</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gname</span><span class="p">,</span> <span class="n">nxtype</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">gname</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">name</span>
@@ -748,6 +746,7 @@
                 <span class="n">troffset</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;offset&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="n">trdependson</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getAttr</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;depends_on&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="n">nxpath</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getPath</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
+                <span class="n">fullnxpath</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getFullPath</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
                 <span class="n">dnodes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;dimensions&quot;</span><span class="p">)</span>
                 <span class="n">shape</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getShape</span><span class="p">(</span><span class="n">dnodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">dnodes</span> <span class="k">else</span> <span class="kc">None</span>
                 <span class="n">stnodes</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__getChildrenByTagName</span><span class="p">(</span><span class="n">nd</span><span class="p">,</span> <span class="s2">&quot;strategy&quot;</span><span class="p">)</span>
@@ -756,6 +755,7 @@
                 <span class="n">sfdinfo</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s2">&quot;strategy&quot;</span><span class="p">:</span> <span class="n">strategy</span><span class="p">,</span>
                     <span class="s2">&quot;nexus_path&quot;</span><span class="p">:</span> <span class="n">nxpath</span><span class="p">,</span>
+                    <span class="s2">&quot;full_nexus_path&quot;</span><span class="p">:</span> <span class="n">fullnxpath</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="n">fdinfo</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="s2">&quot;nexus_type&quot;</span><span class="p">:</span> <span class="n">nxtype</span><span class="p">,</span>
@@ -862,7 +862,7 @@
     <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param description: description list</span>
@@ -1039,7 +1039,7 @@
     <span class="sd">&quot;&quot;&quot; configuration server adapter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">nonone</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; constructor</span>
 
 <span class="sd">        :param description: description list</span>
@@ -1231,7 +1231,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>
