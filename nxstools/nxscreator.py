@@ -49,52 +49,10 @@ if sys.version_info > (3,):
     basestring = str
     unicode = str
 
-npTn = {"float32": "NX_FLOAT32",
-        "float64": "NX_FLOAT64",
-        "double": "NX_FLOAT64",
-        "float": "NX_FLOAT32",
-        "int64": "NX_INT64",
-        "int32": "NX_INT32",
-        "int16": "NX_INT16",
-        "int8": "NX_INT8",
+npTn = {"double": "NX_FLOAT64",
         "int": "NX_INT64",
-        "uint64": "NX_UINT64",
-        "uint32": "NX_UINT32",
-        "uint16": "NX_UINT16",
-        "uint8": "NX_UINT8",
-        "uint": "NX_UINT64",
         "string": "NX_CHAR",
         "bool": "NX_BOOLEAN"}
-
-
-dsc2mm = [
-    ("temperaturesensor", "temperature"),
-    ("phsensor", "pH"),
-    ("magneticfieldsensor", "magnetic_field"),
-    ("electricfieldsensor", "electric_field"),
-    ("conductivitysensor", "conductivity"),
-    ("resistancesensor", "resistance"),
-    ("voltagesensor", "voltage"),
-    ("surfacepressuresensor", "surface_pressure"),
-    ("pressuresensor", "pressure"),
-    ("flowsensor", "flow"),
-    ("stresssensor", "stress"),
-    ("strainsensor", "strain"),
-    ("shearsensor", "shear"),
-    ("temperature", "temperature"),
-    ("ph", "pH"),
-    ("magneticfield", "magnetic_field"),
-    ("electricfield", "electric_field"),
-    ("conductivity", "conductivity"),
-    ("resistance", "resistance"),
-    ("voltage", "voltage"),
-    ("surfacepressure", "surface_pressure"),
-    ("pressure", "pressure"),
-    ("flow", "flow"),
-    ("stress", "stress"),
-    ("strain", "strain"),
-    ("shear", "shear"),
-]
 
 
 class CPExistsException(Exception):
@@ -1897,12 +1855,14 @@ class SECoPCPCreator(CPCreator):
             field = NField(mgr, 'name', 'NX_CHAR')
             field.setText("%s" % str(conf['description']).replace(",", "_"))
             field.setStrategy('INIT')
-            for desc, meas in dsc2mm:
-                if desc in conf['description'].lower():
-                    field = NField(mgr, 'measurement', 'NX_CHAR')
-                    field.setText(meas)
-                    field.setStrategy('INIT')
-                    break
+        if 'meaning' in conf.keys():
+            meaning = conf['meaning']
+            if isinstance(meaning, list):
+                if len(meaning) > 0:
+                    meaning = meaning[0]
+            field = NField(mgr, 'measurement', 'NX_CHAR')
+            field.setText(meaning)
+            field.setStrategy('INIT')
 
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
@@ -1913,7 +1873,7 @@ class SECoPCPCreator(CPCreator):
             par = NGroup(mgr, "parameters", "NXcollection")
             for pname, pconf in params.items():
                 if pname:
-                    if pconf.get("description") == "currentvalueofthemodule":
+                    if pname == "value":
                         di = pconf.get("datainfo")
                         if di:
                             dtype = di.get("type")
@@ -1957,8 +1917,7 @@ class SECoPCPCreator(CPCreator):
                             field.setText(str(maxval))
                             if units:
                                 field.setUnits(units)
-                    elif pconf.get("description") == \
-                            "currentstatusofthemodule":
+                    elif pname == "status":
                         self.__createSECoPParam(
                             par, pname, pconf, nodename, name, canfail,
                             "[0,0]", "int")
