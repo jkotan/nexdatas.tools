@@ -1,3 +1,7 @@
+2022-07-05 Jan Kotanski <jankotan@gmail.com>
+	* add proposal as proposal option for nxsfileinfo metadata
+	* tagged as v3.22.0
+
 2022-06-29 Jan Kotanski <jankotan@gmail.com>
 	* improve writing the measurement field by nxscreate secopcp
 	* add relative timestamp to the secop component
