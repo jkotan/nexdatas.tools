@@ -1,4 +1,9 @@
 2022-07-05 Jan Kotanski <jankotan@gmail.com>
+	* add support for ownerGroup and accessGroups in nxsfileinfo metadata/origdatablocks
+	* apply fixes proposed by Markus Z.
+	* tagged as v3.23.0
+
+2022-07-05 Jan Kotanski <jankotan@gmail.com>
 	* add proposal as proposal option for nxsfileinfo metadata
 	* apply fixes proposed by Markus Z.
 	* tagged as v3.22.0

@@ -97,6 +97,12 @@ Options:
                         names of field or group attributes to be hidden (separated by commas without spaces). The default: 'nexdatas_source,nexdatas_strategy'
    -v VALUES, --values VALUES
                         field names of more dimensional datasets which value should be shown (separated by commas without spaces)
+   -w OWNERGROUP, --owner-group OWNERGROUP
+                        owner group name. Default is {beamtimeid}-part
+   -c ACCESSGROUPS, --access-groups ACCESSGROUPS
+                        access group names separated by commas. Default is
+                        {beamtimeid}-clbt,{beamtimeId}-dmgt,{beamline}dmgt
+
    -g GROUP_POSTFIX, --group-postfix GROUP_POSTFIX
                         postfix to be added to NeXus group name. The default: 'Parameters'
    -t ENTRYCLASSES, --entry-classes ENTRYCLASSES
@@ -132,3 +138,39 @@ Example
           nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'
           nxsfileinfo metadata /user/data/myfile.nxs -s
           nxsfileinfo metadata /user/data/myfile.nxs -a units,NX_class
+
+nxsfileinfo origdatablock
+-------------------------
+
+It shows description of all scan files
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo origdatablock <scan_name>
+
+Options:
+  -h, --help            show this help message and exit
+  -p PID, --pid PID     dataset pid
+  -o OUTPUT, --output OUTPUT
+                        output scicat metadata file
+  -w OWNERGROUP, --owner-group OWNERGROUP
+                        owner group name. Default is {beamtimeid}-part
+  -c ACCESSGROUPS, --access-groups ACCESSGROUPS
+                        access group names separated by commas. Default is
+                        {beamtimeid}-clbt,{beamtimeId}-dmgt
+  -s SKIP, --skip SKIP  filters for files to be skipped (separated by commas
+                        without spaces). Default: ''. E.g.
+			'*.pyc,*\~'
+  -a ADD, --add ADD     list of filtes to be added (separated by commas
+                        without spaces). Default: ''. E.g.
+                        'scan1.nxs,scan2.nxs'
+
+Example
+"""""""
+
+.. code:: bash
+
+	  nxsfileinfo origdatablock /user/data/scan_12345
