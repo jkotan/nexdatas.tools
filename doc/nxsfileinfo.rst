@@ -109,7 +109,7 @@ Options:
                         names of entry NX_class to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: 'NXentry'
    -e ENTRYNAMES, --entry-names ENTRYNAMES
                         names of entry groups to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: ''
-   -r, --raw-metadata    do not store NXentry as scientificMetadata
+   -m, --raw-metadata    do not store NXentry as scientificMetadata
    -p PID, --pid PID
                         dataset pid
    -i BEAMTIMEID, --beamtimeid BEAMTIMEID
@@ -124,6 +124,8 @@ Options:
                         scientific metadata file
    -o OUTPUT, --output OUTPUT
                         output scicat metadata file
+   -r RELPATH, --relative-path RELPATH
+                        relative path to the scan files
    --proposal-as-proposal
                         Store the DESY proposal as the SciCat proposal
    --h5py               use h5py module as a nexus reader
@@ -167,6 +169,8 @@ Options:
   -a ADD, --add ADD     list of filtes to be added (separated by commas
                         without spaces). Default: ''. E.g.
                         'scan1.nxs,scan2.nxs'
+  -r RELPATH, --relative-path RELPATH
+                        relative path to the scan files
 
 Example
 """""""

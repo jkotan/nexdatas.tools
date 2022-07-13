@@ -190,7 +190,7 @@ names of entry NX_class to be shown (separated by commas without spaces). If nam
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
 names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
-.B  \-r\fP,\fB  \-\-raw\-metadata
+.B  \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
@@ -213,6 +213,9 @@ scientific metadata file
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
+.TP
+.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+relative path to the scan files
 .TP
 .B  \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
@@ -282,6 +285,9 @@ without spaces). Default: \(aq\(aq. E.g.
 list of filtes to be added (separated by commas
 without spaces). Default: \(aq\(aq. E.g.
 \(aqscan1.nxs,scan2.nxs\(aq
+.TP
+.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+relative path to the scan files
 .UNINDENT
 .UNINDENT
 .SS Example

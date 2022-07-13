@@ -1,6 +1,8 @@
-2022-07-05 Jan Kotanski <jankotan@gmail.com>
+2022-07-14 Jan Kotanski <jankotan@gmail.com>
 	* add support for ownerGroup and accessGroups in nxsfileinfo metadata/origdatablocks
-	* apply fixes proposed by Markus Z.
+	* change default posfix-group from Parameters to ""
+	* add -r relative path to  nxsfileinfo metadata/origdatablocks
+	* change rename -r to -m options
 	* tagged as v3.23.0
 
 2022-07-05 Jan Kotanski <jankotan@gmail.com>
