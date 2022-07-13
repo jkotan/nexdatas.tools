@@ -2132,7 +2132,7 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata -r %s %s'
+                ('nxsfileinfo metadata -m %s %s'
                  % (filename, self.flags)).split(),
                 ('nxsfileinfo metadata --raw-metadata %s %s'
                  % (filename, self.flags)).split(),
@@ -2220,9 +2220,9 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -r -g Group -v intimage' % (
+            ('nxsfileinfo metadata %s %s -m -g Group -v intimage' % (
                 filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s -r --group-postfix Group '
+            ('nxsfileinfo metadata %s %s -m --group-postfix Group '
              '-v intimage' % (
                  filename, self.flags)).split(),
             ('nxsfileinfo metadata %s %s --raw-metadata -g Group '

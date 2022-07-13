@@ -383,6 +383,7 @@ class BeamtimeLoader(object):
         """
         self.__pid = options.pid
         self.__pap = options.pap
+        self.__relpath = options.relpath
         self.__ownergroup = options.ownergroup
         self.__accessgroups = None
         if options.accessgroups is not None:
@@ -447,6 +448,9 @@ class BeamtimeLoader(object):
                         self.__metadata[sc] = vl.format(**self.__btmeta)
                     else:
                         self.__metadata[sc] = vl
+        if self.__relpath and "sourceFolder" in self.__metadata:
+            self.__metadata["sourceFolder"] = \
+                os.path.join(self.__metadata["sourceFolder"], self.__relpath)
         if self.__scmeta or self.__btmeta:
             self.__metadata["scientificMetadata"] = {}
         if self.__scmeta:
@@ -675,7 +679,7 @@ class Metadata(Runner):
             "The  default: ''",
             dest="entrynames", default="")
         self._parser.add_argument(
-            "-r", "--raw-metadata", action="store_true",
+            "-m", "--raw-metadata", action="store_true",
             default=False, dest="rawscientific",
             help="do not store NXentry as scientificMetadata")
         self._parser.add_argument(
@@ -716,6 +720,9 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-o", "--output", dest="output",
             help=("output scicat metadata file"))
+        self._parser.add_argument(
+            "-r", "--relative-path", dest="relpath",
+            help=("relative path to the scan files"))
         self._parser.add_argument(
             'args', metavar='nexus_file', type=str, nargs="*",
             help='new nexus file name')
@@ -916,9 +923,6 @@ class OrigDatablock(Runner):
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
         self._parser.add_argument(
-            "-o", "--output", dest="output",
-            help=("output scicat metadata file"))
-        self._parser.add_argument(
             "-w", "--owner-group",
             default="", dest="ownergroup",
             help="owner group name. Default is {beamtimeid}-part")
@@ -943,6 +947,12 @@ class OrigDatablock(Runner):
         self._parser.add_argument(
             'args', metavar='scan_name', type=str, nargs=1,
             help='scan name')
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+        self._parser.add_argument(
+            "-r", "--relative-path", dest="relpath",
+            help=("relative path to scan files"))
 
     def run(self, options):
         """ the main program function
@@ -979,7 +989,7 @@ class OrigDatablock(Runner):
                     break
         return found
 
-    def datafiles(self, scanpath, scdir, scfiles, filters=None):
+    def datafiles(self, scanpath, scdir, scfiles, relpath, filters=None):
         dtfiles = []
         totsize = 0
         pdc = {'7': 'rwx', '6': 'rw-', '5': 'r-x', '4': 'r--',
@@ -1001,6 +1011,8 @@ class OrigDatablock(Runner):
             path = os.path.join(scdir, fl)
             if path.startswith("./"):
                 path = path[2:]
+            if relpath:
+                path = os.path.join(relpath, path)
             rec["path"] = path
             rec["size"] = status.st_size
             rec["time"] = self.isotime(status.st_ctime)
@@ -1044,14 +1056,16 @@ class OrigDatablock(Runner):
             scanfiles = [f for f in filenames if f.startswith(scanname)]
             scandirs = [f for f in dirnames if f.startswith(scanname)]
             break
-        flist, tsize = self.datafiles(scandir, "", scanfiles, skip)
+        flist, tsize = self.datafiles(scandir, "", scanfiles,
+                                      options.relpath, skip)
         dtfiles.extend(flist)
         totsize += tsize
 
         for fl in add:
             if os.path.isfile(fl):
                 ascandir, ascanname = os.path.split(os.path.abspath(fl))
-                flist, tsize = self.datafiles(scandir, ascandir, [ascanname])
+                flist, tsize = self.datafiles(
+                    scandir, ascandir, [ascanname], options.relpath)
                 dtfiles.extend(flist)
                 totsize += tsize
 
@@ -1059,7 +1073,7 @@ class OrigDatablock(Runner):
             for (dirpath, dirnames, filenames) in os.walk(
                     os.path.join(scandir, scdir)):
                 flist, tsize = self.datafiles(
-                    scandir, dirpath, filenames, skip)
+                    scandir, dirpath, filenames, options.relpath, skip)
                 dtfiles.extend(flist)
                 totsize += tsize
         result["dataFileList"] = dtfiles
