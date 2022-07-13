@@ -2186,20 +2186,20 @@ For more help:
                     self.assertEqual('', er)
                     # print(vl)
                     dct = json.loads(vl)
-                    res = {'entry12345Parameters':
+                    res = {'entry12345':
                            {'NX_class': 'NXentry',
-                            'dataParameters': {'NX_class': 'NXdata'},
+                            'data': {'NX_class': 'NXdata'},
                             'end_time': {'value': '%s' % arg[6]},
                             'experiment_identifier': {'value': '%s' % arg[2]},
-                            'instrumentParameters': {
+                            'instrument': {
                                 'NX_class': 'NXinstrument',
-                                'detectorParameters': {
+                                'detector': {
                                     'NX_class': 'NXdetector',
                                     'intimage': {'shape': [0, 30]}},
                                 'name': {
                                     'short_name': '%s' % arg[4],
                                     'value': '%s' % arg[3]}},
-                            'sampleParameters': {
+                            'sample': {
                                 'NX_class': 'NXsample',
                                 'chemical_formula': {'value': '%s' % arg[8]},
                                 'name': {'value': '%s' % arg[7]}},
@@ -2494,18 +2494,18 @@ For more help:
                            'scientificMetadata':
                            {'NX_class': 'NXentry',
                             'name': 'entry12345',
-                            'dataParameters': {'NX_class': 'NXdata'},
+                            'data': {'NX_class': 'NXdata'},
                             'end_time': {'value': '%s' % arg[6]},
                             'experiment_identifier': {'value': '%s' % arg[2]},
-                            'instrumentParameters': {
+                            'instrument': {
                                 'NX_class': 'NXinstrument',
-                                'detectorParameters': {
+                                'detector': {
                                     'NX_class': 'NXdetector',
                                     'intimage': {
                                         'shape': [0, 30]}},
                                 'name': {
                                     'value': '%s' % arg[3]}},
-                            'sampleParameters': {
+                            'sample': {
                                 'NX_class': 'NXsample',
                                 'chemical_formula': {'value': '%s' % arg[8]},
                                 'name': {'value': '%s' % arg[7]}},
@@ -2517,6 +2517,10 @@ For more help:
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
                            }
+                    if kk % 2:
+                        res['datasetName'] = "%s_12345" % fname
+                    else:
+                        res['datasetName'] = "12345"
                     self.myAssertDict(dct, res, skip=['pid'])
                     if kk % 2:
                         self.assertEqual(
@@ -2636,17 +2640,17 @@ For more help:
                     res = {'scientificMetadata':
                            {
                             'name': 'entry12345',
-                            'dataParameters': {},
+                            'data': {},
                             'end_time': {'value': '%s' % arg[6]},
                             'experiment_identifier': {'value': '%s' % arg[2]},
-                            'instrumentParameters': {
-                                'detectorParameters': {
+                            'instrument': {
+                                'detector': {
                                     'intimage': {
                                         'shape': [0, 30]}},
                                 'name': {
                                     'short_name': '%s' % arg[4],
                                     'value': '%s' % arg[3]}},
-                            'sampleParameters': {
+                            'sample': {
                                 'chemical_formula': {'value': '%s' % arg[8]},
                                 'name': {'value': '%s' % arg[7]}},
                             'start_time': {
@@ -2764,6 +2768,7 @@ For more help:
                     dct = json.loads(vl)
                     res = {
                         'pid': '12341234',
+                        'datasetName': '12341234',
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
@@ -2882,6 +2887,7 @@ For more help:
                     dct = json.loads(vl)
                     res = {
                         'pid': '12341234',
+                        'datasetName': '12341234',
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
@@ -2890,7 +2896,6 @@ For more help:
                          "name": "logs"
                          }
                     }
-
                     self.myAssertDict(dct, res)
             finally:
                 os.remove(filename)
@@ -2948,7 +2953,7 @@ For more help:
                 entry = rt.create_group("entry12345", "NXentry")
                 entry.create_group("instrument", "NXinstrument")
                 sattr = entry.attributes.create(
-                    "instrumentParameters", "string")
+                    "instrument", "string")
                 sattr.write("duplicated")
 
                 entry.create_field("title", "string").write(title)
@@ -2979,8 +2984,8 @@ For more help:
                     res = {'scientificMetadata':
                            {'NX_class': 'NXentry',
                             'name': 'entry12345',
-                            'instrumentParameters_': 'duplicated',
-                            'instrumentParameters': {
+                            'instrument_': 'duplicated',
+                            'instrument': {
                                 'NX_class': 'NXinstrument'},
                             'missingfield': {},
                             'title_': 'duplicated',
@@ -3191,6 +3196,10 @@ For more help:
                         "contactEmail": "hilarious.hilarious@hilarious.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
+                        "ownerGroup": "16171271-part",
+                        "accessGroups": [
+                            '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
+                        "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
@@ -3204,7 +3213,7 @@ For more help:
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
                             "user_comments": "Awesome comment",
-                            "dataParameters": {
+                            "data": {
                                 "NX_class": "NXdata"
                             },
                             "end_time": {
@@ -3213,9 +3222,9 @@ For more help:
                             "experiment_identifier": {
                                 "value": '%s' % arg[2]
                             },
-                            "instrumentParameters": {
+                            "instrument": {
                                 "NX_class": "NXinstrument",
-                                "detectorParameters": {
+                                "detector": {
                                     "NX_class": "NXdetector",
                                     "intimage": {
                                         "shape": [
@@ -3230,7 +3239,7 @@ For more help:
                                 }
                             },
                             "name": "entry12345",
-                            "sampleParameters": {
+                            "sample": {
                                 "NX_class": "NXsample",
                                 "chemical_formula": {
                                     "value": '%s' % arg[8]
@@ -3405,6 +3414,9 @@ For more help:
                     "beautiful-cornflower-wallaby-of-agreement",
                     # "endTime": "2020-01-21T12:37:00Z",
                     "owner": "famous",
+                    "ownerGroup": "16171271-part",
+                    "accessGroups": [
+                        '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
                     "ownerEmail": "cute.cute@cute.com",
                     "principalInvestigator": "robust.robust@robust.com",
                     "proposalId": "16171271",
@@ -3530,6 +3542,7 @@ For more help:
 
         for arg in args:
             filename = arg[0]
+            scanname, fext = os.path.splitext(filename)
             fdir, fname = os.path.split(filename)
             fname, fext = os.path.splitext(fname)
             title = arg[1]
@@ -3622,11 +3635,15 @@ For more help:
                         "contactEmail": "hilarious.hilarious@hilarious.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
+                        'datasetName': "%s_12345" % scanname,
                         "creationLocation": "/DESY/PETRA III/p01",
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
                         "owner": "famous",
+                        "ownerGroup": "16171271-part",
+                        "accessGroups": [
+                            '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
                         "ownerEmail": "cute.cute@cute.com",
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
@@ -3634,7 +3651,7 @@ For more help:
                             "NX_class": "NXentry",
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
-                            "dataParameters": {
+                            "data": {
                                 "NX_class": "NXdata"
                             },
                             "end_time": {
@@ -3645,9 +3662,9 @@ For more help:
                                 "beamtime_valid": True,
                                 "value": '%s' % arg[2]
                             },
-                            "instrumentParameters": {
+                            "instrument": {
                                 "NX_class": "NXinstrument",
-                                "detectorParameters": {
+                                "detector": {
                                     "NX_class": "NXdetector",
                                     "intimage": {
                                         "shape": [
@@ -3662,7 +3679,7 @@ For more help:
                                 }
                             },
                             "name": "entry12345",
-                            "sampleParameters": {
+                            "sample": {
                                 "NX_class": "NXsample",
                                 "chemical_formula": {
                                     "value": '%s' % arg[8]

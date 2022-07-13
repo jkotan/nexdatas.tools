@@ -318,6 +318,10 @@ class BeamtimeLoader(object):
         "creationLocation": "/DESY/{facility}/{beamline}",
         "type": "raw",
         "isPublished": False,
+        "ownerGroup": "{beamtimeId}-part",
+        "accessGroups": ["{beamtimeId}-clbt",
+                         "{beamtimeId}-dmgt",
+                         "{beamline}dmgt"]
     }
 
     cre = {
@@ -379,6 +383,10 @@ class BeamtimeLoader(object):
         """
         self.__pid = options.pid
         self.__pap = options.pap
+        self.__ownergroup = options.ownergroup
+        self.__accessgroups = None
+        if options.accessgroups is not None:
+            self.__accessgroups = options.accessgroups.split(",")
         dct = {}
         if options.beamtimemeta:
             with open(options.beamtimemeta, "r") as fl:
@@ -428,10 +436,17 @@ class BeamtimeLoader(object):
                 else:
                     self.__metadata[sc] = md
             for sc, vl in self.strcre.items():
-                if hasattr(vl, "format"):
-                    self.__metadata[sc] = vl.format(**self.__btmeta)
+                if isinstance(vl, list):
+                    self.__metadata[sc] = [
+                        (vv.format(**self.__btmeta)
+                         if hasattr(vv, "format") else vv)
+                        for vv in vl
+                    ]
                 else:
-                    self.__metadata[sc] = vl
+                    if hasattr(vl, "format"):
+                        self.__metadata[sc] = vl.format(**self.__btmeta)
+                    else:
+                        self.__metadata[sc] = vl
         if self.__scmeta or self.__btmeta:
             self.__metadata["scientificMetadata"] = {}
         if self.__scmeta:
@@ -446,6 +461,10 @@ class BeamtimeLoader(object):
                 self.__btmeta["proposalId"]
         if self.__pid:
             self.__metadata["pid"] = self.__pid
+        if self.__ownergroup:
+            self.__metadata["ownerGroup"] = self.__ownergroup
+        if self.__accessgroups is not None:
+            self.__metadata["accessGroups"] = self.__accessgroups
         # print(self.__metadata)
         return self.__metadata
 
@@ -580,6 +599,12 @@ class BeamtimeLoader(object):
                     metadata["pid"] = "%s/%s" % \
                         (beamtimeid, scanid)
 
+        if "datasetName" not in metadata and "pid" in metadata:
+            spid = metadata["pid"].split("/")
+            if len(spid) > 1:
+                metadata["datasetName"] = spid[1]
+            else:
+                metadata["datasetName"] = metadata["pid"]
         return metadata
 
 
@@ -622,10 +647,19 @@ class Metadata(Runner):
             " (separated by commas without spaces)",
             dest="values", default="")
         self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-part")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeid}-clbt,{beamtimeId}-dmgt,{beamline}dmgt")
+        self._parser.add_argument(
             "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
-            "The  default: 'Parameters'",
-            dest="group_postfix", default="Parameters")
+            "The  default: ''",
+            dest="group_postfix", default="")
         self._parser.add_argument(
             "-t", "--entry-classes",
             help="names of entry NX_class to be shown"
@@ -885,6 +919,15 @@ class OrigDatablock(Runner):
             "-o", "--output", dest="output",
             help=("output scicat metadata file"))
         self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-part")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeid}-clbt,{beamtimeId}-dmgt")
+        self._parser.add_argument(
             "-s", "--skip",
             help="filters for files to be skipped (separated by commas "
             "without spaces). Default: ''. E.g. '*.pyc,*~'",
@@ -1021,8 +1064,25 @@ class OrigDatablock(Runner):
                 totsize += tsize
         result["dataFileList"] = dtfiles
         result["size"] = totsize
+        if options.ownergroup:
+            result["ownerGroup"] = options.ownergroup
+        if options.accessgroups is not None:
+            accessgroups = options.accessgroups.split(",")
+            result["accessGroups"] = accessgroups
         if options.pid:
             result["datasetId"] = options.pid
+        if "datasetId" in result \
+           and result["datasetId"] and \
+           len(result["datasetId"].split("/")) > 1:
+            if "ownerGroup" not in result:
+                result["ownerGroup"] = "%s-part" % (
+                    result["datasetId"].split("/")[1])
+            if "accessGroups" not in result:
+                result["accessGroups"] = [
+                    "%s-clbt" % (
+                        result["datasetId"].split("/")[1]),
+                    "%s-dmgt" % (
+                        result["datasetId"].split("/")[1])]
         return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
