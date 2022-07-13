@@ -148,7 +148,7 @@ class NXSFileParser(object):
         #: (:obj:`str`) metadata JSON dictionary
         self.metadata = ""
         #: (:obj:`str`) group postfix
-        self.group_postfix = "Parameters"
+        self.group_postfix = ""
         #: (:obj:`bool`) store NXentries as scientificMetadata
         self.scientific = False
         #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary

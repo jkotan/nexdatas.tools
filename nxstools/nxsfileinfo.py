@@ -658,8 +658,8 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
-            "The  default: 'Parameters'",
-            dest="group_postfix", default="Parameters")
+            "The  default: ''",
+            dest="group_postfix", default="")
         self._parser.add_argument(
             "-t", "--entry-classes",
             help="names of entry NX_class to be shown"
