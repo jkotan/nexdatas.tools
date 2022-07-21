@@ -1,4 +1,9 @@
 2022-07-14 Jan Kotanski <jankotan@gmail.com>
+	* rebuild package with /usr/bin/env
+	* change repository name from tools to nxstools
+	* tagged as v3.23.1
+
+2022-07-14 Jan Kotanski <jankotan@gmail.com>
 	* add support for ownerGroup and accessGroups in nxsfileinfo metadata/origdatablocks
 	* change default posfix-group from Parameters to ""
 	* add -r relative path to  nxsfileinfo metadata/origdatablocks

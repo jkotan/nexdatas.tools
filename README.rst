@@ -7,12 +7,12 @@ Welcome to nxstools's documentation!
 |Pypi Version|
 |Python Versions|
 
-.. |github workflow| image:: https://github.com/nexdatas/tools/actions/workflows/tests.yml/badge.svg
-   :target: https://github.com/nexdatas/tools/actions
+.. |github workflow| image:: https://github.com/nexdatas/nxstools/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/nexdatas/nxstools/actions
    :alt:
 
 .. |docs| image:: https://img.shields.io/badge/Documentation-webpages-ADD8E6.svg
-   :target: https://nexdatas.github.io/tools/index.html
+   :target: https://nexdatas.github.io/nxstools/index.html
    :alt:
 
 .. |Pypi Version| image:: https://img.shields.io/pypi/v/nxstools.svg
@@ -32,18 +32,18 @@ Introduction
 
 Configuration tools for NeXDaTaS Tango Servers consists of the following command-line scripts:
 
-- `nxscollect <https://nexdatas.github.io/tools/nxscollect.html>`__ uploads external images into the NeXus/HDF5 file
-- `nxsconfig <https://nexdatas.github.io/tools/nxsconfig.html>`__ reads NeXus Configuration Server settings
-- `nxscreate <https://nexdatas.github.io/tools/nxscreate.html>`__ creates NeXus Configuration components
-- `nxsdata <https://nexdatas.github.io/tools/nxsdata.html>`__ runs NeXus Data Writer
-- `nxsfileinfo <https://nexdatas.github.io/tools/nxsfileinfo.html>`__ shows nedadata of the NeXus/HDF5 file
-- `nxsetup <https://nexdatas.github.io/tools/nxsetup.html>`__ setups NeXDaTaS Tango Server environment
+- `nxscollect <https://nexdatas.github.io/nxstools/nxscollect.html>`__ uploads external images into the NeXus/HDF5 file
+- `nxsconfig <https://nexdatas.github.io/nxstools/nxsconfig.html>`__ reads NeXus Configuration Server settings
+- `nxscreate <https://nexdatas.github.io/nxstools/nxscreate.html>`__ creates NeXus Configuration components
+- `nxsdata <https://nexdatas.github.io/nxstools/nxsdata.html>`__ runs NeXus Data Writer
+- `nxsfileinfo <https://nexdatas.github.io/nxstools/nxsfileinfo.html>`__ shows nedadata of the NeXus/HDF5 file
+- `nxsetup <https://nexdatas.github.io/nxstools/nxsetup.html>`__ setups NeXDaTaS Tango Server environment
 
-as well as the `nxstools <https://nexdatas.github.io/tools/nxstools.html>`__ package which allows perform these operations
+as well as the `nxstools <https://nexdatas.github.io/nxstools/nxstools.html>`__ package which allows perform these operations
 directly from a python code.
 
-| Source code: https://github.com/nexdatas/tools
-| Web page: https://nexdatas.github.io/tools
+| Source code: https://github.com/nexdatas/nxstools
+| Web page: https://nexdatas.github.io/nxstools
 | NexDaTaS Web page: https://nexdatas.github.io
 
 ------------
@@ -59,7 +59,7 @@ From sources
 
 Download the latest NXS Tools version from
 
-|    https://github.com/nexdatas/tools
+|    https://github.com/nexdatas/nxstools
 
 Extract sources and run
 
