@@ -17,7 +17,7 @@
 #    along with nexdatas.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-""" setup.py for command-line tools """
+""" setup.py for command-line nxstools """
 
 import os
 import sys
@@ -102,7 +102,7 @@ SETUPDATA = dict(
     license=glicense,
     description=("Configuration tools for NeXDaTaS Tango Servers"),
     keywords="configuration writer Tango component nexus data",
-    url="http://github.com/nexdatas/tools",
+    url="http://github.com/nexdatas/nxstools",
     platforms=("Linux"),
     install_requires=install_requires,
     classifiers=[
