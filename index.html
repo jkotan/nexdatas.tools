@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Welcome to nxstools&#39;s documentation! &#8212; NXSTools 3.22.0 documentation</title>
+    <title>Welcome to nxstools’s documentation! &#8212; NXSTools 3.23.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="#">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.22</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.23</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -96,6 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-origdatablock">nxsfileinfo origdatablock</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -142,7 +143,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Welcome to nxstools's documentation!</a><ul>
+<li><a class="reference internal" href="#">Welcome to nxstools’s documentation!</a><ul>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#from-sources">From sources</a></li>
@@ -192,9 +193,9 @@
     <div class="col-md-12 content">
       
   <section id="welcome-to-nxstools-s-documentation">
-<h1>Welcome to nxstools's documentation!<a class="headerlink" href="#welcome-to-nxstools-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://github.com/nexdatas/tools/actions"><img alt="" src="https://github.com/nexdatas/tools/actions/workflows/tests.yml/badge.svg" /></a>
-<a class="reference external" href="https://nexdatas.github.io/tools/index.html"><img alt="" src="https://img.shields.io/badge/Documentation-webpages-ADD8E6.svg" /></a>
+<h1>Welcome to nxstools’s documentation!<a class="headerlink" href="#welcome-to-nxstools-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/nexdatas/nxstools/actions"><img alt="" src="https://github.com/nexdatas/nxstools/actions/workflows/tests.yml/badge.svg" /></a>
+<a class="reference external" href="https://nexdatas.github.io/nxstools/index.html"><img alt="" src="https://img.shields.io/badge/Documentation-webpages-ADD8E6.svg" /></a>
 <a class="reference external" href="https://pypi.python.org/pypi/nxstools"><img alt="" src="https://img.shields.io/pypi/v/nxstools.svg" /></a>
 <a class="reference external" href="https://pypi.python.org/pypi/nxstools/"><img alt="" src="https://img.shields.io/pypi/pyversions/nxstools.svg" /></a></p>
 <p>Authors: Jan Kotanski</p>
@@ -202,18 +203,18 @@
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>Configuration tools for NeXDaTaS Tango Servers consists of the following command-line scripts:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxscollect.html">nxscollect</a> uploads external images into the NeXus/HDF5 file</p></li>
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxsconfig.html">nxsconfig</a> reads NeXus Configuration Server settings</p></li>
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxscreate.html">nxscreate</a> creates NeXus Configuration components</p></li>
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxsdata.html">nxsdata</a> runs NeXus Data Writer</p></li>
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxsfileinfo.html">nxsfileinfo</a> shows nedadata of the NeXus/HDF5 file</p></li>
-<li><p><a class="reference external" href="https://nexdatas.github.io/tools/nxsetup.html">nxsetup</a> setups NeXDaTaS Tango Server environment</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxscollect.html">nxscollect</a> uploads external images into the NeXus/HDF5 file</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxsconfig.html">nxsconfig</a> reads NeXus Configuration Server settings</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxscreate.html">nxscreate</a> creates NeXus Configuration components</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxsdata.html">nxsdata</a> runs NeXus Data Writer</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxsfileinfo.html">nxsfileinfo</a> shows nedadata of the NeXus/HDF5 file</p></li>
+<li><p><a class="reference external" href="https://nexdatas.github.io/nxstools/nxsetup.html">nxsetup</a> setups NeXDaTaS Tango Server environment</p></li>
 </ul>
-<p>as well as the <a class="reference external" href="https://nexdatas.github.io/tools/nxstools.html">nxstools</a> package which allows perform these operations
+<p>as well as the <a class="reference external" href="https://nexdatas.github.io/nxstools/nxstools.html">nxstools</a> package which allows perform these operations
 directly from a python code.</p>
 <div class="line-block">
-<div class="line">Source code: <a class="reference external" href="https://github.com/nexdatas/tools">https://github.com/nexdatas/tools</a></div>
-<div class="line">Web page: <a class="reference external" href="https://nexdatas.github.io/tools">https://nexdatas.github.io/tools</a></div>
+<div class="line">Source code: <a class="reference external" href="https://github.com/nexdatas/nxstools">https://github.com/nexdatas/nxstools</a></div>
+<div class="line">Web page: <a class="reference external" href="https://nexdatas.github.io/nxstools">https://nexdatas.github.io/nxstools</a></div>
 <div class="line">NexDaTaS Web page: <a class="reference external" href="https://nexdatas.github.io">https://nexdatas.github.io</a></div>
 </div>
 </section>
@@ -227,7 +228,7 @@ directly from a python code.</p>
 <h3>From sources<a class="headerlink" href="#from-sources" title="Permalink to this headline">¶</a></h3>
 <p>Download the latest NXS Tools version from</p>
 <div class="line-block">
-<div class="line"><a class="reference external" href="https://github.com/nexdatas/tools">https://github.com/nexdatas/tools</a></div>
+<div class="line"><a class="reference external" href="https://github.com/nexdatas/nxstools">https://github.com/nexdatas/nxstools</a></div>
 </div>
 <p>Extract sources and run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python setup.py install
@@ -334,6 +335,7 @@ directly from a python code.</p>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-general">nxsfileinfo general</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-origdatablock">nxsfileinfo origdatablock</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
