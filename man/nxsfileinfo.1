@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSFILEINFO" "1" "Jul 13, 2022" "3.23" "NXSTools"
+.TH "NXSFILEINFO" "1" "Jul 27, 2022" "3.23" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
@@ -112,7 +112,7 @@ show this help message and exit
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
+full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
@@ -169,7 +169,7 @@ show this help message and exit
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
 .BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
+names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
@@ -182,13 +182,13 @@ access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: \(aqParameters\(aq
+postfix to be added to NeXus group name. The default: ‘Parameters’
 .TP
 .BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
 .TP
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
+names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
 .TP
 .B  \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
@@ -278,13 +278,13 @@ access group names separated by commas. Default is
 .TP
 .BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aq\fI\&.pyc,\fP~\(aq
+without spaces). Default: ‘’. E.g.
+‘\fI\&.pyc,\fP~’
 .TP
 .BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of filtes to be added (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aqscan1.nxs,scan2.nxs\(aq
+without spaces). Default: ‘’. E.g.
+‘scan1.nxs,scan2.nxs’
 .TP
 .BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
