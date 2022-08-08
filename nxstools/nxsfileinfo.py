@@ -636,14 +636,14 @@ class Metadata(Runner):
             "-a", "--attributes",
             help="names of field or group attributes to be show "
             " (separated by commas without spaces). "
-            "The  default takes all attributes",
+            "The default takes all attributes",
             dest="attrs", default=None)
         self._parser.add_argument(
             "-n", "--hidden-attributes",
             help="names of field or group attributes to be hidden "
             " (separated by commas without spaces). "
-            "The  default: 'nexdatas_source,nexdatas_strategy'",
-            dest="nattrs", default="nexdatas_source,nexdatas_strategy")
+            "The default: 'nexdatas_source,nexdatas_strategy,units'",
+            dest="nattrs", default="nexdatas_source,nexdatas_strategy,units")
         self._parser.add_argument(
             "-v", "--values",
             help="field names of more dimensional datasets"
@@ -662,21 +662,21 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
-            "The  default: ''",
+            "The default: ''",
             dest="group_postfix", default="")
         self._parser.add_argument(
             "-t", "--entry-classes",
             help="names of entry NX_class to be shown"
             " (separated by commas without spaces)."
             " If name is '' all groups are shown. "
-            "The  default: 'NXentry'",
+            "The default: 'NXentry'",
             dest="entryclasses", default="NXentry")
         self._parser.add_argument(
             "-e", "--entry-names",
             help="names of entry groups to be shown"
             " (separated by commas without spaces)."
             " If name is '' all groups are shown. "
-            "The  default: ''",
+            "The default: ''",
             dest="entrynames", default="")
         self._parser.add_argument(
             "-m", "--raw-metadata", action="store_true",

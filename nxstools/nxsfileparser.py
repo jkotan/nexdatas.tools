@@ -193,6 +193,7 @@ class NXSFileParser(object):
             "source_type": ["nexdatas_source", getdstype],
             "source": ["nexdatas_source", getdssource],
             "strategy": ["nexdatas_strategy", str],
+            "unit": ["units", str],
         }
         #: (:obj:`list`< :obj:`str`>)  field names which value should be stored
         self.valuestostore = ["depends_on"]

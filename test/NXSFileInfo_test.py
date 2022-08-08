@@ -2354,7 +2354,7 @@ For more help:
                                     "strategy": "FINAL",
                                     "transformation_type": "rotation",
                                     "vector": [1, 0, 0],
-                                    "units": "deg",
+                                    "unit": "deg",
                                     "value": 0.5
                                 },
                                 "z": {
@@ -2366,7 +2366,7 @@ For more help:
                                     "strategy": "INIT",
                                     "transformation_type": "translation",
                                     "vector": [0, 0, 1],
-                                    "units": "mm",
+                                    "unit": "mm",
                                     "value": 0.5
                                 }
                             }
