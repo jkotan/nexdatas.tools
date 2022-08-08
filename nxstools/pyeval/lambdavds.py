@@ -100,7 +100,7 @@ def nm_triggermode_cb(commonblock, name, triggermode,
             else:
                 import nxstools.h5cppwriter as nxw
         else:
-            raise("Writer cannot be found")
+            raise Exception("Writer cannot be found")
 
         en = root.open(entryname)
         ins = en.open(insname)
@@ -243,7 +243,7 @@ def triggermode_cb(commonblock, name, triggermode, saveallimages,
             else:
                 import nxstools.h5cppwriter as nxw
         else:
-            raise("Writer cannot be found")
+            raise Exception("Writer cannot be found")
 
         en = root.open(entry_str)
         ins = en.open("instrument")

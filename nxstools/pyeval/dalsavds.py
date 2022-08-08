@@ -170,7 +170,7 @@ def triggermode(commonblock, name,
             else:
                 import nxstools.h5cppwriter as nxw
         else:
-            raise("Writer cannot be found")
+            raise Exception("Writer cannot be found")
 
         en = root.open(entryname)
         ins = en.open(insname)

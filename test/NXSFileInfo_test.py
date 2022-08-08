@@ -90,7 +90,8 @@ class NXSFileInfoTest(unittest.TestCase):
 
         self.helperror = "Error: too few arguments\n"
 
-        self.helpinfo = """usage: nxsfileinfo [-h] {field,general,metadata,origdatablock} ...
+        self.helpinfo = """usage: nxsfileinfo [-h] """ \
+            """{field,general,metadata,origdatablock} ...
 
 Command-line tool for showing meta data from Nexus Files
 

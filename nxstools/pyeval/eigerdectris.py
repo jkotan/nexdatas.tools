@@ -98,7 +98,7 @@ def triggermode_cb(commonblock, name, triggermode,
         else:
             import nxstools.h5cppwriter as nxw
     else:
-        raise("Writer cannot be found")
+        raise Exception("Writer cannot be found")
     en = root.open(entryname)
     dt = en.open("data")
     ins = en.open(insname)
