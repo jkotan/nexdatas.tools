@@ -533,8 +533,8 @@ class BeamtimeLoader(object):
             else:
                 yield (key, dct2[key])
 
-    def updatepid(self, metadata, filename=None, puuid=False, pfname=False,
-                  beamtimeid=None):
+    def update_pid(self, metadata, filename=None, puuid=False, pfname=False,
+                   beamtimeid=None):
         """ update pid metadata with dictionary
 
         :param metadata: metadata dictionary to merge in
@@ -611,6 +611,37 @@ class BeamtimeLoader(object):
                 metadata["datasetName"] = metadata["pid"]
         return metadata
 
+    def update_techniques(self, metadata, techniques=None):
+        """ update techniques
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :param techniques: a list of techniques splitted by comma
+        :type techniques: :obj:`str`
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if techniques:
+            metadata["techniques"] = techniques.split(",")
+        if "techniques" not in metadata:
+            try:
+                if "scientificMetadata" in metadata and \
+                       "definition" in metadata["scientificMetadata"]:
+                    gdefin = metadata["scientificMetadata"]["definition"]
+                    if "value" in gdefin:
+                        defin = gdefin["value"]
+                        if defin and str(defin).startswith("NX"):
+                            defin = str(defin)[2:]
+                        if defin:
+                            metadata["techniques"] = [str(defin)]
+            except Exception as e:
+                sys.stderr.write("nxsfileinfo: '%s'\n"
+                                 % str(e))
+
+        if "techniques" not in metadata:
+            metadata["techniques"] = []
+        return metadata
+
 
 class Metadata(Runner):
 
@@ -678,6 +709,12 @@ class Metadata(Runner):
             " If name is '' all groups are shown. "
             "The default: ''",
             dest="entrynames", default="")
+        self._parser.add_argument(
+            "-q", "--techniques",
+            help="names of techniques"
+            " (separated by commas without spaces)."
+            "The default: ''",
+            dest="techniques", default="")
         self._parser.add_argument(
             "-m", "--raw-metadata", action="store_true",
             default=False, dest="rawscientific",
@@ -821,9 +858,11 @@ class Metadata(Runner):
             bl = BeamtimeLoader(options)
             result = bl.run()
             result = bl.overwrite(result)
-            result = bl.updatepid(
+            result = bl.update_pid(
                 result, None, options.puuid,
                 options.pfname, options.beamtimeid)
+            if not options.rawscientific:
+                result = bl.update_techniques(result, options.techniques)
         elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
@@ -845,9 +884,11 @@ class Metadata(Runner):
                 bl.run()
                 result = bl.merge(desc)
                 result = bl.overwrite(result)
-                result = bl.updatepid(
+                result = bl.update_pid(
                     result, options.args[0], options.puuid,
                     options.pfname, options.beamtimeid)
+                if not options.rawscientific:
+                    result = bl.update_techniques(result, options.techniques)
 
             else:
                 result = []
@@ -870,9 +911,11 @@ class Metadata(Runner):
                     bl.run()
                     rst = bl.merge(desc)
                     rst = bl.overwrite(rst)
-                    rst = bl.updatepid(
+                    rst = bl.update_pid(
                         rst, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
+                    if not options.rawscientific:
+                        rst = bl.update_techniques(rst, options.techniques)
                     result.append(rst)
         if result is not None:
             return json.dumps(

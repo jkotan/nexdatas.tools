@@ -2312,6 +2312,7 @@ For more help:
                 er = mystderr.getvalue()
 
                 self.assertEqual('', er)
+                # print(vl)
                 dct = json.loads(vl)
                 res = {
                     "entry12345Group": {
@@ -2394,8 +2395,7 @@ For more help:
                 "2014-02-15T15:17:21+00:00",
                 "water",
                 "H20",
-                "int",
-                ""
+                "saxs",
             ],
             [
                 "mmyfileinfo.nxs",
@@ -2407,7 +2407,7 @@ For more help:
                 "2019-02-15T15:27:21+00:00",
                 "test sample",
                 "LaB6",
-
+                "waxs,saxs"
             ],
         ]
 
@@ -2423,21 +2423,23 @@ For more help:
             etime = arg[6]
             smpl = arg[7]
             formula = arg[8]
+            techniques = arg[9]
+            ltech = techniques.split(",")
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
-                 ' -i 12344321 --pid-without-filename'
-                 % (filename, self.flags)).split(),
+                 ' -i 12344321 --pid-without-filename -q %s'
+                 % (filename, self.flags, techniques)).split(),
                 ('nxsfileinfo metadata %s %s  '
                  ' --beamtimeid 12344321 '
-                 '--attributes units,NX_class'
-                 % (filename, self.flags)).split(),
+                 '--attributes units,NX_class --techniques %s'
+                 % (filename, self.flags, techniques)).split(),
                 ('nxsfileinfo metadata %s %s -a units,NX_class'
-                 ' --beamtimeid 12344321 -d'
-                 % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s --attributes units,NX_class'
+                 ' --beamtimeid 12344321 -d --techniques %s'
+                 % (filename, self.flags, techniques)).split(),
+                ('nxsfileinfo metadata %s %s --attributes units,NX_class -q %s'
                  ' -i 12344321 '
-                 % (filename, self.flags)).split(),
+                 % (filename, self.flags, techniques)).split(),
             ]
 
             wrmodule = WRITERS[self.writer]
@@ -2489,9 +2491,11 @@ For more help:
 
                     self.assertEqual('', er)
                     # print(vl)
+
                     dct = json.loads(vl)
                     # print(dct)
                     res = {'pid': '12344321/12345',
+                           'techniques': ltech,
                            'scientificMetadata':
                            {'NX_class': 'NXentry',
                             'name': 'entry12345',
@@ -2660,6 +2664,7 @@ For more help:
                            'creationTime': '%s' % arg[6],
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
+                           'techniques': [],
                            }
                     self.myAssertDict(dct, res)
             finally:
@@ -2728,6 +2733,7 @@ For more help:
                 entry = rt.create_group("entry12345", "NXentry")
                 col = rt.create_group("logs", "NXcollection")
                 col.create_field("log1", "string").write(title)
+                col.create_field("definition", "string").write("NXsaxs")
                 ins = entry.create_group("instrument", "NXinstrument")
                 det = ins.create_group("detector", "NXdetector")
                 entry.create_group("data", "NXdata")
@@ -2770,10 +2776,14 @@ For more help:
                     res = {
                         'pid': '12341234',
                         'datasetName': '12341234',
+                        'techniques': ['saxs'],
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
                              "value": title
+                         },
+                         "definition": {
+                             "value": "NXsaxs"
                          },
                          "name": "logs"
                          }
@@ -2889,6 +2899,7 @@ For more help:
                     res = {
                         'pid': '12341234',
                         'datasetName': '12341234',
+                        'techniques': [],
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
@@ -2993,6 +3004,7 @@ For more help:
                             'title': {'value': '%s' % arg[1]},
                             },
                            'description': '%s' % arg[1],
+                           'techniques': [],
                            }
                     self.myAssertDict(dct, res)
             finally:
@@ -3194,6 +3206,7 @@ For more help:
                         dct = json.load(of)
                     # print(dct)
                     res = {
+                        'techniques': [],
                         "contactEmail": "hilarious.hilarious@hilarious.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
@@ -3408,6 +3421,7 @@ For more help:
                     dct = json.load(of)
                 # print(dct)
                 res = {
+                    'techniques': [],
                     "contactEmail": "hilarious.hilarious@hilarious.com",
                     "createdAt": "2020-01-20T00:10:00Z",
                     "creationLocation": "/DESY/PETRA III/p01",
@@ -3633,6 +3647,7 @@ For more help:
                         dct = json.load(of)
                     # print(dct)
                     res = {
+                        'techniques': [],
                         "contactEmail": "hilarious.hilarious@hilarious.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
