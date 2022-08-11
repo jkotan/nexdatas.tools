@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.23.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/js/jquery-1.11.0.min.js"></script>
-    <script src="../../_static/js/jquery-fix.js"></script>
-    <script src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script src="../../_static/bootstrap-sphinx.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.24.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
@@ -35,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.23</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.24</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -207,21 +208,21 @@
 <span class="kn">import</span> <span class="nn">grp</span>
 <span class="kn">import</span> <span class="nn">fnmatch</span>
 
-<span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">TableTools</span>
-<span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">NXSFileParser</span><span class="p">,</span> <span class="n">numpyEncoder</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">filewriter</span>
+<span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="k">import</span> <span class="n">TableTools</span>
+<span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="k">import</span> <span class="p">(</span><span class="n">NXSFileParser</span><span class="p">,</span> <span class="n">numpyEncoder</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="k">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">filewriter</span>
 
 
 <span class="n">WRITERS</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">h5pywriter</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">h5pywriter</span>
     <span class="n">WRITERS</span><span class="p">[</span><span class="s2">&quot;h5py&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5pywriter</span>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">h5cppwriter</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">h5cppwriter</span>
     <span class="n">WRITERS</span><span class="p">[</span><span class="s2">&quot;h5cpp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5cppwriter</span>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
@@ -550,7 +551,7 @@
         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;scientificMetadata.title.value&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; loader constructor</span>
 
 <span class="sd">        :param options: parser options</span>
@@ -708,8 +709,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dct2</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
-<div class="viewcode-block" id="BeamtimeLoader.updatepid"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.updatepid">[docs]</a>    <span class="k">def</span> <span class="nf">updatepid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">puuid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pfname</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                  <span class="n">beamtimeid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BeamtimeLoader.update_pid"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.update_pid">[docs]</a>    <span class="k">def</span> <span class="nf">update_pid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">puuid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pfname</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">beamtimeid</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update pid metadata with dictionary</span>
 
 <span class="sd">        :param metadata: metadata dictionary to merge in</span>
@@ -784,6 +785,37 @@
                 <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;pid&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">metadata</span></div>
+
+<div class="viewcode-block" id="BeamtimeLoader.update_techniques"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.update_techniques">[docs]</a>    <span class="k">def</span> <span class="nf">update_techniques</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">techniques</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; update techniques</span>
+
+<span class="sd">        :param metadata: metadata dictionary to merge in</span>
+<span class="sd">        :type metadata: :obj:`dict` &lt;:obj:`str`, `any`&gt;</span>
+<span class="sd">        :param techniques: a list of techniques splitted by comma</span>
+<span class="sd">        :type techniques: :obj:`str`</span>
+<span class="sd">        :returns: metadata dictionary</span>
+<span class="sd">        :rtype: :obj:`dict` &lt;:obj:`str`, `any`&gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">techniques</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;techniques&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">techniques</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;techniques&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;scientificMetadata&quot;</span> <span class="ow">in</span> <span class="n">metadata</span> <span class="ow">and</span> \
+                       <span class="s2">&quot;definition&quot;</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;scientificMetadata&quot;</span><span class="p">]:</span>
+                    <span class="n">gdefin</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;scientificMetadata&quot;</span><span class="p">][</span><span class="s2">&quot;definition&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">gdefin</span><span class="p">:</span>
+                        <span class="n">defin</span> <span class="o">=</span> <span class="n">gdefin</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">defin</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">defin</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;NX&quot;</span><span class="p">):</span>
+                            <span class="n">defin</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">defin</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]</span>
+                        <span class="k">if</span> <span class="n">defin</span><span class="p">:</span>
+                            <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;techniques&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">defin</span><span class="p">)]</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;nxsfileinfo: &#39;</span><span class="si">%s</span><span class="s2">&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                 <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="s2">&quot;techniques&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;techniques&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">metadata</span></div></div>
 
 
@@ -811,14 +843,14 @@
             <span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--attributes&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;names of field or group attributes to be show &quot;</span>
             <span class="s2">&quot; (separated by commas without spaces). &quot;</span>
-            <span class="s2">&quot;The  default takes all attributes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The default takes all attributes&quot;</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;attrs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--hidden-attributes&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;names of field or group attributes to be hidden &quot;</span>
             <span class="s2">&quot; (separated by commas without spaces). &quot;</span>
-            <span class="s2">&quot;The  default: &#39;nexdatas_source,nexdatas_strategy&#39;&quot;</span><span class="p">,</span>
-            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;nattrs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nexdatas_source,nexdatas_strategy&quot;</span><span class="p">)</span>
+            <span class="s2">&quot;The default: &#39;nexdatas_source,nexdatas_strategy,units&#39;&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;nattrs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nexdatas_source,nexdatas_strategy,units&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--values&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;field names of more dimensional datasets&quot;</span>
@@ -837,22 +869,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-g&quot;</span><span class="p">,</span> <span class="s2">&quot;--group-postfix&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;postfix to be added to NeXus group name. &quot;</span>
-            <span class="s2">&quot;The  default: &#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The default: &#39;&#39;&quot;</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;group_postfix&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-t&quot;</span><span class="p">,</span> <span class="s2">&quot;--entry-classes&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;names of entry NX_class to be shown&quot;</span>
             <span class="s2">&quot; (separated by commas without spaces).&quot;</span>
             <span class="s2">&quot; If name is &#39;&#39; all groups are shown. &quot;</span>
-            <span class="s2">&quot;The  default: &#39;NXentry&#39;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The default: &#39;NXentry&#39;&quot;</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;entryclasses&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;NXentry&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--entry-names&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;names of entry groups to be shown&quot;</span>
             <span class="s2">&quot; (separated by commas without spaces).&quot;</span>
             <span class="s2">&quot; If name is &#39;&#39; all groups are shown. &quot;</span>
-            <span class="s2">&quot;The  default: &#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The default: &#39;&#39;&quot;</span><span class="p">,</span>
             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;entrynames&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--techniques&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;names of techniques&quot;</span>
+            <span class="s2">&quot; (separated by commas without spaces).&quot;</span>
+            <span class="s2">&quot;The default: &#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;techniques&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--raw-metadata&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;rawscientific&quot;</span><span class="p">,</span>
@@ -996,9 +1034,11 @@
             <span class="n">bl</span> <span class="o">=</span> <span class="n">BeamtimeLoader</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">overwrite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">updatepid</span><span class="p">(</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_pid</span><span class="p">(</span>
                 <span class="n">result</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">puuid</span><span class="p">,</span>
                 <span class="n">options</span><span class="o">.</span><span class="n">pfname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">beamtimeid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">rawscientific</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_techniques</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">techniques</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">nxsparser</span> <span class="ow">and</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">desc</span> <span class="o">=</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1020,9 +1060,11 @@
                 <span class="n">bl</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">overwrite</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">updatepid</span><span class="p">(</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_pid</span><span class="p">(</span>
                     <span class="n">result</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">options</span><span class="o">.</span><span class="n">puuid</span><span class="p">,</span>
                     <span class="n">options</span><span class="o">.</span><span class="n">pfname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">beamtimeid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">rawscientific</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_techniques</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">techniques</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1045,9 +1087,11 @@
                     <span class="n">bl</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
                     <span class="n">rst</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span>
                     <span class="n">rst</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">overwrite</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
-                    <span class="n">rst</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">updatepid</span><span class="p">(</span>
+                    <span class="n">rst</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_pid</span><span class="p">(</span>
                         <span class="n">rst</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">options</span><span class="o">.</span><span class="n">puuid</span><span class="p">,</span>
                         <span class="n">options</span><span class="o">.</span><span class="n">pfname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">beamtimeid</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">rawscientific</span><span class="p">:</span>
+                        <span class="n">rst</span> <span class="o">=</span> <span class="n">bl</span><span class="o">.</span><span class="n">update_techniques</span><span class="p">(</span><span class="n">rst</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">techniques</span><span class="p">)</span>
                     <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
@@ -1506,7 +1550,7 @@
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
     </p>
   </div>
 </footer>

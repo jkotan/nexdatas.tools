@@ -118,6 +118,9 @@ Options:
                         generate pid with uuid
    -f, --pid-with-filename
                         generate pid with file name
+   -q TECHNIQUES, --techniques TECHNIQUES
+                        names of techniques (separated by commas without
+                        spaces).The default: ''
    -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
                         beamtime metadata file
    -s SCIENTIFICMETA, --scientific-meta SCIENTIFICMETA
