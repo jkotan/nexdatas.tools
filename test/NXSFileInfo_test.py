@@ -2424,7 +2424,7 @@ For more help:
             smpl = arg[7]
             formula = arg[8]
             techniques = arg[9]
-            ltech = techniques.split(",")
+            ltech = [{"name": te} for te in techniques.split(",")]
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
@@ -2776,7 +2776,7 @@ For more help:
                     res = {
                         'pid': '12341234',
                         'datasetName': '12341234',
-                        'techniques': ['saxs'],
+                        'techniques': [{'name': 'saxs'}],
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
