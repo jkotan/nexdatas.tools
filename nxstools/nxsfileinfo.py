@@ -622,7 +622,8 @@ class BeamtimeLoader(object):
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         if techniques:
-            metadata["techniques"] = techniques.split(",")
+            metadata["techniques"] = \
+                [{"name": te} for te in techniques.split(",")]
         if "techniques" not in metadata:
             try:
                 if "scientificMetadata" in metadata and \
@@ -633,7 +634,7 @@ class BeamtimeLoader(object):
                         if defin and str(defin).startswith("NX"):
                             defin = str(defin)[2:]
                         if defin:
-                            metadata["techniques"] = [str(defin)]
+                            metadata["techniques"] = [{"name": str(defin)}]
             except Exception as e:
                 sys.stderr.write("nxsfileinfo: '%s'\n"
                                  % str(e))
