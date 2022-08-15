@@ -45,6 +45,7 @@ install_requires = [
     'numpy>1.6.0',
     'lxml',
     'fabio',
+    'pyyaml',
     # 'pytango',
     # 'pninexus',
 ]
@@ -121,8 +122,10 @@ SETUPDATA = dict(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
     ],
-    packages=["nxstools", "nxstools.xmltemplates", "nxstools.pyeval"],
-    package_data={'nxstools.xmltemplates': ['*.xml']},
+    packages=["nxstools", "nxstools.xmltemplates", "nxstools.pyeval",
+              "nxstools.ontology"],
+    package_data={'nxstools.xmltemplates': ['*.xml'],
+                  'nxstools.ontology': ['*.json']},
     scripts=[
         'nxsconfig',
         'nxsdata',

@@ -31,12 +31,13 @@ import datetime
 import pwd
 import grp
 import fnmatch
+import yaml
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, numpyEncoder)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
-
+from .ontology import id_techniques, nexus_panet
 
 WRITERS = {}
 try:
@@ -623,18 +624,62 @@ class BeamtimeLoader(object):
         """
         if techniques:
             metadata["techniques"] = \
-                [{"name": te} for te in techniques.split(",")]
+                self.generate_techniques(techniques.split(","))
         if "techniques" not in metadata:
             try:
                 if "scientificMetadata" in metadata and \
                        "definition" in metadata["scientificMetadata"]:
                     gdefin = metadata["scientificMetadata"]["definition"]
                     if "value" in gdefin:
-                        defin = gdefin["value"]
-                        if defin and str(defin).startswith("NX"):
-                            defin = str(defin)[2:]
+                        defin = gdefin["value"].split(",")
+                        defin = [
+                            (df[2:]
+                             if (df and str(df).startswith("NX")) else df)
+                            for df in defin]
                         if defin:
-                            metadata["techniques"] = [{"name": str(defin)}]
+                            metadata["techniques"] = \
+                                self.generate_techniques(defin)
+            except Exception as e:
+                sys.stderr.write("nxsfileinfo: '%s'\n"
+                                 % str(e))
+
+            try:
+                if "scientificMetadata" in metadata and \
+                       "experiment_description" in \
+                       metadata["scientificMetadata"]:
+                    gexpdes = \
+                        metadata["scientificMetadata"][
+                            "experiment_description"]
+                    if "value" in gexpdes:
+                        try:
+                            pids = None
+                            tes = None
+                            expdes = yaml.safe_load(gexpdes["value"])
+                            if "techniques" in expdes:
+                                tes = expdes["techniques"]
+                            elif "technique" in expdes:
+                                tes = [expdes["technique"]]
+                            if "techniques_pids" in expdes:
+                                pids = expdes["techniques_pids"]
+                            elif "technique_pid" in expdes:
+                                pids = [expdes["technique_pid"]]
+                            if tes is not None and pids is not None:
+                                metadata["techniques"] = \
+                                    self.generate_techniques(tes, pids)
+                            elif tes is not None:
+                                metadata["techniques"] = \
+                                    self.generate_techniques(tes)
+                            elif pids is not None:
+                                metadata["techniques"] = \
+                                    self.generate_techniques(pids)
+                            else:
+                                metadata["techniques"] = \
+                                    self.generate_techniques(
+                                        [gexpdes["value"]])
+                        except Exception:
+                            metadata["techniques"] = \
+                                self.generate_techniques(
+                                    [gexpdes["value"]])
             except Exception as e:
                 sys.stderr.write("nxsfileinfo: '%s'\n"
                                  % str(e))
@@ -642,6 +687,43 @@ class BeamtimeLoader(object):
         if "techniques" not in metadata:
             metadata["techniques"] = []
         return metadata
+
+    def generate_techniques(self, techniques, techniques_pids=None):
+        """ generate technique dictionary
+
+        :param techniques: a list of techniques splitted by comma
+        :type techniques: :obj:`list` <:obj:`str`>
+        :param techniques_pids: a list of technique pids splitted by comma
+        :type techniques_pids: :obj:`list` <:obj:`str`>
+        :returns: technique dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `objstr`>
+        """
+        result = []
+        # print(techniques)
+        # print(techniques_pids)
+        for it, te in enumerate(techniques):
+            pid = None
+            name = te
+            if techniques_pids and len(techniques_pids) > it and \
+               techniques_pids[it] is not None:
+                pid = techniques_pids[it]
+            elif te.startswith("http:/") and te in id_techniques.keys():
+                pid = te
+                name = id_techniques[pid]
+            elif te in nexus_panet.keys():
+                pid = nexus_panet[te]
+                name = id_techniques[pid]
+            elif te.startswith("PaNET"):
+                nm = "http://purl.org/pan-science/PaNET/%s" % te
+                if nm in id_techniques.keys():
+                    pid = nm
+                    name = id_techniques[pid]
+            if pid:
+                result.append({"pid": pid, "name": name})
+            else:
+                result.append({"name": name})
+        # print(result)
+        return result
 
 
 class Metadata(Runner):
@@ -863,7 +945,10 @@ class Metadata(Runner):
                 result, None, options.puuid,
                 options.pfname, options.beamtimeid)
             if not options.rawscientific:
-                result = bl.update_techniques(result, options.techniques)
+                techniques = None
+                if hasattr(options, "techniques"):
+                    techniques = options.techniques
+                result = bl.update_techniques(result, techniques)
         elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
@@ -889,7 +974,10 @@ class Metadata(Runner):
                     result, options.args[0], options.puuid,
                     options.pfname, options.beamtimeid)
                 if not options.rawscientific:
-                    result = bl.update_techniques(result, options.techniques)
+                    techniques = None
+                    if hasattr(options, "techniques"):
+                        techniques = options.techniques
+                    result = bl.update_techniques(result, techniques)
 
             else:
                 result = []
@@ -916,7 +1004,10 @@ class Metadata(Runner):
                         rst, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
                     if not options.rawscientific:
-                        rst = bl.update_techniques(rst, options.techniques)
+                        techniques = None
+                        if hasattr(options, "techniques"):
+                            techniques = options.techniques
+                        rst = bl.update_techniques(rst, techniques)
                     result.append(rst)
         if result is not None:
             return json.dumps(

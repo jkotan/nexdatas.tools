@@ -10,7 +10,7 @@ RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian bionic main" -y
 
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
-RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y mysql-client mysql-client python-h5py python-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python-pninexus  python-argcomplete python-tz python-lxml liblog4j1.2-java python-fabio python-whichcraft python-setuptools
+RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y mysql-client mysql-client python-h5py python-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python-pninexus  python-argcomplete python-tz python-lxml liblog4j1.2-java python-fabio python-whichcraft python-setuptools python-yaml
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y  python-pninexus
 RUN apt-get -qq install -y hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4
 # hdf5-plugins-common
