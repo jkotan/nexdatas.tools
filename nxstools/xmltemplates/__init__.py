@@ -1438,9 +1438,11 @@ standardComponentTemplateFiles = {
         'start_time.ds.xml',
     ],
     'description': [
+        'description.xml',
         'experiment_description.ds.xml',
     ],
     'descriptiontext': [
+        'descriptiontext.xml',
     ],
     'default': [
         'default.xml',
