@@ -2407,11 +2407,38 @@ For more help:
                 "2019-02-15T15:27:21+00:00",
                 "test sample",
                 "LaB6",
-                "waxs,saxs"
+                "waxs,saxs,PaNET01098"
             ],
         ]
+        ltechs = [
+            [
+                {
+                    'name': 'small angle x-ray scattering',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01188'
+                }
+            ],
+            [
+                {
+                    'name': 'wide angle x-ray scattering',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01191'
+                },
+                {
+                    'name': 'small angle x-ray scattering',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01188'
+                },
+                {
+                    'name': 'grazing incidence diffraction',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01098'
+                },
+            ],
 
-        for arg in args:
+        ]
+
+        for k, arg in enumerate(args):
             filename = arg[0]
             fdir, fname = os.path.split(filename)
             fname, fext = os.path.splitext(fname)
@@ -2424,7 +2451,7 @@ For more help:
             smpl = arg[7]
             formula = arg[8]
             techniques = arg[9]
-            ltech = [{"name": te} for te in techniques.split(",")]
+            ltech = ltechs[k]
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
@@ -2527,6 +2554,202 @@ For more help:
                     else:
                         res['datasetName'] = "12345"
                     self.myAssertDict(dct, res, skip=['pid'])
+                    if kk % 2:
+                        self.assertEqual(
+                            dct["pid"], "12344321/%s_12345" % fname)
+                    else:
+                        self.assertEqual(
+                            dct["pid"], "12344321/12345")
+            finally:
+                os.remove(filename)
+
+    def test_metadata_attributes_description(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                'technique: "saxs"',
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+                'techniques:\n' \
+                '  - "my new technique"\n' \
+                '  - "saxs"\n' \
+                '  - "PaNET01098"\n'
+                'techniques_pids:\n' \
+                '  - "MNT1234353453ipo4pi"\n'
+            ],
+        ]
+
+        ltechs = [
+            [
+                {
+                    'name': 'small angle x-ray scattering',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01188'
+                }
+            ],
+            [
+                {
+                    'name': 'my new technique',
+                    'pid':
+                    'MNT1234353453ipo4pi'
+                },
+                {
+                    'name': 'small angle x-ray scattering',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01188'
+                },
+                {
+                    'name': 'grazing incidence diffraction',
+                    'pid':
+                    'http://purl.org/pan-science/PaNET/PaNET01098'
+                },
+            ],
+
+        ]
+
+        for k, arg in enumerate(args):
+            filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+            desc = arg[9]
+            ltech = ltechs[k]
+
+            commands = [
+                ('nxsfileinfo metadata %s %s -a units,NX_class '
+                 ' -i 12344321 --pid-without-filename'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s  '
+                 ' --beamtimeid 12344321 '
+                 '--attributes units,NX_class'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s -a units,NX_class'
+                 ' --beamtimeid 12344321 -d'
+                 % (filename, self.flags)).split(),
+                ('nxsfileinfo metadata %s %s --attributes units,NX_class'
+                 ' -i 12344321 '
+                 % (filename, self.flags)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                col = rt.create_group("logs", "NXcollection")
+                col.create_field("log1", "string").write(title)
+                entry.create_field(
+                    "experiment_description", "string").write(desc)
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for kk, cmd in enumerate(commands):
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    # print(vl)
+
+                    dct = json.loads(vl)
+                    # print(dct)
+                    res = {'pid': '12344321/12345',
+                           'techniques': ltech,
+                           'scientificMetadata':
+                           {'NX_class': 'NXentry',
+                            'name': 'entry12345',
+                            'experiment_description': {
+                                'value': desc
+                            },
+                            'data': {'NX_class': 'NXdata'},
+                            'end_time': {'value': '%s' % arg[6]},
+                            'experiment_identifier': {'value': '%s' % arg[2]},
+                            'instrument': {
+                                'NX_class': 'NXinstrument',
+                                'detector': {
+                                    'NX_class': 'NXdetector',
+                                    'intimage': {
+                                        'shape': [0, 30]}},
+                                'name': {
+                                    'value': '%s' % arg[3]}},
+                            'sample': {
+                                'NX_class': 'NXsample',
+                                'chemical_formula': {'value': '%s' % arg[8]},
+                                'name': {'value': '%s' % arg[7]}},
+                            'start_time': {
+                                'value': '%s' % arg[5]},
+                            'title': {'value': '%s' % arg[1]}
+                            },
+                           'creationTime': '%s' % arg[6],
+                           'endTime': '%s' % arg[6],
+                           'description': '%s' % arg[1],
+                           }
+                    if kk % 2:
+                        res['datasetName'] = "%s_12345" % fname
+                    else:
+                        res['datasetName'] = "12345"
+                    self.myAssertDict(res, dct, skip=['pid'])
                     if kk % 2:
                         self.assertEqual(
                             dct["pid"], "12344321/%s_12345" % fname)
@@ -2776,7 +2999,11 @@ For more help:
                     res = {
                         'pid': '12341234',
                         'datasetName': '12341234',
-                        'techniques': [{'name': 'saxs'}],
+                        'techniques': [{
+                            'name': 'small angle x-ray scattering',
+                            'pid':
+                            'http://purl.org/pan-science/PaNET/PaNET01188'
+                        }],
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
                          "log1": {
