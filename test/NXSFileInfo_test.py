@@ -2592,11 +2592,11 @@ For more help:
                 "2019-02-15T15:27:21+00:00",
                 "test sample",
                 "LaB6",
-                'techniques:\n' \
-                '  - "my new technique"\n' \
-                '  - "saxs"\n' \
+                'techniques:\n'
+                '  - "my new technique"\n'
+                '  - "saxs"\n'
                 '  - "PaNET01098"\n'
-                'techniques_pids:\n' \
+                'techniques_pids:\n'
                 '  - "MNT1234353453ipo4pi"\n'
             ],
         ]
