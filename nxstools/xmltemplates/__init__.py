@@ -933,6 +933,14 @@ standardComponentVariables = {
             'doc': "data axes field name(s) (string)"
         },
     },
+    'descriptiontext': {
+        'description': {
+            'default': "scan",
+            'doc': "scan technique (string)"
+        },
+    },
+    'description': {
+    },
     'defaultinstrument': {
         'control': {
             'default': None,
@@ -1428,6 +1436,13 @@ standardComponentTemplateFiles = {
         'beamtimefname.xml',
         'beamtimefname.ds.xml',
         'start_time.ds.xml',
+    ],
+    'description': [
+        'description.xml',
+        'experiment_description.ds.xml',
+    ],
+    'descriptiontext': [
+        'descriptiontext.xml',
     ],
     'default': [
         'default.xml',
