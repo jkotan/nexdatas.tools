@@ -45,7 +45,7 @@ install_requires = [
     'numpy>1.6.0',
     'lxml',
     'fabio',
-    'yaml',
+    'pyyaml',
     # 'pytango',
     # 'pninexus',
 ]
