@@ -1,3 +1,9 @@
+2022-08-15 Jan Kotanski <jankotan@gmail.com>
+	* add description and descriptiontext components (#332)
+	* add PaNET ontology techniques in nxsfileinfo metadata (#330)
+	* fix compatibility issues with nxsdatawriter (#330)
+	* tagged as v3.25.0
+
 2022-08-11 Jan Kotanski <jankotan@gmail.com>
 	* add support for techniques (#326)
 	* change nexus units to scicat unit (#324)
