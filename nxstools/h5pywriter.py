@@ -723,7 +723,7 @@ class H5PYGroup(filewriter.FTGroup):
         if type_code == h5py.special_dtype(vlen=unicode) and \
            shape is None and chunk is None:
             return H5PYField(
-                self._h5object.create_dataset(name, (), type_code), self)
+                self._h5object.create_dataset(name,  (), type_code), self)
 
         shape = shape or [1]
         mshape = [None for _ in shape] or (None,)

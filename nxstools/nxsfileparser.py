@@ -244,8 +244,16 @@ class NXSFileParser(object):
                 cont = True
                 while cont:
                     try:
-                        if not isinstance(vl, str) and \
-                           (hasattr(vl, "__len__") and len(vl) == 1):
+                        if isinstance(vl, np.ndarray) and \
+                           vl.shape == ():
+                            vl = vl[...]
+                            try:
+                                float(vl)
+                            except Exception:
+                                vl = str(vl)
+                            cont = False
+                        elif not isinstance(vl, str) and \
+                                (hasattr(vl, "__len__") and len(vl) == 1):
                             vl = vl[0]
                         else:
                             cont = False
@@ -457,8 +465,17 @@ class NXSFileParser(object):
                         cont = True
                         while cont:
                             try:
-                                if not isinstance(vl, str) and \
-                                   (hasattr(vl, "__len__") and len(vl) == 1):
+                                if isinstance(vl, np.ndarray) and \
+                                   vl.shape == ():
+                                    vl = vl[...]
+                                    try:
+                                        float(vl)
+                                    except Exception:
+                                        vl = str(vl)
+                                    cont = False
+                                elif not isinstance(vl, str) and \
+                                        (hasattr(vl, "__len__") and
+                                         len(vl) == 1):
                                     vl = vl[0]
                                 else:
                                     cont = False

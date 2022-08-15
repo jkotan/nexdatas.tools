@@ -2994,6 +2994,7 @@ For more help:
                     vl = mystdout.getvalue()
                     er = mystderr.getvalue()
 
+                    print(vl)
                     self.assertEqual('', er)
                     dct = json.loads(vl)
                     res = {
