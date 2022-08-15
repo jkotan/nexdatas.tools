@@ -246,11 +246,7 @@ class NXSFileParser(object):
                     try:
                         if isinstance(vl, np.ndarray) and \
                            vl.shape == ():
-                            vl = vl[...]
-                            try:
-                                float(vl)
-                            except Exception:
-                                vl = str(vl)
+                            vl = vl.item()
                             cont = False
                         elif not isinstance(vl, str) and \
                                 (hasattr(vl, "__len__") and len(vl) == 1):
@@ -467,11 +463,7 @@ class NXSFileParser(object):
                             try:
                                 if isinstance(vl, np.ndarray) and \
                                    vl.shape == ():
-                                    vl = vl[...]
-                                    try:
-                                        float(vl)
-                                    except Exception:
-                                        vl = str(vl)
+                                    vl = vl.item()
                                     cont = False
                                 elif not isinstance(vl, str) and \
                                         (hasattr(vl, "__len__") and
