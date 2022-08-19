@@ -103,6 +103,8 @@ knownHosts = {
                     'user': 'p02user', 'dbname': 'nxsconfig'},
     'haspp022ch': {'beamline': 'p022', 'masterhost': 'haspp022ch',
                    'user': 'p022user', 'dbname': 'nxsconfig'},
+    'haspp022chms': {'beamline': 'p022', 'masterhost': 'haspp022chms',
+                     'user': 'p022user', 'dbname': 'nxsconfig'},
     'haso224w': {'beamline': 'p02', 'masterhost': 'haso224w',
                  'user': 'p021user', 'dbname': 'nxsconfig'},
     'haso232s': {'beamline': 'p02', 'masterhost': 'haspp232s',
