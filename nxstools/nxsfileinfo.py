@@ -1148,7 +1148,7 @@ class OrigDatablock(Runner):
                 path = path[2:]
             if relpath:
                 path = os.path.join(relpath, path)
-            rec["path"] = path
+            rec["path"] = os.path.normpath(path)
             rec["size"] = status.st_size
             rec["time"] = self.isotime(status.st_ctime)
             try:
@@ -1185,15 +1185,23 @@ class OrigDatablock(Runner):
         scanfiles = []
         scandirs = []
         totsize = 0
+        fscandir = None
 
         for arg in options.args:
             scandir, scanname = os.path.split(os.path.abspath(arg))
+            if not fscandir:
+                fscandir = fscandir or scandir
+                relpath = options.relpath
+            else:
+                relpath = os.path.relpath(scandir, fscandir)
+                if options.relpath:
+                    relpath = os.path.join(options.relpath, relpath)
             for (dirpath, dirnames, filenames) in os.walk(scandir):
                 scanfiles = [f for f in filenames if f.startswith(scanname)]
                 scandirs = [f for f in dirnames if f.startswith(scanname)]
                 break
             flist, tsize = self.datafiles(scandir, "", scanfiles,
-                                          options.relpath, skip)
+                                          relpath, skip)
             dtfiles.extend(flist)
             totsize += tsize
 
@@ -1201,7 +1209,7 @@ class OrigDatablock(Runner):
                 if os.path.isfile(fl):
                     ascandir, ascanname = os.path.split(os.path.abspath(fl))
                     flist, tsize = self.datafiles(
-                        scandir, ascandir, [ascanname], options.relpath)
+                        scandir, ascandir, [ascanname], relpath)
                     dtfiles.extend(flist)
                     totsize += tsize
 
@@ -1209,7 +1217,7 @@ class OrigDatablock(Runner):
                 for (dirpath, dirnames, filenames) in os.walk(
                         os.path.join(scandir, scdir)):
                     flist, tsize = self.datafiles(
-                        scandir, dirpath, filenames, options.relpath, skip)
+                        scandir, dirpath, filenames, relpath, skip)
                     dtfiles.extend(flist)
                     totsize += tsize
         result["dataFileList"] = dtfiles
