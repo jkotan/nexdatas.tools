@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "Aug 15, 2022" "3.25" "NXSTools"
+.TH "NXSCREATE" "1" "Aug 22, 2022" "3.26" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -78,25 +78,25 @@ default <server> is taken from Tango DB
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory w/o <name1>)
 .TP
-.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
 first index (mandatory w/o <name1>)
 .TP
-.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
 last index (mandatory w/o <name1>)
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-s \ DSOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DSOURCE
+.BI \-s \ DSOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DSOURCE
 datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)
 .TP
 .B \-b\fP,\fB  \-\-database
@@ -105,7 +105,7 @@ store datasources in Configuration Server database
 .B \-m\fP,\fB  \-\-minimal_device
 device name without first ‘0’
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -159,47 +159,47 @@ default <host>, <port> are taken from <server>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory)
 .TP
-.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
 first index
 .TP
-.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
 last index
 .TP
-.BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
+.BI \-a \ ATTRIBUTE\fR,\fB \ \-\-attribute\fB= ATTRIBUTE
 tango attribute name
 .TP
-.BI \-s \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+.BI \-s \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
 datasource\-prefix (useful for avoiding duplicated
 datasource names)
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-u \ HOST\fP,\fB \ \-\-host\fB= HOST
+.BI \-u \ HOST\fR,\fB \ \-\-host\fB= HOST
 tango host name
 .TP
-.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+.BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-g \ GROUP\fP,\fB \ \-\-group\fB= GROUP
+.BI \-g \ GROUP\fR,\fB \ \-\-group\fB= GROUP
 device group name
 .TP
-.BI \-e \ ELEMENTTYPE\fP,\fB \ \-\-elementtype\fB= ELEMENTTYPE
+.BI \-e \ ELEMENTTYPE\fR,\fB \ \-\-elementtype\fB= ELEMENTTYPE
 element type, i.e. attribute, property or command
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -257,22 +257,22 @@ default <host>, <port> are taken from <server>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fP,\fB \ \-\-device\fB= DEVICE
+.BI \-v \ DEVICE\fR,\fB \ \-\-device\fB= DEVICE
 device, i.e. p09/pilatus300k/01 (mandatory)
 .TP
-.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+.BI \-o \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
 datasource\-prefix
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
+.BI \-s \ HOST\fR,\fB \ \-\-host\fB= HOST
 tango host name
 .TP
-.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
+.BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
@@ -282,7 +282,7 @@ store datasources in Configuration Server database
 don’t create common group with a name of datasource
 prefix
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -341,22 +341,22 @@ store components in Configuration Server database
 .B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
 .B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
 .B \-\-verbose
@@ -421,19 +421,19 @@ store components in Configuration Server database
 .B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
 .B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-p \ POOL\fP,\fB \ \-\-pool\fB= POOL
+.BI \-p \ POOL\fR,\fB \ \-\-pool\fB= POOL
 sardana pool device name
 .UNINDENT
 .UNINDENT
@@ -490,23 +490,23 @@ default <server> is taken from Tango DB
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
+.BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
 component namerelated to the device name from
 <inputFile>
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-t \ CPTYPE\fP,\fB \ \-\-type \ CPTYPE
+.BI \-t \ CPTYPE\fR,\fB \ \-\-type \ CPTYPE
 component type
 .TP
-.BI \-v \ DEVICE\fP,\fB \ \-\-device \ DEVICE
+.BI \-v \ DEVICE\fR,\fB \ \-\-device \ DEVICE
 device, i.e. p09/pilatus300k/01
 .TP
-.BI \-u \ HOST\fP,\fB \ \-\-host \ HOST
+.BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
 tango host name
 .TP
-.BI \-w \ PORT\fP,\fB \ \-\-port \ PORT
+.BI \-w \ PORT\fR,\fB \ \-\-port \ PORT
 tango host port
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -518,22 +518,22 @@ overwrite existing component
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
-.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .TP
-.BI \-i \ INSNAME\fP,\fB \ \-\-insname \ INSNAME
+.BI \-i \ INSNAME\fR,\fB \ \-\-insname \ INSNAME
 instrument group name
 .UNINDENT
 .UNINDENT
@@ -590,16 +590,16 @@ default <directory> is ‘.’
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
+.BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
 component name
 .TP
-.BI \-t \ CPTYPE\fP,\fB \ \-\-type\fB= CPTYPE
+.BI \-t \ CPTYPE\fR,\fB \ \-\-type\fB= CPTYPE
 component type
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -614,16 +614,16 @@ set the component as mandatory
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .UNINDENT
 .UNINDENT
@@ -681,37 +681,37 @@ default <nexuspath> is “/$var.entryname#’scan’$var.serialno:NXentry/instru
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c
 .TP
-.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
 first index
 .TP
-.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
 last index
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing components
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output component directory
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-n \ NEXUSPATH\fP,\fB \ \-\-nexuspath\fB= NEXUSPATH
+.BI \-n \ NEXUSPATH\fR,\fB \ \-\-nexuspath\fB= NEXUSPATH
 nexus path with field name
 .TP
-.BI \-g \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
+.BI \-g \ STRATEGY\fR,\fB \ \-\-strategy\fB= STRATEGY
 writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
 .TP
-.BI \-s \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix \ DATASOURCE
+.BI \-s \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix \ DATASOURCE
 datasource\-prefix or datasourcename
 .TP
-.BI \-t \ TYPE\fP,\fB \ \-\-type\fB= TYPE
+.BI \-t \ TYPE\fR,\fB \ \-\-type\fB= TYPE
 nexus type of the field
 .TP
-.BI \-u \ UNITS\fP,\fB \ \-\-units\fB= UNITS
+.BI \-u \ UNITS\fR,\fB \ \-\-units\fB= UNITS
 nexus units of the field
 .TP
 .B \-k\fP,\fB  \-\-links
@@ -720,10 +720,10 @@ create datasource links
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-c \ CHUNK\fP,\fB \ \-\-chunk\fB= CHUNK
+.BI \-c \ CHUNK\fR,\fB \ \-\-chunk\fB= CHUNK
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
@@ -786,37 +786,37 @@ overwrite existing components
 .B \-a\fP,\fB  \-\-can\-fail
 can fail strategy flag
 .TP
-.BI \-c \ COMPONENT\fP,\fB \ \-\-component \ COMPONENT
+.BI \-c \ COMPONENT\fR,\fB \ \-\-component \ COMPONENT
 component namesecop component name
 .TP
-.BI \-e \ PARAMSTRATEGY\fP,\fB \ \-\-param\-strategy \ PARAMSTRATEGY
+.BI \-e \ PARAMSTRATEGY\fR,\fB \ \-\-param\-strategy \ PARAMSTRATEGY
 sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT
 .TP
-.BI \-g \ STRATEGY\fP,\fB \ \-\-strategy \ STRATEGY
+.BI \-g \ STRATEGY\fR,\fB \ \-\-strategy \ STRATEGY
 sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT
 .TP
-.BI \-m \ TIMEOUT\fP,\fB \ \-\-timeout \ TIMEOUT
+.BI \-m \ TIMEOUT\fR,\fB \ \-\-timeout \ TIMEOUT
 sensor minimum timeout default: 0.001
 .TP
-.BI \-s \ SAMPLENAME\fP,\fB \ \-\-sample \ SAMPLENAME
+.BI \-s \ SAMPLENAME\fR,\fB \ \-\-sample \ SAMPLENAME
 sample name
 .TP
-.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package \ XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
 .TP
-.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .TP
-.BI \-i \ INSNAME\fP,\fB \ \-\-insname \ INSNAME
+.BI \-i \ INSNAME\fR,\fB \ \-\-insname \ INSNAME
 instrument group name
 .TP
-.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory \ DIRECTORY
+.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory \ DIRECTORY
 output component directory
 .TP
-.BI \-j \ JSON\fP,\fB \ \-\-json\-file \ JSON
+.BI \-j \ JSON\fR,\fB \ \-\-json\-file \ JSON
 json configuration file
 .TP
-.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix \ FILE
+.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix \ FILE
 file prefix, i.e. counter
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -825,13 +825,13 @@ do not change aliases into lower case
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.BI \-u \ HOST\fP,\fB \ \-\-host \ HOST
+.BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
 secop host name
 .TP
-.BI \-t \ PORT\fP,\fB \ \-\-port \ PORT
+.BI \-t \ PORT\fR,\fB \ \-\-port \ PORT
 secop host port
 .TP
-.BI \-r \ SERVER\fP,\fB \ \-\-server \ SERVER
+.BI \-r \ SERVER\fR,\fB \ \-\-server \ SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
