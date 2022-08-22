@@ -4254,6 +4254,114 @@ For more help:
             if os.path.isfile(filename):
                 os.remove(filename)
 
+    def test_origdatablock_nxsextras_add_more(self):
+        """ test nxsfileinfo origdatablock
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        locpath, _ = os.path.split(__file__)
+        filename = 'testfile_123456.nxs'
+        scanname = os.path.join(os.path.relpath(locpath), 'testfile_123456')
+        scanname = 'testfile_123456'
+        scanname2 = os.path.join(os.path.relpath(locpath), 'nxsextras')
+
+        commands = [
+            ('nxsfileinfo origdatablock %s %s'
+             " -s *.pyc,*~,*.py" % (scanname, scanname2)).split(),
+            ('nxsfileinfo origdatablock %s %s'
+             " --skip *.pyc,*~,*.py" % (scanname, scanname2)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                dct = json.loads(vl)
+                self.assertTrue(dct["size"] > 4966)
+                dfl = dct["dataFileList"]
+                self.assertEqual(len(dfl), 4)
+
+                df = dfl[0]
+
+                self.assertTrue(df["size"] < dct["size"])
+                self.assertEqual(df["path"], filename)
+                self.assertEqual(df["uid"], getpass.getuser())
+                self.assertTrue(df["perm"] in ['-rw-r--r--', '-rw-rw-r--'])
+
+                gid = pwd.getpwnam(getpass.getuser()).pw_gid
+                self.assertEqual(df["gid"], grp.getgrgid(gid).gr_name)
+
+                tm = df["time"]
+                if sys.version_info > (3,):
+                    tst = duparser.parse(tm).timestamp()
+                    ct = time.time()
+                    self.assertTrue(tst <= ct)
+                    self.assertTrue(ct - tst < 1)
+
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/common4_common.ds.xml':
+                        break
+                #    df = dfl[1]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/common4_common.ds.xml')
+                self.assertEqual(df["size"], 258)
+
+                self.assertTrue(isinstance(df["uid"], unicode))
+                self.assertTrue(isinstance(df["gid"], unicode))
+                self.assertTrue(isinstance(df["time"], unicode))
+                self.assertTrue(isinstance(df["perm"], unicode))
+
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/collect4.xml':
+                        break
+                # df = dfl[2]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/collect4.xml')
+                self.assertEqual(df["size"], 143)
+
+                self.assertTrue(isinstance(df["uid"], unicode))
+                self.assertTrue(isinstance(df["gid"], unicode))
+                self.assertTrue(isinstance(df["time"], unicode))
+                self.assertTrue(isinstance(df["perm"], unicode))
+
+                for df in dfl:
+                    if df["path"] == 'nxsextrasp00/mymca.xml':
+                        break
+
+                # df = dfl[3]
+                self.assertEqual(
+                    df["path"], 'nxsextrasp00/mymca.xml')
+                self.assertEqual(df["size"], 565)
+
+                self.assertTrue(isinstance(df["uid"], unicode))
+                self.assertTrue(isinstance(df["gid"], unicode))
+                self.assertTrue(isinstance(df["time"], unicode))
+                self.assertTrue(isinstance(df["perm"], unicode))
+
+        finally:
+            if os.path.isfile(filename):
+                os.remove(filename)
+
 
 if __name__ == '__main__':
     unittest.main()

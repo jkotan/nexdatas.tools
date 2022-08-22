@@ -625,7 +625,7 @@ class BeamtimeLoader(object):
         if techniques:
             metadata["techniques"] = \
                 self.generate_techniques(techniques.split(","))
-        if "techniques" not in metadata:
+        if metadata and "techniques" not in metadata:
             try:
                 if "scientificMetadata" in metadata and \
                        "definition" in metadata["scientificMetadata"]:
@@ -684,7 +684,7 @@ class BeamtimeLoader(object):
                 sys.stderr.write("nxsfileinfo: '%s'\n"
                                  % str(e))
 
-        if "techniques" not in metadata:
+        if metadata and "techniques" not in metadata:
             metadata["techniques"] = []
         return metadata
 
@@ -1080,7 +1080,7 @@ class OrigDatablock(Runner):
     def postauto(self):
         """ parser creator after autocomplete run """
         self._parser.add_argument(
-            'args', metavar='scan_name', type=str, nargs=1,
+            'args', metavar='scan_name', type=str, nargs='+',
             help='scan name')
         self._parser.add_argument(
             "-o", "--output", dest="output",
@@ -1186,31 +1186,32 @@ class OrigDatablock(Runner):
         scandirs = []
         totsize = 0
 
-        scandir, scanname = os.path.split(os.path.abspath(options.args[0]))
-        for (dirpath, dirnames, filenames) in os.walk(scandir):
-            scanfiles = [f for f in filenames if f.startswith(scanname)]
-            scandirs = [f for f in dirnames if f.startswith(scanname)]
-            break
-        flist, tsize = self.datafiles(scandir, "", scanfiles,
-                                      options.relpath, skip)
-        dtfiles.extend(flist)
-        totsize += tsize
+        for arg in options.args:
+            scandir, scanname = os.path.split(os.path.abspath(arg))
+            for (dirpath, dirnames, filenames) in os.walk(scandir):
+                scanfiles = [f for f in filenames if f.startswith(scanname)]
+                scandirs = [f for f in dirnames if f.startswith(scanname)]
+                break
+            flist, tsize = self.datafiles(scandir, "", scanfiles,
+                                          options.relpath, skip)
+            dtfiles.extend(flist)
+            totsize += tsize
 
-        for fl in add:
-            if os.path.isfile(fl):
-                ascandir, ascanname = os.path.split(os.path.abspath(fl))
-                flist, tsize = self.datafiles(
-                    scandir, ascandir, [ascanname], options.relpath)
-                dtfiles.extend(flist)
-                totsize += tsize
+            for fl in add:
+                if os.path.isfile(fl):
+                    ascandir, ascanname = os.path.split(os.path.abspath(fl))
+                    flist, tsize = self.datafiles(
+                        scandir, ascandir, [ascanname], options.relpath)
+                    dtfiles.extend(flist)
+                    totsize += tsize
 
-        for scdir in scandirs:
-            for (dirpath, dirnames, filenames) in os.walk(
-                    os.path.join(scandir, scdir)):
-                flist, tsize = self.datafiles(
-                    scandir, dirpath, filenames, options.relpath, skip)
-                dtfiles.extend(flist)
-                totsize += tsize
+            for scdir in scandirs:
+                for (dirpath, dirnames, filenames) in os.walk(
+                        os.path.join(scandir, scdir)):
+                    flist, tsize = self.datafiles(
+                        scandir, dirpath, filenames, options.relpath, skip)
+                    dtfiles.extend(flist)
+                    totsize += tsize
         result["dataFileList"] = dtfiles
         result["size"] = totsize
         if options.ownergroup:
