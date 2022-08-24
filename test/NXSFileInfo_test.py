@@ -2222,7 +2222,7 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -m -g Group -v intimage' % (
+            ('nxsfileinfo metadata %s %s -m -g Group -v intimage ' % (
                 filename, self.flags)).split(),
             ('nxsfileinfo metadata %s %s -m --group-postfix Group '
              '-v intimage' % (
@@ -2324,6 +2324,172 @@ For more help:
                                 "shape": [
                                     10
                                 ]
+                            }
+                        },
+                        "instrumentGroup": {
+                            "NX_class": "NXinstrument",
+                            "detectorGroup": {
+                                "NX_class": "NXdetector",
+                                "intimage": {
+                                    'value': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    "shape": [10]
+                                }
+                            }
+                        },
+                        "sampleGroup": {
+                            "NX_class": "NXsample",
+                            "depends_on": {
+                                "value": "transformations/phi"
+                            },
+                            "name": {
+                                "value": "water"
+                            },
+                            "transformationsGroup": {
+                                "NX_class": "NXtransformations",
+                                "phi": {
+                                    "depends_on": "z",
+                                    "type": "NX_FLOAT64",
+                                    "source":
+                                    "haso0000:10000/p/motor/m16/Position",
+                                    "source_name": "sphi",
+                                    "source_type": "TANGO",
+                                    "strategy": "FINAL",
+                                    "transformation_type": "rotation",
+                                    "vector": [1, 0, 0],
+                                    "unit": "deg",
+                                    "value": 0.5
+                                },
+                                "z": {
+                                    "type": "NX_FLOAT32",
+                                    "source":
+                                    "haso0000:10000/p/motor/m15/Position",
+                                    "source_name": "sz",
+                                    "source_type": "TANGO",
+                                    "strategy": "INIT",
+                                    "transformation_type": "translation",
+                                    "vector": [0, 0, 1],
+                                    "unit": "mm",
+                                    "value": 0.5
+                                }
+                            }
+                        }
+                    }
+                }
+                self.myAssertDict(dct, res)
+        finally:
+            os.remove(filename)
+
+    def test_metadata_postfix_oned(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "ttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo metadata %s %s -m -g Group -v intimage --oned' % (
+                filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s -m --group-postfix Group --oned '
+             % (
+                 filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s --raw-metadata -g Group  --oned '
+             % (
+                 filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s  --raw-metadata --oned '
+             '--group-postfix Group' % (
+                 filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [10], [10]).write(
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                # print(vl)
+                dct = json.loads(vl)
+                res = {
+                    "entry12345Group": {
+                        "NX_class": "NXentry",
+                        "dataGroup": {
+                            "NX_class": "NXdata",
+                            "lkintimage": {
+                                'value': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                "shape": [10]
                             }
                         },
                         "instrumentGroup": {
