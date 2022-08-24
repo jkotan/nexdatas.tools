@@ -803,6 +803,10 @@ class Metadata(Runner):
             default=False, dest="rawscientific",
             help="do not store NXentry as scientificMetadata")
         self._parser.add_argument(
+            "--oned", action="store_true",
+            default=False, dest="oned",
+            help="add 1d values to scientificMetadata")
+        self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
         self._parser.add_argument(
@@ -935,6 +939,8 @@ class Metadata(Runner):
             nxsparser.scientific = not options.rawscientific
             nxsparser.attrs = attrs
             nxsparser.hiddenattrs = nattrs
+            if hasattr(options, "oned"):
+                nxsparser.oned = options.oned
             nxsparser.parseMeta()
 
         if nxsparser is None:

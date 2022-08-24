@@ -200,6 +200,8 @@ class NXSFileParser(object):
         self.__root = root
         #: (:obj:`list`< :obj:`str`>)  filters for `full_path` names
         self.filters = []
+        # (:obj:`bool`) oned value flag
+        self.oned = False
 
     @classmethod
     def getpath(cls, path):
@@ -454,7 +456,8 @@ class NXSFileParser(object):
         if not isinstance(node, filewriter.FTGroup):
             if (node.name in self.valuestostore and node.is_valid) \
                or "shape" not in desc \
-               or desc["shape"] in [None, [1], []]:
+               or desc["shape"] in [None, [1], []] \
+               or (self.oned and len(desc["shape"]) == 1):
                 if hasattr(node, "read"):
                     try:
                         vl = node.read()
