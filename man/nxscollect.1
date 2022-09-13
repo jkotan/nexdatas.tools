@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCOLLECT" "1" "Aug 22, 2022" "3.26" "NXSTools"
+.TH "NXSCOLLECT" "1" "Sep 13, 2022" "3.28" "NXSTools"
 .SH NAME
 nxscollect \- upload external images into NeXus/HDF5 file
 .
@@ -64,16 +64,16 @@ nexus_file            nexus files to be collected
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPRESSION\fR,\fB \ \-\-compression \ COMPRESSION
+.BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
 <filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
-.BI \-p \ PATH\fR,\fB \ \-\-path \ PATH
+.BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
 nexus path for the output field, e.g.
 /scan/instrument/pilatus/data
 .TP
-.BI \-i \ INPUTFILES\fR,\fB \ \-\-input_files \ INPUTFILES
+.BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
 by ‘,’ e.g.’scan_%05d.tif:0:100’
 .TP
@@ -145,10 +145,10 @@ nexus_file_path       nexus files with the nexus directory to place the link
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-n \ NAME\fR,\fB \ \-\-name \ NAME
+.BI \-n \ NAME\fP,\fB \ \-\-name \ NAME
 link name
 .TP
-.BI \-t \ TARGET\fR,\fB \ \-\-target \ TARGET
+.BI \-t \ TARGET\fP,\fB \ \-\-target \ TARGET
 link target with the file name if external
 .TP
 .B \-r\fP,\fB  \-\-replace_nexus_file
@@ -208,17 +208,17 @@ Options:
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-t \ DTYPE\fR,\fB \ \-\-dtype \ DTYPE
+.BI \-t \ DTYPE\fP,\fB \ \-\-dtype \ DTYPE
 datatype of the VDS field, e.g. ‘uint8’
 .TP
-.BI \-s \ SHAPE\fR,\fB \ \-\-shape \ SHAPE
+.BI \-s \ SHAPE\fP,\fB \ \-\-shape \ SHAPE
 shape of the VDS field, e.g. ‘[U,4096,2048]’ or
 U,4096,2048 where U means span along the field’
 .TP
-.BI \-f \ FILLVALUE\fR,\fB \ \-\-fill\-value \ FILLVALUE
+.BI \-f \ FILLVALUE\fP,\fB \ \-\-fill\-value \ FILLVALUE
 fill value for the gaps, default is 0
 .TP
-.BI \-e \ TARGETFIELDS\fR,\fB \ \-\-target\-fields \ TARGETFIELDS
+.BI \-e \ TARGETFIELDS\fP,\fB \ \-\-target\-fields \ TARGETFIELDS
 external fields with their NeXus file paths defined
 with a pattern or separated by ‘,’
 e.g.’scan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP’
@@ -226,79 +226,79 @@ e.g.’scan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP’
 .BI \-\-separator \ SEPARATOR
 input data files separator (default: ‘,’)
 .TP
-.BI \-p \ SHAPES\fR,\fB \ \-\-shapes \ SHAPES
+.BI \-p \ SHAPES\fP,\fB \ \-\-shapes \ SHAPES
 shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
-.BI \-o \ OFFSETS\fR,\fB \ \-\-offsets \ OFFSETS
+.BI \-o \ OFFSETS\fP,\fB \ \-\-offsets \ OFFSETS
 offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
-.BI \-b \ BLOCKS\fR,\fB \ \-\-blocks \ BLOCKS
+.BI \-b \ BLOCKS\fP,\fB \ \-\-blocks \ BLOCKS
 block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,256,512;,256,512;,256,512’ where an
 empty coordinate means 1
 .TP
-.BI \-c \ COUNTS\fR,\fB \ \-\-counts \ COUNTS
+.BI \-c \ COUNTS\fP,\fB \ \-\-counts \ COUNTS
 count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,1,1;,1,1;,1,1’ where an empty coordinate
 means span along the layout
 .TP
-.BI \-d \ STRIDES\fR,\fB \ \-\-strides \ STRIDES
+.BI \-d \ STRIDES\fP,\fB \ \-\-strides \ STRIDES
 stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,,;,,;,,’ where an empty coordinate means
 1
 .TP
-.BI \-l \ SLICES\fR,\fB \ \-\-slices \ SLICES
+.BI \-l \ SLICES\fP,\fB \ \-\-slices \ SLICES
 mapping slices in the VDS layoutfor the corresponding
 target fields with coordinates sepatated by ‘,’ and
 different fields separated by ‘;’ or spaces e.g.
 ‘:,0:50,: :,50:100,:’ where U means span along the
 layout
 .TP
-.BI \-P \ TARGETSHAPES\fR,\fB \ \-\-target\-shapes \ TARGETSHAPES
+.BI \-P \ TARGETSHAPES\fP,\fB \ \-\-target\-shapes \ TARGETSHAPES
 field shapes with coordinates sepatated by ‘,’ and
 different fields separated by ‘;’, ‘:’ or spaces
 e.g.’,,;,300,;,600,0’
 .TP
-.BI \-O \ TARGETOFFSETS\fR,\fB \ \-\-target\-offsets \ TARGETOFFSETS
+.BI \-O \ TARGETOFFSETS\fP,\fB \ \-\-target\-offsets \ TARGETOFFSETS
 offsets in the view hyperslab of target fieldswith
 coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g.’,,;,300,;,600,0’
 where an empty coordinate means 0
 .TP
-.BI \-B \ TARGETBLOCKS\fR,\fB \ \-\-target\-blocks \ TARGETBLOCKS
+.BI \-B \ TARGETBLOCKS\fP,\fB \ \-\-target\-blocks \ TARGETBLOCKS
 block sizes in the view hyperslab of target fields
 with coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g.
 ‘,256,512;,256,512;,256,512’ where an empty coordinate
 means 1
 .TP
-.BI \-C \ TARGETCOUNTS\fR,\fB \ \-\-target\-counts \ TARGETCOUNTS
+.BI \-C \ TARGETCOUNTS\fP,\fB \ \-\-target\-counts \ TARGETCOUNTS
 count numbers in the view hyperslab of target fields
 with coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g. ‘,1,1;,1,1;,1,1’
 where an empty coordinate means span along the layout
 .TP
-.BI \-D \ TARGETSTRIDES\fR,\fB \ \-\-target\-strides \ TARGETSTRIDES
+.BI \-D \ TARGETSTRIDES\fP,\fB \ \-\-target\-strides \ TARGETSTRIDES
 stride sizes numbers in the view hyperslab of target
 fields with coordinates sepatated by ‘,’ and different
 fields separated by ‘;’, ‘:’ or spaces e.g. ‘,,;,,;,,’
 where an empty coordinate means 1
 .TP
-.BI \-L \ TARGETSLICES\fR,\fB \ \-\-target\-slices \ TARGETSLICES
+.BI \-L \ TARGETSLICES\fP,\fB \ \-\-target\-slices \ TARGETSLICES
 view slices of target fields with coordinates
 sepatated by ‘,’ and different fields separated by ‘;’
 or spaces e.g. ‘:,0:50,: :,0:50,:’ where U means span

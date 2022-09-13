@@ -129,6 +129,8 @@ Options:
                         output scicat metadata file
    -r RELPATH, --relative-path RELPATH
                         relative path to the scan files
+   -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
    --proposal-as-proposal
                         Store the DESY proposal as the SciCat proposal
    --h5py               use h5py module as a nexus reader
@@ -174,6 +176,8 @@ Options:
                         'scan1.nxs,scan2.nxs'
   -r RELPATH, --relative-path RELPATH
                         relative path to the scan files
+  -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
 
 Example
 """""""

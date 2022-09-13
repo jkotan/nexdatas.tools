@@ -834,7 +834,7 @@ class Metadata(Runner):
             help="use h5cpp module as a nexus reader")
         self._parser.add_argument(
             "-x", "--chmod", dest="chmod",
-            help=("json metadata file mod bits"))
+            help=("json metadata file mod bits, e.g. 0o662"))
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -1109,7 +1109,7 @@ class OrigDatablock(Runner):
             dest="add", default="")
         self._parser.add_argument(
             "-x", "--chmod", dest="chmod",
-            help=("json metadata file mod bits"))
+            help=("json metadata file mod bits, e.g. 0o662"))
 
     def postauto(self):
         """ parser creator after autocomplete run """
