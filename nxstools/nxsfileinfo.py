@@ -832,6 +832,9 @@ class Metadata(Runner):
             "--h5cpp", action="store_true",
             default=False, dest="h5cpp",
             help="use h5cpp module as a nexus reader")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits"))
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -1032,8 +1035,30 @@ class Metadata(Runner):
             metadata = self.metadata(root, options)
             if metadata:
                 if options.output:
-                    with open(options.output, "w") as fl:
-                        fl.write(metadata)
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
                 else:
                     print(metadata)
         except Exception as e:
@@ -1082,6 +1107,9 @@ class OrigDatablock(Runner):
             help="list of filtes to be added (separated by commas "
             "without spaces). Default: ''. E.g. 'scan1.nxs,scan2.nxs'",
             dest="add", default="")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits"))
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -1261,8 +1289,29 @@ class OrigDatablock(Runner):
             metadata = self.datablock(options)
             if metadata:
                 if options.output:
-                    with open(options.output, "w") as fl:
-                        fl.write(metadata)
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
                 else:
                     print(metadata)
         except Exception as e:

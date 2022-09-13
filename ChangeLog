@@ -1,3 +1,7 @@
+2022-09-13 Jan Kotanski <jankotan@gmail.com>
+	* add chmod options to nxsfileinfo
+	* tagged as v3.28.0
+
 2022-08-24 Jan Kotanski <jankotan@gmail.com>
 	* add 1d metadata to nxsfileinfo
 	* tagged as v3.27.0

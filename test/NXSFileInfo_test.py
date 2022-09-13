@@ -3491,8 +3491,8 @@ For more help:
                 "2014-02-15T15:17:21+00:00",
                 "water",
                 "H20",
-                "int",
-                ""
+                "0o666",
+                "0666",
             ],
             [
                 "mmyfileinfo.nxs",
@@ -3504,7 +3504,8 @@ For more help:
                 "2019-02-15T15:27:21+00:00",
                 "test sample",
                 "LaB6",
-
+                "0o662",
+                "0662",
             ],
         ]
 
@@ -3520,23 +3521,31 @@ For more help:
             etime = arg[6]
             smpl = arg[7]
             formula = arg[8]
+            chmod = arg[9]
+            chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u'
-                 % (filename, self.flags, btfname, smfname, ofname)).split(),
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
                 ('nxsfileinfo metadata %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
-                 % (filename, self.flags, btfname, smfname, ofname)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s'
+                 ' --chmod %s '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
-                 % (filename, self.flags, btfname, smfname, ofname)).split(),
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
                 ('nxsfileinfo metadata %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
-                 % (filename, self.flags, btfname, smfname, ofname)).split(),
+                 ' --chmod %s '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
             ]
 
             wrmodule = WRITERS[self.writer]
@@ -3599,6 +3608,13 @@ For more help:
 
                     with open(ofname) as of:
                         dct = json.load(of)
+                    status = os.stat(ofname)
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
                     # print(dct)
                     res = {
                         'techniques': [],
@@ -4175,12 +4191,14 @@ For more help:
         scanname = 'testfile_123456'
         filename = "%s.nxs" % scanname
         ofname = '%s/origdatablock-12345678.json' % (os.getcwd())
+        chmod = "0o666"
+        chmod2 = "0666"
 
         commands = [
-            ('nxsfileinfo origdatablock %s -o %s'
-             % (scanname, ofname)).split(),
-            ('nxsfileinfo origdatablock %s --output %s'
-             % (scanname, ofname)).split(),
+            ('nxsfileinfo origdatablock %s -o %s -x %s '
+             % (scanname, ofname, chmod)).split(),
+            ('nxsfileinfo origdatablock %s --output %s --chmod %s '
+             % (scanname, ofname, chmod)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -4209,6 +4227,12 @@ For more help:
                 self.assertEqual('', vl.strip())
                 with open(ofname) as of:
                     dct = json.load(of)
+                status = os.stat(ofname)
+                try:
+                    self.assertEqual(chmod, str(oct(status.st_mode & 0o777)))
+                except Exception:
+                    self.assertEqual(
+                        chmod2, str(oct(status.st_mode & 0o777)))
                 # dct = json.loads(vl)
                 self.assertTrue(dct["size"] > 4000)
                 dfl = dct["dataFileList"]
