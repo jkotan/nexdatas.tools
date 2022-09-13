@@ -1047,8 +1047,14 @@ class Metadata(Runner):
                         def opener(path, flags):
                             return os.open(path, flags, chmod)
 
-                        with open(options.output, "w", opener=opener) as fl:
-                            fl.write(metadata)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
                         os.umask(oldmask)
                     else:
                         with open(options.output, "w") as fl:
@@ -1294,9 +1300,14 @@ class OrigDatablock(Runner):
 
                         def opener(path, flags):
                             return os.open(path, flags, chmod)
-
-                        with open(options.output, "w", opener=opener) as fl:
-                            fl.write(metadata)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
                         os.umask(oldmask)
                     else:
                         with open(options.output, "w") as fl:

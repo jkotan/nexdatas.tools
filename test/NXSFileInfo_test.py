@@ -3492,6 +3492,7 @@ For more help:
                 "water",
                 "H20",
                 "0o666",
+                "0666",
             ],
             [
                 "mmyfileinfo.nxs",
@@ -3504,6 +3505,7 @@ For more help:
                 "test sample",
                 "LaB6",
                 "0o662",
+                "0662",
             ],
         ]
 
@@ -3520,6 +3522,7 @@ For more help:
             smpl = arg[7]
             formula = arg[8]
             chmod = arg[9]
+            chmod2 = arg[10]
 
             commands = [
                 ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
@@ -3606,7 +3609,12 @@ For more help:
                     with open(ofname) as of:
                         dct = json.load(of)
                     status = os.stat(ofname)
-                    self.assertEqual(chmod, str(oct(status.st_mode & 0o777)))
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
                     # print(dct)
                     res = {
                         'techniques': [],
@@ -4184,6 +4192,7 @@ For more help:
         filename = "%s.nxs" % scanname
         ofname = '%s/origdatablock-12345678.json' % (os.getcwd())
         chmod = "0o666"
+        chmod2 = "0666"
 
         commands = [
             ('nxsfileinfo origdatablock %s -o %s -x %s '
@@ -4219,7 +4228,11 @@ For more help:
                 with open(ofname) as of:
                     dct = json.load(of)
                 status = os.stat(ofname)
-                self.assertEqual(chmod, str(oct(status.st_mode & 0o777)))
+                try:
+                    self.assertEqual(chmod, str(oct(status.st_mode & 0o777)))
+                except Exception:
+                    self.assertEqual(
+                        chmod2, str(oct(status.st_mode & 0o777)))
                 # dct = json.loads(vl)
                 self.assertTrue(dct["size"] > 4000)
                 dfl = dct["dataFileList"]
