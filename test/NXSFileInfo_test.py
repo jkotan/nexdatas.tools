@@ -3621,9 +3621,10 @@ For more help:
                         "contactEmail": "hilarious.hilarious@hilarious.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
-                        "ownerGroup": "16171271-part",
+                        "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
-                            '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
+                            '16171271-dmgt', '16171271-clbt', '16171271-part',
+                            'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
                         # "description":
@@ -3840,9 +3841,10 @@ For more help:
                     "beautiful-cornflower-wallaby-of-agreement",
                     # "endTime": "2020-01-21T12:37:00Z",
                     "owner": "famous",
-                    "ownerGroup": "16171271-part",
+                    "ownerGroup": "16171271-dmgt",
                     "accessGroups": [
-                        '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
+                        '16171271-dmgt', '16171271-clbt', '16171271-part',
+                        'p01dmgt', 'p01staff'],
                     "ownerEmail": "cute.cute@cute.com",
                     "principalInvestigator": "robust.robust@robust.com",
                     "proposalId": "16171271",
@@ -4068,9 +4070,10 @@ For more help:
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
                         "owner": "famous",
-                        "ownerGroup": "16171271-part",
+                        "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
-                            '16171271-clbt', '16171271-dmgt', 'p01dmgt'],
+                            '16171271-dmgt', '16171271-clbt', '16171271-part',
+                            'p01dmgt', 'p01staff'],
                         "ownerEmail": "cute.cute@cute.com",
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",

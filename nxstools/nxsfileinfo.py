@@ -319,10 +319,12 @@ class BeamtimeLoader(object):
         "creationLocation": "/DESY/{facility}/{beamline}",
         "type": "raw",
         "isPublished": False,
-        "ownerGroup": "{beamtimeId}-part",
-        "accessGroups": ["{beamtimeId}-clbt",
-                         "{beamtimeId}-dmgt",
-                         "{beamline}dmgt"]
+        "ownerGroup": "{beamtimeId}-dmgt",
+        "accessGroups": ["{beamtimeId}-dmgt",
+                         "{beamtimeId}-clbt",
+                         "{beamtimeId}-part",
+                         "{beamline}dmgt",
+                         "{beamline}staff"]
     }
 
     cre = {
@@ -767,12 +769,13 @@ class Metadata(Runner):
         self._parser.add_argument(
             "-w", "--owner-group",
             default="", dest="ownergroup",
-            help="owner group name. Default is {beamtimeid}-part")
+            help="owner group name. Default is {beamtimeid}-dmgt")
         self._parser.add_argument(
             "-c", "--access-groups",
             default=None, dest="accessgroups",
             help="access group names separated by commas. "
-            "Default is {beamtimeid}-clbt,{beamtimeId}-dmgt,{beamline}dmgt")
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
         self._parser.add_argument(
             "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
@@ -1091,12 +1094,13 @@ class OrigDatablock(Runner):
         self._parser.add_argument(
             "-w", "--owner-group",
             default="", dest="ownergroup",
-            help="owner group name. Default is {beamtimeid}-part")
+            help="owner group name. Default is {beamtimeid}-dmgt")
         self._parser.add_argument(
             "-c", "--access-groups",
             default=None, dest="accessgroups",
             help="access group names separated by commas. "
-            "Default is {beamtimeid}-clbt,{beamtimeId}-dmgt")
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
         self._parser.add_argument(
             "-s", "--skip",
             help="filters for files to be skipped (separated by commas "
@@ -1267,7 +1271,7 @@ class OrigDatablock(Runner):
            and result["datasetId"] and \
            len(result["datasetId"].split("/")) > 1:
             if "ownerGroup" not in result:
-                result["ownerGroup"] = "%s-part" % (
+                result["ownerGroup"] = "%s-dmgt" % (
                     result["datasetId"].split("/")[1])
             if "accessGroups" not in result:
                 result["accessGroups"] = [

@@ -1,3 +1,7 @@
+2022-10-12 Jan Kotanski <jankotan@gmail.com>
+	* update of ownerGroup and accessGroups (#352)
+	* tagged as v3.28.1
+
 2022-09-13 Jan Kotanski <jankotan@gmail.com>
 	* add chmod options to nxsfileinfo
 	* tagged as v3.28.0
