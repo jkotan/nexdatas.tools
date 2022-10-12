@@ -3618,7 +3618,7 @@ For more help:
                     # print(dct)
                     res = {
                         'techniques': [],
-                        "contactEmail": "hilarious.hilarious@hilarious.com",
+                        "contactEmail": "robust.robust@robust.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
@@ -3630,8 +3630,8 @@ For more help:
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
-                        "owner": "famous",
-                        "ownerEmail": "cute.cute@cute.com",
+                        "owner": "glossy",
+                        "ownerEmail": "feathered.feathered@feathered.com",
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
                         "scientificMetadata": {
@@ -3723,7 +3723,7 @@ For more help:
           "username": "piquant"
         },
           "beamline": "p01",
-          "beamlineAlias": "p01",
+          "beamlineAlias": "P01",
           "beamtimeId": "16171271",
           "contact": "hilarious.hilarious@hilarious.com",
           "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
@@ -3834,18 +3834,18 @@ For more help:
                 # print(dct)
                 res = {
                     'techniques': [],
-                    "contactEmail": "hilarious.hilarious@hilarious.com",
+                    "contactEmail": "robust.robust@robust.com",
                     "createdAt": "2020-01-20T00:10:00Z",
-                    "creationLocation": "/DESY/PETRA III/p01",
+                    "creationLocation": "/DESY/PETRA III/P01",
                     "description":
                     "beautiful-cornflower-wallaby-of-agreement",
                     # "endTime": "2020-01-21T12:37:00Z",
-                    "owner": "famous",
+                    "owner": "glossy",
                     "ownerGroup": "16171271-dmgt",
                     "accessGroups": [
                         '16171271-dmgt', '16171271-clbt', '16171271-part',
                         'p01dmgt', 'p01staff'],
-                    "ownerEmail": "cute.cute@cute.com",
+                    "ownerEmail": "feathered.feathered@feathered.com",
                     "principalInvestigator": "robust.robust@robust.com",
                     "proposalId": "16171271",
                     "scientificMetadata": {
@@ -4061,7 +4061,7 @@ For more help:
                     # print(dct)
                     res = {
                         'techniques': [],
-                        "contactEmail": "hilarious.hilarious@hilarious.com",
+                        "contactEmail": "robust.robust@robust.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         'datasetName': "%s_12345" % scanname,
@@ -4069,12 +4069,12 @@ For more help:
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
-                        "owner": "famous",
+                        "owner": "glossy",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
-                        "ownerEmail": "cute.cute@cute.com",
+                        "ownerEmail": "feathered.feathered@feathered.com",
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
                         "scientificMetadata": {
