@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Sep 13, 2022" "3.28" "NXSTools"
+.TH "NXSTOOLS" "1" "Oct 12, 2022" "3.28" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -5648,7 +5648,7 @@ loader constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B btmdmap = {\(aqcontactEmail\(aq: \(aqcontact\(aq, \(aqcreatedAt\(aq: \(aqgenerated\(aq, \(aqdescription\(aq: \(aqtitle\(aq, \(aqendTime\(aq: \(aqeventEnd\(aq, \(aqowner\(aq: \(aqapplicant.lastname\(aq, \(aqownerEmail\(aq: \(aqapplicant.email\(aq, \(aqprincipalInvestigator\(aq: \(aqpi.email\(aq, \(aqproposalId\(aq: \(aqbeamtimeId\(aq, \(aqsourceFolder\(aq: \(aqcorePath\(aq, \(aqupdatedAt\(aq: \(aqgenerated\(aq}
+.B btmdmap = {\(aqcontactEmail\(aq: \(aqpi.email\(aq, \(aqcreatedAt\(aq: \(aqgenerated\(aq, \(aqdescription\(aq: \(aqtitle\(aq, \(aqendTime\(aq: \(aqeventEnd\(aq, \(aqowner\(aq: \(aqleader.lastname\(aq, \(aqownerEmail\(aq: \(aqleader.email\(aq, \(aqprincipalInvestigator\(aq: \(aqpi.email\(aq, \(aqproposalId\(aq: \(aqbeamtimeId\(aq, \(aqsourceFolder\(aq: \(aqcorePath\(aq, \(aqupdatedAt\(aq: \(aqgenerated\(aq}
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -5738,7 +5738,7 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B strcre = {\(aqaccessGroups\(aq: [\(aq{beamtimeId}\-clbt\(aq, \(aq{beamtimeId}\-dmgt\(aq, \(aq{beamline}dmgt\(aq], \(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamline}\(aq, \(aqisPublished\(aq: False, \(aqownerGroup\(aq: \(aq{beamtimeId}\-part\(aq, \(aqtype\(aq: \(aqraw\(aq}
+.B strcre = {\(aqaccessGroups\(aq: [\(aq{beamtimeId}\-dmgt\(aq, \(aq{beamtimeId}\-clbt\(aq, \(aq{beamtimeId}\-part\(aq, \(aq{beamline}dmgt\(aq, \(aq{beamline}staff\(aq], \(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamlineAlias}\(aq, \(aqisPublished\(aq: False, \(aqownerGroup\(aq: \(aq{beamtimeId}\-dmgt\(aq, \(aqtype\(aq: \(aqraw\(aq}
 .UNINDENT
 .INDENT 7.0
 .TP
