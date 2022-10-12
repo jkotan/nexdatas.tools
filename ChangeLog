@@ -1,5 +1,6 @@
 2022-10-12 Jan Kotanski <jankotan@gmail.com>
-	* update of ownerGroup and accessGroups (#352)
+	* update ownerGroup and accessGroups (#352)
+	* update sources for dataset metadata values (#354)
 	* tagged as v3.28.1
 
 2022-09-13 Jan Kotanski <jankotan@gmail.com>

@@ -302,12 +302,12 @@ class BeamtimeLoader(object):
     btmdmap = {
         "principalInvestigator": "pi.email",
         # "pid": "beamtimeId",   # ?? is not unique for dataset
-        "owner": "applicant.lastname",
-        "contactEmail": "contact",
+        "owner": "leader.lastname",
+        "contactEmail": "pi.email",
         "sourceFolder": "corePath",
 
         "endTime": "eventEnd",    # ?? should be endTime for dataset
-        "ownerEmail": "applicant.email",
+        "ownerEmail": "leader.email",
         "description": "title",   # ?? should be from dataset
         "createdAt": "generated",  # ?? should be automatic
         "updatedAt": "generated",  # ?? should be automatic
@@ -316,7 +316,7 @@ class BeamtimeLoader(object):
     }
 
     strcre = {
-        "creationLocation": "/DESY/{facility}/{beamline}",
+        "creationLocation": "/DESY/{facility}/{beamlineAlias}",
         "type": "raw",
         "isPublished": False,
         "ownerGroup": "{beamtimeId}-dmgt",
