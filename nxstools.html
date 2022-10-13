@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools package &#8212; NXSTools 3.28.0 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.28.1 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -3378,7 +3378,7 @@ by the new line character</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>server</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</li>
 <li><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</li>
-<li><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</li>
+<li><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</li>
 <li><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</li>
 <li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</li>
 <li><strong>waitforproc</strong> – wait for process list update</li>
@@ -3406,7 +3406,7 @@ by the new line character</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>server</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</li>
 <li><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</li>
-<li><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</li>
+<li><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</li>
 <li><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</li>
 <li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</li>
 <li><strong>waitforproc</strong> – wait for process list update</li>
@@ -4274,7 +4274,7 @@ and stores it in DB or filesytem</p>
 </table>
 <dl class="attribute">
 <dt id="nxstools.nxsfileinfo.BeamtimeLoader.btmdmap">
-<code class="descname">btmdmap</code><em class="property"> = {'contactEmail': 'contact', 'createdAt': 'generated', 'description': 'title', 'endTime': 'eventEnd', 'owner': 'applicant.lastname', 'ownerEmail': 'applicant.email', 'principalInvestigator': 'pi.email', 'proposalId': 'beamtimeId', 'sourceFolder': 'corePath', 'updatedAt': 'generated'}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.btmdmap" title="Permalink to this definition">¶</a></dt>
+<code class="descname">btmdmap</code><em class="property"> = {'contactEmail': 'pi.email', 'createdAt': 'generated', 'description': 'title', 'endTime': 'eventEnd', 'owner': 'leader.lastname', 'ownerEmail': 'leader.email', 'principalInvestigator': 'pi.email', 'proposalId': 'beamtimeId', 'sourceFolder': 'corePath', 'updatedAt': 'generated'}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.btmdmap" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -4378,7 +4378,7 @@ and stores it in DB or filesytem</p>
 
 <dl class="attribute">
 <dt id="nxstools.nxsfileinfo.BeamtimeLoader.strcre">
-<code class="descname">strcre</code><em class="property"> = {'accessGroups': ['{beamtimeId}-clbt', '{beamtimeId}-dmgt', '{beamline}dmgt'], 'creationLocation': '/DESY/{facility}/{beamline}', 'isPublished': False, 'ownerGroup': '{beamtimeId}-part', 'type': 'raw'}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.strcre" title="Permalink to this definition">¶</a></dt>
+<code class="descname">strcre</code><em class="property"> = {'accessGroups': ['{beamtimeId}-dmgt', '{beamtimeId}-clbt', '{beamtimeId}-part', '{beamline}dmgt', '{beamline}staff'], 'creationLocation': '/DESY/{facility}/{beamlineAlias}', 'isPublished': False, 'ownerGroup': '{beamtimeId}-dmgt', 'type': 'raw'}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.strcre" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
