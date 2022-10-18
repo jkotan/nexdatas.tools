@@ -376,6 +376,8 @@ class BeamtimeLoader(object):
         "endTime": "scientificMetadata.end_time.value",
         "creationTime": "scientificMetadata.end_time.value",
         "description": "scientificMetadata.title.value",
+        "scientificMetadata.ScanCommand":
+            "scientificMetadata.program_name.scan_command",
     }
 
     def __init__(self, options):

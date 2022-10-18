@@ -4017,6 +4017,10 @@ For more help:
                 det.create_field("intimage", "uint32", [0, 30], [1, 30])
 
                 entry.create_field("title", "string").write(title)
+                pm = entry.create_field("program_name", "string")
+                pm.write("NeXDaTaS")
+                sn = pm.attributes.create("scan_command", "string")
+                sn.write("ascan mot01 0 10 10 0.1")
                 ei = entry.create_field(
                     "experiment_identifier", "string")
                 ei.write(beamtime)
@@ -4081,6 +4085,11 @@ For more help:
                             "NX_class": "NXentry",
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
+                            "ScanCommand": "ascan mot01 0 10 10 0.1",
+                            "program_name": {
+                                "value": "NeXDaTaS",
+                                "scan_command": "ascan mot01 0 10 10 0.1",
+                            },
                             "data": {
                                 "NX_class": "NXdata"
                             },
