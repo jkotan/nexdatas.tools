@@ -309,7 +309,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      "pinhole",
                      "pointdet", "qbpm", "samplehkl", "secop",
                      "singlesecop", "slit", "source", "starttime",
-                     "undulator"])
+                     "tango", "undulator"])
                 self.assertEqual(lines[-1], "")
         finally:
             pass
@@ -331,7 +331,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                  "maiadimension", "maiaflux", "pinhole",
                  "pointdet", "qbpm", "samplehkl",
                  "secop", "singlesecop", "slit",
-                 "source", "starttime", "undulator"]
+                 "source", "starttime", "tango", "undulator"]
         args = [
                 ('nxscreate stdcomp %s -t ' % self.flags).split(),
                 ('nxscreate stdcomp %s --type ' % self.flags).split(),
