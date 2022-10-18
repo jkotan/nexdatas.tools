@@ -1,3 +1,7 @@
+2022-10-20 Jan Kotanski <jankotan@gmail.com>
+	* expose ScanCommand in scientific metadata (#359)
+	* tagged as v3.28.2
+
 2022-10-12 Jan Kotanski <jankotan@gmail.com>
 	* update ownerGroup and accessGroups (#352)
 	* update sources for dataset metadata values (#354)
