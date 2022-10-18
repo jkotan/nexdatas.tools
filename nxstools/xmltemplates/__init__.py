@@ -819,6 +819,16 @@ standardComponentVariables = {
             "If it is  not set it is not created (string)"
         },
     },
+    'tango': {
+        'device': {
+            'default': None,
+            'doc': "tango device MANDATORY (string)"
+        },
+        'attribute': {
+            'default': 'Position',
+            'doc': "tango device attribute (string)"
+        },
+    },
     'starttime': {
     },
     'beamtimeid': {
@@ -1521,6 +1531,9 @@ standardComponentTemplateFiles = {
     ],
     'common2': [
         'common2_common.ds.xml',
+    ],
+    'tango': [
+        'tango.ds.xml',
     ],
     'common3': [
         'common3_common.ds.xml',
