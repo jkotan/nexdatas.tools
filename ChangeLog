@@ -1,6 +1,7 @@
 2022-10-20 Jan Kotanski <jankotan@gmail.com>
 	* expose ScanCommand in scientific metadata (#359)
 	* add tango datasource template of PYEVAL type (#361)
+	* add nexus_components, measurement_group, measurement_group_channels attributes to default instrument  (#363)
 	* tagged as v3.29.0
 
 2022-10-12 Jan Kotanski <jankotan@gmail.com>
