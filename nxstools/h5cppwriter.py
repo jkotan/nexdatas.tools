@@ -1472,7 +1472,9 @@ class H5CppAttributeManager(filewriter.FTAttributeManager):
         if name in names:
             if overwrite:
                 try:
-                    if str(self[name].dtype) == _tostr(dtype):
+                    pass
+                    if str(self[name].dtype) == _tostr(dtype) \
+                       and self[name].shape == shape:
                         at = self._h5object[name]
                 except Exception as e:
                     print(str(e))
