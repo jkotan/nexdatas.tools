@@ -21,6 +21,7 @@
 
 from nxstools import filewriter
 
+
 def signalname(commonblock, detector, firstchannel,
                timers, mgchannels, entryname, defaultattrs=True,
                nchannels_to_skip=0):
@@ -89,6 +90,7 @@ def signalname(commonblock, detector, firstchannel,
         result = str(e)
     return result
 
+
 def axesnames(commonblock, detector, firstchannel,
               timers, mgchannels, entryname, nexus_step_datasources,
               nchannels_to_skip=0):
@@ -137,15 +139,13 @@ def axesnames(commonblock, detector, firstchannel,
                     if len(ax.shape) == 1 and ax.shape[0] == dtshape[0]:
                         result = [stepdss[0]]
             if result and len(dtshape) > 1 and dtshape[1] > 0:
-                if len(stepdss) > 1  and stepdss[1] in names:
+                if len(stepdss) > 1 and stepdss[1] in names:
                     ax = nxdata.open(stepdss[1])
                     if len(ax.shape) == 1 and ax.shape[0] == dtshape[1]:
                         result.append(stepdss[1])
             if result:
                 while len(dtshape) > len(result):
                     result.append(".")
-
-
     except Exception as e:
         result = str(e)
     return result
