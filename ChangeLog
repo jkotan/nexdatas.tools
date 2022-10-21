@@ -2,6 +2,7 @@
 	* add dataaxessignal component template (#368)
 	* add nexus_step_datasources and nexus_init_datasources attributes to default instrument  (#366)
 	* fix for changing attribute shape (#368)
+	* fix info for all datasources (#370)
 	* tagged as v3.30.0
 
 2022-10-20 Jan Kotanski <jankotan@gmail.com>
