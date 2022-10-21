@@ -3,14 +3,14 @@
   <datasource type="PYEVAL" name="signalname">
     <result name="result">
 from nxstools.pyeval import datasignal
-ds.result = datasignal.signalname(
+ds.result = datasignal.axesnames(
     commonblock,
     "$var.detector",
     "$var.firstchannel",
     "$var.timers",
     "$var.mgchannels",
     "$var.entryname#'$(__entryname__)'$var.serialno",
-    False,
+    "$var.nexus_step_datasources",
     $(nchannelstoskip))
 </result>
   </datasource>

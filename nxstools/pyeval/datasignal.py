@@ -23,7 +23,8 @@ from nxstools import filewriter
 
 
 def signalname(commonblock, detector, firstchannel,
-               timers, mgchannels, entryname, defaultattrs=True):
+               timers, mgchannels, entryname, defaultattrs=True,
+               nchannels_to_skip=0):
     """ code for signalname  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -40,6 +41,8 @@ def signalname(commonblock, detector, firstchannel,
     :type entryname: :obj:`str`
     :param defaultattrs:  set default attributes in NXentry and NXdata
     :type defaultattrs: :obj:`bool`
+    :param nchannels_to_skip: a number of mg channels to skip
+    :type nchannels_to_skip: :obj:`int`
     :returns: signal name
     :rtype: :obj:`str`
     """
@@ -69,8 +72,9 @@ def signalname(commonblock, detector, firstchannel,
         elif firstchannel in names:
             result = str(firstchannel)
         elif mgchannels:
-            for ch in mgchannels:
-                if ch in names and ch not in timers:
+            for ic, ch in enumerate(mgchannels):
+                if nchannels_to_skip <= ic and \
+                   ch in names and ch not in timers:
                     result = str(ch)
                     break
         if not result:
@@ -82,6 +86,66 @@ def signalname(commonblock, detector, firstchannel,
                     break
         if not result and names:
             result = str(names[0])
+    except Exception as e:
+        result = str(e)
+    return result
+
+
+def axesnames(commonblock, detector, firstchannel,
+              timers, mgchannels, entryname, nexus_step_datasources,
+              nchannels_to_skip=0):
+    """ code for axesnames  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param detector: detector name
+    :type detector: :obj:`str`
+    :param firstchannel: first mg channel
+    :type firstchannel: :obj:`str`
+    :param timers: a list of timers separated by space
+    :type timers: :obj:`str`
+    :param mgchannels: a list of mgchannels separated by space
+    :type mgchannels: :obj:`str`
+    :param entryname:  entry group name
+    :type entryname: :obj:`str`
+    :param mgchannels: a list of nexus_step_datasources
+    :type mgchannels: :obj:`str`
+    :param nchannels_to_skip: a number of mg channels to skip
+    :type nchannels_to_skip: :obj:`int`
+    :returns: signal name
+    :rtype: :obj:`str`
+    """
+    signal = signalname(
+        commonblock, detector, firstchannel, timers, mgchannels, entryname,
+        False, nchannels_to_skip)
+
+    result = []
+    try:
+        timers = [ch for ch in str(timers).split(" ") if ch]
+        stepdss = [
+            ch for ch in str(nexus_step_datasources).split(" ") if ch]
+        root = commonblock["__root__"]
+        nxentry = root.open(entryname)
+        nxdata = nxentry.open("data")
+        writer = root.parent.writer
+        links = writer.get_links(nxdata)
+        names = list(sorted([ch.name for ch in links]))
+        if signal != detector:
+            dt = nxdata.open(signal)
+            dtshape = dt.shape
+            if len(dtshape) > 0 and dtshape[0] > 0:
+                if stepdss and stepdss[0] in names:
+                    ax = nxdata.open(stepdss[0])
+                    if len(ax.shape) == 1 and ax.shape[0] == dtshape[0]:
+                        result = [stepdss[0]]
+            if result and len(dtshape) > 1 and dtshape[1] > 0:
+                if len(stepdss) > 1 and stepdss[1] in names:
+                    ax = nxdata.open(stepdss[1])
+                    if len(ax.shape) == 1 and ax.shape[0] == dtshape[1]:
+                        result.append(stepdss[1])
+            if result:
+                while len(dtshape) > len(result):
+                    result.append(".")
     except Exception as e:
         result = str(e)
     return result

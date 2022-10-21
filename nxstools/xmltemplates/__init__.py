@@ -936,11 +936,29 @@ standardComponentVariables = {
     'datasignal': {
         'signal': {
             'default': 'defaultsignal',
-            'doc': "data signal field name (string)"
+            'doc': "data signal field name (datasource)"
         },
         'axes': {
             'default': None,
-            'doc': "data axes field name(s) (string)"
+            'doc': "data axes field name(s) (datasource)"
+        },
+        'nchannelstoskip': {
+            'default': '0',
+            'doc': "number of mg channels to skip (string)"
+        },
+    },
+    'dataaxessignal': {
+        'signal': {
+            'default': 'defaultsignal',
+            'doc': "data signal field name (datasource)"
+        },
+        'axes': {
+            'default': 'defaultaxes',
+            'doc': "list of data axes field names (datasource)"
+        },
+        'nchannelstoskip': {
+            'default': '0',
+            'doc': "number of mg channels to skip (string)"
         },
     },
     'descriptiontext': {
@@ -1479,6 +1497,13 @@ standardComponentTemplateFiles = {
         'signal_name.ds.xml',
         'signalname.ds.xml',
         'signal_axes.ds.xml',
+    ],
+    'dataaxessignal': [
+        'dataaxessignal.xml',
+        'defaultsignal.ds.xml',
+        'defaultaxes.ds.xml',
+        'signal_name.ds.xml',
+        'signalname.ds.xml',
     ],
     'defaultinstrument': [
         'defaultinstrument.xml',
