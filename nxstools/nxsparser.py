@@ -73,7 +73,7 @@ def _toxml(node):
         xml = _tostr(et.tostring(node, encoding='utf8', method='xml'))
     if xml.startswith("<?xml version='1.0' encoding='utf8'?>"):
         xml = str(xml[38:])
-        return xml
+    return xml
 
 
 class ESRFConverter(object):
