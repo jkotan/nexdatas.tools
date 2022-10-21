@@ -1,6 +1,8 @@
-2022-10-20 Jan Kotanski <jankotan@gmail.com>
-	* add nexus_step_datasources and nexus_init_datasources attributes to default instrument  (#363)
-	* tagged as v3.29.1
+2022-10-21 Jan Kotanski <jankotan@gmail.com>
+	* add dataaxessignal component template (#368)
+	* add nexus_step_datasources and nexus_init_datasources attributes to default instrument  (#366)
+	* fix for changing attribute shape (#368)
+	* tagged as v3.30.0
 
 2022-10-20 Jan Kotanski <jankotan@gmail.com>
 	* expose ScanCommand in scientific metadata (#359)
