@@ -10,7 +10,8 @@ ds.result = datasignal.axesnames(
     "$var.timers",
     "$var.mgchannels",
     "$var.entryname#'$(__entryname__)'$var.serialno",
-    "$var.nexus_step_datasources")
+    "$var.nexus_step_datasources",
+    $(nchannelstoskip))
 </result>
   </datasource>
 </definition>

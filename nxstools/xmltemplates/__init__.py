@@ -942,6 +942,10 @@ standardComponentVariables = {
             'default': None,
             'doc': "data axes field name(s) (datasource)"
         },
+        'nchannelstoskip': {
+            'default': '0',
+            'doc': "number of mg channels to skip (string)"
+        },
     },
     'dataaxessignal': {
         'signal': {
@@ -951,6 +955,10 @@ standardComponentVariables = {
         'axes': {
             'default': 'defaultaxes',
             'doc': "list of data axes field names (datasource)"
+        },
+        'nchannelstoskip': {
+            'default': '0',
+            'doc': "number of mg channels to skip (string)"
         },
     },
     'descriptiontext': {
