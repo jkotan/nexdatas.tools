@@ -1,5 +1,6 @@
 2022-10-21 Jan Kotanski <jankotan@gmail.com>
 	* add dataaxessignal component template (#368)
+	* add datasource PYEVAL record description  (#372)
 	* add nexus_step_datasources and nexus_init_datasources attributes to default instrument  (#366)
 	* fix for changing attribute shape (#368)
 	* fix info for all datasources (#370)
