@@ -2538,8 +2538,8 @@ For more help:
             name2: ["motor_1"],
             name3: ["motor_2",
                     "haso.desy.de:10000/p09/motor/exp.01/Position"],
-            name4: [],
-            name5: [],
+            name4: ["25.6"],
+            name5: ['SELECT * from weather limit 3'],
         }
 
         self.setXML(el, xml)
@@ -2574,8 +2574,12 @@ For more help:
                 vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
-                    avc3 = [ec.strip() for ec in vl.split(' ')
-                            if ec.strip()]
+                    if len(dss[nm]) > 1:
+                        avc3 = [ec.strip() for ec in vl.split(' ')
+                                if ec.strip()]
+                    else:
+                        avc3 = [ec.strip() for ec in [vl]
+                                if ec.strip()]
                 else:
                     avc3 = [ec for ec in vl.split('\n') if ec]
                 self.assertEqual(sorted(avc3), sorted(dss[nm]))
@@ -2694,8 +2698,8 @@ For more help:
             name: ["motor_1"],
             name2: ["motor_2",
                     "haso.desy.de:10000/p09/motor/exp.01/Position"],
-            name3: [],
-            name4: [],
+            name3: ["25.6"],
+            name4: ['SELECT * from weather limit 3'],
         }
 
         self.setXML(el, xml % dss[name])
@@ -2733,8 +2737,12 @@ For more help:
                 vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
-                    avc3 = [ec.strip() for ec in vl.split(' ')
-                            if ec.strip()]
+                    if len(dss[nm]) > 1:
+                        avc3 = [ec.strip() for ec in vl.split(' ')
+                                if ec.strip()]
+                    else:
+                        avc3 = [ec.strip() for ec in [vl]
+                                if ec.strip()]
                 else:
                     avc3 = [ec for ec in vl.split('\n') if ec]
                 self.assertEqual(sorted(avc3), sorted(rec[nm]))
@@ -2803,8 +2811,8 @@ For more help:
             dsname[1]: ["motor_2"],
             dsname[2]: [
                 "haso.desy.de:10000/p09/motor/exp.01/Position"],
-            dsname[3]: [],
-            dsname[4]: [],
+            dsname[3]: ["25.6"],
+            dsname[4]: ['SELECT * from weather limit 3'],
         }
 
         dsnp = len(xds)
@@ -2835,8 +2843,12 @@ For more help:
                 vl = vl.strip()
 
                 if "-n" in cmd or "--no-newlines" in cmd:
-                    avc3 = [ec.strip() for ec in vl.split(' ')
-                            if ec.strip()]
+                    if len(rec[nm]) > 1:
+                        avc3 = [ec.strip() for ec in vl.split(' ')
+                                if ec.strip()]
+                    else:
+                        avc3 = [ec.strip() for ec in [vl]
+                                if ec.strip()]
                 else:
                     avc3 = [ec for ec in vl.split('\n') if ec]
                 self.assertEqual(sorted(avc3), sorted(rec[nm]))
@@ -6276,10 +6288,11 @@ For more help:
                  "haso.desy.de:10000/p09/motor/exp.01/Position"],
             ],
             [
-                ["sl3right", "PYEVAL", None, "[20]", "INIT", None],
+                ["sl3right", "PYEVAL", None, "[20]", "INIT", "25.6"],
             ],
             [
-                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL",
+                 "SELECT * from weather limit 3"],
             ],
         ]
         np = len(xml)
@@ -6397,11 +6410,12 @@ For more help:
                 ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
             ],
             [
-                ["sl3right", "PYEVAL", None, "[20]", "INIT", None],
+                ["sl3right", "PYEVAL", None, "[20]", "INIT", '25.6'],
                 ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
             ],
             [
-                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+                ["sl1right", "DB",  "NX_CHAR", "['*', '*']", "FINAL",
+                 "SELECT * from weather limit 3"],
                 ["sl2right", "CLIENT", "NX_FLOAT", None, "INIT", "motor_1"],
             ],
         ]
@@ -6558,10 +6572,11 @@ For more help:
                  "haso.desy.de:10000/p09/motor/exp.01/Position"],
             ],
             [
-                [dsname[3], "PYEVAL", None, "[20]", "INIT", None],
+                [dsname[3], "PYEVAL", None, "[20]", "INIT", "25.6"],
             ],
             [
-                [dsname[4], "DB",  "NX_CHAR", "['*', '*']", "FINAL", None],
+                [dsname[4], "DB",  "NX_CHAR", "['*', '*']", "FINAL",
+                 "SELECT * from weather limit 3"],
             ],
         ]
         for i in range(np):
@@ -6650,10 +6665,10 @@ For more help:
                  "haso.desy.de:10000/p09/motor/exp.01/Position"]
             ],
             [
-                ["PYEVAL", None]
+                ["PYEVAL", "25.6"]
             ],
             [
-                ["DB", None]
+                ["DB", "SELECT * from weather limit 3"]
             ],
         ]
         dsnp = len(xds)
@@ -7244,10 +7259,10 @@ For more help:
                  "haso.desy.de:10000/p09/motor/exp.01/Position"]
             ],
             [
-                ["PYEVAL", None]
+                ["PYEVAL", "25.6"]
             ],
             [
-                ["DB", None]
+                ["DB", "SELECT * from weather limit 3"]
             ],
         ]
         dsnp = len(xds)
@@ -8339,12 +8354,12 @@ For more help:
             [
                 ["data", None, "INIT",
                  "[20]", None, None, None, None, None,
-                 dsname[3], "PYEVAL", None, None],
+                 dsname[3], "PYEVAL", "25.6", None],
             ],
             [
                 ["data", "NX_CHAR", "FINAL",
                  "['*', '*']", None, None, None, None, None,
-                 dsname[4], "DB", None, None],
+                 dsname[4], "DB", "SELECT * from weather limit 3", None],
             ],
         ]
         for i in range(np):

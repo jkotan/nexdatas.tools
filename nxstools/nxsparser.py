@@ -236,7 +236,6 @@ class ParserTools(object):
             cresult = dsource.find(".//result")
             if result is not None and len(result) > 0:
                 rname = result[0].get("name", "result")
-                print(dir(cresult))
                 tres = "ds.%s = " % rname
                 if len(cresult.text) and cresult.text.strip():
                     teres = cresult.text.strip() or ""
