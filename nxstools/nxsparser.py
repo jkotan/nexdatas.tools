@@ -185,6 +185,7 @@ class ParserTools(object):
         :rtype: :obj:`str`
         """
         withRec = ["CLIENT", "TANGO"]
+        withResult = ["PYEVAL"]
         withQuery = ["DB"]
         if node.tag == 'datasource':
             dsource = node
@@ -228,8 +229,21 @@ class ParserTools(object):
                 return res
         elif dstype and dstype in withQuery:
             query = dsource.find(".//query")
-            if len(query) and query.strip():
-                return query.strip() or ""
+            if len(query.text) and query.text.strip():
+                return query.text.strip() or ""
+        elif dstype and dstype in withResult:
+            result = dsource.findall("result")
+            cresult = dsource.find(".//result")
+            if result is not None and len(result) > 0:
+                rname = result[0].get("name", "result")
+                print(dir(cresult))
+                tres = "ds.%s = " % rname
+                if len(cresult.text) and cresult.text.strip():
+                    teres = cresult.text.strip() or ""
+                    lres = teres.split("\n")
+                    for re in lres:
+                        if re.strip().startswith(tres):
+                            res = re.strip()[len(tres):]
         return res
 
     @classmethod
