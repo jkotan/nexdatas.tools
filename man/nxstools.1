@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Oct 21, 2022" "3.30" "NXSTools"
+.TH "NXSTOOLS" "1" "Oct 24, 2022" "3.30" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -238,16 +238,16 @@ nexus_file            nexus files to be collected
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPRESSION\fR,\fB \ \-\-compression \ COMPRESSION
+.BI \-c \ COMPRESSION\fP,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
 <filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
-.BI \-p \ PATH\fR,\fB \ \-\-path \ PATH
+.BI \-p \ PATH\fP,\fB \ \-\-path \ PATH
 nexus path for the output field, e.g.
 /scan/instrument/pilatus/data
 .TP
-.BI \-i \ INPUTFILES\fR,\fB \ \-\-input_files \ INPUTFILES
+.BI \-i \ INPUTFILES\fP,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
 by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
 .TP
@@ -319,10 +319,10 @@ nexus_file_path       nexus files with the nexus directory to place the link
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-n \ NAME\fR,\fB \ \-\-name \ NAME
+.BI \-n \ NAME\fP,\fB \ \-\-name \ NAME
 link name
 .TP
-.BI \-t \ TARGET\fR,\fB \ \-\-target \ TARGET
+.BI \-t \ TARGET\fP,\fB \ \-\-target \ TARGET
 link target with the file name if external
 .TP
 .B \-r\fP,\fB  \-\-replace_nexus_file
@@ -382,17 +382,17 @@ Options:
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-t \ DTYPE\fR,\fB \ \-\-dtype \ DTYPE
+.BI \-t \ DTYPE\fP,\fB \ \-\-dtype \ DTYPE
 datatype of the VDS field, e.g. \(aquint8\(aq
 .TP
-.BI \-s \ SHAPE\fR,\fB \ \-\-shape \ SHAPE
+.BI \-s \ SHAPE\fP,\fB \ \-\-shape \ SHAPE
 shape of the VDS field, e.g. \(aq[U,4096,2048]\(aq or
 U,4096,2048 where U means span along the field\(aq
 .TP
-.BI \-f \ FILLVALUE\fR,\fB \ \-\-fill\-value \ FILLVALUE
+.BI \-f \ FILLVALUE\fP,\fB \ \-\-fill\-value \ FILLVALUE
 fill value for the gaps, default is 0
 .TP
-.BI \-e \ TARGETFIELDS\fR,\fB \ \-\-target\-fields \ TARGETFIELDS
+.BI \-e \ TARGETFIELDS\fP,\fB \ \-\-target\-fields \ TARGETFIELDS
 external fields with their NeXus file paths defined
 with a pattern or separated by \(aq,\(aq
 e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
@@ -400,79 +400,79 @@ e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
 .BI \-\-separator \ SEPARATOR
 input data files separator (default: \(aq,\(aq)
 .TP
-.BI \-p \ SHAPES\fR,\fB \ \-\-shapes \ SHAPES
+.BI \-p \ SHAPES\fP,\fB \ \-\-shapes \ SHAPES
 shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
 spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
 means 0
 .TP
-.BI \-o \ OFFSETS\fR,\fB \ \-\-offsets \ OFFSETS
+.BI \-o \ OFFSETS\fP,\fB \ \-\-offsets \ OFFSETS
 offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
 spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
 means 0
 .TP
-.BI \-b \ BLOCKS\fR,\fB \ \-\-blocks \ BLOCKS
+.BI \-b \ BLOCKS\fP,\fB \ \-\-blocks \ BLOCKS
 block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
 spaces e.g. \(aq,256,512;,256,512;,256,512\(aq where an
 empty coordinate means 1
 .TP
-.BI \-c \ COUNTS\fR,\fB \ \-\-counts \ COUNTS
+.BI \-c \ COUNTS\fP,\fB \ \-\-counts \ COUNTS
 count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
 spaces e.g. \(aq,1,1;,1,1;,1,1\(aq where an empty coordinate
 means span along the layout
 .TP
-.BI \-d \ STRIDES\fR,\fB \ \-\-strides \ STRIDES
+.BI \-d \ STRIDES\fP,\fB \ \-\-strides \ STRIDES
 stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
 spaces e.g. \(aq,,;,,;,,\(aq where an empty coordinate means
 1
 .TP
-.BI \-l \ SLICES\fR,\fB \ \-\-slices \ SLICES
+.BI \-l \ SLICES\fP,\fB \ \-\-slices \ SLICES
 mapping slices in the VDS layoutfor the corresponding
 target fields with coordinates sepatated by \(aq,\(aq and
 different fields separated by \(aq;\(aq or spaces e.g.
 \(aq:,0:50,: :,50:100,:\(aq where U means span along the
 layout
 .TP
-.BI \-P \ TARGETSHAPES\fR,\fB \ \-\-target\-shapes \ TARGETSHAPES
+.BI \-P \ TARGETSHAPES\fP,\fB \ \-\-target\-shapes \ TARGETSHAPES
 field shapes with coordinates sepatated by \(aq,\(aq and
 different fields separated by \(aq;\(aq, \(aq:\(aq or spaces
 e.g.\(aq,,;,300,;,600,0\(aq
 .TP
-.BI \-O \ TARGETOFFSETS\fR,\fB \ \-\-target\-offsets \ TARGETOFFSETS
+.BI \-O \ TARGETOFFSETS\fP,\fB \ \-\-target\-offsets \ TARGETOFFSETS
 offsets in the view hyperslab of target fieldswith
 coordinates sepatated by \(aq,\(aq and different fields
 separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.\(aq,,;,300,;,600,0\(aq
 where an empty coordinate means 0
 .TP
-.BI \-B \ TARGETBLOCKS\fR,\fB \ \-\-target\-blocks \ TARGETBLOCKS
+.BI \-B \ TARGETBLOCKS\fP,\fB \ \-\-target\-blocks \ TARGETBLOCKS
 block sizes in the view hyperslab of target fields
 with coordinates sepatated by \(aq,\(aq and different fields
 separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.
 \(aq,256,512;,256,512;,256,512\(aq where an empty coordinate
 means 1
 .TP
-.BI \-C \ TARGETCOUNTS\fR,\fB \ \-\-target\-counts \ TARGETCOUNTS
+.BI \-C \ TARGETCOUNTS\fP,\fB \ \-\-target\-counts \ TARGETCOUNTS
 count numbers in the view hyperslab of target fields
 with coordinates sepatated by \(aq,\(aq and different fields
 separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,1,1;,1,1;,1,1\(aq
 where an empty coordinate means span along the layout
 .TP
-.BI \-D \ TARGETSTRIDES\fR,\fB \ \-\-target\-strides \ TARGETSTRIDES
+.BI \-D \ TARGETSTRIDES\fP,\fB \ \-\-target\-strides \ TARGETSTRIDES
 stride sizes numbers in the view hyperslab of target
 fields with coordinates sepatated by \(aq,\(aq and different
 fields separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,,;,,;,,\(aq
 where an empty coordinate means 1
 .TP
-.BI \-L \ TARGETSLICES\fR,\fB \ \-\-target\-slices \ TARGETSLICES
+.BI \-L \ TARGETSLICES\fP,\fB \ \-\-target\-slices \ TARGETSLICES
 view slices of target fields with coordinates
 sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
 or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
@@ -623,7 +623,7 @@ show transformation parameters of given components
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-s \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-s \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
 .B \-d\fP,\fB  \-\-datasources
@@ -704,25 +704,25 @@ default <server> is taken from Tango DB
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory w/o <name1>)
 .TP
-.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
 first index (mandatory w/o <name1>)
 .TP
-.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
 last index (mandatory w/o <name1>)
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-s \ DSOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DSOURCE
+.BI \-s \ DSOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DSOURCE
 datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)
 .TP
 .B \-b\fP,\fB  \-\-database
@@ -731,7 +731,7 @@ store datasources in Configuration Server database
 .B \-m\fP,\fB  \-\-minimal_device
 device name without first \(aq0\(aq
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -785,47 +785,47 @@ default <host>, <port> are taken from <server>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c (mandatory)
 .TP
-.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
 first index
 .TP
-.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
 last index
 .TP
-.BI \-a \ ATTRIBUTE\fR,\fB \ \-\-attribute\fB= ATTRIBUTE
+.BI \-a \ ATTRIBUTE\fP,\fB \ \-\-attribute\fB= ATTRIBUTE
 tango attribute name
 .TP
-.BI \-s \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+.BI \-s \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
 datasource\-prefix (useful for avoiding duplicated
 datasource names)
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-u \ HOST\fR,\fB \ \-\-host\fB= HOST
+.BI \-u \ HOST\fP,\fB \ \-\-host\fB= HOST
 tango host name
 .TP
-.BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-g \ GROUP\fR,\fB \ \-\-group\fB= GROUP
+.BI \-g \ GROUP\fP,\fB \ \-\-group\fB= GROUP
 device group name
 .TP
-.BI \-e \ ELEMENTTYPE\fR,\fB \ \-\-elementtype\fB= ELEMENTTYPE
+.BI \-e \ ELEMENTTYPE\fP,\fB \ \-\-elementtype\fB= ELEMENTTYPE
 element type, i.e. attribute, property or command
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -883,22 +883,22 @@ default <host>, <port> are taken from <server>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fR,\fB \ \-\-device\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\fB= DEVICE
 device, i.e. p09/pilatus300k/01 (mandatory)
 .TP
-.BI \-o \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
+.BI \-o \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix\fB= DATASOURCE
 datasource\-prefix
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-s \ HOST\fR,\fB \ \-\-host\fB= HOST
+.BI \-s \ HOST\fP,\fB \ \-\-host\fB= HOST
 tango host name
 .TP
-.BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
+.BI \-t \ PORT\fP,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
 .B \-b\fP,\fB  \-\-database
@@ -908,7 +908,7 @@ store datasources in Configuration Server database
 don\(aqt create common group with a name of datasource
 prefix
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -967,22 +967,22 @@ store components in Configuration Server database
 .B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
 .B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
 .B \-\-verbose
@@ -1047,19 +1047,19 @@ store components in Configuration Server database
 .B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
 .B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-p \ POOL\fR,\fB \ \-\-pool\fB= POOL
+.BI \-p \ POOL\fP,\fB \ \-\-pool\fB= POOL
 sardana pool device name
 .UNINDENT
 .UNINDENT
@@ -1116,23 +1116,23 @@ default <server> is taken from Tango DB
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
 component namerelated to the device name from
 <inputFile>
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-t \ CPTYPE\fR,\fB \ \-\-type \ CPTYPE
+.BI \-t \ CPTYPE\fP,\fB \ \-\-type \ CPTYPE
 component type
 .TP
-.BI \-v \ DEVICE\fR,\fB \ \-\-device \ DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device \ DEVICE
 device, i.e. p09/pilatus300k/01
 .TP
-.BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
+.BI \-u \ HOST\fP,\fB \ \-\-host \ HOST
 tango host name
 .TP
-.BI \-w \ PORT\fR,\fB \ \-\-port \ PORT
+.BI \-w \ PORT\fP,\fB \ \-\-port \ PORT
 tango host port
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -1144,22 +1144,22 @@ overwrite existing component
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
-.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .TP
-.BI \-i \ INSNAME\fR,\fB \ \-\-insname \ INSNAME
+.BI \-i \ INSNAME\fP,\fB \ \-\-insname \ INSNAME
 instrument group name
 .UNINDENT
 .UNINDENT
@@ -1216,16 +1216,16 @@ default <directory> is \(aq.\(aq
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component\fB= COMPONENT
 component name
 .TP
-.BI \-t \ CPTYPE\fR,\fB \ \-\-type\fB= CPTYPE
+.BI \-t \ CPTYPE\fP,\fB \ \-\-type\fB= CPTYPE
 component type
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -1240,16 +1240,16 @@ set the component as mandatory
 .B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output datasource directory
 .TP
-.BI \-e \ EXTERNAL\fR,\fB \ \-\-external\fB= EXTERNAL
+.BI \-e \ EXTERNAL\fP,\fB \ \-\-external\fB= EXTERNAL
 external configuration server
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .UNINDENT
 .UNINDENT
@@ -1307,37 +1307,37 @@ default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instru
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
+.BI \-v \ DEVICE\fP,\fB \ \-\-device\-prefix\fB= DEVICE
 device prefix, i.e. exp_c
 .TP
-.BI \-f \ FIRST\fR,\fB \ \-\-first\fB= FIRST
+.BI \-f \ FIRST\fP,\fB \ \-\-first\fB= FIRST
 first index
 .TP
-.BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
+.BI \-l \ LAST\fP,\fB \ \-\-last\fB= LAST
 last index
 .TP
 .B \-o\fP,\fB  \-\-overwrite
 overwrite existing components
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory\fB= DIRECTORY
 output component directory
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix\fB= FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix\fB= FILE
 file prefix, i.e. counter
 .TP
-.BI \-n \ NEXUSPATH\fR,\fB \ \-\-nexuspath\fB= NEXUSPATH
+.BI \-n \ NEXUSPATH\fP,\fB \ \-\-nexuspath\fB= NEXUSPATH
 nexus path with field name
 .TP
-.BI \-g \ STRATEGY\fR,\fB \ \-\-strategy\fB= STRATEGY
+.BI \-g \ STRATEGY\fP,\fB \ \-\-strategy\fB= STRATEGY
 writing strategy, i.e. STEP, INIT, FINAL, POSTRUN
 .TP
-.BI \-s \ DATASOURCE\fR,\fB \ \-\-datasource\-prefix \ DATASOURCE
+.BI \-s \ DATASOURCE\fP,\fB \ \-\-datasource\-prefix \ DATASOURCE
 datasource\-prefix or datasourcename
 .TP
-.BI \-t \ TYPE\fR,\fB \ \-\-type\fB= TYPE
+.BI \-t \ TYPE\fP,\fB \ \-\-type\fB= TYPE
 nexus type of the field
 .TP
-.BI \-u \ UNITS\fR,\fB \ \-\-units\fB= UNITS
+.BI \-u \ UNITS\fP,\fB \ \-\-units\fB= UNITS
 nexus units of the field
 .TP
 .B \-k\fP,\fB  \-\-links
@@ -1346,10 +1346,10 @@ create datasource links
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 configuration server device name
 .TP
-.BI \-c \ CHUNK\fR,\fB \ \-\-chunk\fB= CHUNK
+.BI \-c \ CHUNK\fP,\fB \ \-\-chunk\fB= CHUNK
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
@@ -1412,37 +1412,37 @@ overwrite existing components
 .B \-a\fP,\fB  \-\-can\-fail
 can fail strategy flag
 .TP
-.BI \-c \ COMPONENT\fR,\fB \ \-\-component \ COMPONENT
+.BI \-c \ COMPONENT\fP,\fB \ \-\-component \ COMPONENT
 component namesecop component name
 .TP
-.BI \-e \ PARAMSTRATEGY\fR,\fB \ \-\-param\-strategy \ PARAMSTRATEGY
+.BI \-e \ PARAMSTRATEGY\fP,\fB \ \-\-param\-strategy \ PARAMSTRATEGY
 sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT
 .TP
-.BI \-g \ STRATEGY\fR,\fB \ \-\-strategy \ STRATEGY
+.BI \-g \ STRATEGY\fP,\fB \ \-\-strategy \ STRATEGY
 sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT
 .TP
-.BI \-m \ TIMEOUT\fR,\fB \ \-\-timeout \ TIMEOUT
+.BI \-m \ TIMEOUT\fP,\fB \ \-\-timeout \ TIMEOUT
 sensor minimum timeout default: 0.001
 .TP
-.BI \-s \ SAMPLENAME\fR,\fB \ \-\-sample \ SAMPLENAME
+.BI \-s \ SAMPLENAME\fP,\fB \ \-\-sample \ SAMPLENAME
 sample name
 .TP
-.BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
+.BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
 .TP
-.BI \-y \ ENTRYNAME\fR,\fB \ \-\-entryname \ ENTRYNAME
+.BI \-y \ ENTRYNAME\fP,\fB \ \-\-entryname \ ENTRYNAME
 entry group name (prefix)
 .TP
-.BI \-i \ INSNAME\fR,\fB \ \-\-insname \ INSNAME
+.BI \-i \ INSNAME\fP,\fB \ \-\-insname \ INSNAME
 instrument group name
 .TP
-.BI \-d \ DIRECTORY\fR,\fB \ \-\-directory \ DIRECTORY
+.BI \-d \ DIRECTORY\fP,\fB \ \-\-directory \ DIRECTORY
 output component directory
 .TP
-.BI \-j \ JSON\fR,\fB \ \-\-json\-file \ JSON
+.BI \-j \ JSON\fP,\fB \ \-\-json\-file \ JSON
 json configuration file
 .TP
-.BI \-x \ FILE\fR,\fB \ \-\-file\-prefix \ FILE
+.BI \-x \ FILE\fP,\fB \ \-\-file\-prefix \ FILE
 file prefix, i.e. counter
 .TP
 .B \-n\fP,\fB  \-\-nolower
@@ -1451,13 +1451,13 @@ do not change aliases into lower case
 .B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
+.BI \-u \ HOST\fP,\fB \ \-\-host \ HOST
 secop host name
 .TP
-.BI \-t \ PORT\fR,\fB \ \-\-port \ PORT
+.BI \-t \ PORT\fP,\fB \ \-\-port \ PORT
 secop host port
 .TP
-.BI \-r \ SERVER\fR,\fB \ \-\-server \ SERVER
+.BI \-r \ SERVER\fP,\fB \ \-\-server \ SERVER
 configuration server device name
 .UNINDENT
 .UNINDENT
@@ -1583,7 +1583,7 @@ get lists of tango data servers from the current tango host
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-s \ SERVER\fR,\fB \ \-\-server\fB= SERVER
+.BI \-s \ SERVER\fP,\fB \ \-\-server\fB= SERVER
 tango data server device name
 .UNINDENT
 .UNINDENT
@@ -1677,13 +1677,13 @@ Usage: nxsfileinfo field <file_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ HEADERS\fR,\fB \ \-\-columns\fB= HEADERS
+.BI \-c \ HEADERS\fP,\fB \ \-\-columns\fB= HEADERS
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
-.BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
+.BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
 full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
 .TP
-.BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
+.BI \-v \ VALUES\fP,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
 .B \-g\fP,\fB  \-\-geometry
@@ -1734,38 +1734,38 @@ Usage: nxsfileinfo metadata <file_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-a \ ATTRS\fR,\fB \ \-\-attributes \ ATTRS
+.BI \-a \ ATTRS\fP,\fB \ \-\-attributes \ ATTRS
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
-.BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
+.BI \-n \ NATTRS\fP,\fB \ \-\-hidden\-attributes \ NATTRS
 names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
 .TP
-.BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
+.BI \-v \ VALUES\fP,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
 .TP
-.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
-.BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
+.BI \-g \ GROUP_POSTFIX\fP,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
 postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
-.BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
+.BI \-t \ ENTRYCLASSES\fP,\fB \ \-\-entry\-classes \ ENTRYCLASSES
 names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
-.BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
+.BI \-e \ ENTRYNAMES\fP,\fB \ \-\-entry\-names \ ENTRYNAMES
 names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
 .B \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
 .B \-u\fP,\fB  \-\-pid\-with\-uuid
@@ -1774,23 +1774,23 @@ generate pid with uuid
 .B \-f\fP,\fB  \-\-pid\-with\-filename
 generate pid with file name
 .TP
-.BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
+.BI \-q \ TECHNIQUES\fP,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
 spaces).The default: \(aq\(aq
 .TP
-.BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
+.BI \-b \ BEAMTIMEMETA\fP,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
 .TP
-.BI \-s \ SCIENTIFICMETA\fR,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
+.BI \-s \ SCIENTIFICMETA\fP,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
 scientific metadata file
 .TP
-.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
 .B \-\-proposal\-as\-proposal
@@ -1839,33 +1839,33 @@ Usage: nxsfileinfo origdatablock <scan_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt
 .TP
-.BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
+.BI \-s \ SKIP\fP,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
 without spaces). Default: \(aq\(aq. E.g.
 \(aq\fI\&.pyc,\fP~\(aq
 .TP
-.BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
+.BI \-a \ ADD\fP,\fB \ \-\-add \ ADD
 list of filtes to be added (separated by commas
 without spaces). Default: \(aq\(aq. E.g.
 \(aqscan1.nxs,scan2.nxs\(aq
 .TP
-.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .UNINDENT
 .UNINDENT
@@ -2207,22 +2207,22 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B hyperslab
+.B hyperslab = None
 \fBfilewriter.FTHyperslab\fP layout hyperslab or slices
 .UNINDENT
 .INDENT 7.0
 .TP
-.B shape
+.B shape = None
 \fI\%tuple\fP vds shape in layout
 .UNINDENT
 .INDENT 7.0
 .TP
-.B slices
+.B slices = None
 \fI\%list\fP <\fI\%slice\fP>
 .UNINDENT
 .INDENT 7.0
 .TP
-.B target
+.B target = None
 \fI\%TargetFieldView\fP target field object
 .UNINDENT
 .UNINDENT
@@ -2326,38 +2326,38 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B filename
+.B filename = None
 \fI\%str\fP file name
 .UNINDENT
 .INDENT 7.0
 .TP
-.B hyperslab
+.B hyperslab = None
 \fBfilewriter.FTHyperslab\fP field hyperslab or slices
 .UNINDENT
 .INDENT 7.0
 .TP
-.B maxshape
+.B maxshape = None
 \fI\%list\fP <\fI\%int\fP> field maximal shape
 .UNINDENT
 .INDENT 7.0
 .TP
-.B path
+.B path = None
 \fI\%str\fP nexus field path with its name
 .UNINDENT
 .INDENT 7.0
 .TP
-.B shape
+.B shape = None
 \fI\%list\fP <\fI\%int\fP> field shape
 .UNINDENT
 .INDENT 7.0
 .TP
-.B slices
+.B slices = None
 \fI\%list\fP <\fI\%slice\fP>
 .UNINDENT
 .UNINDENT
 .INDENT 0.0
 .TP
-.B class nxstools.nxscollect.TargetFieldsLayout(exfieldpaths=\(aq\(aq, exfieldshapes=\(aq\(aq, shapes=None, separator=\(aq,\(aq)
+.B class nxstools.nxscollect.TargetFieldsLayout(exfieldpaths=\(aq\(aq, exfieldshapes=\(aq\(aq, shapes=None, separator=\(aq, \(aq)
 Bases: \fI\%list\fP
 .sp
 constructor
@@ -2666,7 +2666,7 @@ by the new line character
 .UNINDENT
 .INDENT 7.0
 .TP
-.B char
+.B char = None
 (\fI\%str\fP) spliting character
 .UNINDENT
 .INDENT 7.0
@@ -4187,7 +4187,7 @@ sets the global JSON data
 .UNINDENT
 .INDENT 7.0
 .TP
-.B tdwServer
+.B tdwServer = None
 (\fBPyTango.DeviceProxy\fP) NeXus writer device proxy
 .UNINDENT
 .UNINDENT
@@ -4774,12 +4774,12 @@ True if server was created
 .UNINDENT
 .INDENT 7.0
 .TP
-.B cserver_name
+.B cserver_name = None
 (\fI\%str\fP) NeXus config server device name
 .UNINDENT
 .INDENT 7.0
 .TP
-.B db
+.B db = None
 (\fBPyTango.Database\fP) tango database server
 .UNINDENT
 .INDENT 7.0
@@ -4896,7 +4896,7 @@ True if server is running
 .UNINDENT
 .INDENT 7.0
 .TP
-.B writer_name
+.B writer_name = None
 (\fI\%str\fP) NeXus writer device name
 .UNINDENT
 .UNINDENT
@@ -5014,7 +5014,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B components
+.B components = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) component xml dictionary
 .UNINDENT
 .INDENT 7.0
@@ -5030,17 +5030,17 @@ abstract method
 .UNINDENT
 .INDENT 7.0
 .TP
-.B datasources
+.B datasources = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) datasource xml dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B xmlpackage
+.B xmlpackage = None
 (\fI\%str\fP) xml template component package
 .UNINDENT
 .INDENT 7.0
 .TP
-.B xmltemplatepath
+.B xmltemplatepath = None
 (\fI\%str\fP) xml template component package path
 .UNINDENT
 .UNINDENT
@@ -5099,7 +5099,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B args
+.B args = None
 (\fI\%list\fP < \fI\%str\fP >) creator arguments
 .UNINDENT
 .INDENT 7.0
@@ -5108,7 +5108,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B options
+.B options = None
 (\fBoptparse.Values\fP) creator options
 .UNINDENT
 .UNINDENT
@@ -5160,12 +5160,12 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B args
+.B args = None
 (\fI\%list\fP < \fI\%str\fP >) creator arguments
 .UNINDENT
 .INDENT 7.0
 .TP
-.B options
+.B options = None
 (\fBoptparse.Values\fP) creator options
 .UNINDENT
 .UNINDENT
@@ -5423,17 +5423,17 @@ creates datasource xmls of all online.xml simple devices
 .UNINDENT
 .INDENT 7.0
 .TP
-.B datasources
+.B datasources = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) datasource xml dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B xmlpackage
+.B xmlpackage = None
 (\fI\%str\fP) xml template component package
 .UNINDENT
 .INDENT 7.0
 .TP
-.B xmltemplatepath
+.B xmltemplatepath = None
 (\fI\%str\fP) xml template component package path
 .UNINDENT
 .UNINDENT
@@ -5474,7 +5474,7 @@ creates datasource xmls of all online.xml simple devices
 .UNINDENT
 .INDENT 7.0
 .TP
-.B datasources
+.B datasources = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP >) datasource xml dictionary
 .UNINDENT
 .UNINDENT
@@ -6139,7 +6139,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B filters
+.B filters = None
 (\fBlist\(ga< :obj:\(gastr\fP>)  filters for \fIfull_path\fP names
 .UNINDENT
 .INDENT 7.0
@@ -6154,12 +6154,12 @@ converts full_path with NX_classes into nexus_path
 .UNINDENT
 .INDENT 7.0
 .TP
-.B group_postfix
+.B group_postfix = None
 (\fI\%str\fP) group postfix
 .UNINDENT
 .INDENT 7.0
 .TP
-.B metadata
+.B metadata = None
 (\fI\%str\fP) metadata JSON dictionary
 .UNINDENT
 .INDENT 7.0
@@ -6174,12 +6174,12 @@ parses the file and creates the filtered description list
 .UNINDENT
 .INDENT 7.0
 .TP
-.B scientific
+.B scientific = None
 (\fI\%bool\fP) store NXentries as scientificMetadata
 .UNINDENT
 .INDENT 7.0
 .TP
-.B valuestostore
+.B valuestostore = None
 (\fBlist\(ga< :obj:\(gastr\fP>)  field names which value should be stored
 .UNINDENT
 .UNINDENT
@@ -6544,13 +6544,13 @@ table rows
 .UNINDENT
 .INDENT 7.0
 .TP
-.B headers
+.B headers = None
 (\fI\%list\fP <\fI\%str\fP>)
 headers
 .UNINDENT
 .INDENT 7.0
 .TP
-.B title
+.B title = None
 (\fI\%str\fP) table title
 .UNINDENT
 .UNINDENT
@@ -6578,7 +6578,7 @@ constructor
 .UNINDENT
 .INDENT 7.0
 .TP
-.B filters
+.B filters = None
 (\fI\%list\fP <\fI\%str\fP>) filter list
 .UNINDENT
 .INDENT 7.0
@@ -6596,7 +6596,7 @@ table rows
 .UNINDENT
 .INDENT 7.0
 .TP
-.B headers
+.B headers = None
 (\fI\%list\fP <\fI\%str\fP>) table headers
 .UNINDENT
 .INDENT 7.0
@@ -6611,7 +6611,7 @@ loads description
 .UNINDENT
 .INDENT 7.0
 .TP
-.B title
+.B title = None
 (\fI\%str\fP) table title
 .UNINDENT
 .UNINDENT
@@ -6852,7 +6852,7 @@ adds dim tag
 .UNINDENT
 .INDENT 7.0
 .TP
-.B dims
+.B dims = None
 (\fI\%dict\fP <\fI\%str\fP, \fI\%NDim\fP>)
 container with dim tag wrapper
 .UNINDENT
@@ -7071,7 +7071,7 @@ adds tag content
 .UNINDENT
 .INDENT 7.0
 .TP
-.B elem
+.B elem = None
 (\fBlxml.etree.Element\fP) tag element from etree
 .UNINDENT
 .INDENT 7.0
@@ -7110,12 +7110,12 @@ It opens XML file, calls prettyPrint and closes the XML file
 .UNINDENT
 .INDENT 7.0
 .TP
-.B elem
+.B elem = None
 (\fBlxml.etree.Element\fP) XML root instance
 .UNINDENT
 .INDENT 7.0
 .TP
-.B fname
+.B fname = None
 (\fI\%str\fP) XML file name
 .UNINDENT
 .INDENT 7.0
@@ -7483,12 +7483,12 @@ Generator class creating image file names.
 .UNINDENT
 .INDENT 7.0
 .TP
-.B file_index
+.B file_index = None
 (\fI\%int\fP) file start index
 .UNINDENT
 .INDENT 7.0
 .TP
-.B file_template
+.B file_template = None
 (\fI\%str\fP) file name template
 .UNINDENT
 .INDENT 7.0
@@ -7510,7 +7510,7 @@ filename generator object
 .UNINDENT
 .INDENT 7.0
 .TP
-.B stop_index
+.B stop_index = None
 (\fI\%int\fP) file stop index
 .UNINDENT
 .UNINDENT

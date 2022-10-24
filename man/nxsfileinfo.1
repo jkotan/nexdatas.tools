@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Oct 21, 2022" "3.30" "NXSTools"
+.TH "NXSFILEINFO" "1" "Oct 24, 2022" "3.30" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -108,13 +108,13 @@ Usage: nxsfileinfo field <file_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ HEADERS\fR,\fB \ \-\-columns\fB= HEADERS
+.BI \-c \ HEADERS\fP,\fB \ \-\-columns\fB= HEADERS
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
-.BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
+.BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
 full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
 .TP
-.BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
+.BI \-v \ VALUES\fP,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
 .B \-g\fP,\fB  \-\-geometry
@@ -165,38 +165,38 @@ Usage: nxsfileinfo metadata <file_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-a \ ATTRS\fR,\fB \ \-\-attributes \ ATTRS
+.BI \-a \ ATTRS\fP,\fB \ \-\-attributes \ ATTRS
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
-.BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
+.BI \-n \ NATTRS\fP,\fB \ \-\-hidden\-attributes \ NATTRS
 names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
 .TP
-.BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
+.BI \-v \ VALUES\fP,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
 .TP
-.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
-.BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
+.BI \-g \ GROUP_POSTFIX\fP,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
 postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
-.BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
+.BI \-t \ ENTRYCLASSES\fP,\fB \ \-\-entry\-classes \ ENTRYCLASSES
 names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
-.BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
+.BI \-e \ ENTRYNAMES\fP,\fB \ \-\-entry\-names \ ENTRYNAMES
 names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
 .B \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
 .B \-u\fP,\fB  \-\-pid\-with\-uuid
@@ -205,23 +205,23 @@ generate pid with uuid
 .B \-f\fP,\fB  \-\-pid\-with\-filename
 generate pid with file name
 .TP
-.BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
+.BI \-q \ TECHNIQUES\fP,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
 spaces).The default: \(aq\(aq
 .TP
-.BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
+.BI \-b \ BEAMTIMEMETA\fP,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
 .TP
-.BI \-s \ SCIENTIFICMETA\fR,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
+.BI \-s \ SCIENTIFICMETA\fP,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
 scientific metadata file
 .TP
-.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
 .B \-\-proposal\-as\-proposal
@@ -270,33 +270,33 @@ Usage: nxsfileinfo origdatablock <scan_name>
 .B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt
 .TP
-.BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
+.BI \-s \ SKIP\fP,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
 without spaces). Default: \(aq\(aq. E.g.
 \(aq\fI\&.pyc,\fP~\(aq
 .TP
-.BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
+.BI \-a \ ADD\fP,\fB \ \-\-add \ ADD
 list of filtes to be added (separated by commas
 without spaces). Default: \(aq\(aq. E.g.
 \(aqscan1.nxs,scan2.nxs\(aq
 .TP
-.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .UNINDENT
 .UNINDENT
