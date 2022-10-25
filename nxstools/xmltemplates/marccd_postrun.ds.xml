@@ -3,11 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
 from nxstools.pyeval import marccd
-ds.result = marccd.postrun(
-    commonblock,
-    ds.$(name)_savingdirectory,
-    ds.$(name)_savingprefix,
-    ds.$(name)_savingpostfix)
+ds.result = marccd.postrun(commonblock, ds.$(name)_savingdirectory, ds.$(name)_savingprefix, ds.$(name)_savingpostfix)
 </result>
  $datasources.$(name)_savingdirectory
  $datasources.$(name)_savingpostfix

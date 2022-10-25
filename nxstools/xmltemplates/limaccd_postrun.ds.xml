@@ -3,15 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
 from nxstools.pyeval import limaccd
-ds.result = limaccd.postrun(
-    commonblock,
-    ds.$(name)_saving_next_number,
-    ds.$(name)_saving_directory,
-    ds.$(name)_saving_suffix,
-    ds.$(name)_acq_nb_frames,
-    ds.$(name)_saving_format,
-    ds.$(name)_saving_prefix,
-    "$(name)_saving_next_number")
+ds.result = limaccd.postrun(commonblock, ds.$(name)_saving_next_number, ds.$(name)_saving_directory, ds.$(name)_saving_suffix, ds.$(name)_acq_nb_frames, ds.$(name)_saving_format, ds.$(name)_saving_prefix, "$(name)_saving_next_number")
 </result>
  $datasources.$(name)_saving_next_number
  $datasources.$(name)_saving_directory

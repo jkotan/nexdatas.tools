@@ -4,7 +4,8 @@
     <result name="result">
 from nxstools.pyeval import common
 common.blockitem_rm(commonblock, ["$(name)_stepindex""])
-ds.result = ds.$(name)_description</result>
+ds.result = ds.$(name)_description
+</result>
   $datasources.$(name)_description
   </datasource>
 </definition>

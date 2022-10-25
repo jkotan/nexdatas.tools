@@ -3,14 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_postrun">
     <result name="result">
 from nxstools.pyeval import pco
-ds.result = pco.postrun(
-    commonblock,
-    ds.$(name)_filestartnum,
-    ds.$(name)_filedir,
-    ds.$(name)_nbframes,
-    ds.$(name)_filepostfix,
-    ds.$(name)_fileprefix,
-    "$(name)_filestartnum")
+ds.result = pco.postrun(commonblock, ds.$(name)_filestartnum, ds.$(name)_filedir, ds.$(name)_nbframes, ds.$(name)_filepostfix, ds.$(name)_fileprefix, "$(name)_filestartnum")
 </result>
  $datasources.$(name)_filestartnum
  $datasources.$(name)_filedir

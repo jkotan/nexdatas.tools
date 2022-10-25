@@ -4,6 +4,7 @@
     <result name="result">
 from nxstools.pyeval import common
 common.blockitem_rm(commonblock, ["$(name)_filestartnum"])
-ds.result = "Pilatus 300k"</result>
+ds.result = "Pilatus 300k"
+</result>
   </datasource>
 </definition>

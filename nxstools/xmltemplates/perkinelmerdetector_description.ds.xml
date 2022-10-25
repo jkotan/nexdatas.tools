@@ -4,6 +4,7 @@
     <result name="result">
 from nxstools.pyeval import common
 common.blockitem_rm(commonblock, ["$(name)_fileindex"])
-ds.result = "$(name)"</result>
+ds.result = "$(name)"
+</result>
   </datasource>
 </definition>

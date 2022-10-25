@@ -3,13 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_m1_external_data">
     <result name="result">
 from nxstools.pyeval import lmbd
-ds.result = lmbd.m2_external_data(
-    commonblock,
-    "$(name)",
-    ds.$(name)_savefilename,
-    ds.$(name)_saveallimages,
-    ds.$(name)_filepostfix,
-    "$var.filename", "m1")
+ds.result = lmbd.m2_external_data(commonblock, "$(name)", ds.$(name)_savefilename, ds.$(name)_saveallimages, ds.$(name)_filepostfix, "$var.filename", "m1")
   </result>
  $datasources.$(name)_savefilename
  $datasources.$(name)_saveallimages
