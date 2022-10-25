@@ -986,7 +986,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '  <datasource name="nexdatas_version" type="PYEVAL">\n'
                      '    <result name="result">\n'
                      'from nxswriter import __version__\n'
-                     'ds.result = __version__</result>\n'
+                     'ds.result = __version__\n    </result>\n'
                      '  </datasource>\n'
                      '</definition>',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -1024,7 +1024,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource type="PYEVAL" name="beamtime_filename">\n'
                      '    <result name="result">\n'
-                     '    ds.result = ""</result>\n'
+                     'ds.result = ""\n</result>\n'
                      '  </datasource>\n'
                      '</definition>']
                 ],
@@ -1161,7 +1161,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '  <datasource name="nexdatas_version" type="PYEVAL">\n'
                      '    <result name="result">\n'
                      'from nxswriter import __version__\n'
-                     'ds.result = __version__</result>\n'
+                     'ds.result = __version__\n    </result>\n'
                      '  </datasource>\n'
                      '</definition>',
                      '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
@@ -1199,7 +1199,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      '<definition>\n'
                      '  <datasource type="PYEVAL" name="beamtime_filename">\n'
                      '    <result name="result">\n'
-                     '    ds.result = ""</result>\n'
+                     'ds.result = ""\n</result>\n'
                      '  </datasource>\n'
                      '</definition>']
                 ],
