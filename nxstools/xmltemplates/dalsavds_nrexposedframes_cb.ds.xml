@@ -3,8 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_nrexposedframes_cb">
     <result name="result">
 from nxstools.pyeval import common
-ds.result = common.blockitem_addint_safe(
-    commonblock, "$(name)_nrexposedframes", ds.$(name)_nrexposedframes)
+ds.result = common.blockitem_addint_safe(commonblock, "$(name)_nrexposedframes", ds.$(name)_nrexposedframes)
     </result>
     $datasources.$(name)_nrexposedframes
   </datasource>
