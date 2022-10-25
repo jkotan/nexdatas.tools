@@ -3,8 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_stepindex">
     <result name="result">
 from nxstools.pyeval import common
-ds.result = common.blockitem_addint(
-    commonblock, "$(name)_stepindex", ds.$(name)_nbimages)
+ds.result = common.blockitem_addint(commonblock, "$(name)_stepindex", ds.$(name)_nbimages)
 ds.result = len(commonblock["$(name)_stepindex"])
     </result>
     $datasources.$(name)_nbimages
