@@ -1,6 +1,7 @@
-2022-10-21 Jan Kotanski <jankotan@gmail.com>
+2022-10-26 Jan Kotanski <jankotan@gmail.com>
 	* rearrange PYEVAL ds.results = ... to one line for the PYEVAL info (#375)
-	* tagged as v3.30.1
+	* add cobold template components
+	* tagged as v3.31.0
 
 2022-10-21 Jan Kotanski <jankotan@gmail.com>
 	* add dataaxessignal component template (#368)

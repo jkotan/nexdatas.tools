@@ -1600,6 +1600,7 @@ standardComponentTemplateFiles = {
 #:     xml template files of modules
 moduleTemplateFiles = {
     'mythen2': ['mythen2.xml'],
+    'cobold': ['cobold.xml'],
     'mythen': ['mythen.xml',
                'mythen_postrun.ds.xml',
                'mythen_filestartnumber.ds.xml'],
@@ -1913,6 +1914,9 @@ moduleMultiAttributes = {
         'FileDir', 'FileIndex', 'FilePrefix', 'Data',
         'Energy', 'NbFrames', 'RoI1End', 'RoI2End', 'RoI1Start', 'RoI2Start',
         'Threshold'
+    ],
+    'cobold': [
+        'BinSize', 'ExposureTime'
     ],
     'marccd': [
         'FrameShift', 'SavingDirectory', 'SavingPostfix', 'SavingPrefix'],
