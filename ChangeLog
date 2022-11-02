@@ -1,3 +1,7 @@
+2022-11-02 Jan Kotanski <jankotan@gmail.com>
+	* add coboldhisto template components (#377)
+	* tagged as v3.32.0
+
 2022-10-26 Jan Kotanski <jankotan@gmail.com>
 	* rearrange PYEVAL ds.results = ... to one line for the PYEVAL info (#375)
 	* add cobold template components
