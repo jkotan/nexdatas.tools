@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<definition>
+  <datasource type="PYEVAL" name="$(name)_timeofflight">
+    <result name="result">
+from nxstools.pyeval import cobold
+ds.result = cobold.time_of_flight(commonblock, ds.$(name)_binsize, "$(__entryname__)", "$(histoprefix)")
+    </result>
+    $datasources.$(name)_binsize
+  </datasource>
+</definition>

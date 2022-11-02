@@ -1600,7 +1600,8 @@ standardComponentTemplateFiles = {
 #:     xml template files of modules
 moduleTemplateFiles = {
     'mythen2': ['mythen2.xml'],
-    'cobold': ['cobold.xml'],
+    'cobold': ['cobold.xml',
+               'cobold_timeofflight.xml'],
     'mythen': ['mythen.xml',
                'mythen_postrun.ds.xml',
                'mythen_filestartnumber.ds.xml'],
