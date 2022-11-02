@@ -1,4 +1,8 @@
 2022-11-02 Jan Kotanski <jankotan@gmail.com>
+	* add missing  cobold.py file (#383)
+	* tagged as v3.32.1
+
+2022-11-02 Jan Kotanski <jankotan@gmail.com>
 	* add coboldhisto template components (#381)
 	* tagged as v3.32.0
 
