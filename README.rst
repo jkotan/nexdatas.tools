@@ -70,7 +70,7 @@ Extract sources and run
 Debian packages
 """""""""""""""
 
-Debian `bullseye`, `buster`, `stretch`  or Ubuntu `focal`, `bionic` packages can be found in the HDRI repository.
+Debian `bullseye`, `buster`, `stretch`  or Ubuntu `kinetic`, `jammy`, `focal` packages can be found in the HDRI repository.
 
 To install the debian packages, add the PGP repository key
 
