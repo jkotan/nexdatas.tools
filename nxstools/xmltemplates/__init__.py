@@ -188,6 +188,20 @@ standardComponentVariables = {
             'doc': "detector group name (string)"
         },
     },
+    'coboldhisto': {
+        'histogram': {
+            'default': None,
+            'doc': "histogram data (datasource)"
+        },
+        'binsize': {
+            'default': None,
+            'doc': "bin size of histogram data (datasource)"
+        },
+        'exposuretime': {
+            'default': None,
+            'doc': "exposure time for histogram data (datasource)"
+        },
+    },
     'maiaflux': {
         'detname': {
             'default': "maia",
@@ -1594,6 +1608,11 @@ standardComponentTemplateFiles = {
     'pointdet': [
         'pointdet.xml',
     ],
+    'coboldhisto': [
+        'coboldhisto.xml',
+        'coboldhisto_timeofflight.ds.xml',
+    ],
+
 }
 
 #: (:obj:`dict` <:obj:`str` , :obj:`list` <:obj:`str`> >)
