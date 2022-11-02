@@ -20,8 +20,5 @@
 
       </group>
     </group>
-    <group name="data" type="NXdata">
-      <link name="$(name)_time_of_flight" target="/$var.entryname#'$(__entryname__)'$var.serialno:NXentry/$(__insname__)/$(name):NXdetector/time_of_flight"/>
-    </group>
   </group>
 </definition>
