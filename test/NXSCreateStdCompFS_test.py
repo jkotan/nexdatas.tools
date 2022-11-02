@@ -297,7 +297,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                 self.assertEqual(
                     lines[-2].split(),
                     ["absorber", "beamstop", "beamtimefname",
-                     "beamtimeid", "chcut",
+                     "beamtimeid", "chcut", "coboldhisto",
                      "collect2", "collect3",
                      "collect4", "collect5", "collect6",
                      "common2", "common3",
@@ -322,7 +322,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
 
         types = ["absorber", "beamstop", "beamtimeid", "chcut",
-                 "collect2", "collect3",
+                 "coboldhisto", "collect2", "collect3",
                  "collect4", "collect5", "collect6",
                  "common2", "common3",
                  "dataaxessignal",
