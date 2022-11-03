@@ -3,8 +3,7 @@
   <datasource type="PYEVAL" name="$(name)_crystal">
     <result name="result">
 import PyTango
-dp = PyTango.DeviceProxy("$(chcutdevice)")
-ds.result = dp.crystal
+ds.result = PyTango.DeviceProxy("$(chcutdevice)").crystal
     </result>
   </datasource>
 </definition>
