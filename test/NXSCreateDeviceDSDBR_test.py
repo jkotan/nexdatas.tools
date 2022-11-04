@@ -20,17 +20,8 @@
 # unittests for field Tags running Tango Server
 #
 import unittest
-# import os
 import sys
-# import random
-# import struct
-# import binascii
-# import time
-# import threading
-# import PyTango
 from os.path import expanduser
-# import json
-# from nxstools import nxscreate
 
 try:
     import NXSCreateDeviceDSDB_test

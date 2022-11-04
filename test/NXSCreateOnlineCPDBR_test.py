@@ -20,17 +20,12 @@
 # unittests for field Tags running Tango Server
 #
 import unittest
-# import os
 import sys
-# import random
-# import struct
-# import binascii
-# import time
-# import threading
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 from os.path import expanduser
-# import json
-# from nxstools import nxscreate
 
 try:
     import NXSCreateOnlineCPDB_test
@@ -83,10 +78,10 @@ class NXSCreateOnlineCPDBRTest(
     # closes opens config server
     # \param xmlc XMLConfigurator instance
     def closeConfig2(self):
-        self.assertEqual(self._proxy2.state(), PyTango.DevState.OPEN)
+        self.assertEqual(self._proxy2.state(), tango.DevState.OPEN)
 
         self._proxy2.Close()
-        self.assertEqual(self._proxy2.state(), PyTango.DevState.ON)
+        self.assertEqual(self._proxy2.state(), tango.DevState.ON)
 
     # test starter
     # \brief Common set up

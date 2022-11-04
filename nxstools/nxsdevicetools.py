@@ -154,10 +154,13 @@ oneDModules = ['mca_xia']
 ioRegModules = ['sis3610']
 
 
-#: (:obj:`bool`) True if PyTango available
+#: (:obj:`bool`) True if tango available
 PYTANGO = False
 try:
-    import PyTango
+    try:
+        import tango
+    except Exception:
+        import PyTango as tango
     PYTANGO = True
 except Exception:
     pass
@@ -207,9 +210,9 @@ def getAttributes(device, host=None, port=10000):
     :rtype: :obj:`list` <:obj:`str`>
     """
     if host:
-        dp = PyTango.DeviceProxy("%s:%s/%s" % (host, port, device))
+        dp = tango.DeviceProxy("%s:%s/%s" % (host, port, device))
     else:
-        dp = PyTango.DeviceProxy(device)
+        dp = tango.DeviceProxy(device)
     attr = dp.attribute_list_query()
     return [at.name for at in attr if at.name not in ['State', 'Status']]
 
@@ -220,15 +223,15 @@ def openServer(device):
     :param configuration: server device name
     :type configuration: :obj:`str`
     :returns: configuration server proxy
-    :rtype: :class:`PyTango.DeviceProxy`
+    :rtype: :class:`tango.DeviceProxy`
     """
     found = False
     cnt = 0
     # spliting character
     try:
         #: configuration server proxy
-        cnfServer = PyTango.DeviceProxy(device)
-    except PyTango.DevFailed:
+        cnfServer = tango.DeviceProxy(device)
+    except tango.DevFailed:
         found = True
 
     if found:
@@ -241,9 +244,9 @@ def openServer(device):
         if cnt > 1:
             time.sleep(0.01)
         try:
-            if cnfServer.state() != PyTango.DevState.RUNNING:
+            if cnfServer.state() != tango.DevState.RUNNING:
                 found = True
-        except PyTango.DevFailed:
+        except tango.DevFailed:
             time.sleep(0.01)
             found = False
         cnt += 1
@@ -285,7 +288,7 @@ def getServerTangoHost(server):
         host = proxy.get_db_host()
         port = proxy.get_db_port()
     else:
-        db = PyTango.Database()
+        db = tango.Database()
         host = db.get_db_host().split(".")[0]
         port = db.get_db_port()
     shost = str(host).split(".")
@@ -364,7 +367,7 @@ def getClassName(devicename):
     :rtype: :obj:`str`
    """
     try:
-        db = PyTango.Database()
+        db = tango.Database()
     except Exception:
         sys.stderr.write(
             "Info: Cannot connect to %s" % devicename
@@ -385,7 +388,7 @@ def getServers(name='NXSConfigServer'):
     """
 
     try:
-        db = PyTango.Database()
+        db = tango.Database()
     except Exception:
         sys.stderr.write(
             "Error: Cannot connect to %s" % name

@@ -27,7 +27,12 @@ import struct
 import binascii
 import time
 import threading
-import PyTango
+
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+
 from nxstools import nxsdata
 from nxstools import h5cppwriter as H5CppWriter
 
@@ -275,10 +280,10 @@ For more help:
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
-                wr = PyTango.DeviceProxy(
+                wr = tango.DeviceProxy(
                     self._sv.new_device_info_writer.name)
                 time.sleep(0.01)
-                if wr.state() == PyTango.DevState.ON:
+                if wr.state() == tango.DevState.ON:
                     found = True
                 found = True
             except Exception as e:
@@ -294,7 +299,7 @@ For more help:
                 "Cannot connect to %s"
                 % self._sv.new_device_info_writer.name)
 
-        self.assertEqual(wr.state(), PyTango.DevState.ON)
+        self.assertEqual(wr.state(), tango.DevState.ON)
         return wr
 
     # test starter

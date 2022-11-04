@@ -28,7 +28,10 @@ import binascii
 import time
 import numpy as np
 import threading
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 from nxstools import nxsconfig
 import shutil
 
@@ -339,10 +342,10 @@ For more help:
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
-                xmlc = PyTango.DeviceProxy(
+                xmlc = tango.DeviceProxy(
                     self._sv.new_device_info_writer.name)
                 time.sleep(0.01)
-                if xmlc.state() == PyTango.DevState.ON:
+                if xmlc.state() == tango.DevState.ON:
                     found = True
                 found = True
             except Exception as e:
@@ -358,7 +361,7 @@ For more help:
                 "Cannot connect to %s"
                 % self._sv.new_device_info_writer.name)
 
-        if xmlc.state() == PyTango.DevState.ON:
+        if xmlc.state() == tango.DevState.ON:
             xmlc.JSONSettings = args
             xmlc.Open()
         version = xmlc.version
@@ -367,16 +370,16 @@ For more help:
         self.version = ".".join(vv[0:3])
         self.label = ".".join(vv[3:-1])
 
-        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
+        self.assertEqual(xmlc.state(), tango.DevState.OPEN)
         return xmlc
 
     # closes opens config server
     # \param xmlc XMLConfigurator instance
     def closeConfig(self, xmlc):
-        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
+        self.assertEqual(xmlc.state(), tango.DevState.OPEN)
 
         xmlc.Close()
-        self.assertEqual(xmlc.state(), PyTango.DevState.ON)
+        self.assertEqual(xmlc.state(), tango.DevState.ON)
 
     # sets xmlconfiguration
     # \param xmlc configuration instance

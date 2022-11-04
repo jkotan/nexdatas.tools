@@ -23,7 +23,10 @@ import os
 import sys
 import subprocess
 
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 import time
 
 
@@ -35,7 +38,7 @@ class WriterSetUp(object):
     def __init__(self, instance="TDWTEST",
                  dvname="testp09/testtdw/testr228"):
         # information about tango writer
-        self.new_device_info_writer = PyTango.DbDevInfo()
+        self.new_device_info_writer = tango.DbDevInfo()
         self.new_device_info_writer._class = "NXSDataWriter"
         self.new_device_info_writer.server = "NXSDataWriter/%s" % instance
         self.new_device_info_writer.name = dvname
@@ -47,7 +50,7 @@ class WriterSetUp(object):
     # \brief Common set up of Tango Server
     def setUp(self):
         print("setting up ...")
-        db = PyTango.Database()
+        db = tango.Database()
         db.add_device(self.new_device_info_writer)
         db.add_server(
             self.new_device_info_writer.server,
@@ -81,9 +84,9 @@ class WriterSetUp(object):
                     time.sleep(0.01)
                     cnt += 1
                     continue
-                dp = PyTango.DeviceProxy(dvname)
+                dp = tango.DeviceProxy(dvname)
                 time.sleep(0.01)
-                if dp.state() == PyTango.DevState.ON:
+                if dp.state() == tango.DevState.ON:
                     found = True
                 found = True
             except Exception:
@@ -95,7 +98,7 @@ class WriterSetUp(object):
     # \brief Common tear down oif Tango Server
     def tearDown(self):
         print("tearing down ...")
-        db = PyTango.Database()
+        db = tango.Database()
         db.delete_server(self.new_device_info_writer.server)
 
         if sys.version_info > (3,):

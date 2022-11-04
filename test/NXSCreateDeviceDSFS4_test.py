@@ -26,9 +26,11 @@ import random
 import struct
 import binascii
 import time
-# import threading
-import PyTango
-# import json
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+
 from os.path import expanduser
 from nxstools import nxscreate
 
@@ -84,7 +86,7 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
         self._sv = ServerSetUp.ServerSetUp()
         self._proxy = None
 
-        db = PyTango.Database()
+        db = tango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
         self.directory = "."
@@ -112,10 +114,10 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
-                xmlc = PyTango.DeviceProxy(
+                xmlc = tango.DeviceProxy(
                     self._sv.new_device_info_writer.name)
                 time.sleep(0.01)
-                if xmlc.state() == PyTango.DevState.ON:
+                if xmlc.state() == tango.DevState.ON:
                     found = True
                 found = True
             except Exception as e:
@@ -131,7 +133,7 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
                 "Cannot connect to %s"
                 % self._sv.new_device_info_writer.name)
 
-        if xmlc.state() == PyTango.DevState.ON:
+        if xmlc.state() == tango.DevState.ON:
             xmlc.JSONSettings = args
             xmlc.Open()
         version = xmlc.version
@@ -140,16 +142,16 @@ class NXSCreateDeviceDSFS4Test(unittest.TestCase):
         self.version = ".".join(vv[0:3])
         self.label = ".".join(vv[3:-1])
 
-        self.assertEqual(xmlc.state(), PyTango.DevState.OPEN)
+        self.assertEqual(xmlc.state(), tango.DevState.OPEN)
         return xmlc
 
     # closes opens config server
     # \param xmlc XMLConfigurator instance
     def closeConfig(self):
-        self.assertEqual(self._proxy.state(), PyTango.DevState.OPEN)
+        self.assertEqual(self._proxy.state(), tango.DevState.OPEN)
 
         self._proxy.Close()
-        self.assertEqual(self._proxy.state(), PyTango.DevState.ON)
+        self.assertEqual(self._proxy.state(), tango.DevState.ON)
 
     # test starter
     # \brief Common set up

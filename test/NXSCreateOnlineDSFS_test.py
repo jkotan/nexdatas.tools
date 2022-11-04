@@ -25,10 +25,12 @@ import sys
 import random
 import struct
 import binascii
-# import time
-# import threading
-import PyTango
-# import json
+
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+
 import nxstools
 from nxstools import nxscreate
 from nxstools import nxsdevicetools
@@ -85,7 +87,7 @@ class NXSCreateOnlineDSFSTest(unittest.TestCase):
 
         # home = expanduser("~")
         self.maxDiff = None
-        db = PyTango.Database()
+        db = tango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
         self.directory = "."

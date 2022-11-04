@@ -26,10 +26,13 @@ import random
 import struct
 import binascii
 import time
-import PyTango
-from nxstools import nxsetup
 import socket
 import subprocess
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+from nxstools import nxsetup
 
 try:
     from cStringIO import StringIO
@@ -184,7 +187,7 @@ For more help:
         self.__args2 = '{"db":"nxsconfig", ' \
                        '"read_default_file":"%s/.my.cnf", ' \
                        '"use_unicode":true}' % home
-        self.db = PyTango.Database()
+        self.db = tango.Database()
         self.tghost = self.db.get_db_host().split(".")[0]
         self.tgport = self.db.get_db_port()
         self.host = socket.gethostname()
@@ -198,10 +201,10 @@ For more help:
         while not found and cnt < 1000:
             try:
                 sys.stdout.write(".")
-                dp = PyTango.DeviceProxy(dvname)
+                dp = tango.DeviceProxy(dvname)
                 time.sleep(0.01)
                 dp.ping()
-                if dp.state() == PyTango.DevState.ON:
+                if dp.state() == tango.DevState.ON:
                     found = True
                 found = True
             except Exception as e:
@@ -255,7 +258,7 @@ For more help:
         # HardKillServer does not work
         try:
             admin = nxsetup.SetUp().getStarterName(self.host)
-            adp = PyTango.DeviceProxy(admin)
+            adp = tango.DeviceProxy(admin)
             adp.UpdateServersInfo()
             adp.HardKillServer(svname)
         except Exception:
@@ -461,7 +464,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         commands = ['nxsetup set'.split()]
         for cmd in commands:
@@ -595,7 +598,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
             commands = [
                 ('nxsetup set -b %s -m %s ' %
@@ -736,7 +739,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
             commands = [
                 ('nxsetup set '
@@ -890,7 +893,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
             commands = [
                 ('nxsetup set NXSConfigServer '
                  ' -b %s '
@@ -1014,7 +1017,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
             if not os.path.isfile("/home/%s/.my.cnf" % cnf['user']):
                 skiptest = True
             csjson = '{"db":"%s",' \
@@ -1168,7 +1171,7 @@ For more help:
                     skiptest = True
                     adminproxy = None
                 else:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set '
@@ -1323,7 +1326,7 @@ For more help:
                     skiptest = True
                     adminproxy = None
                 else:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set '
@@ -1477,7 +1480,7 @@ For more help:
                     skiptest = True
                     adminproxy = None
                 else:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set NXSDataWriter NXSConfigServer '
@@ -1618,7 +1621,7 @@ For more help:
                     skiptest = True
                     adminproxy = None
                 else:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
 
                 commands = [
                     ('nxsetup set NXSDataWriter '
@@ -1743,7 +1746,7 @@ For more help:
                     skiptest = True
                     adminproxy = None
                 else:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
 
                 dwcfsvs = ['NXSDataWriter', 'NXSConfigServer']
                 rssvs = ['NXSRecSelector']
@@ -1938,7 +1941,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
         skiptests = skiptest
 
@@ -2222,7 +2225,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
         skiptests = skiptest
 
@@ -2512,7 +2515,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
         skiptests = skiptest
 
@@ -2757,7 +2760,7 @@ For more help:
                 skiptest = True
                 adminproxy = None
             else:
-                adminproxy = PyTango.DeviceProxy(admin)
+                adminproxy = tango.DeviceProxy(admin)
 
         skiptests = skiptest
 
@@ -2981,7 +2984,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -3142,7 +3145,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -3305,7 +3308,7 @@ For more help:
             setup = nxsetup.SetUp()
             admin = setup.getStarterName(self.host)
             startdspaths = self.getProperty(admin, "StartDsPath")
-            adp = PyTango.DeviceProxy(admin)
+            adp = tango.DeviceProxy(admin)
             setup.waitServerRunning("MacroServer/%s" % ins2,
                                     msdv2,  adp)
             newpath = os.path.abspath(
@@ -3384,7 +3387,7 @@ For more help:
             ms2.setUp()
             setup = nxsetup.SetUp()
             admin = setup.getStarterName(self.host)
-            adp = PyTango.DeviceProxy(admin)
+            adp = tango.DeviceProxy(admin)
             setup.waitServerRunning("MacroServer/%s" % ins2,
                                     msdv2,  adp)
 
@@ -3445,7 +3448,7 @@ For more help:
                 setup = nxsetup.SetUp()
                 admin = setup.getStarterName(self.host)
                 startdspaths = self.getProperty(admin, "StartDsPath")
-                adp = PyTango.DeviceProxy(admin)
+                adp = tango.DeviceProxy(admin)
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
                                         msdv2,  adp, waitforproc=False)
@@ -3562,7 +3565,7 @@ For more help:
             try:
                 setup = nxsetup.SetUp()
                 admin = setup.getStarterName(self.host)
-                adp = PyTango.DeviceProxy(admin)
+                adp = tango.DeviceProxy(admin)
 
                 setup.waitServerRunning("MacroServer/%s" % ins2,
                                         msdv2,  adp, waitforproc=False)
@@ -3636,7 +3639,7 @@ For more help:
             setup = nxsetup.SetUp()
             admin = setup.getStarterName(self.host)
             startdspaths = self.getProperty(admin, "StartDsPath")
-            adp = PyTango.DeviceProxy(admin)
+            adp = tango.DeviceProxy(admin)
             setup.waitServerRunning("MacroServer/%s" % ins2,
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
@@ -3725,7 +3728,7 @@ For more help:
             setup = nxsetup.SetUp()
             admin = setup.getStarterName(self.host)
             startdspaths = self.getProperty(admin, "StartDsPath")
-            adp = PyTango.DeviceProxy(admin)
+            adp = tango.DeviceProxy(admin)
             setup.waitServerRunning("MacroServer/%s" % ins2,
                                     msdv2[0],  adp)
             newpath = os.path.abspath(
@@ -3836,7 +3839,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -3974,7 +3977,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -4112,7 +4115,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 
@@ -4238,7 +4241,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 
@@ -4365,7 +4368,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -4502,7 +4505,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -4639,7 +4642,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 
@@ -4764,7 +4767,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 
@@ -4890,7 +4893,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -5030,7 +5033,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.getProperty(admin, "StartDsPath")
 
         rservers = []
@@ -5170,7 +5173,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 
@@ -5299,7 +5302,7 @@ For more help:
             skiptest = True
             adminproxy = None
         else:
-            adminproxy = PyTango.DeviceProxy(admin)
+            adminproxy = tango.DeviceProxy(admin)
 
         rservers = []
 

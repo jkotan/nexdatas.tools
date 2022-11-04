@@ -19,13 +19,17 @@
 """ Set Up NeXus Tango Servers"""
 
 import socket
-import PyTango
 import os
 import sys
 import time
 import json
 import argparse
 import subprocess
+
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 
 from nxstools.nxsargparser import (Runner, NXSArgParser, ErrorException)
 
@@ -233,8 +237,8 @@ class SetUp(object):
         """ constructor
         """
         try:
-            #: (:class:`PyTango.Database`) tango database server
-            self.db = PyTango.Database()
+            #: (:class:`tango.Database`) tango database server
+            self.db = tango.Database()
         except Exception:
             print("Can't connect to tango database on %s" %
                   os.getenv('TANGO_HOST'))
@@ -567,7 +571,7 @@ class SetUp(object):
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
                     servers = self.__registered_servers()
                     started = adminproxy.DevGetRunningServers(True)
@@ -662,7 +666,7 @@ class SetUp(object):
                 servers = None
                 started = None
                 try:
-                    adminproxy = PyTango.DeviceProxy(admin)
+                    adminproxy = tango.DeviceProxy(admin)
                     adminproxy.UpdateServersInfo()
                     started = adminproxy.DevGetRunningServers(True)
                     servers = self.__registered_servers()
@@ -734,7 +738,7 @@ class SetUp(object):
         admin = self.getStarterName(host)
         if not admin:
             raise Exception("Starter tango server is not running")
-        adminproxy = PyTango.DeviceProxy(admin)
+        adminproxy = tango.DeviceProxy(admin)
         startdspaths = self.db.get_device_property(
             admin,
             "StartDsPath")["StartDsPath"]
@@ -797,7 +801,7 @@ class SetUp(object):
                 print("createDataWriter: DB contains already %s" % server_name)
                 return False
 
-            di = PyTango.DbDevInfo()
+            di = tango.DbDevInfo()
             di.name = self.writer_name
             di._class = class_name
             di.server = server_name
@@ -849,7 +853,7 @@ class SetUp(object):
                       % server_name)
                 return False
 
-            di = PyTango.DbDevInfo()
+            di = tango.DbDevInfo()
             di.name = self.cserver_name
             di._class = class_name
             di.server = server_name
@@ -868,11 +872,11 @@ class SetUp(object):
 
         self._startupServer(server_name, 1, hostname, 1, self.cserver_name)
 
-        dp = PyTango.DeviceProxy(self.cserver_name)
-        if dp.state() != PyTango.DevState.ON:
+        dp = tango.DeviceProxy(self.cserver_name)
+        if dp.state() != tango.DevState.ON:
             dp.Close()
         if jsonsettings:
-            dp = PyTango.DeviceProxy(self.cserver_name)
+            dp = tango.DeviceProxy(self.cserver_name)
             dp.JSONSettings = jsonsettings
         try:
             dp.Open()
@@ -936,7 +940,7 @@ class SetUp(object):
                 print("createSelector: DB contains already %s" % server_name)
                 return False
 
-            di = PyTango.DbDevInfo()
+            di = tango.DbDevInfo()
             di.name = device_name
             di._class = class_name
             di.server = server_name
@@ -953,7 +957,7 @@ class SetUp(object):
         self._startupServer(full_class_name, 4, hostname, 1, device_name)
 
         if self.writer_name or self.cserver_name:
-            dp = PyTango.DeviceProxy(device_name)
+            dp = tango.DeviceProxy(device_name)
             dp.ping()
             self.waitServerRunning(None, device_name)
             if self.cserver_name:
