@@ -23,9 +23,13 @@ import os
 import sys
 import subprocess
 import shutil
-
-import PyTango
 import time
+
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+
 try:
     import TestPool
 except Exception:
@@ -52,13 +56,13 @@ class MacroServerSetUp(object):
         # device proxy
         self.dps = {}
         for dv in msdevices:
-            self.ms[dv] = PyTango.DbDevInfo()
+            self.ms[dv] = tango.DbDevInfo()
             self.ms[dv]._class = "MacroServer"
             self.ms[dv].server = self.server
             self.ms[dv].name = dv
 
         for dv in doordevices:
-            self.door[dv] = PyTango.DbDevInfo()
+            self.door[dv] = tango.DbDevInfo()
             self.door[dv]._class = "Door"
             self.door[dv].server = self.server
             self.door[dv].name = dv
@@ -80,7 +84,7 @@ class MacroServerSetUp(object):
         self.start()
 
     def add(self):
-        db = PyTango.Database()
+        db = tango.Database()
 #        db.add_device(self.new_device_info_writer)
         devices = list(self.ms.values())
         devices.extend(list(self.door.values()))
@@ -92,7 +96,7 @@ class MacroServerSetUp(object):
 
     # starts server
     def start(self):
-        db = PyTango.Database()
+        db = tango.Database()
         path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
@@ -125,9 +129,9 @@ class MacroServerSetUp(object):
                         time.sleep(0.01)
                         cnt += 1
                         continue
-                    self.dps[dv.name] = PyTango.DeviceProxy(dv.name)
+                    self.dps[dv.name] = tango.DeviceProxy(dv.name)
                     time.sleep(0.01)
-                    if self.dps[dv.name].state() == PyTango.DevState.ON:
+                    if self.dps[dv.name].state() == tango.DevState.ON:
                         dpcnt += 1
                 if dpcnt == len(devices):
                     found = True
@@ -147,7 +151,7 @@ class MacroServerSetUp(object):
             os.remove(path)
 
     def delete(self):
-        db = PyTango.Database()
+        db = tango.Database()
         db.delete_server(self.server)
 
     # stops server

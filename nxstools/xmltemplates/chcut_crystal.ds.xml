@@ -2,8 +2,11 @@
 <definition>
   <datasource type="PYEVAL" name="$(name)_crystal">
     <result name="result">
-import PyTango
-ds.result = PyTango.DeviceProxy("$(chcutdevice)").crystal
+try:
+    import tango
+except Exception:
+    import PyTango as tango
+ds.result = tango.DeviceProxy("$(chcutdevice)").crystal
     </result>
   </datasource>
 </definition>

@@ -142,7 +142,6 @@ except Exception as e:
 except Exception:
     print("ORACLE not available")
 
-# db = PyTango.Database()
 
 if H5PY_AVAILABLE:
     import H5PYWriter_test

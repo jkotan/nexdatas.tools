@@ -30,7 +30,10 @@ import socket
 import pickle
 # import time
 # import threading
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 # import json
 # import nxstools
 # from nxstools import nxscreate
@@ -90,7 +93,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
         # home = expanduser("~")
-        db = PyTango.Database()
+        db = tango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
         self.directory = "."
@@ -1582,7 +1585,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             tsv1 = TestServerSetUp.TestServerSetUp(
                 dcmdevice, "MYTESTS1")
             tsv1.setUp()
-            db = PyTango.Database()
+            db = tango.Database()
             db.put_device_property(dcmdevice,
                                    {'BraggDevice': [braggdevice]})
             tsv1.dp.Init()
@@ -1614,7 +1617,7 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             tsv1 = TestServerSetUp.TestServerSetUp(
                 dcmdevice, "MYTESTS1")
             tsv1.setUp()
-            db = PyTango.Database()
+            db = tango.Database()
             db.put_device_property(dcmdevice,
                                    {'Version': [version]})
             tsv1.dp.Init()

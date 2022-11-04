@@ -27,7 +27,10 @@ import struct
 import binascii
 # import time
 # import threading
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 # import json
 from nxstools import nxscreate
 from nxstools.xmltemplates import standardComponentVariables
@@ -91,7 +94,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                       '"read_default_file":"/etc/my.cnf", "use_unicode":true}'
 
         # home = expanduser("~")
-        db = PyTango.Database()
+        db = tango.Database()
         self.host = db.get_db_host().split(".")[0]
         self.port = db.get_db_port()
         self._sv = ServerSetUp.ServerSetUp()

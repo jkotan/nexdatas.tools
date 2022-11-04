@@ -40,7 +40,10 @@ from nxstools.pyeval.secop import secop_cmd
 #: (:obj:`bool`) True if PyTango available
 PYTANGO = False
 try:
-    import PyTango
+    try:
+        import tango
+    except Exception:
+        import PyTango as tango
     PYTANGO = True
 except Exception:
     pass
@@ -235,7 +238,7 @@ class Device(object):
         self.sport = None
         if PYTANGO:
             try:
-                dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
+                dp = tango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
 
                 #  self.hostname = mhost
@@ -271,10 +274,10 @@ class Device(object):
         elif PYTANGO and self.module in moduleAttributes:
             try:
                 try:
-                    dp = PyTango.DeviceProxy(
+                    dp = tango.DeviceProxy(
                         str("%s/%s" % (mhost, self.sardananame)))
                 except Exception:
-                    dp = PyTango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
+                    dp = tango.DeviceProxy(str("%s/%s" % (mhost, self.name)))
                 mdevice = str(dp.name())
 
                 sarattr = moduleAttributes[self.module][0]
