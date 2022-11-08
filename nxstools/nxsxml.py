@@ -19,7 +19,10 @@
 """  Creator of XML configuration files """
 
 
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 import sys
 
 import lxml.etree
@@ -601,8 +604,8 @@ class NDeviceGroup(NGroup):
         :type blackAttrs: :obj:`list` <:obj:`str`>
         """
         NGroup.__init__(self, parent, nameAttr, typeAttr)
-        #: (:class:`PyTango.DeviceProxy`) device proxy
-        self._proxy = PyTango.DeviceProxy(deviceName)
+        #: (:class:`tango.DeviceProxy`) device proxy
+        self._proxy = tango.DeviceProxy(deviceName)
         #: (:obj:`dict` <:obj:`str`, :class:`NTag`>) fields of the device
         self._fields = {}
         #: (:obj:`list` <:obj:`str`>) blacklist for Attributes

@@ -25,11 +25,14 @@ import json
 from .nxsparser import ParserTools, TableTools, TableDictTools, ESRFConverter
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from .nxsdevicetools import (checkServer, listServers, openServer)
-#: (:obj:`bool`) True if PyTango available
+#: (:obj:`bool`) True if tango available
 
 PYTANGO = False
 try:
-    import PyTango
+    try:
+        import tango
+    except Exception:
+        import PyTango as tango
     PYTANGO = True
 except Exception:
     pass
@@ -54,7 +57,7 @@ class ConfigServer(object):
         """
         #: (:obj:`str`) spliting character
         self.char = " " if nonewline else "\n"
-        #: (:class:`PyTango.DeviceProxy`) configuration server proxy
+        #: (:class:`tango.DeviceProxy`) configuration server proxy
         self._cnfServer = openServer(device)
         self._cnfServer.Open()
 
@@ -1589,7 +1592,7 @@ def main():
     try:
         result = runners[options.subparser].run(options)
 
-        # except PyTango.DevFailed as
+        # except tango.DevFailed as
     except Exception as e:
         if isinstance(e, EOFError) \
            and str(e).startswith("EOF when reading a line"):
@@ -1598,7 +1601,7 @@ def main():
             sys.stderr.flush()
             sys.exit(255)
 
-        if PYTANGO and isinstance(e, PyTango.DevFailed):
+        if PYTANGO and isinstance(e, tango.DevFailed):
             # print(str((e.args[0]).desc))
             if str((e.args[0]).desc).startswith(
                     "NonregisteredDBRecordError: The datasource "):

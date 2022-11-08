@@ -24,7 +24,10 @@ import sys
 import subprocess
 import shutil
 
-import PyTango
+try:
+    import tango
+except Exception:
+    import PyTango as tango
 import time
 try:
     import TestPool
@@ -41,7 +44,7 @@ class TestServerSetUp(object):
     def __init__(self, device="ttestp09/testts/t1r228", instance="S1",
                  alias=None):
         # information about tango writer
-        self.new_device_info_writer = PyTango.DbDevInfo()
+        self.new_device_info_writer = tango.DbDevInfo()
         # information about tango writer class
         self.new_device_info_writer._class = "TestServer"
         # information about tango writer server
@@ -92,7 +95,7 @@ class TestServerSetUp(object):
         self.start()
 
     def add(self):
-        db = PyTango.Database()
+        db = tango.Database()
         db.add_device(self.new_device_info_writer)
         db.add_server(self.new_device_info_writer.server,
                       self.new_device_info_writer)
@@ -106,7 +109,7 @@ class TestServerSetUp(object):
 
     # starts server
     def start(self):
-        db = PyTango.Database()
+        db = tango.Database()
         path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
@@ -136,9 +139,9 @@ class TestServerSetUp(object):
                     time.sleep(0.01)
                     cnt += 1
                     continue
-                self.dp = PyTango.DeviceProxy(dvname)
+                self.dp = tango.DeviceProxy(dvname)
                 time.sleep(0.01)
-                if self.dp.state() == PyTango.DevState.ON:
+                if self.dp.state() == tango.DevState.ON:
                     found = True
             except Exception:
                 found = False
@@ -156,7 +159,7 @@ class TestServerSetUp(object):
             os.remove(path)
 
     def delete(self):
-        db = PyTango.Database()
+        db = tango.Database()
         if self._alias:
             db.delete_device_alias(self._alias)
         db.delete_server(self.new_device_info_writer.server)
@@ -210,7 +213,7 @@ class MultiTestServerSetUp(object):
         # device proxy
         self.dps = {}
         for dv in devices:
-            self.ts[dv] = PyTango.DbDevInfo()
+            self.ts[dv] = tango.DbDevInfo()
             self.ts[dv]._class = "TestServer"
             self.ts[dv].server = self.server
             self.ts[dv].name = dv
@@ -251,7 +254,7 @@ class MultiTestServerSetUp(object):
         self.start()
 
     def add(self):
-        db = PyTango.Database()
+        db = tango.Database()
 
         devices = list(self.ts.values())
         for dv in devices:
@@ -265,7 +268,7 @@ class MultiTestServerSetUp(object):
 
     # starts server
     def start(self):
-        db = PyTango.Database()
+        db = tango.Database()
         path = os.path.dirname(TestPool.__file__)
         if not path:
             path = '.'
@@ -293,9 +296,9 @@ class MultiTestServerSetUp(object):
                         time.sleep(0.01)
                         cnt += 1
                         continue
-                    self.dps[dv.name] = PyTango.DeviceProxy(dv.name)
+                    self.dps[dv.name] = tango.DeviceProxy(dv.name)
                     time.sleep(0.01)
-                    if self.dps[dv.name].state() == PyTango.DevState.ON:
+                    if self.dps[dv.name].state() == tango.DevState.ON:
                         dpcnt += 1
                 if dpcnt == len(devices):
                     found = True
@@ -312,7 +315,7 @@ class MultiTestServerSetUp(object):
         self.stop()
 
     def delete(self):
-        db = PyTango.Database()
+        db = tango.Database()
         db.delete_server(self.server)
 
     # stops server

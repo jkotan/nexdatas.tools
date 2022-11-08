@@ -28,9 +28,6 @@ import binascii
 import shutil
 import fabio
 import numpy as np
-# import time
-# import threading
-# import PyTango
 import json
 from nxstools import nxscollect
 from nxstools import filewriter
