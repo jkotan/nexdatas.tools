@@ -52,7 +52,7 @@ Installation
 
 Install the dependencies:
 
-|    pninexus or h5py, numpy, PyTango, sphinx
+|    pninexus or h5py, numpy, tango, sphinx
 
 From sources
 """"""""""""
