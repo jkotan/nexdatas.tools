@@ -151,6 +151,8 @@ class NXSFileParser(object):
         self.group_postfix = ""
         #: (:obj:`bool`) store NXentries as scientificMetadata
         self.scientific = False
+        #: (:obj:`bool`) add empty units
+        self.emptyunits = False
         #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary
         self.__dctmetadata = {}
 
@@ -477,6 +479,8 @@ class NXSFileParser(object):
                             except Exception:
                                 cont = False
                         nd["value"] = vl
+                        if self.emptyunits and "unit" not in nd.keys():
+                            nd["unit"] = ""
                     except Exception:
                         pass
             if "shape" in desc and desc["shape"] not in [None, [1], []]:

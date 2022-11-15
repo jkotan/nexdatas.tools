@@ -3983,16 +3983,16 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s  -o %s -u'
+                ('nxsfileinfo metadata %s %s  -o %s -u --add-empty-units'
                  % (filename, self.flags, ofname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata %s %s  --add-empty-units '
                  ' --output %s '
                  % (filename, self.flags, ofname)).split(),
-                ('nxsfileinfo metadata %s %s -o %s'
+                ('nxsfileinfo metadata %s %s -o %s  --add-empty-units'
                  ' --pid-with-uuid'
                  % (filename, self.flags, ofname)).split(),
                 ('nxsfileinfo metadata %s %s '
-                 ' --output %s '
+                 ' --output %s  --add-empty-units '
                  % (filename, self.flags, ofname)).split(),
             ]
 
@@ -4088,16 +4088,19 @@ For more help:
                             "ScanCommand": "ascan mot01 0 10 10 0.1",
                             "program_name": {
                                 "value": "NeXDaTaS",
+                                "unit": "",
                                 "scan_command": "ascan mot01 0 10 10 0.1",
                             },
                             "data": {
                                 "NX_class": "NXdata"
                             },
                             "end_time": {
-                                "value": '%s' % etime
+                                "value": '%s' % etime,
+                                "unit": ""
                             },
                             "experiment_identifier": {
                                 "beamtime_filename": '%s' % btfname,
+                                "unit": "",
                                 "beamtime_valid": True,
                                 "value": '%s' % arg[2]
                             },
@@ -4114,6 +4117,7 @@ For more help:
                                 },
                                 "name": {
                                     "short_name": '%s' % arg[4],
+                                    "unit": "",
                                     "value": '%s' % arg[3]
                                 }
                             },
@@ -4121,16 +4125,20 @@ For more help:
                             "sample": {
                                 "NX_class": "NXsample",
                                 "chemical_formula": {
+                                    "unit": "",
                                     "value": '%s' % arg[8]
                                 },
                                 "name": {
+                                    "unit": "",
                                     "value": '%s' % arg[7]
                                 }
                             },
                             "start_time": {
+                                "unit": "",
                                 "value": '%s' % arg[5]
                             },
                             "title": {
+                                "unit": "",
                                 "value": '%s' % arg[1]
                             }
                         },

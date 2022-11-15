@@ -808,6 +808,10 @@ class Metadata(Runner):
             default=False, dest="rawscientific",
             help="do not store NXentry as scientificMetadata")
         self._parser.add_argument(
+            "--add-empty-units", action="store_true",
+            default=False, dest="emptyunits",
+            help="add empty units for fields without units")
+        self._parser.add_argument(
             "--oned", action="store_true",
             default=False, dest="oned",
             help="add 1d values to scientificMetadata")
@@ -945,6 +949,7 @@ class Metadata(Runner):
             nxsparser.entryclasses = entryclasses
             nxsparser.entrynames = entrynames
             nxsparser.scientific = not options.rawscientific
+            nxsparser.emptyunits = options.emptyunits
             nxsparser.attrs = attrs
             nxsparser.hiddenattrs = nattrs
             if hasattr(options, "oned"):
