@@ -949,7 +949,8 @@ class Metadata(Runner):
             nxsparser.entryclasses = entryclasses
             nxsparser.entrynames = entrynames
             nxsparser.scientific = not options.rawscientific
-            nxsparser.emptyunits = options.emptyunits
+            if hasattr(options, "emptyunits"):
+                nxsparser.emptyunits = options.emptyunits
             nxsparser.attrs = attrs
             nxsparser.hiddenattrs = nattrs
             if hasattr(options, "oned"):
