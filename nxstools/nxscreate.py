@@ -1217,7 +1217,7 @@ class SECoPCP(Runner):
         + " in the local directory for the node configured" \
         + " with the json file \n" \
         + "\n" \
-        + "       nxscreate secopcp T -p 5001 -b \n" \
+        + "       nxscreate secopcp T -t 5001 -b \n" \
         + "\n" \
         + "           - create the component for the T secop module " \
         + " in the NXSConfigServer database for the node on the port 5000 \n" \
