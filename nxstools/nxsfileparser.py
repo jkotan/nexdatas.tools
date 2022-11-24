@@ -454,7 +454,9 @@ class NXSFileParser(object):
                        (self.hiddenattrs is None or
                             at not in self.hiddenattrs):
                         nd[at] = filewriter.first(attrs[at].read())
-
+            if self.scientific and "NX_class" in nd.keys() and \
+               nd["NX_class"] == "NXentry":
+                nd.pop("NX_class")
         if not isinstance(node, filewriter.FTGroup):
             if (node.name in self.valuestostore and node.is_valid) \
                or "shape" not in desc \
