@@ -2691,8 +2691,7 @@ For more help:
                     res = {'pid': '12344321/12345',
                            'techniques': ltech,
                            'scientificMetadata':
-                           {'NX_class': 'NXentry',
-                            'name': 'entry12345',
+                           {'name': 'entry12345',
                             'data': {'NX_class': 'NXdata'},
                             'end_time': {'value': '%s' % arg[6]},
                             'experiment_identifier': {'value': '%s' % arg[2]},
@@ -2884,8 +2883,7 @@ For more help:
                     res = {'pid': '12344321/12345',
                            'techniques': ltech,
                            'scientificMetadata':
-                           {'NX_class': 'NXentry',
-                            'name': 'entry12345',
+                           {'name': 'entry12345',
                             'experiment_description': {
                                 'value': desc
                             },
@@ -3389,8 +3387,7 @@ For more help:
                     self.assertEqual('', er)
                     dct = json.loads(vl)
                     res = {'scientificMetadata':
-                           {'NX_class': 'NXentry',
-                            'name': 'entry12345',
+                           {'name': 'entry12345',
                             'instrument_': 'duplicated',
                             'instrument': {
                                 'NX_class': 'NXinstrument'},
@@ -3635,7 +3632,6 @@ For more help:
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
                         "scientificMetadata": {
-                            "NX_class": "NXentry",
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
                             "user_comments": "Awesome comment",
@@ -4082,7 +4078,6 @@ For more help:
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
                         "scientificMetadata": {
-                            "NX_class": "NXentry",
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
                             "ScanCommand": "ascan mot01 0 10 10 0.1",

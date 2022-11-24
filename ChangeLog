@@ -1,6 +1,7 @@
 2022-11-24 Jan Kotanski <jankotan@gmail.com>
 	* fix for depends_on field in beamstop template (#396)
-	* tagged as v3.33.2
+	* store NXclass attribute with NXentry only for --raw-metadata (#398)
+	* tagged as v3.34.0
 
 2022-11-23 Jan Kotanski <jankotan@gmail.com>
 	* check if emptyunits variable exists (#393)
