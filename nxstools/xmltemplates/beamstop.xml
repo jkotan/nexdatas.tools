@@ -5,7 +5,7 @@
       <group type="NXbeam_stop" name="$(name)">
 	<field type="NX_CHAR" name="description">
             <strategy mode="INIT"/>$(description)</field>
-        <field type="NX_CHAR" name="depends_on">transformations/y<strategy mode="INIT"/>
+        <field type="NX_CHAR" name="depends_on">transformations/$(yname)<strategy mode="INIT"/>
         </field>
         <group type="NXtransformations" name="transformations">
           <field depends_on="$(xname)" units="mm" type="NX_FLOAT64" name="$(yname)">
