@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsetup &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools.nxsetup &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -195,13 +195,17 @@
 <span class="sd">&quot;&quot;&quot; Set Up NeXus Tango Servers&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">socket</span>
-<span class="kn">import</span> <span class="nn">PyTango</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">tango</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">PyTango</span> <span class="k">as</span> <span class="nn">tango</span>
 
 <span class="kn">from</span> <span class="nn">nxstools.nxsargparser</span> <span class="k">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
 
@@ -409,8 +413,8 @@
         <span class="sd">&quot;&quot;&quot; constructor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="c1">#: (:class:`PyTango.Database`) tango database server</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">Database</span><span class="p">()</span>
+            <span class="c1">#: (:class:`tango.Database`) tango database server</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">Database</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Can&#39;t connect to tango database on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
                   <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;TANGO_HOST&#39;</span><span class="p">))</span>
@@ -743,7 +747,7 @@
                 <span class="n">servers</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">started</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
                     <span class="n">adminproxy</span><span class="o">.</span><span class="n">UpdateServersInfo</span><span class="p">()</span>
                     <span class="n">servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__registered_servers</span><span class="p">()</span>
                     <span class="n">started</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevGetRunningServers</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -838,7 +842,7 @@
                 <span class="n">servers</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">started</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+                    <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
                     <span class="n">adminproxy</span><span class="o">.</span><span class="n">UpdateServersInfo</span><span class="p">()</span>
                     <span class="n">started</span> <span class="o">=</span> <span class="n">adminproxy</span><span class="o">.</span><span class="n">DevGetRunningServers</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
                     <span class="n">servers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__registered_servers</span><span class="p">()</span>
@@ -910,7 +914,7 @@
         <span class="n">admin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStarterName</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Starter tango server is not running&quot;</span><span class="p">)</span>
-        <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+        <span class="n">adminproxy</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
         <span class="n">startdspaths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get_device_property</span><span class="p">(</span>
             <span class="n">admin</span><span class="p">,</span>
             <span class="s2">&quot;StartDsPath&quot;</span><span class="p">)[</span><span class="s2">&quot;StartDsPath&quot;</span><span class="p">]</span>
@@ -973,7 +977,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;createDataWriter: DB contains already </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
             <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
@@ -1025,7 +1029,7 @@
                       <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
             <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
@@ -1044,11 +1048,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">server_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
 
-        <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">dp</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DevState</span><span class="o">.</span><span class="n">ON</span><span class="p">:</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dp</span><span class="o">.</span><span class="n">state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DevState</span><span class="o">.</span><span class="n">ON</span><span class="p">:</span>
             <span class="n">dp</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">jsonsettings</span><span class="p">:</span>
-            <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
+            <span class="n">dp</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">)</span>
             <span class="n">dp</span><span class="o">.</span><span class="n">JSONSettings</span> <span class="o">=</span> <span class="n">jsonsettings</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dp</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
@@ -1112,7 +1116,7 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;createSelector: DB contains already </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">server_name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">False</span>
 
-            <span class="n">di</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
+            <span class="n">di</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DbDevInfo</span><span class="p">()</span>
             <span class="n">di</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">device_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">_class</span> <span class="o">=</span> <span class="n">class_name</span>
             <span class="n">di</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server_name</span>
@@ -1129,7 +1133,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_startupServer</span><span class="p">(</span><span class="n">full_class_name</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">hostname</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">device_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">:</span>
-            <span class="n">dp</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="n">dp</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
             <span class="n">dp</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">waitServerRunning</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">device_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cserver_name</span><span class="p">:</span>

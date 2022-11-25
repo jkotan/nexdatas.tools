@@ -110,6 +110,7 @@ Options:
    -e ENTRYNAMES, --entry-names ENTRYNAMES
                         names of entry groups to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: ''
    -m, --raw-metadata    do not store NXentry as scientificMetadata
+   --add-empty-units     add empty units for fields without units
    -p PID, --pid PID
                         dataset pid
    -i BEAMTIMEID, --beamtimeid BEAMTIMEID

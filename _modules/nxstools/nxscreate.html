@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreate &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools.nxscreate &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -213,7 +213,10 @@
 <span class="c1">#: (:obj:`bool`) True if PyTango available</span>
 <span class="n">PYTANGO</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;PyTango&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;tango&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;PyTango&quot;</span><span class="p">)</span>
     <span class="n">PYTANGO</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
@@ -1390,7 +1393,7 @@
         <span class="o">+</span> <span class="s2">&quot; in the local directory for the node configured&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot; with the json file </span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
-        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp T -p 5001 -b </span><span class="se">\n</span><span class="s2">&quot;</span> \
+        <span class="o">+</span> <span class="s2">&quot;       nxscreate secopcp T -t 5001 -b </span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;           - create the component for the T secop module &quot;</span> \
         <span class="o">+</span> <span class="s2">&quot; in the NXSConfigServer database for the node on the port 5000 </span><span class="se">\n</span><span class="s2">&quot;</span> \

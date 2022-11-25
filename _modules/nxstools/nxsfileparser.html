@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileparser &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools.nxsfileparser &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -327,6 +327,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">group_postfix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="c1">#: (:obj:`bool`) store NXentries as scientificMetadata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scientific</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#: (:obj:`bool`) add empty units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emptyunits</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1">#: (:obj:`dict` &lt;:obj:`str`, `any`&gt;)  metadata dictionary</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dctmetadata</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -628,7 +630,9 @@
                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hiddenattrs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
                             <span class="n">at</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hiddenattrs</span><span class="p">):</span>
                         <span class="n">nd</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">attrs</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scientific</span> <span class="ow">and</span> <span class="s2">&quot;NX_class&quot;</span> <span class="ow">in</span> <span class="n">nd</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> \
+               <span class="n">nd</span><span class="p">[</span><span class="s2">&quot;NX_class&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NXentry&quot;</span><span class="p">:</span>
+                <span class="n">nd</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;NX_class&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">FTGroup</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuestostore</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">is_valid</span><span class="p">)</span> \
                <span class="ow">or</span> <span class="s2">&quot;shape&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">desc</span> \
@@ -653,6 +657,8 @@
                             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                                 <span class="n">cont</span> <span class="o">=</span> <span class="kc">False</span>
                         <span class="n">nd</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vl</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">emptyunits</span> <span class="ow">and</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">nd</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">nd</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="k">pass</span>
             <span class="k">if</span> <span class="s2">&quot;shape&quot;</span> <span class="ow">in</span> <span class="n">desc</span> <span class="ow">and</span> <span class="n">desc</span><span class="p">[</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[]]:</span>

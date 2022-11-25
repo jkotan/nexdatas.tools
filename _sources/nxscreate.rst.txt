@@ -515,7 +515,7 @@ Example
 
            - create the all secop components in the local directory for the node configured with the json file
 
-       nxscreate secopcp T -p 5001 -b
+       nxscreate secopcp T -t 5001 -b
 
            - create the component for the T secop module  in the NXSConfigServer database for the node on the port 5000
 

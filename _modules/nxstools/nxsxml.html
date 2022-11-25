@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsxml &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools.nxsxml &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -195,7 +195,10 @@
 <span class="sd">&quot;&quot;&quot;  Creator of XML configuration files &quot;&quot;&quot;</span>
 
 
-<span class="kn">import</span> <span class="nn">PyTango</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">tango</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">PyTango</span> <span class="k">as</span> <span class="nn">tango</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">lxml.etree</span>
@@ -777,8 +780,8 @@
 <span class="sd">        :type blackAttrs: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">NGroup</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">nameAttr</span><span class="p">,</span> <span class="n">typeAttr</span><span class="p">)</span>
-        <span class="c1">#: (:class:`PyTango.DeviceProxy`) device proxy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span> <span class="o">=</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">deviceName</span><span class="p">)</span>
+        <span class="c1">#: (:class:`tango.DeviceProxy`) device proxy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span> <span class="o">=</span> <span class="n">tango</span><span class="o">.</span><span class="n">DeviceProxy</span><span class="p">(</span><span class="n">deviceName</span><span class="p">)</span>
         <span class="c1">#: (:obj:`dict` &lt;:obj:`str`, :class:`NTag`&gt;) fields of the device</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1">#: (:obj:`list` &lt;:obj:`str`&gt;) blacklist for Attributes</span>

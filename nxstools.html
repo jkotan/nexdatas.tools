@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools package &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2302,7 +2302,7 @@ by the new line character</li>
 
 <dl class="attribute">
 <dt id="nxstools.nxscreate.SECoPCP.epilog">
-<code class="descname">epilog</code><em class="property"> = &quot; * with -b: components are created (without datasources) in Configuration Server database\n * without -b: components are created (without datasources) on the local filesystem in -d &lt;directory&gt; \n * default: &lt;directory&gt; is '.' \n            &lt;port&gt; is 5001\n\n examples:\n\n       nxscreate secopcp \n       nxscreate secopcp -l \n\n           - list all modules of the given node \n\n       nxscreate secopcp -c temp_node -d . -j secopn_node.json \n\n           - create the all secop components in the local directory for the node configured with the json file \n\n       nxscreate secopcp T -p 5001 -b \n\n           - create the component for the T secop module  in the NXSConfigServer database for the node on the port 5000 \n\n       nxscreate secopcp -d /home/user/xmldir/ \n\n           - create the all secop components in the given directory\n\n&quot;</em><a class="headerlink" href="#nxstools.nxscreate.SECoPCP.epilog" title="Permalink to this definition">¶</a></dt>
+<code class="descname">epilog</code><em class="property"> = &quot; * with -b: components are created (without datasources) in Configuration Server database\n * without -b: components are created (without datasources) on the local filesystem in -d &lt;directory&gt; \n * default: &lt;directory&gt; is '.' \n            &lt;port&gt; is 5001\n\n examples:\n\n       nxscreate secopcp \n       nxscreate secopcp -l \n\n           - list all modules of the given node \n\n       nxscreate secopcp -c temp_node -d . -j secopn_node.json \n\n           - create the all secop components in the local directory for the node configured with the json file \n\n       nxscreate secopcp T -t 5001 -b \n\n           - create the component for the T secop module  in the NXSConfigServer database for the node on the port 5000 \n\n       nxscreate secopcp -d /home/user/xmldir/ \n\n           - create the all secop components in the given directory\n\n&quot;</em><a class="headerlink" href="#nxstools.nxscreate.SECoPCP.epilog" title="Permalink to this definition">¶</a></dt>
 <dd><p>(<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) command epilog</p>
 </dd></dl>
 
@@ -3303,7 +3303,7 @@ by the new line character</li>
 <dl class="attribute">
 <dt id="nxstools.nxsetup.SetUp.db">
 <code class="descname">db</code><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsetup.SetUp.db" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<code class="xref py py-class docutils literal notranslate"><span class="pre">PyTango.Database</span></code>) tango database server</p>
+<dd><p>(<a class="reference external" href="https://pytango.readthedocs.io/en/latest/database.html#tango.Database" title="(in PyTango v9.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.Database</span></code></a>) tango database server</p>
 </dd></dl>
 
 <dl class="method">
@@ -4846,6 +4846,12 @@ and stores it in DB or filesytem</p>
 </tbody>
 </table>
 <dl class="attribute">
+<dt id="nxstools.nxsfileparser.NXSFileParser.emptyunits">
+<code class="descname">emptyunits</code><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsfileparser.NXSFileParser.emptyunits" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) add empty units</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="nxstools.nxsfileparser.NXSFileParser.filters">
 <code class="descname">filters</code><em class="property"> = None</em><a class="headerlink" href="#nxstools.nxsfileparser.NXSFileParser.filters" title="Permalink to this definition">¶</a></dt>
 <dd><p>(<code class="xref py py-obj docutils literal notranslate"><span class="pre">list`&lt;</span> <span class="pre">:obj:`str</span></code>&gt;)  filters for <cite>full_path</cite> names</p>
@@ -5965,7 +5971,7 @@ e.g. with different subentries</li>
 <dl class="data">
 <dt id="nxstools.nxsdevicetools.PYTANGO">
 <code class="descclassname">nxstools.nxsdevicetools.</code><code class="descname">PYTANGO</code><em class="property"> = True</em><a class="headerlink" href="#nxstools.nxsdevicetools.PYTANGO" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) True if PyTango available</p>
+<dd><p>(<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) True if tango available</p>
 </dd></dl>
 
 <dl class="class">
@@ -6230,7 +6236,7 @@ xml template files of modules</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">configuration server proxy</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyTango.DeviceProxy</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a></td>
 </tr>
 </tbody>
 </table>

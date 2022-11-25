@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsconfig &#8212; NXSTools 3.32.0 documentation</title>
+    <title>nxstools.nxsconfig &#8212; NXSTools 3.34.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.32</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.34</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -201,11 +201,14 @@
 <span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="k">import</span> <span class="n">ParserTools</span><span class="p">,</span> <span class="n">TableTools</span><span class="p">,</span> <span class="n">TableDictTools</span><span class="p">,</span> <span class="n">ESRFConverter</span>
 <span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="k">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.nxsdevicetools</span> <span class="k">import</span> <span class="p">(</span><span class="n">checkServer</span><span class="p">,</span> <span class="n">listServers</span><span class="p">,</span> <span class="n">openServer</span><span class="p">)</span>
-<span class="c1">#: (:obj:`bool`) True if PyTango available</span>
+<span class="c1">#: (:obj:`bool`) True if tango available</span>
 
 <span class="n">PYTANGO</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">PyTango</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">tango</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">PyTango</span> <span class="k">as</span> <span class="nn">tango</span>
     <span class="n">PYTANGO</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
     <span class="k">pass</span>
@@ -230,7 +233,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#: (:obj:`str`) spliting character</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="k">if</span> <span class="n">nonewline</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="c1">#: (:class:`PyTango.DeviceProxy`) configuration server proxy</span>
+        <span class="c1">#: (:class:`tango.DeviceProxy`) configuration server proxy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span> <span class="o">=</span> <span class="n">openServer</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cnfServer</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
 
@@ -1765,7 +1768,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">runners</span><span class="p">[</span><span class="n">options</span><span class="o">.</span><span class="n">subparser</span><span class="p">]</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
-        <span class="c1"># except PyTango.DevFailed as</span>
+        <span class="c1"># except tango.DevFailed as</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="ne">EOFError</span><span class="p">)</span> \
            <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;EOF when reading a line&quot;</span><span class="p">):</span>
@@ -1774,7 +1777,7 @@
             <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">PYTANGO</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">PyTango</span><span class="o">.</span><span class="n">DevFailed</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">PYTANGO</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">tango</span><span class="o">.</span><span class="n">DevFailed</span><span class="p">):</span>
             <span class="c1"># print(str((e.args[0]).desc))</span>
             <span class="k">if</span> <span class="nb">str</span><span class="p">((</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">desc</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
                     <span class="s2">&quot;NonregisteredDBRecordError: The datasource &quot;</span><span class="p">):</span>
