@@ -4954,7 +4954,6 @@ For more help:
             '"scientificMetadata.sample_name":' + \
             ' "scientificMetadata.sample.name.value"'
 
-
         smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
 
         args = [
