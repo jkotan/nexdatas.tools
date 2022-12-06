@@ -961,6 +961,20 @@ standardComponentVariables = {
             'doc': "number of mg channels to skip (string)"
         },
     },
+    'parametercopymap': {
+        'program': {
+            'default': 'nxsfileinfo_parameters',
+            'doc': "group name of NXparameters (string)"
+        },
+        'parameter': {
+            'default': 'copymap',
+            'doc': "parameter name of copymap (string)"
+        },
+        'copymap': {
+            'default': None,
+            'doc': "yaml dictionary with {output: input} copy map (string)"
+        },
+    },
     'dataaxessignal': {
         'signal': {
             'default': 'defaultsignal',
@@ -1444,6 +1458,9 @@ standardComponentTemplateFiles = {
     'qbpm': [
         'qbpm_foil.ds.xml',
         'qbpm.xml',
+    ],
+    'parametercopymap': [
+        'parametercopymap.xml',
     ],
     'secop': [
         'secop.ds.xml',
