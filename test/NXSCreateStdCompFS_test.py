@@ -310,7 +310,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      "descriptiontext", "detectorlive",
                      "empty", "groupsecop", "keithley", "maia",
                      "maiadimension", "maiaflux", "msnsar", "mssar",
-                     "pinhole",
+                     "parametercopymap", "pinhole",
                      "pointdet", "qbpm", "samplehkl", "secop",
                      "singlesecop", "slit", "source", "starttime",
                      "tango", "undulator"])
@@ -333,7 +333,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                  "defaultsample", "description",
                  "descriptiontext", "detectorlive",
                  "empty", "groupsecop", "keithley", "maia",
-                 "maiadimension", "maiaflux", "pinhole",
+                 "maiadimension", "maiaflux",
+                 "parametercopymap", "pinhole",
                  "pointdet", "qbpm", "samplehkl",
                  "secop", "singlesecop", "slit",
                  "source", "starttime", "tango", "undulator"]

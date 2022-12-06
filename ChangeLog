@@ -1,5 +1,7 @@
 2022-12-06 Jan Kotanski <jankotan@gmail.com>
-	* add --copy-map-file and --copy-map paramters (#401)
+	* add --copy-map-file and --copy-map parameters (#401)
+	* add --copy-map-field  parameters (#403)
+	* add parametercopymap component template (#403)
 	* tagged as v3.35.0
 
 2022-11-24 Jan Kotanski <jankotan@gmail.com>

@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<definition>
+  <group type="NXentry" name="$var.entryname#'$(__entryname__)'$var.serialno">
+    <group type="NXinstrument" name="$(__insname__)">
+      <group type="NXparameters" name="$(program)">
+	<field type="NX_FLOAT" name="$(parameter)">
+	  <strategy mode="INIT"/>$(jsonmap)
+	</field>
+      </group>
+    </group>
+  </group>
+</definition>
