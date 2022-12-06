@@ -132,6 +132,15 @@ Options:
                         relative path to the scan files
    -x CHMOD, --chmod CHMOD
                         json metadata file mod bits, e.g. 0o662
+   --copy-map COPYMAP    json or yaml map {output: input} to re-arrange
+                        metadata
+   --copy-map-field COPYMAPFIELD
+                        field json or yaml with map {output: input} to re-
+                        arrange metadata:The default: 'scientificMetadata.nxsf
+                        ileinfo_parameters.copymap.value'
+   --copy-map-file COPYMAPFILE
+                        json or yaml file containing the copy map, see also
+                        --copy-map
    --proposal-as-proposal
                         Store the DESY proposal as the SciCat proposal
    --h5py               use h5py module as a nexus reader
