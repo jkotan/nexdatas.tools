@@ -531,7 +531,7 @@ class BeamtimeLoader(object):
             else:
                 if md:
                     try:
-                        dct = json.loads(str(md).strip())
+                        dct = yaml.safe_load(str(md).strip())
                         if dct and isinstance(dct, dict):
                             cmap.update(dct)
                     except Exception as e:
@@ -933,11 +933,11 @@ class Metadata(Runner):
             help=("json metadata file mod bits, e.g. 0o662"))
         self._parser.add_argument(
             "--copy-map", dest="copymap",
-            help=("map {output: input} to re-arrange metadata"))
+            help=("json or yaml map {output: input} to re-arrange metadata"))
         self._parser.add_argument(
             "--copy-map-field", dest="copymapfield",
             help=(
-                "field with map {output: input} "
+                "field json or yaml with map {output: input} "
                 "to re-arrange metadata:"
                 "The default: "
                 "'scientificMetadata.nxsfileinfo_parameters.copymap.value'"),
@@ -953,7 +953,8 @@ class Metadata(Runner):
             help=("scientific metadata file"))
         self._parser.add_argument(
             "--copy-map-file", dest="copymapfile",
-            help=("json file containing the copy map, see also --copy-map"))
+            help=("json or yaml file containing the copy map, "
+                  "see also --copy-map"))
         self._parser.add_argument(
             "-o", "--output", dest="output",
             help=("output scicat metadata file"))
@@ -1047,7 +1048,7 @@ class Metadata(Runner):
             copymapfield = options.copymapfield
 
         if hasattr(options, "copymap") and options.copymap:
-            dct = json.loads(options.copymap.strip())
+            dct = yaml.safe_load(options.copymap.strip())
             if dct and isinstance(dct, dict):
                 usercopymap.update(dct)
 
@@ -1056,7 +1057,7 @@ class Metadata(Runner):
                 jstr = fl.read()
                 # print(jstr)
                 try:
-                    dct = json.loads(jstr.strip())
+                    dct = yaml.safe_load(jstr.strip())
                 except Exception:
                     if jstr:
                         nan = float('nan')    # noqa: F841

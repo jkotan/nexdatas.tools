@@ -970,9 +970,9 @@ standardComponentVariables = {
             'default': 'copymap',
             'doc': "parameter name of copymap (string)"
         },
-        'jsonmap': {
+        'copymap': {
             'default': None,
-            'doc': "json dictionary with {output: input} copy map (string)"
+            'doc': "yaml dictionary with {output: input} copy map (string)"
         },
     },
     'dataaxessignal': {
