@@ -1,3 +1,7 @@
+2022-12-07 Jan Kotanski <jankotan@gmail.com>
+	* add support for copy list in --copy-map* parameters (#406)
+	* tagged as v3.36.0
+
 2022-12-06 Jan Kotanski <jankotan@gmail.com>
 	* add --copy-map-file and --copy-map parameters (#401)
 	* add --copy-map-field  parameters (#403)
