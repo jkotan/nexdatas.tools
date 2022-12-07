@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Dec 06, 2022" "3.35" "NXSTools"
+.TH "NXSFILEINFO" "1" "Dec 07, 2022" "3.36" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -228,12 +228,12 @@ relative path to the scan files
 json metadata file mod bits, e.g. 0o662
 .TP
 .BI \-\-copy\-map \ COPYMAP
-json or yaml map {output: input} to re\-arrange
-metadata
+json or yaml map {output: input} or [[output, input],]
+or a text file list to re\-arrange metadata
 .TP
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
-field json or yaml with map {output: input} to
-re\-arrange metadata:The default:
+field json or yaml with map {output: input} or [[output, input],]
+or a text file list to re\-arrange metadata. The default:
 \(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE

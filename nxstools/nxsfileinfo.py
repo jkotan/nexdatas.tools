@@ -53,6 +53,22 @@ except Exception:
     pass
 
 
+def getlist(text):
+    """ converts a text string to a list of lists
+        with respect to newline and space characters
+
+    :param text: parser options
+    :type text: :obj:`str`
+    :returns: a list of list
+    :rtype: :obj:`list` < :obj:`list`<:obj:`str`> >
+    """
+    lst = []
+    if text:
+        lines = text.strip().split("\n")
+        lst = [line.split(" ") for line in lines if line.strip()]
+    return lst
+
+
 class General(Runner):
 
     """ General runner"""
@@ -508,13 +524,15 @@ class BeamtimeLoader(object):
             cpmap.update(cmap)
         return cpmap
 
-    def append_copymap_field(self, metadata, cmap, cmapfield=None):
+    def append_copymap_field(self, metadata, cmap, clist, cmapfield=None):
         """ overwrite metadata with dictionary
 
         :param metadata: metadata dictionary to merge in
         :type metadata: :obj:`dict` <:obj:`str`, `any`>
         :param cmap: overwrite dictionary
         :type cmap: :obj:`dict` <:obj:`str`, :obj:`str`>
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
         :param cmapfield: copy map nexus field
         :type cmapfield: :obj:`str`
         :returns: metadata dictionary
@@ -534,25 +552,35 @@ class BeamtimeLoader(object):
                         dct = yaml.safe_load(str(md).strip())
                         if dct and isinstance(dct, dict):
                             cmap.update(dct)
+                        elif dct:
+                            if isinstance(dct, str):
+                                dct = getlist(str(md).strip())
+                            if isinstance(dct, list):
+                                for line in dct:
+                                    if isinstance(line, list):
+                                        clist.append(line[:2])
                     except Exception as e:
                         sys.stderr.write(
                             "nxsfileinfo: copymap update: '%s'\n"
                             % str(e))
 
-    def overwrite(self, metadata, cmap=None, cmapfield=None):
+    def overwrite(self, metadata, cmap=None, clist=None, cmapfield=None):
         """ overwrite metadata with dictionary
 
         :param metadata: metadata dictionary to merge in
         :type metadata: :obj:`dict` <:obj:`str`, `any`>
-        :param cmap: overwrite dictionary
+        :param cmap: copy map to overwrite dictionary
         :type cmap: :obj:`dict` <:obj:`str`, :obj:`str`>
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
         :param cmapfield: copy map nexus field
         :type cmapfield: :obj:`str`
         :returns: metadata dictionary
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         cpmap = self.merge_copy_maps(cmap)
-        self.append_copymap_field(metadata, cpmap, cmapfield)
+        cplist = list(clist or [])
+        self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
                 if ts and vs:
@@ -574,9 +602,31 @@ class BeamtimeLoader(object):
                             else:
                                 td = td[tg] = {}
                         parent[tg] = md
+            for line in cplist:
+                if line and len(line) > 1 and line[0] and line[1]:
+                    ts = line[0]
+                    vs = line[1]
+                    vls = vs.split(".")
+                    md = metadata
+                    for vl in vls:
+                        if vl in md:
+                            md = md[vl]
+                        else:
+                            break
+                    else:
+                        tgs = ts.split(".")
+                        td = metadata
+                        parent = None
+                        for tg in tgs:
+                            parent = td
+                            if tg in td:
+                                td = td[tg]
+                            else:
+                                td = td[tg] = {}
+                        parent[tg] = md
         return metadata
 
-    def remove_metadata(self, metadata, cmap=None, cmapfield=None):
+    def remove_metadata(self, metadata, cmap=None, clist=None, cmapfield=None):
         """ remove metadata with dictionary with empty input or output
             in the copy map
 
@@ -584,13 +634,16 @@ class BeamtimeLoader(object):
         :type metadata: :obj:`dict` <:obj:`str`, `any`>
         :param cmap: overwrite dictionary
         :type cmap: :obj:`dict` <:obj:`str`, :obj:`str`>
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
         :param cmapfield: copy map nexus field
         :type cmapfield: :obj:`str`
         :returns: metadata dictionary
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         cpmap = self.merge_copy_maps(cmap)
-        self.append_copymap_field(metadata, cpmap, cmapfield)
+        cplist = list(clist or [])
+        self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
                 vv = None
@@ -610,6 +663,28 @@ class BeamtimeLoader(object):
                             break
                     else:
                         parent.pop(vl)
+            for line in cplist:
+                vv = None
+                if line:
+                    if len(line) == 1 and line[0]:
+                        vv = line[0]
+                    elif len(line) > 1:
+                        if line[0] and not line[1]:
+                            vv = line[0]
+                        if line[1] and not line[0]:
+                            vv = line[1]
+                    if vv:
+                        vls = vv.split(".")
+                        md = metadata
+                        parent = None
+                        for vl in vls:
+                            parent = md
+                            if vl in md:
+                                md = md[vl]
+                            else:
+                                break
+                        else:
+                            parent.pop(vl)
         return metadata
 
     @classmethod
@@ -933,13 +1008,16 @@ class Metadata(Runner):
             help=("json metadata file mod bits, e.g. 0o662"))
         self._parser.add_argument(
             "--copy-map", dest="copymap",
-            help=("json or yaml map {output: input} to re-arrange metadata"))
+            help=("json or yaml map of {output: input} "
+                  "or [[output, input],]  or a text file list "
+                  " to re-arrange metadata"))
         self._parser.add_argument(
             "--copy-map-field", dest="copymapfield",
             help=(
                 "field json or yaml with map {output: input} "
-                "to re-arrange metadata:"
-                "The default: "
+                "or [[output, input],] or a text file list "
+                "to re-arrange metadata."
+                " The default: "
                 "'scientificMetadata.nxsfileinfo_parameters.copymap.value'"),
             default='scientificMetadata.nxsfileinfo_parameters.copymap.value')
 
@@ -1023,6 +1101,7 @@ class Metadata(Runner):
         entryclasses = []
         entrynames = []
         usercopymap = {}
+        usercopylist = []
 
         if options.values:
             values = options.values.split(',')
@@ -1051,6 +1130,13 @@ class Metadata(Runner):
             dct = yaml.safe_load(options.copymap.strip())
             if dct and isinstance(dct, dict):
                 usercopymap.update(dct)
+            elif dct:
+                if isinstance(dct, str):
+                    dct = getlist(options.copymap.strip())
+                if isinstance(dct, list):
+                    for line in dct:
+                        if isinstance(line, list):
+                            usercopylist.append(line[:2])
 
         if hasattr(options, "copymapfile") and options.copymapfile:
             with open(options.copymapfile, "r") as fl:
@@ -1065,6 +1151,13 @@ class Metadata(Runner):
                         # mdflatten(dstr, [], dct)
                 if dct and isinstance(dct, dict):
                     usercopymap.update(dct)
+                elif dct:
+                    if isinstance(dct, str):
+                        dct = getlist(jstr.strip())
+                    if isinstance(dct, list):
+                        for line in dct:
+                            if isinstance(line, list):
+                                usercopylist.append(line[:2])
         result = None
         nxsparser = None
         if root is not None:
@@ -1086,7 +1179,10 @@ class Metadata(Runner):
             bl = BeamtimeLoader(options)
             result = bl.run()
             result = bl.overwrite(
-                result, usercopymap or None, copymapfield)
+                result,
+                usercopymap or None,
+                usercopylist or None,
+                copymapfield)
             result = bl.update_pid(
                 result, None, options.puuid,
                 options.pfname, options.beamtimeid)
@@ -1096,7 +1192,8 @@ class Metadata(Runner):
                     techniques = options.techniques
                 result = bl.update_techniques(result, techniques)
             result = bl.remove_metadata(
-                result, usercopymap or None, copymapfield)
+                result, usercopymap or None,
+                usercopylist or None, copymapfield)
         elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
@@ -1118,7 +1215,8 @@ class Metadata(Runner):
                 bl.run()
                 result = bl.merge(desc)
                 result = bl.overwrite(
-                    result, usercopymap or None, copymapfield)
+                    result, usercopymap or None,
+                    usercopylist or None, copymapfield)
                 result = bl.update_pid(
                     result, options.args[0], options.puuid,
                     options.pfname, options.beamtimeid)
@@ -1129,7 +1227,8 @@ class Metadata(Runner):
                     result = bl.update_techniques(result, techniques)
 
                 result = bl.remove_metadata(
-                    result, usercopymap or None, copymapfield)
+                    result, usercopymap or None,
+                    usercopylist or None, copymapfield)
             else:
                 result = []
                 for desc in nxsparser.description:
@@ -1151,7 +1250,8 @@ class Metadata(Runner):
                     bl.run()
                     rst = bl.merge(desc)
                     rst = bl.overwrite(
-                        rst, usercopymap or None, copymapfield)
+                        rst, usercopymap or None,
+                        usercopylist or None, copymapfield)
                     rst = bl.update_pid(
                         rst, options.args[0], options.puuid,
                         options.pfname, options.beamtimeid)
@@ -1161,7 +1261,8 @@ class Metadata(Runner):
                             techniques = options.techniques
                         rst = bl.update_techniques(rst, techniques)
                     rst = bl.remove_metadata(
-                        rst, usercopymap or None, copymapfield)
+                        rst, usercopymap or None,
+                        usercopylist or None, copymapfield)
                     result.append(rst)
         if result is not None:
             return json.dumps(
