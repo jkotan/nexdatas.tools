@@ -906,6 +906,7 @@ class Metadata(Runner):
     epilog = "" \
         + " examples:\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.fio\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs -s\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs " \
@@ -997,7 +998,8 @@ class Metadata(Runner):
             help=("generate pid without file name"))
         self._parser.add_argument(
             "-f", "--file-format", dest="fileformat",
-            help=("input file format, Default 'nxs'"))
+            help=("input file format, e.g. 'nxs'. "
+                  "Default is defined by the file extension"))
         self._parser.add_argument(
             "--proposal-as-proposal", action="store_true",
             default=False, dest="pap",
