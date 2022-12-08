@@ -997,6 +997,7 @@ class Metadata(Runner):
             help=("generate pid without file name"))
         self._parser.add_argument(
             "-f", "--file-format", dest="fileformat",
+            default='nxs',
             help=("input file format, Default 'nxs'"))
         self._parser.add_argument(
             "--proposal-as-proposal", action="store_true",
