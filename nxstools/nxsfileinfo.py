@@ -34,7 +34,7 @@ import fnmatch
 import yaml
 
 from .nxsparser import TableTools
-from .nxsfileparser import (NXSFileParser, numpyEncoder)
+from .nxsfileparser import (NXSFileParser, FIOFileParser, numpyEncoder)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 from .ontology import id_techniques, nexus_panet
@@ -906,6 +906,7 @@ class Metadata(Runner):
     epilog = "" \
         + " examples:\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs\n" \
+        + "       nxsfileinfo metadata /user/data/myfile.fio\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs -s\n" \
         + "       nxsfileinfo metadata /user/data/myfile.nxs " \
@@ -996,6 +997,10 @@ class Metadata(Runner):
             default=False, dest="pfname",
             help=("generate pid without file name"))
         self._parser.add_argument(
+            "-f", "--file-format", dest="fileformat",
+            help=("input file format, e.g. 'nxs'. "
+                  "Default is defined by the file extension"))
+        self._parser.add_argument(
             "--proposal-as-proposal", action="store_true",
             default=False, dest="pap",
             help=("Store the DESY proposal as the SciCat proposal"))
@@ -1071,12 +1076,22 @@ class Metadata(Runner):
             sys.exit(255)
 
         root = None
+        nxfl = None
         if options.args:
             wrmodule = WRITERS[writer.lower()]
+            if not options.fileformat:
+                rt, ext = os.path.splitext(options.args[0])
+                if ext and len(ext) > 1 and ext.startswith("."):
+                    options.fileformat = ext[1:]
             try:
-                fl = filewriter.open_file(
-                    options.args[0], readonly=True,
-                    writer=wrmodule)
+                if options.fileformat in ['nxs', 'h5', 'nx', 'hdf5']:
+                    nxfl = filewriter.open_file(
+                        options.args[0], readonly=True,
+                        writer=wrmodule)
+                    root = nxfl.root()
+                elif options.fileformat in ['fio']:
+                    with open(options.args[0]) as fl:
+                        root = fl.read()
             except Exception:
                 sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                                  % options.args[0])
@@ -1084,10 +1099,9 @@ class Metadata(Runner):
                 self._parser.print_help()
                 sys.exit(255)
 
-            root = fl.root()
         self.show(root, options)
-        if root is not None:
-            fl.close()
+        if nxfl is not None:
+            nxfl.close()
 
     @classmethod
     def metadata(cls, root, options):
@@ -1165,19 +1179,28 @@ class Metadata(Runner):
         result = None
         nxsparser = None
         if root is not None:
-            nxsparser = NXSFileParser(root)
-            nxsparser.valuestostore = values
-            nxsparser.group_postfix = options.group_postfix
-            nxsparser.entryclasses = entryclasses
-            nxsparser.entrynames = entrynames
-            nxsparser.scientific = not options.rawscientific
-            if hasattr(options, "emptyunits"):
-                nxsparser.emptyunits = options.emptyunits
-            nxsparser.attrs = attrs
-            nxsparser.hiddenattrs = nattrs
-            if hasattr(options, "oned"):
-                nxsparser.oned = options.oned
-            nxsparser.parseMeta()
+            if options.fileformat in ['nxs', 'h5', 'nx', 'hdf5']:
+                nxsparser = NXSFileParser(root)
+                nxsparser.valuestostore = values
+                nxsparser.group_postfix = options.group_postfix
+                nxsparser.entryclasses = entryclasses
+                nxsparser.entrynames = entrynames
+                nxsparser.scientific = not options.rawscientific
+                if hasattr(options, "emptyunits"):
+                    nxsparser.emptyunits = options.emptyunits
+                nxsparser.attrs = attrs
+                nxsparser.hiddenattrs = nattrs
+                if hasattr(options, "oned"):
+                    nxsparser.oned = options.oned
+                nxsparser.parseMeta()
+            elif options.fileformat in ['fio']:
+                nxsparser = FIOFileParser(root)
+                nxsparser.group_postfix = options.group_postfix
+                # nxsparser.attrs = attrs
+                # nxsparser.hiddenattrs = nattrs
+                if hasattr(options, "oned"):
+                    nxsparser.oned = options.oned
+                nxsparser.parseMeta()
 
         if nxsparser is None:
             bl = BeamtimeLoader(options)

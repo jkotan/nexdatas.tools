@@ -145,16 +145,12 @@ class NXSFileParser(object):
         #: (:obj:`list` <:obj:`dict` <:obj:`str`, `any`> >) \
         #  description list of found nodes
         self.description = []
-        #: (:obj:`str`) metadata JSON dictionary
-        self.metadata = ""
         #: (:obj:`str`) group postfix
         self.group_postfix = ""
         #: (:obj:`bool`) store NXentries as scientificMetadata
         self.scientific = False
         #: (:obj:`bool`) add empty units
         self.emptyunits = False
-        #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary
-        self.__dctmetadata = {}
 
         #: (:obj:`list` <:obj:`str` >) \
         #    nexus field attribute show names
@@ -534,3 +530,145 @@ class NXSFileParser(object):
                 if len(self.entrynames) == 0 or \
                    (nm and nm in self.entrynames):
                     self.__parsemetaentry(entry, self.description)
+
+
+class FIOFileParser(object):
+
+    """ Metadata parser for FIO files
+    """
+
+    def __init__(self, root):
+        """ constructor
+
+        :param root: fio file content
+        :type root: :obj:`str`
+        """
+
+        #: (:obj:`list` <:obj:`dict` <:obj:`str`, `any`> >) \
+        #  description list of found nodes
+        self.description = []
+        #: (:obj:`str`) group postfix
+        self.group_postfix = ""
+        #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary
+        self.__dctmetadata = {}
+
+        # (:obj:`str`) text content of the file
+        self.__root = root
+        # (:obj:`bool`) oned value flag
+        self.oned = False
+
+    def _appendComments(self, lines, meta):
+        """append comments
+
+        :param lines: comment fio lines
+        :type lines: :obj:`list` <:obj:`str`>
+        :param meta: metadata dictionary
+        :type meta: :obj:`dict` <:obj:`str`, `any`>
+        """
+        comments = {}
+        counter = 0
+        for line in lines:
+            if not line.startswith("!"):
+                counter += 1
+                comments["line_%s" % counter] = line
+                if counter == 1:
+                    meta["ScanCommand"] = line
+            if "Acquisition started at " in line:
+                sline = line.split("Acquisition started at ")
+                if sline and sline[-1].strip():
+                    meta["start_time"] = sline[-1].strip()
+            elif "Acquisition ended at " in line:
+                sline = line.split("Acquisition ended at ")
+                if sline and sline[-1].strip():
+                    meta["end_time"] = sline[-1].strip()
+        if comments:
+            meta["comments"] = comments
+
+    def _appendParameters(self, lines, meta):
+        """append comments
+
+        :param lines: parameter fio lines
+        :type lines: :obj:`list` <:obj:`str`>
+        :param meta: metadata dictionary
+        :type meta: :obj:`dict` <:obj:`str`, `any`>
+        """
+        params = {}
+        for line in lines:
+            if not line.startswith("!") and "=" in line:
+                sline = line.split("=")
+                if len(sline) > 1 and sline[0].strip() and \
+                   sline[1].strip():
+                    try:
+                        params[sline[0].strip().replace(" ", "_")] = \
+                            eval(sline[1].strip())
+                    except Exception:
+                        params[sline[0].strip().replace(" ", "_")] = \
+                            str(sline[1].strip())
+
+        if params:
+            meta["parameters"] = params
+
+    def _appendData(self, lines, meta):
+        """append comments
+
+        :param lines: data fio lines
+        :type lines: :obj:`list` <:obj:`str`>
+        :param meta: metadata dictionary
+        :type meta: :obj:`dict` <:obj:`str`, `any`>
+        """
+        columns = {}
+        data = {}
+        for line in lines:
+            if line.startswith("Col"):
+                sline = line.split(" ")
+                name = None
+                if len(sline) > 2:
+                    try:
+                        if sline[1].strip():
+                            cid = int(sline[1].strip())
+                            if sline[2].strip():
+                                name = str(sline[2].strip())
+                                columns[cid - 1] = [name, []]
+                    except Exception:
+                        pass
+            elif not line.startswith("!"):
+                sline = [word.strip() for word in line.split(" ")
+                         if word.strip()]
+                for wid, word in enumerate(sline):
+                    if wid in columns.keys():
+                        try:
+                            columns[wid][1].append(float(word))
+                        except Exception:
+                            columns[wid][1].append(str(word))
+        for wid, nmvl in columns.items():
+            data[nmvl[0]] = nmvl[1]
+
+        if data:
+            meta["data"] = data
+
+    def parseMeta(self):
+        """parses the file and creates the filtered description list
+
+        """
+        smname = "scientificMetadata"
+        dct = {}
+        self.description = [dct]
+        nd = dct[smname] = {}
+        if self.__root and isinstance(self.__root, str):
+            lines = [line.strip() for line in self.__root.split("\n")]
+            dcpmap = {"%d": [], "%c": [], "%p": []}
+            last = None
+            for line in lines:
+                if line in dcpmap.keys():
+                    last = line
+                elif last and not line.startswith("!"):
+                    dcpmap[last].append(line)
+                elif line.startswith("!"):
+                    dcpmap["%c"].append(line)
+
+            if dcpmap["%c"]:
+                self._appendComments(dcpmap["%c"], nd)
+            if dcpmap["%p"]:
+                self._appendParameters(dcpmap["%p"], nd)
+            if dcpmap["%d"] and self.oned:
+                self._appendData(dcpmap["%d"], nd)
