@@ -1,3 +1,9 @@
+2022-12-09 Jan Kotanski <jankotan@gmail.com>
+	* support comments to copy map text list files (#409)
+	* skip wrong copy map lines with circular dependence (#409)
+	* add support for fio files in nxsfileinfo metadata
+	* tagged as v3.37.0
+
 2022-12-07 Jan Kotanski <jankotan@gmail.com>
 	* add support for copy list in --copy-map* parameters (#406)
 	* tagged as v3.36.0
