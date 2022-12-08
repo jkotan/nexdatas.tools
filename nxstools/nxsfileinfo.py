@@ -65,7 +65,8 @@ def getlist(text):
     lst = []
     if text:
         lines = text.strip().split("\n")
-        lst = [line.split(" ") for line in lines if line.strip()]
+        lst = [line.strip().split(" ") for line in lines
+               if (line.strip() and not line.strip().startswith("#"))]
     return lst
 
 
@@ -583,7 +584,8 @@ class BeamtimeLoader(object):
         self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
-                if ts and vs:
+                if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+                   and not ts.startswith(vs + "."):
                     vls = vs.split(".")
                     md = metadata
                     for vl in vls:
@@ -603,7 +605,9 @@ class BeamtimeLoader(object):
                                 td = td[tg] = {}
                         parent[tg] = md
             for line in cplist:
-                if line and len(line) > 1 and line[0] and line[1]:
+                if line and len(line) > 1 and line[0] and line[1] and \
+                   isinstance(line[0], str) and isinstance(line[1], str) and \
+                   not line[0].startswith(line[1] + "."):
                     ts = line[0]
                     vs = line[1]
                     vls = vs.split(".")
@@ -651,7 +655,7 @@ class BeamtimeLoader(object):
                     vv = vs
                 if not vs:
                     vv = ts
-                if vv:
+                if vv and isinstance(vv, str):
                     vls = vv.split(".")
                     md = metadata
                     parent = None
@@ -673,7 +677,7 @@ class BeamtimeLoader(object):
                             vv = line[0]
                         if line[1] and not line[0]:
                             vv = line[1]
-                    if vv:
+                    if vv and isinstance(vv, str):
                         vls = vv.split(".")
                         md = metadata
                         parent = None
