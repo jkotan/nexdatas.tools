@@ -637,9 +637,9 @@ class FIOFileParser(object):
                 for wid, word in enumerate(sline):
                     if wid in columns.keys():
                         try:
-                            columns[wid][1].append(float(wid))
+                            columns[wid][1].append(float(word))
                         except Exception:
-                            columns[wid][1].append(str(wid))
+                            columns[wid][1].append(str(word))
         for wid, nmvl in columns.items():
             data[nmvl[0]] = nmvl[1]
 

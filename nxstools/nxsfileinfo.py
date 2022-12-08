@@ -997,7 +997,6 @@ class Metadata(Runner):
             help=("generate pid without file name"))
         self._parser.add_argument(
             "-f", "--file-format", dest="fileformat",
-            default='nxs',
             help=("input file format, Default 'nxs'"))
         self._parser.add_argument(
             "--proposal-as-proposal", action="store_true",
@@ -1078,6 +1077,10 @@ class Metadata(Runner):
         nxfl = None
         if options.args:
             wrmodule = WRITERS[writer.lower()]
+            if not options.fileformat:
+                rt, ext = os.path.splitext(options.args[0])
+                if ext and len(ext) > 1 and ext.startswith("."):
+                    options.fileformat = ext[1:]
             try:
                 if options.fileformat in ['nxs', 'h5', 'nx', 'hdf5']:
                     nxfl = filewriter.open_file(
