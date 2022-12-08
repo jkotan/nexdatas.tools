@@ -3782,6 +3782,8 @@ For more help:
         "scientificMetadata.sample": null,
         "scientificMetadata.instrument_name":
             "scientificMetadata.instrument.name.value",
+        "scientificMetadata.chemical_formula.value":
+            "scientificMetadata.sample.chemical_formula",
         "scientificMetadata.sample_name":
             "scientificMetadata.sample.name.value"
         }
@@ -5242,7 +5244,9 @@ For more help:
             'scientificMetadata.instrument_name ' + \
             'scientificMetadata.instrument.name.value\n' + \
             'scientificMetadata.sample_name ' + \
-            'scientificMetadata.sample.name.value'
+            'scientificMetadata.sample.name.value\n' + \
+            '# scientificMetadata.chemical_formula ' + \
+            'scientificMetadata.sample.chemical_formula.value'
 
         smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
 
@@ -5537,7 +5541,9 @@ For more help:
           ["scientificMetadata.instrument_name",
             "scientificMetadata.instrument.name.value"],
           ["scientificMetadata.sample_name",
-            "scientificMetadata.sample.name.value"]
+            "scientificMetadata.sample.name.value"],
+          ["scientificMetadata.chemical_formula.value",
+            "scientificMetadata.sample.chemical_formula"]
            ]
         '''
 
