@@ -1077,6 +1077,8 @@ class Metadata(Runner):
 
         root = None
         nxfl = None
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
         if options.args:
             wrmodule = WRITERS[writer.lower()]
             if not options.fileformat:
