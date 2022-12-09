@@ -140,6 +140,9 @@ Options:
 			'scientificMetadata.nxsfileinfo_parameters.copymap.value'
    --copy-map-file COPYMAPFILE
                         json or yaml file containing the copy map, see also --copy-map
+   -f FILEFORMAT, --file-format FILEFORMAT
+                        input file format, e.g. 'nxs'. Default is defined by the file extension
+			
    --proposal-as-proposal
                         Store the DESY proposal as the SciCat proposal
    --h5py               use h5py module as a nexus reader
@@ -151,6 +154,7 @@ Example
 .. code:: bash
 
           nxsfileinfo metadata /user/data/myfile.nxs
+          nxsfileinfo metadata /user/data/myfile.fio
           nxsfileinfo metadata /user/data/myfile.nxs -p 'Group'
           nxsfileinfo metadata /user/data/myfile.nxs -s
           nxsfileinfo metadata /user/data/myfile.nxs -a units,NX_class
