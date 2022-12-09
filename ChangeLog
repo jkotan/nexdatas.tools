@@ -1,4 +1,8 @@
 2022-12-09 Jan Kotanski <jankotan@gmail.com>
+	* fix for older versions of nxsdatawriter when fileformat is not defined
+	* tagged as v3.37.1
+
+2022-12-09 Jan Kotanski <jankotan@gmail.com>
 	* support comments to copy map text list files (#409)
 	* skip wrong copy map lines with circular dependence (#409)
 	* add support for fio files in nxsfileinfo metadata
