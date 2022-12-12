@@ -1,3 +1,8 @@
+2022-12-12 Jan Kotanski <jankotan@gmail.com>
+	* add ndf to nexus file extension lists (#417)
+	* fixes for missing fileformat (#417)
+	* tagged as v3.37.2
+
 2022-12-09 Jan Kotanski <jankotan@gmail.com>
 	* fix for older versions of nxsdatawriter when fileformat is not defined
 	* tagged as v3.37.1
