@@ -41,6 +41,8 @@ except Exception:
 
 import nxstools.h5cppwriter as H5CppWriter
 
+from nxstools.pyeval import scdataset
+
 try:
     import TestServerSetUp
 except ImportError:
@@ -65,6 +67,32 @@ class TstRoot2(object):
     filename = ""
     stepsperfile = 0
     currentfileid = 0
+
+
+class TstMacro(object):
+    """ test macro """
+
+    def __init__(self):
+        """ constructor
+        """
+        self.env = {}
+        self.log = []
+
+    def getEnv(self, name):
+        """ mocked get variable
+
+        :param name: variable name
+        :type name: :obj:`str`
+        """
+        return self.env[name]
+
+    def output(self, text):
+        """ mocked output function
+
+        :param text: output text
+        :type text: :obj:`str`
+        """
+        self.log.append(text)
 
 
 # test fixture
@@ -2687,6 +2715,195 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             shutil.rmtree(mainpath,
                           ignore_errors=False, onerror=None)
             os.remove(self._fname)
+
+    def test_scingestor_append_scicat_dataset_novar(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = "/gpfs/current/raw"
+        macro.env["ScanID"] = 123
+        result = scdataset.append_scicat_dataset(macro)
+        self.assertEqual("", result)
+        self.assertEqual(macro.log, [])
+
+    def test_scingestor_append_scicat_dataset_error(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        try:
+            macro = TstMacro()
+            macro.env["AppendSciCatDataset"] = True
+            scdataset.append_scicat_dataset(macro)
+        except Exception:
+            error = True
+        self.assertTrue(error)
+
+    def test_scingestor_append_scicat_dataset_scanvar(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        try:
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("mytest_00123", result)
+            self.assertEqual(macro.log,
+                             ["Appending 'mytest_00123' to "
+                              "%s/scicat-datasets-00000000.lst" % cwd])
+        finally:
+            if os.path.isfile("%s/scicat-datasets-00000000.lst" % (cwd)):
+                os.remove("%s/scicat-datasets-00000000.lst" % (cwd))
+
+    def test_scingestor_append_scicat_dataset_nxsappend(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["NXSAppendSciCatDataset"] = True
+        result = scdataset.append_scicat_dataset(macro)
+        self.assertEqual("", result)
+        self.assertEqual(macro.log, [])
+
+    def test_scingestor_append_scicat_dataset_beamtime(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["NXSAppendSciCatDataset"] = False
+        macro.env["BeamtimeFilePath"] = cwd
+        # macro.env["BeamtimeFilePrefix"] =
+        # macro.env["BeamtimeFileExt"] =
+        # macro.env["SciCatDatasetListFileLocal"] =
+        # macro.env["SciCatDatasetListFilePrefix"] =
+        # macro.env["SciCatDatasetListFileExt"] =
+
+        currentprefix = "beamtime-metadata-"
+        currentpostfix = ".json"
+        beamtime = "2342342"
+
+        bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
+
+        try:
+            open(bfn, 'a').close()
+
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("mytest_00123", result)
+            self.assertEqual(macro.log,
+                             ["Appending 'mytest_00123' to "
+                              "%s/scicat-datasets-%s.lst" % (cwd, beamtime)])
+        finally:
+            os.remove(bfn)
+            if os.path.isfile("%s/scicat-datasets-%s.lst" % (cwd, beamtime)):
+                os.remove("%s/scicat-datasets-%s.lst" % (cwd, beamtime))
+
+    def test_scingestor_append_scicat_dataset_local(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 12
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["NXSAppendSciCatDataset"] = False
+        macro.env["BeamtimeFilePath"] = cwd
+        macro.env["SciCatDatasetListFileLocal"] = True
+        hostname = socket.gethostname()
+        # macro.env["BeamtimeFilePrefix"] =
+        # macro.env["BeamtimeFileExt"] =
+        # macro.env["SciCatDatasetListFilePrefix"] =
+        # macro.env["SciCatDatasetListFileExt"] =
+
+        currentprefix = "beamtime-metadata-"
+        currentpostfix = ".json"
+        beamtime = "2342342"
+
+        bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
+
+        try:
+            open(bfn, 'a').close()
+
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("mytest_00012", result)
+            lfname = "%s/scicat-datasets-%s-%s.lst" % (cwd, hostname, beamtime)
+            self.assertEqual(macro.log,
+                             ["Appending 'mytest_00012' to %s" % (lfname)])
+        finally:
+            os.remove(bfn)
+            if os.path.isfile(lfname):
+                os.remove(lfname)
+
+    def test_scingestor_append_scicat_dataset_usernames(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        cwd = os.getcwd()
+        currentprefix = "bt-mt-"
+        currentpostfix = ".jsn"
+        currentprefix = "bt-mt-"
+        currentpostfix = ".jsn"
+        beamtime = "2234231"
+        dtlistprefix = 'sc-ds-'
+        dtlistpostfix = '.lt'
+
+        macro = TstMacro()
+        macro.env["ScanFile"] = "mytest.fio"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 12
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["NXSAppendSciCatDataset"] = True
+        macro.env["BeamtimeFilePath"] = cwd
+        macro.env["SciCatDatasetListFileLocal"] = True
+        macro.env["BeamtimeFilePrefix"] = currentprefix
+        macro.env["BeamtimeFileExt"] = currentpostfix
+        macro.env["SciCatDatasetListFilePrefix"] = dtlistprefix
+        macro.env["SciCatDatasetListFileExt"] = dtlistpostfix
+
+        bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
+
+        try:
+            open(bfn, 'a').close()
+
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("mytest_00012", result)
+            lfname = "%s/sc-ds-%s.lt" % (cwd, beamtime)
+            self.assertEqual(macro.log,
+                             ["Appending 'mytest_00012' to %s" % (lfname)])
+        finally:
+            os.remove(bfn)
+            if os.path.isfile(lfname):
+                os.remove(lfname)
 
 
 if __name__ == '__main__':
