@@ -47,29 +47,29 @@ def append_scicat_dataset(macro, status_info=True):
     # find scan name for the master file
     if isinstance(sfl, str):
         sfl = [sfl]
+    scanname = ""
     if sfl and isinstance(sfl, list) or isinstance(sfl, tuple):
         for sf in sfl:
-            sname, ext = os.path.splitext(str(sf))
-            if ext in [".nxs", ".nx", ".h5", ".ndf"] and sname:
-                scanname = str(sname)
+            scname, ext = os.path.splitext(str(sf))
+            if ext in [".nxs", ".nx", ".h5", ".ndf"] and scname:
+                scanname = str(scname)
                 break
         if not scanname:
             for sf in sfl:
-                sname, ext = os.path.splitext(str(sf))
-                if ext in [".fio"] and sname:
-                    scanname = str(sname)
+                scname, ext = os.path.splitext(str(sf))
+                if ext in [".fio"] and scname:
+                    scanname = str(scname)
                     nxsappend = None
                     break
         if not scanname:
             for sf in sfl:
-                sname, ext = os.path.splitext(str(sf))
-                if sname:
-                    scanname = str(sname)
+                scname, ext = os.path.splitext(str(sf))
+                if scname:
+                    scanname = str(scname)
                     nxsappend = None
                     break
-
-    if sname and not nxsappend:
-        sname = "%s_%05i" % (sname, sid)
+    if scanname and not nxsappend:
+        sname = "%s_%05i" % (scanname, sid)
 
         # get beamtime id
         bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
@@ -82,6 +82,7 @@ def append_scicat_dataset(macro, status_info=True):
         # get scicat dataset list file name
         defprefix = "scicat-datasets-"
         defaulthost = get_env_var(macro, "SciCatDatasetListFileLocal", None)
+        hostname = None
         if defaulthost:
             hostname = socket.gethostname()
         if hostname and hostname is not True and hostname.lower() != "true":
