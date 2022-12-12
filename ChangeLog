@@ -1,7 +1,8 @@
 2022-12-12 Jan Kotanski <jankotan@gmail.com>
+	* add append_scicat_dataset function to pyeval.scdataset.py (#419)
 	* add ndf to nexus file extension lists (#417)
 	* fixes for missing fileformat (#417)
-	* tagged as v3.37.2
+	* tagged as v3.38.0
 
 2022-12-09 Jan Kotanski <jankotan@gmail.com>
 	* fix for older versions of nxsdatawriter when fileformat is not defined
