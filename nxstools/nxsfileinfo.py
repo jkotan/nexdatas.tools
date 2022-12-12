@@ -1182,6 +1182,10 @@ class Metadata(Runner):
         nxsparser = None
         if not hasattr(options, "fileformat"):
             options.fileformat = ""
+        if not options.fileformat:
+            rt, ext = os.path.splitext(options.args[0])
+            if ext and len(ext) > 1 and ext.startswith("."):
+                options.fileformat = ext[1:]
         if root is not None:
             if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                 nxsparser = NXSFileParser(root)
