@@ -1086,7 +1086,7 @@ class Metadata(Runner):
                 if ext and len(ext) > 1 and ext.startswith("."):
                     options.fileformat = ext[1:]
             try:
-                if options.fileformat in ['nxs', 'h5', 'nx', 'hdf5']:
+                if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                     nxfl = filewriter.open_file(
                         options.args[0], readonly=True,
                         writer=wrmodule)
@@ -1180,8 +1180,10 @@ class Metadata(Runner):
                                 usercopylist.append(line[:2])
         result = None
         nxsparser = None
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
         if root is not None:
-            if options.fileformat in ['nxs', 'h5', 'nx', 'hdf5']:
+            if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                 nxsparser = NXSFileParser(root)
                 nxsparser.valuestostore = values
                 nxsparser.group_postfix = options.group_postfix
