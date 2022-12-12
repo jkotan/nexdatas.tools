@@ -1182,7 +1182,7 @@ class Metadata(Runner):
         nxsparser = None
         if not hasattr(options, "fileformat"):
             options.fileformat = ""
-        if not options.fileformat:
+        if options.args and not options.fileformat:
             rt, ext = os.path.splitext(options.args[0])
             if ext and len(ext) > 1 and ext.startswith("."):
                 options.fileformat = ext[1:]
