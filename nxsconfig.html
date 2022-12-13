@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxsconfig &#8212; NXSTools 3.37.1 documentation</title>
+    <title>nxsconfig &#8212; NXSTools 3.38.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -38,7 +38,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.37</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.38</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -215,31 +215,31 @@ perform the process of component merging.</p>
 <dd>list names of available datasources</dd>
 <dt>list -r [-s &lt;config_server&gt;] [-n]</dt>
 <dd>list names of available profiles</dd>
-<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 …</dt>
+<dt>show [-s &lt;config_server&gt;] [-m] [-o &lt;dir&gt;] component_name1 component_name2 ...</dt>
 <dd>show components with given names</dd>
-<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 …</dt>
+<dt>show -d [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] dsource_name1 dsource_name2 ...</dt>
 <dd>show datasources with given names</dd>
-<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 …</dt>
+<dt>show -r [-s &lt;config_server&gt;]  [-o &lt;dir&gt;] profile_name1 profile_name2 ...</dt>
 <dd>show profiles with given names</dd>
-<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 …</dt>
+<dt>upload [-s &lt;config_server&gt;] [-m] [-i &lt;dir&gt;] [-f] component_name1 component_name2 ...</dt>
 <dd>load components from given files</dd>
-<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 …</dt>
+<dt>upload -d [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] dsource_name1 dsource_name2 ...</dt>
 <dd>load datasources from given files</dd>
-<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 …</dt>
+<dt>upload -r [-s &lt;config_server&gt;]  [-i &lt;dir&gt;] [-f] profile_name1 profile_name2 ...</dt>
 <dd>load profiles from given files</dd>
-<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 …</dt>
+<dt>get [-s &lt;config_server&gt;]  [-n] component_name1 component_name2 ...</dt>
 <dd>get merged configuration of components</dd>
-<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 …</dt>
+<dt>delete [-s &lt;config_server&gt;] [-f] component_name1 component_name2 ...</dt>
 <dd>delete components with given names</dd>
-<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 …</dt>
+<dt>delete -d [-s &lt;config_server&gt;] [-f] dsource_name1 dsource_name2 ...</dt>
 <dd>delete datasources with given names</dd>
-<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 …</dt>
+<dt>delete -r [-s &lt;config_server&gt;] [-f] profile_name1 profile_name2 ...</dt>
 <dd>delete profiles with given names</dd>
-<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt>
+<dt>sources [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt>
 <dd>get a list of component datasources</dd>
-<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 …</dt>
+<dt>components [-s &lt;config_server&gt;] [-n] component_name1 component_name2 ...</dt>
 <dd>get a list of dependent components</dd>
-<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 …</dt>
+<dt>variables [-s &lt;config_server&gt;] [-m] [-n] component_name1 component_name2 ...</dt>
 <dd>get a list of component variables</dd>
 <dt>data [-s &lt;config_server&gt;] json_data</dt>
 <dd>set values of component variables</dd>
@@ -249,15 +249,15 @@ perform the process of component merging.</p>
 <dd>get a list of datasource record names</dd>
 <dt>servers [-s &lt;config_server/host&gt;] [-n]</dt>
 <dd>get lists of configuration servers from the current tango host</dd>
-<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
+<dt>describe [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt>
 <dd>show all parameters of given components</dd>
-<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 …</dt>
+<dt>describe|info -d [-s &lt;config_server&gt;] [-n] dsource_name1 dsource_name2 ...</dt>
 <dd>show all parameters of given datasources</dd>
-<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
+<dt>info [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt>
 <dd>show source parameters of given components</dd>
-<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 …</dt>
+<dt>info -r [-s &lt;config_server&gt;]  [-n] profile_name1 profile_name2 ...</dt>
 <dd>show general parameters of given profiles</dd>
-<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 …</dt>
+<dt>geometry [-s &lt;config_server&gt;] [-m | -p] [-n] component_name1 component_name2 ...</dt>
 <dd>show transformation parameters of given components</dd>
 </dl>
 </dd>
@@ -283,7 +283,7 @@ perform the process of component merging.</p>
 <tr><td>&#160;</td><td>make use mandatory components as well</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">-p</span>, <span class="option">--private</span></kbd></td>
-<td>make use private components, i.e. starting with ‘__’</td></tr>
+<td>make use private components, i.e. starting with '__'</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">-n</span>, <span class="option">--no-newlines</span></kbd></td>
 </tr>

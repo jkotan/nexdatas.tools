@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.37.1 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.38.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.37</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.38</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1262,7 +1262,7 @@
                 <span class="k">if</span> <span class="n">ext</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
                     <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nxs&#39;</span><span class="p">,</span> <span class="s1">&#39;h5&#39;</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;hdf5&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nxs&#39;</span><span class="p">,</span> <span class="s1">&#39;h5&#39;</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ndf&#39;</span><span class="p">]:</span>
                     <span class="n">nxfl</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span>
                         <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">writer</span><span class="o">=</span><span class="n">wrmodule</span><span class="p">)</span>
@@ -1356,8 +1356,14 @@
                                 <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">nxsparser</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;fileformat&quot;</span><span class="p">):</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span><span class="p">:</span>
+            <span class="n">rt</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">ext</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ext</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
         <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nxs&#39;</span><span class="p">,</span> <span class="s1">&#39;h5&#39;</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;hdf5&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nxs&#39;</span><span class="p">,</span> <span class="s1">&#39;h5&#39;</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ndf&#39;</span><span class="p">]:</span>
                 <span class="n">nxsparser</span> <span class="o">=</span> <span class="n">NXSFileParser</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
                 <span class="n">nxsparser</span><span class="o">.</span><span class="n">valuestostore</span> <span class="o">=</span> <span class="n">values</span>
                 <span class="n">nxsparser</span><span class="o">.</span><span class="n">group_postfix</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">group_postfix</span>
