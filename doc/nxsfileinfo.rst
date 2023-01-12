@@ -125,7 +125,9 @@ Options:
    -j SAMPLEID, --sample-id SAMPLEID
                         sampleId
    --sample-id-from-name  get sampleId from the sample name
-
+   -y INSTRUMENTID, --instrument-id INSTRUMENTID
+                        instrumentId
+   --raw-instrument-id   leave raw instrument id
    -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
                         beamtime metadata file
    -s SCIENTIFICMETA, --scientific-meta SCIENTIFICMETA

@@ -2604,6 +2604,7 @@ For more help:
             ],
         ]
         sids = ["H20/1233123", "sample/12343"]
+        iids = ["/fsec/e01", "/fsec/e02"]
 
         for k, arg in enumerate(args):
             filename = arg[0]
@@ -2620,21 +2621,24 @@ For more help:
             techniques = arg[9]
             ltech = ltechs[k]
             sid = sids[k]
+            iid = iids[k]
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
                  ' -i 12344321 --pid-without-filename -q %s -j %s '
-                 % (filename, self.flags, techniques, sid)).split(),
+                 '  --instrument-id %s '
+                 % (filename, self.flags, techniques, sid, iid)).split(),
                 ('nxsfileinfo metadata %s %s  '
                  ' --beamtimeid 12344321 '
                  '--attributes units,NX_class --techniques %s --sample-id %s '
-                 % (filename, self.flags, techniques, sid)).split(),
+                 ' -y %s '
+                 % (filename, self.flags, techniques, sid, iid)).split(),
                 ('nxsfileinfo metadata %s %s -a units,NX_class'
-                 ' --beamtimeid 12344321 -d --techniques %s -j %s'
-                 % (filename, self.flags, techniques, sid)).split(),
+                 ' --beamtimeid 12344321 -d --techniques %s -j %s -y %s '
+                 % (filename, self.flags, techniques, sid, iid)).split(),
                 ('nxsfileinfo metadata %s %s --attributes units,NX_class -q %s'
-                 ' -i 12344321 --sample-id %s '
-                 % (filename, self.flags, techniques, sid)).split(),
+                 ' -i 12344321 --sample-id %s  --instrument-id %s '
+                 % (filename, self.flags, techniques, sid, iid)).split(),
             ]
 
             wrmodule = WRITERS[self.writer]
@@ -2692,6 +2696,7 @@ For more help:
                     res = {'pid': '12344321/12345',
                            'techniques': ltech,
                            'sampleId': sid,
+                           'instrumentId': iid,
                            'scientificMetadata':
                            {'name': 'entry12345',
                             'data': {'NX_class': 'NXdata'},
@@ -3639,6 +3644,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -3890,6 +3896,7 @@ For more help:
                         'contactEmail': 'robust.robust@robust.com',
                         'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
+                        'instrumentId': '/petra3/p01',
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'datasetName': 'mymeta2_00011',
                         'description':
@@ -4152,6 +4159,7 @@ For more help:
                         'contactEmail': 'robust.robust@robust.com',
                         'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
+                        'instrumentId': '/petra3/p01',
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'datasetName': 'mymeta2_00011',
                         'description':
@@ -4453,6 +4461,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -4747,6 +4756,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -5038,6 +5048,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -5328,6 +5339,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -5618,6 +5630,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -5912,6 +5925,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -6211,6 +6225,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -6505,6 +6520,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -6796,6 +6812,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -7086,6 +7103,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -7376,6 +7394,7 @@ For more help:
                             'p01dmgt', 'p01staff'],
                         "datasetName": "%s_12345" % fname,
                         "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -7447,14 +7466,14 @@ For more help:
           "userId": "987654321",
           "username": "piquant"
         },
-          "beamline": "p01",
-          "beamlineAlias": "p01",
+          "beamline": "scdd01",
+          "beamlineAlias": "scdd01",
           "beamtimeId": "16171271",
           "contact": "hilarious.hilarious@hilarious.com",
-          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "corePath": "/asap3/fs-sc/gpfs/scdd01/2020/data/12345678",
           "eventEnd": "2020-01-21T12:37:00Z",
           "eventStart": "2020-01-20T01:05:00Z",
-          "facility": "PETRA III",
+          "facility": "FS-SC",
           "generated": "2020-01-20T00:10:00Z",
           "leader": {
           "email": "feathered.feathered@feathered.com",
@@ -7663,9 +7682,10 @@ For more help:
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
-                            'p01dmgt', 'p01staff'],
+                            'scdd01dmgt', 'scdd01staff'],
                         "datasetName": "%s_12345" % fname,
-                        "creationLocation": "/DESY/PETRA III/p01",
+                        "creationLocation": "/DESY/FS-SC/scdd01",
+                        'instrumentId': '/fs-sc/scdd01',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -7697,7 +7717,7 @@ For more help:
                             }
                         },
                         "sourceFolder":
-                        "/asap3/petra3/gpfs/p01/2020/data/12345678",
+                        "/asap3/fs-sc/gpfs/scdd01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
                         "updatedAt": "2020-01-20T00:10:00Z",
@@ -7852,6 +7872,7 @@ For more help:
                     "contactEmail": "robust.robust@robust.com",
                     "createdAt": "2020-01-20T00:10:00Z",
                     "creationLocation": "/DESY/PETRA III/P01",
+                    'instrumentId': '/petra3/p01',
                     "description":
                     "beautiful-cornflower-wallaby-of-agreement",
                     # "endTime": "2020-01-21T12:37:00Z",
@@ -7902,14 +7923,14 @@ For more help:
           "userId": "987654321",
           "username": "piquant"
         },
-          "beamline": "p01",
-          "beamlineAlias": "p01",
+          "beamline": "p02",
+          "beamlineAlias": "p02",
           "beamtimeId": "16171271",
           "contact": "hilarious.hilarious@hilarious.com",
-          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "corePath": "/asap3/petra3/gpfs/p02/2020/data/12345678",
           "eventEnd": "2020-01-21T12:37:00Z",
           "eventStart": "2020-01-20T01:05:00Z",
-          "facility": "PETRA III",
+          "facility": "PETRA IV",
           "generated": "2020-01-20T00:10:00Z",
           "leader": {
           "email": "feathered.feathered@feathered.com",
@@ -8084,7 +8105,8 @@ For more help:
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         'datasetName': "%s_12345" % scanname,
-                        "creationLocation": "/DESY/PETRA III/p01",
+                        "creationLocation": "/DESY/PETRA IV/p02",
+                        'instrumentId': '/petra4/p02',
                         # "description":
                         # "beautiful-cornflower-wallaby-of-agreement",
                         # "endTime": "2020-01-21T12:37:00Z",
@@ -8092,7 +8114,7 @@ For more help:
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
-                            'p01dmgt', 'p01staff'],
+                            'p02dmgt', 'p02staff'],
                         "ownerEmail": "feathered.feathered@feathered.com",
                         "principalInvestigator": "robust.robust@robust.com",
                         "proposalId": "16171271",
@@ -8157,7 +8179,7 @@ For more help:
                             }
                         },
                         "sourceFolder":
-                        "/asap3/petra3/gpfs/p01/2020/data/12345678",
+                        "/asap3/petra3/gpfs/p02/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
                         "updatedAt": "2020-01-20T00:10:00Z",
