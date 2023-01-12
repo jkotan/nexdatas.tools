@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Dec 12, 2022" "3.38" "NXSTools"
+.TH "NXSTOOLS" "1" "Jan 12, 2023" "3.39" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1780,6 +1780,12 @@ generate pid with file name
 .BI \-q \ TECHNIQUES\fP,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
 spaces).The default: \(aq\(aq
+.TP
+.BI \-j \ SAMPLEID\fP,\fB \ \-\-sample\-id \ SAMPLEID
+sampleId
+.TP
+.B \-\-sample\-id\-from\-name
+get sampleId from the sample name
 .TP
 .BI \-b \ BEAMTIMEMETA\fP,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
@@ -5854,6 +5860,29 @@ update pid metadata with dictionary
 \fBpuuid\fP (\fI\%bool\fP) \-\- pid with uuid
 .IP \(bu 2
 \fBpfname\fP (\fI\%bool\fP) \-\- pid with file name
+.UNINDENT
+.TP
+.B Returns
+metadata dictionary
+.TP
+.B Return type
+\fI\%dict\fP <\fI\%str\fP, \fIany\fP>
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B update_sampleid(metadata, sampleid=None, sidfromname=False)
+update techniques
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBmetadata\fP (\fI\%dict\fP <\fI\%str\fP, \fIany\fP>) \-\- metadata dictionary to merge in
+.IP \(bu 2
+\fBsampleid\fP (\fI\%str\fP) \-\- sample id
+.IP \(bu 2
+\fBsidfromname\fP (\fI\%bool\fP) \-\- sample id from its name
 .UNINDENT
 .TP
 .B Returns

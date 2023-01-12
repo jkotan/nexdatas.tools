@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Dec 12, 2022" "3.38" "NXSTools"
+.TH "NXSFILEINFO" "1" "Jan 12, 2023" "3.39" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -211,6 +211,12 @@ generate pid with file name
 .BI \-q \ TECHNIQUES\fP,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
 spaces).The default: \(aq\(aq
+.TP
+.BI \-j \ SAMPLEID\fP,\fB \ \-\-sample\-id \ SAMPLEID
+sampleId
+.TP
+.B \-\-sample\-id\-from\-name
+get sampleId from the sample name
 .TP
 .BI \-b \ BEAMTIMEMETA\fP,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file

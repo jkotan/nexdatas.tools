@@ -122,6 +122,10 @@ Options:
    -q TECHNIQUES, --techniques TECHNIQUES
                         names of techniques (separated by commas without
                         spaces).The default: ''
+   -j SAMPLEID, --sample-id SAMPLEID
+                        sampleId
+   --sample-id-from-name  get sampleId from the sample name
+
    -b BEAMTIMEMETA, --beamtime-meta BEAMTIMEMETA
                         beamtime metadata file
    -s SCIENTIFICMETA, --scientific-meta SCIENTIFICMETA

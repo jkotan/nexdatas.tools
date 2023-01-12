@@ -2602,8 +2602,8 @@ For more help:
                     'http://purl.org/pan-science/PaNET/PaNET01098'
                 },
             ],
-
         ]
+        sids = ["H20/1233123", "sample/12343"]
 
         for k, arg in enumerate(args):
             filename = arg[0]
@@ -2619,21 +2619,22 @@ For more help:
             formula = arg[8]
             techniques = arg[9]
             ltech = ltechs[k]
+            sid = sids[k]
 
             commands = [
                 ('nxsfileinfo metadata %s %s -a units,NX_class '
-                 ' -i 12344321 --pid-without-filename -q %s'
-                 % (filename, self.flags, techniques)).split(),
+                 ' -i 12344321 --pid-without-filename -q %s -j %s '
+                 % (filename, self.flags, techniques, sid)).split(),
                 ('nxsfileinfo metadata %s %s  '
                  ' --beamtimeid 12344321 '
-                 '--attributes units,NX_class --techniques %s'
-                 % (filename, self.flags, techniques)).split(),
+                 '--attributes units,NX_class --techniques %s --sample-id %s '
+                 % (filename, self.flags, techniques, sid)).split(),
                 ('nxsfileinfo metadata %s %s -a units,NX_class'
-                 ' --beamtimeid 12344321 -d --techniques %s'
-                 % (filename, self.flags, techniques)).split(),
+                 ' --beamtimeid 12344321 -d --techniques %s -j %s'
+                 % (filename, self.flags, techniques, sid)).split(),
                 ('nxsfileinfo metadata %s %s --attributes units,NX_class -q %s'
-                 ' -i 12344321 '
-                 % (filename, self.flags, techniques)).split(),
+                 ' -i 12344321 --sample-id %s '
+                 % (filename, self.flags, techniques, sid)).split(),
             ]
 
             wrmodule = WRITERS[self.writer]
@@ -2690,6 +2691,7 @@ For more help:
                     # print(dct)
                     res = {'pid': '12344321/12345',
                            'techniques': ltech,
+                           'sampleId': sid,
                            'scientificMetadata':
                            {'name': 'entry12345',
                             'data': {'NX_class': 'NXdata'},
@@ -2747,6 +2749,7 @@ For more help:
                 "water",
                 "H20",
                 'technique: "saxs"',
+                'sample_id: "water/1234"'
             ],
             [
                 "mmyfileinfo.nxs",
@@ -2763,9 +2766,11 @@ For more help:
                 '  - "saxs"\n'
                 '  - "PaNET01098"\n'
                 'techniques_pids:\n'
-                '  - "MNT1234353453ipo4pi"\n'
+                '  - "MNT1234353453ipo4pi"\n',
+                'water/2134'
             ],
         ]
+        sids = ["water/1234", "water/2134"]
 
         ltechs = [
             [
@@ -2808,6 +2813,8 @@ For more help:
             smpl = arg[7]
             formula = arg[8]
             desc = arg[9]
+            sdesc = arg[10]
+            sid = sids[k]
             ltech = ltechs[k]
 
             commands = [
@@ -2855,6 +2862,8 @@ For more help:
                 sattr.write(inssname)
                 sname = sample.create_field("name", "string")
                 sname.write(smpl)
+                sample.create_field(
+                    "description", "string").write(sdesc)
                 sfml = sample.create_field("chemical_formula", "string")
                 sfml.write(formula)
 
@@ -2882,6 +2891,7 @@ For more help:
                     # print(dct)
                     res = {'pid': '12344321/12345',
                            'techniques': ltech,
+                           'sampleId': sid,
                            'scientificMetadata':
                            {'name': 'entry12345',
                             'experiment_description': {
@@ -2901,6 +2911,7 @@ For more help:
                             'sample': {
                                 'NX_class': 'NXsample',
                                 'chemical_formula': {'value': '%s' % arg[8]},
+                                'description': {'value': '%s' % sdesc},
                                 'name': {'value': '%s' % arg[7]}},
                             'start_time': {
                                 'value': '%s' % arg[5]},
@@ -3523,6 +3534,7 @@ For more help:
 
             commands = [
                 ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                 ' --sample-id-from-name '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
                 ('nxsfileinfo metadata %s %s '
@@ -3530,13 +3542,16 @@ For more help:
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
+                 ' --sample-id-from-name '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
                 ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                 ' --sample-id-from-name '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
                 ('nxsfileinfo metadata %s %s '
+                 ' --sample-id-from-name '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -3612,9 +3627,9 @@ For more help:
                     except Exception:
                         self.assertEqual(
                             chmod2, str(oct(status.st_mode & 0o777)))
-                    # print(dct)
                     res = {
                         'techniques': [],
+                        'sampleId': arg[7],
                         "contactEmail": "robust.robust@robust.com",
                         "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",

@@ -997,6 +997,22 @@ standardComponentVariables = {
     },
     'description': {
     },
+    'sampledescriptiontext': {
+        'sname': {
+            'default': 'sample',
+            'doc': "sample group name (string)"
+        },
+        'description': {
+            'default': "",
+            'doc': "sample description or sampleId (string)"
+        },
+    },
+    'sampledescription': {
+        'sname': {
+            'default': 'sample',
+            'doc': "sample group name (string)"
+        },
+    },
     'defaultinstrument': {
         'control': {
             'default': None,
@@ -1502,6 +1518,13 @@ standardComponentTemplateFiles = {
     ],
     'descriptiontext': [
         'descriptiontext.xml',
+    ],
+    'sampledescription': [
+        'sampledescription.xml',
+        'sample_description.ds.xml',
+    ],
+    'sampledescriptiontext': [
+        'sampledescriptiontext.xml',
     ],
     'default': [
         'default.xml',
