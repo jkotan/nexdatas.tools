@@ -782,6 +782,52 @@ class BeamtimeLoader(object):
                 metadata["datasetName"] = metadata["pid"]
         return metadata
 
+    def update_sampleid(self, metadata, sampleid=None, sidfromname=False):
+        """ update techniques
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :param sampleid: sample id
+        :type sampleid: :obj:`str`
+        :param sidfromname: sample id from its name
+        :type sidfromname: :obj:`bool`
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if sampleid:
+            metadata["sampleId"] = sampleid
+        elif sidfromname:
+            if "scientificMetadata" in metadata and \
+               "sample" in metadata["scientificMetadata"] and \
+               "name" in metadata["scientificMetadata"]["sample"]:
+                metadata["sampleId"] = \
+                    metadata["scientificMetadata"]["sample"]["name"]
+        else:
+            try:
+                if "scientificMetadata" in metadata and \
+                   "sample" in metadata["scientificMetadata"] and \
+                   "description" in metadata["scientificMetadata"]["sample"]:
+                    gdes = \
+                        metadata["scientificMetadata"]["sample"]["description"]
+                    if "value" in gdes:
+                        sampleid = None
+                        try:
+                            des = yaml.safe_load(gdes["value"])
+                            if "sample_id" in des:
+                                sampleid = des["sample_id"]
+                            elif "sampleId" in des:
+                                sampleid = des["sampleId"]
+                            else:
+                                sampleid = gdes
+                        except Exception:
+                            sampleid = gdes
+                        if sampleid:
+                            metadata["sampleId"] = sampleid
+            except Exception as e:
+                sys.stderr.write("nxsfileinfo: '%s'\n"
+                                 % str(e))
+        return metadata
+
     def update_techniques(self, metadata, techniques=None):
         """ update techniques
 
@@ -970,6 +1016,14 @@ class Metadata(Runner):
             " (separated by commas without spaces)."
             "The default: ''",
             dest="techniques", default="")
+        self._parser.add_argument(
+            "-j", "--sample-id",
+            help="sampleId",
+            dest="sampleid", default="")
+        self._parser.add_argument(
+            "--sample-id-from-name", action="store_true",
+            default=False, dest="sampleidfromname",
+            help="get sampleId from the sample name")
         self._parser.add_argument(
             "-m", "--raw-metadata", action="store_true",
             default=False, dest="rawscientific",
@@ -1226,6 +1280,14 @@ class Metadata(Runner):
                 if hasattr(options, "techniques"):
                     techniques = options.techniques
                 result = bl.update_techniques(result, techniques)
+
+                sampleid = None
+                if hasattr(options, "sampleid"):
+                    sampleid = options.sampleid
+                sid_from_name = None
+                if hasattr(options, "sampleidfromname"):
+                    sid_from_name = options.sampleidfromname
+                result = bl.update_sampleid(result, sampleid, sid_from_name)
             result = bl.remove_metadata(
                 result, usercopymap or None,
                 usercopylist or None, copymapfield)
@@ -1261,6 +1323,14 @@ class Metadata(Runner):
                         techniques = options.techniques
                     result = bl.update_techniques(result, techniques)
 
+                    sampleid = None
+                    if hasattr(options, "sampleid"):
+                        sampleid = options.sampleid
+                    sid_from_name = None
+                    if hasattr(options, "sampleidfromname"):
+                        sid_from_name = options.sampleidfromname
+                    result = bl.update_sampleid(
+                        result, sampleid, sid_from_name)
                 result = bl.remove_metadata(
                     result, usercopymap or None,
                     usercopylist or None, copymapfield)
@@ -1295,6 +1365,14 @@ class Metadata(Runner):
                         if hasattr(options, "techniques"):
                             techniques = options.techniques
                         rst = bl.update_techniques(rst, techniques)
+                        sampleid = None
+                        if hasattr(options, "sampleid"):
+                            sampleid = options.sampleid
+                        sid_from_name = None
+                        if hasattr(options, "sampleidfromname"):
+                            sid_from_name = options.sampleidfromname
+                        result = bl.update_sampleid(
+                            result, sampleid, sid_from_name)
                     rst = bl.remove_metadata(
                         rst, usercopymap or None,
                         usercopylist or None, copymapfield)
