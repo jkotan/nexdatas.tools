@@ -316,6 +316,11 @@ class General(Runner):
 
 class BeamtimeLoader(object):
 
+    facilityalias = {
+        "PETRA III": "petra3",
+        "PETRA IV": "petra4",
+    }
+
     btmdmap = {
         "principalInvestigator": "pi.email",
         # "pid": "beamtimeId",   # ?? is not unique for dataset
@@ -334,6 +339,7 @@ class BeamtimeLoader(object):
 
     strcre = {
         "creationLocation": "/DESY/{facility}/{beamlineAlias}",
+        "instrumentId": "/{facility}/{beamline}",
         "type": "raw",
         "isPublished": False,
         "ownerGroup": "{beamtimeId}-dmgt",
@@ -783,7 +789,7 @@ class BeamtimeLoader(object):
         return metadata
 
     def update_sampleid(self, metadata, sampleid=None, sidfromname=False):
-        """ update techniques
+        """ update sampleid
 
         :param metadata: metadata dictionary to merge in
         :type metadata: :obj:`dict` <:obj:`str`, `any`>
@@ -830,6 +836,22 @@ class BeamtimeLoader(object):
             except Exception as e:
                 sys.stderr.write("nxsfileinfo: '%s'\n"
                                  % str(e))
+        return metadata
+
+    def update_instrumentid(self, metadata):
+        """ update instrument id
+
+        :param metadata: metadata dictionary to merge in
+        :type metadata: :obj:`dict` <:obj:`str`, `any`>
+        :returns: metadata dictionary
+        :rtype: :obj:`dict` <:obj:`str`, `any`>
+        """
+        if "instrumentId" in metadata:
+            ins = metadata["instrumentId"]
+            for fac, alias in self.facilityalias.items():
+                ins = ins.replace(fac, alias)
+            ins = ins.lower()
+            metadata["instrumentId"] = ins
         return metadata
 
     def update_techniques(self, metadata, techniques=None):
@@ -1028,6 +1050,14 @@ class Metadata(Runner):
             "--sample-id-from-name", action="store_true",
             default=False, dest="sampleidfromname",
             help="get sampleId from the sample name")
+        self._parser.add_argument(
+            "-y", "--instrument-id",
+            help="instrumentId",
+            dest="instrumentid", default="")
+        self._parser.add_argument(
+            "--raw-instrument-id", action="store_true",
+            default=False, dest="rawinstrumentid",
+            help="leave raw instrument id")
         self._parser.add_argument(
             "-m", "--raw-metadata", action="store_true",
             default=False, dest="rawscientific",
@@ -1292,6 +1322,16 @@ class Metadata(Runner):
                 if hasattr(options, "sampleidfromname"):
                     sid_from_name = options.sampleidfromname
                 result = bl.update_sampleid(result, sampleid, sid_from_name)
+                rawinstrumentid = None
+                if hasattr(options, "rawinstrumentid"):
+                    rawinstrumentid = options.rawinstrumentid
+                if hasattr(options, "instrumentid"):
+                    instrumentid = options.instrumentid
+                    if instrumentid:
+                        result["instrumentId"] = instrumentid
+                    elif "instrumentId" in result and \
+                         result["instrumentId"] and not rawinstrumentid:
+                        result = bl.update_instrumentid(result)
             result = bl.remove_metadata(
                 result, usercopymap or None,
                 usercopylist or None, copymapfield)
@@ -1335,6 +1375,16 @@ class Metadata(Runner):
                         sid_from_name = options.sampleidfromname
                     result = bl.update_sampleid(
                         result, sampleid, sid_from_name)
+                    rawinstrumentid = None
+                    if hasattr(options, "rawinstrumentid"):
+                        rawinstrumentid = options.rawinstrumentid
+                    if hasattr(options, "instrumentid"):
+                        instrumentid = options.instrumentid
+                        if instrumentid:
+                            result["instrumentId"] = instrumentid
+                        elif "instrumentId" in result and \
+                             result["instrumentId"] and not rawinstrumentid:
+                            result = bl.update_instrumentid(result)
                 result = bl.remove_metadata(
                     result, usercopymap or None,
                     usercopylist or None, copymapfield)
@@ -1375,8 +1425,17 @@ class Metadata(Runner):
                         sid_from_name = None
                         if hasattr(options, "sampleidfromname"):
                             sid_from_name = options.sampleidfromname
-                        result = bl.update_sampleid(
-                            result, sampleid, sid_from_name)
+                        rst = bl.update_sampleid(
+                            rst, sampleid, sid_from_name)
+                        if hasattr(options, "rawinstrumentid"):
+                            rawinstrumentid = options.rawinstrumentid
+                        if hasattr(options, "instrumentid"):
+                            instrumentid = options.instrumentid
+                            if instrumentid:
+                                rst["instrumentId"] = instrumentid
+                            elif "instrumentId" in rst and \
+                                 rst["instrumentId"] and not rawinstrumentid:
+                                rst = bl.update_instrumentid(rst)
                     rst = bl.remove_metadata(
                         rst, usercopymap or None,
                         usercopylist or None, copymapfield)

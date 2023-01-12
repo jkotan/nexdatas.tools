@@ -1,3 +1,9 @@
+2023-01-12 Jan Kotanski <jankotan@gmail.com>
+	* add sampledescription and sampledescriptiontext components (#421)
+	* set metadata sampleId  --sample-id and --sample-id-from-name parameters (#421)
+	* set metadata instrumentId with --instrument-id parameter (#422)
+	* tagged as v3.39.0
+
 2022-12-12 Jan Kotanski <jankotan@gmail.com>
 	* add append_scicat_dataset function to pyeval.scdataset.py (#419)
 	* add ndf to nexus file extension lists (#417)
