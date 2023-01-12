@@ -800,8 +800,12 @@ class BeamtimeLoader(object):
             if "scientificMetadata" in metadata and \
                "sample" in metadata["scientificMetadata"] and \
                "name" in metadata["scientificMetadata"]["sample"]:
-                metadata["sampleId"] = \
-                    metadata["scientificMetadata"]["sample"]["name"]
+                sname = metadata["scientificMetadata"]["sample"]["name"]
+                if isinstance(sname, dict):
+                    if "value" in sname.keys() and sname["value"]:
+                        metadata["sampleId"] = sname["value"]
+                elif sname:
+                    metadata["sampleId"] = sname
         else:
             try:
                 if "scientificMetadata" in metadata and \
@@ -818,9 +822,9 @@ class BeamtimeLoader(object):
                             elif "sampleId" in des:
                                 sampleid = des["sampleId"]
                             else:
-                                sampleid = gdes
+                                sampleid = gdes["value"]
                         except Exception:
-                            sampleid = gdes
+                            sampleid = gdes["value"]
                         if sampleid:
                             metadata["sampleId"] = sampleid
             except Exception as e:

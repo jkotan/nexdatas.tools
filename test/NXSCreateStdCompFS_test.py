@@ -311,7 +311,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      "empty", "groupsecop", "keithley", "maia",
                      "maiadimension", "maiaflux", "msnsar", "mssar",
                      "parametercopymap", "pinhole",
-                     "pointdet", "qbpm", "samplehkl", "secop",
+                     "pointdet", "qbpm", "sampledescription",
+                     "sampledescriptiontext", "samplehkl", "secop",
                      "singlesecop", "slit", "source", "starttime",
                      "tango", "undulator"])
                 self.assertEqual(lines[-1], "")
@@ -335,7 +336,8 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                  "empty", "groupsecop", "keithley", "maia",
                  "maiadimension", "maiaflux",
                  "parametercopymap", "pinhole",
-                 "pointdet", "qbpm", "samplehkl",
+                 "pointdet", "qbpm", "sampledescription",
+                 "sampledescriptiontext", "samplehkl",
                  "secop", "singlesecop", "slit",
                  "source", "starttime", "tango", "undulator"]
         args = [
