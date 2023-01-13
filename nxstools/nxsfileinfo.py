@@ -1767,7 +1767,7 @@ class Sample(Runner):
     """ Sample runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of all scan files"
+    description = "show description of sample"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1937,7 +1937,7 @@ class Instrument(Runner):
     """ Instrument runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of all scan files"
+    description = "show description of instrument"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
