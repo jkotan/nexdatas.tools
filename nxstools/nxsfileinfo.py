@@ -1511,6 +1511,12 @@ class OrigDatablock(Runner):
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
         self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
+            "-b", "--beamline", dest="beamline",
+            help=("beamline"))
+        self._parser.add_argument(
             "-w", "--owner-group",
             default="", dest="ownergroup",
             help="owner group name. Default is {beamtimeid}-dmgt")
@@ -1686,18 +1692,29 @@ class OrigDatablock(Runner):
             result["accessGroups"] = accessgroups
         if options.pid:
             result["datasetId"] = options.pid
-        if "datasetId" in result \
+        beamtimeid = ""
+        if hasattr(options, "beamtimeid") and options.beamtimeid:
+            beamtimeid = options.beamtimeid
+        if not beamtimeid and "datasetId" in result \
            and result["datasetId"] and \
            len(result["datasetId"].split("/")) > 1:
-            if "ownerGroup" not in result:
-                result["ownerGroup"] = "%s-dmgt" % (
-                    result["datasetId"].split("/")[1])
-            if "accessGroups" not in result:
-                result["accessGroups"] = [
-                    "%s-clbt" % (
-                        result["datasetId"].split("/")[1]),
-                    "%s-dmgt" % (
-                        result["datasetId"].split("/")[1])]
+            beamtimeid = result["datasetId"].split("/")[1]
+        if "ownerGroup" not in result and beamtimeid:
+            result["ownerGroup"] = "%s-dmgt" % (beamtimeid)
+        if "accessGroups" not in result:
+            accessgroups = []
+            if beamtimeid:
+                accessgroups = [
+                    "%s-clbt" % (beamtimeid),
+                    "%s-part" % (beamtimeid),
+                    "%s-dmgt" % (beamtimeid)]
+            if hasattr(options, "beamline") and options.beamline:
+                accessgroups.extend([
+                    "%sdmgt" % (options.beamline),
+                    "%sstaff" % (options.beamline)
+                ])
+            if accessgroups:
+                result["accessGroups"] = accessgroups
         return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
@@ -1710,6 +1727,334 @@ class OrigDatablock(Runner):
         """
         try:
             metadata = self.datablock(options)
+            if metadata:
+                if options.output:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
+                else:
+                    print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
+class Sample(Runner):
+
+    """ Sample runner"""
+
+    #: (:obj:`str`) command description
+    description = "show description of all scan files"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo sample -i petra3/h2o/234234 -d 'HH water' " \
+        + "-s ~/cm.json \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-s", "--sample-id", dest="sampleid",
+            help=("sample id"))
+        self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
+            "-b", "--beamline", dest="beamline",
+            help=("beamline"))
+        self._parser.add_argument(
+            "-d", "--description", dest="description",
+            help=("sample description"))
+        self._parser.add_argument(
+            "-r", "--owner", dest="owner",
+            help=("sample owner"))
+        self._parser.add_argument(
+            "-p", "--published", dest="published", action="store_true",
+            help=("sample is published"), default=False)
+        self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-dmgt")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits, e.g. 0o662"))
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            "-m", "--sample-characteristics", dest="characteristicsmeta",
+            help=("sample characteristics metadata file"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        self.show(options)
+
+    def sample(self, options):
+        """ create sample metadata
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        dct = {}
+        result = {}
+
+        if hasattr(options, "sampleid") and options.sampleid:
+            result["sampleId"] = options.sampleid
+        if hasattr(options, "description") and options.description:
+            result["description"] = options.description
+        if hasattr(options, "owner") and options.owner:
+            result["owner"] = options.owner
+        if hasattr(options, "published") and options.published:
+            result["isPublished"] = True
+        else:
+            result["isPublished"] = False
+        if options.ownergroup:
+            result["ownerGroup"] = options.ownergroup
+        if hasattr(options, "beamtimeid") and options.beamtimeid:
+            if "ownerGroup" not in result:
+                result["ownerGroup"] = "%s-dmgt" % (options.beamtimeid)
+        if options.accessgroups is not None:
+            accessgroups = options.accessgroups.split(",")
+            result["accessGroups"] = accessgroups
+        if "accessGroups" not in result:
+            accessgroups = []
+            if hasattr(options, "beamtimeid") and options.beamtimeid:
+                accessgroups = [
+                    "%s-clbt" % (options.beamtimeid),
+                    "%s-part" % (options.beamtimeid),
+                    "%s-dmgt" % (options.beamtimeid)]
+            if hasattr(options, "beamline") and options.beamline:
+                accessgroups.extend([
+                    "%sdmgt" % (options.beamline),
+                    "%sstaff" % (options.beamline)
+                ])
+            if accessgroups:
+                result["accessGroups"] = accessgroups
+        if options.characteristicsmeta:
+            with open(options.characteristicsmeta, "r") as fl:
+                jstr = fl.read()
+                try:
+                    dct = json.loads(jstr)
+                except Exception:
+                    if jstr:
+                        nan = float('nan')    # noqa: F841
+                        dct = eval(jstr)
+        if 'sampleCharacteristics' in dct.keys():
+            dct = dct['sampleCharacteristics']
+        result['sampleCharacteristics'] = dct
+        return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
+
+    def show(self, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        try:
+            metadata = self.sample(options)
+            if metadata:
+                if options.output:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
+                else:
+                    print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
+class Instrument(Runner):
+
+    """ Instrument runner"""
+
+    #: (:obj:`str`) command description
+    description = "show description of all scan files"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo instrument -p /petra3/p00 -n P00 -m " \
+        + "~/cm.json \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-p", "--pid", dest="pid",
+            help=("instrument pid"))
+        self._parser.add_argument(
+            "-n", "--name", dest="name",
+            help=("instrument name"))
+        self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
+            "-b", "--beamline", dest="beamline",
+            help=("beamline"))
+        self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-dmgt")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits, e.g. 0o662"))
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            "-m", "--custom-metadata", dest="custommeta",
+            help=("instrument characteristics metadata file"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        self.show(options)
+
+    def instrument(self, options):
+        """ create instrument metadata
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        dct = {}
+        result = {}
+
+        if hasattr(options, "pid") and options.pid:
+            result["pid"] = options.pid
+        if hasattr(options, "name") and options.name:
+            result["name"] = options.name
+        if options.ownergroup:
+            result["ownerGroup"] = options.ownergroup
+        if hasattr(options, "beamtimeid") and options.beamtimeid:
+            if "ownerGroup" not in result:
+                result["ownerGroup"] = "%s-dmgt" % (options.beamtimeid)
+        if options.accessgroups is not None:
+            accessgroups = options.accessgroups.split(",")
+            result["accessGroups"] = accessgroups
+        if "accessGroups" not in result:
+            accessgroups = []
+            if hasattr(options, "beamtimeid") and options.beamtimeid:
+                accessgroups = [
+                    "%s-clbt" % (options.beamtimeid),
+                    "%s-part" % (options.beamtimeid),
+                    "%s-dmgt" % (options.beamtimeid)]
+            if hasattr(options, "beamline") and options.beamline:
+                accessgroups.extend([
+                    "%sdmgt" % (options.beamline),
+                    "%sstaff" % (options.beamline)
+                ])
+            if accessgroups:
+                result["accessGroups"] = accessgroups
+        if options.custommeta:
+            with open(options.custommeta, "r") as fl:
+                jstr = fl.read()
+                try:
+                    dct = json.loads(jstr)
+                except Exception:
+                    if jstr:
+                        nan = float('nan')    # noqa: F841
+                        dct = eval(jstr)
+        if 'customMetadata' in dct.keys():
+            dct = dct['customMetadata']
+        result['customMetadata'] = dct
+        return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
+
+    def show(self, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        try:
+            metadata = self.instrument(options)
             if metadata:
                 if options.output:
                     chmod = None
@@ -1910,6 +2255,8 @@ def main():
                          ('general', General),
                          ('metadata', Metadata),
                          ('origdatablock', OrigDatablock),
+                         ('sample', Sample),
+                         ('instrument', Instrument),
                          ]
     runners = parser.createSubParsers()
 
