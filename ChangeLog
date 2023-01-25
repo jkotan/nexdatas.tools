@@ -1,4 +1,8 @@
 2023-01-12 Jan Kotanski <jankotan@gmail.com>
+	* add nxsfileinfo sample and instrument metadata creators (#425)
+	* tagged as v3.40.0
+
+2023-01-12 Jan Kotanski <jankotan@gmail.com>
 	* add sampledescription and sampledescriptiontext components (#421)
 	* set metadata sampleId  --sample-id and --sample-id-from-name parameters (#421)
 	* set metadata instrumentId with --instrument-id parameter (#422)
