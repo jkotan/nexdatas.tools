@@ -32,6 +32,7 @@ import pwd
 import grp
 import fnmatch
 import yaml
+import base64
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, FIOFileParser, numpyEncoder)
@@ -1197,10 +1198,10 @@ class Metadata(Runner):
     def metadata(cls, root, options):
         """ get metadata from nexus and beamtime file
 
-        :param options: parser options
-        :type options: :class:`argparse.Namespace`
         :param root: nexus file root
         :type root: :class:`filewriter.FTGroup`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
         :returns: nexus file root metadata
         :rtype: :obj:`str`
         """
@@ -1932,6 +1933,236 @@ class Sample(Runner):
             sys.exit(255)
 
 
+class Attachment(Runner):
+
+    """ Attachment runner"""
+
+    #: (:obj:`str`) command description
+    description = "show description of attachment"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo attachment -i petra3/h2o/234234 -d 'HH water' " \
+        + "-s ~/cm.json \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-a", "--id", dest="atid",
+            help=("attachment id"))
+        self._parser.add_argument(
+            "-t", "--caption", dest="caption",
+            help=("caption text"))
+        self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
+            "-b", "--beamline", dest="beamline",
+            help=("beamline"))
+        self._parser.add_argument(
+            "-d", "--description", dest="description",
+            help=("attachment description"))
+        self._parser.add_argument(
+            "-r", "--owner", dest="owner",
+            help=("attachment owner"))
+        self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-dmgt")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-f", "--file-format", dest="fileformat",
+            help=("input file format, e.g. 'nxs'. "
+                  "Default is defined by the file extension"))
+        self._parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits, e.g. 0o662"))
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+        self._parser.add_argument(
+            'args', metavar='image_file', type=str, nargs="*",
+            help='png or NeXus image file name')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        else:
+            writer = "h5py"
+        if (options.h5cpp and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+        root = None
+        nxfl = None
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
+        if options.args:
+            wrmodule = WRITERS[writer.lower()]
+            if not options.fileformat:
+                rt, ext = os.path.splitext(options.args[0])
+                if ext and len(ext) > 1 and ext.startswith("."):
+                    options.fileformat = ext[1:]
+            try:
+                if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
+                    nxfl = filewriter.open_file(
+                        options.args[0], readonly=True,
+                        writer=wrmodule)
+                    root = nxfl.root()
+                elif options.fileformat in ['fio']:
+                    with open(options.args[0]) as fl:
+                        root = fl.read()
+                elif options.fileformat in ['png']:
+                    with open(options.args[0], "rb") as fl:
+                        root =  b"data:image/png;base64," + \
+                            base64.b64encode(fl.read())
+
+            except Exception:
+                sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                                 % options.args[0])
+                sys.stderr.flush()
+                self._parser.print_help()
+                sys.exit(255)
+
+        self.show(root, options)
+        if nxfl is not None:
+            nxfl.close()
+
+    def attachment(self, root, options):
+        """ get metadata from nexus and beamtime file
+
+        :param root: nexus file root
+        :type root: :class:`filewriter.FTGroup`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: atttachment metadata
+        :rtype: :obj:`str`
+        """
+        result = {}
+
+        if hasattr(options, "atid") and options.atid:
+            result["id"] = options.atid
+        if hasattr(options, "caption") and options.caption:
+            result["caption"] = options.caption
+        if options.ownergroup:
+            result["ownerGroup"] = options.ownergroup
+        if hasattr(options, "beamtimeid") and options.beamtimeid:
+            if "ownerGroup" not in result:
+                result["ownerGroup"] = "%s-dmgt" % (options.beamtimeid)
+        if options.accessgroups is not None:
+            accessgroups = options.accessgroups.split(",")
+            result["accessGroups"] = accessgroups
+        if "accessGroups" not in result:
+            accessgroups = []
+            if hasattr(options, "beamtimeid") and options.beamtimeid:
+                accessgroups = [
+                    "%s-clbt" % (options.beamtimeid),
+                    "%s-part" % (options.beamtimeid),
+                    "%s-dmgt" % (options.beamtimeid)]
+            if hasattr(options, "beamline") and options.beamline:
+                accessgroups.extend([
+                    "%sdmgt" % (options.beamline),
+                    "%sstaff" % (options.beamline)
+                ])
+            if accessgroups:
+                result["accessGroups"] = accessgroups
+
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
+        if options.args and not options.fileformat:
+            rt, ext = os.path.splitext(options.args[0])
+            if ext and len(ext) > 1 and ext.startswith("."):
+                options.fileformat = ext[1:]
+
+        if root is not None:
+            if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
+                pass
+            elif options.fileformat in ['fio']:
+                pass
+            elif options.fileformat in ['png']:
+                result["thumbnail"] = root
+        return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
+
+    def show(self, root, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :param root: nexus file root
+        :type root: :class:`filewriter.FTGroup`
+        """
+        try:
+            metadata = self.attachment(root, options)
+            if metadata:
+                if options.output:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
+                else:
+                    print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
 class Instrument(Runner):
 
     """ Instrument runner"""
@@ -2257,6 +2488,7 @@ def main():
                          ('origdatablock', OrigDatablock),
                          ('sample', Sample),
                          ('instrument', Instrument),
+                         ('attachment', Attachment),
                          ]
     runners = parser.createSubParsers()
 
