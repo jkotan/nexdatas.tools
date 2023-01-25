@@ -2047,7 +2047,7 @@ class Attachment(Runner):
                         root = fl.read()
                 elif options.fileformat in ['png']:
                     with open(options.args[0], "rb") as fl:
-                        root =  b"data:image/png;base64," + \
+                        root = b"data:image/png;base64," + \
                             base64.b64encode(fl.read())
 
             except Exception:
