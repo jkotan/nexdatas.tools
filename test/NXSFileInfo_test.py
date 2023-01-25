@@ -8738,6 +8738,280 @@ For more help:
             if os.path.isdir(fdir):
                 shutil.rmtree(fdir)
 
+    def test_instrument_empty(self):
+        """ test nxsfileinfo instrument
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commands = [
+            ('nxsfileinfo instrument').split(),
+        ]
+
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsfileinfo.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            self.assertEqual('', er)
+            dct = json.loads(vl)
+            res = {
+                "customMetadata": {}
+            }
+            self.myAssertDict(dct, res)
+
+    def test_instrument_parameters(self):
+        """ test nxsfileinfo instrument
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        imfname = '%s/custom-instrument-metadata-p00.json' % (os.getcwd())
+        ofname = '%s/instrument-metadata-p00.json' % (os.getcwd())
+
+        params = {
+            "pid": "/petra3/p00",
+            "name": "P00",
+            "bid": "1312312",
+            "bl": "p02",
+            "ogrp": "1312312-part",
+            "agrps": "1312312-part,1312312-clbt,1312312-dmgt",
+            "chmod": "0o662",
+            "meta": imfname,
+            "output": ofname,
+        }
+
+        commands = [
+            ('nxsfileinfo instrument '
+             ' -p {pid} -n {name} '
+             ' -i {bid} -b {bl} '
+             ' -w {ogrp} -c {agrps} '
+             ' -x {chmod} '
+             ' -m {meta} '
+             ' -o {output} '
+             ''.format(**params)).split(),
+            ('nxsfileinfo instrument '
+             ' --pid {pid} --name {name} '
+             ' --beamtimeid {bid} --beamline {bl} '
+             ' --owner-group {ogrp} --access-groups {agrps} '
+             ' --chmod {chmod} '
+             ' --custom-metadata {meta} '
+             ' --output {output} '
+             ''.format(**params)).split(),
+        ]
+
+        try:
+
+            imfile = '''{
+                "comments": "Awesome comment",
+                "description": {"techniques":["saxs","waxs"]}
+            }
+            '''
+
+            chmod = "0o662"
+            chmod2 = "0662"
+
+            if os.path.isfile(imfname):
+                raise Exception("Test file %s exists" % imfname)
+            with open(imfname, "w") as fl:
+                fl.write(imfile)
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertEqual('', vl.strip())
+
+                with open(ofname) as of:
+                    dct = json.load(of)
+                status = os.stat(ofname)
+                try:
+                    self.assertEqual(
+                        chmod, str(oct(status.st_mode & 0o777)))
+                except Exception:
+                    self.assertEqual(
+                        chmod2, str(oct(status.st_mode & 0o777)))
+                res = {
+                    'accessGroups': [
+                        '1312312-part',
+                        '1312312-clbt',
+                        '1312312-dmgt'],
+                    'customMetadata': {
+                        'comments': 'Awesome comment',
+                        'description': {
+                            'techniques': ['saxs', 'waxs']
+                        }
+                    },
+                    'name': 'P00',
+                    'ownerGroup': '1312312-part',
+                    'pid': '/petra3/p00'
+                }
+
+                self.myAssertDict(dct, res)
+        finally:
+            if os.path.isfile(imfname):
+                os.remove(imfname)
+            if os.path.isfile(ofname):
+                os.remove(ofname)
+
+    def test_sample_empty(self):
+        """ test nxsfileinfo sample
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commands = [
+            ('nxsfileinfo sample').split(),
+        ]
+
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsfileinfo.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            self.assertEqual('', er)
+            dct = json.loads(vl)
+            res = {
+                "isPublished": False,
+                "sampleCharacteristics": {}
+            }
+            self.myAssertDict(dct, res)
+
+    def test_sample_parameters(self):
+        """ test nxsfileinfo sample
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        imfname = '%s/custom-sample-metadata-p00.json' % (os.getcwd())
+        ofname = '%s/sample-metadata-p00.json' % (os.getcwd())
+
+        params = {
+            "sid": "/petra3/sample/234234",
+            "bid": "1312312",
+            "bl": "p02",
+            "des": "HH_Water_1",
+            "ogrp": "1312312-part",
+            "agrps": "1312312-part,1312312-clbt,1312312-dmgt",
+            "chmod": "0o662",
+            "meta": imfname,
+            "output": ofname,
+        }
+
+        commands = [
+            ('nxsfileinfo sample '
+             ' --sample-id {sid} --description {des} --published '
+             ' --beamtimeid {bid} --beamline {bl} '
+             ' --owner-group {ogrp} --access-groups {agrps} '
+             ' --chmod {chmod} '
+             ' --sample-characteristics {meta} '
+             ' --output {output} '
+             ''.format(**params)).split(),
+            ('nxsfileinfo sample '
+             ' -s {sid} -d {des} -p '
+             ' -i {bid} -b {bl} '
+             ' -w {ogrp} -c {agrps} '
+             ' -x {chmod} '
+             ' -m {meta} '
+             ' -o {output} '
+             ''.format(**params)).split(),
+        ]
+
+        try:
+
+            imfile = '''{
+                "comments": "Awesome comment",
+                "formula": "H2O"
+            }
+            '''
+
+            chmod = "0o662"
+            chmod2 = "0662"
+
+            if os.path.isfile(imfname):
+                raise Exception("Test file %s exists" % imfname)
+            with open(imfname, "w") as fl:
+                fl.write(imfile)
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                self.assertEqual('', vl.strip())
+
+                with open(ofname) as of:
+                    dct = json.load(of)
+                status = os.stat(ofname)
+                try:
+                    self.assertEqual(
+                        chmod, str(oct(status.st_mode & 0o777)))
+                except Exception:
+                    self.assertEqual(
+                        chmod2, str(oct(status.st_mode & 0o777)))
+                res = {
+                    'accessGroups': [
+                        '1312312-part',
+                        '1312312-clbt',
+                        '1312312-dmgt'],
+                    'description': 'HH_Water_1',
+                    'isPublished': True,
+                    'ownerGroup': '1312312-part',
+                    'sampleCharacteristics': {
+                        'comments': 'Awesome comment',
+                        'formula': 'H2O'},
+                    'sampleId': '/petra3/sample/234234'}
+
+                self.myAssertDict(dct, res)
+        finally:
+            if os.path.isfile(imfname):
+                os.remove(imfname)
+            if os.path.isfile(ofname):
+                os.remove(ofname)
+
 
 if __name__ == '__main__':
     unittest.main()
