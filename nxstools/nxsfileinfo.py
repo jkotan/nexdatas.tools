@@ -2047,9 +2047,8 @@ class Attachment(Runner):
                         root = fl.read()
                 elif options.fileformat in ['png']:
                     with open(options.args[0], "rb") as fl:
-                        root = b"data:image/png;base64," + \
-                            base64.b64encode(fl.read())
-
+                        root = "data:image/png;base64," + \
+                            base64.b64encode(fl.read()).decode('utf-8')
             except Exception:
                 sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
                                  % options.args[0])
@@ -2111,7 +2110,12 @@ class Attachment(Runner):
             if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                 pass
             elif options.fileformat in ['fio']:
-                pass
+                nxsparser = FIOFileParser(root)
+                nxsparser.oned = True
+                nxsparser.parseMeta()
+                print(nxsparser.columns[0])
+                print(nxsparser.columns[1])
+
             elif options.fileformat in ['png']:
                 result["thumbnail"] = root
         return json.dumps(
