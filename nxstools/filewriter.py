@@ -536,69 +536,7 @@ class FTFile(FTObject):
         :returns: field pointed by default attributes
         :rtype: :class:`FTField`
         """
-        node = self.root()
-        searching = True
-        while searching:
-            attrs = node.attributes
-            if hasattr(node, "names") and "default" in attrs.names():
-                nname = attrs["default"].read()
-                if isinstance(nname, numpy.ndarray) and len(nname):
-                    nname = nname[0]
-                if nname in node.names():
-                    node = node.open(nname)
-                    continue
-            searching = False
-        if hasattr(node, "names"):
-            attrs = node.attributes
-            if "signal" in attrs.names():
-                nname = attrs["signal"].read()
-                if isinstance(nname, numpy.ndarray) and len(nname):
-                    nname = nname[0]
-                if nname in node.names():
-                    node = node.open(nname)
-        if not hasattr(node, "names"):
-            return node
-
-        for cnm in ["NXentry", "NXdata", "NXmonitor", "NXlog"]:
-            names = node.names()
-            if cnm[2:] in names:
-                snames = [cnm[2:]]
-            else:
-                snames = []
-            snames.extend(sorted([nm for nm in names if nm != cnm[2:]]))
-            for nn in snames:
-                nd = node.open(nn)
-                if not hasattr(nd, "attributes"):
-                    continue
-                attrs = nd.attributes
-                if "NX_class" in attrs.names():
-                    nname = attrs["NX_class"].read()
-                    if isinstance(nname, numpy.ndarray) and len(nname):
-                        nname = nname[0]
-                    if nname in cnm:
-                        node = nd
-                        break
-        if hasattr(node, "names") and hasattr(node, "attributes"):
-            attrs = node.attributes
-            if "signal" in attrs.names():
-                nname = attrs["signal"].read()
-                if isinstance(nname, numpy.ndarray) and len(nname):
-                    nname = nname[0]
-                if nname in node.names():
-                    node = node.open(nname)
-        if not hasattr(node, "names"):
-            return node
-        while hasattr(node, "names") and "data" in node.names():
-            node = node.open("data")
-        if hasattr(node, "names"):
-            for nn in sorted(node.names()):
-                nd = node.open(nn)
-                if not hasattr(nd, "names"):
-                    node = nd
-                    break
-        if not hasattr(node, "names"):
-            return node
-        return None
+        return self.root().default_field()
 
 
 class FTGroup(FTObject):
@@ -714,6 +652,76 @@ class FTGroup(FTObject):
         """ reopen attribute
         """
         FTObject._reopen(self)
+
+    def default_field(self):
+        """ field pointed by default attributes
+
+        :returns: field pointed by default attributes
+        :rtype: :class:`FTField`
+        """
+        node = self
+        searching = True
+        while searching:
+            attrs = node.attributes
+            if hasattr(node, "names") and "default" in attrs.names():
+                nname = attrs["default"].read()
+                if isinstance(nname, numpy.ndarray) and len(nname):
+                    nname = nname[0]
+                if nname in node.names():
+                    node = node.open(nname)
+                    continue
+            searching = False
+        if hasattr(node, "names"):
+            attrs = node.attributes
+            if "signal" in attrs.names():
+                nname = attrs["signal"].read()
+                if isinstance(nname, numpy.ndarray) and len(nname):
+                    nname = nname[0]
+                if nname in node.names():
+                    node = node.open(nname)
+        if not hasattr(node, "names"):
+            return node
+
+        for cnm in ["NXentry", "NXdata", "NXmonitor", "NXlog"]:
+            names = node.names()
+            if cnm[2:] in names:
+                snames = [cnm[2:]]
+            else:
+                snames = []
+            snames.extend(sorted([nm for nm in names if nm != cnm[2:]]))
+            for nn in snames:
+                nd = node.open(nn)
+                if not hasattr(nd, "attributes"):
+                    continue
+                attrs = nd.attributes
+                if "NX_class" in attrs.names():
+                    nname = attrs["NX_class"].read()
+                    if isinstance(nname, numpy.ndarray) and len(nname):
+                        nname = nname[0]
+                    if nname in cnm:
+                        node = nd
+                        break
+        if hasattr(node, "names") and hasattr(node, "attributes"):
+            attrs = node.attributes
+            if "signal" in attrs.names():
+                nname = attrs["signal"].read()
+                if isinstance(nname, numpy.ndarray) and len(nname):
+                    nname = nname[0]
+                if nname in node.names():
+                    node = node.open(nname)
+        if not hasattr(node, "names"):
+            return node
+        while hasattr(node, "names") and "data" in node.names():
+            node = node.open("data")
+        if hasattr(node, "names"):
+            for nn in sorted(node.names()):
+                nd = node.open(nn)
+                if not hasattr(nd, "names"):
+                    node = nd
+                    break
+        if not hasattr(node, "names"):
+            return node
+        return None
 
 
 class FTVirtualFieldLayout(FTObject):

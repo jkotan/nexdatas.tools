@@ -33,6 +33,7 @@ import grp
 import fnmatch
 import yaml
 import base64
+from io import BytesIO
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, FIOFileParser, numpyEncoder)
@@ -52,6 +53,21 @@ try:
     WRITERS["h5cpp"] = h5cppwriter
 except Exception:
     pass
+
+try:
+    import matplotlib.pyplot as plt
+    MATPLOTLIB = True
+except Exception:
+    MATPLOTLIB = False
+
+# try:
+#     import PIL
+#     import PIL.Image
+#     #: (:obj:`bool`) PIL imported
+#     PILLOW = True
+# except ImportError:
+#     #: (:obj:`bool`) PIL imported
+#     PILLOW = False
 
 
 def getlist(text):
@@ -1993,6 +2009,25 @@ class Attachment(Runner):
         self._parser.add_argument(
             "-x", "--chmod", dest="chmod",
             help=("json metadata file mod bits, e.g. 0o662"))
+        self._parser.add_argument(
+            "-s", "--signals", dest="signals",
+            help=("signals data name(s) separated by comma"))
+        self._parser.add_argument(
+            "-e", "--axes", dest="axes",
+            help=("axis/axes data name(s) separated by comma"))
+        self._parser.add_argument(
+            "-m", "--frame", dest="frame",
+            help=("a frame number for if more 2D images in the data"))
+        self._parser.add_argument(
+            "--signal-label", dest="slabel", help=("signal label"))
+        self._parser.add_argument(
+            "--xlabel", dest="xlabel", help=("x-axis label"))
+        self._parser.add_argument(
+            "--ylabel", dest="ylabel", help=("y-axis label"))
+        self._parser.add_argument(
+            "-u", "--overwrite", action="store_true",
+            default=False, dest="overwrite",
+            help="overwrite NeXus entries by script parameters")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -2107,20 +2142,421 @@ class Attachment(Runner):
                 options.fileformat = ext[1:]
 
         if root is not None:
-            if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
-                pass
-            elif options.fileformat in ['fio']:
-                nxsparser = FIOFileParser(root)
-                nxsparser.oned = True
-                nxsparser.parseMeta()
-                print(nxsparser.columns[0])
-                print(nxsparser.columns[1])
-
-            elif options.fileformat in ['png']:
+            if options.fileformat in ['png']:
                 result["thumbnail"] = root
+            elif MATPLOTLIB:
+                signals = None
+                axes = []
+                xlabel = None
+                ylabel = None
+                slabel = None
+                frame = None
+                if options.signals:
+                    signals = options.signals.split(",")
+                if options.axes:
+                    axes = options.axes.split(",")
+                if options.frame:
+                    frame = options.frame
+                if options.xlabel:
+                    xlabel = options.xlabel
+                if options.ylabel:
+                    ylabel = options.ylabel
+                if options.slabel:
+                    slabel = options.slabel
+                if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
+                    tn = self._nxsplot(
+                        root, signals, axes, slabel, xlabel, ylabel, frame,
+                        options.caption, options.overwrite)
+                    if tn:
+                        result["thumbnail"] = tn
+
+                elif options.fileformat in ['fio']:
+                    nxsparser = FIOFileParser(root)
+                    nxsparser.oned = True
+                    nxsparser.parseMeta()
+                    data = None
+                    sdata = None
+                    adata = None
+                    signal = None
+                    if nxsparser.description and nxsparser.columns:
+                        desc = nxsparser.description[0]
+                        sm = None
+                        if "scientificMetadata" in desc.keys():
+                            sm = desc["scientificMetadata"]
+                        if sm and "data" in sm.keys():
+                            data = sm["data"]
+                        if data and signals:
+                            for sg in signals:
+                                if signal and signal in data.keys():
+                                    signal = sg
+                                    sdata = data[signal]
+                                    if not slabel:
+                                        slabel = signal
+                        if not signal:
+                            if len(nxsparser.columns) > 1 and \
+                                    len(nxsparser.columns[1]) > 1:
+                                sdata = nxsparser.columns[1][1]
+                                if not slabel:
+                                    slabel = nxsparser.columns[1][0]
+                            elif len(nxsparser.columns) > 0 and \
+                                    len(nxsparser.columns[0]) > 1:
+                                sdata = nxsparser.columns[0][1]
+                                if not slabel:
+                                    slabel = nxsparser.columns[0][0]
+                        if data and axes and axes[0] in data.keys():
+                            adata = data[axes[0]]
+                            if not xlabel:
+                                xlabel = axes[0]
+                        elif len(nxsparser.columns) > 1 and \
+                                len(nxsparser.columns[0]) > 1:
+                            adata = nxsparser.columns[0][1]
+                            if not xlabel:
+                                xlabel = nxsparser.columns[0][0]
+                        if sdata:
+                            result["thumbnail"] = self._plot1d(
+                                sdata, adata, xlabel, slabel, options.caption)
+
         return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
+
+    def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
+                 title, overwrite=False):
+        """ create plot from nexus file
+
+
+        :param root: nexus file root
+        :type root: class:`filewriter.FTGroup`
+        :param signals: signal names
+        :type signals: :obj:`list`<:obj:`str`>
+        :param axes: axes names
+        :type axes: :obj:`list`<:obj:`str`>
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        sgnode = root.default_field()
+        nxdata = None
+        signal = None
+        if sgnode is not None:
+            nxdata = sgnode.parent
+            if nxdata is not None:
+                if overwrite and signals:
+                    for sg in signals:
+                        if sg in nxdata.names():
+                            sgnode = nxdata.open(sg)
+                            signal = sg
+                elif not signal:
+                    signal = sgnode.name
+        if nxdata is None:
+            entry = None
+            attrs = root.attributes
+            if hasattr(root, "names") and "default" in attrs.names():
+                nname = filewriter.first(attrs["default"].read())
+                if nname in root.names():
+                    entry = root.open(nname)
+            if entry is None:
+                enames = ["entry", "scan"]
+                for enm in enames:
+                    if enm in root.names():
+                        entry = root.open(enm)
+                        break
+            attrs = entry.attributes
+            if entry is not None:
+                if hasattr(entry, "names") and "default" in attrs.names():
+                    nname = filewriter.first(attrs["default"].read())
+                    if nname in entry.names():
+                        nxdata = entry.open(nname)
+            if nxdata is None:
+                enames = ["data"]
+                for enm in enames:
+                    if enm in entry.names():
+                        entry = entry.open(enm)
+                        break
+            if nxdata is not None:
+                attrs = nxdata.attributes
+                if hasattr(nxdata, "names") and "signal" in attrs.names():
+                    nname = filewriter.first(attrs["signal"].read())
+                    if nname in nxdata.names():
+                        sgnode = nxdata.open(nname)
+            if nxdata is not None and (overwrite or sgnode is None) and \
+               signal in nxdata.names():
+                sgnode = nxdata.open(signal)
+            if sgnode is None and "data" in nxdata.names():
+                sgnode = nxdata.open("data")
+                signal = "data"
+
+        if sgnode is not None:
+            dtshape = sgnode.shape
+            # print(dtshape)
+            # print(nxdata.names())
+            # print(signal)
+            if len(dtshape) == 1:
+                return self._nxsplot1d(
+                    sgnode, signal, axes, slabel, xlabel, ylabel,
+                    title, overwrite)
+            elif len(dtshape) == 2:
+                return self._nxsplot2d(
+                    sgnode, signal, slabel, title, overwrite)
+
+            elif len(dtshape) == 3:
+                return self._nxsplot3d(
+                    sgnode, signal, slabel, title, overwrite, frame)
+
+    def _nxsplot3d(self, sgnode, signal, slabel, title,
+                   overwrite=False, frame=None):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        shape = sgnode.shape
+        mxframe = shape[0]
+        if not frame:
+            frame = int(mxframe / 2)
+        if frame and frame < 0:
+            frame = 1
+        if frame and frame > mxframe:
+            frame = mxframe
+
+        sdata = sgnode[frame, :, :]
+        sunits = None
+        slname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            else:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot2d(sdata, slabel, title)
+
+    def _nxsplot2d(self, sgnode, signal, slabel, title,
+                   overwrite=False, frame=None):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :param frame: frame number to display
+        :type frame: :obj:`int`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        sdata = sgnode.read()
+        sunits = None
+        slname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            else:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot2d(sdata, slabel, title)
+
+    def _nxsplot1d(self, sgnode, signal, axes, slabel, xlabel, ylabel,
+                   title, overwrite=False):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param axes: axes names
+        :type axes: :obj:`list`<:obj:`str`>
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        attrs = nxdata.attributes
+        if hasattr(nxdata, "names") and "axes" in attrs.names():
+
+            naxes = filewriter.first(attrs["axes"].read())
+            if not overwrite and naxes:
+                axes = [naxes]
+        adata = []
+        anode = None
+        if axes and axes[0] in nxdata.names():
+            anode = nxdata.open(axes[0])
+            adata = anode.read()
+        sdata = sgnode.read()
+        sunits = None
+        aunits = None
+        slname = None
+        alname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            else:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if anode is not None and "units" in anode.attributes.names():
+            aunits = filewriter.first(anode.attributes["units"].read())
+        if anode is not None and "long_name" in anode.attributes.names():
+            alname = filewriter.first(
+                anode.attributes["long_name"].read())
+        if (not overwrite or not xlabel) and axes and axes[0]:
+            if alname:
+                xlabel = alname
+            else:
+                xlabel = axes[0]
+            if aunits:
+                xlabel = "%s (%s)" % (xlabel, aunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot1d(
+            sdata, adata, xlabel, slabel, title)
+
+    def _plot1d(self, data, axis, xlabel, ylabel, title, maxo=25):
+        """ create oned thumbnail plot
+
+
+        :param data: 1d signal data
+        :type data: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param axis: 1d axis data
+        :type axis: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+
+        fig, ax = plt.subplots()
+        if axis is not None and len(axis) == len(data):
+            if len(data) < maxo:
+                ax.plot(axis, data, 'o', axis, data)
+            else:
+                ax.plot(axis, data)
+            ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+        else:
+            axis = list(range(len(data)))
+            if len(data) < maxo:
+                ax.plot(axis, data, 'o', axis, data)
+            else:
+                ax.plot(axis, data)
+            ax.set(ylabel=ylabel, title=title)
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        png_image = buffer.getvalue()
+        buffer.close()
+        thumbnail = base64.b64encode(png_image)
+        thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        return thumbnail
+
+    def _plot2d(self, data, slabel, title, maxratio=10):
+        """ create oned thumbnail plot
+
+
+        :param data: 1d signal data
+        :type data: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param slabel: signal-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        fig, ax = plt.subplots()
+        # if axis is not None and len(axis) == len(data):
+        #     ax.plot(axis, data, 'o', axis, data)
+        #     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+        # else:
+        shape = data.shape
+        if int(shape[0]/shape[1]) > maxratio or \
+                int(shape[1]/shape[0]) > maxratio:
+            ax.imshow(data, aspect='auto')
+        else:
+            ax.imshow(data)
+        if slabel:
+            title = "%s: %s" % (title, slabel)
+        ax.set(title=title)
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        png_image = buffer.getvalue()
+        buffer.close()
+        thumbnail = base64.b64encode(png_image)
+        thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        return thumbnail
 
     def show(self, root, options):
         """ the main function
