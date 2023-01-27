@@ -10,7 +10,7 @@ RUN chmod 644 /etc/apt/trusted.gpg.d/debian-hdri-repo.gpg
 RUN add-apt-repository "deb http://repos.pni-hdri.de/apt/debian bionic main" -y
 
 RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq dist-upgrade
-RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y mysql-client mysql-client python3-h5py python3-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python3-distutils python3-pninexus python3-argcomplete python3-tz python3-lxml  hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 liblog4j1.2-java python3-whichcraft python3-fabio python3-setuptools python3-yaml
+RUN apt-get -qq update && export DEBIAN_FRONTEND=noninteractive && apt-get -qq install -y mysql-client mysql-client python3-h5py python3-sphinx apt-utils debconf-utils net-tools  omniidl libomniorb4-dev libcos4-dev libzmq3-dev python3-distutils python3-pninexus python3-argcomplete python3-tz python3-lxml  hdf5-plugin-bshuf hdf5-plugin-bz2 hdf5-plugin-lz4 liblog4j1.2-java python3-whichcraft python3-fabio python3-setuptools python3-yaml python3-pil python3-matplotlib
 
 RUN useradd -ms /bin/bash tango
 RUN  /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive; debconf-set-selections <<< "mysql-server mysql-server/root_password password rootpw"'
