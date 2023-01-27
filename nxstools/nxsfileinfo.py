@@ -55,6 +55,8 @@ except Exception:
     pass
 
 try:
+    import matplotlib
+    matplotlib.interactive(False)
     import matplotlib.pyplot as plt
     MATPLOTLIB = True
 except Exception:
