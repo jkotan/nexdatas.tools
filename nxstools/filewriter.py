@@ -653,7 +653,7 @@ class FTGroup(FTObject):
         """
         FTObject._reopen(self)
 
-    def default_field(self):
+    def default_field(self, signals=None):
         """ field pointed by default attributes
 
         :returns: field pointed by default attributes
@@ -713,6 +713,14 @@ class FTGroup(FTObject):
             return node
         while hasattr(node, "names") and "data" in node.names():
             node = node.open("data")
+        if hasattr(node, "names"):
+            if signals:
+                for signal in signals:
+                    if signal in node.names():
+                        nd = node.open(signal)
+                        if not hasattr(signal, "names"):
+                            node = nd
+                            break
         if hasattr(node, "names"):
             for nn in sorted(node.names()):
                 nd = node.open(nn)

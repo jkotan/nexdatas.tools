@@ -2156,7 +2156,10 @@ class Attachment(Runner):
                 if options.axes:
                     axes = options.axes.split(",")
                 if options.frame:
-                    frame = options.frame
+                    try:
+                        frame = int(options.frame)
+                    except Exception:
+                        frame = None
                 if options.xlabel:
                     xlabel = options.xlabel
                 if options.ylabel:
@@ -2187,7 +2190,7 @@ class Attachment(Runner):
                             data = sm["data"]
                         if data and signals:
                             for sg in signals:
-                                if signal and signal in data.keys():
+                                if sg and sg in data.keys():
                                     signal = sg
                                     sdata = data[signal]
                                     if not slabel:
@@ -2242,9 +2245,11 @@ class Attachment(Runner):
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
-        sgnode = root.default_field()
+        # print(signals)
+        sgnode = root.default_field(signals)
         nxdata = None
         signal = None
+        # print(sgnode)
         if sgnode is not None:
             nxdata = sgnode.parent
             if nxdata is not None:
@@ -2268,13 +2273,13 @@ class Attachment(Runner):
                     if enm in root.names():
                         entry = root.open(enm)
                         break
-            attrs = entry.attributes
             if entry is not None:
+                attrs = entry.attributes
                 if hasattr(entry, "names") and "default" in attrs.names():
                     nname = filewriter.first(attrs["default"].read())
                     if nname in entry.names():
                         nxdata = entry.open(nname)
-            if nxdata is None:
+            if entry is not None and nxdata is None:
                 enames = ["data"]
                 for enm in enames:
                     if enm in entry.names():
@@ -2289,7 +2294,8 @@ class Attachment(Runner):
             if nxdata is not None and (overwrite or sgnode is None) and \
                signal in nxdata.names():
                 sgnode = nxdata.open(signal)
-            if sgnode is None and "data" in nxdata.names():
+            if sgnode is None and nxdata is not None and \
+                    "data" in nxdata.names():
                 sgnode = nxdata.open("data")
                 signal = "data"
 
@@ -2298,6 +2304,9 @@ class Attachment(Runner):
             # print(dtshape)
             # print(nxdata.names())
             # print(signal)
+            # print(slabel)
+            # print(xlabel)
+            # print(ylabel)
             if len(dtshape) == 1:
                 return self._nxsplot1d(
                     sgnode, signal, axes, slabel, xlabel, ylabel,
@@ -2396,7 +2405,7 @@ class Attachment(Runner):
         if not overwrite or not slabel:
             if slname:
                 slabel = slname
-            else:
+            elif not slabel:
                 slabel = signal
             if sunits:
                 slabel = "%s (%s)" % (slabel, sunits)
@@ -2457,7 +2466,7 @@ class Attachment(Runner):
         if not overwrite or not slabel:
             if slname:
                 slabel = slname
-            else:
+            elif not slabel:
                 slabel = signal
             if sunits:
                 slabel = "%s (%s)" % (slabel, sunits)
@@ -2469,7 +2478,7 @@ class Attachment(Runner):
         if (not overwrite or not xlabel) and axes and axes[0]:
             if alname:
                 xlabel = alname
-            else:
+            elif not xlabel:
                 xlabel = axes[0]
             if aunits:
                 xlabel = "%s (%s)" % (xlabel, aunits)
