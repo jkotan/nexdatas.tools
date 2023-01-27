@@ -283,6 +283,8 @@ For more help:
         filewriter.writer = wrmodule
 
         try:
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            nxsfile.close()
 
             for cmd in commands:
                 old_stdout = sys.stdout
