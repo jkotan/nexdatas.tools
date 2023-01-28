@@ -57,6 +57,7 @@ except Exception:
 try:
     import matplotlib
     matplotlib.interactive(False)
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     MATPLOTLIB = True
 except Exception:
