@@ -56,9 +56,6 @@ except Exception:
 
 try:
     import matplotlib
-    matplotlib.interactive(False)
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
     MATPLOTLIB = True
 except Exception:
     MATPLOTLIB = False
@@ -2509,6 +2506,9 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
 
+        import matplotlib.pyplot as plt
+        matplotlib.interactive(False)
+        matplotlib.use('Agg')
         fig, ax = plt.subplots()
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
@@ -2531,6 +2531,7 @@ class Attachment(Runner):
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        plt.close('all')
         return thumbnail
 
     def _plot2d(self, data, slabel, title, maxratio=10):
@@ -2546,6 +2547,9 @@ class Attachment(Runner):
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
+        import matplotlib.pyplot as plt
+        matplotlib.interactive(False)
+        matplotlib.use('Agg')
         fig, ax = plt.subplots()
         # if axis is not None and len(axis) == len(data):
         #     ax.plot(axis, data, 'o', axis, data)
@@ -2568,6 +2572,7 @@ class Attachment(Runner):
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        plt.close('all')
         return thumbnail
 
     def show(self, root, options):
