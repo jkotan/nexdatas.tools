@@ -2507,8 +2507,9 @@ class Attachment(Runner):
         """
 
         import matplotlib.pyplot as plt
-        matplotlib.interactive(False)
-        matplotlib.use('Agg')
+        if os.environ.get('DISPLAY','') == '':
+            matplotlib.interactive(False)
+            matplotlib.use('Agg')
         fig, ax = plt.subplots()
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
@@ -2548,8 +2549,9 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
         import matplotlib.pyplot as plt
-        matplotlib.interactive(False)
-        matplotlib.use('Agg')
+        if os.environ.get('DISPLAY','') == '':
+            matplotlib.interactive(False)
+            matplotlib.use('Agg')
         fig, ax = plt.subplots()
         # if axis is not None and len(axis) == len(data):
         #     ax.plot(axis, data, 'o', axis, data)
