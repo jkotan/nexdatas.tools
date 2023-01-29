@@ -2507,7 +2507,7 @@ class Attachment(Runner):
         """
 
         import matplotlib.pyplot as plt
-        if os.environ.get('DISPLAY','') == '':
+        if os.environ.get('DISPLAY', '') == '':
             matplotlib.interactive(False)
             matplotlib.use('Agg')
         fig, ax = plt.subplots()
@@ -2549,7 +2549,7 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
         import matplotlib.pyplot as plt
-        if os.environ.get('DISPLAY','') == '':
+        if os.environ.get('DISPLAY', '') == '':
             matplotlib.interactive(False)
             matplotlib.use('Agg')
         fig, ax = plt.subplots()
