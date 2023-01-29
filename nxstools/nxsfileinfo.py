@@ -2527,7 +2527,7 @@ class Attachment(Runner):
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
-        plt.clf()
+        plt.close(fig)
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
@@ -2569,7 +2569,7 @@ class Attachment(Runner):
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
-        plt.clf()
+        plt.close(fig)
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
