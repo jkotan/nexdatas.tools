@@ -2526,12 +2526,12 @@ class Attachment(Runner):
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
+        plt.clf()
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
-        plt.close('all')
         return thumbnail
 
     def _plot2d(self, data, slabel, title, maxratio=10):
@@ -2567,12 +2567,12 @@ class Attachment(Runner):
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
+        plt.clf()
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
-        plt.close('all')
         return thumbnail
 
     def show(self, root, options):
