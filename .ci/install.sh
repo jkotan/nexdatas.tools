@@ -26,7 +26,7 @@ if [ "$?" != "0" ]; then exit 255; fi
 docker exec  --user root ndts mkdir -p /tmp/runtime-tango
 docker exec  --user root ndts chown -R tango:tango /tmp/runtime-tango
 
-if [ "$1" = "debian9" ]; then
+if [ "$1" = "debian9" ] ||  [ "$2" = "2" ] ; then
     echo "start Xvfb :99 -screen 0 1024x768x24 &"
     docker exec  --user root ndts /bin/bash -c 'export DISPLAY=":99.0"; Xvfb :99 -screen 0 1024x768x24 &'
     if [ "$?" != "0" ]; then exit 255; fi

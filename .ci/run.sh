@@ -2,11 +2,7 @@
 
 if [ "$2" = "2" ]; then
     echo "run python-nxstools"
-    if [ "$1" = "debian9" ]; then
-	docker exec ndts /bin/bash -c 'export DISPLAY=":99.0"; python test'
-    else
-	docker exec ndts python test
-    fi
+    docker exec ndts /bin/bash -c 'export DISPLAY=":99.0"; python test'
 else
     echo "run python3-nxstools"
     if [ "$1" = "debian10" ] || [ "$1" = "ubuntu22.04" ] || [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "debian11" ] ; then
