@@ -21,7 +21,16 @@ if [ "$1" = "ubuntu20.04" ] || [ "$1" = "ubuntu20.10" ] || [ "$1" = "ubuntu21.04
     docker exec  --user root ndts /bin/bash -c 'echo -e "[client]\nuser=tango\nhost=127.0.0.1\npassword=rootpw" > /var/lib/tango/.my.cnf'
 fi
 docker exec  --user root ndts service tango-db restart
+if [ "$?" != "0" ]; then exit 255; fi
 
+docker exec  --user root ndts mkdir -p /tmp/runtime-tango
+docker exec  --user root ndts chown -R tango:tango /tmp/runtime-tango
+
+if [ "$1" = "debian9" ] ||  [ "$2" = "2" ] ; then
+    echo "start Xvfb :99 -screen 0 1024x768x24 &"
+    docker exec  --user root ndts /bin/bash -c 'export DISPLAY=":99.0"; Xvfb :99 -screen 0 1024x768x24 &'
+    if [ "$?" != "0" ]; then exit 255; fi
+fi
 
 echo "install tango servers"
 docker exec --user root ndts /bin/bash -c 'export DEBIAN_FRONTEND=noninteractive;  apt-get -qq update; apt-get -qq install -y  tango-starter tango-test'

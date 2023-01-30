@@ -32,6 +32,8 @@ import pwd
 import grp
 import fnmatch
 import yaml
+import base64
+from io import BytesIO
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, FIOFileParser, numpyEncoder)
@@ -51,6 +53,21 @@ try:
     WRITERS["h5cpp"] = h5cppwriter
 except Exception:
     pass
+
+try:
+    import matplotlib
+    MATPLOTLIB = True
+except Exception:
+    MATPLOTLIB = False
+
+# try:
+#     import PIL
+#     import PIL.Image
+#     #: (:obj:`bool`) PIL imported
+#     PILLOW = True
+# except ImportError:
+#     #: (:obj:`bool`) PIL imported
+#     PILLOW = False
 
 
 def getlist(text):
@@ -1197,10 +1214,10 @@ class Metadata(Runner):
     def metadata(cls, root, options):
         """ get metadata from nexus and beamtime file
 
-        :param options: parser options
-        :type options: :class:`argparse.Namespace`
         :param root: nexus file root
         :type root: :class:`filewriter.FTGroup`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
         :returns: nexus file root metadata
         :rtype: :obj:`str`
         """
@@ -1932,6 +1949,679 @@ class Sample(Runner):
             sys.exit(255)
 
 
+class Attachment(Runner):
+
+    """ Attachment runner"""
+
+    #: (:obj:`str`) command description
+    description = "show description of attachment"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo attachment -i petra3/h2o/234234 -d 'HH water' " \
+        + "-s ~/cm.json \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        self._parser.add_argument(
+            "-a", "--id", dest="atid",
+            help=("attachment id"))
+        self._parser.add_argument(
+            "-t", "--caption", dest="caption",
+            help=("caption text"))
+        self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
+        self._parser.add_argument(
+            "-b", "--beamline", dest="beamline",
+            help=("beamline"))
+        self._parser.add_argument(
+            "-d", "--description", dest="description",
+            help=("attachment description"))
+        self._parser.add_argument(
+            "-r", "--owner", dest="owner",
+            help=("attachment owner"))
+        self._parser.add_argument(
+            "-w", "--owner-group",
+            default="", dest="ownergroup",
+            help="owner group name. Default is {beamtimeid}-dmgt")
+        self._parser.add_argument(
+            "-c", "--access-groups",
+            default=None, dest="accessgroups",
+            help="access group names separated by commas. "
+            "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
+            "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-f", "--file-format", dest="fileformat",
+            help=("input file format, e.g. 'nxs'. "
+                  "Default is defined by the file extension"))
+        self._parser.add_argument(
+            "--h5py", action="store_true",
+            default=False, dest="h5py",
+            help="use h5py module as a nexus reader")
+        self._parser.add_argument(
+            "--h5cpp", action="store_true",
+            default=False, dest="h5cpp",
+            help="use h5cpp module as a nexus reader")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits, e.g. 0o662"))
+        self._parser.add_argument(
+            "-s", "--signals", dest="signals",
+            help=("signals data name(s) separated by comma"))
+        self._parser.add_argument(
+            "-e", "--axes", dest="axes",
+            help=("axis/axes data name(s) separated by comma"))
+        self._parser.add_argument(
+            "-m", "--frame", dest="frame",
+            help=("a frame number for if more 2D images in the data"))
+        self._parser.add_argument(
+            "--signal-label", dest="slabel", help=("signal label"))
+        self._parser.add_argument(
+            "--xlabel", dest="xlabel", help=("x-axis label"))
+        self._parser.add_argument(
+            "--ylabel", dest="ylabel", help=("y-axis label"))
+        self._parser.add_argument(
+            "-u", "--overwrite", action="store_true",
+            default=False, dest="overwrite",
+            help="overwrite NeXus entries by script parameters")
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat metadata file"))
+        self._parser.add_argument(
+            'args', metavar='image_file', type=str, nargs="*",
+            help='png or NeXus image file name')
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        if options.h5cpp:
+            writer = "h5cpp"
+        elif options.h5py:
+            writer = "h5py"
+        elif "h5cpp" in WRITERS.keys():
+            writer = "h5cpp"
+        else:
+            writer = "h5py"
+        if (options.h5cpp and options.h5py) or writer not in WRITERS.keys():
+            sys.stderr.write("nxsfileinfo: Writer '%s' cannot be opened\n"
+                             % writer)
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+        root = None
+        nxfl = None
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
+        if options.args:
+            wrmodule = WRITERS[writer.lower()]
+            if not options.fileformat:
+                rt, ext = os.path.splitext(options.args[0])
+                if ext and len(ext) > 1 and ext.startswith("."):
+                    options.fileformat = ext[1:]
+            try:
+                if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
+                    nxfl = filewriter.open_file(
+                        options.args[0], readonly=True,
+                        writer=wrmodule)
+                    root = nxfl.root()
+                elif options.fileformat in ['fio']:
+                    with open(options.args[0]) as fl:
+                        root = fl.read()
+                elif options.fileformat in ['png']:
+                    with open(options.args[0], "rb") as fl:
+                        root = "data:image/png;base64," + \
+                            base64.b64encode(fl.read()).decode('utf-8')
+            except Exception:
+                sys.stderr.write("nxsfileinfo: File '%s' cannot be opened\n"
+                                 % options.args[0])
+                sys.stderr.flush()
+                self._parser.print_help()
+                sys.exit(255)
+
+        self.show(root, options)
+        if nxfl is not None:
+            nxfl.close()
+
+    def attachment(self, root, options):
+        """ get metadata from nexus and beamtime file
+
+        :param root: nexus file root
+        :type root: :class:`filewriter.FTGroup`
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: atttachment metadata
+        :rtype: :obj:`str`
+        """
+        result = {}
+
+        if hasattr(options, "atid") and options.atid:
+            result["id"] = options.atid
+        if hasattr(options, "caption") and options.caption:
+            result["caption"] = options.caption
+        if options.ownergroup:
+            result["ownerGroup"] = options.ownergroup
+        if hasattr(options, "beamtimeid") and options.beamtimeid:
+            if "ownerGroup" not in result:
+                result["ownerGroup"] = "%s-dmgt" % (options.beamtimeid)
+        if options.accessgroups is not None:
+            accessgroups = options.accessgroups.split(",")
+            result["accessGroups"] = accessgroups
+        if "accessGroups" not in result:
+            accessgroups = []
+            if hasattr(options, "beamtimeid") and options.beamtimeid:
+                accessgroups = [
+                    "%s-clbt" % (options.beamtimeid),
+                    "%s-part" % (options.beamtimeid),
+                    "%s-dmgt" % (options.beamtimeid)]
+            if hasattr(options, "beamline") and options.beamline:
+                accessgroups.extend([
+                    "%sdmgt" % (options.beamline),
+                    "%sstaff" % (options.beamline)
+                ])
+            if accessgroups:
+                result["accessGroups"] = accessgroups
+
+        if not hasattr(options, "fileformat"):
+            options.fileformat = ""
+        if options.args and not options.fileformat:
+            rt, ext = os.path.splitext(options.args[0])
+            if ext and len(ext) > 1 and ext.startswith("."):
+                options.fileformat = ext[1:]
+
+        if root is not None:
+            if options.fileformat in ['png']:
+                result["thumbnail"] = root
+            elif MATPLOTLIB:
+                signals = None
+                axes = []
+                xlabel = None
+                ylabel = None
+                slabel = None
+                frame = None
+                if options.signals:
+                    signals = options.signals.split(",")
+                if options.axes:
+                    axes = options.axes.split(",")
+                if options.frame:
+                    try:
+                        frame = int(options.frame)
+                    except Exception:
+                        frame = None
+                if options.xlabel:
+                    xlabel = options.xlabel
+                if options.ylabel:
+                    ylabel = options.ylabel
+                if options.slabel:
+                    slabel = options.slabel
+                if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
+                    tn = self._nxsplot(
+                        root, signals, axes, slabel, xlabel, ylabel, frame,
+                        options.caption, options.overwrite)
+                    if tn:
+                        result["thumbnail"] = tn
+
+                elif options.fileformat in ['fio']:
+                    nxsparser = FIOFileParser(root)
+                    nxsparser.oned = True
+                    nxsparser.parseMeta()
+                    data = None
+                    sdata = None
+                    adata = None
+                    signal = None
+                    if nxsparser.description and nxsparser.columns:
+                        desc = nxsparser.description[0]
+                        sm = None
+                        if "scientificMetadata" in desc.keys():
+                            sm = desc["scientificMetadata"]
+                        if sm and "data" in sm.keys():
+                            data = sm["data"]
+                        if data and signals:
+                            for sg in signals:
+                                if sg and sg in data.keys():
+                                    signal = sg
+                                    sdata = data[signal]
+                                    if not slabel:
+                                        slabel = signal
+                        if not signal:
+                            if len(nxsparser.columns) > 1 and \
+                                    len(nxsparser.columns[1]) > 1:
+                                sdata = nxsparser.columns[1][1]
+                                if not slabel:
+                                    slabel = nxsparser.columns[1][0]
+                            elif len(nxsparser.columns) > 0 and \
+                                    len(nxsparser.columns[0]) > 1:
+                                sdata = nxsparser.columns[0][1]
+                                if not slabel:
+                                    slabel = nxsparser.columns[0][0]
+                        if data and axes and axes[0] in data.keys():
+                            adata = data[axes[0]]
+                            if not xlabel:
+                                xlabel = axes[0]
+                        elif len(nxsparser.columns) > 1 and \
+                                len(nxsparser.columns[0]) > 1:
+                            adata = nxsparser.columns[0][1]
+                            if not xlabel:
+                                xlabel = nxsparser.columns[0][0]
+                        if sdata:
+                            result["thumbnail"] = self._plot1d(
+                                sdata, adata, xlabel, slabel, options.caption)
+
+        return json.dumps(
+                result, sort_keys=True, indent=4,
+                cls=numpyEncoder)
+
+    def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
+                 title, overwrite=False):
+        """ create plot from nexus file
+
+
+        :param root: nexus file root
+        :type root: class:`filewriter.FTGroup`
+        :param signals: signal names
+        :type signals: :obj:`list`<:obj:`str`>
+        :param axes: axes names
+        :type axes: :obj:`list`<:obj:`str`>
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        # print(signals)
+        sgnode = root.default_field(signals)
+        nxdata = None
+        signal = None
+        # print(sgnode)
+        if sgnode is not None:
+            nxdata = sgnode.parent
+            if nxdata is not None:
+                if overwrite and signals:
+                    for sg in signals:
+                        if sg in nxdata.names():
+                            sgnode = nxdata.open(sg)
+                            signal = sg
+                elif not signal:
+                    signal = sgnode.name
+        if nxdata is None:
+            entry = None
+            attrs = root.attributes
+            if hasattr(root, "names") and "default" in attrs.names():
+                nname = filewriter.first(attrs["default"].read())
+                if nname in root.names():
+                    entry = root.open(nname)
+            if entry is None:
+                enames = ["entry", "scan"]
+                for enm in enames:
+                    if enm in root.names():
+                        entry = root.open(enm)
+                        break
+            if entry is not None:
+                attrs = entry.attributes
+                if hasattr(entry, "names") and "default" in attrs.names():
+                    nname = filewriter.first(attrs["default"].read())
+                    if nname in entry.names():
+                        nxdata = entry.open(nname)
+            if entry is not None and nxdata is None:
+                enames = ["data"]
+                for enm in enames:
+                    if enm in entry.names():
+                        entry = entry.open(enm)
+                        break
+            if nxdata is not None:
+                attrs = nxdata.attributes
+                if hasattr(nxdata, "names") and "signal" in attrs.names():
+                    nname = filewriter.first(attrs["signal"].read())
+                    if nname in nxdata.names():
+                        sgnode = nxdata.open(nname)
+            if nxdata is not None and (overwrite or sgnode is None) and \
+               signal in nxdata.names():
+                sgnode = nxdata.open(signal)
+            if sgnode is None and nxdata is not None and \
+                    "data" in nxdata.names():
+                sgnode = nxdata.open("data")
+                signal = "data"
+
+        if sgnode is not None:
+            dtshape = sgnode.shape
+            # print(dtshape)
+            # print(nxdata.names())
+            # print(signal)
+            # print(slabel)
+            # print(xlabel)
+            # print(ylabel)
+            if len(dtshape) == 1:
+                return self._nxsplot1d(
+                    sgnode, signal, axes, slabel, xlabel, ylabel,
+                    title, overwrite)
+            elif len(dtshape) == 2:
+                return self._nxsplot2d(
+                    sgnode, signal, slabel, title, overwrite)
+
+            elif len(dtshape) == 3:
+                return self._nxsplot3d(
+                    sgnode, signal, slabel, title, overwrite, frame)
+
+    def _nxsplot3d(self, sgnode, signal, slabel, title,
+                   overwrite=False, frame=None):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        shape = sgnode.shape
+        mxframe = shape[0]
+        if not frame:
+            frame = int(mxframe / 2)
+        if frame and frame < 0:
+            frame = 1
+        if frame and frame > mxframe:
+            frame = mxframe
+
+        sdata = sgnode[frame, :, :]
+        sunits = None
+        slname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            else:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot2d(sdata, slabel, title)
+
+    def _nxsplot2d(self, sgnode, signal, slabel, title,
+                   overwrite=False, frame=None):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :param frame: frame number to display
+        :type frame: :obj:`int`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        sdata = sgnode.read()
+        sunits = None
+        slname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            elif not slabel:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot2d(sdata, slabel, title)
+
+    def _nxsplot1d(self, sgnode, signal, axes, slabel, xlabel, ylabel,
+                   title, overwrite=False):
+        """ create plot 1d from nexus file
+
+
+        :param sgnode: nexus signal field node
+        :type sgnode: class:`filewriter.FTField`
+        :param signal: signal name
+        :type signal: :obj:`str`
+        :param axes: axes names
+        :type axes: :obj:`list`<:obj:`str`>
+        :param slabel: s-label
+        :type slabel: :obj:`str`
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :param overwrite: overwrite nexus attributes flag
+        :type overwrite: :obj:`bool`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        signal = sgnode.name
+        nxdata = sgnode.parent
+
+        attrs = nxdata.attributes
+        if hasattr(nxdata, "names") and "axes" in attrs.names():
+
+            naxes = filewriter.first(attrs["axes"].read())
+            if not overwrite and naxes:
+                axes = [naxes]
+        adata = []
+        anode = None
+        if axes and axes[0] in nxdata.names():
+            anode = nxdata.open(axes[0])
+            adata = anode.read()
+        sdata = sgnode.read()
+        sunits = None
+        aunits = None
+        slname = None
+        alname = None
+        if "units" in sgnode.attributes.names():
+            sunits = filewriter.first(
+                sgnode.attributes["units"].read())
+        if "long_name" in sgnode.attributes.names():
+            slname = filewriter.first(
+                sgnode.attributes["long_name"].read())
+        if not overwrite or not slabel:
+            if slname:
+                slabel = slname
+            elif not slabel:
+                slabel = signal
+            if sunits:
+                slabel = "%s (%s)" % (slabel, sunits)
+        if anode is not None and "units" in anode.attributes.names():
+            aunits = filewriter.first(anode.attributes["units"].read())
+        if anode is not None and "long_name" in anode.attributes.names():
+            alname = filewriter.first(
+                anode.attributes["long_name"].read())
+        if (not overwrite or not xlabel) and axes and axes[0]:
+            if alname:
+                xlabel = alname
+            elif not xlabel:
+                xlabel = axes[0]
+            if aunits:
+                xlabel = "%s (%s)" % (xlabel, aunits)
+        if (not overwrite or not title) and nxdata.parent is not None and \
+                "title" in nxdata.parent.names():
+            title = filewriter.first(nxdata.parent.open("title").read())
+        return self._plot1d(
+            sdata, adata, xlabel, slabel, title)
+
+    def _plot1d(self, data, axis, xlabel, ylabel, title, maxo=25):
+        """ create oned thumbnail plot
+
+
+        :param data: 1d signal data
+        :type data: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param axis: 1d axis data
+        :type axis: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param xlabel: x-label
+        :type xlabel: :obj:`str`
+        :param ylabel: y-label
+        :type ylabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+
+        import matplotlib.pyplot as plt
+        if os.environ.get('DISPLAY', '') == '':
+            matplotlib.interactive(False)
+            matplotlib.use('Agg')
+        fig, ax = plt.subplots()
+        if axis is not None and len(axis) == len(data):
+            if len(data) < maxo:
+                ax.plot(axis, data, 'o', axis, data)
+            else:
+                ax.plot(axis, data)
+            ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+        else:
+            axis = list(range(len(data)))
+            if len(data) < maxo:
+                ax.plot(axis, data, 'o', axis, data)
+            else:
+                ax.plot(axis, data)
+            ax.set(ylabel=ylabel, title=title)
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        plt.close(fig)
+        buffer.seek(0)
+        png_image = buffer.getvalue()
+        buffer.close()
+        thumbnail = base64.b64encode(png_image)
+        thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        return thumbnail
+
+    def _plot2d(self, data, slabel, title, maxratio=10):
+        """ create oned thumbnail plot
+
+
+        :param data: 1d signal data
+        :type data: :obj:`list`<:obj:`float`> or :obj:`list`<:obj:`int`>
+        :param slabel: signal-label
+        :type slabel: :obj:`str`
+        :param title: title
+        :type title: :obj:`str`
+        :returns: thumbnail string
+        :rtype: :obj:`str`
+        """
+        import matplotlib.pyplot as plt
+        if os.environ.get('DISPLAY', '') == '':
+            matplotlib.interactive(False)
+            matplotlib.use('Agg')
+        fig, ax = plt.subplots()
+        # if axis is not None and len(axis) == len(data):
+        #     ax.plot(axis, data, 'o', axis, data)
+        #     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+        # else:
+        shape = data.shape
+        if int(shape[0]/shape[1]) > maxratio or \
+                int(shape[1]/shape[0]) > maxratio:
+            ax.imshow(data, aspect='auto')
+        else:
+            ax.imshow(data)
+        if slabel:
+            title = "%s: %s" % (title, slabel)
+        ax.set(title=title)
+
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        plt.close(fig)
+        buffer.seek(0)
+        png_image = buffer.getvalue()
+        buffer.close()
+        thumbnail = base64.b64encode(png_image)
+        thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
+        return thumbnail
+
+    def show(self, root, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :param root: nexus file root
+        :type root: :class:`filewriter.FTGroup`
+        """
+        try:
+            metadata = self.attachment(root, options)
+            if metadata:
+                if options.output:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
+                else:
+                    print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
 class Instrument(Runner):
 
     """ Instrument runner"""
@@ -2257,6 +2947,7 @@ def main():
                          ('origdatablock', OrigDatablock),
                          ('sample', Sample),
                          ('instrument', Instrument),
+                         ('attachment', Attachment),
                          ]
     runners = parser.createSubParsers()
 

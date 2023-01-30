@@ -551,6 +551,8 @@ class FIOFileParser(object):
         self.group_postfix = ""
         #: (:obj:`dict` <:obj:`str`, `any`>)  metadata dictionary
         self.__dctmetadata = {}
+        #: (:obj:`dict` <:obj:`str`, `any`>)  columns dictionary
+        self.columns = {}
 
         # (:obj:`str`) text content of the file
         self.__root = root
@@ -616,7 +618,7 @@ class FIOFileParser(object):
         :param meta: metadata dictionary
         :type meta: :obj:`dict` <:obj:`str`, `any`>
         """
-        columns = {}
+        self.columns = {}
         data = {}
         for line in lines:
             if line.startswith("Col"):
@@ -628,19 +630,19 @@ class FIOFileParser(object):
                             cid = int(sline[1].strip())
                             if sline[2].strip():
                                 name = str(sline[2].strip())
-                                columns[cid - 1] = [name, []]
+                                self.columns[cid - 1] = [name, []]
                     except Exception:
                         pass
             elif not line.startswith("!"):
                 sline = [word.strip() for word in line.split(" ")
                          if word.strip()]
                 for wid, word in enumerate(sline):
-                    if wid in columns.keys():
+                    if wid in self.columns.keys():
                         try:
-                            columns[wid][1].append(float(word))
+                            self.columns[wid][1].append(float(word))
                         except Exception:
-                            columns[wid][1].append(str(word))
-        for wid, nmvl in columns.items():
+                            self.columns[wid][1].append(str(word))
+        for wid, nmvl in self.columns.items():
             data[nmvl[0]] = nmvl[1]
 
         if data:

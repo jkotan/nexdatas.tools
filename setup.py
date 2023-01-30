@@ -46,6 +46,8 @@ install_requires = [
     'lxml',
     'fabio',
     'pyyaml',
+    # 'pil',
+    # 'matplotlib',
     # 'pytango',
     # 'pninexus',
 ]

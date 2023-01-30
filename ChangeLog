@@ -1,5 +1,6 @@
 2023-01-12 Jan Kotanski <jankotan@gmail.com>
 	* add nxsfileinfo sample and instrument metadata creators (#425)
+	* add nxsfileinfo attachment metadata creators (#427)
 	* tagged as v3.40.0
 
 2023-01-12 Jan Kotanski <jankotan@gmail.com>
