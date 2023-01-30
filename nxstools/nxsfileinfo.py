@@ -56,9 +56,9 @@ except Exception:
 
 try:
     import matplotlib
-    MATPLOTLIB = True
+    MATPLOTLIBVER = int(matplotlib.__version__.split(".")[0])
 except Exception:
-    MATPLOTLIB = False
+    MATPLOTLIBVER = None
 
 # try:
 #     import PIL
@@ -2144,7 +2144,7 @@ class Attachment(Runner):
         if root is not None:
             if options.fileformat in ['png']:
                 result["thumbnail"] = root
-            elif MATPLOTLIB:
+            elif MATPLOTLIBVER:
                 signals = None
                 axes = []
                 xlabel = None
@@ -2506,10 +2506,10 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
 
-        import matplotlib.pyplot as plt
-        # if os.environ.get('DISPLAY', '') == '':
+        # if MATPLOTLIBVER > 2:
         matplotlib.interactive(False)
         matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
@@ -2548,10 +2548,10 @@ class Attachment(Runner):
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
-        import matplotlib.pyplot as plt
-        # if os.environ.get('DISPLAY', '') == '':
+        # if MATPLOTLIBVER > 2:
         matplotlib.interactive(False)
         matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
         # if axis is not None and len(axis) == len(data):
         #     ax.plot(axis, data, 'o', axis, data)
