@@ -15,7 +15,7 @@ Synopsis
 	  nxsfileinfo <command> [options] <nexus_file_name>
 
 
-The following commands are available: general, field
+The following commands are available: general, field, metadata, origdatablock, sample, instrument, attachment
 
 
 nxsfileinfo general
@@ -52,7 +52,7 @@ Synopsis
 
 .. code:: bash
 
-	  Usage: nxsfileinfo field <file_name>
+	  Usage: nxsfileinfo field [options]  <file_name>
 
 Options:
    -h, --help            show this help message and exit
@@ -87,7 +87,7 @@ Synopsis
 
 .. code:: bash
 
-	  Usage: nxsfileinfo metadata <file_name>
+	  Usage: nxsfileinfo metadata [options] <file_name>
 
 Options:
    -h, --help            show this help message and exit
@@ -168,14 +168,14 @@ Example
 nxsfileinfo origdatablock
 -------------------------
 
-It shows description of all scan files
+It generates description of all scan files
 
 Synopsis
 """"""""
 
 .. code:: bash
 
-	  Usage: nxsfileinfo origdatablock <scan_name>
+	  Usage: nxsfileinfo origdatablock [options] <scan_name>
 
 Options:
   -h, --help            show this help message and exit
@@ -204,3 +204,148 @@ Example
 .. code:: bash
 
 	  nxsfileinfo origdatablock /user/data/scan_12345
+
+nxsfileinfo sample
+------------------
+
+It generates description of sample
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo sample [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -s SAMPLEID, --sample-id SAMPLEID
+                        sample id
+  -i BEAMTIMEID, --beamtimeid BEAMTIMEID
+                        beamtime id
+  -b BEAMLINE, --beamline BEAMLINE
+                        beamline
+  -d DESCRIPTION, --description DESCRIPTION
+                        sample description
+  -r OWNER, --owner OWNER
+                        sample owner
+  -p, --published       sample is published
+  -w OWNERGROUP, --owner-group OWNERGROUP
+                        owner group name. Default is {beamtimeid}-dmgt
+  -c ACCESSGROUPS, --access-groups ACCESSGROUPS
+                        access group names separated by commas. Default is {be
+                        amtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,{be
+                        amline}dmgt,{beamline}staff
+  -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
+  -m CHARACTERISTICSMETA, --sample-characteristics CHARACTERISTICSMETA
+                        sample characteristics metadata file
+  -o OUTPUT, --output OUTPUT
+                        output scicat metadata file
+
+Example
+"""""""
+
+.. code:: bash
+
+          nxsfileinfo sample -i petra3/h2o/234234 -d 'HH water' -s ~/cm.json
+
+nxsfileinfo instrument
+----------------------
+
+It generates description of instrument
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo instrument [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -p PID, --pid PID     instrument pid
+  -n NAME, --name NAME  instrument name
+  -i BEAMTIMEID, --beamtimeid BEAMTIMEID
+                        beamtime id
+  -b BEAMLINE, --beamline BEAMLINE
+                        beamline
+  -w OWNERGROUP, --owner-group OWNERGROUP
+                        owner group name. Default is {beamtimeid}-dmgt
+  -c ACCESSGROUPS, --access-groups ACCESSGROUPS
+                        access group names separated by commas. Default is {be
+                        amtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,{be
+                        amline}dmgt,{beamline}staff
+  -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
+  -m CUSTOMMETA, --custom-metadata CUSTOMMETA
+                        instrument characteristics metadata file
+  -o OUTPUT, --output OUTPUT
+                        output scicat metadata file
+
+Example
+"""""""
+
+.. code:: bash
+
+	  nxsfileinfo instrument -p /petra3/p00 -n P00 -m ~/cm.json
+
+nxsfileinfo attachment
+----------------------
+
+It generates description of attachment
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo attachment [options] <image_file|scan_file>
+
+Options:
+  -h, --help            show this help message and exit
+  -a ATID, --id ATID    attachment id
+  -t CAPTION, --caption CAPTION
+                        caption text
+  -i BEAMTIMEID, --beamtimeid BEAMTIMEID
+                        beamtime id
+  -b BEAMLINE, --beamline BEAMLINE
+                        beamline
+  -r OWNER, --owner OWNER
+                        attachment owner
+  -w OWNERGROUP, --owner-group OWNERGROUP
+                        owner group name. Default is {beamtimeid}-dmgt
+  -c ACCESSGROUPS, --access-groups ACCESSGROUPS
+                        access group names separated by commas. Default is {be
+                        amtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,{be
+                        amline}dmgt,{beamline}staff
+  -f FILEFORMAT, --file-format FILEFORMAT
+                        input file format, e.g. 'nxs'. Default is defined by
+                        the file extension
+  --h5py                use h5py module as a nexus reader
+  --h5cpp               use h5cpp module as a nexus reader
+  -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
+  -s SIGNALS, --signals SIGNALS
+                        signals data name(s) separated by comma
+  -e AXES, --axes AXES  axis/axes data name(s) separated by comma
+  -m FRAME, --frame FRAME
+                        a frame number for if more 2D images in the data
+  --signal-label SLABEL
+                        signal label
+  --xlabel XLABEL       x-axis label
+  --ylabel YLABEL       y-axis label
+  -u, --overwrite       overwrite NeXus entries by script parameters
+  -o OUTPUT, --output OUTPUT
+                        output scicat metadata file
+
+
+Example
+"""""""
+
+.. code:: bash
+
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at1.json thumbnail.png 
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json -s pilatus myscan_00123.nxs 
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json  myscan_00124.fio 
+
