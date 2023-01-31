@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; NXSTools 3.39.0 documentation</title>
+    <title>Index &#8212; NXSTools 3.40.1 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.39</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.40</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -97,6 +97,9 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-field">nxsfileinfo field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-metadata">nxsfileinfo metadata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-origdatablock">nxsfileinfo origdatablock</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-sample">nxsfileinfo sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -246,6 +249,10 @@
         <li><a href="nxstools.html#nxstools.nxscreator.Creator.args">(nxstools.nxscreator.Creator attribute)</a>
 </li>
       </ul></li>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment">Attachment (class in nxstools.nxsfileinfo)</a>
+</li>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.attachment">attachment() (nxstools.nxsfileinfo.Attachment method)</a>
+</li>
       <li><a href="nxstools.html#nxstools.nxscreator.Device.attribute">attribute (nxstools.nxscreator.Device attribute)</a>
 </li>
   </ul></td>
@@ -293,6 +300,8 @@
       <li><a href="nxstools.html#nxstools.nxscollect.Collector.collect">collect() (nxstools.nxscollect.Collector method)</a>
 </li>
       <li><a href="nxstools.html#nxstools.nxscollect.Collector">Collector (class in nxstools.nxscollect)</a>
+</li>
+      <li><a href="nxstools.html#nxstools.nxsfileparser.FIOFileParser.columns">columns (nxstools.nxsfileparser.FIOFileParser attribute)</a>
 </li>
       <li><a href="nxstools.html#nxstools.nxscreate.Comp">Comp (class in nxstools.nxscreate)</a>
 </li>
@@ -433,13 +442,19 @@
 </li>
         <li><a href="nxstools.html#nxstools.nxsetup.Stop.create">(nxstools.nxsetup.Stop method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.create">(nxstools.nxsfileinfo.Attachment method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.create">(nxstools.nxsfileinfo.Field method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.create">(nxstools.nxsfileinfo.General method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.create">(nxstools.nxsfileinfo.Instrument method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.create">(nxstools.nxsfileinfo.Metadata method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.create">(nxstools.nxsfileinfo.OrigDatablock method)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.create">(nxstools.nxsfileinfo.Sample method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -595,13 +610,19 @@
 </li>
         <li><a href="nxstools.html#nxstools.nxsetup.Stop.description">(nxstools.nxsetup.Stop attribute)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.description">(nxstools.nxsfileinfo.Attachment attribute)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.description">(nxstools.nxsfileinfo.Field attribute)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.description">(nxstools.nxsfileinfo.General attribute)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.description">(nxstools.nxsfileinfo.Instrument attribute)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.description">(nxstools.nxsfileinfo.Metadata attribute)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.description">(nxstools.nxsfileinfo.OrigDatablock attribute)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.description">(nxstools.nxsfileinfo.Sample attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -725,13 +746,19 @@
 </li>
         <li><a href="nxstools.html#nxstools.nxsetup.Stop.epilog">(nxstools.nxsetup.Stop attribute)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.epilog">(nxstools.nxsfileinfo.Attachment attribute)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.epilog">(nxstools.nxsfileinfo.Field attribute)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.epilog">(nxstools.nxsfileinfo.General attribute)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.epilog">(nxstools.nxsfileinfo.Instrument attribute)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.epilog">(nxstools.nxsfileinfo.Metadata attribute)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.epilog">(nxstools.nxsfileinfo.OrigDatablock attribute)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.epilog">(nxstools.nxsfileinfo.Sample attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -884,11 +911,15 @@
 </li>
       <li><a href="nxstools.html#nxstools.nxsxml.NDSource.initClient">initClient() (nxstools.nxsxml.NDSource method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nxstools.html#nxstools.nxsxml.NDSource.initDBase">initDBase() (nxstools.nxsxml.NDSource method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nxstools.html#nxstools.nxsxml.NDSource.initTango">initTango() (nxstools.nxsxml.NDSource method)</a>
+</li>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument">Instrument (class in nxstools.nxsfileinfo)</a>
+</li>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.instrument">instrument() (nxstools.nxsfileinfo.Instrument method)</a>
 </li>
       <li><a href="nxstools.html#nxstools.nxsdevicetools.ioRegModules">ioRegModules (in module nxstools.nxsdevicetools)</a>
 </li>
@@ -1169,13 +1200,19 @@
 </li>
         <li><a href="nxstools.html#nxstools.nxsetup.AddRecorderPath.postauto">(nxstools.nxsetup.AddRecorderPath method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.postauto">(nxstools.nxsfileinfo.Attachment method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.postauto">(nxstools.nxsfileinfo.Field method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.postauto">(nxstools.nxsfileinfo.General method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.postauto">(nxstools.nxsfileinfo.Instrument method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.postauto">(nxstools.nxsfileinfo.Metadata method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.postauto">(nxstools.nxsfileinfo.OrigDatablock method)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.postauto">(nxstools.nxsfileinfo.Sample method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1299,15 +1336,21 @@
 </li>
         <li><a href="nxstools.html#nxstools.nxsetup.Stop.run">(nxstools.nxsetup.Stop method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.run">(nxstools.nxsfileinfo.Attachment method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.run">(nxstools.nxsfileinfo.BeamtimeLoader method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.run">(nxstools.nxsfileinfo.Field method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.run">(nxstools.nxsfileinfo.General method)</a>
 </li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.run">(nxstools.nxsfileinfo.Instrument method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.run">(nxstools.nxsfileinfo.Metadata method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.run">(nxstools.nxsfileinfo.OrigDatablock method)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.run">(nxstools.nxsfileinfo.Sample method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1320,6 +1363,10 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample">Sample (class in nxstools.nxsfileinfo)</a>
+</li>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.sample">sample() (nxstools.nxsfileinfo.Sample method)</a>
+</li>
       <li><a href="nxstools.html#nxstools.nxscreator.Device.sardanahostname">sardanahostname (nxstools.nxscreator.Device attribute)</a>
 </li>
       <li><a href="nxstools.html#nxstools.nxscreator.Device.sardananame">sardananame (nxstools.nxscreator.Device attribute)</a>
@@ -1368,14 +1415,20 @@
 </li>
       <li><a href="nxstools.html#nxstools.nxsconfig.Show">Show (class in nxstools.nxsconfig)</a>
 </li>
-      <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.show">show() (nxstools.nxsfileinfo.Field method)</a>
+      <li><a href="nxstools.html#nxstools.nxsfileinfo.Attachment.show">show() (nxstools.nxsfileinfo.Attachment method)</a>
 
       <ul>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Field.show">(nxstools.nxsfileinfo.Field method)</a>
+</li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.General.show">(nxstools.nxsfileinfo.General method)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Instrument.show">(nxstools.nxsfileinfo.Instrument method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.Metadata.show">(nxstools.nxsfileinfo.Metadata method)</a>
 </li>
         <li><a href="nxstools.html#nxstools.nxsfileinfo.OrigDatablock.show">(nxstools.nxsfileinfo.OrigDatablock method)</a>
+</li>
+        <li><a href="nxstools.html#nxstools.nxsfileinfo.Sample.show">(nxstools.nxsfileinfo.Sample method)</a>
 </li>
       </ul></li>
   </ul></td>
