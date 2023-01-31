@@ -15,7 +15,7 @@ Synopsis
 	  nxsfileinfo <command> [options] <nexus_file_name>
 
 
-The following commands are available: general, field
+The following commands are available: general, field, metadata, origdatablock, sample, instrument, attachment
 
 
 nxsfileinfo general
