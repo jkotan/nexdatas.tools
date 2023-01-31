@@ -2626,7 +2626,7 @@ class Instrument(Runner):
     """ Instrument runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of instrument"
+    description = "generate description of instrument"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
