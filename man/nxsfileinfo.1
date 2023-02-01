@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Jan 12, 2023" "3.39" "NXSTools"
+.TH "NXSFILEINFO" "1" "Jan 31, 2023" "3.40" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -45,7 +45,7 @@ nxsfileinfo <command> [options] <nexus_file_name>
 .UNINDENT
 .UNINDENT
 .sp
-The following commands are available: general, field
+The following commands are available: general, field, metadata, origdatablock, sample, instrument, attachment
 .SH NXSFILEINFO GENERAL
 .sp
 It shows general information for he nexus file.
@@ -95,7 +95,7 @@ It shows field information for the nexus file.
 .sp
 .nf
 .ft C
-Usage: nxsfileinfo field <file_name>
+Usage: nxsfileinfo field [options]  <file_name>
 .ft P
 .fi
 .UNINDENT
@@ -152,7 +152,7 @@ It shows metadata of the nexus file.
 .sp
 .nf
 .ft C
-Usage: nxsfileinfo metadata <file_name>
+Usage: nxsfileinfo metadata [options] <file_name>
 .ft P
 .fi
 .UNINDENT
@@ -281,14 +281,14 @@ nxsfileinfo metadata /user/data/myfile.nxs \-a units,NX_class
 .UNINDENT
 .SH NXSFILEINFO ORIGDATABLOCK
 .sp
-It shows description of all scan files
+It generates description of all scan files
 .SS Synopsis
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-Usage: nxsfileinfo origdatablock <scan_name>
+Usage: nxsfileinfo origdatablock [options] <scan_name>
 .ft P
 .fi
 .UNINDENT
@@ -338,6 +338,234 @@ json metadata file mod bits, e.g. 0o662
 .nf
 .ft C
 nxsfileinfo origdatablock /user/data/scan_12345
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSFILEINFO SAMPLE
+.sp
+It generates description of sample
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Usage: nxsfileinfo sample [options]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-s \ SAMPLEID\fP,\fB \ \-\-sample\-id \ SAMPLEID
+sample id
+.TP
+.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+beamtime id
+.TP
+.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+beamline
+.TP
+.BI \-d \ DESCRIPTION\fP,\fB \ \-\-description \ DESCRIPTION
+sample description
+.TP
+.BI \-r \ OWNER\fP,\fB \ \-\-owner \ OWNER
+sample owner
+.TP
+.B \-p\fP,\fB  \-\-published
+sample is published
+.TP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+owner group name. Default is {beamtimeid}\-dmgt
+.TP
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+access group names separated by commas. Default is {be
+amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
+amline}dmgt,{beamline}staff
+.TP
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+json metadata file mod bits, e.g. 0o662
+.TP
+.BI \-m \ CHARACTERISTICSMETA\fP,\fB \ \-\-sample\-characteristics \ CHARACTERISTICSMETA
+sample characteristics metadata file
+.TP
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+output scicat metadata file
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo sample \-i petra3/h2o/234234 \-d \(aqHH water\(aq \-s ~/cm.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSFILEINFO INSTRUMENT
+.sp
+It generates description of instrument
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Usage: nxsfileinfo instrument [options]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
+instrument pid
+.TP
+.BI \-n \ NAME\fP,\fB \ \-\-name \ NAME
+instrument name
+.TP
+.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+beamtime id
+.TP
+.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+beamline
+.TP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+owner group name. Default is {beamtimeid}\-dmgt
+.TP
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+access group names separated by commas. Default is {be
+amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
+amline}dmgt,{beamline}staff
+.TP
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+json metadata file mod bits, e.g. 0o662
+.TP
+.BI \-m \ CUSTOMMETA\fP,\fB \ \-\-custom\-metadata \ CUSTOMMETA
+instrument characteristics metadata file
+.TP
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+output scicat metadata file
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo instrument \-p /petra3/p00 \-n P00 \-m ~/cm.json
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSFILEINFO ATTACHMENT
+.sp
+It generates description of attachment
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Usage: nxsfileinfo attachment [options] <image_file|scan_file>
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-a \ ATID\fP,\fB \ \-\-id \ ATID
+attachment id
+.TP
+.BI \-t \ CAPTION\fP,\fB \ \-\-caption \ CAPTION
+caption text
+.TP
+.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+beamtime id
+.TP
+.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+beamline
+.TP
+.BI \-r \ OWNER\fP,\fB \ \-\-owner \ OWNER
+attachment owner
+.TP
+.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+owner group name. Default is {beamtimeid}\-dmgt
+.TP
+.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+access group names separated by commas. Default is {be
+amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
+amline}dmgt,{beamline}staff
+.TP
+.BI \-f \ FILEFORMAT\fP,\fB \ \-\-file\-format \ FILEFORMAT
+input file format, e.g. \(aqnxs\(aq. Default is defined by
+the file extension
+.TP
+.B \-\-h5py
+use h5py module as a nexus reader
+.TP
+.B \-\-h5cpp
+use h5cpp module as a nexus reader
+.TP
+.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+json metadata file mod bits, e.g. 0o662
+.TP
+.BI \-s \ SIGNALS\fP,\fB \ \-\-signals \ SIGNALS
+signals data name(s) separated by comma
+.TP
+.BI \-e \ AXES\fP,\fB \ \-\-axes \ AXES
+axis/axes data name(s) separated by comma
+.TP
+.BI \-m \ FRAME\fP,\fB \ \-\-frame \ FRAME
+a frame number for if more 2D images in the data
+.TP
+.BI \-\-signal\-label \ SLABEL
+signal label
+.TP
+.BI \-\-xlabel \ XLABEL
+x\-axis label
+.TP
+.BI \-\-ylabel \ YLABEL
+y\-axis label
+.TP
+.B \-u\fP,\fB  \-\-overwrite
+overwrite NeXus entries by script parameters
+.TP
+.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+output scicat metadata file
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at1.json thumbnail.png
+nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at2.json \-s pilatus myscan_00123.nxs
+nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at2.json  myscan_00124.fio
 .ft P
 .fi
 .UNINDENT

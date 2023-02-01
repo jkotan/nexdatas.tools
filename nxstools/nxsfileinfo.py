@@ -1513,7 +1513,7 @@ class OrigDatablock(Runner):
     """ OrigDatablock runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of all scan files"
+    description = "generate description of all scan files"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1784,7 +1784,7 @@ class Sample(Runner):
     """ Sample runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of sample"
+    description = "generate description of sample"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
@@ -1954,12 +1954,16 @@ class Attachment(Runner):
     """ Attachment runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of attachment"
+    description = "generate description of attachment"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
-        + "       nxsfileinfo attachment -i petra3/h2o/234234 -d 'HH water' " \
-        + "-s ~/cm.json \n" \
+        + "       nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' " \
+        + "-o ~/at1.json thumbnail.png \n" \
+        + "       nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' " \
+        + "-o ~/at2.json -s pilatus myscan_00123.nxs \n" \
+        + "       nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' " \
+        + "-o ~/at2.json  myscan_00124.fio \n" \
         + "\n"
 
     def create(self):
@@ -1978,9 +1982,6 @@ class Attachment(Runner):
         self._parser.add_argument(
             "-b", "--beamline", dest="beamline",
             help=("beamline"))
-        self._parser.add_argument(
-            "-d", "--description", dest="description",
-            help=("attachment description"))
         self._parser.add_argument(
             "-r", "--owner", dest="owner",
             help=("attachment owner"))
@@ -2506,10 +2507,9 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
 
+        matplotlib.interactive(False)
+        matplotlib.use('Agg')
         import matplotlib.pyplot as plt
-        if os.environ.get('DISPLAY', '') == '':
-            matplotlib.interactive(False)
-            matplotlib.use('Agg')
         fig, ax = plt.subplots()
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
@@ -2548,10 +2548,9 @@ class Attachment(Runner):
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
+        matplotlib.interactive(False)
+        matplotlib.use('Agg')
         import matplotlib.pyplot as plt
-        if os.environ.get('DISPLAY', '') == '':
-            matplotlib.interactive(False)
-            matplotlib.use('Agg')
         fig, ax = plt.subplots()
         # if axis is not None and len(axis) == len(data):
         #     ax.plot(axis, data, 'o', axis, data)
@@ -2627,7 +2626,7 @@ class Instrument(Runner):
     """ Instrument runner"""
 
     #: (:obj:`str`) command description
-    description = "show description of instrument"
+    description = "generate description of instrument"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \

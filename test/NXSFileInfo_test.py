@@ -108,10 +108,10 @@ positional arguments:
     field               show field information for the nexus file
     general             show general information for the nexus file
     metadata            show metadata information for the nexus file
-    origdatablock       show description of all scan files
-    sample              show description of sample
-    instrument          show description of instrument
-    attachment          show description of attachment
+    origdatablock       generate description of all scan files
+    sample              generate description of sample
+    instrument          generate description of instrument
+    attachment          generate description of attachment
 
 optional arguments:
   -h, --help            show this help message and exit
