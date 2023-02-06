@@ -9155,7 +9155,7 @@ For more help:
                 "0o666",
                 "0666",
                 "exp_c03",
-                "exp_mot04",
+                "ex_mo1,exp_mot04",
                 "exp_c03.(counts)",
                 "lat.(mm)",
             ],
@@ -9420,7 +9420,7 @@ For more help:
                 "0o662",
                 "0662",
                 "exp_c99,exp_c02",
-                "timestamp",
+                "erd,timestamp",
                 "exp_p02.(counts)",
                 "time.(s)",
             ],
@@ -9539,7 +9539,6 @@ For more help:
                     ctn = tn[len("data:image/png;base64,"):]
 
                     ipng = base64.b64decode(ctn.encode("utf-8"))
-
                     img = PIL.Image.open(BytesIO(ipng))
                     shape = np.array(img).shape
                     self.assertEqual(len(shape), 3)
@@ -9712,7 +9711,6 @@ For more help:
                     ctn = tn[len("data:image/png;base64,"):]
 
                     ipng = base64.b64decode(ctn.encode("utf-8"))
-
                     img = PIL.Image.open(BytesIO(ipng))
                     shape = np.array(img).shape
                     self.assertEqual(len(shape), 3)

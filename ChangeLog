@@ -1,5 +1,6 @@
 2023-02-06 Jan Kotanski <jankotan@gmail.com>
 	* do not create json for attachments without thumbnail (#437)
+	* use first existing axis (#437)
 	* tagged as v3.40.2
 
 2023-01-31 Jan Kotanski <jankotan@gmail.com>

@@ -2207,11 +2207,16 @@ class Attachment(Runner):
                                 sdata = nxsparser.columns[0][1]
                                 if not slabel:
                                     slabel = nxsparser.columns[0][0]
-                        if data and axes and axes[0] in data.keys():
-                            adata = data[axes[0]]
-                            if not xlabel:
-                                xlabel = axes[0]
-                        elif len(nxsparser.columns) > 1 and \
+                        axis = None
+                        if data and axes:
+                            for ax in axes:
+                                if ax and ax in data.keys():
+                                    axis = ax
+                                    adata = data[ax]
+                                    if not xlabel:
+                                        xlabel = ax
+
+                        if not axis and len(nxsparser.columns) > 1 and \
                                 len(nxsparser.columns[0]) > 1:
                             adata = nxsparser.columns[0][1]
                             if not xlabel:
@@ -2455,9 +2460,15 @@ class Attachment(Runner):
                 axes = [naxes]
         adata = []
         anode = None
-        if axes and axes[0] in nxdata.names():
-            anode = nxdata.open(axes[0])
-            adata = anode.read()
+        if axes:
+            for ax in axes:
+                if ax in nxdata.names():
+                    try:
+                        anode = nxdata.open(ax)
+                        adata = anode.read()
+                        break
+                    except Exception:
+                        pass
         sdata = sgnode.read()
         sunits = None
         aunits = None
