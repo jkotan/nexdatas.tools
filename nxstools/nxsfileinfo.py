@@ -2220,7 +2220,8 @@ class Attachment(Runner):
                             result["thumbnail"] = self._plot1d(
                                 sdata, adata, xlabel, slabel, options.caption)
 
-        return json.dumps(
+        if "thumbnail" in result and result["thumbnail"]:
+            return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
 
@@ -2301,24 +2302,28 @@ class Attachment(Runner):
                 signal = "data"
 
         if sgnode is not None:
-            dtshape = sgnode.shape
-            # print(dtshape)
-            # print(nxdata.names())
-            # print(signal)
-            # print(slabel)
-            # print(xlabel)
-            # print(ylabel)
-            if len(dtshape) == 1:
-                return self._nxsplot1d(
-                    sgnode, signal, axes, slabel, xlabel, ylabel,
-                    title, overwrite)
-            elif len(dtshape) == 2:
-                return self._nxsplot2d(
-                    sgnode, signal, slabel, title, overwrite)
+            try:
+                dtshape = sgnode.shape
+                dtsize = sgnode.size
+                # print(dtshape)
+                # print(nxdata.names())
+                # print(signal)
+                # print(slabel)
+                # print(xlabel)
+                # print(ylabel)
+                if len(dtshape) == 1 and dtsize > 1:
+                    return self._nxsplot1d(
+                        sgnode, signal, axes, slabel, xlabel, ylabel,
+                        title, overwrite)
+                elif len(dtshape) == 2 and dtsize > 1:
+                    return self._nxsplot2d(
+                        sgnode, signal, slabel, title, overwrite)
 
-            elif len(dtshape) == 3:
-                return self._nxsplot3d(
-                    sgnode, signal, slabel, title, overwrite, frame)
+                elif len(dtshape) == 3 and dtsize > 1:
+                    return self._nxsplot3d(
+                        sgnode, signal, slabel, title, overwrite, frame)
+            except Exception:
+                return None
 
     def _nxsplot3d(self, sgnode, signal, slabel, title,
                    overwrite=False, frame=None):

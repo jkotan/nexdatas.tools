@@ -9045,9 +9045,10 @@ For more help:
             er = mystderr.getvalue()
 
             self.assertEqual('', er)
-            dct = json.loads(vl)
-            res = {}
-            self.myAssertDict(dct, res)
+            self.assertEqual('', vl.strip())
+            # dct = json.loads(vl)
+            # res = {}
+            # self.myAssertDict(dct, res)
 
     def test_attachment_png(self):
         """ test nxsfileinfo attachment
@@ -9318,7 +9319,6 @@ For more help:
             bid = arg[3]
             bl = arg[4]
             chmod = arg[5]
-            chmod2 = arg[6]
             signals = arg[7]
             axes = arg[8]
             slabel = arg[9]
@@ -9379,26 +9379,7 @@ For more help:
                     self.assertEqual('', er)
                     self.assertEqual('', vl.strip())
 
-                    with open(ofname) as of:
-                        dct = json.load(of)
-                        status = os.stat(ofname)
-                    try:
-                        self.assertEqual(
-                            chmod, str(oct(status.st_mode & 0o777)))
-                    except Exception:
-                        self.assertEqual(
-                            chmod2, str(oct(status.st_mode & 0o777)))
-                    res = {
-                        'id': atid,
-                        'caption': caption,
-                        "ownerGroup": "%s-dmgt" % bid,
-                        "accessGroups": [
-                            '%s-clbt' % bid,
-                            '%s-part' % bid,
-                            '%s-dmgt' % bid,
-                            '%sdmgt' % bl, '%sstaff' % bl],
-                    }
-                    self.myAssertDict(dct, res)
+                    self.assertTrue(not os.path.isfile(ofname))
 
             finally:
                 if os.path.isfile(filename):
