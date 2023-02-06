@@ -3,6 +3,7 @@ FROM ubuntu:20.04
 MAINTAINER DESY, Jan Kotanski <jankotan@gmail.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN sed -i 's|http://archive|http://de.archive|g' /etc/apt/sources.list
 RUN apt-get -qq update && apt-get -qq install -y libterm-readline-gnu-perl software-properties-common coreutils gnupg2 procps apt-utils curl apt-transport-https gnupg2 ca-certificates wget
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg  | gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
