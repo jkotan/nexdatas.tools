@@ -2026,9 +2026,9 @@ class Attachment(Runner):
         self._parser.add_argument(
             "--ylabel", dest="ylabel", help=("y-axis label"))
         self._parser.add_argument(
-            "-u", "--overwrite", action="store_true",
-            default=False, dest="overwrite",
-            help="overwrite NeXus entries by script parameters")
+            "-u", "--override", action="store_true",
+            default=False, dest="override",
+            help="override NeXus entries by script parameters")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -2170,7 +2170,7 @@ class Attachment(Runner):
                 if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                     tn = self._nxsplot(
                         root, signals, axes, slabel, xlabel, ylabel, frame,
-                        options.caption, options.overwrite)
+                        options.caption, options.override)
                     if tn:
                         result["thumbnail"] = tn
 
@@ -2231,7 +2231,7 @@ class Attachment(Runner):
                 cls=numpyEncoder)
 
     def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
-                 title, overwrite=False):
+                 title, override=False):
         """ create plot from nexus file
 
 
@@ -2260,7 +2260,7 @@ class Attachment(Runner):
         if sgnode is not None:
             nxdata = sgnode.parent
             if nxdata is not None:
-                if overwrite and signals:
+                if override and signals:
                     for sg in signals:
                         if sg in nxdata.names():
                             sgnode = nxdata.open(sg)
@@ -2298,7 +2298,7 @@ class Attachment(Runner):
                     nname = filewriter.first(attrs["signal"].read())
                     if nname in nxdata.names():
                         sgnode = nxdata.open(nname)
-            if nxdata is not None and (overwrite or sgnode is None) and \
+            if nxdata is not None and (override or sgnode is None) and \
                signal in nxdata.names():
                 sgnode = nxdata.open(signal)
             if sgnode is None and nxdata is not None and \
@@ -2319,19 +2319,19 @@ class Attachment(Runner):
                 if len(dtshape) == 1 and dtsize > 1:
                     return self._nxsplot1d(
                         sgnode, signal, axes, slabel, xlabel, ylabel,
-                        title, overwrite)
+                        title, override)
                 elif len(dtshape) == 2 and dtsize > 1:
                     return self._nxsplot2d(
-                        sgnode, signal, slabel, title, overwrite)
+                        sgnode, signal, slabel, title, override)
 
                 elif len(dtshape) == 3 and dtsize > 1:
                     return self._nxsplot3d(
-                        sgnode, signal, slabel, title, overwrite, frame)
+                        sgnode, signal, slabel, title, override, frame)
             except Exception:
                 return None
 
     def _nxsplot3d(self, sgnode, signal, slabel, title,
-                   overwrite=False, frame=None):
+                   override=False, frame=None):
         """ create plot 1d from nexus file
 
 
@@ -2343,8 +2343,8 @@ class Attachment(Runner):
         :type slabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
-        :param overwrite: overwrite nexus attributes flag
-        :type overwrite: :obj:`bool`
+        :param override: override nexus attributes flag
+        :type override: :obj:`bool`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2369,20 +2369,20 @@ class Attachment(Runner):
         if "long_name" in sgnode.attributes.names():
             slname = filewriter.first(
                 sgnode.attributes["long_name"].read())
-        if not overwrite or not slabel:
+        if not override or not slabel:
             if slname:
                 slabel = slname
             else:
                 slabel = signal
             if sunits:
                 slabel = "%s (%s)" % (slabel, sunits)
-        if (not overwrite or not title) and nxdata.parent is not None and \
+        if (not override or not title) and nxdata.parent is not None and \
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
         return self._plot2d(sdata, slabel, title)
 
     def _nxsplot2d(self, sgnode, signal, slabel, title,
-                   overwrite=False, frame=None):
+                   override=False, frame=None):
         """ create plot 1d from nexus file
 
 
@@ -2394,8 +2394,8 @@ class Attachment(Runner):
         :type slabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
-        :param overwrite: overwrite nexus attributes flag
-        :type overwrite: :obj:`bool`
+        :param override: override nexus attributes flag
+        :type override: :obj:`bool`
         :param frame: frame number to display
         :type frame: :obj:`int`
         :returns: thumbnail string
@@ -2413,20 +2413,20 @@ class Attachment(Runner):
         if "long_name" in sgnode.attributes.names():
             slname = filewriter.first(
                 sgnode.attributes["long_name"].read())
-        if not overwrite or not slabel:
+        if not override or not slabel:
             if slname:
                 slabel = slname
             elif not slabel:
                 slabel = signal
             if sunits:
                 slabel = "%s (%s)" % (slabel, sunits)
-        if (not overwrite or not title) and nxdata.parent is not None and \
+        if (not override or not title) and nxdata.parent is not None and \
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
         return self._plot2d(sdata, slabel, title)
 
     def _nxsplot1d(self, sgnode, signal, axes, slabel, xlabel, ylabel,
-                   title, overwrite=False):
+                   title, override=False):
         """ create plot 1d from nexus file
 
 
@@ -2444,8 +2444,8 @@ class Attachment(Runner):
         :type ylabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
-        :param overwrite: overwrite nexus attributes flag
-        :type overwrite: :obj:`bool`
+        :param override: override nexus attributes flag
+        :type override: :obj:`bool`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2456,7 +2456,7 @@ class Attachment(Runner):
         if hasattr(nxdata, "names") and "axes" in attrs.names():
 
             naxes = filewriter.first(attrs["axes"].read())
-            if not overwrite and naxes:
+            if not override and naxes:
                 axes = [naxes]
         adata = []
         anode = None
@@ -2480,7 +2480,7 @@ class Attachment(Runner):
         if "long_name" in sgnode.attributes.names():
             slname = filewriter.first(
                 sgnode.attributes["long_name"].read())
-        if not overwrite or not slabel:
+        if not override or not slabel:
             if slname:
                 slabel = slname
             elif not slabel:
@@ -2492,14 +2492,14 @@ class Attachment(Runner):
         if anode is not None and "long_name" in anode.attributes.names():
             alname = filewriter.first(
                 anode.attributes["long_name"].read())
-        if (not overwrite or not xlabel) and axes and axes[0]:
+        if (not override or not xlabel) and axes and axes[0]:
             if alname:
                 xlabel = alname
             elif not xlabel:
                 xlabel = axes[0]
             if aunits:
                 xlabel = "%s (%s)" % (xlabel, aunits)
-        if (not overwrite or not title) and nxdata.parent is not None and \
+        if (not override or not title) and nxdata.parent is not None and \
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
         return self._plot1d(
