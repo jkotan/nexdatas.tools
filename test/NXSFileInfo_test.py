@@ -9449,7 +9449,7 @@ For more help:
                  ' -x %s '
                  ' -s %s '
                  ' -e %s '
-                 # ' --override '
+                 ' -u '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes)).split(),
                 ('nxsfileinfo attachment %s '
@@ -9463,7 +9463,7 @@ For more help:
                  ' --axes %s '
                  ' --signal-label %s '
                  ' --xlabel %s '
-                 # ' --override '
+                 ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, slabel, xlabel)).split(),
             ]
