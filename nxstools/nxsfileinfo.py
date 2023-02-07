@@ -2460,11 +2460,13 @@ class Attachment(Runner):
                 axes = [naxes]
         adata = []
         anode = None
+        axis = ""
         if axes:
             for ax in axes:
                 if ax in nxdata.names():
                     try:
                         anode = nxdata.open(ax)
+                        axis = ax
                         adata = anode.read()
                         break
                     except Exception:
@@ -2495,8 +2497,8 @@ class Attachment(Runner):
         if (not override or not xlabel) and axes and axes[0]:
             if alname:
                 xlabel = alname
-            elif not xlabel:
-                xlabel = axes[0]
+            elif not xlabel and axis:
+                xlabel = axis
             if aunits:
                 xlabel = "%s (%s)" % (xlabel, aunits)
         if (not override or not title) and nxdata.parent is not None and \

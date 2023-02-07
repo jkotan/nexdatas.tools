@@ -1,3 +1,7 @@
+2023-02-07 Jan Kotanski <jankotan@gmail.com>
+	* take next axis if the first does not exist in nxsfileinfo attribute (#443)
+	* tagged as v3.40.4
+
 2023-02-06 Jan Kotanski <jankotan@gmail.com>
 	* change --overwrite to --override in nxsfileinfo attachment (#440)
 	* tagged as v3.40.3
