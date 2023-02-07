@@ -9449,7 +9449,7 @@ For more help:
                  ' -x %s '
                  ' -s %s '
                  ' -e %s '
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes)).split(),
                 ('nxsfileinfo attachment %s '
@@ -9463,7 +9463,7 @@ For more help:
                  ' --axes %s '
                  ' --signal-label %s '
                  ' --xlabel %s '
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, slabel, xlabel)).split(),
             ]
@@ -9612,7 +9612,7 @@ For more help:
                  ' -x %s '
                  ' -s %s '
                  ' -e %s '
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes)).split(),
                 ('nxsfileinfo attachment %s '
@@ -9626,7 +9626,7 @@ For more help:
                  ' --axes %s '
                  ' --signal-label %s '
                  ' --xlabel %s '
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, slabel, xlabel)).split(),
             ]
@@ -9785,7 +9785,7 @@ For more help:
                  ' -s %s '
                  ' -e %s '
                  ' -m %s '
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, frame)).split(),
                 ('nxsfileinfo attachment %s '
@@ -9800,7 +9800,7 @@ For more help:
                  ' --frame %s '
                  ' --signal-label %s '
 
-                 # ' --overwrite '
+                 # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, frame, slabel)).split(),
             ]

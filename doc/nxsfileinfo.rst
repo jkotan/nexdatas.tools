@@ -335,7 +335,7 @@ Options:
                         signal label
   --xlabel XLABEL       x-axis label
   --ylabel YLABEL       y-axis label
-  -u, --overwrite       overwrite NeXus entries by script parameters
+  -u, --override        override NeXus entries by script parameters
   -o OUTPUT, --output OUTPUT
                         output scicat metadata file
 
