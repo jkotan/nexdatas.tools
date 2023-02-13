@@ -578,11 +578,17 @@ class FIOFileParser(object):
             if "Acquisition started at " in line:
                 sline = line.split("Acquisition started at ")
                 if sline and sline[-1].strip():
-                    meta["start_time"] = sline[-1].strip()
+                    meta["start_time"] = {
+                        "value": sline[-1].strip(),
+                        "unit": ""
+                    }
             elif "Acquisition ended at " in line:
                 sline = line.split("Acquisition ended at ")
                 if sline and sline[-1].strip():
-                    meta["end_time"] = sline[-1].strip()
+                    meta["end_time"] = {
+                        "value": sline[-1].strip(),
+                        "unit": ""
+                    }
         if comments:
             meta["comments"] = comments
 
