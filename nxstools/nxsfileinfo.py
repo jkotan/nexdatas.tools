@@ -2210,10 +2210,17 @@ class Attachment(Runner):
                             data = sm["data"]
                         if sm and "parameters" in sm.keys():
                             params = sm["parameters"]
-                        if 'signalcounter' in params \
+                        if not signal and 'signalcounter' in params \
                                 and params['signalcounter']:
                             if data and params['signalcounter'] in data:
                                 signal = params['signalcounter']
+                                sdata = data[signal]
+                                if not slabel:
+                                    slabel = signal
+                        if not signal and 'signal' in params \
+                                and params['signal']:
+                            if data and params['signal'] in data:
+                                signal = params['signal']
                                 sdata = data[signal]
                                 if not slabel:
                                     slabel = signal
