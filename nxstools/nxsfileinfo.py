@@ -1211,6 +1211,18 @@ class Metadata(Runner):
             nxfl.close()
 
     @classmethod
+    def _cure(cls, result):
+        if 'creationTime' not in result:
+            result['creationTime'] = filewriter.FTFile.currenttime()
+        if 'type' not in result:
+            result['type'] = 'raw'
+        if 'creationLocation' not in result:
+            result['creationLocation'] = "/DESY/PETRA III"
+        if 'ownerGroup' not in result:
+            result['ownerGroup'] = "ingestor"
+        return result
+
+    @classmethod
     def metadata(cls, root, options):
         """ get metadata from nexus and beamtime file
 
@@ -1308,7 +1320,7 @@ class Metadata(Runner):
                 nxsparser.parseMeta()
             elif options.fileformat in ['fio']:
                 nxsparser = FIOFileParser(root)
-                nxsparser.group_postfix = options.group_postfix
+                nxsparser.grup_postfix = options.group_postfix
                 # nxsparser.attrs = attrs
                 # nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
@@ -1352,6 +1364,7 @@ class Metadata(Runner):
             result = bl.remove_metadata(
                 result, usercopymap or None,
                 usercopylist or None, copymapfield)
+            result = cls._cure(result)
         elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
@@ -1405,6 +1418,7 @@ class Metadata(Runner):
                 result = bl.remove_metadata(
                     result, usercopymap or None,
                     usercopylist or None, copymapfield)
+                result = cls._cure(result)
             else:
                 result = []
                 for desc in nxsparser.description:
@@ -1456,6 +1470,7 @@ class Metadata(Runner):
                     rst = bl.remove_metadata(
                         rst, usercopymap or None,
                         usercopylist or None, copymapfield)
+                    rst = cls._cure(rst)
                     result.append(rst)
         if result is not None:
             return json.dumps(
@@ -2182,6 +2197,7 @@ class Attachment(Runner):
                     sdata = None
                     adata = None
                     signal = None
+                    params = None
                     if nxsparser.description and nxsparser.columns:
                         desc = nxsparser.description[0]
                         sm = None
@@ -2189,13 +2205,20 @@ class Attachment(Runner):
                             sm = desc["scientificMetadata"]
                         if sm and "data" in sm.keys():
                             data = sm["data"]
-                        if data and signals:
-                            for sg in signals:
-                                if sg and sg in data.keys():
-                                    signal = sg
-                                    sdata = data[signal]
-                                    if not slabel:
-                                        slabel = signal
+                        if sm and "parameters" in sm.keys():
+                            params = sm["parameters"]
+                        if 'signalcounter' in params \
+                                and params['signalcounter']:
+                            if data and params['signalcounter'] in data:
+                                signal = params['signalcounter']
+                        if not signal or options.override:
+                            if data and signals:
+                                for sg in signals:
+                                    if sg and sg in data.keys():
+                                        signal = sg
+                                        sdata = data[signal]
+                                        if not slabel:
+                                            slabel = signal
                         if not signal:
                             if len(nxsparser.columns) > 1 and \
                                     len(nxsparser.columns[1]) > 1:
