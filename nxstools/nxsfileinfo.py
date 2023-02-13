@@ -1320,7 +1320,7 @@ class Metadata(Runner):
                 nxsparser.parseMeta()
             elif options.fileformat in ['fio']:
                 nxsparser = FIOFileParser(root)
-                nxsparser.grup_postfix = options.group_postfix
+                nxsparser.group_postfix = options.group_postfix
                 # nxsparser.attrs = attrs
                 # nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
