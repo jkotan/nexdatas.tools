@@ -1364,7 +1364,8 @@ class Metadata(Runner):
             result = bl.remove_metadata(
                 result, usercopymap or None,
                 usercopylist or None, copymapfield)
-            result = cls._cure(result)
+            if not options.rawscientific:
+                result = cls._cure(result)
         elif nxsparser and nxsparser.description:
             if len(nxsparser.description) == 1:
                 desc = nxsparser.description[0]
@@ -1418,7 +1419,8 @@ class Metadata(Runner):
                 result = bl.remove_metadata(
                     result, usercopymap or None,
                     usercopylist or None, copymapfield)
-                result = cls._cure(result)
+                if not options.rawscientific:
+                    result = cls._cure(result)
             else:
                 result = []
                 for desc in nxsparser.description:
@@ -1470,7 +1472,8 @@ class Metadata(Runner):
                     rst = bl.remove_metadata(
                         rst, usercopymap or None,
                         usercopylist or None, copymapfield)
-                    rst = cls._cure(rst)
+                    if not options.rawscientific:
+                        rst = cls._cure(rst)
                     result.append(rst)
         if result is not None:
             return json.dumps(
@@ -2211,6 +2214,9 @@ class Attachment(Runner):
                                 and params['signalcounter']:
                             if data and params['signalcounter'] in data:
                                 signal = params['signalcounter']
+                                sdata = data[signal]
+                                if not slabel:
+                                    slabel = signal
                         if not signal or options.override:
                             if data and signals:
                                 for sg in signals:

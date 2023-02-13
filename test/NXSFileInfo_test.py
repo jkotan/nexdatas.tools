@@ -2197,8 +2197,9 @@ For more help:
                     self.assertEqual('', er)
                     # print(vl)
                     dct = json.loads(vl)
-                    res = {'entry12345':
-                           {'NX_class': 'NXentry',
+                    res = {
+                        'entry12345':
+                        {'NX_class': 'NXentry',
                             'data': {'NX_class': 'NXdata'},
                             'end_time': {'value': '%s' % arg[6]},
                             'experiment_identifier': {'value': '%s' % arg[2]},
@@ -2703,6 +2704,9 @@ For more help:
                     dct = json.loads(vl)
                     # print(dct)
                     res = {'pid': '12344321/12345',
+                           "type": "raw",
+                           "ownerGroup": "ingestor",
+                           "creationLocation": "/DESY/PETRA III",
                            'techniques': ltech,
                            'sampleId': sid,
                            'instrumentId': iid,
@@ -2735,7 +2739,8 @@ For more help:
                         res['datasetName'] = "%s_12345" % fname
                     else:
                         res['datasetName'] = "12345"
-                    self.myAssertDict(dct, res, skip=['pid'])
+                    self.myAssertDict(dct, res,
+                                      skip=['pid', 'creationTime'])
                     if kk % 2:
                         self.assertEqual(
                             dct["pid"], "12344321/%s_12345" % fname)
@@ -2904,6 +2909,9 @@ For more help:
                     dct = json.loads(vl)
                     # print(dct)
                     res = {'pid': '12344321/12345',
+                           "type": "raw",
+                           "ownerGroup": "ingestor",
+                           "creationLocation": "/DESY/PETRA III",
                            'techniques': ltech,
                            'sampleId': sid,
                            'scientificMetadata':
@@ -2939,7 +2947,8 @@ For more help:
                         res['datasetName'] = "%s_12345" % fname
                     else:
                         res['datasetName'] = "12345"
-                    self.myAssertDict(res, dct, skip=['pid'])
+                    self.myAssertDict(res, dct,
+                                      skip=['pid', 'creationTime'])
                     if kk % 2:
                         self.assertEqual(
                             dct["pid"], "12344321/%s_12345" % fname)
@@ -3078,6 +3087,9 @@ For more help:
                            'endTime': '%s' % arg[6],
                            'description': '%s' % arg[1],
                            'techniques': [],
+                           "type": "raw",
+                           "ownerGroup": "ingestor",
+                           "creationLocation": "/DESY/PETRA III",
                            }
                     self.myAssertDict(dct, res)
             finally:
@@ -3188,6 +3200,10 @@ For more help:
                     self.assertEqual('', er)
                     dct = json.loads(vl)
                     res = {
+                        "type": "raw",
+                        "creationTime": "",
+                        "ownerGroup": "ingestor",
+                        "creationLocation": "/DESY/PETRA III",
                         'pid': '12341234',
                         'datasetName': '12341234',
                         'techniques': [{
@@ -3207,7 +3223,7 @@ For more help:
                          }
                     }
 
-                    self.myAssertDict(dct, res)
+                    self.myAssertDict(dct, res, skip=["creationTime"])
             finally:
                 os.remove(filename)
 
@@ -3317,6 +3333,10 @@ For more help:
                     res = {
                         'pid': '12341234',
                         'datasetName': '12341234',
+                        "type": "raw",
+                        "creationTime": "",
+                        "ownerGroup": "ingestor",
+                        "creationLocation": "/DESY/PETRA III",
                         'techniques': [],
                         'scientificMetadata':
                         {"NX_class": "NXcollection",
@@ -3326,7 +3346,7 @@ For more help:
                          "name": "logs"
                          }
                     }
-                    self.myAssertDict(dct, res)
+                    self.myAssertDict(dct, res, skip=["creationTime"])
             finally:
                 os.remove(filename)
 
@@ -3420,10 +3440,14 @@ For more help:
                             'title_': 'duplicated',
                             'title': {'value': '%s' % arg[1]},
                             },
+                           "type": "raw",
+                           "creationTime": "",
+                           "ownerGroup": "ingestor",
+                           "creationLocation": "/DESY/PETRA III",
                            'description': '%s' % arg[1],
                            'techniques': [],
                            }
-                    self.myAssertDict(dct, res)
+                    self.myAssertDict(dct, res, skip=["creationTime"])
             finally:
                 os.remove(filename)
 
@@ -3902,6 +3926,7 @@ For more help:
                             '16171271-part',
                             'p01dmgt',
                             'p01staff'],
+                        'creationTime': '2014-02-16T15:17:21+00:00',
                         'contactEmail': 'robust.robust@robust.com',
                         'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
@@ -3929,7 +3954,10 @@ For more help:
                                 'user jkotan Acquisition started at '
                                 'Thu Dec  8 17:00:43 2022'
                             },
-                            'end_time': {'value': '2014-02-16T15:17:21+00:00'},
+                            'end_time': {
+                                'value': '2014-02-16T15:17:21+00:00',
+                                'unit': ''
+                            },
                             'parameters': {
                                 'abs': 1423,
                                 'anav': 5.14532,
@@ -3949,7 +3977,10 @@ For more help:
                                 '[ 0.02460193  0.0091408   1.15661358]; '
                                 '[-0.80932194 -0.82636427  0.02374563]]'
                             },
-                            'start_time': 'Thu Dec  8 17:00:43 2022',
+                            'start_time': {
+                                'value': 'Thu Dec  8 17:00:43 2022',
+                                'unit': ''
+                            },
                             'user_comments': 'Awesome comment'},
                         'sourceFolder':
                         '/asap3/petra3/gpfs/p01/2020/data/12345678',
@@ -4165,6 +4196,7 @@ For more help:
                             '16171271-part',
                             'p01dmgt',
                             'p01staff'],
+                        'creationTime': '2014-02-16T15:17:21+00:00',
                         'contactEmail': 'robust.robust@robust.com',
                         'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
@@ -4201,8 +4233,14 @@ For more help:
                                           4.407033920288086,
                                           5.524206161499023,
                                           6.656368255615234],
-                            'end_time': {'value': '2014-02-16T15:17:21+00:00'},
-                            'start_time': 'Thu Dec  8 17:00:43 2022',
+                            'end_time': {
+                                'value': '2014-02-16T15:17:21+00:00',
+                                'unit': "",
+                            },
+                            'start_time': {
+                                'value': 'Thu Dec  8 17:00:43 2022',
+                                'unit': ""
+                            },
                             'user_comments': 'Awesome comment'},
                         'sourceFolder':
                         '/asap3/petra3/gpfs/p01/2020/data/12345678',
