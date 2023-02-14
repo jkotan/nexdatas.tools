@@ -91,9 +91,60 @@ def signalname(commonblock, detector, firstchannel,
     return result
 
 
+def scanaxesnames(commonblock, scancommand,
+                  signal, detector, firstchannel,
+                  timers, mgchannels, entryname, nexus_step_datasources,
+                  nchannels_to_skip=0):
+    """ code for axesnames  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param scancommand: scan command
+    :type scancommand: :obj:`str`
+    :param signal: signal name
+    :type signal: :obj:`str`
+    :param detector: detector name
+    :type detector: :obj:`str`
+    :param firstchannel: first mg channel
+    :type firstchannel: :obj:`str`
+    :param timers: a list of timers separated by space
+    :type timers: :obj:`str`
+    :param mgchannels: a list of mgchannels separated by space
+    :type mgchannels: :obj:`str`
+    :param entryname:  entry group name
+    :type entryname: :obj:`str`
+    :param nexus_step_datasources: a list of nexus_step_datasources
+    :type nexus_step_datasources: :obj:`str`
+    :param nchannels_to_skip: a number of mg channels to skip
+    :type nchannels_to_skip: :obj:`int`
+    :returns: axes names
+    :rtype: :obj:`str`
+    """
+    result = ""
+    root = commonblock["__root__"]
+    nxentry = root.open(entryname)
+    nxdata = nxentry.open("data")
+    writer = root.parent.writer
+    links = writer.get_links(nxdata)
+    names = list(sorted([ch.name for ch in links]))
+    if scancommand:
+        pars = [par for par in str(scancommand).split(" ") if par]
+        if len(pars) > 1:
+            sg = pars[1]
+            if sg in names:
+                result = sg
+    if signal not in names:
+        signal = None
+    result = axesnames(
+        commonblock, detector, firstchannel,
+        timers, mgchannels, entryname, nexus_step_datasources,
+        nchannels_to_skip, signal, result)
+    return result
+
+
 def axesnames(commonblock, detector, firstchannel,
               timers, mgchannels, entryname, nexus_step_datasources,
-              nchannels_to_skip=0):
+              nchannels_to_skip=0, signal=None, scanaxis=None):
     """ code for axesnames  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -108,22 +159,32 @@ def axesnames(commonblock, detector, firstchannel,
     :type mgchannels: :obj:`str`
     :param entryname:  entry group name
     :type entryname: :obj:`str`
-    :param mgchannels: a list of nexus_step_datasources
-    :type mgchannels: :obj:`str`
+    :param nexus_step_datasources: a list of nexus_step_datasources
+    :type nexus_step_datasources: :obj:`str`
     :param nchannels_to_skip: a number of mg channels to skip
     :type nchannels_to_skip: :obj:`int`
-    :returns: signal name
+    :param signal: signal name
+    :type signal: :obj:`str`
+    :param scanaxis: axis name
+    :type scanaxis: :obj:`str`
+    :returns: axes names
     :rtype: :obj:`str`
     """
-    signal = signalname(
-        commonblock, detector, firstchannel, timers, mgchannels, entryname,
-        False, nchannels_to_skip)
+    if not signal:
+        signal = signalname(
+            commonblock, detector, firstchannel, timers,
+            mgchannels, entryname,
+            False, nchannels_to_skip)
 
     result = []
     try:
         timers = [ch for ch in str(timers).split(" ") if ch]
         stepdss = [
             ch for ch in str(nexus_step_datasources).split(" ") if ch]
+        if scanaxis:
+            if scanaxis in stepdss:
+                stepdss.remove(scanaxis)
+            stepdss.insert(0, scanaxis)
         root = commonblock["__root__"]
         nxentry = root.open(entryname)
         nxdata = nxentry.open("data")
