@@ -960,6 +960,14 @@ standardComponentVariables = {
             'default': '0',
             'doc': "number of mg channels to skip (string)"
         },
+        'sardanasignal': {
+            'default': 'SignalCounter',
+            'doc': "signal sardana variable name (string)"
+        },
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        }
     },
     'parametercopymap': {
         'program': {
@@ -980,6 +988,10 @@ standardComponentVariables = {
             'default': 'defaultsignal',
             'doc': "data signal field name (datasource)"
         },
+        'sardanasignal': {
+            'default': 'SignalCounter',
+            'doc': "signal sardana variable name (string)"
+        },
         'axes': {
             'default': 'defaultaxes',
             'doc': "list of data axes field names (datasource)"
@@ -988,6 +1000,10 @@ standardComponentVariables = {
             'default': '0',
             'doc': "number of mg channels to skip (string)"
         },
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        }
     },
     'descriptiontext': {
         'description': {

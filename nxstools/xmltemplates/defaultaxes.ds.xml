@@ -3,8 +3,8 @@
   <datasource type="PYEVAL" name="signalname">
     <result name="result">
 from nxstools.pyeval import datasignal
-ds.result = datasignal.scanaxesnames(commonblock, "$var.scan_title", ds.$(signal), "$var.detector", "$var.firstchannel", "$var.timers", "$var.mgchannels", "$var.entryname#'$(__entryname__)'$var.serialno", "$var.nexus_step_datasources", $(nchannelstoskip))
+ds.result = datasignal.axesnames(commonblock, "$var.detector", "$var.firstchannel", "$var.timers", "$var.mgchannels", "$var.entryname#'$(__entryname__)'$var.serialno", "$var.nexus_step_datasources", $(nchannelstoskip), "$var.scan_title", ds.$(msenv), $(sardanasignal))
 </result>
+   $datasources.$(msenv)
   </datasource>
-   $datasources.$(signal)
 </definition>
