@@ -967,7 +967,19 @@ standardComponentVariables = {
         'msenv': {
             'default': None,
             'doc': "sardana environment (datasource)"
-        }
+        },
+        'mssardanadevice': {
+            'default': None,
+            'doc': "macroserver sardana device name MANDATORY (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
     },
     'parametercopymap': {
         'program': {
@@ -1003,7 +1015,20 @@ standardComponentVariables = {
         'msenv': {
             'default': None,
             'doc': "sardana environment (datasource)"
-        }
+        },
+        'mssardanadevice': {
+            'default': None,
+            'doc': "macroserver sardana device name MANDATORY (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
+
     },
     'descriptiontext': {
         'description': {
@@ -1567,6 +1592,7 @@ standardComponentTemplateFiles = {
         'signal_name.ds.xml',
         'signalname.ds.xml',
         'signal_axes.ds.xml',
+        'sardanaenvironment.ds.xml',
     ],
     'dataaxessignal': [
         'dataaxessignal.xml',
@@ -1574,6 +1600,7 @@ standardComponentTemplateFiles = {
         'defaultaxes.ds.xml',
         'signal_name.ds.xml',
         'signalname.ds.xml',
+        'sardanaenvironment.ds.xml',
     ],
     'defaultinstrument': [
         'defaultinstrument.xml',
