@@ -960,6 +960,26 @@ standardComponentVariables = {
             'default': '0',
             'doc': "number of mg channels to skip (string)"
         },
+        'sardanasignal': {
+            'default': 'SignalCounter',
+            'doc': "signal sardana variable name (string)"
+        },
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        },
+        'mssardanadevice': {
+            'default': None,
+            'doc': "macroserver sardana device name MANDATORY (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
     },
     'parametercopymap': {
         'program': {
@@ -980,6 +1000,10 @@ standardComponentVariables = {
             'default': 'defaultsignal',
             'doc': "data signal field name (datasource)"
         },
+        'sardanasignal': {
+            'default': 'SignalCounter',
+            'doc': "signal sardana variable name (string)"
+        },
         'axes': {
             'default': 'defaultaxes',
             'doc': "list of data axes field names (datasource)"
@@ -988,6 +1012,23 @@ standardComponentVariables = {
             'default': '0',
             'doc': "number of mg channels to skip (string)"
         },
+        'msenv': {
+            'default': None,
+            'doc': "sardana environment (datasource)"
+        },
+        'mssardanadevice': {
+            'default': None,
+            'doc': "macroserver sardana device name MANDATORY (string)"
+        },
+        '__tangohost__': {
+            'default': "localhost",
+            'doc': "tango host (string)"
+        },
+        '__tangoport__': {
+            'default': "10000",
+            'doc': "tango port (string)"
+        },
+
     },
     'descriptiontext': {
         'description': {
@@ -1551,6 +1592,7 @@ standardComponentTemplateFiles = {
         'signal_name.ds.xml',
         'signalname.ds.xml',
         'signal_axes.ds.xml',
+        'sardanaenvironment.ds.xml',
     ],
     'dataaxessignal': [
         'dataaxessignal.xml',
@@ -1558,6 +1600,7 @@ standardComponentTemplateFiles = {
         'defaultaxes.ds.xml',
         'signal_name.ds.xml',
         'signalname.ds.xml',
+        'sardanaenvironment.ds.xml',
     ],
     'defaultinstrument': [
         'defaultinstrument.xml',

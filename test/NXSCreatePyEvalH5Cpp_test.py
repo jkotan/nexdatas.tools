@@ -1075,6 +1075,139 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             if os.path.exists(self._fname):
                 os.remove(self._fname)
 
+    def test_signalname_sardanasignal(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        env = {"new": {
+            'NeXusSelectorDevice': 'nxs/nxsrecselector/dellek',
+            'ScanFile': ['sdfsdf.nxs', 'sdfsdf.fio'],
+            'Signal': 'exp_c02',
+            'SignalCounter': 'exp_c01',
+            'ScanDir': '/tmp'}}
+        penv = pickle.dumps(env)
+        varname = "Signal"
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "exp_c02"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname,
+                False,
+                0,
+                penv,
+                varname
+            )
+            self.assertEqual(signalname, result)
+            self.assertTrue("default" not in rt.attributes.names())
+            self.assertTrue("default" not in entry.attributes.names())
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_signalname_sardanaenv(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        env = {"new": {
+            'NeXusSelectorDevice': 'nxs/nxsrecselector/dellek',
+            'ScanFile': ['sdfsdf.nxs', 'sdfsdf.fio'],
+            'SignalCounter': 'exp_c02',
+            'ScanDir': '/tmp'}}
+        penv = pickle.dumps(env)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+
+            signalname = "exp_c02"
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.signalname(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname,
+                False,
+                0,
+                penv
+            )
+            self.assertEqual(signalname, result)
+            self.assertTrue("default" not in rt.attributes.names())
+            self.assertTrue("default" not in entry.attributes.names())
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
     def test_signalname_mgchannels(self):
         """
         """
@@ -1216,6 +1349,139 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
                 mgchannels,
                 entryname)
             self.assertEqual(signalname, result)
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_axesnames_scancommand(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        env = {"new": {
+            'NeXusSelectorDevice': 'nxs/nxsrecselector/dellek',
+            'ScanFile': ['sdfsdf.nxs', 'sdfsdf.fio'],
+            'Signal': 'exp_c02',
+            'SignalCounter': 'exp_c01',
+            'ScanDir': '/tmp'}}
+        penv = pickle.dumps(env)
+        varname = "Signal"
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+            dt.create_field("exp_mot01", "uint32", [30], [1]).close()
+            dt.create_field("exp_mot02", "uint32", [30], [1]).close()
+
+            axesnames = ["exp_mot02"]
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            stepdss = "exp_mot01 exp_mot02"
+            entryname = "entry123"
+            scancmd = "ascan exp_mot02 0 10 10 0.1"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.axesnames(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname,
+                stepdss,
+                0,
+                scancmd,
+                penv,
+                varname
+            )
+            self.assertEqual(axesnames, result)
+            self.assertTrue("default" not in rt.attributes.names())
+            self.assertTrue("default" not in entry.attributes.names())
+
+            dt.close()
+            entry.close()
+            fl.close()
+        finally:
+            if os.path.exists(self._fname):
+                os.remove(self._fname)
+
+    def test_axesnames_stepdss(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        mfileprefix = "%s%s" % (self.__class__.__name__, fun)
+        scanid = 12345
+        self._fname = "%s_%s.nxs" % (mfileprefix, scanid)
+
+        try:
+
+            entryname = "entry123"
+            fl = self.fwriter.create_file(self._fname, overwrite=True)
+            fl.writer = self.fwriter
+            rt = fl.root()
+            entry = rt.create_group(entryname, "NXentry")
+            dt = entry.create_group("data", "NXdata")
+            dt.create_field(
+                "pilatus", "uint32", [30, 30, 20], [1, 30, 20]).close()
+            dt.create_field(
+                "lambda", "uint32", [30, 30, 10], [1, 30, 10]).close()
+            dt.create_field("exp_c01", "uint32", [30], [1]).close()
+            dt.create_field("exp_t01", "uint32", [30], [1]).close()
+            dt.create_field("exp_c02", "uint32", [30], [1]).close()
+            dt.create_field("exp_mot01", "uint32", [30], [1]).close()
+            dt.create_field("exp_mot02", "uint32", [30], [1]).close()
+
+            axesnames = ["exp_mot01"]
+
+            commonblock = {"__root__": rt}
+            detector = "lambda2"
+            firstchannel = "exp_c01"
+            timers = "exp_t01 exp_t02"
+            mgchannels = "pilatus exp_c01 exp_c02 ext_t01"
+            stepdss = "exp_mot01 exp_mot02"
+            entryname = "entry123"
+
+            from nxstools.pyeval import datasignal
+            result = datasignal.axesnames(
+                commonblock,
+                detector,
+                firstchannel,
+                timers,
+                mgchannels,
+                entryname,
+                stepdss,
+                0
+            )
+            self.assertEqual(axesnames, result)
+            self.assertTrue("default" not in rt.attributes.names())
+            self.assertTrue("default" not in entry.attributes.names())
 
             dt.close()
             entry.close()

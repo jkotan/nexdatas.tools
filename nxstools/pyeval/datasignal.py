@@ -21,10 +21,16 @@
 
 from nxstools import filewriter
 
+try:
+    from . import mssar
+except Exception:
+    import mssar
+
 
 def signalname(commonblock, detector, firstchannel,
                timers, mgchannels, entryname, defaultattrs=True,
-               nchannels_to_skip=0):
+               nchannels_to_skip=0, msenv=None,
+               sardanasignal='SignalCounter'):
     """ code for signalname  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -43,6 +49,12 @@ def signalname(commonblock, detector, firstchannel,
     :type defaultattrs: :obj:`bool`
     :param nchannels_to_skip: a number of mg channels to skip
     :type nchannels_to_skip: :obj:`int`
+    :param nchannels_to_skip: sardana signal name
+    :type nchannels_to_skip: :obj:`str`
+    :param msenv: sardana environment
+    :type msenv: :obj:`str`
+    :param sardanasignal: signal sardana environment variable
+    :type sardanasignal: :obj:`str`
     :returns: signal name
     :rtype: :obj:`str`
     """
@@ -67,7 +79,15 @@ def signalname(commonblock, detector, firstchannel,
         writer = root.parent.writer
         links = writer.get_links(nxdata)
         names = list(sorted([ch.name for ch in links]))
-        if detector in names:
+        sarsg = ""
+        if msenv and sardanasignal:
+            try:
+                sarsg = mssar.mssarenv(msenv, sardanasignal)
+            except Exception:
+                pass
+        if sarsg and sarsg in names:
+            result = str(sarsg)
+        elif detector in names:
             result = str(detector)
         elif firstchannel in names:
             result = str(firstchannel)
@@ -93,7 +113,8 @@ def signalname(commonblock, detector, firstchannel,
 
 def axesnames(commonblock, detector, firstchannel,
               timers, mgchannels, entryname, nexus_step_datasources,
-              nchannels_to_skip=0):
+              nchannels_to_skip=0, scancommand="", msenv=None,
+              sardanasignal='SignalCounter'):
     """ code for axesnames  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -108,16 +129,22 @@ def axesnames(commonblock, detector, firstchannel,
     :type mgchannels: :obj:`str`
     :param entryname:  entry group name
     :type entryname: :obj:`str`
-    :param mgchannels: a list of nexus_step_datasources
-    :type mgchannels: :obj:`str`
+    :param nexus_step_datasources: a list of nexus_step_datasources
+    :type nexus_step_datasources: :obj:`str`
     :param nchannels_to_skip: a number of mg channels to skip
     :type nchannels_to_skip: :obj:`int`
-    :returns: signal name
+    :param scancommand: scan command
+    :type scancommand: :obj:`str`
+    :param msenv: sardana environment
+    :type msenv: :obj:`str`
+    :param sardanasignal: signal sardana environment variable
+    :type sardanasignal: :obj:`str`
+    :returns: axes names
     :rtype: :obj:`str`
     """
     signal = signalname(
         commonblock, detector, firstchannel, timers, mgchannels, entryname,
-        False, nchannels_to_skip)
+        False, nchannels_to_skip, msenv, sardanasignal)
 
     result = []
     try:
@@ -130,6 +157,14 @@ def axesnames(commonblock, detector, firstchannel,
         writer = root.parent.writer
         links = writer.get_links(nxdata)
         names = list(sorted([ch.name for ch in links]))
+        if scancommand:
+            pars = [par for par in str(scancommand).split(" ") if par]
+            if len(pars) > 1:
+                scanaxis = pars[1]
+                if scanaxis in names:
+                    if scanaxis in stepdss:
+                        stepdss.remove(scanaxis)
+                    stepdss.insert(0, scanaxis)
         if signal != detector:
             dt = nxdata.open(signal)
             dtshape = dt.shape
