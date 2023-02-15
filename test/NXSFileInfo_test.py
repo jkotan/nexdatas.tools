@@ -10094,7 +10094,7 @@ For more help:
 
                     cps = dct["caption"].split(" ", 1)
                     self.assertEqual(len(cps), 2)
-                    self.assertEqual(cps, caption)
+                    self.assertEqual(cps[0], caption)
                     self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
