@@ -9305,7 +9305,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
@@ -9455,7 +9460,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
@@ -9602,7 +9612,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
@@ -9893,7 +9908,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
@@ -10070,7 +10090,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
