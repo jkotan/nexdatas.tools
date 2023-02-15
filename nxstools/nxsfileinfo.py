@@ -2035,6 +2035,13 @@ class Attachment(Runner):
             "-e", "--axes", dest="axes",
             help=("axis/axes data name(s) separated by comma"))
         self._parser.add_argument(
+            "-q", "--scan-command-axes", dest="scancmdaxes",
+            default='{"hklscan":"h;k;l","qscan":"qz;qpar"}',
+            help=("a JSON dictionary with scan-command axes to override, "
+                  "axis/axes data name(s) separated by comma for detectors"
+                  " and by semicolon for more plots. Default: "
+                  '{"hklscan":"h;k;l","qscan":"qz;qpar"}'))
+        self._parser.add_argument(
             "-m", "--frame", dest="frame",
             help=("a frame number for if more 2D images in the data"))
         self._parser.add_argument(
@@ -2188,7 +2195,7 @@ class Attachment(Runner):
                 if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                     tn = self._nxsplot(
                         root, signals, axes, slabel, xlabel, ylabel, frame,
-                        options.caption, options.override)
+                        options.caption, options.override, options.scancmdaxes)
                     if tn:
                         result["thumbnail"] = tn
 
@@ -2210,6 +2217,13 @@ class Attachment(Runner):
                             data = sm["data"]
                         if sm and "parameters" in sm.keys():
                             params = sm["parameters"]
+                        if sm and options.scancmdaxes:
+                            if "ScanCommand" in sm and sm["ScanCommand"]:
+                                ax = self._axesfromcommand(
+                                    sm["ScanCommand"],
+                                    options.scancmdaxes, data)
+                                if ax:
+                                    axes = ax
                         if not signal and 'signalcounter' in params \
                                 and params['signalcounter']:
                             if data and params['signalcounter'] in data:
@@ -2232,6 +2246,7 @@ class Attachment(Runner):
                                         sdata = data[signal]
                                         if not slabel:
                                             slabel = signal
+                                        break
                         if not signal:
                             if len(nxsparser.columns) > 1 and \
                                     len(nxsparser.columns[1]) > 1:
@@ -2251,6 +2266,7 @@ class Attachment(Runner):
                                     adata = data[ax]
                                     if not xlabel:
                                         xlabel = ax
+                                    break
 
                         if not axis and len(nxsparser.columns) > 1 and \
                                 len(nxsparser.columns[0]) > 1:
@@ -2266,8 +2282,60 @@ class Attachment(Runner):
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
 
+    def _axesfromcommand(self, scmd, scmdaxes, data):
+        """ create plot from nexus file
+
+        :param scmd: scan command
+        :type scmd: :obj:`str`
+        :param scmdaxes: JSON dictionry with scan command axes
+        :type scmdaxes: :obj:`str`
+        :param data: nxdata nexus file
+        :type data: class:`filewriter.FTGroup` or dict <:obj:`str`, `any`>
+        :returns: axis from scan command
+        :rtype: :obj:`str`
+        """
+
+        axes = []
+        try:
+            scaxes = json.loads(scmdaxes)
+            if scaxes and isinstance(scaxes, dict):
+                    scmd = scmd.split(" ")[0]
+                    if scmd in scaxes:
+                        axs = scaxes[scmd].split(",")
+                        for ax in axs:
+                            maxsz = 0
+                            for aa in ax.split(";"):
+                                ta = ""
+                                adata = None
+                                if isinstance(data, dict):
+                                    if aa and aa in data.keys():
+                                        adata = data[aa]
+                                        mx = max(adata) - min(adata)
+                                        if mx > maxsz:
+                                            maxsz = mx
+                                            ta = aa
+                                elif hasattr(data, "names") and \
+                                        hasattr(data, "open"):
+                                    if aa and aa in data.names():
+                                        try:
+                                            adata = data.open(aa).read()
+                                        except Exception:
+                                            pass
+                                if adata is not None:
+                                    mx = max(adata) - min(adata)
+                                    if mx > maxsz:
+                                        maxsz = mx
+                                        ta = aa
+
+                            if maxsz:
+                                axes = [ta]
+                            break
+        except Exception:
+            pass
+        return axes
+
     def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
-                 title, override=False):
+                 title, override=False, scmdaxes=None):
         """ create plot from nexus file
 
 
@@ -2285,12 +2353,15 @@ class Attachment(Runner):
         :type ylabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
+        :param scmdaxes: JSON dictionry with scan command axes
+        :type scmdaxes: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
         # print(signals)
         sgnode = root.default_field(signals)
         nxdata = None
+        entry = None
         signal = None
         # print(sgnode)
         if sgnode is not None:
@@ -2353,6 +2424,21 @@ class Attachment(Runner):
                 # print(xlabel)
                 # print(ylabel)
                 if len(dtshape) == 1 and dtsize > 1:
+                    if hasattr(entry, "names") and \
+                            hasattr(nxdata, "names")  and \
+                            "program_name" in entry.names():
+                        pn = entry.open("program_name")
+                        attr = pn.attributes
+                        names = [att.name for att in attr]
+                        if "scan_command" in names:
+                            scommand = filewriter.first(
+                                attr["scan_command"].read())
+                            ax = self._axesfromcommand(
+                                scommand, scmdaxes, nxdata)
+                            if ax:
+                                axes = ax
+                                if not xlabel:
+                                    xlabel = ax
                     return self._nxsplot1d(
                         sgnode, signal, axes, slabel, xlabel, ylabel,
                         title, override)

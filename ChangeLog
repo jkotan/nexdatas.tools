@@ -3,6 +3,7 @@
 	* fix setting the creationTime in FIO nxsfileinfo attachment (#447)
 	* set the signal from the SignalCounter sardana variable in nxsfileinfo attachment (#449)
 	* set the axes from the sardana scancommand first parameter in nxsfileinfo attachment (#449)
+	* add --scan-command-axes to nxsfileinfo attachment (#451)
 	* tagged as v3.41.0
 
 2023-02-07 Jan Kotanski <jankotan@gmail.com>
