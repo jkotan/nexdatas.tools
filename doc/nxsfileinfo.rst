@@ -329,6 +329,11 @@ Options:
   -s SIGNALS, --signals SIGNALS
                         signals data name(s) separated by comma
   -e AXES, --axes AXES  axis/axes data name(s) separated by comma
+  -q SCANCMDAXES, --scan-command-axes SCANCMDAXES
+                        a JSON dictionary with scan-command axes to override,
+                        axis/axes data name(s) separated by comma for
+                        detectors and by semicolon for more plots. Default:
+                        {"hklscan":"h;k;l","qscan":"qz;qpar"}
   -m FRAME, --frame FRAME
                         a frame number for if more 2D images in the data
   --signal-label SLABEL
@@ -336,6 +341,8 @@ Options:
   --xlabel XLABEL       x-axis label
   --ylabel YLABEL       y-axis label
   -u, --override        override NeXus entries by script parameters
+  --parameters-in-caption
+                        add plot paramters to the caption
   -o OUTPUT, --output OUTPUT
                         output scicat metadata file
 

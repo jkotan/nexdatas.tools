@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Feb 13, 2023" "3.41" "NXSTools"
+.TH "NXSFILEINFO" "1" "Feb 15, 2023" "3.41" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .
@@ -538,6 +538,12 @@ signals data name(s) separated by comma
 .BI \-e \ AXES\fP,\fB \ \-\-axes \ AXES
 axis/axes data name(s) separated by comma
 .TP
+.BI \-q \ SCANCMDAXES\fP,\fB \ \-\-scan\-command\-axes \ SCANCMDAXES
+a JSON dictionary with scan\-command axes to override,
+axis/axes data name(s) separated by comma for
+detectors and by semicolon for more plots. Default:
+{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
+.TP
 .BI \-m \ FRAME\fP,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
 .TP
@@ -552,6 +558,9 @@ y\-axis label
 .TP
 .B \-u\fP,\fB  \-\-override
 override NeXus entries by script parameters
+.TP
+.B \-\-parameters\-in\-caption
+add plot paramters to the caption
 .TP
 .BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
