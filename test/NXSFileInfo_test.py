@@ -10031,7 +10031,7 @@ For more help:
             nxsfile = filewriter.create_file(filename, overwrite=True)
             rt = nxsfile.root()
             entry = rt.create_group("entry1234", "NXentry")
-            pn = entry.create_field("program_name", "str")
+            pn = entry.create_field("program_name", "string")
             pn.write("nex")
             pn.attributes.create("scan_command", "string").write(scmd)
             entry.create_group("instrument", "NXinstrument")
