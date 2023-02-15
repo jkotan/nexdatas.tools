@@ -2221,7 +2221,7 @@ class Attachment(Runner):
                             if "ScanCommand" in sm and sm["ScanCommand"]:
                                 ax = self._axesfromcommand(
                                     sm["ScanCommand"],
-                                    options.scancmdaxes, data)
+                                    options.scancmdaxes, data, axes)
                                 if ax:
                                     axes = ax
                         if not signal and 'signalcounter' in params \
@@ -2282,7 +2282,7 @@ class Attachment(Runner):
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
 
-    def _axesfromcommand(self, scmd, scmdaxes, data):
+    def _axesfromcommand(self, scmd, scmdaxes, data, useraxes=None):
         """ create plot from nexus file
 
         :param scmd: scan command
@@ -2296,42 +2296,49 @@ class Attachment(Runner):
         """
 
         axes = []
+        useraxes = useraxes or []
         try:
             scaxes = json.loads(scmdaxes)
             if scaxes and isinstance(scaxes, dict):
-                    scmd = scmd.split(" ")[0]
-                    if scmd in scaxes:
-                        axs = scaxes[scmd].split(",")
-                        for ax in axs:
-                            maxsz = 0
-                            for aa in ax.split(";"):
-                                ta = ""
-                                adata = None
-                                if isinstance(data, dict):
-                                    if aa and aa in data.keys():
-                                        adata = data[aa]
-                                        mx = max(adata) - min(adata)
-                                        if mx > maxsz:
-                                            maxsz = mx
-                                            ta = aa
-                                elif hasattr(data, "names") and \
-                                        hasattr(data, "open"):
-                                    if aa and aa in data.names():
-                                        try:
-                                            adata = data.open(aa).read()
-                                        except Exception:
-                                            pass
-                                if adata is not None:
-                                    mx = max(adata) - min(adata)
-                                    if mx > maxsz:
-                                        maxsz = mx
-                                        ta = aa
+                scmd1 = [sc for sc in scmd.split(" ") if sc][0]
+                if scmd in scaxes:
+                    axs = scaxes[scmd1].split(",")
+                    for ax in axs:
+                        maxsz = 0
+                        for aa in ax.split(";"):
+                            ta = ""
+                            adata = None
+                            if isinstance(data, dict):
+                                if aa and aa in data.keys():
+                                    adata = data[aa]
+                            elif hasattr(data, "names") and \
+                                    hasattr(data, "open"):
+                                if aa and aa in data.names():
+                                    try:
+                                        adata = data.open(aa).read()
+                                    except Exception:
+                                        pass
+                            if adata is not None:
+                                mx = max(adata) - min(adata)
+                                if mx > maxsz:
+                                    maxsz = mx
+                                    ta = aa
 
-                            if maxsz:
-                                axes = [ta]
-                            break
+                        if maxsz:
+                            axes = [ta]
+                        break
         except Exception:
             pass
+        if not axes and not useraxes:
+            scmds = [sc for sc in scmd.split(" ") if sc]
+            if len(scmds) > 1:
+                aa = scmds[1]
+                if isinstance(data, dict):
+                    if aa and aa in data.keys():
+                        axes = [aa]
+                    elif hasattr(data, "names") and \
+                            aa and aa in data.names():
+                        axes = [aa]
         return axes
 
     def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
@@ -2425,7 +2432,7 @@ class Attachment(Runner):
                 # print(ylabel)
                 if len(dtshape) == 1 and dtsize > 1:
                     if hasattr(entry, "names") and \
-                            hasattr(nxdata, "names")  and \
+                            hasattr(nxdata, "names") and \
                             "program_name" in entry.names():
                         pn = entry.open("program_name")
                         attr = pn.attributes
@@ -2434,7 +2441,7 @@ class Attachment(Runner):
                             scommand = filewriter.first(
                                 attr["scan_command"].read())
                             ax = self._axesfromcommand(
-                                scommand, scmdaxes, nxdata)
+                                scommand, scmdaxes, nxdata, axes)
                             if ax:
                                 axes = ax
                                 if not xlabel:
