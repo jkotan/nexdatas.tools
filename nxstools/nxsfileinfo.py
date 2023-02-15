@@ -2054,6 +2054,10 @@ class Attachment(Runner):
             "-u", "--override", action="store_true",
             default=False, dest="override",
             help="override NeXus entries by script parameters")
+        self._parser.add_argument(
+            "--parameters-in-caption", action="store_true",
+            default=False, dest="ppflag",
+            help="add plot paramters to the caption")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -2193,11 +2197,15 @@ class Attachment(Runner):
                 if options.slabel:
                     slabel = options.slabel
                 if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
-                    tn = self._nxsplot(
+                    tn, pars = self._nxsplot(
                         root, signals, axes, slabel, xlabel, ylabel, frame,
                         options.caption, options.override, options.scancmdaxes)
                     if tn:
                         result["thumbnail"] = tn
+                        if options.ppflag:
+                            if pars and "caption" not in result:
+                                result["caption"] = ""
+                            result["caption"] += " " + pars
 
                 elif options.fileformat in ['fio']:
                     nxsparser = FIOFileParser(root)
@@ -2274,8 +2282,12 @@ class Attachment(Runner):
                             if not xlabel:
                                 xlabel = nxsparser.columns[0][0]
                         if sdata:
-                            result["thumbnail"] = self._plot1d(
+                            result["thumbnail"], pars = self._plot1d(
                                 sdata, adata, xlabel, slabel, options.caption)
+                        if options.ppflag:
+                            if pars and "caption" not in result:
+                                result["caption"] = ""
+                            result["caption"] += " " + pars
 
         if "thumbnail" in result and result["thumbnail"]:
             return json.dumps(
@@ -2301,12 +2313,12 @@ class Attachment(Runner):
             scaxes = json.loads(scmdaxes)
             if scaxes and isinstance(scaxes, dict):
                 scmd1 = [sc for sc in scmd.split(" ") if sc][0]
-                if scmd in scaxes:
+                if scmd1 in scaxes:
                     axs = scaxes[scmd1].split(",")
                     for ax in axs:
                         maxsz = 0
+                        ta = ""
                         for aa in ax.split(";"):
-                            ta = ""
                             adata = None
                             if isinstance(data, dict):
                                 if aa and aa in data.keys():
@@ -2323,10 +2335,9 @@ class Attachment(Runner):
                                 if mx > maxsz:
                                     maxsz = mx
                                     ta = aa
-
                         if maxsz:
                             axes = [ta]
-                        break
+                            break
         except Exception:
             pass
         if not axes and not useraxes:
@@ -2336,9 +2347,9 @@ class Attachment(Runner):
                 if isinstance(data, dict):
                     if aa and aa in data.keys():
                         axes = [aa]
-                    elif hasattr(data, "names") and \
-                            aa and aa in data.names():
-                        axes = [aa]
+                elif hasattr(data, "names") and \
+                        aa and aa in data.names():
+                    axes = [aa]
         return axes
 
     def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
@@ -2381,6 +2392,7 @@ class Attachment(Runner):
                             signal = sg
                 elif not signal:
                     signal = sgnode.name
+            entry = nxdata.parent
         if nxdata is None:
             entry = None
             attrs = root.attributes
@@ -2444,8 +2456,8 @@ class Attachment(Runner):
                                 scommand, scmdaxes, nxdata, axes)
                             if ax:
                                 axes = ax
-                                if not xlabel:
-                                    xlabel = ax
+                                if not xlabel and ax:
+                                    xlabel = ax[0]
                     return self._nxsplot1d(
                         sgnode, signal, axes, slabel, xlabel, ylabel,
                         title, override)
@@ -2457,7 +2469,8 @@ class Attachment(Runner):
                     return self._nxsplot3d(
                         sgnode, signal, slabel, title, override, frame)
             except Exception:
-                return None
+                return None, None
+        return None, None
 
     def _nxsplot3d(self, sgnode, signal, slabel, title,
                    override=False, frame=None):
@@ -2576,7 +2589,7 @@ class Attachment(Runner):
         :param override: override nexus attributes flag
         :type override: :obj:`bool`
         :returns: thumbnail string
-        :rtype: :obj:`str`
+        :rtype: :obj:`str`,
         """
         signal = sgnode.name
         nxdata = sgnode.parent
@@ -2654,6 +2667,7 @@ class Attachment(Runner):
         :rtype: :obj:`str`
         """
 
+        pars = {}
         matplotlib.interactive(False)
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
@@ -2664,6 +2678,12 @@ class Attachment(Runner):
             else:
                 ax.plot(axis, data)
             ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+            if xlabel:
+                pars["xlabel"] = xlabel
+            if ylabel:
+                pars["ylabel"] = ylabel
+            if title:
+                pars["title"] = title
         else:
             axis = list(range(len(data)))
             if len(data) < maxo:
@@ -2671,6 +2691,12 @@ class Attachment(Runner):
             else:
                 ax.plot(axis, data)
             ax.set(ylabel=ylabel, title=title)
+            if xlabel:
+                pars["xlabel"] = xlabel
+            if ylabel:
+                pars["ylabel"] = ylabel
+            if title:
+                pars["title"] = title
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -2680,7 +2706,7 @@ class Attachment(Runner):
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
-        return thumbnail
+        return thumbnail, json.dumps(pars)
 
     def _plot2d(self, data, slabel, title, maxratio=10):
         """ create oned thumbnail plot
@@ -2695,6 +2721,7 @@ class Attachment(Runner):
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
+        pars = {}
         matplotlib.interactive(False)
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
@@ -2707,11 +2734,14 @@ class Attachment(Runner):
         if int(shape[0]/shape[1]) > maxratio or \
                 int(shape[1]/shape[0]) > maxratio:
             ax.imshow(data, aspect='auto')
+            pars["aspect"] = 'auto'
         else:
             ax.imshow(data)
         if slabel:
             title = "%s: %s" % (title, slabel)
         ax.set(title=title)
+        if title:
+            pars["title"] = title
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -2721,7 +2751,7 @@ class Attachment(Runner):
         buffer.close()
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
-        return thumbnail
+        return thumbnail, json.dumps(pars)
 
     def show(self, root, options):
         """ the main function
