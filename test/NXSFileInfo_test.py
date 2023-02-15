@@ -10094,7 +10094,7 @@ For more help:
 
                     cps = dct["caption"].split(" ", 1)
                     self.assertEqual(len(cps), 2)
-                    self.assertEqual(cps[0], caption)
+                    self.assertEqual(cps, caption)
                     self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
@@ -10134,6 +10134,8 @@ For more help:
                 "exp_mot04",
                 "MCA01",
                 "lat.(mm)",
+                '{"aspect":"auto","title":"My_tests: exp_mca01"}',
+                '{"aspect":"auto","title":"My_tests: MCA01"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -10149,6 +10151,8 @@ For more help:
                 "timestamp",
                 "MCA01",
                 "time.(s)",
+                '{"aspect":"auto","title":"Water_tests: exp_mca01"}',
+                '{"aspect":"auto","title":"Water_tests: MCA01"}',
             ],
         ]
 
@@ -10175,6 +10179,7 @@ For more help:
                  ' -x %s '
                  ' -s %s '
                  ' -e %s '
+                 ' --parameters-in-caption '
                  # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes)).split(),
@@ -10189,6 +10194,7 @@ For more help:
                  ' --axes %s '
                  ' --signal-label %s '
                  ' --xlabel %s '
+                 ' --parameters-in-caption '
                  # ' --override '
                  % (filename, atid, caption, bid, bl,
                     ofname, chmod, signals, axes, slabel, xlabel)).split(),
@@ -10226,7 +10232,9 @@ For more help:
             nxsfile.close()
 
             try:
-                for cmd in commands:
+                for ci, cmd in enumerate(commands):
+
+                    pars = arg[11 + ci]
                     # print(cmd)
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
@@ -10258,7 +10266,7 @@ For more help:
                             chmod2, str(oct(status.st_mode & 0o777)))
                     res = {
                         'id': atid,
-                        'caption': caption,
+                        'caption': "%s %s" % (caption, pars),
                         'thumbnail': "",
                         "ownerGroup": "%s-dmgt" % bid,
                         "accessGroups": [
@@ -10267,7 +10275,12 @@ For more help:
                             '%s-dmgt' % bid,
                             '%sdmgt' % bl, '%sstaff' % bl],
                     }
-                    self.myAssertDict(dct, res, ["thumbnail"])
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
                     self.assertTrue(tn.startswith("data:image/png;base64,"))
@@ -10282,8 +10295,8 @@ For more help:
             finally:
                 if os.path.isfile(filename):
                     os.remove(filename)
-                if os.path.isfile(ofname):
-                    os.remove(ofname)
+                # if os.path.isfile(ofname):
+                #     os.remove(ofname)
 
     def test_attachment_nxs_images(self):
         """ test nxsfileinfo attachment
@@ -10302,10 +10315,12 @@ For more help:
                 "p00",
                 "0o666",
                 "0666",
-                "exp_mca01",
                 "lambda",
+                "exp_mot04",
                 "MCA01",
                 3,
+                '{"title": "My_tests: lambda"}',
+                '{"title": "My_tests: lambda"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -10321,6 +10336,8 @@ For more help:
                 "timestamp",
                 "MCA01",
                 2,
+                '{"title": "Water_tests: lambda"}',
+                '{"title": "Water_tests: lambda"}',
             ],
         ]
 
@@ -10346,6 +10363,7 @@ For more help:
                  ' -o %s '
                  ' -x %s '
                  ' -s %s '
+                 ' --parameters-in-caption '
                  ' -e %s '
                  ' -m %s '
                  # ' --override '
@@ -10360,6 +10378,7 @@ For more help:
                  ' --chmod %s '
                  ' --signals %s '
                  ' --axes %s '
+                 ' --parameters-in-caption '
                  ' --frame %s '
                  ' --signal-label %s '
 
@@ -10400,7 +10419,9 @@ For more help:
             nxsfile.close()
 
             try:
-                for cmd in commands:
+                for ci, cmd in enumerate(commands):
+
+                    pars = arg[11 + ci]
                     # print(cmd)
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
@@ -10432,7 +10453,7 @@ For more help:
                             chmod2, str(oct(status.st_mode & 0o777)))
                     res = {
                         'id': atid,
-                        'caption': caption,
+                        'caption': "%s %s" % (caption, pars),
                         'thumbnail': "",
                         "ownerGroup": "%s-dmgt" % bid,
                         "accessGroups": [
@@ -10457,8 +10478,8 @@ For more help:
             finally:
                 if os.path.isfile(filename):
                     os.remove(filename)
-                if os.path.isfile(ofname):
-                    os.remove(ofname)
+                # if os.path.isfile(ofname):
+                #     os.remove(ofname)
 
 
 if __name__ == '__main__':
