@@ -2216,6 +2216,7 @@ class Attachment(Runner):
                     adata = None
                     signal = None
                     params = None
+                    scancmd = None
                     if nxsparser.description and nxsparser.columns:
                         desc = nxsparser.description[0]
                         sm = None
@@ -2225,11 +2226,11 @@ class Attachment(Runner):
                             data = sm["data"]
                         if sm and "parameters" in sm.keys():
                             params = sm["parameters"]
-                        if sm and options.scancmdaxes:
+                        if sm:
                             if "ScanCommand" in sm and sm["ScanCommand"]:
+                                scancmd = sm["ScanCommand"]
                                 ax = self._axesfromcommand(
-                                    sm["ScanCommand"],
-                                    options.scancmdaxes, data, axes)
+                                    scancmd, options.scancmdaxes, data, axes)
                                 if ax:
                                     axes = ax
                         if not signal and 'signalcounter' in params \
@@ -2283,7 +2284,8 @@ class Attachment(Runner):
                                 xlabel = nxsparser.columns[0][0]
                         if sdata:
                             result["thumbnail"], pars = self._plot1d(
-                                sdata, adata, xlabel, slabel, options.caption)
+                                sdata, adata, xlabel, slabel, options.caption,
+                                scancmd=scancmd)
                         if options.ppflag:
                             if pars and "caption" not in result:
                                 result["caption"] = ""
@@ -2310,34 +2312,35 @@ class Attachment(Runner):
         axes = []
         useraxes = useraxes or []
         try:
-            scaxes = json.loads(scmdaxes)
-            if scaxes and isinstance(scaxes, dict):
-                scmd1 = [sc for sc in scmd.split(" ") if sc][0]
-                if scmd1 in scaxes:
-                    axs = scaxes[scmd1].split(",")
-                    for ax in axs:
-                        maxsz = 0
-                        ta = ""
-                        for aa in ax.split(";"):
-                            adata = None
-                            if isinstance(data, dict):
-                                if aa and aa in data.keys():
-                                    adata = data[aa]
-                            elif hasattr(data, "names") and \
-                                    hasattr(data, "open"):
-                                if aa and aa in data.names():
-                                    try:
-                                        adata = data.open(aa).read()
-                                    except Exception:
-                                        pass
-                            if adata is not None:
-                                mx = max(adata) - min(adata)
-                                if mx > maxsz:
-                                    maxsz = mx
-                                    ta = aa
-                        if maxsz:
-                            axes = [ta]
-                            break
+            if scmdaxes:
+                scaxes = json.loads(scmdaxes)
+                if scaxes and isinstance(scaxes, dict):
+                    scmd1 = [sc for sc in scmd.split(" ") if sc][0]
+                    if scmd1 in scaxes:
+                        axs = scaxes[scmd1].split(",")
+                        for ax in axs:
+                            maxsz = 0
+                            ta = ""
+                            for aa in ax.split(";"):
+                                adata = None
+                                if isinstance(data, dict):
+                                    if aa and aa in data.keys():
+                                        adata = data[aa]
+                                elif hasattr(data, "names") and \
+                                        hasattr(data, "open"):
+                                    if aa and aa in data.names():
+                                        try:
+                                            adata = data.open(aa).read()
+                                        except Exception:
+                                            pass
+                                if adata is not None:
+                                    mx = max(adata) - min(adata)
+                                    if mx > maxsz:
+                                        maxsz = mx
+                                        ta = aa
+                            if maxsz:
+                                axes = [ta]
+                                break
         except Exception:
             pass
         if not axes and not useraxes:
@@ -2442,6 +2445,7 @@ class Attachment(Runner):
                 # print(slabel)
                 # print(xlabel)
                 # print(ylabel)
+                scommand = None
                 if len(dtshape) == 1 and dtsize > 1:
                     if hasattr(entry, "names") and \
                             hasattr(nxdata, "names") and \
@@ -2456,24 +2460,24 @@ class Attachment(Runner):
                                 scommand, scmdaxes, nxdata, axes)
                             if ax:
                                 axes = ax
-                                if not xlabel and ax:
-                                    xlabel = ax[0]
                     return self._nxsplot1d(
                         sgnode, signal, axes, slabel, xlabel, ylabel,
-                        title, override)
+                        title, override, scancmd=scommand)
                 elif len(dtshape) == 2 and dtsize > 1:
                     return self._nxsplot2d(
-                        sgnode, signal, slabel, title, override)
+                        sgnode, signal, slabel, title, override,
+                        scancmd=scommand)
 
                 elif len(dtshape) == 3 and dtsize > 1:
                     return self._nxsplot3d(
-                        sgnode, signal, slabel, title, override, frame)
+                        sgnode, signal, slabel, title, override, frame,
+                        scancmd=scommand)
             except Exception:
                 return None, None
         return None, None
 
     def _nxsplot3d(self, sgnode, signal, slabel, title,
-                   override=False, frame=None):
+                   override=False, frame=None, scancmd=None):
         """ create plot 1d from nexus file
 
 
@@ -2487,6 +2491,10 @@ class Attachment(Runner):
         :type title: :obj:`str`
         :param override: override nexus attributes flag
         :type override: :obj:`bool`
+        :param frame: frame number to plot
+        :type frame: :obj:`int`
+        :param scancmd: scan command
+        :type scancmd: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2521,10 +2529,10 @@ class Attachment(Runner):
         if (not override or not title) and nxdata.parent is not None and \
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
-        return self._plot2d(sdata, slabel, title)
+        return self._plot2d(sdata, slabel, title, scancmd=scancmd)
 
     def _nxsplot2d(self, sgnode, signal, slabel, title,
-                   override=False, frame=None):
+                   override=False, frame=None, scancmd=None):
         """ create plot 1d from nexus file
 
 
@@ -2540,6 +2548,8 @@ class Attachment(Runner):
         :type override: :obj:`bool`
         :param frame: frame number to display
         :type frame: :obj:`int`
+        :param scancmd: scan command
+        :type scancmd: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2565,10 +2575,10 @@ class Attachment(Runner):
         if (not override or not title) and nxdata.parent is not None and \
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
-        return self._plot2d(sdata, slabel, title)
+        return self._plot2d(sdata, slabel, title, scancmd=scancmd)
 
     def _nxsplot1d(self, sgnode, signal, axes, slabel, xlabel, ylabel,
-                   title, override=False):
+                   title, override=False, scancmd=None):
         """ create plot 1d from nexus file
 
 
@@ -2588,6 +2598,8 @@ class Attachment(Runner):
         :type title: :obj:`str`
         :param override: override nexus attributes flag
         :type override: :obj:`bool`
+        :param scancmd: scan command
+        :type scancmd: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`,
         """
@@ -2647,9 +2659,10 @@ class Attachment(Runner):
                 "title" in nxdata.parent.names():
             title = filewriter.first(nxdata.parent.open("title").read())
         return self._plot1d(
-            sdata, adata, xlabel, slabel, title)
+            sdata, adata, xlabel, slabel, title, scancmd=scancmd)
 
-    def _plot1d(self, data, axis, xlabel, ylabel, title, maxo=25):
+    def _plot1d(self, data, axis, xlabel, ylabel, title, maxo=25,
+                scancmd=None):
         """ create oned thumbnail plot
 
 
@@ -2663,6 +2676,10 @@ class Attachment(Runner):
         :type ylabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
+        :param maxo:  maximal number of point to display dots
+        :type maxo: :obj:`int`
+        :param scancmd: scan command
+        :type scancmd: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2672,6 +2689,18 @@ class Attachment(Runner):
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
+
+        if ylabel:
+            if title:
+                title = "%s: %s" % (title, ylabel)
+            else:
+                title = ylabel
+        if scancmd:
+            if title:
+                title = "%s\n%s" % (title, scancmd)
+            else:
+                title = scancmd
+
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
                 ax.plot(axis, data, 'o', axis, data)
@@ -2691,8 +2720,6 @@ class Attachment(Runner):
             else:
                 ax.plot(axis, data)
             ax.set(ylabel=ylabel, title=title)
-            if xlabel:
-                pars["xlabel"] = xlabel
             if ylabel:
                 pars["ylabel"] = ylabel
             if title:
@@ -2708,7 +2735,7 @@ class Attachment(Runner):
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
         return thumbnail, json.dumps(pars)
 
-    def _plot2d(self, data, slabel, title, maxratio=10):
+    def _plot2d(self, data, slabel, title, maxratio=10, scancmd=None):
         """ create oned thumbnail plot
 
 
@@ -2718,6 +2745,10 @@ class Attachment(Runner):
         :type slabel: :obj:`str`
         :param title: title
         :type title: :obj:`str`
+        :param maxratio:  max ratio to do not change aspect ratio
+        :type maxratio: :obj:`float`
+        :param scancmd: scan command
+        :type scancmd: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2738,9 +2769,18 @@ class Attachment(Runner):
         else:
             ax.imshow(data)
         if slabel:
-            title = "%s: %s" % (title, slabel)
-        ax.set(title=title)
+            if title:
+                title = "%s: %s" % (title, slabel)
+            else:
+                title = slabel
+        if scancmd:
+            if title:
+                title = "%s\n%s" % (title, scancmd)
+            else:
+                title = scancmd
+
         if title:
+            ax.set(title=title)
             pars["title"] = title
 
         buffer = BytesIO()

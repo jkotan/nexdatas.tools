@@ -1831,7 +1831,7 @@ class SECoPCPCreator(CPCreator):
         :type conf: :obj:`dict`
         :param samplename: sample name
         :type samplename: :obj:`str`
-        :param modulenames: sample name
+        :param modulenames: module names
         :type modulenames: :obj:`list` <:obj:`str`>
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
