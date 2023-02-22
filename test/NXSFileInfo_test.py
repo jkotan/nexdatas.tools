@@ -9197,9 +9197,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
             [
                 "mymeta2_00011.fio",
@@ -9214,9 +9216,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c02", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_c02'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_p02.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
         ]
 
@@ -9352,9 +9356,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c03", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"ascan":"exp_mot01;timestamp;exp_mot04"}',
             ],
             [
@@ -9370,9 +9376,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c03", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_c03'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_p02.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"ascan":"exp_mot01;timestamp;exp_mot04"}',
             ],
         ]
@@ -9507,9 +9515,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
             [
                 "mymeta2_00011.fio",
@@ -9524,9 +9534,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_c03'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_p02.(counts)'
+                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
         ]
 
@@ -9773,9 +9785,9 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03.(counts)"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -9792,9 +9804,9 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c02", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_c02"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_p02.(counts)"}',
             ],
         ]
 
@@ -9952,10 +9964,12 @@ For more help:
                 "exp_mot04",
                 "exp_c03.(counts)",
                 "lat.(mm)",
-                '{"xlabel": "timestamp", "ylabel": "exp_c02", '
-                '"title": "My_tests"}',
+                '{"xlabel": "timestamp (s)", "ylabel": "exp_c02 (counts)", '
+                '"title": "My_tests: exp_c02 (counts)'
+                '\\nascan timestamp 0 1 10 0.1"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests"}',
+                '"title": "My_tests: exp_c03.(counts)'
+                '\\nascan timestamp 0 1 10 0.1"}',
                 'ascan timestamp 0 1 10 0.1',
             ],
             [
@@ -9972,10 +9986,12 @@ For more help:
                 "erd,timestamp",
                 "exp_p02.(counts)",
                 "time.(s)",
-                '{"xlabel": "exp_mot04", "ylabel": "exp_c02", '
-                '"title": "Water_tests"}',
+                '{"xlabel": "exp_mot04 (mm)", "ylabel": "exp_c02 (counts)", '
+                '"title": "Water_tests: exp_c02 (counts)'
+                '\\nqscan exp_mot04 0 1 10 0.1"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests"}',
+                '"title": "Water_tests: exp_p02.(counts)'
+                '\\nqscan exp_mot04 0 1 10 0.1"}',
                 'qscan exp_mot04 0 1 10 0.1',
             ],
         ]
@@ -10037,12 +10053,16 @@ For more help:
             entry.create_group("instrument", "NXinstrument")
             da = entry.create_group("data", "NXdata")
             c2 = da.create_field("exp_c02", "uint32", [10], [10])
+            c2.attributes.create("units", "string").write("counts")
             c2.write(c2d)
             c3 = da.create_field("exp_c03", "uint32", [10], [10])
+            c3.attributes.create("units", "string").write("counts")
             c3.write(c3d)
             m4 = da.create_field("exp_mot04", "float32", [10], [10])
+            m4.attributes.create("units", "string").write("mm")
             m4.write(m4d)
             ts = da.create_field("timestamp", "float64", [10], [10])
+            ts.attributes.create("units", "string").write("s")
             ts.write(tsd)
             nxsfile.close()
 
