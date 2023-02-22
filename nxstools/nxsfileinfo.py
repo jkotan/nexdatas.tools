@@ -2751,10 +2751,6 @@ class Attachment(Runner):
         matplotlib.use('Agg')
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
-        # if axis is not None and len(axis) == len(data):
-        #     ax.plot(axis, data, 'o', axis, data)
-        #     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
-        # else:
         shape = data.shape
         if int(shape[0]/shape[1]) > maxratio or \
                 int(shape[1]/shape[0]) > maxratio:
@@ -2767,11 +2763,6 @@ class Attachment(Runner):
                 title = "%s: %s" % (title, slabel)
             else:
                 title = slabel
-        # if scancmd:
-        #     if title:
-        #         title = "%s\n%s" % (title, scancmd)
-        #     else:
-        #         title = scancmd
 
         if title:
             fig.suptitle(title, fontsize=20, y=1)
