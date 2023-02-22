@@ -1,5 +1,5 @@
 2023-02-22 Jan Kotanski <jankotan@gmail.com>
-	* add scan_command to the title in nxsfileinfo attribute (#457)
+	* add scan_command to the title in nxsfileinfo attribute (#457), (#458)
 	* tagged as v3.42.0
 
 2023-02-16 Jan Kotanski <jankotan@gmail.com>
