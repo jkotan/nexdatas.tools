@@ -2692,38 +2692,32 @@ class Attachment(Runner):
 
         if ylabel:
             if title:
-                title = "%s: %s" % (title, ylabel)
+                title = title
             else:
                 title = ylabel
-        if scancmd:
-            if title:
-                title = "%s\n%s" % (title, scancmd)
-            else:
-                title = scancmd
 
         if axis is not None and len(axis) == len(data):
             if len(data) < maxo:
                 ax.plot(axis, data, 'o', axis, data)
             else:
                 ax.plot(axis, data)
-            ax.set(xlabel=xlabel, ylabel=ylabel, title=title)
+            ax.set(xlabel=xlabel, ylabel=ylabel, title=scancmd)
             if xlabel:
                 pars["xlabel"] = xlabel
-            if ylabel:
-                pars["ylabel"] = ylabel
-            if title:
-                pars["title"] = title
         else:
             axis = list(range(len(data)))
             if len(data) < maxo:
                 ax.plot(axis, data, 'o', axis, data)
             else:
                 ax.plot(axis, data)
-            ax.set(ylabel=ylabel, title=title)
-            if ylabel:
-                pars["ylabel"] = ylabel
-            if title:
-                pars["title"] = title
+            ax.set(ylabel=ylabel, title=scancmd)
+        fig.suptitle(title, fontsize=20, y=1)
+        if ylabel:
+            pars["ylabel"] = ylabel
+        if title:
+            pars["suptitle"] = title
+        if scancmd:
+            pars["title"] = scancmd
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -2773,15 +2767,18 @@ class Attachment(Runner):
                 title = "%s: %s" % (title, slabel)
             else:
                 title = slabel
-        if scancmd:
-            if title:
-                title = "%s\n%s" % (title, scancmd)
-            else:
-                title = scancmd
+        # if scancmd:
+        #     if title:
+        #         title = "%s\n%s" % (title, scancmd)
+        #     else:
+        #         title = scancmd
 
         if title:
-            ax.set(title=title)
-            pars["title"] = title
+            fig.suptitle(title, fontsize=20, y=1)
+            pars["suptitle"] = title
+        if scancmd:
+            ax.set(title=scancmd)
+            pars["title"] = scancmd
 
         buffer = BytesIO()
         plt.savefig(buffer, format='png')

@@ -9197,11 +9197,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests: exp_c03'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests: exp_c03.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests", '
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
             [
                 "mymeta2_00011.fio",
@@ -9216,11 +9216,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c02", '
-                '"title": "Water_tests: exp_c02'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests: exp_p02.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
         ]
 
@@ -9356,11 +9356,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c03", '
-                '"title": "My_tests: exp_c03'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests: exp_c03.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"ascan":"exp_mot01;timestamp;exp_mot04"}',
             ],
             [
@@ -9376,11 +9376,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c03", '
-                '"title": "Water_tests: exp_c03'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests: exp_p02.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"ascan":"exp_mot01;timestamp;exp_mot04"}',
             ],
         ]
@@ -9515,11 +9515,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests: exp_c03'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests: exp_c03.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
             [
                 "mymeta2_00011.fio",
@@ -9534,11 +9534,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "Water_tests: exp_c03'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests: exp_p02.(counts)'
-                '\\nascan exp_mot04 0.0 4.0 4 0.5"}',
+                '"suptitle": "Water_tests",'
+                '"title": "ascan exp_mot04 0.0 4.0 4 0.5"}',
             ],
         ]
 
@@ -9785,9 +9785,9 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "exp_mot04", "ylabel": "exp_c03", '
-                '"title": "My_tests: exp_c03"}',
+                '"suptitle": "My_tests"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests: exp_c03.(counts)"}',
+                '"suptitle": "My_tests"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -9804,9 +9804,9 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "timestamp", "ylabel": "exp_c02", '
-                '"title": "Water_tests: exp_c02"}',
+                '"suptitle": "Water_tests"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests: exp_p02.(counts)"}',
+                '"suptitle": "Water_tests"}',
             ],
         ]
 
@@ -9965,11 +9965,11 @@ For more help:
                 "exp_c03.(counts)",
                 "lat.(mm)",
                 '{"xlabel": "timestamp (s)", "ylabel": "exp_c02 (counts)", '
-                '"title": "My_tests: exp_c02 (counts)'
-                '\\nascan timestamp 0 1 10 0.1"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan timestamp 0 1 10 0.1"}',
                 '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
-                '"title": "My_tests: exp_c03.(counts)'
-                '\\nascan timestamp 0 1 10 0.1"}',
+                '"suptitle": "My_tests",'
+                '"title": "ascan timestamp 0 1 10 0.1"}',
                 'ascan timestamp 0 1 10 0.1',
             ],
             [
@@ -9987,11 +9987,11 @@ For more help:
                 "exp_p02.(counts)",
                 "time.(s)",
                 '{"xlabel": "exp_mot04 (mm)", "ylabel": "exp_c02 (counts)", '
-                '"title": "Water_tests: exp_c02 (counts)'
-                '\\nqscan exp_mot04 0 1 10 0.1"}',
+                '"suptitle": "Water_tests",'
+                '"title": "qscan exp_mot04 0 1 10 0.1"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
-                '"title": "Water_tests: exp_p02.(counts)'
-                '\\nqscan exp_mot04 0 1 10 0.1"}',
+                '"suptitle": "Water_tests",'
+                '"title": "qscan exp_mot04 0 1 10 0.1"}',
                 'qscan exp_mot04 0 1 10 0.1',
             ],
         ]
@@ -10154,8 +10154,8 @@ For more help:
                 "exp_mot04",
                 "MCA01",
                 "lat.(mm)",
-                '{"aspect":"auto","title":"My_tests: exp_mca01"}',
-                '{"aspect":"auto","title":"My_tests: MCA01"}',
+                '{"aspect":"auto","suptitle":"My_tests: exp_mca01"}',
+                '{"aspect":"auto","suptitle":"My_tests: MCA01"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -10171,8 +10171,8 @@ For more help:
                 "timestamp",
                 "MCA01",
                 "time.(s)",
-                '{"aspect":"auto","title":"Water_tests: exp_mca01"}',
-                '{"aspect":"auto","title":"Water_tests: MCA01"}',
+                '{"aspect":"auto","suptitle":"Water_tests: exp_mca01"}',
+                '{"aspect":"auto","suptitle":"Water_tests: MCA01"}',
             ],
         ]
 
@@ -10339,8 +10339,8 @@ For more help:
                 "exp_mot04",
                 "MCA01",
                 3,
-                '{"title": "My_tests: lambda"}',
-                '{"title": "My_tests: lambda"}',
+                '{"suptitle": "My_tests: lambda"}',
+                '{"suptitle": "My_tests: lambda"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -10356,8 +10356,8 @@ For more help:
                 "timestamp",
                 "MCA01",
                 2,
-                '{"title": "Water_tests: lambda"}',
-                '{"title": "Water_tests: lambda"}',
+                '{"suptitle": "Water_tests: lambda"}',
+                '{"suptitle": "Water_tests: lambda"}',
             ],
         ]
 
