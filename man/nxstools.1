@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Feb 15, 2023" "3.41" "NXSTools"
+.TH "NXSTOOLS" "1" "Feb 23, 2023" "3.42" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -6031,7 +6031,11 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B copymap = {\(aqcreationTime\(aq: \(aqscientificMetadata.end_time.value\(aq, \(aqdescription\(aq: \(aqscientificMetadata.title.value\(aq, \(aqendTime\(aq: \(aqscientificMetadata.end_time.value\(aq, \(aqscientificMetadata.ScanCommand\(aq: \(aqscientificMetadata.program_name.scan_command\(aq}
+.B copylist = [[\(aqcreationTime\(aq, \(aqendTime\(aq]]
+.UNINDENT
+.INDENT 7.0
+.TP
+.B copymap = {\(aqdescription\(aq: \(aqscientificMetadata.title.value\(aq, \(aqendTime\(aq: \(aqscientificMetadata.end_time.value\(aq, \(aqscientificMetadata.ScanCommand\(aq: \(aqscientificMetadata.program_name.scan_command\(aq}
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6084,17 +6088,28 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
+.B merge_copy_lists(clist)
+merge copy lists
+.INDENT 7.0
+.TP
+.B Parameters
+\fBclist\fP – overwrite copy list
+.TP
+.B Returns
+metadata dictionary
+.TP
+.B Return type
+\fI\%list\fP < [\fI\%str\fP, \fI\%str\fP] >
+.UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
 .B merge_copy_maps(cmap)
 merge copy maps
 .INDENT 7.0
 .TP
 .B Parameters
-.INDENT 7.0
-.IP \(bu 2
 \fBcmap\fP (\fI\%dict\fP <\fI\%str\fP, \fI\%str\fP>) – overwrite dictionary
-.IP \(bu 2
-\fBcmapfield\fP (\fI\%str\fP) – copy map nexus field
-.UNINDENT
 .TP
 .B Returns
 metadata dictionary
