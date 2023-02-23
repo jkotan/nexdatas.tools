@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.41.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.42.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.41</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.42</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -593,11 +593,14 @@
 
     <span class="n">copymap</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;endTime&quot;</span><span class="p">:</span> <span class="s2">&quot;scientificMetadata.end_time.value&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;creationTime&quot;</span><span class="p">:</span> <span class="s2">&quot;scientificMetadata.end_time.value&quot;</span><span class="p">,</span>
         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;scientificMetadata.title.value&quot;</span><span class="p">,</span>
         <span class="s2">&quot;scientificMetadata.ScanCommand&quot;</span><span class="p">:</span>
             <span class="s2">&quot;scientificMetadata.program_name.scan_command&quot;</span><span class="p">,</span>
     <span class="p">}</span>
+
+    <span class="n">copylist</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="s2">&quot;creationTime&quot;</span><span class="p">,</span> <span class="s2">&quot;endTime&quot;</span><span class="p">],</span>
+    <span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; loader constructor</span>
@@ -715,8 +718,6 @@
 
 <span class="sd">        :param cmap: overwrite dictionary</span>
 <span class="sd">        :type cmap: :obj:`dict` &lt;:obj:`str`, :obj:`str`&gt;</span>
-<span class="sd">        :param cmapfield: copy map nexus field</span>
-<span class="sd">        :type cmapfield: :obj:`str`</span>
 <span class="sd">        :returns: metadata dictionary</span>
 <span class="sd">        :rtype: :obj:`dict` &lt;:obj:`str`, `any`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -726,6 +727,21 @@
             <span class="n">cpmap</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copymap</span><span class="p">)</span>
             <span class="n">cpmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cpmap</span></div>
+
+<div class="viewcode-block" id="BeamtimeLoader.merge_copy_lists"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.merge_copy_lists">[docs]</a>    <span class="k">def</span> <span class="nf">merge_copy_lists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; merge copy lists</span>
+
+<span class="sd">        :param clist: overwrite copy list</span>
+<span class="sd">        :type cmap: :obj:`list` &lt; [:obj:`str`, :obj:`str`] &gt;</span>
+<span class="sd">        :returns: metadata dictionary</span>
+<span class="sd">        :rtype: :obj:`list` &lt; [:obj:`str`, :obj:`str`] &gt;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">clist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cplist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copylist</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cplist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copylist</span><span class="p">)</span>
+            <span class="n">cplist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">clist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cplist</span></div>
 
 <div class="viewcode-block" id="BeamtimeLoader.append_copymap_field"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.BeamtimeLoader.append_copymap_field">[docs]</a>    <span class="k">def</span> <span class="nf">append_copymap_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">clist</span><span class="p">,</span> <span class="n">cmapfield</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; overwrite metadata with dictionary</span>
@@ -782,7 +798,7 @@
 <span class="sd">        :rtype: :obj:`dict` &lt;:obj:`str`, `any`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cpmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_copy_maps</span><span class="p">(</span><span class="n">cmap</span><span class="p">)</span>
-        <span class="n">cplist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">clist</span> <span class="ow">or</span> <span class="p">[])</span>
+        <span class="n">cplist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_copy_lists</span><span class="p">(</span><span class="n">clist</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">append_copymap_field</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">cpmap</span><span class="p">,</span> <span class="n">cplist</span><span class="p">,</span> <span class="n">cmapfield</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ts</span><span class="p">,</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">cpmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2395,6 +2411,7 @@
                     <span class="n">adata</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">signal</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">scancmd</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">if</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span> <span class="ow">and</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                         <span class="n">desc</span> <span class="o">=</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="n">sm</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2404,11 +2421,11 @@
                             <span class="n">data</span> <span class="o">=</span> <span class="n">sm</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
                         <span class="k">if</span> <span class="n">sm</span> <span class="ow">and</span> <span class="s2">&quot;parameters&quot;</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                             <span class="n">params</span> <span class="o">=</span> <span class="n">sm</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">]</span>
-                        <span class="k">if</span> <span class="n">sm</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">sm</span><span class="p">:</span>
                             <span class="k">if</span> <span class="s2">&quot;ScanCommand&quot;</span> <span class="ow">in</span> <span class="n">sm</span> <span class="ow">and</span> <span class="n">sm</span><span class="p">[</span><span class="s2">&quot;ScanCommand&quot;</span><span class="p">]:</span>
+                                <span class="n">scancmd</span> <span class="o">=</span> <span class="n">sm</span><span class="p">[</span><span class="s2">&quot;ScanCommand&quot;</span><span class="p">]</span>
                                 <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_axesfromcommand</span><span class="p">(</span>
-                                    <span class="n">sm</span><span class="p">[</span><span class="s2">&quot;ScanCommand&quot;</span><span class="p">],</span>
-                                    <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+                                    <span class="n">scancmd</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
                                 <span class="k">if</span> <span class="n">ax</span><span class="p">:</span>
                                     <span class="n">axes</span> <span class="o">=</span> <span class="n">ax</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">signal</span> <span class="ow">and</span> <span class="s1">&#39;signalcounter&#39;</span> <span class="ow">in</span> <span class="n">params</span> \
@@ -2462,7 +2479,8 @@
                                 <span class="n">xlabel</span> <span class="o">=</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                         <span class="k">if</span> <span class="n">sdata</span><span class="p">:</span>
                             <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">],</span> <span class="n">pars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot1d</span><span class="p">(</span>
-                                <span class="n">sdata</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">)</span>
+                                <span class="n">sdata</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span>
+                                <span class="n">scancmd</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">ppflag</span><span class="p">:</span>
                             <span class="k">if</span> <span class="n">pars</span> <span class="ow">and</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
                                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
@@ -2489,34 +2507,35 @@
         <span class="n">axes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">useraxes</span> <span class="o">=</span> <span class="n">useraxes</span> <span class="ow">or</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">scaxes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">scmdaxes</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">scaxes</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scaxes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">scmd1</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span> <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">scmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">scmd1</span> <span class="ow">in</span> <span class="n">scaxes</span><span class="p">:</span>
-                    <span class="n">axs</span> <span class="o">=</span> <span class="n">scaxes</span><span class="p">[</span><span class="n">scmd1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
-                        <span class="n">maxsz</span> <span class="o">=</span> <span class="mi">0</span>
-                        <span class="n">ta</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-                        <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
-                            <span class="n">adata</span> <span class="o">=</span> <span class="kc">None</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                                <span class="k">if</span> <span class="n">aa</span> <span class="ow">and</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                                    <span class="n">adata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span>
-                            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;names&quot;</span><span class="p">)</span> <span class="ow">and</span> \
-                                    <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">):</span>
-                                <span class="k">if</span> <span class="n">aa</span> <span class="ow">and</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
-                                    <span class="k">try</span><span class="p">:</span>
-                                        <span class="n">adata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                                        <span class="k">pass</span>
-                            <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                                <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="n">mx</span> <span class="o">&gt;</span> <span class="n">maxsz</span><span class="p">:</span>
-                                    <span class="n">maxsz</span> <span class="o">=</span> <span class="n">mx</span>
-                                    <span class="n">ta</span> <span class="o">=</span> <span class="n">aa</span>
-                        <span class="k">if</span> <span class="n">maxsz</span><span class="p">:</span>
-                            <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ta</span><span class="p">]</span>
-                            <span class="k">break</span>
+            <span class="k">if</span> <span class="n">scmdaxes</span><span class="p">:</span>
+                <span class="n">scaxes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">scmdaxes</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">scaxes</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scaxes</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">scmd1</span> <span class="o">=</span> <span class="p">[</span><span class="n">sc</span> <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">scmd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">sc</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">scmd1</span> <span class="ow">in</span> <span class="n">scaxes</span><span class="p">:</span>
+                        <span class="n">axs</span> <span class="o">=</span> <span class="n">scaxes</span><span class="p">[</span><span class="n">scmd1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">:</span>
+                            <span class="n">maxsz</span> <span class="o">=</span> <span class="mi">0</span>
+                            <span class="n">ta</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                            <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">):</span>
+                                <span class="n">adata</span> <span class="o">=</span> <span class="kc">None</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                                    <span class="k">if</span> <span class="n">aa</span> <span class="ow">and</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                        <span class="n">adata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">aa</span><span class="p">]</span>
+                                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;names&quot;</span><span class="p">)</span> <span class="ow">and</span> \
+                                        <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;open&quot;</span><span class="p">):</span>
+                                    <span class="k">if</span> <span class="n">aa</span> <span class="ow">and</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
+                                        <span class="k">try</span><span class="p">:</span>
+                                            <span class="n">adata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">aa</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                                        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                            <span class="k">pass</span>
+                                <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                    <span class="n">mx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+                                    <span class="k">if</span> <span class="n">mx</span> <span class="o">&gt;</span> <span class="n">maxsz</span><span class="p">:</span>
+                                        <span class="n">maxsz</span> <span class="o">=</span> <span class="n">mx</span>
+                                        <span class="n">ta</span> <span class="o">=</span> <span class="n">aa</span>
+                            <span class="k">if</span> <span class="n">maxsz</span><span class="p">:</span>
+                                <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ta</span><span class="p">]</span>
+                                <span class="k">break</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">axes</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">useraxes</span><span class="p">:</span>
@@ -2621,6 +2640,7 @@
                 <span class="c1"># print(slabel)</span>
                 <span class="c1"># print(xlabel)</span>
                 <span class="c1"># print(ylabel)</span>
+                <span class="n">scommand</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">dtsize</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="s2">&quot;names&quot;</span><span class="p">)</span> <span class="ow">and</span> \
                             <span class="nb">hasattr</span><span class="p">(</span><span class="n">nxdata</span><span class="p">,</span> <span class="s2">&quot;names&quot;</span><span class="p">)</span> <span class="ow">and</span> \
@@ -2635,24 +2655,24 @@
                                 <span class="n">scommand</span><span class="p">,</span> <span class="n">scmdaxes</span><span class="p">,</span> <span class="n">nxdata</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">ax</span><span class="p">:</span>
                                 <span class="n">axes</span> <span class="o">=</span> <span class="n">ax</span>
-                                <span class="k">if</span> <span class="ow">not</span> <span class="n">xlabel</span> <span class="ow">and</span> <span class="n">ax</span><span class="p">:</span>
-                                    <span class="n">xlabel</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nxsplot1d</span><span class="p">(</span>
                         <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span>
-                        <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">)</span>
+                        <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="n">scommand</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">dtsize</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nxsplot2d</span><span class="p">(</span>
-                        <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">)</span>
+                        <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span>
+                        <span class="n">scancmd</span><span class="o">=</span><span class="n">scommand</span><span class="p">)</span>
 
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">dtshape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">dtsize</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nxsplot3d</span><span class="p">(</span>
-                        <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+                        <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span>
+                        <span class="n">scancmd</span><span class="o">=</span><span class="n">scommand</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">_nxsplot3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span>
-                   <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create plot 1d from nexus file</span>
 
 
@@ -2666,6 +2686,10 @@
 <span class="sd">        :type title: :obj:`str`</span>
 <span class="sd">        :param override: override nexus attributes flag</span>
 <span class="sd">        :type override: :obj:`bool`</span>
+<span class="sd">        :param frame: frame number to plot</span>
+<span class="sd">        :type frame: :obj:`int`</span>
+<span class="sd">        :param scancmd: scan command</span>
+<span class="sd">        :type scancmd: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2700,10 +2724,10 @@
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">override</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">title</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
                 <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
             <span class="n">title</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot2d</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot2d</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_nxsplot2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span>
-                   <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                   <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create plot 1d from nexus file</span>
 
 
@@ -2719,6 +2743,8 @@
 <span class="sd">        :type override: :obj:`bool`</span>
 <span class="sd">        :param frame: frame number to display</span>
 <span class="sd">        :type frame: :obj:`int`</span>
+<span class="sd">        :param scancmd: scan command</span>
+<span class="sd">        :type scancmd: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2744,10 +2770,10 @@
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">override</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">title</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
                 <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
             <span class="n">title</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot2d</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot2d</span><span class="p">(</span><span class="n">sdata</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_nxsplot1d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sgnode</span><span class="p">,</span> <span class="n">signal</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span>
-                   <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                   <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create plot 1d from nexus file</span>
 
 
@@ -2767,6 +2793,8 @@
 <span class="sd">        :type title: :obj:`str`</span>
 <span class="sd">        :param override: override nexus attributes flag</span>
 <span class="sd">        :type override: :obj:`bool`</span>
+<span class="sd">        :param scancmd: scan command</span>
+<span class="sd">        :type scancmd: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`,</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2826,9 +2854,10 @@
                 <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">names</span><span class="p">():</span>
             <span class="n">title</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot1d</span><span class="p">(</span>
-            <span class="n">sdata</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+            <span class="n">sdata</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_plot1d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">maxo</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_plot1d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">maxo</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                <span class="n">scancmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create oned thumbnail plot</span>
 
 
@@ -2842,6 +2871,10 @@
 <span class="sd">        :type ylabel: :obj:`str`</span>
 <span class="sd">        :param title: title</span>
 <span class="sd">        :type title: :obj:`str`</span>
+<span class="sd">        :param maxo:  maximal number of point to display dots</span>
+<span class="sd">        :type maxo: :obj:`int`</span>
+<span class="sd">        :param scancmd: scan command</span>
+<span class="sd">        :type scancmd: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2851,31 +2884,35 @@
         <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
         <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">ylabel</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">ylabel</span>
+
         <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">maxo</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">xlabel</span><span class="p">:</span>
                 <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;xlabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xlabel</span>
-            <span class="k">if</span> <span class="n">ylabel</span><span class="p">:</span>
-                <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ylabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ylabel</span>
-            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
-                <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">maxo</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">xlabel</span><span class="p">:</span>
-                <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;xlabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xlabel</span>
-            <span class="k">if</span> <span class="n">ylabel</span><span class="p">:</span>
-                <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ylabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ylabel</span>
-            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
-                <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylabel</span><span class="o">=</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ylabel</span><span class="p">:</span>
+            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;ylabel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ylabel</span>
+        <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;suptitle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">if</span> <span class="n">scancmd</span><span class="p">:</span>
+            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scancmd</span>
 
         <span class="n">buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
@@ -2887,7 +2924,7 @@
         <span class="n">thumbnail</span> <span class="o">=</span> <span class="s2">&quot;data:image/png;base64,&quot;</span> <span class="o">+</span> <span class="n">thumbnail</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">thumbnail</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pars</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_plot2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">maxratio</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_plot2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">maxratio</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scancmd</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create oned thumbnail plot</span>
 
 
@@ -2897,6 +2934,10 @@
 <span class="sd">        :type slabel: :obj:`str`</span>
 <span class="sd">        :param title: title</span>
 <span class="sd">        :type title: :obj:`str`</span>
+<span class="sd">        :param maxratio:  max ratio to do not change aspect ratio</span>
+<span class="sd">        :type maxratio: :obj:`float`</span>
+<span class="sd">        :param scancmd: scan command</span>
+<span class="sd">        :type scancmd: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2905,10 +2946,6 @@
         <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
         <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-        <span class="c1"># if axis is not None and len(axis) == len(data):</span>
-        <span class="c1">#     ax.plot(axis, data, &#39;o&#39;, axis, data)</span>
-        <span class="c1">#     ax.set(xlabel=xlabel, ylabel=ylabel, title=title)</span>
-        <span class="c1"># else:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
         <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">maxratio</span> <span class="ow">or</span> \
                 <span class="nb">int</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">maxratio</span><span class="p">:</span>
@@ -2917,10 +2954,17 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">slabel</span><span class="p">:</span>
-            <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">slabel</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">slabel</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">slabel</span>
+
         <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
-            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;suptitle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">if</span> <span class="n">scancmd</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
+            <span class="n">pars</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scancmd</span>
 
         <span class="n">buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
