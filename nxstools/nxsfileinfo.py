@@ -414,11 +414,14 @@ class BeamtimeLoader(object):
 
     copymap = {
         "endTime": "scientificMetadata.end_time.value",
-        "creationTime": "scientificMetadata.end_time.value",
         "description": "scientificMetadata.title.value",
         "scientificMetadata.ScanCommand":
             "scientificMetadata.program_name.scan_command",
     }
+
+    copylist = [
+        ["creationTime", "endTime"],
+    ]
 
     def __init__(self, options):
         """ loader constructor
@@ -536,8 +539,6 @@ class BeamtimeLoader(object):
 
         :param cmap: overwrite dictionary
         :type cmap: :obj:`dict` <:obj:`str`, :obj:`str`>
-        :param cmapfield: copy map nexus field
-        :type cmapfield: :obj:`str`
         :returns: metadata dictionary
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
@@ -547,6 +548,21 @@ class BeamtimeLoader(object):
             cpmap = dict(self.copymap)
             cpmap.update(cmap)
         return cpmap
+
+    def merge_copy_lists(self, clist):
+        """ merge copy lists
+
+        :param clist: overwrite copy list
+        :type cmap: :obj:`list` < [:obj:`str`, :obj:`str`] >
+        :returns: metadata dictionary
+        :rtype: :obj:`list` < [:obj:`str`, :obj:`str`] >
+        """
+        if clist is None:
+            cplist = list(self.copylist)
+        else:
+            cplist = list(self.copylist)
+            cplist.extend(clist)
+        return cplist
 
     def append_copymap_field(self, metadata, cmap, clist, cmapfield=None):
         """ overwrite metadata with dictionary
@@ -603,7 +619,7 @@ class BeamtimeLoader(object):
         :rtype: :obj:`dict` <:obj:`str`, `any`>
         """
         cpmap = self.merge_copy_maps(cmap)
-        cplist = list(clist or [])
+        cplist = self.merge_copy_lists(clist)
         self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
