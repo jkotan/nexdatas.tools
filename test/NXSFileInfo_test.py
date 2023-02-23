@@ -2740,7 +2740,7 @@ For more help:
                     else:
                         res['datasetName'] = "12345"
                     self.myAssertDict(dct, res,
-                                      skip=['pid', 'creationTime'])
+                                      skip=['pid'])
                     if kk % 2:
                         self.assertEqual(
                             dct["pid"], "12344321/%s_12345" % fname)
@@ -2948,7 +2948,7 @@ For more help:
                     else:
                         res['datasetName'] = "12345"
                     self.myAssertDict(res, dct,
-                                      skip=['pid', 'creationTime'])
+                                      skip=['pid'])
                     if kk % 2:
                         self.assertEqual(
                             dct["pid"], "12344321/%s_12345" % fname)
