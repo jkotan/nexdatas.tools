@@ -2201,7 +2201,7 @@ class Attachment(Runner):
                     signals = options.signals.split(",")
                 if options.axes:
                     axes = options.axes.split(",")
-                if options.frame:
+                if options.frame is not None:
                     try:
                         frame = int(options.frame)
                     except Exception:
@@ -2519,12 +2519,14 @@ class Attachment(Runner):
 
         shape = sgnode.shape
         mxframe = shape[0]
-        if not frame:
+        if frame is None:
             frame = int(mxframe / 2)
         if frame and frame < 0:
-            frame = 1
-        if frame and frame > mxframe:
-            frame = mxframe
+            frame = mxframe + frame
+        if frame and frame < 0:
+            frame = 0
+        if frame and frame >= mxframe:
+            frame = mxframe - 1
 
         sdata = sgnode[frame, :, :]
         sunits = None
@@ -2537,9 +2539,9 @@ class Attachment(Runner):
                 sgnode.attributes["long_name"].read())
         if not override or not slabel:
             if slname:
-                slabel = slname
+                slabel =  "%s[%s]" % (slname, frame)
             else:
-                slabel = signal
+                slabel = "%s[%s]" % (signal, frame)
             if sunits:
                 slabel = "%s (%s)" % (slabel, sunits)
         if (not override or not title) and nxdata.parent is not None and \

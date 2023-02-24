@@ -10339,8 +10339,8 @@ For more help:
                 "exp_mot04",
                 "MCA01",
                 3,
-                '{"suptitle": "My_tests: lambda"}',
-                '{"suptitle": "My_tests: lambda"}',
+                '{"suptitle": "My_tests: lambda[3]"}',
+                '{"suptitle": "My_tests: lambda[3]"}',
             ],
             [
                 'testfileinfo.nxs',
@@ -10355,9 +10355,9 @@ For more help:
                 "exp_c99,lambda",
                 "timestamp",
                 "MCA01",
-                2,
-                '{"suptitle": "Water_tests: lambda"}',
-                '{"suptitle": "Water_tests: lambda"}',
+                -4,
+                '{"suptitle": "Water_tests: lambda[2]"}',
+                '{"suptitle": "Water_tests: lambda[2]"}',
             ],
         ]
 
