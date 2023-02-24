@@ -1,3 +1,7 @@
+2023-02-24 Jan Kotanski <jankotan@gmail.com>
+	* fix setting a frame number of attachment images (#463)
+	* tagged as v3.42.1
+
 2023-02-22 Jan Kotanski <jankotan@gmail.com>
 	* add scan_command to the title in nxsfileinfo attribute (#457), (#458)
 	* fix setting the creationTime from endTime (#460)
