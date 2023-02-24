@@ -2539,7 +2539,7 @@ class Attachment(Runner):
                 sgnode.attributes["long_name"].read())
         if not override or not slabel:
             if slname:
-                slabel =  "%s[%s]" % (slname, frame)
+                slabel = "%s[%s]" % (slname, frame)
             else:
                 slabel = "%s[%s]" % (signal, frame)
             if sunits:
