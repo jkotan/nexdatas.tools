@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.42.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.42.1 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -2380,7 +2380,7 @@
                     <span class="n">signals</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">axes</span><span class="p">:</span>
                     <span class="n">axes</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">frame</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -2698,12 +2698,14 @@
 
         <span class="n">shape</span> <span class="o">=</span> <span class="n">sgnode</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">mxframe</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">frame</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">frame</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mxframe</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">frame</span> <span class="ow">and</span> <span class="n">frame</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">frame</span> <span class="ow">and</span> <span class="n">frame</span> <span class="o">&gt;</span> <span class="n">mxframe</span><span class="p">:</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="n">mxframe</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">mxframe</span> <span class="o">+</span> <span class="n">frame</span>
+        <span class="k">if</span> <span class="n">frame</span> <span class="ow">and</span> <span class="n">frame</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">frame</span> <span class="ow">and</span> <span class="n">frame</span> <span class="o">&gt;=</span> <span class="n">mxframe</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">mxframe</span> <span class="o">-</span> <span class="mi">1</span>
 
         <span class="n">sdata</span> <span class="o">=</span> <span class="n">sgnode</span><span class="p">[</span><span class="n">frame</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
         <span class="n">sunits</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2716,9 +2718,9 @@
                 <span class="n">sgnode</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">override</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">slabel</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">slname</span><span class="p">:</span>
-                <span class="n">slabel</span> <span class="o">=</span> <span class="n">slname</span>
+                <span class="n">slabel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">slname</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">slabel</span> <span class="o">=</span> <span class="n">signal</span>
+                <span class="n">slabel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">[</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sunits</span><span class="p">:</span>
                 <span class="n">slabel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">slabel</span><span class="p">,</span> <span class="n">sunits</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">override</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">title</span><span class="p">)</span> <span class="ow">and</span> <span class="n">nxdata</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
