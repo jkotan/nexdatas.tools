@@ -4238,7 +4238,7 @@ For more help:
                                 'value': '2014-02-16T15:17:21+00:00',
                                 'unit': "",
                             },
-                            'start_time': { 
+                            'start_time': {
                                 'value': '2022-12-08T17:00:43.000000+0100',
                                 # 'value': 'Thu Dec  8 17:00:43 2022',
                                 'unit': ""
