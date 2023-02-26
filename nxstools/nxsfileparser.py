@@ -24,6 +24,9 @@ import json
 import sys
 import xml.etree.ElementTree as et
 import numpy as np
+import pytz
+import time
+import dateutil.parser
 from lxml.etree import XMLParser
 
 from nxstools.nxsparser import ParserTools
@@ -579,18 +582,43 @@ class FIOFileParser(object):
                 sline = line.split("Acquisition started at ")
                 if sline and sline[-1].strip():
                     meta["start_time"] = {
-                        "value": sline[-1].strip(),
+                        "value": self._isoDate(sline[-1].strip()),
                         "unit": ""
                     }
             elif "Acquisition ended at " in line:
                 sline = line.split("Acquisition ended at ")
                 if sline and sline[-1].strip():
                     meta["end_time"] = {
-                        "value": sline[-1].strip(),
+                        "value": self._isoDate(sline[-1].strip()),
                         "unit": ""
                     }
         if comments:
             meta["comments"] = comments
+
+    @classmethod
+    def _isoDate(cls, text):
+        """ convert date to iso format
+
+        :param text: date text to convert
+        :type text: :obj:`str`
+        :returns: date in iso format
+        :rtype: :obj:`str`
+        """
+        try:
+            date = dateutil.parser.parse(text)
+            if date.tzinfo is None:
+                tzone = time.tzname[0]
+                try:
+                    tz = pytz.timezone(tzone)
+                except Exception:
+                    import tzlocal
+                    tz = tzlocal.get_localzone()
+                date = tz.localize(date)
+            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
+            result = str(date.strftime(fmt))
+        except Exception:
+            result = text
+        return result
 
     def _appendParameters(self, lines, meta):
         """append comments

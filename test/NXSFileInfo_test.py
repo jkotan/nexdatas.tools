@@ -3978,7 +3978,8 @@ For more help:
                                 '[-0.80932194 -0.82636427  0.02374563]]'
                             },
                             'start_time': {
-                                'value': 'Thu Dec  8 17:00:43 2022',
+                                'value': '2022-12-08T17:00:43.000000+0100',
+                                # 'value': 'Thu Dec  8 17:00:43 2022',
                                 'unit': ''
                             },
                             'user_comments': 'Awesome comment'},
@@ -4237,8 +4238,9 @@ For more help:
                                 'value': '2014-02-16T15:17:21+00:00',
                                 'unit': "",
                             },
-                            'start_time': {
-                                'value': 'Thu Dec  8 17:00:43 2022',
+                            'start_time': { 
+                                'value': '2022-12-08T17:00:43.000000+0100',
+                                # 'value': 'Thu Dec  8 17:00:43 2022',
                                 'unit': ""
                             },
                             'user_comments': 'Awesome comment'},
