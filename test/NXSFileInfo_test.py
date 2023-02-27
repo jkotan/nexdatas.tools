@@ -3978,7 +3978,8 @@ For more help:
                                 '[-0.80932194 -0.82636427  0.02374563]]'
                             },
                             'start_time': {
-                                'value': 'Thu Dec  8 17:00:43 2022',
+                                'value': '2022-12-08T17:00:43.000000+0100',
+                                # 'value': 'Thu Dec  8 17:00:43 2022',
                                 'unit': ''
                             },
                             'user_comments': 'Awesome comment'},
@@ -3988,7 +3989,13 @@ For more help:
                         'type': 'raw',
                         'updatedAt': '2020-01-20T00:10:00Z'
                     }
-                    self.myAssertDict(dct, res, skip=["pid"])
+                    self.myAssertDict(
+                        dct, res,
+                        skip=["pid", 'scientificMetadata.start_time.value'])
+                    self.assertTrue(
+                        dct['scientificMetadata']['start_time']['value'].
+                        startswith('2022-12-08T17:00:43.000000')
+                    )
                     if kk % 2:
                         self.assertEqual(dct["pid"],
                                          "16171271/%s" % fname)
@@ -4238,7 +4245,8 @@ For more help:
                                 'unit': "",
                             },
                             'start_time': {
-                                'value': 'Thu Dec  8 17:00:43 2022',
+                                'value': '2022-12-08T17:00:43.000000+0100',
+                                # 'value': 'Thu Dec  8 17:00:43 2022',
                                 'unit': ""
                             },
                             'user_comments': 'Awesome comment'},
@@ -4248,7 +4256,13 @@ For more help:
                         'type': 'raw',
                         'updatedAt': '2020-01-20T00:10:00Z'
                     }
-                    self.myAssertDict(dct, res, skip=["pid"])
+                    self.myAssertDict(
+                        dct, res,
+                        skip=["pid", 'scientificMetadata.start_time.value'])
+                    self.assertTrue(
+                        dct['scientificMetadata']['start_time']['value'].
+                        startswith('2022-12-08T17:00:43.000000')
+                    )
                     if kk % 2:
                         self.assertEqual(dct["pid"],
                                          "16171271/%s" % fname)
