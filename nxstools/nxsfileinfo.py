@@ -2739,7 +2739,8 @@ class Attachment(Runner):
         fig, ax = plt.subplots()
 
         if scancmd and len(scancmd) > 68:
-            scancmd = splittext(scancmd)
+            # scancmd = splittext(scancmd)
+            scancmd = scancmd[:68]
         if ylabel:
             if title:
                 title = title
@@ -2809,7 +2810,8 @@ class Attachment(Runner):
         else:
             ax.imshow(data)
         if scancmd and len(scancmd) > 68:
-            scancmd = splittext(scancmd)
+            scancmd = scancmd[:68]
+            # scancmd = splittext(scancmd)
         if slabel:
             if title:
                 title = "%s: %s" % (title, slabel)
