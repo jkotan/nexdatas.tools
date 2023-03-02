@@ -1,4 +1,8 @@
 2023-02-27 Jan Kotanski <jankotan@gmail.com>
+	* split a scan command text in the dataset attachment if it is too long (#471)
+	* tagged as v3.42.4
+
+2023-02-27 Jan Kotanski <jankotan@gmail.com>
 	* move left, right, top, bottom of NXslit to the NXtransformations (#469)
 	* tagged as v3.42.3
 

@@ -87,6 +87,36 @@ def getlist(text):
     return lst
 
 
+def splittext(text, lmax=68):
+    """ split text to lines
+
+    :param text: parser options
+    :type text: :obj:`str`
+    :param lmax: maximal line length
+    :type lmax: :obj:`int`
+    :returns: split text
+    :rtype: :obj:`str`
+    """
+    lnew = []
+
+    lw = [" " + ee for ee in text.split(" ") if ee]
+    nw = []
+    for ew in lw:
+        ww = [ee + "," for ee in ew.split(",") if ee]
+        ww[-1] = ww[-1][:-1]
+        nw.extend(ww)
+
+    for ll in nw:
+        if ll:
+            if not lnew and ll[1:]:
+                lnew.append(ll[1:])
+            elif len(lnew[-1]) + len(ll) < lmax:
+                lnew[-1] = lnew[-1] + ll
+            else:
+                lnew.append(ll)
+    return "\n".join(lnew)
+
+
 class General(Runner):
 
     """ General runner"""
@@ -2708,6 +2738,8 @@ class Attachment(Runner):
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
 
+        if scancmd and len(scancmd) > 68:
+            scancmd = splittext(scancmd)
         if ylabel:
             if title:
                 title = title
@@ -2776,6 +2808,8 @@ class Attachment(Runner):
             pars["aspect"] = 'auto'
         else:
             ax.imshow(data)
+        if scancmd and len(scancmd) > 68:
+            scancmd = splittext(scancmd)
         if slabel:
             if title:
                 title = "%s: %s" % (title, slabel)

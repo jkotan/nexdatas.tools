@@ -10002,11 +10002,20 @@ For more help:
                 "time.(s)",
                 '{"xlabel": "exp_mot04 (mm)", "ylabel": "exp_c02 (counts)", '
                 '"suptitle": "Water_tests",'
-                '"title": "qscan exp_mot04 0 1 10 0.1"}',
+                '"title": "qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 '
+                '0.1 qscan\\n exp_mot04 0 1 10 0.1 '
+                '[tango,\\ntango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
+                '/p00/nnnnnnnnn/sdfsdf/sdf]"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
                 '"suptitle": "Water_tests",'
-                '"title": "qscan exp_mot04 0 1 10 0.1"}',
-                'qscan exp_mot04 0 1 10 0.1',
+                '"title": "qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 '
+                '0.1 qscan\\n exp_mot04 0 1 10 0.1 '
+                '[tango,\\ntango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
+                '/p00/nnnnnnnnn/sdfsdf/sdf]"}',
+                'qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 0.1 '
+                'qscan exp_mot04 0 1 10 0.1 '
+                '[tango,tango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
+                '/p00/nnnnnnnnn/sdfsdf/sdf]',
             ],
         ]
 
@@ -10129,6 +10138,8 @@ For more help:
                     cps = dct["caption"].split(" ", 1)
                     self.assertEqual(len(cps), 2)
                     self.assertEqual(cps[0], caption)
+                    # print(json.loads(cps[1]))
+                    # print(json.loads(pars))
                     self.myAssertDict(json.loads(cps[1]), json.loads(pars))
 
                     tn = dct["thumbnail"]
