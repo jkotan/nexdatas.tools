@@ -2710,7 +2710,7 @@ class Attachment(Runner):
             sdata, adata, xlabel, slabel, title, scancmd=scancmd)
 
     def _plot1d(self, data, axis, xlabel, ylabel, title, maxo=25,
-                scancmd=None):
+                scancmd=None, maxtitle=68):
         """ create oned thumbnail plot
 
 
@@ -2728,6 +2728,8 @@ class Attachment(Runner):
         :type maxo: :obj:`int`
         :param scancmd: scan command
         :type scancmd: :obj:`str`
+        :param maxtitle: maximal title size
+        :type maxtitle: :obj:`int`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2738,8 +2740,9 @@ class Attachment(Runner):
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots()
 
-        if scancmd and len(scancmd) > 68:
-            scancmd = splittext(scancmd)
+        if scancmd and len(scancmd) > maxtitle:
+            # scancmd = splittext(scancmd)
+            scancmd = scancmd[:maxtitle]
         if ylabel:
             if title:
                 title = title
@@ -2779,7 +2782,8 @@ class Attachment(Runner):
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
         return thumbnail, json.dumps(pars)
 
-    def _plot2d(self, data, slabel, title, maxratio=10, scancmd=None):
+    def _plot2d(self, data, slabel, title, maxratio=10, scancmd=None,
+                maxtitle=68):
         """ create oned thumbnail plot
 
 
@@ -2793,6 +2797,8 @@ class Attachment(Runner):
         :type maxratio: :obj:`float`
         :param scancmd: scan command
         :type scancmd: :obj:`str`
+        :param maxtitle: maximal title size
+        :type maxtitle: :obj:`int`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
@@ -2808,8 +2814,9 @@ class Attachment(Runner):
             pars["aspect"] = 'auto'
         else:
             ax.imshow(data)
-        if scancmd and len(scancmd) > 68:
-            scancmd = splittext(scancmd)
+        if scancmd and len(scancmd) > maxtitle:
+            scancmd = scancmd[:maxtitle]
+            # scancmd = splittext(scancmd)
         if slabel:
             if title:
                 title = "%s: %s" % (title, slabel)

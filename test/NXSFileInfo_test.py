@@ -10003,15 +10003,11 @@ For more help:
                 '{"xlabel": "exp_mot04 (mm)", "ylabel": "exp_c02 (counts)", '
                 '"suptitle": "Water_tests",'
                 '"title": "qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 '
-                '0.1 qscan\\n exp_mot04 0 1 10 0.1 '
-                '[tango,\\ntango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
-                '/p00/nnnnnnnnn/sdfsdf/sdf]"}',
+                '0.1 qscan exp_mot0"}',
                 '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
                 '"suptitle": "Water_tests",'
                 '"title": "qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 '
-                '0.1 qscan\\n exp_mot04 0 1 10 0.1 '
-                '[tango,\\ntango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
-                '/p00/nnnnnnnnn/sdfsdf/sdf]"}',
+                '0.1 qscan exp_mot0"}',
                 'qscan exp_mot04 0 1 10 0.1 qscan exp_mot04 0 1 10 0.1 '
                 'qscan exp_mot04 0 1 10 0.1 '
                 '[tango,tango://myyyyyyyyyyyyyyyyyyyyyyyyy.desy.de'
