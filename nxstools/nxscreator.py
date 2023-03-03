@@ -2110,9 +2110,9 @@ class SECoPCPCreator(CPCreator):
             conf = secop_cmd(
                 "describe", self.options.host, int(self.options.port))
         if isinstance(conf, dict):
-            dump = \
-                json.dumps(conf, sort_keys=True, indent=4)
-            print("%s" % dump)
+            # dump = \
+            #     json.dumps(conf, sort_keys=True, indent=4)
+            # print("%s" % dump)
             cpname = self.options.component
             if 'description' in conf.keys() and not cpname:
                 cpname = str(conf['description']).replace("[", "").\
@@ -2296,13 +2296,13 @@ class SECoPCPCreator(CPCreator):
                         self.options.file, dsname), "w") as myfile:
                     myfile.write(dsxml)
             for cpname, cpxml in self.components.items():
-                print(cpname)
+                # print(cpname)
                 with open("%s/%s%s.xml" % (
                         self.options.directory,
                         self.options.file, cpname), "w") as myfile:
-                    print("%s/%s%s.xml" % (
-                        self.options.directory,
-                        self.options.file, cpname))
+                    # print("%s/%s%s.xml" % (
+                    #     self.options.directory,
+                    #     self.options.file, cpname))
                     myfile.write(cpxml)
 
     @classmethod

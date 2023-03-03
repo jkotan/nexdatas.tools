@@ -96,6 +96,99 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         self.device = 'testp09/testmcs/testr228'
         self.maxDiff = None
 
+        self.secoplist = [
+            # 'client_start_time',
+            'myuni',
+            'myuni_drv',
+            'myuni_drv__interval',
+            'myuni_drv__interval_time',
+            'myuni_drv__maxcurrent',
+            'myuni_drv__maxcurrent_time',
+            'myuni_drv__move_limit',
+            'myuni_drv__move_limit_time',
+            'myuni_drv__safe_current',
+            'myuni_drv__safe_current_time',
+            'myuni_drv__speed',
+            'myuni_drv__speed_time',
+            'myuni_drv__tolerance',
+            'myuni_drv__tolerance_time',
+            'myuni_drv_pollinterval',
+            'myuni_drv_pollinterval_time',
+            'myuni_drv_status',
+            'myuni_drv_status_time',
+            'myuni_drv_target',
+            'myuni_drv_target_time',
+            'myuni_drv_time',
+            'myuni_force',
+            'myuni_force__adjusting',
+            'myuni_force__adjusting_current',
+            'myuni_force__adjusting_current_time',
+            'myuni_force__adjusting_time',
+            'myuni_force__current_step',
+            'myuni_force__current_step_time',
+            'myuni_force__filter_interval',
+            'myuni_force__filter_interval_time',
+            'myuni_force__force_offset',
+            'myuni_force__force_offset_time',
+            'myuni_force__high_pos',
+            'myuni_force__high_pos_time',
+            'myuni_force__hysteresis',
+            'myuni_force__hysteresis_time',
+            'myuni_force__limit',
+            'myuni_force__limit_time',
+            'myuni_force__low_pos',
+            'myuni_force__low_pos_time',
+            'myuni_force__pid_i',
+            'myuni_force__pid_i_time',
+            'myuni_force__safe_current',
+            'myuni_force__safe_current_time',
+            'myuni_force__safe_step',
+            'myuni_force__safe_step_time',
+            'myuni_force__slope',
+            'myuni_force__slope_time',
+            'myuni_force__tolerance',
+            'myuni_force__tolerance_time',
+            'myuni_force_pollinterval',
+            'myuni_force_pollinterval_time',
+            'myuni_force_status',
+            'myuni_force_status_time',
+            'myuni_force_target',
+            'myuni_force_target_time',
+            'myuni_force_time',
+            'myuni_res',
+            'myuni_res__jitter',
+            'myuni_res__jitter_time',
+            'myuni_res_pollinterval',
+            'myuni_res_pollinterval_time',
+            'myuni_res_status',
+            'myuni_res_status_time',
+            'myuni_res_time',
+            'myuni_t',
+            'myuni_t__abs',
+            'myuni_t__abs_time',
+            'myuni_t__calib',
+            'myuni_t__calib_time',
+            'myuni_t_status',
+            'myuni_t_status_time',
+            'myuni_t_time',
+            'myuni_transducer',
+            'myuni_transducer__friction',
+            'myuni_transducer__friction_time',
+            'myuni_transducer__hysteresis',
+            'myuni_transducer__hysteresis_time',
+            'myuni_transducer__jitter',
+            'myuni_transducer__jitter_time',
+            'myuni_transducer__offset',
+            'myuni_transducer__offset_time',
+            'myuni_transducer__slope',
+            'myuni_transducer__slope_time',
+            'myuni_transducer_pollinterval',
+            'myuni_transducer_pollinterval_time',
+            'myuni_transducer_status',
+            'myuni_transducer_status_time',
+            'myuni_transducer_time'
+        ]
+
     # sets xmlconfiguration
     # \param xmlc configuration instance
     # \param xml xml configuration string
@@ -305,7 +398,7 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                 vl, er = self.runtest(arg[0])
 
                 # if er:
-                #     self.assertTrue(er.startswith("Info: ")
+                #     self.assertTrue(er.startswith("Info: "))
                 # else:
                 #     self.assertEqual('', er)
                 lines = vl.split("\n")
@@ -320,7 +413,7 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         finally:
             os.remove(fname)
 
-    def ttest_secopcp_create(self):
+    def test_secopcp_create(self):
         """ test nxsccreate stdcomp file system
         """
         fun = sys._getframe().f_code.co_name
@@ -329,10 +422,12 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         fname = '%s/%s%s.json' % (
             os.getcwd(), self.__class__.__name__, fun)
 
+        cname = "myuni"
+
         args = [
             [
-                ('nxscreate secopcp  -j %s %s'
-                 % (fname, self.flags)).split(),
+                ('nxscreate secopcp -c %s -j %s %s'
+                 % (cname, fname, self.flags)).split(),
             ],
         ]
 
@@ -344,20 +439,43 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                 vl, er = self.runtest(arg[0])
 
                 # if er:
-                #     self.assertTrue(er.startswith("Info: ")
+                #     self.assertTrue(er.startswith("Info: "))
                 # else:
                 #     self.assertEqual('', er)
-                # lines = vl.split("\n")
-                # self.assertEqual(len(lines),3)
-                # self.assertEqual(lines[-3], "MODULES:")
-                # self.assertEqual(
-                #     lines[-2].split(),
-                #     ['force', 'drv', 'transducer', 'res', 'T'])
-                # self.assertEqual(
-                #     lines[-1].split(),
-                #     [])
+                lines = vl.split("\n")
+                # print(lines[:10])
+                self.assertEqual(len(lines), 135)
+                self.assertEqual(lines[0], "OUTPUT DIRECTORY: .")
+                self.assertEqual(len(lines), 135)
+                ncst = sorted(
+                    [ll for ll in lines[1:]
+                     if ('client_start_time' not in ll and ll)])
+                cst = sorted(
+                    [ll for ll in lines[1:]
+                     if 'client_start_time' in ll])
+                self.assertEqual(len(cst), 44)
+                self.assertEqual(len(set(cst)), 1)
+                fmtstr = "CREATING '{name}' of secop in './{name}.ds.xml'"
+                cfmtstr = "CREATING '{name}' of secop in './{name}.xml'"
+                self.assertEqual(
+                    list(set(cst))[0],
+                    fmtstr.format(name='client_start_time'))
+                self.assertEqual(len(ncst), 89)
+                self.assertEqual(len(ncst), len(self.secoplist))
+                for si, scn in enumerate(self.secoplist):
+                    # print(scn, ncst[si])
+                    if "_" in scn:
+                        self.assertEqual(ncst[si], fmtstr.format(name=scn))
+                    else:
+                        self.assertEqual(ncst[si], cfmtstr.format(name=scn))
+
         finally:
             os.remove(fname)
+            for scn in self.secoplist:
+                if "_" in scn:
+                    os.remove("%s.ds.xml" % scn)
+                else:
+                    os.remove("%s.xml" % scn)
 
 
 if __name__ == '__main__':
