@@ -1819,6 +1819,7 @@ class SECoPCPCreator(CPCreator):
         modules = conf.get("modules", {})
         if modules:
             names = [mname for mname in modules.keys()]
+        # print(json.dumps(conf))
         return names
 
     def __createSECoPTree(self, df, name, conf, samplename=None,
