@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Feb 24, 2023" "3.42" "NXSTools"
+.TH "NXSTOOLS" "1" "Mar 03, 2023" "3.43" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -1426,6 +1426,17 @@ sensor minimum timeout default: 0.001
 .TP
 .BI \-s \ SAMPLENAME\fP,\fB \ \-\-sample \ SAMPLENAME
 sample name
+.TP
+.BI \-k \ MEANINGS\fP,\fB \ \-\-links \ MEANINGS
+NXlog links of physical quantities to sensors
+separated by comman
+.TP
+.BI \-v \ ENVIRONMENTS\fP,\fB \ \-\-environments \ ENVIRONMENTS
+NXenvironment links of physical quantities separated
+by comman
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first \ FIRST
+first linked targets separated by comman
 .TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
@@ -6783,6 +6794,27 @@ a list of list
 .TP
 .B nxstools.nxsfileinfo.main()
 the main program function
+.UNINDENT
+.INDENT 0.0
+.TP
+.B nxstools.nxsfileinfo.splittext(text, lmax=68)
+split text to lines
+.INDENT 7.0
+.TP
+.B Parameters
+.INDENT 7.0
+.IP \(bu 2
+\fBtext\fP (\fI\%str\fP) – parser options
+.IP \(bu 2
+\fBlmax\fP (\fI\%int\fP) – maximal line length
+.UNINDENT
+.TP
+.B Returns
+split text
+.TP
+.B Return type
+\fI\%str\fP
+.UNINDENT
 .UNINDENT
 .SS nxstools.nxsfileparser module
 .sp

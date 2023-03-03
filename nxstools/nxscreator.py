@@ -1813,14 +1813,16 @@ class SECoPCPCreator(CPCreator):
                 conf = json.load(fl)
         else:
             conf = secop_cmd(
-                "describe", self.options.host, int(self.options.port))
+                "describe", self.options.host, int(self.options.port)) or {}
         modules = conf.get("modules", {})
         if modules:
             names = [mname for mname in modules.keys()]
         return names
 
     def __createSECoPTree(self, df, name, conf, samplename=None,
-                          modulenames=None, canfail=None):
+                          modulenames=None, canfail=None,
+                          environments=None,
+                          meanings=None, first=None):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -1832,14 +1834,21 @@ class SECoPCPCreator(CPCreator):
         :param samplename: sample name
         :type samplename: :obj:`str`
         :param modulenames: module names
-        :type modulenames: :obj:`list` <:obj:`str`>
+        :typae modulenames: :obj:`list` <:obj:`str`>
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
+        :param environments: environments to link separated by comman
+        :type environments: :obj:`str`
+        :param meanings: physical quantity meaning to link separated by comman
+        :type meanings: :obj:`str`
+        :param first: first targets to link separated by comman
+        :type first: :obj:`str`
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
         entry = NGroup(df, samplename or ename, "NXentry")
-        sample = NGroup(entry, samplename or "sample", "NXsample")
+        samplename = samplename or "sample"
+        sample = NGroup(entry, samplename, "NXsample")
         env = NGroup(sample, name or "environment", "NXenvironment")
         modules = conf.get("modules", {})
         if 'description' in conf.keys():
@@ -1859,12 +1868,40 @@ class SECoPCPCreator(CPCreator):
             field.setText("%s" % str(conf['version']))
             field.setStrategy('INIT')
 
+        targets = (first or "").split(",")
+        lmeanings = (meanings or "").split(",")
+        lenvironments = (environments or "").split(",")
+        links = {}
         for mname, mconf in modules.items():
             if mname:
                 if not modulenames or mname in modulenames:
-                    self.__createSECoPSensor(env, mname, mconf, name, canfail)
+                    lk = self.__createSECoPSensor(
+                        env, mname, mconf, name, canfail, samplename)
+                    if lk and isinstance(lk, dict):
+                        links.update(lk)
+        ename = \
+            "$var.entryname#'$(__entryname__)'" \
+            "$var.serialno".replace(
+                "$(__entryname__)",
+                (self.options.entryname or "scan"))
+        created = []
+        for tg in targets:
+            if tg in links.keys():
+                mn = links[tg]
+                NLink(sample, mn, tg)
+                created.append(mn)
 
-    def __createSECoPSensor(self, env, name, conf, nodename, canfail=None):
+        for target, mn in links:
+            if mn in lenvironments and "%s_env" % mn not in created:
+                NLink(sample, "%s_env" % mn,
+                      "/%s/%s/%s" % (ename, samplename, name))
+                created.append("%s_env" % mn)
+            if mn in lmeanings and mn not in created:
+                NLink(sample, mn, target)
+                created.append(mn)
+
+    def __createSECoPSensor(self, env, name, conf, nodename, canfail=None,
+                            samplename="sample"):
         """ create nexus node tree
 
         :param env: definition parent node
@@ -1877,12 +1914,18 @@ class SECoPCPCreator(CPCreator):
         :type nodename: :obj:`str`
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
+        :param samplename: sample name
+        :type samplename: :obj:`str`
+        :returns: links targets and meaning names
+        :rtype: :obj:`dict`< :obj:`str`, :obj:`str` >
         """
+        links = {}
         mgr = NGroup(env, name, "NXsensor")
         if 'description' in conf.keys():
             field = NField(mgr, 'name', 'NX_CHAR')
             field.setText("%s" % str(conf['description']).replace(",", "_"))
             field.setStrategy('INIT')
+        meaning = None
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
             if isinstance(meaning, list):
@@ -1913,6 +1956,15 @@ class SECoPCPCreator(CPCreator):
                             maxval = di.get("max")
                         log = NGroup(mgr, "value_log", "NXlog")
                         field = NField(log, 'value', nxtype)
+                        if meaning:
+                            ename = \
+                                "$var.entryname#'$(__entryname__)'" \
+                                "$var.serialno".replace(
+                                    "$(__entryname__)",
+                                    (self.options.entryname or "scan"))
+                            target = "/%s/%s/%s/%s/value_log" % \
+                                (ename, samplename, nodename, name)
+                            links[target] = meaning
                         dsname = "%s_%s" % (nodename, name)
                         timedsname = "%s_%s_time" % (nodename, name)
                         if self.options.lower:
@@ -1961,8 +2013,9 @@ class SECoPCPCreator(CPCreator):
                                     "$(__entryname__)",
                                     (self.options.entryname or "scan"))
                             NLink(mgr, "value",
-                                  "/%s/sample/%s/%s/parameters/target/value" %
-                                  (ename, nodename, name))
+                                  "/%s/%s/%s/%s/parameters/target/value" %
+                                  (ename, samplename, nodename, name))
+        return links
 
     def __createSECoPParam(self, par, name, conf, nodename, modname,
                            canfail=None, access=None, accesstype=None):
@@ -2058,7 +2111,10 @@ class SECoPCPCreator(CPCreator):
                 cpname = cpname.lower()
             df = XMLFile("%s/%s" % (self.options.directory, fname))
             self.__createSECoPTree(df, cpname, conf, self.options.samplename,
-                                   cpnames, self.options.canfail)
+                                   cpnames, self.options.canfail,
+                                   self.options.environments,
+                                   self.options.meanings,
+                                   self.options.first)
             self._printAction(cpname)
             self.components[cpname] = df.prettyPrint()
 

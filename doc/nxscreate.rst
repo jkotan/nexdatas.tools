@@ -480,6 +480,14 @@ Options:
                         sensor minimum timeout default: 0.001
   -s SAMPLENAME, --sample SAMPLENAME
                         sample name
+  -k MEANINGS, --links MEANINGS
+                        NXlog links of physical quantities to sensors
+                        separated by comman
+  -v ENVIRONMENTS, --environments ENVIRONMENTS
+                        NXenvironment links of physical quantities separated
+                        by comman
+  -f FIRST, --first FIRST
+                        first linked targets separated by comman
   -p XMLPACKAGE, --xml-package XMLPACKAGE
                         xml template package
   -y ENTRYNAME, --entryname ENTRYNAME

@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "Feb 24, 2023" "3.42" "NXSTools"
+.TH "NXSCREATE" "1" "Mar 03, 2023" "3.43" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -800,6 +800,17 @@ sensor minimum timeout default: 0.001
 .TP
 .BI \-s \ SAMPLENAME\fP,\fB \ \-\-sample \ SAMPLENAME
 sample name
+.TP
+.BI \-k \ MEANINGS\fP,\fB \ \-\-links \ MEANINGS
+NXlog links of physical quantities to sensors
+separated by comman
+.TP
+.BI \-v \ ENVIRONMENTS\fP,\fB \ \-\-environments \ ENVIRONMENTS
+NXenvironment links of physical quantities separated
+by comman
+.TP
+.BI \-f \ FIRST\fP,\fB \ \-\-first \ FIRST
+first linked targets separated by comman
 .TP
 .BI \-p \ XMLPACKAGE\fP,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
