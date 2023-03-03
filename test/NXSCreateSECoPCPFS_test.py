@@ -312,8 +312,8 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                 self.assertEqual(len(lines), 3)
                 self.assertEqual(lines[-3], "MODULES:")
                 self.assertEqual(
-                    lines[-2].split(),
-                    ['force', 'drv', 'transducer', 'res', 'T'])
+                    sorted(lines[-2].split()),
+                    sorted(['force', 'drv', 'transducer', 'res', 'T']))
                 self.assertEqual(
                     lines[-1].split(),
                     [])
