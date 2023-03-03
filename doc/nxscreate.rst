@@ -482,10 +482,12 @@ Options:
                         sample name
   -k MEANINGS, --links MEANINGS
                         NXlog links of physical quantities to sensors
-                        separated by comman
+                        separated by comman. Default:
+			'temperature,magnetic_field,electric_field,stress_field,pressure'
+
   -v ENVIRONMENTS, --environments ENVIRONMENTS
                         NXenvironment links of physical quantities separated
-                        by comman
+                        by comman. Default: 'temperature,magnetic_field'
   -f FIRST, --first FIRST
                         first linked targets separated by comman
   -p XMLPACKAGE, --xml-package XMLPACKAGE
