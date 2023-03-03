@@ -23,6 +23,8 @@ import os.path
 import json
 import sys
 
+from operator import itemgetter
+
 import lxml.etree as etree
 import xml.etree.ElementTree as et
 from lxml.etree import XMLParser
@@ -1886,12 +1888,19 @@ class SECoPCPCreator(CPCreator):
                 (self.options.entryname or "scan"))
         created = []
         for tg in targets:
-            if tg in links.keys():
-                mn = links[tg]
+            try:
+                stg = "/".join(tg.split("/")[-3:])
+            except Exception:
+                stg = None
+            if tg in links.keys() or stg and stg in links.keys():
+                mn = links[tg][0]
                 NLink(sample, mn, tg)
                 created.append(mn)
 
-        for target, mn in links:
+        llinks = sorted([(tg, mns[0], mns[1]) for tg, mns in links.items()],
+                        key=itemgetter(2))
+
+        for target, mn, semn in llinks:
             if mn in lenvironments and "%s_env" % mn not in created:
                 NLink(sample, "%s_env" % mn,
                       "/%s/%s/%s" % (ename, samplename, name))
@@ -1917,7 +1926,7 @@ class SECoPCPCreator(CPCreator):
         :param samplename: sample name
         :type samplename: :obj:`str`
         :returns: links targets and meaning names
-        :rtype: :obj:`dict`< :obj:`str`, :obj:`str` >
+        :rtype: :obj:`dict`< :obj:`str`, (:obj:`str`, :obj:`str`) >
         """
         links = {}
         mgr = NGroup(env, name, "NXsensor")
@@ -1926,8 +1935,10 @@ class SECoPCPCreator(CPCreator):
             field.setText("%s" % str(conf['description']).replace(",", "_"))
             field.setStrategy('INIT')
         meaning = None
+        semeaning = None
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
+            semeaning = meaning
             if isinstance(meaning, list):
                 if len(meaning) > 0:
                     meaning = meaning[0]
@@ -1964,7 +1975,7 @@ class SECoPCPCreator(CPCreator):
                                     (self.options.entryname or "scan"))
                             target = "/%s/%s/%s/%s/value_log" % \
                                 (ename, samplename, nodename, name)
-                            links[target] = meaning
+                            links[target] = (meaning, semeaning)
                         dsname = "%s_%s" % (nodename, name)
                         timedsname = "%s_%s_time" % (nodename, name)
                         if self.options.lower:
