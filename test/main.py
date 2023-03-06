@@ -194,6 +194,8 @@ if PYTANGO_AVAILABLE:
     import NXSCreatePoolDSFS2_test
     import NXSCreatePoolDSFS3_test
 
+    import NXSCreateSECoPCPFS_test
+
     import NXSData_test
 
     if "MYSQL" in DB_AVAILABLE:
@@ -248,6 +250,8 @@ if PYTANGO_AVAILABLE:
         import NXSCreatePoolDSDB2_test
         import NXSCreatePoolDSDBR_test
         import NXSCreatePoolDSDBR2_test
+
+        import NXSCreateSECoPCPDB_test
 
 
 # main function
@@ -363,6 +367,10 @@ def main():
 
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
+                NXSCreateSECoPCPFS_test))
+
+        suite.addTests(
+            unittest.defaultTestLoader.loadTestsFromModule(
                 NXSCreateDeviceDSFS_test))
         suite.addTests(
             unittest.defaultTestLoader.loadTestsFromModule(
@@ -450,6 +458,10 @@ def main():
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(
                     NXSCreateOnlineDSDBR2_test))
+
+            suite.addTests(
+                unittest.defaultTestLoader.loadTestsFromModule(
+                    NXSCreateSECoPCPDB_test))
 
             suite.addTests(
                 unittest.defaultTestLoader.loadTestsFromModule(

@@ -1262,6 +1262,28 @@ class SECoPCP(Runner):
         parser.add_argument("-s", "--sample",
                             help="sample name",
                             dest="samplename", default="")
+
+        parser.add_argument("-k", "--links",
+                            help="NXlog links of physical "
+                            "quantities to sensors "
+                            "separated by comman. Default: "
+                            "'temperature,magnetic_field,"
+                            "electric_field,"
+                            "stress_field,pressure'",
+                            dest="meanings",
+                            default="temperature,magnetic_field,"
+                            "electric_field,"
+                            "stress_field,pressure")
+        parser.add_argument("-v", "--environments",
+                            help="NXenvironment links of physical quantities "
+                            "separated by comman. "
+                            "Default: 'temperature,magnetic_field'",
+                            dest="environments",
+                            default="temperature,magnetic_field")
+        parser.add_argument("-f", "--first",
+                            help="first linked targets separated by comman",
+                            dest="first", default="")
+
         parser.add_argument("-p", "--xml-package", dest="xmlpackage",
                             help="xml template package")
         parser.add_argument("-y", "--entryname", dest="entryname",
