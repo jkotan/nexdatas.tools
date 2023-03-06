@@ -46,6 +46,11 @@ try:
 except ImportError:
     from io import StringIO
 
+try:
+    from .checks import checkxmls
+except Exception:
+    from checks import checkxmls
+
 # try:
 #     import TestServerSetUp
 # except ImportError:
@@ -323,10 +328,14 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
 
                         for i, ds in enumerate(arg[1][1]):
                             xml = self.getds(ds)
-                            self.assertEqual(arg[2][1][i], xml)
+                            checkxmls(
+                                self,
+                                arg[2][1][i], xml)
                         for i, cp in enumerate(arg[1][0]):
                             xml = self.getcp(cp)
-                            self.assertEqual(arg[2][0][i], xml)
+                            checkxmls(
+                                self,
+                                arg[2][0][i], xml)
 
                         for ds in arg[1][1]:
                             self.deleteds(ds)
