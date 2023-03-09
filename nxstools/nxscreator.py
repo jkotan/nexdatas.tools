@@ -36,7 +36,7 @@ from nxstools.nxsdevicetools import (
     openServer, findClassName,
     xmlPackageHandler)
 from nxstools.nxsxml import (XMLFile, NDSource, NGroup, NField, NLink,
-                             NDimensions)
+                             NAttr, NDimensions)
 from nxstools.pyeval.secop import secop_cmd
 
 #: (:obj:`bool`) True if PyTango available
@@ -68,10 +68,10 @@ mnTme = {
     "flowrate": "flow",
 
     # not defined in NeXus yet
-    "humidity": "humidity",
-    "viscosity": "viscosity",
-    "concentration": "concentration",
-    "rotation_z": "rotation_y",
+    # "humidity": "humidity",
+    # "viscosity": "viscosity",
+    # "concentration": "concentration",
+    # "rotation_z": "rotation_z",
 
     # not defined in secop yet
     "ph": "pH",
@@ -1825,7 +1825,7 @@ class SECoPCPCreator(CPCreator):
     def __createSECoPTree(self, df, name, conf, samplename=None,
                           modulenames=None, canfail=None,
                           environments=None,
-                          meanings=None, first=None):
+                          meanings=None, first=None, transattrs=None):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -1846,6 +1846,8 @@ class SECoPCPCreator(CPCreator):
         :type meanings: :obj:`str`
         :param first: first targets to link separated by comman
         :type first: :obj:`str`
+        :param transattrs: JSON dictionary with transformation attributes
+        :type transattrs: :obj:`str`
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
@@ -1874,12 +1876,17 @@ class SECoPCPCreator(CPCreator):
         targets = (first or "").split(",")
         lmeanings = (meanings or "").split(",")
         lenvironments = (environments or "").split(",")
+        try:
+            trattrs = json.loads(transattrs or "{}")
+        except Exception:
+            trattrs = {}
         links = {}
         for mname, mconf in modules.items():
             if mname:
                 if not modulenames or mname in modulenames:
                     lk = self.__createSECoPSensor(
-                        env, mname, mconf, name, canfail, samplename)
+                        env, mname, mconf, name, canfail, samplename,
+                        trattrs)
                     if lk and isinstance(lk, dict):
                         links.update(lk)
         ename = \
@@ -1888,6 +1895,8 @@ class SECoPCPCreator(CPCreator):
                 "$(__entryname__)",
                 (self.options.entryname or "scan"))
         created = []
+        created_trans = []
+        trans = None
         for tg in targets:
             try:
                 stg = "/".join(tg.split("/")[-3:])
@@ -1909,9 +1918,18 @@ class SECoPCPCreator(CPCreator):
             if mn in lmeanings and mn not in created:
                 NLink(sample, mn, target)
                 created.append(mn)
+            if mn in trattrs.keys():
+                starget = target.split("/")
+                nm = "%s_%s" % (starget[-3], starget[-2])
+                if nm not in created_trans:
+                    if trans is None:
+                        trans = NGroup(
+                            sample, "transformations", "NXtransformations")
+                    NLink(trans, nm, target + "/value")
+                    created_trans.append(nm)
 
     def __createSECoPSensor(self, env, name, conf, nodename, canfail=None,
-                            samplename="sample"):
+                            samplename="sample", trattrs=None):
         """ create nexus node tree
 
         :param env: definition parent node
@@ -1926,10 +1944,13 @@ class SECoPCPCreator(CPCreator):
         :type canfail: :obj:`bool`
         :param samplename: sample name
         :type samplename: :obj:`str`
+        :param trattrs: dictionary with transformation attributes
+        :type trattrs: :obj:`dict` <:obj:`str`,:obj:`dict` <:obj:`str`,`and`>>
         :returns: links targets and meaning names
         :rtype: :obj:`dict`< :obj:`str`, (:obj:`str`, :obj:`str`) >
         """
         links = {}
+        trattrs = trattrs or {}
         mgr = NGroup(env, name, "NXsensor")
         if 'description' in conf.keys():
             field = NField(mgr, 'name', 'NX_CHAR')
@@ -1945,9 +1966,9 @@ class SECoPCPCreator(CPCreator):
                     meaning = meaning[0]
             if meaning in mnTme.keys():
                 meaning = mnTme[meaning]
-            field = NField(mgr, 'measurement', 'NX_CHAR')
-            field.setText(meaning)
-            field.setStrategy('INIT')
+                field = NField(mgr, 'measurement', 'NX_CHAR')
+                field.setText(meaning)
+                field.setStrategy('INIT')
 
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
@@ -1988,6 +2009,25 @@ class SECoPCPCreator(CPCreator):
                         field.setText("$datasources.%s" % dsname)
                         if units:
                             field.setUnits(units)
+                        if meaning and meaning in trattrs.keys():
+                            try:
+                                attrs = dict(trattrs[meaning])
+                            except Exception:
+                                attrs = {}
+                            for nm, vl in attrs.items():
+                                if isinstance(vl, list):
+                                    if vl and isinstance(vl[0], str):
+                                        vct = NAttr(field, nm, "NX_CHAR")
+                                        vct.setText("\n ".join(vl))
+                                    else:
+                                        vct = NAttr(field, nm, "NX_FLOAT64")
+                                        vct.setText(
+                                            " ".join([str(st) for st in vl]))
+                                    d = NDimensions(vct, "1")
+                                    d.dim("1", str(len(vl)))
+                                    vct.setStrategy("INIT")
+                                else:
+                                    field.addTagAttr(nm, vl)
                         strategy = self.options.strategy
                         field.setStrategy(strategy)
                         field = NField(log, 'time', "NX_FLOAT64")
@@ -2126,7 +2166,8 @@ class SECoPCPCreator(CPCreator):
                                    cpnames, self.options.canfail,
                                    self.options.environments,
                                    self.options.meanings,
-                                   self.options.first)
+                                   self.options.first,
+                                   self.options.transattrs)
             self._printAction(cpname)
             self.components[cpname] = df.prettyPrint()
 
