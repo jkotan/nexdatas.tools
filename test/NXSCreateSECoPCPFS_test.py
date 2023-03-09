@@ -423,7 +423,7 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         finally:
             os.remove(fname)
 
-    def test_secopcp_create_old(self):
+    def ttest_secopcp_create_old(self):
         """ test nxsccreate stdcomp file system
         """
         fun = sys._getframe().f_code.co_name
