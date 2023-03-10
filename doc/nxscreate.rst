@@ -490,6 +490,9 @@ Options:
                         by comman. Default: 'temperature,magnetic_field'
   -f FIRST, --first FIRST
                         first linked targets separated by comman
+  -z TRANSATTRS, --transformation-attributes TRANSATTRS
+                        a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
+                        {"rotation_z":"{"transformation_type":"rotation","vector":[0,-1,0]}}
   -p XMLPACKAGE, --xml-package XMLPACKAGE
                         xml template package
   -y ENTRYNAME, --entryname ENTRYNAME

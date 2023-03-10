@@ -1,4 +1,5 @@
-2023-03-06 Jan Kotanski <jankotan@gmail.com>
+2023-03-09 Jan Kotanski <jankotan@gmail.com>
+	* add --transformation-attributes options to nxscreate secopcp (#472)
 	* add --environments  --links and  --first options to nxscreate secopcp (#472)
 	* split a scan command text in the dataset attachment if it is too long (#471)
 	* tagged as v3.43.0

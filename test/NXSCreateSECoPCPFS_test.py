@@ -482,10 +482,11 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         finally:
             os.remove(fname)
             for scn in self.secoplist:
-                if "_" in scn:
-                    os.remove("%s.ds.xml" % scn)
-                else:
-                    os.remove("%s.xml" % scn)
+                pass
+                # if "_" in scn:
+                #     os.remove("%s.ds.xml" % scn)
+                # else:
+                #     os.remove("%s.xml" % scn)
 
     def test_secopcp_create(self):
         """ test nxsccreate stdcomp file system
@@ -881,8 +882,12 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                         '          </group>\n'
                         '          <group name="value_log" type="NXlog">\n'
                         '            <field name="value" type="NX_FLOAT64" '
-                        'units="deg">$datasources.myuni_drv'
-                        '<strategy mode="INIT"/></field>\n'
+                        'units="deg" transformation_type="rotation">'
+                        '$datasources.myuni_drv'
+                        '<attribute name="vector" type="NX_FLOAT64">0 -1 0'
+                        '<dimensions rank="1"><dim index="1" value="3"/>'
+                        '</dimensions><strategy mode="INIT"/>'
+                        '</attribute><strategy mode="INIT"/></field>\n'
                         '            <field name="time" type="NX_FLOAT64" '
                         'units="s">$datasources.myuni_drv_time'
                         '<attribute name="start" type="NX_DATE_TIME">'
@@ -1116,6 +1121,12 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                         '          </group>\n'
                         '        </group>\n'
                         '      </group>\n'
+                        '      <group name="transformations" '
+                        'type="NXtransformations">'
+                        '        <link name="myuni_drv" '
+                        'target="/$var.entryname#\'scan\'$var.serialno/sample'
+                        '/myuni/drv/value_log/value"/>'
+                        '      </group>'
                         '      <link name="temperature_env" '
                         'target="/$var.entryname#\'scan\'$var.serialno/sample/'
                         'myuni"/>\n'
