@@ -1911,15 +1911,21 @@ class SECoPCPCreator(CPCreator):
                         key=itemgetter(2))
 
         for target, mn, semn in llinks:
+            starget = target.split("/")
             if mn in lenvironments and "%s_env" % mn not in created:
-                NLink(sample, "%s_env" % mn,
-                      "/%s/%s/%s" % (ename, samplename, name))
+                env = NGroup(
+                    sample, "%s_env" % mn, "NXenvironment")
+                
+                NLink(env, starget[-2], "/".join(starget[:-1]))
+                NLink(env, "description", "/".join(starget[:-2]) + "/description")
+                NLink(env, "name", "/".join(starget[:-2]) + "/name")
+                NLink(env, "short_name", "/".join(starget[:-2]) + "/short_name")
+                NLink(env, "type", "/".join(starget[:-2]) + "/type")
                 created.append("%s_env" % mn)
             if mn in lmeanings and mn not in created:
                 NLink(sample, mn, target)
                 created.append(mn)
             if mn in trattrs.keys():
-                starget = target.split("/")
                 nm = "%s_%s" % (starget[-3], starget[-2])
                 if nm not in created_trans:
                     if trans is None:
