@@ -1854,7 +1854,10 @@ class SECoPCPCreator(CPCreator):
         entry = NGroup(df, samplename or ename, "NXentry")
         samplename = samplename or "sample"
         sample = NGroup(entry, samplename, "NXsample")
-        env = NGroup(sample, name or "environment", "NXenvironment")
+        if self.options.strict:
+            env = NGroup(sample, name or "node", "NXcollection")
+        else:
+            env = NGroup(sample, name or "environment", "NXenvironment")
         modules = conf.get("modules", {})
         if 'description' in conf.keys():
             field = NField(env, 'name', 'NX_CHAR')

@@ -1,5 +1,6 @@
 2023-03-14 Jan Kotanski <jankotan@gmail.com>
 	* create physical secop environment links only with the related sensor (#475)
+	* add --strict option to nxscreate secopcp (#475)
 	* add --transformation-attributes options to nxscreate secopcp (#473)
 	* add --environments  --links and  --first options to nxscreate secopcp (#472)
 	* split a scan command text in the dataset attachment if it is too long (#471)
