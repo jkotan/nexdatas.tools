@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxscreate &#8212; NXSTools 3.42.1 documentation</title>
+    <title>nxstools.nxscreate &#8212; NXSTools 3.43.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.42</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.43</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1420,6 +1420,10 @@
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--can-fail&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
                             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;canfail&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;can fail strategy flag&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--strict&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;strict&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;NeXus strict group types i.e. &quot;</span>
+                            <span class="s2">&quot;use NXcollection if not defined&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--component&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;component name&quot;</span> <span class="o">+</span>
                             <span class="s2">&quot;secop component name&quot;</span><span class="p">,</span>
@@ -1441,6 +1445,35 @@
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--sample&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;sample name&quot;</span><span class="p">,</span>
                             <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;samplename&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--links&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;NXlog links of physical &quot;</span>
+                            <span class="s2">&quot;quantities to sensors &quot;</span>
+                            <span class="s2">&quot;separated by comman. Default: &quot;</span>
+                            <span class="s2">&quot;&#39;temperature,magnetic_field,&quot;</span>
+                            <span class="s2">&quot;electric_field,&quot;</span>
+                            <span class="s2">&quot;stress_field,pressure&#39;&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;meanings&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;temperature,magnetic_field,&quot;</span>
+                            <span class="s2">&quot;electric_field,&quot;</span>
+                            <span class="s2">&quot;stress_field,pressure&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--environments&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;NXenvironment links of physical quantities &quot;</span>
+                            <span class="s2">&quot;separated by comman. &quot;</span>
+                            <span class="s2">&quot;Default: &#39;temperature,magnetic_field&#39;&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;environments&quot;</span><span class="p">,</span>
+                            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;temperature,magnetic_field&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--first&quot;</span><span class="p">,</span>
+                            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;first linked targets separated by comman&quot;</span><span class="p">,</span>
+                            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-z&quot;</span><span class="p">,</span> <span class="s2">&quot;--transformation-attributes&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;transattrs&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s1">&#39;{&quot;rotation_z&quot;:&#39;</span>
+            <span class="s1">&#39;{&quot;transformation_type&quot;:&quot;rotation&quot;,&quot;vector&quot;:[0,-1,0]}}&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a JSON dictionary with transformation parameters i.e, &quot;</span>
+                  <span class="s1">&#39;&quot;transformation_type&quot;, &quot;vector&quot;, &quot;depends_on&quot;.&#39;</span>
+                  <span class="s1">&#39; Default: {&quot;rotation_z&quot;:&#39;</span>
+                  <span class="s1">&#39;&quot;{&quot;transformation_type&quot;:&quot;rotation&quot;,&quot;vector&quot;:[0,-1,0]}}&#39;</span><span class="p">))</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--xml-package&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;xmlpackage&quot;</span><span class="p">,</span>
                             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;xml template package&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">,</span> <span class="s2">&quot;--entryname&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;entryname&quot;</span><span class="p">,</span>
