@@ -1915,11 +1915,14 @@ class SECoPCPCreator(CPCreator):
             if mn in lenvironments and "%s_env" % mn not in created:
                 env = NGroup(
                     sample, "%s_env" % mn, "NXenvironment")
-                
+
                 NLink(env, starget[-2], "/".join(starget[:-1]))
-                NLink(env, "description", "/".join(starget[:-2]) + "/description")
-                NLink(env, "name", "/".join(starget[:-2]) + "/name")
-                NLink(env, "short_name", "/".join(starget[:-2]) + "/short_name")
+                NLink(env, "description",
+                      "/".join(starget[:-2]) + "/description")
+                NLink(env, "name",
+                      "/".join(starget[:-2]) + "/name")
+                NLink(env, "short_name",
+                      "/".join(starget[:-2]) + "/short_name")
                 NLink(env, "type", "/".join(starget[:-2]) + "/type")
                 created.append("%s_env" % mn)
             if mn in lmeanings and mn not in created:
