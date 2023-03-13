@@ -1241,6 +1241,10 @@ class SECoPCP(Runner):
         parser.add_argument("-a", "--can-fail", action="store_true",
                             default=False, dest="canfail",
                             help="can fail strategy flag")
+        parser.add_argument("-q", "--strict", action="store_true",
+                            default=False, dest="strict",
+                            help="NeXus strict group types i.e. "
+                            "use NXcollection if not defined")
         parser.add_argument("-c", "--component",
                             help="component name" +
                             "secop component name",

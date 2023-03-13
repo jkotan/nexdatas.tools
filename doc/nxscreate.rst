@@ -457,9 +457,7 @@ Synopsis
 
 .. code:: bash
 
-	  nxscreate secopcp [-h] [-l] [-o] [-a] [-c COMPONENT] [-e PARAMSTRATEGY] [-g STRATEGY] [-m TIMEOUT] [-s SAMPLENAME] [-p XMLPACKAGE] [-y ENTRYNAME] [-i INSNAME] [-d DIRECTORY]
-                         [-x FILE] [-n] [-b] [-u HOST] [-t PORT] [-r SERVER]
-                         [component_name ...]
+	  nxscreate secopcp [-h] [-l] [-o] [-a] [-q] [-c COMPONENT] [-e PARAMSTRATEGY] [-g STRATEGY] [-m TIMEOUT] [-s SAMPLENAME] [-k MEANINGS] [-v ENVIRONMENTS] [-f FIRST] [-z TRANSATTRS] [-p XMLPACKAGE] [-y ENTRYNAME] [-i INSNAME] [-d DIRECTORY] [-j JSON] [-x FILE] [-n] [-b] [-u HOST] [-t PORT] [-r SERVER] [component_name ...]
 
 - with -b: datasources are created in Configuration Server database
 - without -b: datasources are created on the local filesystem in -d <directory>
@@ -470,6 +468,7 @@ Options:
   -l, --list            list modules of the given node
   -o, --overwrite       overwrite existing components
   -a, --can-fail        can fail strategy flag
+  -q, --strict          NeXus strict group types i.e. use NXcollection if not defined
   -c COMPONENT, --component COMPONENT
                         component namesecop component name
   -e PARAMSTRATEGY, --param-strategy PARAMSTRATEGY
