@@ -1294,7 +1294,7 @@ class SECoPCP(Runner):
             help=("a JSON dictionary with transformation parameters i.e, "
                   '"transformation_type", "vector", "depends_on".'
                   ' Default: {"rotation_z":'
-                  '"{"transformation_type":"rotation","vector":[0,-1,0]}}'))
+                  '{"transformation_type":"rotation","vector":[0,-1,0]}}'))
         parser.add_argument("-p", "--xml-package", dest="xmlpackage",
                             help="xml template package")
         parser.add_argument("-y", "--entryname", dest="entryname",

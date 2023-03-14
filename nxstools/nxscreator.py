@@ -2167,8 +2167,17 @@ class SECoPCPCreator(CPCreator):
             # print("%s" % dump)
             cpname = self.options.component
             if 'description' in conf.keys() and not cpname:
-                cpname = str(conf['description']).replace("[", "").\
+                eid = str(conf['equipment_id']).split(".")
+                if eid and eid[0]:
+                    cpname = eid[0]
+                else:
+                    des = str(conf['description']).split("\n")
+                    if des and des[0]:
+                        cpname = des[0]
+                cpname = cpname.replace("[", "").\
                     replace("]", "_").replace(",", "_")
+                if not cpname:
+                    cpname = "secop"
             fname = "%s%s.xml" % (self.options.file, cpname)
             if self.options.lower:
                 fname = fname.lower()
