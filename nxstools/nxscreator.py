@@ -1859,21 +1859,32 @@ class SECoPCPCreator(CPCreator):
         else:
             env = NGroup(sample, name or "environment", "NXenvironment")
         modules = conf.get("modules", {})
-        if 'description' in conf.keys():
-            field = NField(env, 'name', 'NX_CHAR')
-            field.setText("%s" % str(conf['description']))
-            field.setStrategy('INIT')
         if 'equipment_id' in conf.keys():
-            field = NField(env, 'short_name', 'NX_CHAR')
+            field = NField(env, 'name', 'NX_CHAR')
             field.setText("%s" % str(conf['equipment_id']))
             field.setStrategy('INIT')
-        if 'firmware' in conf.keys():
-            field = NField(env, 'type', 'NX_CHAR')
-            field.setText("%s" % str(conf['firmware']))
+        if name or 'equipment_id' in conf.keys():
+            field = NField(env, 'short_name', 'NX_CHAR')
+            if name:
+                field.setText("%s" % str(name))
+            elif 'equipment_id' in conf.keys():
+                field.setText("%s" % str(conf['equipment_id']))
             field.setStrategy('INIT')
-        if 'version' in conf.keys():
+        if 'firmware' in conf.keys() or 'version' in conf.keys():
+            field = NField(env, 'type', 'NX_CHAR')
+            txt = ""
+            if 'firmware' in conf.keys():
+                txt = str(conf['firmware'])
+            if 'version' in conf.keys():
+                if txt:
+                    txt = "%s (%s)" % (txt, str(conf['version']))
+                else:
+                    txt = "(%s)" % (str(conf['version']))
+            field.setText(txt)
+            field.setStrategy('INIT')
+        if 'description' in conf.keys():
             field = NField(env, 'description', 'NX_CHAR')
-            field.setText("%s" % str(conf['version']))
+            field.setText("%s" % str(conf['description']))
             field.setStrategy('INIT')
 
         targets = (first or "").split(",")
@@ -2167,8 +2178,17 @@ class SECoPCPCreator(CPCreator):
             # print("%s" % dump)
             cpname = self.options.component
             if 'description' in conf.keys() and not cpname:
-                cpname = str(conf['description']).replace("[", "").\
+                eid = str(conf['equipment_id']).split(".")
+                if eid and eid[0]:
+                    cpname = eid[0]
+                else:
+                    des = str(conf['description']).split("\n")
+                    if des and des[0]:
+                        cpname = des[0]
+                cpname = cpname.replace("[", "").\
                     replace("]", "_").replace(",", "_")
+                if not cpname:
+                    cpname = "secop"
             fname = "%s%s.xml" % (self.options.file, cpname)
             if self.options.lower:
                 fname = fname.lower()

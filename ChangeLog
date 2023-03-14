@@ -1,4 +1,9 @@
 2023-03-14 Jan Kotanski <jankotan@gmail.com>
+	* get the default secop component name from equipment_id  (#478)
+	* rearrange name, short_name, description and type of node values (#478)
+	* tagged as v3.44.0
+
+2023-03-13 Jan Kotanski <jankotan@gmail.com>
 	* create physical secop environment links only with the related sensor (#475)
 	* add --strict option to nxscreate secopcp (#475)
 	* add --transformation-attributes options to nxscreate secopcp (#473)
