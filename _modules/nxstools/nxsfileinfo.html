@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.44.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.45.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.44</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.45</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -548,19 +548,19 @@
     <span class="p">}</span>
 
     <span class="n">btmdmap</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;principalInvestigator&quot;</span><span class="p">:</span> <span class="s2">&quot;pi.email&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;principalInvestigator&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pi.email&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.email&quot;</span><span class="p">],</span>
         <span class="c1"># &quot;pid&quot;: &quot;beamtimeId&quot;,   # ?? is not unique for dataset</span>
-        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;leader.lastname&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;contactEmail&quot;</span><span class="p">:</span> <span class="s2">&quot;pi.email&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sourceFolder&quot;</span><span class="p">:</span> <span class="s2">&quot;corePath&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;leader.lastname&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.lastname&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;contactEmail&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pi.email&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.email&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sourceFolder&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;corePath&quot;</span><span class="p">],</span>
 
-        <span class="s2">&quot;endTime&quot;</span><span class="p">:</span> <span class="s2">&quot;eventEnd&quot;</span><span class="p">,</span>    <span class="c1"># ?? should be endTime for dataset</span>
-        <span class="s2">&quot;ownerEmail&quot;</span><span class="p">:</span> <span class="s2">&quot;leader.email&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span>   <span class="c1"># ?? should be from dataset</span>
-        <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;generated&quot;</span><span class="p">,</span>  <span class="c1"># ?? should be automatic</span>
-        <span class="s2">&quot;updatedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;generated&quot;</span><span class="p">,</span>  <span class="c1"># ?? should be automatic</span>
+        <span class="s2">&quot;endTime&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;eventEnd&quot;</span><span class="p">],</span>    <span class="c1"># ?? should be endTime for dataset</span>
+        <span class="s2">&quot;ownerEmail&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;leader.email&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.email&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>   <span class="c1"># ?? should be from dataset</span>
+        <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
+        <span class="s2">&quot;updatedAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
         <span class="c1"># &quot;proposalId&quot;: &quot;proposalId&quot;,</span>
-        <span class="s2">&quot;proposalId&quot;</span><span class="p">:</span> <span class="s2">&quot;beamtimeId&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;proposalId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;beamtimeId&quot;</span><span class="p">],</span>
     <span class="p">}</span>
 
     <span class="n">strcre</span> <span class="o">=</span> <span class="p">{</span>
@@ -680,19 +680,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__pap</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span><span class="p">[</span><span class="s2">&quot;proposalId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;proposalId&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span><span class="p">[</span><span class="s2">&quot;proposalId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;proposalId&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btmeta</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">sc</span><span class="p">,</span> <span class="n">ds</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">sds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-                <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btmeta</span>
-                <span class="k">for</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">sds</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
-                        <span class="n">md</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="n">sd</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sc</span><span class="p">,</span> <span class="n">dss</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dss</span><span class="p">:</span>
+                    <span class="n">sds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+                    <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__btmeta</span>
+                    <span class="k">for</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">sds</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">sd</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
+                            <span class="n">md</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="n">sd</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> cannot be found&quot;</span> <span class="o">%</span> <span class="n">ds</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">sc</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="n">md</span><span class="p">:</span>
                         <span class="k">break</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">sc</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> cannot be found&quot;</span> <span class="o">%</span> <span class="n">ds</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">sc</span><span class="p">,</span> <span class="n">vl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strcre</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">__metadata</span><span class="p">[</span><span class="n">sc</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
