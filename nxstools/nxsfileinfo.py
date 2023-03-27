@@ -369,19 +369,19 @@ class BeamtimeLoader(object):
     }
 
     btmdmap = {
-        "principalInvestigator": "pi.email",
+        "principalInvestigator": ["pi.email", "applicant.email"],
         # "pid": "beamtimeId",   # ?? is not unique for dataset
-        "owner": "leader.lastname",
-        "contactEmail": "pi.email",
-        "sourceFolder": "corePath",
+        "owner": ["leader.lastname", "applicant.lastname"],
+        "contactEmail": ["pi.email", "applicant.email"],
+        "sourceFolder": ["corePath"],
 
-        "endTime": "eventEnd",    # ?? should be endTime for dataset
-        "ownerEmail": "leader.email",
-        "description": "title",   # ?? should be from dataset
-        "createdAt": "generated",  # ?? should be automatic
-        "updatedAt": "generated",  # ?? should be automatic
+        "endTime": ["eventEnd"],    # ?? should be endTime for dataset
+        "ownerEmail": ["leader.email", "applicant.email"],
+        "description": ["title"],   # ?? should be from dataset
+        "createdAt": ["generated"],  # ?? should be automatic
+        "updatedAt": ["generated"],  # ?? should be automatic
         # "proposalId": "proposalId",
-        "proposalId": "beamtimeId",
+        "proposalId": ["beamtimeId"],
     }
 
     strcre = {
@@ -501,19 +501,25 @@ class BeamtimeLoader(object):
         """
 
         if self.__pap:
-            self.btmdmap["proposalId"] = "proposalId"
+            self.btmdmap["proposalId"] = ["proposalId"]
         if self.__btmeta:
-            for sc, ds in self.btmdmap.items():
-                sds = ds.split(".")
-                md = self.__btmeta
-                for sd in sds:
-                    if sd in md:
-                        md = md[sd]
+            for sc, dss in self.btmdmap.items():
+                found = False
+                for ds in dss:
+                    sds = ds.split(".")
+                    md = self.__btmeta
+                    for sd in sds:
+                        if sd in md:
+                            md = md[sd]
+                        else:
+                            break
                     else:
-                        print("%s cannot be found" % ds)
+                        self.__metadata[sc] = md
+                        found = True
+                    if md:
                         break
-                else:
-                    self.__metadata[sc] = md
+                    if not found:
+                        print("%s cannot be found" % ds)
             for sc, vl in self.strcre.items():
                 if isinstance(vl, list):
                     self.__metadata[sc] = [
