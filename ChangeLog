@@ -1,4 +1,8 @@
 2023-03-27 Jan Kotanski <jankotan@gmail.com>
+	* set the SciCat PI as the DESY beamtime applicant (#484)
+	* tagged as v3.45.1
+
+2023-03-27 Jan Kotanski <jankotan@gmail.com>
 	* add optional btmdmap values (#481)
 	* tagged as v3.45.0
 

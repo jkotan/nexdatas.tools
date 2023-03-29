@@ -369,7 +369,7 @@ class BeamtimeLoader(object):
     }
 
     btmdmap = {
-        "principalInvestigator": ["pi.email", "applicant.email"],
+        "principalInvestigator": ["applicant.email"],
         # "pid": "beamtimeId",   # ?? is not unique for dataset
         "owner": ["leader.lastname", "applicant.lastname"],
         "contactEmail": ["pi.email", "applicant.email"],
