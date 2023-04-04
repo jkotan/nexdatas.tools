@@ -203,6 +203,8 @@ class NXSFileParser(object):
         self.filters = []
         # (:obj:`bool`) oned value flag
         self.oned = False
+        # (:obj:`bool`) first last value flag
+        self.firstlast = False
 
     @classmethod
     def getpath(cls, path):
@@ -460,7 +462,8 @@ class NXSFileParser(object):
             if (node.name in self.valuestostore and node.is_valid) \
                or "shape" not in desc \
                or desc["shape"] in [None, [1], []] \
-               or (self.oned and len(desc["shape"]) == 1):
+               or ((self.oned or self.firstlast)
+                   and len(desc["shape"]) == 1):
                 if hasattr(node, "read"):
                     try:
                         vl = node.read()
@@ -479,7 +482,11 @@ class NXSFileParser(object):
                                     cont = False
                             except Exception:
                                 cont = False
-                        nd["value"] = vl
+                        if self.firstlast and len(desc["shape"]) == 1 \
+                           and hasattr(vl, "__len__") and len(vl) > 3:
+                            nd["value"] = [vl[0], vl[-1]]
+                        else:
+                            nd["value"] = vl
                         if self.emptyunits and "unit" not in nd.keys():
                             nd["unit"] = ""
                     except Exception:
@@ -561,6 +568,8 @@ class FIOFileParser(object):
         self.__root = root
         # (:obj:`bool`) oned value flag
         self.oned = False
+        # (:obj:`bool`) first last value flag
+        self.firstlast = False
 
     def _appendComments(self, lines, meta):
         """append comments
@@ -677,8 +686,11 @@ class FIOFileParser(object):
                         except Exception:
                             self.columns[wid][1].append(str(word))
         for wid, nmvl in self.columns.items():
-            data[nmvl[0]] = nmvl[1]
-
+            if self.firstlast \
+               and hasattr(nmvl[1], "__len__") and len(nmvl[1]) > 3:
+                data[nmvl[0]] = [nmvl[1][0], nmvl[1][-1]]
+            else:
+                data[nmvl[0]] = nmvl[1]
         if data:
             meta["data"] = data
 
@@ -706,5 +718,5 @@ class FIOFileParser(object):
                 self._appendComments(dcpmap["%c"], nd)
             if dcpmap["%p"]:
                 self._appendParameters(dcpmap["%p"], nd)
-            if dcpmap["%d"] and self.oned:
+            if dcpmap["%d"] and (self.oned or self.firstlast):
                 self._appendData(dcpmap["%d"], nd)

@@ -1,3 +1,7 @@
+2023-04-04 Jan Kotanski <jankotan@gmail.com>
+	* add firstlast option to nxsfileinfo metadata (#487)
+	* tagged as v3.46.0
+
 2023-03-27 Jan Kotanski <jankotan@gmail.com>
 	* set the SciCat PI as the DESY beamtime applicant (#484)
 	* tagged as v3.45.1
