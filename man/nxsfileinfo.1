@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSFILEINFO" "1" "Mar 13, 2023" "3.43" "NXSTools"
-.SH NAME
-nxsfileinfo \- show metadata of the NeXus file
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "NXSFILEINFO" "1" "Apr 04, 2023" "3.44" "NXSTools"
+.SH NAME
+nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
 .sp
 The nxsfileinfo program show metadata from nexus files
@@ -65,13 +65,13 @@ nxsfileinfo general <nexus_file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -105,28 +105,28 @@ Usage: nxsfileinfo field [options]  <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-c \ HEADERS\fP,\fB \ \-\-columns\fB= HEADERS
+.BI \-c \ HEADERS\fR,\fB \ \-\-columns\fB= HEADERS
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
-.BI \-f \ FILTERS\fP,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
+.BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
+full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
 .TP
-.BI \-v \ VALUES\fP,\fB \ \-\-values\fB= VALUES
+.BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
 .TP
-.B \-g\fP,\fB  \-\-geometry
+.B  \-g\fP,\fB  \-\-geometry
 show fields with geometry full_path filters, i.e. \fI:NXtransformations/\fP,*/depends_on. It works only when \-f is not defined
 .TP
-.B \-s\fP,\fB  \-\-source
+.B  \-s\fP,\fB  \-\-source
 show datasource parameters
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -162,81 +162,87 @@ Usage: nxsfileinfo metadata [options] <file_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-a \ ATTRS\fP,\fB \ \-\-attributes \ ATTRS
+.BI \-a \ ATTRS\fR,\fB \ \-\-attributes \ ATTRS
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
-.BI \-n \ NATTRS\fP,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
+.BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
+names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
 .TP
-.BI \-v \ VALUES\fP,\fB \ \-\-values \ VALUES
+.BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
 .TP
-.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
-.BI \-g \ GROUP_POSTFIX\fP,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: ‘Parameters’
+.BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
+postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
-.BI \-t \ ENTRYCLASSES\fP,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
+.BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
+names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
-.BI \-e \ ENTRYNAMES\fP,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
+.BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
+names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
-.B \-m\fP,\fB  \-\-raw\-metadata
+.B  \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
 .TP
-.B \-\-add\-empty\-units
+.B  \-\-add\-empty\-units
 add empty units for fields without units
 .TP
-.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
+.B  \-\-oned
+add 1d values to scientificMetadata
+.TP
+.B  \-\-first\-last
+add first and last values of 1d records to scientificMetadata
+.TP
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.B \-u\fP,\fB  \-\-pid\-with\-uuid
+.B  \-u\fP,\fB  \-\-pid\-with\-uuid
 generate pid with uuid
 .TP
-.B \-f\fP,\fB  \-\-pid\-with\-filename
+.B  \-f\fP,\fB  \-\-pid\-with\-filename
 generate pid with file name
 .TP
-.BI \-q \ TECHNIQUES\fP,\fB \ \-\-techniques \ TECHNIQUES
+.BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
-spaces).The default: ‘’
+spaces).The default: \(aq\(aq
 .TP
-.BI \-j \ SAMPLEID\fP,\fB \ \-\-sample\-id \ SAMPLEID
+.BI \-j \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sampleId
 .TP
-.B \-\-sample\-id\-from\-name
+.B  \-\-sample\-id\-from\-name
 get sampleId from the sample name
 .TP
-.BI \-y \ INSTRUMENTID\fP,\fB \ \-\-instrument\-id \ INSTRUMENTID
+.BI \-y \ INSTRUMENTID\fR,\fB \ \-\-instrument\-id \ INSTRUMENTID
 instrumentId
 .TP
-.B \-\-raw\-instrument\-id
+.B  \-\-raw\-instrument\-id
 leave raw instrument id
 .TP
-.BI \-b \ BEAMTIMEMETA\fP,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
+.BI \-b \ BEAMTIMEMETA\fR,\fB \ \-\-beamtime\-meta \ BEAMTIMEMETA
 beamtime metadata file
 .TP
-.BI \-s \ SCIENTIFICMETA\fP,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
+.BI \-s \ SCIENTIFICMETA\fR,\fB \ \-\-scientific\-meta \ SCIENTIFICMETA
 scientific metadata file
 .TP
-.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
 .BI \-\-copy\-map \ COPYMAP
@@ -246,21 +252,21 @@ or a text file list to re\-arrange metadata
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
 field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re\-arrange metadata. The default:
-‘scientificMetadata.nxsfileinfo_parameters.copymap.value’
+\(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE
-json or yaml file containing the copy map, see also –copy\-map
+json or yaml file containing the copy map, see also \-\-copy\-map
 .TP
-.BI \-f \ FILEFORMAT\fP,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by the file extension
+.BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
+input file format, e.g. \(aqnxs\(aq. Default is defined by the file extension
 .TP
-.B \-\-proposal\-as\-proposal
+.B  \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .UNINDENT
 .UNINDENT
@@ -298,36 +304,36 @@ Usage: nxsfileinfo origdatablock [options] <scan_name>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
 .TP
-.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .TP
-.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
-.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt
 .TP
-.BI \-s \ SKIP\fP,\fB \ \-\-skip \ SKIP
+.BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: ‘’. E.g.
-‘\fI\&.pyc,\fP~’
+without spaces). Default: \(aq\(aq. E.g.
+\(aq\fI\&.pyc,\fP~\(aq
 .TP
-.BI \-a \ ADD\fP,\fB \ \-\-add \ ADD
+.BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of filtes to be added (separated by commas
-without spaces). Default: ‘’. E.g.
-‘scan1.nxs,scan2.nxs’
+without spaces). Default: \(aq\(aq. E.g.
+\(aqscan1.nxs,scan2.nxs\(aq
 .TP
-.BI \-r \ RELPATH\fP,\fB \ \-\-relative\-path \ RELPATH
+.BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
 .TP
-.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .UNINDENT
 .UNINDENT
@@ -361,42 +367,42 @@ Usage: nxsfileinfo sample [options]
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-s \ SAMPLEID\fP,\fB \ \-\-sample\-id \ SAMPLEID
+.BI \-s \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sample id
 .TP
-.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+.BI \-b \ BEAMLINE\fR,\fB \ \-\-beamline \ BEAMLINE
 beamline
 .TP
-.BI \-d \ DESCRIPTION\fP,\fB \ \-\-description \ DESCRIPTION
+.BI \-d \ DESCRIPTION\fR,\fB \ \-\-description \ DESCRIPTION
 sample description
 .TP
-.BI \-r \ OWNER\fP,\fB \ \-\-owner \ OWNER
+.BI \-r \ OWNER\fR,\fB \ \-\-owner \ OWNER
 sample owner
 .TP
-.B \-p\fP,\fB  \-\-published
+.B  \-p\fP,\fB  \-\-published
 sample is published
 .TP
-.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-dmgt
 .TP
-.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is {be
 amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
-.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
-.BI \-m \ CHARACTERISTICSMETA\fP,\fB \ \-\-sample\-characteristics \ CHARACTERISTICSMETA
+.BI \-m \ CHARACTERISTICSMETA\fR,\fB \ \-\-sample\-characteristics \ CHARACTERISTICSMETA
 sample characteristics metadata file
 .TP
-.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .UNINDENT
 .UNINDENT
@@ -430,36 +436,36 @@ Usage: nxsfileinfo instrument [options]
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-p \ PID\fP,\fB \ \-\-pid \ PID
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 instrument pid
 .TP
-.BI \-n \ NAME\fP,\fB \ \-\-name \ NAME
+.BI \-n \ NAME\fR,\fB \ \-\-name \ NAME
 instrument name
 .TP
-.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+.BI \-b \ BEAMLINE\fR,\fB \ \-\-beamline \ BEAMLINE
 beamline
 .TP
-.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-dmgt
 .TP
-.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is {be
 amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
-.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
-.BI \-m \ CUSTOMMETA\fP,\fB \ \-\-custom\-metadata \ CUSTOMMETA
+.BI \-m \ CUSTOMMETA\fR,\fB \ \-\-custom\-metadata \ CUSTOMMETA
 instrument characteristics metadata file
 .TP
-.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .UNINDENT
 .UNINDENT
@@ -493,58 +499,58 @@ Usage: nxsfileinfo attachment [options] <image_file|scan_file>
 .B Options:
 .INDENT 7.0
 .TP
-.B \-h\fP,\fB  \-\-help
+.B  \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.BI \-a \ ATID\fP,\fB \ \-\-id \ ATID
+.BI \-a \ ATID\fR,\fB \ \-\-id \ ATID
 attachment id
 .TP
-.BI \-t \ CAPTION\fP,\fB \ \-\-caption \ CAPTION
+.BI \-t \ CAPTION\fR,\fB \ \-\-caption \ CAPTION
 caption text
 .TP
-.BI \-i \ BEAMTIMEID\fP,\fB \ \-\-beamtimeid \ BEAMTIMEID
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid \ BEAMTIMEID
 beamtime id
 .TP
-.BI \-b \ BEAMLINE\fP,\fB \ \-\-beamline \ BEAMLINE
+.BI \-b \ BEAMLINE\fR,\fB \ \-\-beamline \ BEAMLINE
 beamline
 .TP
-.BI \-r \ OWNER\fP,\fB \ \-\-owner \ OWNER
+.BI \-r \ OWNER\fR,\fB \ \-\-owner \ OWNER
 attachment owner
 .TP
-.BI \-w \ OWNERGROUP\fP,\fB \ \-\-owner\-group \ OWNERGROUP
+.BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-dmgt
 .TP
-.BI \-c \ ACCESSGROUPS\fP,\fB \ \-\-access\-groups \ ACCESSGROUPS
+.BI \-c \ ACCESSGROUPS\fR,\fB \ \-\-access\-groups \ ACCESSGROUPS
 access group names separated by commas. Default is {be
 amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
-.BI \-f \ FILEFORMAT\fP,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by
+.BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
+input file format, e.g. \(aqnxs\(aq. Default is defined by
 the file extension
 .TP
-.B \-\-h5py
+.B  \-\-h5py
 use h5py module as a nexus reader
 .TP
-.B \-\-h5cpp
+.B  \-\-h5cpp
 use h5cpp module as a nexus reader
 .TP
-.BI \-x \ CHMOD\fP,\fB \ \-\-chmod \ CHMOD
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
 json metadata file mod bits, e.g. 0o662
 .TP
-.BI \-s \ SIGNALS\fP,\fB \ \-\-signals \ SIGNALS
+.BI \-s \ SIGNALS\fR,\fB \ \-\-signals \ SIGNALS
 signals data name(s) separated by comma
 .TP
-.BI \-e \ AXES\fP,\fB \ \-\-axes \ AXES
+.BI \-e \ AXES\fR,\fB \ \-\-axes \ AXES
 axis/axes data name(s) separated by comma
 .TP
-.BI \-q \ SCANCMDAXES\fP,\fB \ \-\-scan\-command\-axes \ SCANCMDAXES
+.BI \-q \ SCANCMDAXES\fR,\fB \ \-\-scan\-command\-axes \ SCANCMDAXES
 a JSON dictionary with scan\-command axes to override,
 axis/axes data name(s) separated by comma for
 detectors and by semicolon for more plots. Default:
-{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
+{"hklscan":"h;k;l","qscan":"qz;qpar"}
 .TP
-.BI \-m \ FRAME\fP,\fB \ \-\-frame \ FRAME
+.BI \-m \ FRAME\fR,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
 .TP
 .BI \-\-signal\-label \ SLABEL
@@ -556,13 +562,13 @@ x\-axis label
 .BI \-\-ylabel \ YLABEL
 y\-axis label
 .TP
-.B \-u\fP,\fB  \-\-override
+.B  \-u\fP,\fB  \-\-override
 override NeXus entries by script parameters
 .TP
-.B \-\-parameters\-in\-caption
+.B  \-\-parameters\-in\-caption
 add plot paramters to the caption
 .TP
-.BI \-o \ OUTPUT\fP,\fB \ \-\-output \ OUTPUT
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
 .UNINDENT
 .UNINDENT

@@ -111,6 +111,8 @@ Options:
                         names of entry groups to be shown (separated by commas without spaces). If name is '' all groups are shown. The default: ''
    -m, --raw-metadata    do not store NXentry as scientificMetadata
    --add-empty-units     add empty units for fields without units
+   --oned                add 1d values to scientificMetadata
+   --first-last          add first and last values of 1d records to scientificMetadata
    -p PID, --pid PID
                         dataset pid
    -i BEAMTIMEID, --beamtimeid BEAMTIMEID
@@ -352,7 +354,6 @@ Example
 
 .. code:: bash
 
-	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at1.json thumbnail.png 
-	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json -s pilatus myscan_00123.nxs 
-	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json  myscan_00124.fio 
-
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at1.json thumbnail.png
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json -s pilatus myscan_00123.nxs
+	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json  myscan_00124.fio

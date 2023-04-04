@@ -1134,6 +1134,11 @@ class Metadata(Runner):
             default=False, dest="oned",
             help="add 1d values to scientificMetadata")
         self._parser.add_argument(
+            "--first-last", action="store_true",
+            default=False, dest="firstlast",
+            help="add first and last values of 1d records "
+            "to scientificMetadata")
+        self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
         self._parser.add_argument(
@@ -1363,6 +1368,8 @@ class Metadata(Runner):
                 nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
                     nxsparser.oned = options.oned
+                if hasattr(options, "firstlast"):
+                    nxsparser.firstlast = options.firstlast
                 nxsparser.parseMeta()
             elif options.fileformat in ['fio']:
                 nxsparser = FIOFileParser(root)
@@ -1371,6 +1378,8 @@ class Metadata(Runner):
                 # nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
                     nxsparser.oned = options.oned
+                if hasattr(options, "firstlast"):
+                    nxsparser.firstlast = options.firstlast
                 nxsparser.parseMeta()
 
         if nxsparser is None:
