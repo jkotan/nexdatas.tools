@@ -2555,6 +2555,170 @@ For more help:
         finally:
             os.remove(filename)
 
+    def test_metadata_postfix_firstlast(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        filename = "ttestfileinfo.nxs"
+        smpl = "water"
+
+        commands = [
+            ('nxsfileinfo metadata %s %s -m -g Group -v intimage '
+             '--first-last ' % (filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s -m --group-postfix Group '
+             '--first-last ' % (filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s --raw-metadata -g Group '
+             ' --first-last ' % (filename, self.flags)).split(),
+            ('nxsfileinfo metadata %s %s  --raw-metadata '
+             '--first-last --group-postfix Group' % (
+                 filename, self.flags)).split(),
+        ]
+
+        wrmodule = WRITERS[self.writer]
+        filewriter.writer = wrmodule
+
+        try:
+
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry12345", "NXentry")
+            ins = entry.create_group("instrument", "NXinstrument")
+            det = ins.create_group("detector", "NXdetector")
+            dt = entry.create_group("data", "NXdata")
+            sample = entry.create_group("sample", "NXsample")
+            sample.create_field("name", "string").write(smpl)
+            sample.create_field("depends_on", "string").write(
+                "transformations/phi")
+            trans = sample.create_group(
+                "transformations", "NXtransformations")
+            phi = trans.create_field("phi", "float64")
+            phi.write(0.5)
+            phi.attributes.create("units", "string").write("deg")
+            phi.attributes.create("type", "string").write("NX_FLOAT64")
+            phi.attributes.create("transformation_type", "string").write(
+                "rotation")
+            phi.attributes.create("depends_on", "string").write("z")
+            phi.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sphi">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m16" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            phi.attributes.create("vector", "int32", [3]).write(
+                [1, 0, 0])
+            phi.attributes.create("nexdatas_strategy", "string").write(
+                "FINAL")
+
+            sz = trans.create_field("z", "float32")
+            sz.write(0.5)
+            sz.attributes.create("units", "string").write("mm")
+            sz.attributes.create("type", "string").write("NX_FLOAT32")
+            sz.attributes.create("transformation_type", "string").write(
+                "translation")
+            sz.attributes.create("nexdatas_strategy", "string").write(
+                "INIT")
+            sz.attributes.create("nexdatas_source", "string").write(
+                '<datasource type="TANGO" name="sz">'
+                '<device member="attribute" hostname="haso0000" '
+                'group="__CLIENT__" name="p/motor/m15" port="10000">'
+                '</device>'
+                '<record name="Position"></record>'
+                '</datasource>')
+            sz.attributes.create("vector", "int32", [3]).write(
+                [0, 0, 1])
+
+            det.create_field("intimage", "uint32", [10], [10]).write(
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            filewriter.link(
+                "/entry12345/instrument/detector/intimage",
+                dt, "lkintimage")
+
+            nxsfile.close()
+
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                # print(vl)
+                dct = json.loads(vl)
+                res = {
+                    "entry12345Group": {
+                        "NX_class": "NXentry",
+                        "dataGroup": {
+                            "NX_class": "NXdata",
+                            "lkintimage": {
+                                'value': [1, 10],
+                                "shape": [10]
+                            }
+                        },
+                        "instrumentGroup": {
+                            "NX_class": "NXinstrument",
+                            "detectorGroup": {
+                                "NX_class": "NXdetector",
+                                "intimage": {
+                                    'value': [1, 10],
+                                    "shape": [10]
+                                }
+                            }
+                        },
+                        "sampleGroup": {
+                            "NX_class": "NXsample",
+                            "depends_on": {
+                                "value": "transformations/phi"
+                            },
+                            "name": {
+                                "value": "water"
+                            },
+                            "transformationsGroup": {
+                                "NX_class": "NXtransformations",
+                                "phi": {
+                                    "depends_on": "z",
+                                    "type": "NX_FLOAT64",
+                                    "source":
+                                    "haso0000:10000/p/motor/m16/Position",
+                                    "source_name": "sphi",
+                                    "source_type": "TANGO",
+                                    "strategy": "FINAL",
+                                    "transformation_type": "rotation",
+                                    "vector": [1, 0, 0],
+                                    "unit": "deg",
+                                    "value": 0.5
+                                },
+                                "z": {
+                                    "type": "NX_FLOAT32",
+                                    "source":
+                                    "haso0000:10000/p/motor/m15/Position",
+                                    "source_name": "sz",
+                                    "source_type": "TANGO",
+                                    "strategy": "INIT",
+                                    "transformation_type": "translation",
+                                    "vector": [0, 0, 1],
+                                    "unit": "mm",
+                                    "value": 0.5
+                                }
+                            }
+                        }
+                    }
+                }
+                self.myAssertDict(dct, res)
+        finally:
+            os.remove(filename)
+
     def test_metadata_attributes(self):
         """ test nxsconfig execute empty file
         """
@@ -4239,6 +4403,272 @@ For more help:
                                           3.3944602012634277,
                                           4.407033920288086,
                                           5.524206161499023,
+                                          6.656368255615234],
+                            'end_time': {
+                                'value': '2014-02-16T15:17:21+00:00',
+                                'unit': "",
+                            },
+                            'start_time': {
+                                'value': '2022-12-08T17:00:43.000000+0100',
+                                # 'value': 'Thu Dec  8 17:00:43 2022',
+                                'unit': ""
+                            },
+                            'user_comments': 'Awesome comment'},
+                        'sourceFolder':
+                        '/asap3/petra3/gpfs/p01/2020/data/12345678',
+                        'techniques': [],
+                        'type': 'raw',
+                        'updatedAt': '2020-01-20T00:10:00Z'
+                    }
+                    self.myAssertDict(
+                        dct, res,
+                        skip=["pid", 'scientificMetadata.start_time.value'])
+                    self.assertTrue(
+                        dct['scientificMetadata']['start_time']['value'].
+                        startswith('2022-12-08T17:00:43.000000')
+                    )
+                    if kk % 2:
+                        self.assertEqual(dct["pid"],
+                                         "16171271/%s" % fname)
+                    else:
+                        self.assertTrue(
+                            dct["pid"].startswith(
+                                "16171271/%s" % fname))
+            finally:
+                if os.path.isfile(cpfname):
+                    os.remove(cpfname)
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                if os.path.isfile(btfname):
+                    os.remove(btfname)
+                if os.path.isfile(smfname):
+                    os.remove(smfname)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
+
+    def test_metadata_beamtime_fio_firstlast(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        beamtimefile = '''{
+        "applicant": {
+          "email": "cute.cute@cute.com",
+          "institute": "Deutsches Elektronen-Synchrotron",
+          "lastname": "famous",
+          "userId": "987654321",
+          "username": "piquant"
+        },
+          "beamline": "p01",
+          "beamlineAlias": "p01",
+          "beamtimeId": "16171271",
+          "contact": "hilarious.hilarious@hilarious.com",
+          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "eventEnd": "2020-01-21T12:37:00Z",
+          "eventStart": "2020-01-20T01:05:00Z",
+          "facility": "PETRA III",
+          "generated": "2020-01-20T00:10:00Z",
+          "leader": {
+          "email": "feathered.feathered@feathered.com",
+          "institute": "debonair",
+          "lastname": "glossy",
+          "userId": "2879",
+          "username": "hairy"
+        },
+        "onlineAnalysis": {
+          "asapoBeamtimeTokenPath": "/shared/asapo_token",
+          "reservedNodes": [
+              "node1",
+              "node2",
+              "node2"
+          ],
+          "slurmReservation": "ponline",
+          "slurmPartition": "45473177",
+          "sshPrivateKeyPath": "shared/rsa-key.pem",
+          "sshPublicKeyPath": "shared/rsa-key.pub",
+          "userAccount": "bttest03"
+        },
+        "pi": {
+          "email": "robust.robust@robust.com",
+          "institute": "nondescript",
+          "lastname": "keen",
+          "userId": "3553",
+          "username": "military"
+        },
+        "proposalId": "65300407",
+        "proposalType": "C",
+        "title": "beautiful-cornflower-wallaby-of-agreement",
+        "unixId": "8362",
+        "users": {
+          "doorDb": [
+          "user1",
+          "user2",
+          "user3"
+          ],
+          "special": []
+        }
+        }
+        '''
+        btfname = '%s/beamtime-metadata-12345678.json' % (os.getcwd())
+        ofname = '%s/metadata-12345678.json' % (os.getcwd())
+
+        smfile = '''{
+          "user_comments": "Awesome comment",
+          "end_time": {"value":"2014-02-16T15:17:21+00:00"}
+        }
+        '''
+
+        cpfname = '%s/copymap-12345678.json' % (os.getcwd())
+
+        copymapfile = '''{
+        "scientificMetadata.data": null,
+        "scientificMetadata.parameters": null,
+            "scientificMetadata.hkl":
+        "scientificMetadata.parameters.hkl",
+        "scientificMetadata.timestamp":
+        "scientificMetadata.data.timestamp"
+        }
+        '''
+
+        smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
+
+        args = [
+            [
+                "mymeta2_00011.fio",
+                "0o666",
+                "0666",
+            ],
+            [
+                "mymeta2_00011.fio",
+                "0o662",
+                "0662",
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
+            chmod = arg[1]
+            chmod2 = arg[2]
+
+            shutil.copy("test/files/%s" % filename, filename)
+            commands = [
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                 ' --copy-map-file %s '
+                 ' --first-last '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod, cpfname)).split(),
+                ('nxsfileinfo metadata %s %s '
+                 ' --beamtime-meta %s '
+                 ' --scientific-meta %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 ' --copy-map-file %s '
+                 ' --first-last '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod, cpfname)).split(),
+                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                 ' --first-last '
+                 ' --copy-map-file %s '
+                 ' --pid-with-uuid'
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod, cpfname)).split(),
+                ('nxsfileinfo metadata %s %s '
+                 ' --first-last '
+                 ' --beamtime-meta %s '
+                 ' --scientific-meta %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 ' --copy-map-file %s '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod, cpfname)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+                if os.path.isfile(btfname):
+                    raise Exception("Test file %s exists" % btfname)
+                with open(cpfname, "w") as fl:
+                    fl.write(copymapfile)
+                with open(btfname, "w") as fl:
+                    fl.write(beamtimefile)
+                if os.path.isfile(smfname):
+                    raise Exception("Test file %s exists" % smfname)
+                with open(smfname, "w") as fl:
+                    fl.write(smfile)
+
+                for kk, cmd in enumerate(commands):
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual('', vl.strip())
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
+                    status = os.stat(ofname)
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
+                    # print(dct)
+                    res = {
+                        'accessGroups': [
+                            '16171271-dmgt',
+                            '16171271-clbt',
+                            '16171271-part',
+                            'p01dmgt',
+                            'p01staff'],
+                        'creationTime': '2014-02-16T15:17:21+00:00',
+                        'contactEmail': 'robust.robust@robust.com',
+                        'createdAt': '2020-01-20T00:10:00Z',
+                        'creationLocation': '/DESY/PETRA III/p01',
+                        'instrumentId': '/petra3/p01',
+                        'creationTime': '2014-02-16T15:17:21+00:00',
+                        'datasetName': 'mymeta2_00011',
+                        'description':
+                        'beautiful-cornflower-wallaby-of-agreement',
+                        'endTime': '2014-02-16T15:17:21+00:00',
+                        'isPublished': False,
+                        'owner': 'glossy',
+                        'ownerEmail': 'feathered.feathered@feathered.com',
+                        'ownerGroup': '16171271-dmgt',
+                        'pid': '16171271/mymeta2_00011/'
+                        '57f418a9-095b-442a-b512-1f9b2c65973c',
+                        'principalInvestigator': 'robust.robust@robust.com',
+                        'proposalId': '16171271',
+                        'scientificMetadata': {
+                            'DOOR_proposalId': '65300407',
+                            'ScanCommand': 'ascan exp_mot04 0.0 4.0 4 0.5',
+                            'beamtimeId': '16171271',
+                            'comments': {
+                                'line_1': 'ascan exp_mot04 0.0 4.0 4 0.5',
+                                'line_2':
+                                'user jkotan Acquisition started at '
+                                'Thu Dec  8 17:00:43 2022'
+                            },
+                            'hkl': [
+                                0.0031110747648095565,
+                                0.0024437328201669176,
+                                0.1910783136442638],
+                            'timestamp': [2.284174680709839,
                                           6.656368255615234],
                             'end_time': {
                                 'value': '2014-02-16T15:17:21+00:00',

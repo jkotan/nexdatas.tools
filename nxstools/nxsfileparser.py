@@ -482,8 +482,8 @@ class NXSFileParser(object):
                                     cont = False
                             except Exception:
                                 cont = False
-                        if self.firstlast \
-                           and hasattr(vl, "__len__") and len(vl) > 2:
+                        if self.firstlast and len(desc["shape"]) == 1 \
+                           and hasattr(vl, "__len__") and len(vl) > 3:
                             nd["value"] = [vl[0], vl[-1]]
                         else:
                             nd["value"] = vl
@@ -687,7 +687,7 @@ class FIOFileParser(object):
                             self.columns[wid][1].append(str(word))
         for wid, nmvl in self.columns.items():
             if self.firstlast \
-               and hasattr(nmvl[1], "__len__") and len(nmvl[1]) > 2:
+               and hasattr(nmvl[1], "__len__") and len(nmvl[1]) > 3:
                 data[nmvl[0]] = [nmvl[1][0], nmvl[1][-1]]
             else:
                 data[nmvl[0]] = nmvl[1]
