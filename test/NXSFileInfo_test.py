@@ -4652,7 +4652,7 @@ For more help:
                         'ownerGroup': '16171271-dmgt',
                         'pid': '16171271/mymeta2_00011/'
                         '57f418a9-095b-442a-b512-1f9b2c65973c',
-                        'principalInvestigator': 'robust.robust@robust.com',
+                        'principalInvestigator': 'cute.cute@cute.com',
                         'proposalId': '16171271',
                         'scientificMetadata': {
                             'DOOR_proposalId': '65300407',
