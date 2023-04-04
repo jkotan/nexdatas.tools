@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "Apr 04, 2023" "3.44" "NXSTools"
+.TH "NXSTOOLS" "1" "Apr 04, 2023" "3.46" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -1442,7 +1442,7 @@ first linked targets separated by comman
 .TP
 .BI \-z \ TRANSATTRS\fR,\fB \ \-\-transformation\-attributes \ TRANSATTRS
 a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
-{"rotation_z":"{"transformation_type":"rotation","vector":[0,\-1,0]}}
+{"rotation_z":{"transformation_type":"rotation","vector":[0,\-1,0]}}
 .TP
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
@@ -6058,7 +6058,7 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B btmdmap  =  {\(aqcontactEmail\(aq: \(aqpi.email\(aq, \(aqcreatedAt\(aq: \(aqgenerated\(aq, \(aqdescription\(aq: \(aqtitle\(aq, \(aqendTime\(aq: \(aqeventEnd\(aq, \(aqowner\(aq: \(aqleader.lastname\(aq, \(aqownerEmail\(aq: \(aqleader.email\(aq, \(aqprincipalInvestigator\(aq: \(aqpi.email\(aq, \(aqproposalId\(aq: \(aqbeamtimeId\(aq, \(aqsourceFolder\(aq: \(aqcorePath\(aq, \(aqupdatedAt\(aq: \(aqgenerated\(aq}
+.B btmdmap  =  {\(aqcontactEmail\(aq: [\(aqpi.email\(aq, \(aqapplicant.email\(aq], \(aqcreatedAt\(aq: [\(aqgenerated\(aq], \(aqdescription\(aq: [\(aqtitle\(aq], \(aqendTime\(aq: [\(aqeventEnd\(aq], \(aqowner\(aq: [\(aqleader.lastname\(aq, \(aqapplicant.lastname\(aq], \(aqownerEmail\(aq: [\(aqleader.email\(aq, \(aqapplicant.email\(aq], \(aqprincipalInvestigator\(aq: [\(aqapplicant.email\(aq], \(aqproposalId\(aq: [\(aqbeamtimeId\(aq], \(aqsourceFolder\(aq: [\(aqcorePath\(aq], \(aqupdatedAt\(aq: [\(aqgenerated\(aq]}
 .UNINDENT
 .INDENT 7.0
 .TP
