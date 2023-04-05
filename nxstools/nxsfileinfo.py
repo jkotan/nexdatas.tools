@@ -1140,10 +1140,11 @@ class Metadata(Runner):
             default=False, dest="oned",
             help="add 1d values to scientificMetadata")
         self._parser.add_argument(
-            "--first-last", action="store_true",
-            default=False, dest="firstlast",
+            "--max-oned-size",
+            default=1024, dest="maxonedsize",
             help="add first and last values of 1d records "
-            "to scientificMetadata")
+            "to scientificMetadata "
+            "if its size excides --max-oned-size value")
         self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
@@ -1241,6 +1242,16 @@ class Metadata(Runner):
         nxfl = None
         if not hasattr(options, "fileformat"):
             options.fileformat = ""
+        if hasattr(options, "maxonedsized"):
+            try:
+                options.maxonedsize = int(options.maxonedsize)
+            except Exception:
+                sys.stderr.write(
+                    "nxsfileinfo: Max 1d size '%s' cannot be "
+                    "converted to int\n" % options.maxonedsize)
+                sys.stderr.flush()
+                self._parser.print_help()
+                sys.exit(255)
         if options.args:
             wrmodule = WRITERS[writer.lower()]
             if not options.fileformat:
@@ -1374,8 +1385,8 @@ class Metadata(Runner):
                 nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
                     nxsparser.oned = options.oned
-                if hasattr(options, "firstlast"):
-                    nxsparser.firstlast = options.firstlast
+                if hasattr(options, "maxonedsize"):
+                    nxsparser.maxonedsize = int(options.maxonedsize)
                 nxsparser.parseMeta()
             elif options.fileformat in ['fio']:
                 nxsparser = FIOFileParser(root)
@@ -1384,8 +1395,8 @@ class Metadata(Runner):
                 # nxsparser.hiddenattrs = nattrs
                 if hasattr(options, "oned"):
                     nxsparser.oned = options.oned
-                if hasattr(options, "firstlast"):
-                    nxsparser.firstlast = options.firstlast
+                if hasattr(options, "maxonedsize"):
+                    nxsparser.maxonedsize = int(options.maxonedsize)
                 nxsparser.parseMeta()
 
         if nxsparser is None:
@@ -2271,6 +2282,7 @@ class Attachment(Runner):
                 elif options.fileformat in ['fio']:
                     nxsparser = FIOFileParser(root)
                     nxsparser.oned = True
+                    nxsparser.maxonedsize = -1
                     nxsparser.parseMeta()
                     data = None
                     sdata = None

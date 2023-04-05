@@ -1,5 +1,5 @@
-2023-04-04 Jan Kotanski <jankotan@gmail.com>
-	* add firstlast option to nxsfileinfo metadata (#487)
+2023-04-05 Jan Kotanski <jankotan@gmail.com>
+	* add maxonedsize option to nxsfileinfo metadata (#487, #489)
 	* tagged as v3.46.0
 
 2023-03-27 Jan Kotanski <jankotan@gmail.com>
