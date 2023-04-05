@@ -112,7 +112,8 @@ Options:
    -m, --raw-metadata    do not store NXentry as scientificMetadata
    --add-empty-units     add empty units for fields without units
    --oned                add 1d values to scientificMetadata
-   --first-last          add first and last values of 1d records to scientificMetadata
+   --max-oned-size MAXONEDSIZE
+                         add first and last values of 1d records to scientificMetadata if its size excides --max-oned-size value
    -p PID, --pid PID
                         dataset pid
    -i BEAMTIMEID, --beamtimeid BEAMTIMEID

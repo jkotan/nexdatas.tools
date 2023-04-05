@@ -2566,13 +2566,13 @@ For more help:
 
         commands = [
             ('nxsfileinfo metadata %s %s -m -g Group -v intimage '
-             '--first-last ' % (filename, self.flags)).split(),
+             '--max-oned-size 3 --oned ' % (filename, self.flags)).split(),
             ('nxsfileinfo metadata %s %s -m --group-postfix Group '
-             '--first-last ' % (filename, self.flags)).split(),
+             '--max-oned-size 3 --oned ' % (filename, self.flags)).split(),
             ('nxsfileinfo metadata %s %s --raw-metadata -g Group '
-             ' --first-last ' % (filename, self.flags)).split(),
+             ' --max-oned-size 3 --oned ' % (filename, self.flags)).split(),
             ('nxsfileinfo metadata %s %s  --raw-metadata '
-             '--first-last --group-postfix Group' % (
+             '--max-oned-size 3 --oned --group-postfix Group' % (
                  filename, self.flags)).split(),
         ]
 
@@ -4557,7 +4557,7 @@ For more help:
             commands = [
                 ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
                  ' --copy-map-file %s '
-                 ' --first-last '
+                 ' --max-oned-size 3 --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
                 ('nxsfileinfo metadata %s %s '
@@ -4566,17 +4566,17 @@ For more help:
                  ' --output %s '
                  ' --chmod %s '
                  ' --copy-map-file %s '
-                 ' --first-last '
+                 ' --max-oned-size 3 --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
                 ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
-                 ' --first-last '
+                 ' --max-oned-size 3 --oned '
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
                 ('nxsfileinfo metadata %s %s '
-                 ' --first-last '
+                 ' --max-oned-size 3 --oned '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
