@@ -687,7 +687,7 @@ class FIOFileParser(object):
                         except Exception:
                             self.columns[wid][1].append(str(word))
         for wid, nmvl in self.columns.items():
-            if self.maxonedsize >=0 \
+            if self.maxonedsize >= 0 \
                and hasattr(nmvl[1], "__len__") and \
                len(nmvl[1]) > self.maxonedsize:
                 data[nmvl[0]] = [nmvl[1][0], nmvl[1][-1]]

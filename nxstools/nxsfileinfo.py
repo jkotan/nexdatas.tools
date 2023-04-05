@@ -1244,7 +1244,7 @@ class Metadata(Runner):
             options.fileformat = ""
         if hasattr(options, "maxonedsized"):
             try:
-                nxsparser.maxonedsize = int(options.maxonedsize)
+                options.maxonedsize = int(options.maxonedsize)
             except Exception:
                 sys.stderr.write(
                     "nxsfileinfo: Max 1d size '%s' cannot be "
