@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.45.1 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.46.0 documentation</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.45</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.46</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1319,6 +1319,12 @@
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;oned&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add 1d values to scientificMetadata&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--max-oned-size&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;maxonedsize&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add first and last values of 1d records &quot;</span>
+            <span class="s2">&quot;to scientificMetadata &quot;</span>
+            <span class="s2">&quot;if its size excides --max-oned-size value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--pid&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;pid&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;dataset pid&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1415,6 +1421,16 @@
         <span class="n">nxfl</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;fileformat&quot;</span><span class="p">):</span>
             <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;maxonedsized&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">maxonedsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">maxonedsize</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;nxsfileinfo: Max 1d size &#39;</span><span class="si">%s</span><span class="s2">&#39; cannot be &quot;</span>
+                    <span class="s2">&quot;converted to int</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">maxonedsize</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="n">wrmodule</span> <span class="o">=</span> <span class="n">WRITERS</span><span class="p">[</span><span class="n">writer</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span><span class="p">:</span>
@@ -1548,6 +1564,8 @@
                 <span class="n">nxsparser</span><span class="o">.</span><span class="n">hiddenattrs</span> <span class="o">=</span> <span class="n">nattrs</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;oned&quot;</span><span class="p">):</span>
                     <span class="n">nxsparser</span><span class="o">.</span><span class="n">oned</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">oned</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;maxonedsize&quot;</span><span class="p">):</span>
+                    <span class="n">nxsparser</span><span class="o">.</span><span class="n">maxonedsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">maxonedsize</span><span class="p">)</span>
                 <span class="n">nxsparser</span><span class="o">.</span><span class="n">parseMeta</span><span class="p">()</span>
             <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;fio&#39;</span><span class="p">]:</span>
                 <span class="n">nxsparser</span> <span class="o">=</span> <span class="n">FIOFileParser</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
@@ -1556,6 +1574,8 @@
                 <span class="c1"># nxsparser.hiddenattrs = nattrs</span>
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;oned&quot;</span><span class="p">):</span>
                     <span class="n">nxsparser</span><span class="o">.</span><span class="n">oned</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">oned</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;maxonedsize&quot;</span><span class="p">):</span>
+                    <span class="n">nxsparser</span><span class="o">.</span><span class="n">maxonedsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">maxonedsize</span><span class="p">)</span>
                 <span class="n">nxsparser</span><span class="o">.</span><span class="n">parseMeta</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">nxsparser</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2441,6 +2461,7 @@
                 <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;fio&#39;</span><span class="p">]:</span>
                     <span class="n">nxsparser</span> <span class="o">=</span> <span class="n">FIOFileParser</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
                     <span class="n">nxsparser</span><span class="o">.</span><span class="n">oned</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">nxsparser</span><span class="o">.</span><span class="n">maxonedsize</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
                     <span class="n">nxsparser</span><span class="o">.</span><span class="n">parseMeta</span><span class="p">()</span>
                     <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">sdata</span> <span class="o">=</span> <span class="kc">None</span>
