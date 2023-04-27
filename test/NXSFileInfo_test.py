@@ -378,9 +378,17 @@ For more help:
                     'Treating the overline as ordinary text '
                     'because it\'s so short.</paragraph></system_message>')
                 self.assertEqual(len(section[1][2]), 1)
-                self.assertEqual(
-                    str(section[1][2]),
-                    '<section ids="id1" names="/"><title>/</title></section>')
+                try:
+                    self.assertEqual(
+                        str(section[1][2]),
+                        '<section ids="id1" '
+                        'names="/"><title>/</title></section>')
+                except Exception:
+                    self.assertEqual(
+                        str(section[1][2]),
+                        '<section ids="section-1" '
+                        'names="/"><title>/</title></section>')
+
         finally:
             os.remove(filename)
 
