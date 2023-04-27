@@ -86,6 +86,14 @@ def myinput(w, text):
     # myio.close()
 
 
+def get_default_settings():
+    if hasattr(docutils.frontend, 'get_default_settings'):
+        return docutils.frontend.get_default_settings(
+            docutils.parsers.rst.Parser)
+    return docutils.frontend.OptionParser(
+        components=(docutils.parsers.rst.Parser,)).get_default_values()
+
+
 # test fixture
 class NXSFileInfoTest(unittest.TestCase):
 
@@ -352,9 +360,7 @@ For more help:
                     vl)
 
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -434,9 +440,7 @@ For more help:
                 self.assertEqual('', er)
 
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -498,9 +502,7 @@ For more help:
                     'nxsfileinfo: start time cannot be found\n'
                     'nxsfileinfo: end time cannot be found\n', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -617,9 +619,7 @@ For more help:
 
                     self.assertEqual('', er)
                     parser = docutils.parsers.rst.Parser()
-                    components = (docutils.parsers.rst.Parser,)
-                    settings = docutils.frontend.OptionParser(
-                        components=components).get_default_values()
+                    settings = get_default_settings()
                     document = docutils.utils.new_document(
                         '<rst-doc>', settings=settings)
                     parser.parse(vl, document)
@@ -819,9 +819,7 @@ For more help:
 
                     self.assertEqual('', er)
                     parser = docutils.parsers.rst.Parser()
-                    components = (docutils.parsers.rst.Parser,)
-                    settings = docutils.frontend.OptionParser(
-                        components=components).get_default_values()
+                    settings = get_default_settings()
                     document = docutils.utils.new_document(
                         '<rst-doc>', settings=settings)
                     parser.parse(vl, document)
@@ -1021,9 +1019,7 @@ For more help:
 
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -1250,9 +1246,7 @@ For more help:
 
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -1422,9 +1416,7 @@ For more help:
                 er = mystderr.getvalue()
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -1577,9 +1569,7 @@ For more help:
 
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -1726,9 +1716,7 @@ For more help:
 
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
@@ -1943,9 +1931,7 @@ For more help:
 
                 self.assertEqual('', er)
                 parser = docutils.parsers.rst.Parser()
-                components = (docutils.parsers.rst.Parser,)
-                settings = docutils.frontend.OptionParser(
-                    components=components).get_default_values()
+                settings = get_default_settings()
                 document = docutils.utils.new_document(
                     '<rst-doc>', settings=settings)
                 parser.parse(vl, document)
