@@ -40,7 +40,6 @@ pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 install_requires = [
     'argcomplete',
-    'h5py',
     'pytz',
     'numpy>1.6.0',
     'lxml',
@@ -50,6 +49,7 @@ install_requires = [
     # 'matplotlib',
     # 'pytango',
     # 'pninexus',
+    # 'h5py',
 ]
 
 
