@@ -585,7 +585,7 @@ class Creator(object):
                 else:
                     NLink(data, fname, npath)
         if depends:
-            deps = [df for df in depends.split(",") if df]
+            deps = [dp for dp in depends.split(",") if dp]
             if deps:
                 df.setDependencies(deps, entry)
 
