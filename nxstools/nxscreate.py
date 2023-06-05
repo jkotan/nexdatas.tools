@@ -1150,6 +1150,11 @@ class Comp(Runner):
             help="device name without first '0'")
 
         parser.add_argument(
+            "-e", "--depends",
+            help="list of component dependencies separated by ','",
+            dest="depends", default="")
+
+        parser.add_argument(
             'args', metavar='component_name',
             type=str, nargs='*',
             help='component names to be created')

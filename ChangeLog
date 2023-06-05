@@ -1,3 +1,7 @@
+2023-06-05 Jan Kotanski <jankotan@gmail.com>
+	* add --depends for nxscreate comp (#495)
+	* tagged as v3.47.0
+
 2023-04-05 Jan Kotanski <jankotan@gmail.com>
 	* add maxonedsize option to nxsfileinfo metadata (#487, #489)
 	* tagged as v3.46.0

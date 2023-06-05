@@ -752,6 +752,17 @@ class XMLFile(object):
             xmls = "<?xml version='1.0' encoding='utf8'?>\n" + xmls
         return xmls
 
+    def setDependencies(self, components):
+        """ sets tag content
+
+        :param components: component dependencies
+        :type components: :obj:`list` <:obj:`str`>
+        """
+        text = "\n"
+        for cp in components:
+            text += "$components.%s\n" % cp
+        self.elem.text = text
+
     def dump(self):
         """ dumps XML structure into the XML file
 
