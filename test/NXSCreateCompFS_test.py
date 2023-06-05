@@ -287,6 +287,67 @@ class NXSCreateCompFSTest(unittest.TestCase):
                 if self.cpexists(cp):
                     self.deletecp(cp)
 
+    def test_comp_simple_depends(self):
+        """ test nxsccreate comp file system
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        args = [
+            [
+                ('nxscreate comp starttimetest -e lmbd %s'
+                 % self.flags).split(),
+                'starttimetest',
+                '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                '<definition>'
+                '<group name="$var.entryname#\'scan\'$var.serialno" '
+                'type="NXentry">'
+                '<group name="instrument" type="NXinstrument">'
+                '<group name="collection" type="NXcollection">'
+                '<field name="starttimetest" type="NX_FLOAT">'
+                '$datasources.starttimetest<strategy mode="STEP"/>'
+                '</field></group></group></group>\n'
+                '$components.lmbd\n'
+                '</definition>\n'
+            ],
+            [
+                ('nxscreate comp endtimetest %s --depends exp_c01,exp_c02'
+                 % self.flags).split(),
+                'endtimetest',
+                '<?xml version=\'1.0\' encoding=\'utf8\'?>\n'
+                '<definition>'
+                '<group name="$var.entryname#\'scan\'$var.serialno" '
+                'type="NXentry">'
+                '<group name="instrument" type="NXinstrument">'
+                '<group name="collection" type="NXcollection">'
+                '<field name="endtimetest" type="NX_FLOAT">'
+                '$datasources.endtimetest<strategy mode="STEP"/>'
+                '</field></group></group></group>\n'
+                '$components.exp_c01\n'
+                '$components.exp_c02\n'
+                '</definition>\n'
+            ],
+        ]
+
+        totest = []
+        try:
+            for arg in args:
+                if not self.cpexists(arg[1]):
+                    totest.append(arg[1])
+
+                    vl, er = self.runtest(arg[0])
+
+                    self.assertEqual('', er)
+                    self.assertTrue(vl)
+                    xml = self.getcp(arg[1])
+                    self.assertEqual(arg[2], xml)
+
+                    self.deletecp(arg[1])
+        finally:
+            for cp in totest:
+                if self.cpexists(cp):
+                    self.deletecp(cp)
+
     def test_comp_first_last(self):
         """ test nxsccreate comp file system
         """

@@ -587,7 +587,7 @@ class Creator(object):
         if depends:
             deps = [df for df in depends.split(",") if df]
             if deps:
-                df.setDependencies(deps)
+                df.setDependencies(deps, entry)
 
     @classmethod
     def _createComponent(cls, name, directory, fileprefix, nexuspath,
