@@ -530,7 +530,8 @@ class Creator(object):
 
     @classmethod
     def __createTree(cls, df, nexuspath, name, nexusType,
-                     strategy, units, link, chunk, canfail=None):
+                     strategy, units, link, chunk, canfail=None,
+                     depends=None):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -551,6 +552,8 @@ class Creator(object):
         :type chunk: :obj:`str`
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
+        :param depends: a list of component dependencies separated by ','
+        :type depends: :obj:`str`
         """
 
         pathlist = cls.__patheval(nexuspath)
@@ -581,11 +584,15 @@ class Creator(object):
                     NLink(data, name, npath)
                 else:
                     NLink(data, fname, npath)
+        if depends:
+            deps = [dp for dp in depends.split(",") if dp]
+            if deps:
+                df.setDependencies(deps, entry)
 
     @classmethod
     def _createComponent(cls, name, directory, fileprefix, nexuspath,
                          strategy, nexusType, units, links, server, chunk,
-                         dsname, canfail=None):
+                         dsname, canfail=None, depends=None):
         """ creates component file
 
         :param name: component name
@@ -612,12 +619,14 @@ class Creator(object):
         :type dsname: :obj:`str`
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
+        :param depends: a list of component dependencies separated by ','
+        :type depends: :obj:`str`
         """
         defpath = "/$var.entryname#'scan'$var.serialno:NXentry/instrument" \
                   + "/collection/%s" % (dsname or name)
         df = XMLFile("%s/%s%s.xml" % (directory, fileprefix, name))
         cls.__createTree(df, nexuspath or defpath, dsname or name, nexusType,
-                         strategy, units, links, chunk, canfail)
+                         strategy, units, links, chunk, canfail, depends)
 
         xml = df.prettyPrint()
         if server:
@@ -766,7 +775,8 @@ class ComponentCreator(Creator):
                     self.options.sourcelinks),
                 self.options.server if self.options.database else None,
                 self.options.chunk, dsname,
-                self.options.canfail
+                self.options.canfail,
+                self.options.depends
             )
 
 

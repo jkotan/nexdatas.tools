@@ -752,6 +752,28 @@ class XMLFile(object):
             xmls = "<?xml version='1.0' encoding='utf8'?>\n" + xmls
         return xmls
 
+    def setDependencies(self, components, entry=None):
+        """ sets tag content
+
+        :param components: component dependencies
+        :type components: :obj:`list` <:obj:`str`>
+        :param entry: entry node
+        :type entry: :class:`lxml.etree.Element`
+        """
+        text = "\n"
+        for cp in components:
+            text += "$components.%s\n" % cp
+        if entry is not None:
+            if entry.elem.tail is not None:
+                entry.elem.tail += text
+            else:
+                entry.elem.tail = text
+        else:
+            if self.elem.text:
+                self.elem.text += text
+            else:
+                self.elem.text = text
+
     def dump(self):
         """ dumps XML structure into the XML file
 
