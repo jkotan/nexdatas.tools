@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxscreate &#8212; NXSTools 3.46.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nxscreate &#8212; NXSTools 3.47.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nxsdata" href="nxsdata.html" />
@@ -24,6 +19,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
   </head><body>
 
@@ -38,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.46</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.47</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -241,7 +240,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="nxscreate">
 <h1>nxscreate<a class="headerlink" href="#nxscreate" title="Permalink to this headline">¶</a></h1>
@@ -251,7 +250,7 @@
 </div>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span>  <span class="o">&lt;</span><span class="n">command</span><span class="o">&gt;</span> <span class="p">[</span> <span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span><span class="p">]</span>  <span class="p">[</span><span class="o">&lt;</span><span class="n">arg1</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">arg2</span><span class="o">&gt;</span>  <span class="o">...</span><span class="p">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate  &lt;command&gt; <span class="o">[</span> &lt;options&gt;<span class="o">]</span>  <span class="o">[</span>&lt;arg1&gt; <span class="o">[</span>&lt;arg2&gt;  ...<span class="o">]]</span>
 </pre></div>
 </div>
 <p>The following commands are available: clientds, tangods, deviceds, onlineds, onlinecp, poolds, stdcomp, comp, secopcp, compare.</p>
@@ -261,74 +260,60 @@
 <p>It creates a set of CLIENT datasources.</p>
 <div class="section" id="id1">
 <h3>Synopsis<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">clientds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span><span class="p">]</span> <span class="p">[</span><span class="n">name2</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate clientds <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>name1<span class="o">]</span> <span class="o">[</span>name2<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device prefix, i.e. exp_c (mandatory w/o &lt;name1&gt;)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>first index (mandatory w/o &lt;name1&gt;)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>last index (mandatory w/o &lt;name1&gt;)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing datasources</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output datasource directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>DSOURCE</var></span>, <span class="option">--datasource-prefix=<var>DSOURCE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store datasources in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device name without first ‘0’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></dt>
+<dd><p>device prefix, i.e. exp_c (mandatory w/o &lt;name1&gt;)</p>
+</dd>
+<dt><kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></dt>
+<dd><p>first index (mandatory w/o &lt;name1&gt;)</p>
+</dd>
+<dt><kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></dt>
+<dd><p>last index (mandatory w/o &lt;name1&gt;)</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing datasources</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output datasource directory</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-s <var>DSOURCE</var></span>, <span class="option">--datasource-prefix=<var>DSOURCE</var></span></kbd></dt>
+<dd><p>datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store datasources in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></dt>
+<dd><p>device name without first ‘0’</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="example">
 <h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">clientds</span> <span class="n">starttime</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="n">title</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span>
-<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="o">-</span><span class="n">v</span> <span class="n">exp_c</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l4</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">clientds</span> <span class="o">-</span><span class="n">v</span> <span class="n">hasppXX</span><span class="p">:</span><span class="mi">10000</span><span class="o">/</span><span class="n">expchan</span><span class="o">/</span><span class="n">vfcadc_exp</span><span class="o">/</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l8</span>  <span class="o">-</span><span class="n">m</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_vfc</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate clientds starttime -b
+nxscreate clientds title -d /home/user/xmldir
+nxscreate clientds -v exp_c -f1 -l4 -b
+nxscreate clientds -v hasppXX:10000/expchan/vfcadc_exp/ -f1 -l8  -m -b -s exp_vfc
 </pre></div>
 </div>
 </div>
@@ -338,95 +323,77 @@
 <p>It creates a set of TANGO datasources.</p>
 <div class="section" id="id2">
 <h3>Synopsis<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">tangods</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate tangods <span class="o">[</span>options<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
-<li>default &lt;datasource&gt; is ‘exp_mot’</li>
-<li>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
+<li><p>default &lt;datasource&gt; is ‘exp_mot’</p></li>
+<li><p>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device prefix, i.e. exp_c (mandatory)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>first index</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>last index</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-a <var>ATTRIBUTE</var></span>, <span class="option">--attribute=<var>ATTRIBUTE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango attribute name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datasource-prefix (useful for avoiding duplicated
-datasource names)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing datasources</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output datasource directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host port</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store datasources in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-g <var>GROUP</var></span>, <span class="option">--group=<var>GROUP</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device group name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>ELEMENTTYPE</var></span>, <span class="option">--elementtype=<var>ELEMENTTYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>element type, i.e. attribute, property or command</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></dt>
+<dd><p>device prefix, i.e. exp_c (mandatory)</p>
+</dd>
+<dt><kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></dt>
+<dd><p>first index</p>
+</dd>
+<dt><kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></dt>
+<dd><p>last index</p>
+</dd>
+<dt><kbd><span class="option">-a <var>ATTRIBUTE</var></span>, <span class="option">--attribute=<var>ATTRIBUTE</var></span></kbd></dt>
+<dd><p>tango attribute name</p>
+</dd>
+<dt><kbd><span class="option">-s <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></dt>
+<dd><p>datasource-prefix (useful for avoiding duplicated
+datasource names)</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing datasources</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output datasource directory</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></dt>
+<dd><p>tango host name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></dt>
+<dd><p>tango host port</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store datasources in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-g <var>GROUP</var></span>, <span class="option">--group=<var>GROUP</var></span></kbd></dt>
+<dd><p>device group name</p>
+</dd>
+<dt><kbd><span class="option">-e <var>ELEMENTTYPE</var></span>, <span class="option">--elementtype=<var>ELEMENTTYPE</var></span></kbd></dt>
+<dd><p>element type, i.e. attribute, property or command</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id3">
 <h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l2</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span>
-<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l32</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p02</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">eh1a</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l32</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p01</span><span class="o">/</span><span class="n">motor</span><span class="o">/</span><span class="n">oh1</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">exp_mot</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l8</span>  <span class="o">-</span><span class="n">v</span> <span class="n">pXX</span><span class="o">/</span><span class="n">slt</span><span class="o">/</span><span class="n">exp</span><span class="o">.</span> <span class="o">-</span><span class="n">s</span> <span class="n">slt_exp_</span> <span class="o">-</span><span class="n">u</span> <span class="n">hasppXX</span><span class="o">.</span><span class="n">desy</span><span class="o">.</span><span class="n">de</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">tangods</span> <span class="o">-</span><span class="n">v</span> <span class="n">petra</span><span class="o">/</span><span class="nb">globals</span><span class="o">/</span><span class="n">keyword</span> <span class="o">-</span><span class="n">s</span> <span class="n">source_current</span> <span class="o">-</span><span class="n">u</span> <span class="n">haso228</span> <span class="o">-</span><span class="n">t</span> <span class="mi">10000</span> \
-                  <span class="o">-</span><span class="n">a</span> <span class="n">BeamCurrent</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">r</span> <span class="n">p09</span><span class="o">/</span><span class="n">nxsconfigserver</span><span class="o">/</span><span class="n">haso228</span> <span class="o">-</span><span class="n">o</span> <span class="o">-</span><span class="n">g</span> <span class="n">__CLIENT__</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate tangods -f1 -l2  -v p09/motor/exp. -s exp_mot
+nxscreate tangods -f1 -l32  -v p02/motor/eh1a. -s exp_mot -b
+nxscreate tangods -f1 -l32  -v p01/motor/oh1. -s exp_mot -b
+nxscreate tangods -f1 -l8  -v pXX/slt/exp. -s slt_exp_ -u hasppXX.desy.de -b
+nxscreate tangods -v petra/globals/keyword -s source_current -u haso228 -t <span class="m">10000</span> <span class="se">\</span>
+                  -a BeamCurrent -b -r p09/nxsconfigserver/haso228 -o -g __CLIENT__
 </pre></div>
 </div>
 </div>
@@ -436,72 +403,60 @@ datasource names)</td></tr>
 <p>It creates a set of TANGO datasources for all device attributes.</p>
 <div class="section" id="id4">
 <h3>Synopsis<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">deviceds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">dv_attr1</span> <span class="p">[</span><span class="n">dv_attr2</span> <span class="p">[</span><span class="n">dv_attr3</span> <span class="o">...</span><span class="p">]]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate deviceds <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>dv_attr1 <span class="o">[</span>dv_attr2 <span class="o">[</span>dv_attr3 ...<span class="o">]]]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>without &lt;dv_attr1&gt;: datasources for all attributes are created</li>
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
-<li>default &lt;datasource&gt; is ‘exp_mot’</li>
-<li>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</li>
+<li><p>without &lt;dv_attr1&gt;: datasources for all attributes are created</p></li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
+<li><p>default &lt;datasource&gt; is ‘exp_mot’</p></li>
+<li><p>default &lt;host&gt;, &lt;port&gt; are taken from &lt;server&gt;</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device=<var>DEVICE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device, i.e. p09/pilatus300k/01 (mandatory)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datasource-prefix</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output datasource directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host port</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store datasources in Configuration Server database</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--no-group</span></kbd></td>
-<td>don’t create common group with a name of datasource
-prefix</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device=<var>DEVICE</var></span></kbd></dt>
+<dd><p>device, i.e. p09/pilatus300k/01 (mandatory)</p>
+</dd>
+<dt><kbd><span class="option">-o <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix=<var>DATASOURCE</var></span></kbd></dt>
+<dd><p>datasource-prefix</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output datasource directory</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-s <var>HOST</var></span>, <span class="option">--host=<var>HOST</var></span></kbd></dt>
+<dd><p>tango host name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port=<var>PORT</var></span></kbd></dt>
+<dd><p>tango host port</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store datasources in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--no-group</span></kbd></dt>
+<dd><p>don’t create common group with a name of datasource
+prefix</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id5">
 <h3>Example<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">pilatus</span><span class="o">/</span><span class="n">haso228k</span>
-<span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">lambda2m</span><span class="o">/</span><span class="n">haso228k</span>  <span class="o">-</span><span class="n">s</span> <span class="n">haslambda</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">deviceds</span>  <span class="o">-</span><span class="n">v</span> <span class="n">p09</span><span class="o">/</span><span class="n">pilatus300k</span><span class="o">/</span><span class="n">haso228k</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">o</span> <span class="n">pilatus300k_</span> <span class="n">RoI</span> <span class="n">Energy</span> <span class="n">ExposureTime</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate deviceds  -v p09/pilatus/haso228k
+nxscreate deviceds  -v p09/lambda2m/haso228k  -s haslambda -b
+nxscreate deviceds  -v p09/pilatus300k/haso228k -b -o pilatus300k_ RoI Energy ExposureTime
 </pre></div>
 </div>
 </div>
@@ -511,70 +466,59 @@ prefix</td></tr>
 <p>It creates a set of motor datasources from an online xml file.</p>
 <div class="section" id="id6">
 <h3>Synopsis<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">inputFile</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlineds <span class="o">[</span>options<span class="o">]</span> inputFile
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>with -d &lt;directory&gt;: datasources are created on the local filesystem</li>
-<li>without -b or -d &lt;directory&gt;: run in the test mode</li>
-<li>default &lt;inputFile&gt; is ‘/online_dir/online.xml’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>with -d &lt;directory&gt;: datasources are created on the local filesystem</p></li>
+<li><p>without -b or -d &lt;directory&gt;: run in the test mode</p></li>
+<li><p>default &lt;inputFile&gt; is ‘/online_dir/online.xml’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
 </ul>
 <p><cite>onlineds</cite> overwrites existing datasources</p>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t</span>, <span class="option">--noclientlike</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>set motor tango datasources to be non __CLIENT__ like</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output directory where datasources will be saved</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>external configuration server</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>xml template package</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--verbose</span></kbd></td>
-<td>printout verbose mode</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store components in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-t</span>, <span class="option">--noclientlike</span></kbd></dt>
+<dd><p>set motor tango datasources to be non __CLIENT__ like</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output directory where datasources will be saved</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></dt>
+<dd><p>external configuration server</p>
+</dd>
+<dt><kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></dt>
+<dd><p>xml template package</p>
+</dd>
+<dt><kbd><span class="option">--verbose</span></kbd></dt>
+<dd><p>printout verbose mode</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id7">
 <h3>Example<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">t</span>
-<span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span>
-<span class="n">nxscreate</span> <span class="n">onlineds</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlineds -b
+nxscreate onlineds -b -t
+nxscreate onlineds -d /home/user/xmldir
+nxscreate onlineds
 </pre></div>
 </div>
 </div>
@@ -584,66 +528,56 @@ prefix</td></tr>
 <p>It creates a set of motor datasources from a sardana pool device channels.</p>
 <div class="section" id="id8">
 <h3>Synopsis<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">channel</span> <span class="p">[</span><span class="n">channel</span><span class="p">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlineds <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>channel <span class="o">[</span>channel<span class="o">]]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>with -d &lt;directory&gt;: datasources are created on the local filesystem</li>
-<li>without -b or -d &lt;directory&gt;: run in the test mode</li>
-<li>default &lt;channel&gt; is ‘ALL’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
-<li>default &lt;pool&gt; is taken from Tango DB</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>with -d &lt;directory&gt;: datasources are created on the local filesystem</p></li>
+<li><p>without -b or -d &lt;directory&gt;: run in the test mode</p></li>
+<li><p>default &lt;channel&gt; is ‘ALL’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
+<li><p>default &lt;pool&gt; is taken from Tango DB</p></li>
 </ul>
 <p><cite>poolds</cite> overwrites existing datasources</p>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t</span>, <span class="option">--noclientlike</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>set motor tango datasources to be non __CLIENT__ like</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output directory where datasources will be saved</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>POOL</var></span>, <span class="option">--pool=<var>POOL</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>sardana pool device name</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store components in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-t</span>, <span class="option">--noclientlike</span></kbd></dt>
+<dd><p>set motor tango datasources to be non __CLIENT__ like</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output directory where datasources will be saved</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-p <var>POOL</var></span>, <span class="option">--pool=<var>POOL</var></span></kbd></dt>
+<dd><p>sardana pool device name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id9">
 <h3>Example<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">t</span>
-<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">s</span> <span class="n">p09</span><span class="o">/</span><span class="n">pool</span><span class="o">/</span><span class="n">haso228</span>
-<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="n">Motor</span> <span class="n">CTExpChannel</span>
-<span class="n">nxscreate</span> <span class="n">poolds</span> <span class="o">-</span><span class="n">b</span> <span class="n">mot01</span> <span class="n">mot03</span>
-<span class="n">nxscreate</span> <span class="n">poolds</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate poolds -b
+nxscreate poolds -b -t
+nxscreate poolds -d -s p09/pool/haso228
+nxscreate poolds -b Motor CTExpChannel
+nxscreate poolds -b mot01 mot03
+nxscreate poolds
 </pre></div>
 </div>
 </div>
@@ -654,98 +588,80 @@ prefix</td></tr>
 and its set of datasources.</p>
 <div class="section" id="id10">
 <h3>Synopsis<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">inputFile</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlinecp <span class="o">[</span>options<span class="o">]</span> inputFile
 </pre></div>
 </div>
 <ul class="simple">
-<li>without ‘-c &lt;component&gt;’: show a list of possible components</li>
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>default &lt;inputFile&gt; is ‘/online_dir/online.xml’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
+<li><p>without ‘-c &lt;component&gt;’: show a list of possible components</p></li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>default &lt;inputFile&gt; is ‘/online_dir/online.xml’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component=<var>COMPONENT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>component namerelated to the device name from
-&lt;inputFile&gt;</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>CPTYPE</var></span>, <span class="option">--type <var>CPTYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>component type</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device <var>DEVICE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device, i.e. p09/pilatus300k/01</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host <var>HOST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-w <var>PORT</var></span>, <span class="option">--port <var>PORT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>tango host port</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing component</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store datasources in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output datasource directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>external configuration server</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>xml template package</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>entry group name (prefix)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-i <var>INSNAME</var></span>, <span class="option">--insname <var>INSNAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>instrument group name</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component=<var>COMPONENT</var></span></kbd></dt>
+<dd><p>component namerelated to the device name from
+&lt;inputFile&gt;</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>CPTYPE</var></span>, <span class="option">--type <var>CPTYPE</var></span></kbd></dt>
+<dd><p>component type</p>
+</dd>
+<dt><kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device <var>DEVICE</var></span></kbd></dt>
+<dd><p>device, i.e. p09/pilatus300k/01</p>
+</dd>
+<dt><kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host <var>HOST</var></span></kbd></dt>
+<dd><p>tango host name</p>
+</dd>
+<dt><kbd><span class="option">-w <var>PORT</var></span>, <span class="option">--port <var>PORT</var></span></kbd></dt>
+<dd><p>tango host port</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing component</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store datasources in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output datasource directory</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></dt>
+<dd><p>external configuration server</p>
+</dd>
+<dt><kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></dt>
+<dd><p>xml template package</p>
+</dd>
+<dt><kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></dt>
+<dd><p>entry group name (prefix)</p>
+</dd>
+<dt><kbd><span class="option">-i <var>INSNAME</var></span>, <span class="option">--insname <var>INSNAME</var></span></kbd></dt>
+<dd><p>instrument group name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id11">
 <h3>Example<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlinecp</span>
-<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="k">lambda</span>
-<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="n">pilatus</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span><span class="o">/</span>
-<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="n">lmbd</span> <span class="o">-</span><span class="n">t</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">onlinecp</span> <span class="o">-</span><span class="n">c</span> <span class="n">lmbd</span> <span class="o">-</span><span class="n">t</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">v</span> <span class="n">p00</span><span class="o">/</span><span class="n">lmbd</span><span class="o">/</span><span class="mi">1</span> <span class="o">-</span><span class="n">u</span> <span class="n">haso000</span> <span class="o">-</span><span class="n">w</span> <span class="mi">10000</span> <span class="o">-</span><span class="n">b</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlinecp
+nxscreate onlinecp -c lambda
+nxscreate onlinecp -c pilatus -b
+nxscreate onlinecp -c lambda -d /home/user/xmldir/
+nxscreate onlinecp -c lmbd -t lambda -b
+nxscreate onlinecp -c lmbd -t lambda -v p00/lmbd/1 -u haso000 -w <span class="m">10000</span> -b
 </pre></div>
 </div>
 </div>
@@ -756,83 +672,68 @@ and its set of datasources.</p>
 and its set of datasources.</p>
 <div class="section" id="id12">
 <h3>Synopsis<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span> <span class="n">value1</span> <span class="p">[</span><span class="n">name2</span> <span class="n">value2</span><span class="p">]</span> <span class="o">...</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate stdcomp <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>name1 value1 <span class="o">[</span>name2 value2<span class="o">]</span> ...<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>without ‘-t &lt;type&gt;’: show a list of possible component types</li>
-<li>with ‘-t &lt;type&gt;  and without -c &lt;component&gt;: show a list of component variables for the given component type</li>
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>[name1 value1 [name2 value2] …] sequence  defines component variable values</li>
+<li><p>without ‘-t &lt;type&gt;’: show a list of possible component types</p></li>
+<li><p>with ‘-t &lt;type&gt;  and without -c &lt;component&gt;: show a list of component variables for the given component type</p></li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>[name1 value1 [name2 value2] …] sequence  defines component variable values</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component=<var>COMPONENT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>component name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>CPTYPE</var></span>, <span class="option">--type=<var>CPTYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>component type</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>xml template package</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing component</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>set the component as mandatory</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store datasources in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output datasource directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>external configuration server</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>entry group name (prefix)</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component=<var>COMPONENT</var></span></kbd></dt>
+<dd><p>component name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>CPTYPE</var></span>, <span class="option">--type=<var>CPTYPE</var></span></kbd></dt>
+<dd><p>component type</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package=<var>XMLPACKAGE</var></span></kbd></dt>
+<dd><p>xml template package</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing component</p>
+</dd>
+<dt><kbd><span class="option">-m</span>, <span class="option">--mandatory</span></kbd></dt>
+<dd><p>set the component as mandatory</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store datasources in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output datasource directory</p>
+</dd>
+<dt><kbd><span class="option">-e <var>EXTERNAL</var></span>, <span class="option">--external=<var>EXTERNAL</var></span></kbd></dt>
+<dd><p>external configuration server</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></dt>
+<dd><p>entry group name (prefix)</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id13">
 <h3>Example<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">stdcomp</span>
-<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">source</span>
-<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">slit</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">b</span> <span class="n">front_slit1</span> <span class="n">xgap</span> <span class="n">slt1x</span> <span class="n">ygap</span> <span class="n">slt1y</span>
-<span class="n">nxscreate</span> <span class="n">stdcomp</span> <span class="o">-</span><span class="n">t</span> <span class="n">default</span> <span class="o">-</span><span class="n">c</span> <span class="n">default</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">m</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate stdcomp
+nxscreate stdcomp -t <span class="nb">source</span>
+nxscreate stdcomp -t slit -c -b front_slit1 xgap slt1x ygap slt1y
+nxscreate stdcomp -t default -c default -b -m
 </pre></div>
 </div>
 </div>
@@ -842,102 +743,83 @@ and its set of datasources.</p>
 <p>It creates a set of simple components.</p>
 <div class="section" id="id14">
 <h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">comp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="p">[</span><span class="n">name1</span><span class="p">]</span> <span class="p">[</span><span class="n">name2</span><span class="p">]</span> <span class="o">...</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate comp <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>name1<span class="o">]</span> <span class="o">[</span>name2<span class="o">]</span> ...
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;directory&gt; is ‘.’</li>
-<li>default &lt;server&gt; is taken from Tango DB</li>
-<li>default &lt;strategy&gt; is step</li>
-<li>default &lt;type&gt; is NX_FLOAT</li>
-<li>default &lt;chunk&gt; is SCALAR</li>
-<li>default &lt;nexuspath&gt; is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;directory&gt; is ‘.’</p></li>
+<li><p>default &lt;server&gt; is taken from Tango DB</p></li>
+<li><p>default &lt;strategy&gt; is step</p></li>
+<li><p>default &lt;type&gt; is NX_FLOAT</p></li>
+<li><p>default &lt;chunk&gt; is SCALAR</p></li>
+<li><p>default &lt;nexuspath&gt; is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device prefix, i.e. exp_c</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>first index</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>last index</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing components</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output component directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n <var>NEXUSPATH</var></span>, <span class="option">--nexuspath=<var>NEXUSPATH</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>nexus path with field name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-g <var>STRATEGY</var></span>, <span class="option">--strategy=<var>STRATEGY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>writing strategy, i.e. STEP, INIT, FINAL, POSTRUN</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix <var>DATASOURCE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datasource-prefix or datasourcename</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>TYPE</var></span>, <span class="option">--type=<var>TYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>nexus type of the field</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>UNITS</var></span>, <span class="option">--units=<var>UNITS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>nexus units of the field</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-k</span>, <span class="option">--links</span></kbd></td>
-<td>create datasource links</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>CHUNK</var></span>, <span class="option">--chunk=<var>CHUNK</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>chunk format, i.e. SCALAR, SPECTRUM, IMAGE</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>device name without first ‘0’</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-v <var>DEVICE</var></span>, <span class="option">--device-prefix=<var>DEVICE</var></span></kbd></dt>
+<dd><p>device prefix, i.e. exp_c</p>
+</dd>
+<dt><kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first=<var>FIRST</var></span></kbd></dt>
+<dd><p>first index</p>
+</dd>
+<dt><kbd><span class="option">-l <var>LAST</var></span>, <span class="option">--last=<var>LAST</var></span></kbd></dt>
+<dd><p>last index</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing components</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory=<var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output component directory</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix=<var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-n <var>NEXUSPATH</var></span>, <span class="option">--nexuspath=<var>NEXUSPATH</var></span></kbd></dt>
+<dd><p>nexus path with field name</p>
+</dd>
+<dt><kbd><span class="option">-g <var>STRATEGY</var></span>, <span class="option">--strategy=<var>STRATEGY</var></span></kbd></dt>
+<dd><p>writing strategy, i.e. STEP, INIT, FINAL, POSTRUN</p>
+</dd>
+<dt><kbd><span class="option">-s <var>DATASOURCE</var></span>, <span class="option">--datasource-prefix <var>DATASOURCE</var></span></kbd></dt>
+<dd><p>datasource-prefix or datasourcename</p>
+</dd>
+<dt><kbd><span class="option">-t <var>TYPE</var></span>, <span class="option">--type=<var>TYPE</var></span></kbd></dt>
+<dd><p>nexus type of the field</p>
+</dd>
+<dt><kbd><span class="option">-u <var>UNITS</var></span>, <span class="option">--units=<var>UNITS</var></span></kbd></dt>
+<dd><p>nexus units of the field</p>
+</dd>
+<dt><kbd><span class="option">-k</span>, <span class="option">--links</span></kbd></dt>
+<dd><p>create datasource links</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store components in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server=<var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+<dt><kbd><span class="option">-c <var>CHUNK</var></span>, <span class="option">--chunk=<var>CHUNK</var></span></kbd></dt>
+<dd><p>chunk format, i.e. SCALAR, SPECTRUM, IMAGE</p>
+</dd>
+<dt><kbd><span class="option">-m</span>, <span class="option">--minimal_device</span></kbd></dt>
+<dd><p>device name without first ‘0’</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id15">
 <h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">comp</span> <span class="n">counter</span>
-<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">l3</span> <span class="o">-</span><span class="n">v</span> <span class="n">exp_c</span> <span class="o">-</span><span class="n">b</span>
-<span class="n">nxscreate</span> <span class="n">comp</span> <span class="k">lambda</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span><span class="o">/</span>
-<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m</span>
-<span class="n">nxscreate</span> <span class="n">comp</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data&quot;</span> <span class="n">eh1_mca01</span> <span class="o">-</span><span class="n">g</span> <span class="n">STEP</span> <span class="o">-</span><span class="n">t</span> <span class="n">NX_FLOAT64</span> <span class="o">-</span><span class="n">i</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span><span class="n">c</span> <span class="n">SPECTRUM</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate comp counter
+nxscreate comp -f1 -l3 -v exp_c -b
+nxscreate comp lambda -d /home/user/xmldir/
+nxscreate comp -n <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/&#39; -v sis3302_1_roi -f1 -l4  -g STEP -t NX_FLOAT64 -k -b -m</span>
+<span class="s2">nxscreate comp -n &quot;</span>/<span class="se">\$</span>var.entryname#<span class="s1">&#39;scan&#39;</span><span class="se">\$</span>var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data<span class="s2">&quot; eh1_mca01 -g STEP -t NX_FLOAT64 -i -b -c SPECTRUM</span>
 </pre></div>
 </div>
 </div>
@@ -947,141 +829,117 @@ and its set of datasources.</p>
 <p>It creates a  component or components describing modules of the secop node.</p>
 <div class="section" id="id16">
 <h3>Synopsis<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">secopcp</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">q</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COMPONENT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">PARAMSTRATEGY</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">g</span> <span class="n">STRATEGY</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="n">TIMEOUT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SAMPLENAME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">k</span> <span class="n">MEANINGS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span> <span class="n">ENVIRONMENTS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">FIRST</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">z</span> <span class="n">TRANSATTRS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">XMLPACKAGE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">y</span> <span class="n">ENTRYNAME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INSNAME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">DIRECTORY</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">JSON</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">x</span> <span class="n">FILE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span> <span class="n">HOST</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">PORT</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="n">SERVER</span><span class="p">]</span> <span class="p">[</span><span class="n">component_name</span> <span class="o">...</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate secopcp <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>-o<span class="o">]</span> <span class="o">[</span>-a<span class="o">]</span> <span class="o">[</span>-q<span class="o">]</span> <span class="o">[</span>-c COMPONENT<span class="o">]</span> <span class="o">[</span>-e PARAMSTRATEGY<span class="o">]</span> <span class="o">[</span>-g STRATEGY<span class="o">]</span> <span class="o">[</span>-m TIMEOUT<span class="o">]</span> <span class="o">[</span>-s SAMPLENAME<span class="o">]</span> <span class="o">[</span>-k MEANINGS<span class="o">]</span> <span class="o">[</span>-v ENVIRONMENTS<span class="o">]</span> <span class="o">[</span>-f FIRST<span class="o">]</span> <span class="o">[</span>-z TRANSATTRS<span class="o">]</span> <span class="o">[</span>-p XMLPACKAGE<span class="o">]</span> <span class="o">[</span>-y ENTRYNAME<span class="o">]</span> <span class="o">[</span>-i INSNAME<span class="o">]</span> <span class="o">[</span>-d DIRECTORY<span class="o">]</span> <span class="o">[</span>-j JSON<span class="o">]</span> <span class="o">[</span>-x FILE<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-u HOST<span class="o">]</span> <span class="o">[</span>-t PORT<span class="o">]</span> <span class="o">[</span>-r SERVER<span class="o">]</span> <span class="o">[</span>component_name ...<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>with -b: datasources are created in Configuration Server database</li>
-<li>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</li>
-<li>default &lt;port&gt; is 5000</li>
+<li><p>with -b: datasources are created in Configuration Server database</p></li>
+<li><p>without -b: datasources are created on the local filesystem in -d &lt;directory&gt;</p></li>
+<li><p>default &lt;port&gt; is 5000</p></li>
 </ul>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-l</span>, <span class="option">--list</span></kbd></td>
-<td>list modules of the given node</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>overwrite existing components</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-a</span>, <span class="option">--can-fail</span></kbd></td>
-<td>can fail strategy flag</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-q</span>, <span class="option">--strict</span></kbd></td>
-<td>NeXus strict group types i.e. use NXcollection if not defined</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component <var>COMPONENT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>component namesecop component name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>PARAMSTRATEGY</var></span>, <span class="option">--param-strategy <var>PARAMSTRATEGY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-g <var>STRATEGY</var></span>, <span class="option">--strategy <var>STRATEGY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-m <var>TIMEOUT</var></span>, <span class="option">--timeout <var>TIMEOUT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>sensor minimum timeout default: 0.001</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>SAMPLENAME</var></span>, <span class="option">--sample <var>SAMPLENAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>sample name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-k <var>MEANINGS</var></span>, <span class="option">--links <var>MEANINGS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>NXlog links of physical quantities to sensors
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-l</span>, <span class="option">--list</span></kbd></dt>
+<dd><p>list modules of the given node</p>
+</dd>
+<dt><kbd><span class="option">-o</span>, <span class="option">--overwrite</span></kbd></dt>
+<dd><p>overwrite existing components</p>
+</dd>
+<dt><kbd><span class="option">-a</span>, <span class="option">--can-fail</span></kbd></dt>
+<dd><p>can fail strategy flag</p>
+</dd>
+<dt><kbd><span class="option">-q</span>, <span class="option">--strict</span></kbd></dt>
+<dd><p>NeXus strict group types i.e. use NXcollection if not defined</p>
+</dd>
+<dt><kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component <var>COMPONENT</var></span></kbd></dt>
+<dd><p>component namesecop component name</p>
+</dd>
+<dt><kbd><span class="option">-e <var>PARAMSTRATEGY</var></span>, <span class="option">--param-strategy <var>PARAMSTRATEGY</var></span></kbd></dt>
+<dd><p>sensor parameter strategy, i.e. INIT, STEP or FINAL, default: INIT</p>
+</dd>
+<dt><kbd><span class="option">-g <var>STRATEGY</var></span>, <span class="option">--strategy <var>STRATEGY</var></span></kbd></dt>
+<dd><p>sensor value strategy, i.e. INIT, STEP or FINAL, default: INIT</p>
+</dd>
+<dt><kbd><span class="option">-m <var>TIMEOUT</var></span>, <span class="option">--timeout <var>TIMEOUT</var></span></kbd></dt>
+<dd><p>sensor minimum timeout default: 0.001</p>
+</dd>
+<dt><kbd><span class="option">-s <var>SAMPLENAME</var></span>, <span class="option">--sample <var>SAMPLENAME</var></span></kbd></dt>
+<dd><p>sample name</p>
+</dd>
+<dt><kbd><span class="option">-k <var>MEANINGS</var></span>, <span class="option">--links <var>MEANINGS</var></span></kbd></dt>
+<dd><p>NXlog links of physical quantities to sensors
 separated by comman. Default:
-‘temperature,magnetic_field,electric_field,stress_field,pressure’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-v <var>ENVIRONMENTS</var></span>, <span class="option">--environments <var>ENVIRONMENTS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>NXenvironment links of physical quantities separated
-by comman. Default: ‘temperature,magnetic_field’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first <var>FIRST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>first linked targets separated by comman</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-z <var>TRANSATTRS</var></span>, <span class="option">--transformation-attributes <var>TRANSATTRS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>a JSON dictionary with transformation parameters i.e, “transformation_type”, “vector”, “depends_on”. Default:
-{“rotation_z”:{“transformation_type”:”rotation”,”vector”:[0,-1,0]}}</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package <var>XMLPACKAGE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>xml template package</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>entry group name (prefix)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-i <var>INSNAME</var></span>, <span class="option">--insname <var>INSNAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>instrument group name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory <var>DIRECTORY</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>output component directory</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-j <var>JSON</var></span>, <span class="option">--json-file <var>JSON</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>json configuration file</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix <var>FILE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>file prefix, i.e. counter</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></td>
-<td>store components in Configuration Server database</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host <var>HOST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>secop host name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port <var>PORT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>secop host port</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server <var>SERVER</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>configuration server device name</td></tr>
-</tbody>
-</table>
+‘temperature,magnetic_field,electric_field,stress_field,pressure’</p>
+</dd>
+<dt><kbd><span class="option">-v <var>ENVIRONMENTS</var></span>, <span class="option">--environments <var>ENVIRONMENTS</var></span></kbd></dt>
+<dd><p>NXenvironment links of physical quantities separated
+by comman. Default: ‘temperature,magnetic_field’</p>
+</dd>
+<dt><kbd><span class="option">-f <var>FIRST</var></span>, <span class="option">--first <var>FIRST</var></span></kbd></dt>
+<dd><p>first linked targets separated by comman</p>
+</dd>
+<dt><kbd><span class="option">-z <var>TRANSATTRS</var></span>, <span class="option">--transformation-attributes <var>TRANSATTRS</var></span></kbd></dt>
+<dd><p>a JSON dictionary with transformation parameters i.e, “transformation_type”, “vector”, “depends_on”. Default:
+{“rotation_z”:{“transformation_type”:”rotation”,”vector”:[0,-1,0]}}</p>
+</dd>
+<dt><kbd><span class="option">-p <var>XMLPACKAGE</var></span>, <span class="option">--xml-package <var>XMLPACKAGE</var></span></kbd></dt>
+<dd><p>xml template package</p>
+</dd>
+<dt><kbd><span class="option">-y <var>ENTRYNAME</var></span>, <span class="option">--entryname <var>ENTRYNAME</var></span></kbd></dt>
+<dd><p>entry group name (prefix)</p>
+</dd>
+<dt><kbd><span class="option">-i <var>INSNAME</var></span>, <span class="option">--insname <var>INSNAME</var></span></kbd></dt>
+<dd><p>instrument group name</p>
+</dd>
+<dt><kbd><span class="option">-d <var>DIRECTORY</var></span>, <span class="option">--directory <var>DIRECTORY</var></span></kbd></dt>
+<dd><p>output component directory</p>
+</dd>
+<dt><kbd><span class="option">-j <var>JSON</var></span>, <span class="option">--json-file <var>JSON</var></span></kbd></dt>
+<dd><p>json configuration file</p>
+</dd>
+<dt><kbd><span class="option">-x <var>FILE</var></span>, <span class="option">--file-prefix <var>FILE</var></span></kbd></dt>
+<dd><p>file prefix, i.e. counter</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+<dt><kbd><span class="option">-b</span>, <span class="option">--database</span></kbd></dt>
+<dd><p>store components in Configuration Server database</p>
+</dd>
+<dt><kbd><span class="option">-u <var>HOST</var></span>, <span class="option">--host <var>HOST</var></span></kbd></dt>
+<dd><p>secop host name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>PORT</var></span>, <span class="option">--port <var>PORT</var></span></kbd></dt>
+<dd><p>secop host port</p>
+</dd>
+<dt><kbd><span class="option">-r <var>SERVER</var></span>, <span class="option">--server <var>SERVER</var></span></kbd></dt>
+<dd><p>configuration server device name</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id17">
 <h3>Example<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">secopcp</span>
-<span class="n">nxscreate</span> <span class="n">secopcp</span> <span class="o">-</span><span class="n">l</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate secopcp
+nxscreate secopcp -l
 
-    <span class="o">-</span> <span class="nb">list</span> <span class="nb">all</span> <span class="n">modules</span> <span class="n">of</span> <span class="n">the</span> <span class="n">given</span> <span class="n">node</span>
+    - list all modules of the given node
 
-<span class="n">nxscreate</span> <span class="n">secopcp</span> <span class="o">-</span><span class="n">c</span> <span class="n">temp_node</span> <span class="o">-</span><span class="n">d</span> <span class="o">.</span> <span class="o">-</span><span class="n">j</span> <span class="n">secop_node</span><span class="o">.</span><span class="n">json</span>
+nxscreate secopcp -c temp_node -d . -j secop_node.json
 
-    <span class="o">-</span> <span class="n">create</span> <span class="n">the</span> <span class="nb">all</span> <span class="n">secop</span> <span class="n">components</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">local</span> <span class="n">directory</span> <span class="k">for</span> <span class="n">the</span> <span class="n">node</span> <span class="n">configured</span> <span class="k">with</span> <span class="n">the</span> <span class="n">json</span> <span class="n">file</span>
+    - create the all secop components in the <span class="nb">local</span> directory <span class="k">for</span> the node configured with the json file
 
-<span class="n">nxscreate</span> <span class="n">secopcp</span> <span class="n">T</span> <span class="o">-</span><span class="n">t</span> <span class="mi">5001</span> <span class="o">-</span><span class="n">b</span>
+nxscreate secopcp T -t <span class="m">5001</span> -b
 
-    <span class="o">-</span> <span class="n">create</span> <span class="n">the</span> <span class="n">component</span> <span class="k">for</span> <span class="n">the</span> <span class="n">T</span> <span class="n">secop</span> <span class="n">module</span>  <span class="ow">in</span> <span class="n">the</span> <span class="n">NXSConfigServer</span> <span class="n">database</span> <span class="k">for</span> <span class="n">the</span> <span class="n">node</span> <span class="n">on</span> <span class="n">the</span> <span class="n">port</span> <span class="mi">5000</span>
+    - create the component <span class="k">for</span> the T secop module  in the NXSConfigServer database <span class="k">for</span> the node on the port <span class="m">5000</span>
 
-<span class="n">nxscreate</span> <span class="n">secopcp</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">xmldir</span><span class="o">/</span>
+nxscreate secopcp -d /home/user/xmldir/
 
-    <span class="o">-</span> <span class="n">create</span> <span class="n">the</span> <span class="nb">all</span> <span class="n">secop</span> <span class="n">components</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">given</span> <span class="n">directory</span>
+    - create the all secop components in the given directory
 </pre></div>
 </div>
 </div>
@@ -1091,35 +949,30 @@ by comman. Default: ‘temperature,magnetic_field’</td></tr>
 <p>It compares two online.xml files</p>
 <div class="section" id="id18">
 <h3>Synopsis<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">compare</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span> <span class="n">online_file</span> <span class="p">[</span><span class="n">online_file</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate compare <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> online_file <span class="o">[</span>online_file<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>default: second &lt;online_file&gt; is ‘/online_dir/online.xml’ if only file is given</li>
+<li><p>default: second &lt;online_file&gt; is ‘/online_dir/online.xml’ if only file is given</p></li>
 </ul>
-<dl class="docutils">
-<dt>positional arguments:</dt>
-<dd>online_file    online.xml files</dd>
-<dt>optional arguments:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></td>
-<td>do not change aliases into lower case</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>positional arguments:</dt><dd><p>online_file    online.xml files</p>
+</dd>
+<dt>optional arguments:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--nolower</span></kbd></dt>
+<dd><p>do not change aliases into lower case</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="id19">
 <h3>Example<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscreate</span> <span class="n">onlineds</span> <span class="o">/</span><span class="n">online_dir</span><span class="o">/</span><span class="n">online</span><span class="o">.</span><span class="n">xml</span> <span class="n">online</span><span class="o">.</span><span class="n">xml</span>
-<span class="n">nxscreate</span> <span class="n">compare</span> <span class="n">online</span><span class="o">.</span><span class="n">xml</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate onlineds /online_dir/online.xml online.xml
+nxscreate compare online.xml
 </pre></div>
 </div>
 </div>
@@ -1141,7 +994,7 @@ by comman. Default: ‘temperature,magnetic_field’</td></tr>
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
 </footer>

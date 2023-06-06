@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>nxcollect &#8212; NXSTools 3.46.0 documentation</title>
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nxcollect &#8212; NXSTools 3.47.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nxsconfig" href="nxsconfig.html" />
@@ -24,6 +19,10 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
   </head><body>
 
@@ -38,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.46</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.47</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -196,7 +195,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="section" id="nxcollect">
 <h1>nxcollect<a class="headerlink" href="#nxcollect" title="Permalink to this headline">¶</a></h1>
@@ -209,311 +208,269 @@ The images to collect should be denoted by postrun fields inside NXcollection gr
 </div>
 <div class="section" id="synopsis-for-nxscollect-append">
 <h2>Synopsis for nxscollect append<a class="headerlink" href="#synopsis-for-nxscollect-append" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">nxscollect</span> <span class="n">append</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COMPRESSION</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PATH</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span> <span class="n">INPUTFILES</span><span class="p">]</span>
-                       <span class="p">[</span><span class="o">--</span><span class="n">separator</span> <span class="n">SEPARATOR</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">dtype</span> <span class="n">DATATYPE</span><span class="p">]</span>
-                       <span class="p">[</span><span class="o">--</span><span class="n">shape</span> <span class="n">SHAPE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">test</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">h5py</span><span class="p">]</span>
-                       <span class="p">[</span><span class="o">--</span><span class="n">h5cpp</span><span class="p">]</span>
-                       <span class="p">[</span><span class="n">nexus_file</span> <span class="p">[</span><span class="n">nexus_file</span> <span class="o">...</span><span class="p">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>        nxscollect append <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-c COMPRESSION<span class="o">]</span> <span class="o">[</span>-p PATH<span class="o">]</span> <span class="o">[</span>-i INPUTFILES<span class="o">]</span>
+                       <span class="o">[</span>--separator SEPARATOR<span class="o">]</span> <span class="o">[</span>--dtype DATATYPE<span class="o">]</span>
+                       <span class="o">[</span>--shape SHAPE<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">[</span>--test<span class="o">]</span> <span class="o">[</span>--h5py<span class="o">]</span>
+                       <span class="o">[</span>--h5cpp<span class="o">]</span>
+                       <span class="o">[</span>nexus_file <span class="o">[</span>nexus_file ...<span class="o">]]</span>
 
 
-<span class="n">nexus_file</span>            <span class="n">nexus</span> <span class="n">files</span> <span class="n">to</span> <span class="n">be</span> <span class="n">collected</span>
+nexus_file            nexus files to be collected
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>COMPRESSION</var></span>, <span class="option">--compression <var>COMPRESSION</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>deflate compression rate from 0 to 9 (default: 2) or
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-c <var>COMPRESSION</var></span>, <span class="option">--compression <var>COMPRESSION</var></span></kbd></dt>
+<dd><p>deflate compression rate from 0 to 9 (default: 2) or
 &lt;filterid&gt;:opt1,opt2,… e.g. -c 32008:0,2 for
-bitshuffle with lz4</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>PATH</var></span>, <span class="option">--path <var>PATH</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>nexus path for the output field, e.g.
-/scan/instrument/pilatus/data</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-i <var>INPUTFILES</var></span>, <span class="option">--input_files <var>INPUTFILES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>input data files defined with a pattern or separated
-by ‘,’ e.g.’scan_%05d.tif:0:100’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--separator <var>SEPARATOR</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>input data files separator (default: ‘,’)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--dtype <var>DATATYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datatype of input data - only for raw data, e.g.
-‘uint8’</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--shape <var>SHAPE</var></span></kbd></td>
-<td>shape of input data - only for raw data, e.g.
-‘[4096,2048]’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s</span>, <span class="option">--skip_missing</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>skip missing files</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r</span>, <span class="option">--replace_nexus_file</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>if it is set the old file is not copied into a file
-with .__nxscollect__old__* extension</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--test</span></kbd></td>
-<td>execute in the test mode</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5py</span></kbd></td>
-<td>use h5py module as a nexus reader/writer</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5cpp</span></kbd></td>
-<td>use h5cpp module as a nexus reader/writer</td></tr>
-</tbody>
-</table>
+bitshuffle with lz4</p>
+</dd>
+<dt><kbd><span class="option">-p <var>PATH</var></span>, <span class="option">--path <var>PATH</var></span></kbd></dt>
+<dd><p>nexus path for the output field, e.g.
+/scan/instrument/pilatus/data</p>
+</dd>
+<dt><kbd><span class="option">-i <var>INPUTFILES</var></span>, <span class="option">--input_files <var>INPUTFILES</var></span></kbd></dt>
+<dd><p>input data files defined with a pattern or separated
+by ‘,’ e.g.’scan_%05d.tif:0:100’</p>
+</dd>
+<dt><kbd><span class="option">--separator <var>SEPARATOR</var></span></kbd></dt>
+<dd><p>input data files separator (default: ‘,’)</p>
+</dd>
+<dt><kbd><span class="option">--dtype <var>DATATYPE</var></span></kbd></dt>
+<dd><p>datatype of input data - only for raw data, e.g.
+‘uint8’</p>
+</dd>
+<dt><kbd><span class="option">--shape <var>SHAPE</var></span></kbd></dt>
+<dd><p>shape of input data - only for raw data, e.g.
+‘[4096,2048]’</p>
+</dd>
+<dt><kbd><span class="option">-s</span>, <span class="option">--skip_missing</span></kbd></dt>
+<dd><p>skip missing files</p>
+</dd>
+<dt><kbd><span class="option">-r</span>, <span class="option">--replace_nexus_file</span></kbd></dt>
+<dd><p>if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension</p>
+</dd>
+<dt><kbd><span class="option">--test</span></kbd></dt>
+<dd><p>execute in the test mode</p>
+</dd>
+<dt><kbd><span class="option">--h5py</span></kbd></dt>
+<dd><p>use h5py module as a nexus reader/writer</p>
+</dd>
+<dt><kbd><span class="option">--h5cpp</span></kbd></dt>
+<dd><p>use h5cpp module as a nexus reader/writer</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="examples-of-nxscollect-append">
 <h2>Examples of nxscollect append<a class="headerlink" href="#examples-of-nxscollect-append" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscollect</span> <span class="n">append</span> <span class="o">-</span><span class="n">c1</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">gpfs</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscollect append -c1 /tmp/gpfs/raw/scan_234.nxs
 
-<span class="n">nxscollect</span> <span class="n">append</span> <span class="o">-</span><span class="n">c32008</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span> <span class="o">/</span><span class="n">ramdisk</span><span class="o">/</span><span class="n">scan_123</span><span class="o">.</span><span class="n">nxs</span>
+nxscollect append -c32008:0,2 /ramdisk/scan_123.nxs
 
-<span class="n">nxscollect</span> <span class="n">append</span> <span class="o">--</span><span class="n">test</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">gpfs</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span>
+nxscollect append --test /tmp/gpfs/raw/scan_234.nxs
 
-<span class="n">nxscollect</span> <span class="n">append</span> <span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span> <span class="o">--</span><span class="n">path</span> <span class="o">/</span><span class="n">scan</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="n">pilatus</span><span class="o">/</span><span class="n">data</span>  <span class="o">--</span><span class="n">inputfiles</span> <span class="s1">&#39;scan_</span><span class="si">%05d</span><span class="s1">.tif:0:100&#39;</span>
+nxscollect append scan_234.nxs --path /scan/instrument/pilatus/data  --inputfiles <span class="s1">&#39;scan_%05d.tif:0:100&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="synopsis-for-nxscollect-link">
 <h2>Synopsis for nxscollect link<a class="headerlink" href="#synopsis-for-nxscollect-link" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">nxscollect</span> <span class="n">link</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span> <span class="n">NAME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">TARGET</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">test</span><span class="p">]</span>
-                     <span class="p">[</span><span class="o">--</span><span class="n">h5py</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">h5cpp</span><span class="p">]</span>
-                     <span class="p">[</span><span class="n">nexus_file_path</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>        nxscollect link <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-n NAME<span class="o">]</span> <span class="o">[</span>-t TARGET<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">[</span>--test<span class="o">]</span>
+                     <span class="o">[</span>--h5py<span class="o">]</span> <span class="o">[</span>--h5cpp<span class="o">]</span>
+                     <span class="o">[</span>nexus_file_path<span class="o">]</span>
 
-<span class="n">nexus_file_path</span>       <span class="n">nexus</span> <span class="n">files</span> <span class="k">with</span> <span class="n">the</span> <span class="n">nexus</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">place</span> <span class="n">the</span> <span class="n">link</span>
+nexus_file_path       nexus files with the nexus directory to place the link
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Options:</dt>
-<dd><table class="first last docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n <var>NAME</var></span>, <span class="option">--name <var>NAME</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>link name</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>TARGET</var></span>, <span class="option">--target <var>TARGET</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>link target with the file name if external</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r</span>, <span class="option">--replace_nexus_file</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>if it is set the old file is not copied into a file
-with .__nxscollect__old__* extension</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--test</span></kbd></td>
-<td>execute in the test mode</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5py</span></kbd></td>
-<td>use h5py module as a nexus reader/writer</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5cpp</span></kbd></td>
-<td>use h5cpp module as a nexus reader</td></tr>
-</tbody>
-</table>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-n <var>NAME</var></span>, <span class="option">--name <var>NAME</var></span></kbd></dt>
+<dd><p>link name</p>
+</dd>
+<dt><kbd><span class="option">-t <var>TARGET</var></span>, <span class="option">--target <var>TARGET</var></span></kbd></dt>
+<dd><p>link target with the file name if external</p>
+</dd>
+<dt><kbd><span class="option">-r</span>, <span class="option">--replace_nexus_file</span></kbd></dt>
+<dd><p>if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension</p>
+</dd>
+<dt><kbd><span class="option">--test</span></kbd></dt>
+<dd><p>execute in the test mode</p>
+</dd>
+<dt><kbd><span class="option">--h5py</span></kbd></dt>
+<dd><p>use h5py module as a nexus reader/writer</p>
+</dd>
+<dt><kbd><span class="option">--h5cpp</span></kbd></dt>
+<dd><p>use h5cpp module as a nexus reader</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </div>
 <div class="section" id="examples-of-nxscollect-link">
 <h2>Examples of nxscollect link<a class="headerlink" href="#examples-of-nxscollect-link" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscollect</span> <span class="n">link</span> <span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="k">lambda</span> <span class="o">--</span><span class="n">name</span> <span class="n">data</span> <span class="o">--</span><span class="n">target</span> <span class="k">lambda</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">data</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscollect link scan_234.nxs://entry/instrument/lambda --name data --target lambda.nxs://entry/data/data
 
-<span class="n">nxscollect</span> <span class="n">link</span> <span class="n">scan_123</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="p">:</span><span class="n">NXentry</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="n">eiger</span><span class="p">:</span><span class="n">NXdetector</span>  <span class="o">--</span><span class="n">target</span> <span class="n">eiger</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">data</span>
+nxscollect link scan_123.nxs://entry:NXentry/instrument/eiger:NXdetector  --target eiger.nxs://entry/data/data
 </pre></div>
 </div>
 </div>
 <div class="section" id="synopsis-for-nxscollect-vds">
 <h2>Synopsis for nxscollect vds<a class="headerlink" href="#synopsis-for-nxscollect-vds" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscollect</span> <span class="n">vds</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">TARGETFIELDS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">separator</span> <span class="n">SEPARATOR</span><span class="p">]</span>
-            <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">DTYPE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SHAPE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="n">FILLVALUE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">SHAPES</span><span class="p">]</span>
-            <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OFFSETS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span> <span class="n">BLOCKS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span> <span class="n">COUNTS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">STRIDES</span><span class="p">]</span>
-            <span class="p">[</span><span class="o">-</span><span class="n">l</span> <span class="n">SLICES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">P</span> <span class="n">TARGETSHAPES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">O</span> <span class="n">TARGETOFFSETS</span><span class="p">]</span>
-            <span class="p">[</span><span class="o">-</span><span class="n">B</span> <span class="n">TARGETBLOCKS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">C</span> <span class="n">TARGETCOUNTS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">D</span> <span class="n">TARGETSTRIDES</span><span class="p">]</span>
-            <span class="p">[</span><span class="o">-</span><span class="n">L</span> <span class="n">TARGETSLICES</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">test</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">h5cpp</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">h5py</span><span class="p">]</span>
-            <span class="p">[</span><span class="n">nexus_file_path_field</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscollect vds <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-e TARGETFIELDS<span class="o">]</span> <span class="o">[</span>--separator SEPARATOR<span class="o">]</span>
+            <span class="o">[</span>-t DTYPE<span class="o">]</span> <span class="o">[</span>-s SHAPE<span class="o">]</span> <span class="o">[</span>-f FILLVALUE<span class="o">]</span> <span class="o">[</span>-p SHAPES<span class="o">]</span>
+            <span class="o">[</span>-o OFFSETS<span class="o">]</span> <span class="o">[</span>-b BLOCKS<span class="o">]</span> <span class="o">[</span>-c COUNTS<span class="o">]</span> <span class="o">[</span>-d STRIDES<span class="o">]</span>
+            <span class="o">[</span>-l SLICES<span class="o">]</span> <span class="o">[</span>-P TARGETSHAPES<span class="o">]</span> <span class="o">[</span>-O TARGETOFFSETS<span class="o">]</span>
+            <span class="o">[</span>-B TARGETBLOCKS<span class="o">]</span> <span class="o">[</span>-C TARGETCOUNTS<span class="o">]</span> <span class="o">[</span>-D TARGETSTRIDES<span class="o">]</span>
+            <span class="o">[</span>-L TARGETSLICES<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">[</span>--test<span class="o">]</span> <span class="o">[</span>--h5cpp<span class="o">]</span> <span class="o">[</span>--h5py<span class="o">]</span>
+            <span class="o">[</span>nexus_file_path_field<span class="o">]</span>
 </pre></div>
 </div>
 <p>create a virual dataset in the master file</p>
 <p>nexus_file_path_field    nexus files with the nexus directory and a field name  to create the VDS field</p>
 <p>Options:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
-<td>show this help message and exit</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-t <var>DTYPE</var></span>, <span class="option">--dtype <var>DTYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>datatype of the VDS field, e.g. ‘uint8’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-s <var>SHAPE</var></span>, <span class="option">--shape <var>SHAPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>shape of the VDS field, e.g. ‘[U,4096,2048]’ or
-U,4096,2048 where U means span along the field’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-f <var>FILLVALUE</var></span>, <span class="option">--fill-value <var>FILLVALUE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>fill value for the gaps, default is 0</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-e <var>TARGETFIELDS</var></span>, <span class="option">--target-fields <var>TARGETFIELDS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>external fields with their NeXus file paths defined
+<div><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-t <var>DTYPE</var></span>, <span class="option">--dtype <var>DTYPE</var></span></kbd></dt>
+<dd><p>datatype of the VDS field, e.g. ‘uint8’</p>
+</dd>
+<dt><kbd><span class="option">-s <var>SHAPE</var></span>, <span class="option">--shape <var>SHAPE</var></span></kbd></dt>
+<dd><p>shape of the VDS field, e.g. ‘[U,4096,2048]’ or
+U,4096,2048 where U means span along the field’</p>
+</dd>
+<dt><kbd><span class="option">-f <var>FILLVALUE</var></span>, <span class="option">--fill-value <var>FILLVALUE</var></span></kbd></dt>
+<dd><p>fill value for the gaps, default is 0</p>
+</dd>
+<dt><kbd><span class="option">-e <var>TARGETFIELDS</var></span>, <span class="option">--target-fields <var>TARGETFIELDS</var></span></kbd></dt>
+<dd><p>external fields with their NeXus file paths defined
 with a pattern or separated by ‘,’
-e.g.’scan_123/lambda_%05d.nxs://entry/data/<a class="reference external" href="data:0:3">data:0:3</a>’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--separator <var>SEPARATOR</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>input data files separator (default: ‘,’)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-p <var>SHAPES</var></span>, <span class="option">--shapes <var>SHAPES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>shapes in the VDS layout hyperslab for the
+e.g.’scan_123/lambda_%05d.nxs://entry/data/<a class="reference external" href="data:0:3">data:0:3</a>’</p>
+</dd>
+<dt><kbd><span class="option">--separator <var>SEPARATOR</var></span></kbd></dt>
+<dd><p>input data files separator (default: ‘,’)</p>
+</dd>
+<dt><kbd><span class="option">-p <var>SHAPES</var></span>, <span class="option">--shapes <var>SHAPES</var></span></kbd></dt>
+<dd><p>shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
-means 0</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-o <var>OFFSETS</var></span>, <span class="option">--offsets <var>OFFSETS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>offsets in the VDS layout hyperslab for the
+means 0</p>
+</dd>
+<dt><kbd><span class="option">-o <var>OFFSETS</var></span>, <span class="option">--offsets <var>OFFSETS</var></span></kbd></dt>
+<dd><p>offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
-means 0</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-b <var>BLOCKS</var></span>, <span class="option">--blocks <var>BLOCKS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>block sizes in the VDS layout hyperslab for the
+means 0</p>
+</dd>
+<dt><kbd><span class="option">-b <var>BLOCKS</var></span>, <span class="option">--blocks <var>BLOCKS</var></span></kbd></dt>
+<dd><p>block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,256,512;,256,512;,256,512’ where an
-empty coordinate means 1</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-c <var>COUNTS</var></span>, <span class="option">--counts <var>COUNTS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>count numbers in the VDS layout hyperslabfor the
+empty coordinate means 1</p>
+</dd>
+<dt><kbd><span class="option">-c <var>COUNTS</var></span>, <span class="option">--counts <var>COUNTS</var></span></kbd></dt>
+<dd><p>count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,1,1;,1,1;,1,1’ where an empty coordinate
-means span along the layout</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-d <var>STRIDES</var></span>, <span class="option">--strides <var>STRIDES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>stride sizes in the VDS layout hyperslabfor the
+means span along the layout</p>
+</dd>
+<dt><kbd><span class="option">-d <var>STRIDES</var></span>, <span class="option">--strides <var>STRIDES</var></span></kbd></dt>
+<dd><p>stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
 by ‘,’ and different fields separated by ‘;’, ‘:’ or
 spaces e.g. ‘,,;,,;,,’ where an empty coordinate means
-1</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l <var>SLICES</var></span>, <span class="option">--slices <var>SLICES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>mapping slices in the VDS layoutfor the corresponding
+1</p>
+</dd>
+<dt><kbd><span class="option">-l <var>SLICES</var></span>, <span class="option">--slices <var>SLICES</var></span></kbd></dt>
+<dd><p>mapping slices in the VDS layoutfor the corresponding
 target fields with coordinates sepatated by ‘,’ and
 different fields separated by ‘;’ or spaces e.g.
 ‘:,0:50,: :,50:100,:’ where U means span along the
-layout</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-P <var>TARGETSHAPES</var></span>, <span class="option">--target-shapes <var>TARGETSHAPES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>field shapes with coordinates sepatated by ‘,’ and
+layout</p>
+</dd>
+<dt><kbd><span class="option">-P <var>TARGETSHAPES</var></span>, <span class="option">--target-shapes <var>TARGETSHAPES</var></span></kbd></dt>
+<dd><p>field shapes with coordinates sepatated by ‘,’ and
 different fields separated by ‘;’, ‘:’ or spaces
-e.g.’,,;,300,;,600,0’</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-O <var>TARGETOFFSETS</var></span>, <span class="option">--target-offsets <var>TARGETOFFSETS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>offsets in the view hyperslab of target fieldswith
+e.g.’,,;,300,;,600,0’</p>
+</dd>
+<dt><kbd><span class="option">-O <var>TARGETOFFSETS</var></span>, <span class="option">--target-offsets <var>TARGETOFFSETS</var></span></kbd></dt>
+<dd><p>offsets in the view hyperslab of target fieldswith
 coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g.’,,;,300,;,600,0’
-where an empty coordinate means 0</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-B <var>TARGETBLOCKS</var></span>, <span class="option">--target-blocks <var>TARGETBLOCKS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>block sizes in the view hyperslab of target fields
+where an empty coordinate means 0</p>
+</dd>
+<dt><kbd><span class="option">-B <var>TARGETBLOCKS</var></span>, <span class="option">--target-blocks <var>TARGETBLOCKS</var></span></kbd></dt>
+<dd><p>block sizes in the view hyperslab of target fields
 with coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g.
 ‘,256,512;,256,512;,256,512’ where an empty coordinate
-means 1</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-C <var>TARGETCOUNTS</var></span>, <span class="option">--target-counts <var>TARGETCOUNTS</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>count numbers in the view hyperslab of target fields
+means 1</p>
+</dd>
+<dt><kbd><span class="option">-C <var>TARGETCOUNTS</var></span>, <span class="option">--target-counts <var>TARGETCOUNTS</var></span></kbd></dt>
+<dd><p>count numbers in the view hyperslab of target fields
 with coordinates sepatated by ‘,’ and different fields
 separated by ‘;’, ‘:’ or spaces e.g. ‘,1,1;,1,1;,1,1’
-where an empty coordinate means span along the layout</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-D <var>TARGETSTRIDES</var></span>, <span class="option">--target-strides <var>TARGETSTRIDES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>stride sizes numbers in the view hyperslab of target
+where an empty coordinate means span along the layout</p>
+</dd>
+<dt><kbd><span class="option">-D <var>TARGETSTRIDES</var></span>, <span class="option">--target-strides <var>TARGETSTRIDES</var></span></kbd></dt>
+<dd><p>stride sizes numbers in the view hyperslab of target
 fields with coordinates sepatated by ‘,’ and different
 fields separated by ‘;’, ‘:’ or spaces e.g. ‘,,;,,;,,’
-where an empty coordinate means 1</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-L <var>TARGETSLICES</var></span>, <span class="option">--target-slices <var>TARGETSLICES</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>view slices of target fields with coordinates
+where an empty coordinate means 1</p>
+</dd>
+<dt><kbd><span class="option">-L <var>TARGETSLICES</var></span>, <span class="option">--target-slices <var>TARGETSLICES</var></span></kbd></dt>
+<dd><p>view slices of target fields with coordinates
 sepatated by ‘,’ and different fields separated by ‘;’
 or spaces e.g. ‘:,0:50,: :,0:50,:’ where U means span
-along the layout</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r</span>, <span class="option">--replace-nexus-file</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>if it is set the old file is not copied into a file
-with .__nxscollect__old__* extension</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--test</span></kbd></td>
-<td>execute in the test mode</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5cpp</span></kbd></td>
-<td>use h5cpp module as a nexus reader</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--h5py</span></kbd></td>
-<td>use h5py module as a nexus reader/writer</td></tr>
-</tbody>
-</table>
+along the layout</p>
+</dd>
+<dt><kbd><span class="option">-r</span>, <span class="option">--replace-nexus-file</span></kbd></dt>
+<dd><p>if it is set the old file is not copied into a file
+with .__nxscollect__old__* extension</p>
+</dd>
+<dt><kbd><span class="option">--test</span></kbd></dt>
+<dd><p>execute in the test mode</p>
+</dd>
+<dt><kbd><span class="option">--h5cpp</span></kbd></dt>
+<dd><p>use h5cpp module as a nexus reader</p>
+</dd>
+<dt><kbd><span class="option">--h5py</span></kbd></dt>
+<dd><p>use h5py module as a nexus reader/writer</p>
+</dd>
+</dl>
 </div></blockquote>
 </div>
 <div class="section" id="examples-of-nxscollect-vds">
 <h2>Examples of nxscollect vds<a class="headerlink" href="#examples-of-nxscollect-vds" title="Permalink to this headline">¶</a></h2>
-<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nxscollect</span> <span class="n">vds</span> <span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="n">eiger</span><span class="o">/</span><span class="n">data</span>  <span class="o">--</span><span class="n">shape</span> <span class="s1">&#39;1000,2048,1024&#39;</span> <span class="o">--</span><span class="n">dtype</span> <span class="n">uint32</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">fields</span> <span class="s1">&#39;eiger_</span><span class="si">%05d</span><span class="s1">.nxs://entry/data/data:1:10&#39;</span> <span class="o">--</span><span class="n">shapes</span> <span class="s1">&#39;100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,&#39;</span>   <span class="o">--</span><span class="n">offsets</span> <span class="s1">&#39;0,,:100,,:200,,:300,,:400,,:500,,:600,,:700,,:800,,:900,,&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscollect vds scan_234.nxs://entry/instrument/eiger/data  --shape <span class="s1">&#39;1000,2048,1024&#39;</span> --dtype uint32 --target-fields <span class="s1">&#39;eiger_%05d.nxs://entry/data/data:1:10&#39;</span> --shapes <span class="s1">&#39;100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,:100,,&#39;</span>   --offsets <span class="s1">&#39;0,,:100,,:200,,:300,,:400,,:500,,:600,,:700,,:800,,:900,,&#39;</span>
 
-    <span class="o">-</span> <span class="n">creates</span> <span class="n">VDS</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">2048</span><span class="p">,</span><span class="mi">1024</span><span class="p">])</span> <span class="n">of</span> <span class="n">ten</span> <span class="n">nexus</span> <span class="n">files</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">2048</span><span class="p">,</span><span class="mi">1024</span><span class="p">])</span> <span class="n">merged</span> <span class="ow">in</span> <span class="n">their</span> <span class="n">first</span> <span class="n">dimension</span>
+    - creates VDS <span class="o">(</span>shape <span class="o">[</span><span class="m">1000</span>,2048,1024<span class="o">])</span> of ten nexus files <span class="o">(</span>shape <span class="o">[</span><span class="m">100</span>,2048,1024<span class="o">])</span> merged in their first dimension
 
-<span class="n">nxscollect</span> <span class="n">vds</span> <span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="k">lambda</span><span class="o">/</span><span class="n">data</span>  <span class="o">--</span><span class="n">shape</span> <span class="s1">&#39;100,300,762&#39;</span>  <span class="o">--</span><span class="n">dtype</span> <span class="n">uint32</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">fields</span> <span class="s1">&#39;lambda_</span><span class="si">%05d</span><span class="s1">.nxs://entry/data/data:0:2&#39;</span> <span class="o">--</span><span class="n">shapes</span> <span class="s1">&#39;,,250:,,250:,,250&#39;</span>   <span class="o">--</span><span class="n">offsets</span> <span class="s1">&#39;,,:,,256:,,512&#39;</span>  <span class="o">--</span><span class="n">counts</span> <span class="s1">&#39;U,,:U,,:U,,&#39;</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span>
+nxscollect vds scan_234.nxs://entry/instrument/lambda/data  --shape <span class="s1">&#39;100,300,762&#39;</span>  --dtype uint32 --target-fields <span class="s1">&#39;lambda_%05d.nxs://entry/data/data:0:2&#39;</span> --shapes <span class="s1">&#39;,,250:,,250:,,250&#39;</span>   --offsets <span class="s1">&#39;,,:,,256:,,512&#39;</span>  --counts <span class="s1">&#39;U,,:U,,:U,,&#39;</span> -f <span class="m">1</span>
 
-    <span class="o">-</span> <span class="n">creates</span> <span class="n">VDS</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">762</span><span class="p">])</span> <span class="n">of</span> <span class="n">three</span> <span class="n">nexus</span> <span class="n">files</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">250</span><span class="p">])</span> <span class="n">merged</span> <span class="ow">in</span> <span class="n">their</span> <span class="n">third</span> <span class="n">dimension</span><span class="p">,</span>
-        <span class="n">separated</span> <span class="k">with</span> <span class="n">a</span> <span class="mi">6</span> <span class="n">pixel</span> <span class="n">gap</span> <span class="n">of</span> <span class="mi">1</span> <span class="n">values</span> <span class="ow">and</span> <span class="n">unlimited</span> <span class="n">first</span> <span class="n">dimension</span>
+    - creates VDS <span class="o">(</span>shape <span class="o">[</span><span class="m">100</span>,300,762<span class="o">])</span> of three nexus files <span class="o">(</span>shape <span class="o">[</span><span class="m">100</span>,300,250<span class="o">])</span> merged in their third dimension,
+        separated with a <span class="m">6</span> pixel gap of <span class="m">1</span> values and unlimited first dimension
 
-<span class="n">nxscollect</span> <span class="n">vds</span> <span class="n">scan_234</span><span class="o">.</span><span class="n">nxs</span><span class="p">:</span><span class="o">//</span><span class="n">entry</span><span class="o">/</span><span class="n">instrument</span><span class="o">/</span><span class="n">percival</span><span class="o">/</span><span class="n">data</span>  <span class="o">--</span><span class="n">shape</span> <span class="s1">&#39;4000,1600,2000&#39;</span> <span class="o">--</span><span class="n">dtype</span> <span class="n">int16</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">fields</span> <span class="s1">&#39;percival_</span><span class="si">%05d</span><span class="s1">.nxs://entry/data/data:1:4&#39;</span> <span class="o">--</span><span class="n">shapes</span> <span class="s1">&#39;1000,,:1000,,:1000,,:1000,,&#39;</span>   <span class="o">--</span><span class="n">offsets</span> <span class="s1">&#39;0,,:1,,:2,,:3,,&#39;</span>  <span class="o">--</span><span class="n">counts</span> <span class="s1">&#39;U,,:U,,:U,,:U,,&#39;</span> <span class="o">--</span><span class="n">strides</span> <span class="s1">&#39;4,,:4,,:4,,:4,,&#39;</span>
+nxscollect vds scan_234.nxs://entry/instrument/percival/data  --shape <span class="s1">&#39;4000,1600,2000&#39;</span> --dtype int16 --target-fields <span class="s1">&#39;percival_%05d.nxs://entry/data/data:1:4&#39;</span> --shapes <span class="s1">&#39;1000,,:1000,,:1000,,:1000,,&#39;</span>   --offsets <span class="s1">&#39;0,,:1,,:2,,:3,,&#39;</span>  --counts <span class="s1">&#39;U,,:U,,:U,,:U,,&#39;</span> --strides <span class="s1">&#39;4,,:4,,:4,,:4,,&#39;</span>
 
-    <span class="o">-</span> <span class="n">creates</span> <span class="n">VDS</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1600</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span> <span class="n">of</span> <span class="n">three</span> <span class="n">nexus</span> <span class="n">files</span> <span class="p">(</span><span class="n">shape</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1600</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
-         <span class="n">merged</span> <span class="ow">in</span> <span class="n">their</span> <span class="n">the</span> <span class="n">first</span> <span class="n">dimension</span> <span class="k">with</span> <span class="n">interlaying</span> <span class="n">frames</span>
-         <span class="ow">and</span> <span class="n">unlimited</span> <span class="n">first</span> <span class="n">dimension</span>
+    - creates VDS <span class="o">(</span>shape <span class="o">[</span><span class="m">1000</span>,1600,2000<span class="o">])</span> of three nexus files <span class="o">(</span>shape <span class="o">[</span><span class="m">1000</span>,1600,2000<span class="o">])</span>
+         merged in their the first dimension with interlaying frames
+         and unlimited first dimension
 </pre></div>
 </div>
 </div>
@@ -534,7 +491,7 @@ with .__nxscollect__old__* extension</td></tr>
         &copy; Copyright 2012-2018 DESY, Jan Kotanski &lt;jkotan@mail.desy.de&gt;
 
 GNU GENERAL PUBLIC LICENSE, version 3.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.4.3.<br/>
     </p>
   </div>
 </footer>
