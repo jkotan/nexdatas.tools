@@ -43,7 +43,7 @@ install_requires = [
     'pytz',
     'numpy>1.6.0',
     'lxml',
-    'fabio',
+    # 'fabio',
     'pyyaml',
     # 'pil',
     # 'matplotlib',
