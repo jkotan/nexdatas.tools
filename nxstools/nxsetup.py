@@ -1296,10 +1296,8 @@ class AddRecorderPath(Runner):
             options.instance = "*"
 
         setUp = SetUp()
-        print("RUN")
         if setUp.changeRecorderPath(
                 options.recpath[0], options.instance):
-            print("RUN2")
             if not options.postpone:
                 if options.instance != "*":
                     ms = "MacroServer/%s" % options.instance
