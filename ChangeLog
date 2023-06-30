@@ -1,3 +1,7 @@
+2023-06-30 Jan Kotanski <jankotan@gmail.com>
+	* remove printouts fomr add-recorder-path (#500)
+	* tagged as v3.47.1
+
 2023-06-05 Jan Kotanski <jankotan@gmail.com>
 	* add --depends for nxscreate comp (#495)
 	* tagged as v3.47.0
