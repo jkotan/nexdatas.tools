@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsetup &#8212; NXSTools 3.47.0 documentation</title>
+    <title>nxstools.nxsetup &#8212; NXSTools 3.47.2 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -1474,10 +1474,8 @@
             <span class="n">options</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
 
         <span class="n">setUp</span> <span class="o">=</span> <span class="n">SetUp</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RUN&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">setUp</span><span class="o">.</span><span class="n">changeRecorderPath</span><span class="p">(</span>
                 <span class="n">options</span><span class="o">.</span><span class="n">recpath</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">options</span><span class="o">.</span><span class="n">instance</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RUN2&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">postpone</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">instance</span> <span class="o">!=</span> <span class="s2">&quot;*&quot;</span><span class="p">:</span>
                     <span class="n">ms</span> <span class="o">=</span> <span class="s2">&quot;MacroServer/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">instance</span>

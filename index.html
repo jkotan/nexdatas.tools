@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to nxstools’s documentation! &#8212; NXSTools 3.47.0 documentation</title>
+    <title>Welcome to nxstools’s documentation! &#8212; NXSTools 3.47.2 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -239,7 +239,7 @@ directly from a python code.</p>
 </div>
 <div class="section" id="debian-packages">
 <h3>Debian packages<a class="headerlink" href="#debian-packages" title="Permalink to this headline">¶</a></h3>
-<p>Debian <cite>bullseye</cite>, <cite>buster</cite>  or Ubuntu <cite>kinetic</cite>, <cite>jammy</cite>, <cite>focal</cite> packages can be found in the HDRI repository.</p>
+<p>Debian <cite>bookworm</cite>, <cite>bullseye</cite>, <cite>buster</cite>  or Ubuntu <cite>lunar</cite>, <cite>jammy</cite>, <cite>focal</cite> packages can be found in the HDRI repository.</p>
 <p>To install the debian packages, add the PGP repository key</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo su
 <span class="gp">$</span> curl -s http://repos.pni-hdri.de/debian_repo.pub.gpg <span class="p">|</span> gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/debian-hdri-repo.gpg --import
@@ -248,7 +248,7 @@ directly from a python code.</p>
 </div>
 <p>and then download the corresponding source list</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> /etc/apt/sources.list.d
-<span class="gp">$</span> wget http://repos.pni-hdri.de/bullseye-pni-hdri.list
+<span class="gp">$</span> wget http://repos.pni-hdri.de/bookworm-pni-hdri.list
 </pre></div>
 </div>
 <p>To install nxstools scripts</p>
