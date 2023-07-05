@@ -114,7 +114,7 @@ def signalname(commonblock, detector, firstchannel,
 def axesnames(commonblock, detector, firstchannel,
               timers, mgchannels, entryname, nexus_step_datasources,
               nchannels_to_skip=0, scancommand="", msenv=None,
-              sardanasignal='SignalCounter'):
+              sardanasignal='SignalCounter', defaultattrs=False):
     """ code for axesnames  datasource
 
     :param commonblock: commonblock of nxswriter
@@ -139,12 +139,14 @@ def axesnames(commonblock, detector, firstchannel,
     :type msenv: :obj:`str`
     :param sardanasignal: signal sardana environment variable
     :type sardanasignal: :obj:`str`
+    :param defaultattrs:  set default attributes in NXentry and NXdata
+    :type defaultattrs: :obj:`bool`
     :returns: axes names
-    :rtype: :obj:`str`
+    :rtype: :obj:`list` <:obj:`str`>
     """
     signal = signalname(
         commonblock, detector, firstchannel, timers, mgchannels, entryname,
-        False, nchannels_to_skip, msenv, sardanasignal)
+        defaultattrs, nchannels_to_skip, msenv, sardanasignal)
 
     result = []
     try:
@@ -183,4 +185,6 @@ def axesnames(commonblock, detector, firstchannel,
                     result.append(".")
     except Exception as e:
         result = str(e)
+    if not result:
+        result = ["."]
     return result

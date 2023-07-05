@@ -1028,6 +1028,10 @@ standardComponentVariables = {
             'default': "10000",
             'doc': "tango port (string)"
         },
+        'defaultattrs': {
+            'default': "False",
+            'doc': "add default attributes (string)"
+        },
 
     },
     'descriptiontext': {
