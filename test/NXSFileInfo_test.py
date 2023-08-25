@@ -3827,7 +3827,6 @@ For more help:
                         'techniques': [],
                         'sampleId': arg[7],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -3893,7 +3892,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -4086,7 +4084,6 @@ For more help:
                             'p01staff'],
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'contactEmail': 'robust.robust@robust.com',
-                        'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
                         'instrumentId': '/petra3/p01',
                         'creationTime': '2014-02-16T15:17:21+00:00',
@@ -4145,7 +4142,6 @@ For more help:
                         '/asap3/petra3/gpfs/p01/2020/data/12345678',
                         'techniques': [],
                         'type': 'raw',
-                        'updatedAt': '2020-01-20T00:10:00Z'
                     }
                     self.myAssertDict(
                         dct, res,
@@ -4363,7 +4359,6 @@ For more help:
                             'p01staff'],
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'contactEmail': 'robust.robust@robust.com',
-                        'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
                         'instrumentId': '/petra3/p01',
                         'creationTime': '2014-02-16T15:17:21+00:00',
@@ -4412,7 +4407,6 @@ For more help:
                         '/asap3/petra3/gpfs/p01/2020/data/12345678',
                         'techniques': [],
                         'type': 'raw',
-                        'updatedAt': '2020-01-20T00:10:00Z'
                     }
                     self.myAssertDict(
                         dct, res,
@@ -4632,7 +4626,6 @@ For more help:
                             'p01staff'],
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'contactEmail': 'robust.robust@robust.com',
-                        'createdAt': '2020-01-20T00:10:00Z',
                         'creationLocation': '/DESY/PETRA III/p01',
                         'instrumentId': '/petra3/p01',
                         'creationTime': '2014-02-16T15:17:21+00:00',
@@ -4678,7 +4671,6 @@ For more help:
                         '/asap3/petra3/gpfs/p01/2020/data/12345678',
                         'techniques': [],
                         'type': 'raw',
-                        'updatedAt': '2020-01-20T00:10:00Z'
                     }
                     self.myAssertDict(
                         dct, res,
@@ -4938,7 +4930,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -4981,7 +4972,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -5233,7 +5223,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -5276,7 +5265,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -5525,7 +5513,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -5568,7 +5555,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -5816,7 +5802,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -5859,7 +5844,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -6107,7 +6091,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -6150,7 +6133,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -6402,7 +6384,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -6445,7 +6426,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -6702,7 +6682,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -6745,7 +6724,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -6997,7 +6975,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -7040,7 +7017,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -7289,7 +7265,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -7332,7 +7307,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -7580,7 +7554,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -7623,7 +7596,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -7871,7 +7843,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -7914,7 +7885,6 @@ For more help:
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -8162,7 +8132,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
                         "accessGroups": [
@@ -8205,7 +8174,6 @@ For more help:
                         "/asap3/fs-sc/gpfs/scdd01/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
                         'description': '%s' % arg[1],
@@ -8355,7 +8323,6 @@ For more help:
                 res = {
                     'techniques': [],
                     "contactEmail": "robust.robust@robust.com",
-                    "createdAt": "2020-01-20T00:10:00Z",
                     "creationLocation": "/DESY/PETRA III/P01",
                     'instrumentId': '/petra3/p01',
                     "description":
@@ -8381,7 +8348,6 @@ For more help:
                     "/asap3/petra3/gpfs/p01/2020/data/12345678",
                     "type": "raw",
                     "isPublished": False,
-                    "updatedAt": "2020-01-20T00:10:00Z",
                     'creationTime': '2014-02-16T15:17:21+00:00',
                     'endTime': '2014-02-16T15:17:21+00:00',
                 }
@@ -8521,7 +8487,6 @@ For more help:
                 res = {
                     'techniques': [],
                     "contactEmail": "cute.cute@cute.com",
-                    "createdAt": "2020-01-20T00:10:00Z",
                     "creationLocation": "/DESY/PETRA III/P01",
                     'instrumentId': '/petra3/p01',
                     "description":
@@ -8547,7 +8512,6 @@ For more help:
                     "/asap3/petra3/gpfs/p01/2020/data/12345678",
                     "type": "raw",
                     "isPublished": False,
-                    "updatedAt": "2020-01-20T00:10:00Z",
                     'creationTime': '2014-02-16T15:17:21+00:00',
                     'endTime': '2014-02-16T15:17:21+00:00',
                 }
@@ -8753,7 +8717,6 @@ For more help:
                     res = {
                         'techniques': [],
                         "contactEmail": "robust.robust@robust.com",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "pid": "13243546",
                         'datasetName': "%s_12345" % scanname,
                         "creationLocation": "/DESY/PETRA IV/p02",
@@ -8833,7 +8796,6 @@ For more help:
                         "/asap3/petra3/gpfs/p02/2020/data/12345678",
                         "type": "raw",
                         "isPublished": False,
-                        "updatedAt": "2020-01-20T00:10:00Z",
                         'creationTime': '%s' % etime,
                         'endTime': '%s' % etime,
                         'description': '%s' % arg[1],
