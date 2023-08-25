@@ -378,10 +378,15 @@ class BeamtimeLoader(object):
         "endTime": ["eventEnd"],    # ?? should be endTime for dataset
         "ownerEmail": ["leader.email", "applicant.email"],
         "description": ["title"],   # ?? should be from dataset
-        "createdAt": ["generated"],  # ?? should be automatic
-        "updatedAt": ["generated"],  # ?? should be automatic
+        # "createdAt": ["generated"],  # ?? should be automatic
+        # "updatedAt": ["generated"],  # ?? should be automatic
         # "proposalId": "proposalId",
         "proposalId": ["beamtimeId"],
+    }
+
+    oldbtmdmap = {
+        "createdAt": ["generated"],  # ?? should be automatic
+        "updatedAt": ["generated"],  # ?? should be automatic
     }
 
     strcre = {
@@ -459,6 +464,8 @@ class BeamtimeLoader(object):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        if not hasattr(options, "old") or options.old:
+            self.btmdmap.update(self.oldbtmdmap)
         self.__pid = options.pid
         self.__pap = options.pap
         self.__relpath = options.relpath
@@ -1167,6 +1174,10 @@ class Metadata(Runner):
             "--proposal-as-proposal", action="store_true",
             default=False, dest="pap",
             help=("Store the DESY proposal as the SciCat proposal"))
+        self._parser.add_argument(
+            "--old", action="store_true",
+            default=False, dest="old",
+            help="old loopback scicat metadata")
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -2274,9 +2285,9 @@ class Attachment(Runner):
                         options.caption, options.override, options.scancmdaxes)
                     if tn:
                         result["thumbnail"] = tn
+                        if "caption" not in result:
+                            result["caption"] = ""
                         if options.ppflag:
-                            if pars and "caption" not in result:
-                                result["caption"] = ""
                             result["caption"] += " " + pars
 
                 elif options.fileformat in ['fio']:
@@ -2359,12 +2370,14 @@ class Attachment(Runner):
                             result["thumbnail"], pars = self._plot1d(
                                 sdata, adata, xlabel, slabel, options.caption,
                                 scancmd=scancmd)
+                        if "caption" not in result:
+                            result["caption"] = ""
                         if options.ppflag:
-                            if pars and "caption" not in result:
-                                result["caption"] = ""
                             result["caption"] += " " + pars
 
         if "thumbnail" in result and result["thumbnail"]:
+            if "caption" not in result:
+                result["caption"] = ""
             return json.dumps(
                 result, sort_keys=True, indent=4,
                 cls=numpyEncoder)
