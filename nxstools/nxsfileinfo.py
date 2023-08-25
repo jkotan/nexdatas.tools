@@ -465,7 +465,7 @@ class BeamtimeLoader(object):
         :type options: :class:`argparse.Namespace`
         """
         if not hasattr(options, "old") or options.old:
-            self.btmdmap.update(self.oldbtmdmap)            
+            self.btmdmap.update(self.oldbtmdmap)
         self.__pid = options.pid
         self.__pap = options.pap
         self.__relpath = options.relpath
