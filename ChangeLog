@@ -1,5 +1,5 @@
-2023-07-05 Jan Kotanski <jankotan@gmail.com>
-	* update nxsfileinfo metadata and attachament for new nestjs scicat backend (#506)
+2023-08-28 Jan Kotanski <jankotan@gmail.com>
+	* update nxsfileinfo metadata and attachament for new nestjs scicat backend (#506, #508)
 	* tagged as v3.48.0
 
 2023-07-05 Jan Kotanski <jankotan@gmail.com>

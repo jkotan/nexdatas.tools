@@ -368,7 +368,9 @@ class BeamtimeLoader(object):
         "PETRA IV": "petra4",
     }
 
-    btmdmap = {
+    btmdmap = {}
+
+    newbtmdmap = {
         "principalInvestigator": ["applicant.email"],
         # "pid": "beamtimeId",   # ?? is not unique for dataset
         "owner": ["leader.lastname", "applicant.lastname"],
@@ -464,7 +466,9 @@ class BeamtimeLoader(object):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
-        if not hasattr(options, "old") or options.old:
+        self.btmdmap = dict(self.newbtmdmap)
+        if not hasattr(options, "scicatversion") or \
+           int(options.scicatversion) < 4:
             self.btmdmap.update(self.oldbtmdmap)
         self.__pid = options.pid
         self.__pap = options.pap
@@ -1175,9 +1179,9 @@ class Metadata(Runner):
             default=False, dest="pap",
             help=("Store the DESY proposal as the SciCat proposal"))
         self._parser.add_argument(
-            "--old", action="store_true",
-            default=False, dest="old",
-            help="old loopback scicat metadata")
+            "-k", "--scicat-version",
+            default=3, dest="scicatversion",
+            help="major scicat version metadata")
         self._parser.add_argument(
             "--h5py", action="store_true",
             default=False, dest="h5py",
@@ -1816,7 +1820,16 @@ class OrigDatablock(Runner):
         if not beamtimeid and "datasetId" in result \
            and result["datasetId"] and \
            len(result["datasetId"].split("/")) > 1:
-            beamtimeid = result["datasetId"].split("/")[1]
+            bts = result["datasetId"].split("/")
+            try:
+                int(bts[1])
+                beamtimeid = bts[1]
+            except Exception:
+                try:
+                    int(bts[0])
+                    beamtimeid = bts[0]
+                except Exception:
+                    beamtimeid = bts[1]
         if "ownerGroup" not in result and beamtimeid:
             result["ownerGroup"] = "%s-dmgt" % (beamtimeid)
         if "accessGroups" not in result:
