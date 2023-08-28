@@ -4080,7 +4080,6 @@ For more help:
                     raise Exception("Test file %s exists" % smfname)
                 with open(smfname, "w") as fl:
                     fl.write(smfile)
-
                 nxsfile = filewriter.create_file(filename, overwrite=True)
                 rt = nxsfile.root()
                 entry = rt.create_group("entry12345", "NXentry")
@@ -4203,8 +4202,6 @@ For more help:
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
-                        "updatedAt": "2020-01-20T00:10:00Z",
-                        "createdAt": "2020-01-20T00:10:00Z",
                         "isPublished": False,
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',

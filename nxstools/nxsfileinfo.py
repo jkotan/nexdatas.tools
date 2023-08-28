@@ -368,7 +368,9 @@ class BeamtimeLoader(object):
         "PETRA IV": "petra4",
     }
 
-    btmdmap = {
+    btmdmap = {}
+
+    newbtmdmap = {
         "principalInvestigator": ["applicant.email"],
         # "pid": "beamtimeId",   # ?? is not unique for dataset
         "owner": ["leader.lastname", "applicant.lastname"],
@@ -464,6 +466,7 @@ class BeamtimeLoader(object):
         :param options: parser options
         :type options: :class:`argparse.Namespace`
         """
+        self.btmdmap = dict(self.newbtmdmap)
         if not hasattr(options, "scicatversion") or \
            int(options.scicatversion) < 4:
             self.btmdmap.update(self.oldbtmdmap)
