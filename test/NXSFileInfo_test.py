@@ -2061,7 +2061,8 @@ For more help:
         filename = 'testfileinfo.nxs'
 
         commands = [
-            ('nxsfileinfo metadata %s %s' % (filename, self.flags)).split(),
+            ('nxsfileinfo metadata -k4 '
+             '%s %s' % (filename, self.flags)).split(),
         ]
 
         wrmodule = WRITERS[self.writer]
@@ -2137,9 +2138,9 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata -m %s %s'
+                ('nxsfileinfo metadata -k4  -m %s %s'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata --raw-metadata %s %s'
+                ('nxsfileinfo metadata -k4  --raw-metadata %s %s'
                  % (filename, self.flags)).split(),
             ]
 
@@ -2226,15 +2227,15 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -m -g Group -v intimage ' % (
+            ('nxsfileinfo metadata -k3  %s %s -m -g Group -v intimage ' % (
                 filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s -m --group-postfix Group '
+            ('nxsfileinfo metadata -k4   %s %s -m --group-postfix Group '
              '-v intimage' % (
                  filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s --raw-metadata -g Group '
+            ('nxsfileinfo metadata   %s %s --raw-metadata -g Group '
              '-v intimage' % (
                  filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s  --raw-metadata '
+            ('nxsfileinfo metadata   %s %s  --raw-metadata '
              '--group-postfix Group -v intimage' % (
                  filename, self.flags)).split(),
         ]
@@ -2393,15 +2394,17 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -m -g Group -v intimage --oned' % (
+            ('nxsfileinfo metadata -k4  '
+             '%s %s -m -g Group -v intimage --oned' % (
                 filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s -m --group-postfix Group --oned '
+            ('nxsfileinfo metadata -k4  '
+             '%s %s -m --group-postfix Group --oned '
              % (
                  filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s --raw-metadata -g Group  --oned '
+            ('nxsfileinfo metadata -k4  %s %s --raw-metadata -g Group  --oned '
              % (
                  filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s  --raw-metadata --oned '
+            ('nxsfileinfo metadata -k4  %s %s  --raw-metadata --oned '
              '--group-postfix Group' % (
                  filename, self.flags)).split(),
         ]
@@ -2559,13 +2562,13 @@ For more help:
         smpl = "water"
 
         commands = [
-            ('nxsfileinfo metadata %s %s -m -g Group -v intimage '
+            ('nxsfileinfo metadata -k4  %s %s -m -g Group -v intimage '
              '--max-oned-size 3 --oned ' % (filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s -m --group-postfix Group '
+            ('nxsfileinfo metadata -k4  %s %s -m --group-postfix Group '
              '--max-oned-size 3 --oned ' % (filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s --raw-metadata -g Group '
+            ('nxsfileinfo metadata -k4  %s %s --raw-metadata -g Group '
              ' --max-oned-size 3 --oned ' % (filename, self.flags)).split(),
-            ('nxsfileinfo metadata %s %s  --raw-metadata '
+            ('nxsfileinfo metadata -k4  %s %s  --raw-metadata '
              '--max-oned-size 3 --oned --group-postfix Group' % (
                  filename, self.flags)).split(),
         ]
@@ -2792,19 +2795,20 @@ For more help:
             iid = iids[k]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -a units,NX_class '
+                ('nxsfileinfo metadata -k4  %s %s -a units,NX_class '
                  ' -i 12344321 --pid-without-filename -q %s -j %s '
                  '  --instrument-id %s '
                  % (filename, self.flags, techniques, sid, iid)).split(),
-                ('nxsfileinfo metadata %s %s  '
+                ('nxsfileinfo metadata -k4  %s %s  '
                  ' --beamtimeid 12344321 '
                  '--attributes units,NX_class --techniques %s --sample-id %s '
                  ' -y %s '
                  % (filename, self.flags, techniques, sid, iid)).split(),
-                ('nxsfileinfo metadata %s %s -a units,NX_class'
+                ('nxsfileinfo metadata -k4  %s %s -a units,NX_class'
                  ' --beamtimeid 12344321 -d --techniques %s -j %s -y %s '
                  % (filename, self.flags, techniques, sid, iid)).split(),
-                ('nxsfileinfo metadata %s %s --attributes units,NX_class -q %s'
+                ('nxsfileinfo metadata -k4  '
+                 '%s %s --attributes units,NX_class -q %s'
                  ' -i 12344321 --sample-id %s  --instrument-id %s '
                  % (filename, self.flags, techniques, sid, iid)).split(),
             ]
@@ -2995,17 +2999,17 @@ For more help:
             ltech = ltechs[k]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -a units,NX_class '
+                ('nxsfileinfo metadata -k4  %s %s -a units,NX_class '
                  ' -i 12344321 --pid-without-filename'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s  '
+                ('nxsfileinfo metadata -k4  %s %s  '
                  ' --beamtimeid 12344321 '
                  '--attributes units,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s -a units,NX_class'
+                ('nxsfileinfo metadata -k4  %s %s -a units,NX_class'
                  ' --beamtimeid 12344321 -d'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s --attributes units,NX_class'
+                ('nxsfileinfo metadata -k4  %s %s --attributes units,NX_class'
                  ' -i 12344321 '
                  % (filename, self.flags)).split(),
             ]
@@ -3162,10 +3166,10 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  '-n nexdatas_strategy,nexdatas_source,NX_class'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  '--hidden-attributes'
                  ' nexdatas_strategy,nexdatas_source,NX_class'
                  % (filename, self.flags)).split(),
@@ -3299,9 +3303,10 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s --pid 12341234 -t NXcollection'
+                ('nxsfileinfo metadata -k4  '
+                 '%s %s --pid 12341234 -t NXcollection'
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' -p 12341234 --entry-classes NXcollection'
                  % (filename, self.flags)).split(),
             ]
@@ -3431,10 +3436,10 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ("nxsfileinfo metadata %s %s --pid 12341234 "
+                ("nxsfileinfo metadata -k4  %s %s --pid 12341234 "
                  "-e logs --entry-classes \'\'"
                  % (filename, self.flags)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  " -p 12341234 --entry-names logs -t \'\'"
                  % (filename, self.flags)).split(),
             ]
@@ -3547,7 +3552,7 @@ For more help:
             title = arg[1]
 
             commands = [
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  % (filename, self.flags)).split(),
             ]
 
@@ -3609,7 +3614,7 @@ For more help:
             finally:
                 os.remove(filename)
 
-    def test_metadata_beamtime(self):
+    def test_metadata_beamtime_k3(self):
         """ test nxsconfig execute empty file
         """
         fun = sys._getframe().f_code.co_name
@@ -3729,11 +3734,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                ('nxsfileinfo metadata -k3  %s %s -b %s  -s %s -o %s -u -x %s'
                  ' --sample-id-from-name '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k3  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -3741,12 +3746,12 @@ For more help:
                  ' --sample-id-from-name '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k3  %s %s -b %s  -s %s -o %s -x %s'
                  ' --sample-id-from-name '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k3  %s %s '
                  ' --sample-id-from-name '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
@@ -3891,6 +3896,315 @@ For more help:
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p01/2020/data/12345678",
                         "type": "raw",
+                        "updatedAt": "2020-01-20T00:10:00Z",
+                        "createdAt": "2020-01-20T00:10:00Z",
+                        "isPublished": False,
+                        'creationTime': '2014-02-16T15:17:21+00:00',
+                        'endTime': '2014-02-16T15:17:21+00:00',
+                        'description': '%s' % arg[1],
+                    }
+                    self.myAssertDict(dct, res, skip=["pid"])
+                    if kk % 2:
+                        self.assertEqual(dct["pid"],
+                                         "16171271/%s_12345" % fname)
+                    else:
+                        self.assertTrue(
+                            dct["pid"].startswith(
+                                "16171271/%s_12345" % fname))
+            finally:
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                if os.path.isfile(btfname):
+                    os.remove(btfname)
+                if os.path.isfile(smfname):
+                    os.remove(smfname)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
+
+    def test_metadata_beamtime_k4(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        beamtimefile = '''{
+        "applicant": {
+          "email": "cute.cute@cute.com",
+          "institute": "Deutsches Elektronen-Synchrotron",
+          "lastname": "famous",
+          "userId": "987654321",
+          "username": "piquant"
+        },
+          "beamline": "p01",
+          "beamlineAlias": "p01",
+          "beamtimeId": "16171271",
+          "contact": "hilarious.hilarious@hilarious.com",
+          "corePath": "/asap3/petra3/gpfs/p01/2020/data/12345678",
+          "eventEnd": "2020-01-21T12:37:00Z",
+          "eventStart": "2020-01-20T01:05:00Z",
+          "facility": "PETRA III",
+          "generated": "2020-01-20T00:10:00Z",
+          "leader": {
+          "email": "feathered.feathered@feathered.com",
+          "institute": "debonair",
+          "lastname": "glossy",
+          "userId": "2879",
+          "username": "hairy"
+        },
+        "onlineAnalysis": {
+          "asapoBeamtimeTokenPath": "/shared/asapo_token",
+          "reservedNodes": [
+              "node1",
+              "node2",
+              "node2"
+          ],
+          "slurmReservation": "ponline",
+          "slurmPartition": "45473177",
+          "sshPrivateKeyPath": "shared/rsa-key.pem",
+          "sshPublicKeyPath": "shared/rsa-key.pub",
+          "userAccount": "bttest03"
+        },
+        "pi": {
+          "email": "robust.robust@robust.com",
+          "institute": "nondescript",
+          "lastname": "keen",
+          "userId": "3553",
+          "username": "military"
+        },
+        "proposalId": "65300407",
+        "proposalType": "C",
+        "title": "beautiful-cornflower-wallaby-of-agreement",
+        "unixId": "8362",
+        "users": {
+          "doorDb": [
+          "user1",
+          "user2",
+          "user3"
+          ],
+          "special": []
+        }
+        }
+        '''
+        btfname = '%s/beamtime-metadata-12345678.json' % (os.getcwd())
+        ofname = '%s/metadata-12345678.json' % (os.getcwd())
+
+        smfile = '''{
+          "user_comments": "Awesome comment",
+          "end_time": {"value":"2014-02-16T15:17:21+00:00"}
+        }
+        '''
+
+        smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
+
+        args = [
+            [
+                "ttestfileinfo.nxs",
+                "Test experiment",
+                "BL1234554",
+                "PETRA III",
+                "P3",
+                "2014-02-12T15:19:21+00:00",
+                "2014-02-15T15:17:21+00:00",
+                "water",
+                "H20",
+                "0o666",
+                "0666",
+            ],
+            [
+                "mmyfileinfo.nxs",
+                "My experiment",
+                "BT123_ADSAD",
+                "Petra III",
+                "PIII",
+                "2019-02-14T15:19:21+00:00",
+                "2019-02-15T15:27:21+00:00",
+                "test sample",
+                "LaB6",
+                "0o662",
+                "0662",
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            fdir, fname = os.path.split(filename)
+            fname, fext = os.path.splitext(fname)
+            title = arg[1]
+            beamtime = arg[2]
+            insname = arg[3]
+            inssname = arg[4]
+            stime = arg[5]
+            etime = arg[6]
+            smpl = arg[7]
+            formula = arg[8]
+            chmod = arg[9]
+            chmod2 = arg[10]
+
+            commands = [
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s'
+                 ' --sample-id-from-name '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
+                ('nxsfileinfo metadata -k4  %s %s '
+                 ' --beamtime-meta %s '
+                 ' --scientific-meta %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 ' --sample-id-from-name '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
+                 ' --sample-id-from-name '
+                 ' --pid-with-uuid'
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
+                ('nxsfileinfo metadata -k4  %s %s '
+                 ' --sample-id-from-name '
+                 ' --beamtime-meta %s '
+                 ' --scientific-meta %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 % (filename, self.flags, btfname, smfname,
+                    ofname, chmod)).split(),
+            ]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+
+            try:
+                if os.path.isfile(btfname):
+                    raise Exception("Test file %s exists" % btfname)
+                with open(btfname, "w") as fl:
+                    fl.write(beamtimefile)
+                if os.path.isfile(smfname):
+                    raise Exception("Test file %s exists" % smfname)
+                with open(smfname, "w") as fl:
+                    fl.write(smfile)
+
+                nxsfile = filewriter.create_file(filename, overwrite=True)
+                rt = nxsfile.root()
+                entry = rt.create_group("entry12345", "NXentry")
+                col = rt.create_group("logs", "NXcollection")
+                col.create_field("log1", "string").write(title)
+                ins = entry.create_group("instrument", "NXinstrument")
+                det = ins.create_group("detector", "NXdetector")
+                entry.create_group("data", "NXdata")
+                sample = entry.create_group("sample", "NXsample")
+                det.create_field("intimage", "uint32", [0, 30], [1, 30])
+
+                entry.create_field("title", "string").write(title)
+                entry.create_field(
+                    "experiment_identifier", "string").write(beamtime)
+                entry.create_field("start_time", "string").write(stime)
+                entry.create_field("end_time", "string").write(etime)
+                sname = ins.create_field("name", "string")
+                sname.write(insname)
+                sattr = sname.attributes.create("short_name", "string")
+                sattr.write(inssname)
+                sname = sample.create_field("name", "string")
+                sname.write(smpl)
+                sfml = sample.create_field("chemical_formula", "string")
+                sfml.write(formula)
+
+                nxsfile.close()
+
+                for kk, cmd in enumerate(commands):
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual('', vl.strip())
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
+                    status = os.stat(ofname)
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
+                    res = {
+                        'techniques': [],
+                        'sampleId': arg[7],
+                        "contactEmail": "robust.robust@robust.com",
+                        "pid": "13243546",
+                        "ownerGroup": "16171271-dmgt",
+                        "accessGroups": [
+                            '16171271-dmgt', '16171271-clbt', '16171271-part',
+                            'p01dmgt', 'p01staff'],
+                        "datasetName": "%s_12345" % fname,
+                        "creationLocation": "/DESY/PETRA III/p01",
+                        'instrumentId': '/petra3/p01',
+                        # "description":
+                        # "beautiful-cornflower-wallaby-of-agreement",
+                        # "endTime": "2020-01-21T12:37:00Z",
+                        "owner": "glossy",
+                        "ownerEmail": "feathered.feathered@feathered.com",
+                        "principalInvestigator": "cute.cute@cute.com",
+                        "proposalId": "16171271",
+                        "scientificMetadata": {
+                            "beamtimeId": "16171271",
+                            "DOOR_proposalId": "65300407",
+                            "user_comments": "Awesome comment",
+                            "data": {
+                                "NX_class": "NXdata"
+                            },
+                            "end_time": {
+                                "value": "2014-02-16T15:17:21+00:00"
+                            },
+                            "experiment_identifier": {
+                                "value": '%s' % arg[2]
+                            },
+                            "instrument": {
+                                "NX_class": "NXinstrument",
+                                "detector": {
+                                    "NX_class": "NXdetector",
+                                    "intimage": {
+                                        "shape": [
+                                            0,
+                                            30
+                                        ]
+                                    }
+                                },
+                                "name": {
+                                    "short_name": '%s' % arg[4],
+                                    "value": '%s' % arg[3]
+                                }
+                            },
+                            "name": "entry12345",
+                            "sample": {
+                                "NX_class": "NXsample",
+                                "chemical_formula": {
+                                    "value": '%s' % arg[8]
+                                },
+                                "name": {
+                                    "value": '%s' % arg[7]
+                                }
+                            },
+                            "start_time": {
+                                "value": '%s' % arg[5]
+                            },
+                            "title": {
+                                "value": '%s' % arg[1]
+                            }
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p01/2020/data/12345678",
+                        "type": "raw",
+                        "updatedAt": "2020-01-20T00:10:00Z",
+                        "createdAt": "2020-01-20T00:10:00Z",
                         "isPublished": False,
                         'creationTime': '2014-02-16T15:17:21+00:00',
                         'endTime': '2014-02-16T15:17:21+00:00',
@@ -4011,21 +4325,21 @@ For more help:
 
             shutil.copy("test/files/%s" % filename, filename)
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -4276,12 +4590,12 @@ For more help:
 
             shutil.copy("test/files/%s" % filename, filename)
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s'
                  ' --copy-map-file %s '
                  ' --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -4290,13 +4604,13 @@ For more help:
                  ' --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --oned '
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --oned '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
@@ -4543,12 +4857,12 @@ For more help:
 
             shutil.copy("test/files/%s" % filename, filename)
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s'
                  ' --copy-map-file %s '
                  ' --max-oned-size 3 --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -4557,13 +4871,13 @@ For more help:
                  ' --max-oned-size 3 --oned '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --max-oned-size 3 --oned '
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --max-oned-size 3 --oned '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
@@ -4830,11 +5144,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map-file %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -4842,12 +5156,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     cpfname, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -5123,11 +5437,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map-file %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -5135,12 +5449,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     cpfname, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -5415,11 +5729,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, copymap)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map %s '
@@ -5427,12 +5741,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     copymap, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, copymap)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map %s '
@@ -5704,21 +6018,21 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -5993,21 +6307,21 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -6284,11 +6598,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map-file %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -6296,12 +6610,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     cpfname, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -6582,11 +6896,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map-file %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -6594,12 +6908,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     cpfname, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -6875,11 +7189,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map-file %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -6887,12 +7201,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     cpfname, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map-file %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, cpfname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map-file %s '
@@ -7167,11 +7481,11 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  ' --copy-map %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, copymap)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map %s '
@@ -7179,12 +7493,12 @@ For more help:
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     copymap, ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --copy-map %s '
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod, copymap)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --copy-map %s '
@@ -7456,21 +7770,21 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -7745,21 +8059,21 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -8034,21 +8348,21 @@ For more help:
             chmod2 = arg[10]
 
             commands = [
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -u -x %s '
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -u -x %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
                  ' --chmod %s '
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s -b %s  -s %s -o %s -x %s'
+                ('nxsfileinfo metadata -k4  %s %s -b %s  -s %s -o %s -x %s'
                  ' --pid-with-uuid'
                  % (filename, self.flags, btfname, smfname,
                     ofname, chmod)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --beamtime-meta %s '
                  ' --scientific-meta %s '
                  ' --output %s '
@@ -8272,17 +8586,17 @@ For more help:
         smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
 
         commands = [
-            ('nxsfileinfo metadata %s -b %s  -s %s -o %s -u'
+            ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s -u'
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s '
+            ('nxsfileinfo metadata -k4  %s '
              ' --beamtime-meta %s '
              ' --scientific-meta %s '
              ' --output %s '
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s -b %s  -s %s -o %s'
+            ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s'
              ' --pid-with-uuid'
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s '
+            ('nxsfileinfo metadata -k4  %s '
              ' --beamtime-meta %s '
              ' --scientific-meta %s '
              ' --output %s '
@@ -8436,17 +8750,17 @@ For more help:
         smfname = '%s/scientific-metadata-12345678.json' % (os.getcwd())
 
         commands = [
-            ('nxsfileinfo metadata %s -b %s  -s %s -o %s -u'
+            ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s -u'
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s '
+            ('nxsfileinfo metadata -k4  %s '
              ' --beamtime-meta %s '
              ' --scientific-meta %s '
              ' --output %s '
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s -b %s  -s %s -o %s'
+            ('nxsfileinfo metadata -k4  %s -b %s  -s %s -o %s'
              ' --pid-with-uuid'
              % (self.flags, btfname, smfname, ofname)).split(),
-            ('nxsfileinfo metadata %s '
+            ('nxsfileinfo metadata -k4  %s '
              ' --beamtime-meta %s '
              ' --scientific-meta %s '
              ' --output %s '
@@ -8634,15 +8948,15 @@ For more help:
             formula = arg[8]
 
             commands = [
-                ('nxsfileinfo metadata %s %s  -o %s -u --add-empty-units'
+                ('nxsfileinfo metadata -k4  %s %s  -o %s -u --add-empty-units'
                  % (filename, self.flags, ofname)).split(),
-                ('nxsfileinfo metadata %s %s  --add-empty-units '
+                ('nxsfileinfo metadata -k4  %s %s  --add-empty-units '
                  ' --output %s '
                  % (filename, self.flags, ofname)).split(),
-                ('nxsfileinfo metadata %s %s -o %s  --add-empty-units'
+                ('nxsfileinfo metadata -k4  %s %s -o %s  --add-empty-units'
                  ' --pid-with-uuid'
                  % (filename, self.flags, ofname)).split(),
-                ('nxsfileinfo metadata %s %s '
+                ('nxsfileinfo metadata -k4  %s %s '
                  ' --output %s  --add-empty-units '
                  % (filename, self.flags, ofname)).split(),
             ]
