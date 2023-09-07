@@ -2318,7 +2318,7 @@ class Attachment(Runner):
                     sdata = None
                     adata = None
                     signal = None
-                    params = None
+                    params = {}
                     scancmd = None
                     if nxsparser.description and nxsparser.columns:
                         desc = nxsparser.description[0]
