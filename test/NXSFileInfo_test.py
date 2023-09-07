@@ -10213,6 +10213,165 @@ For more help:
                 if os.path.isfile(ofname):
                     os.remove(ofname)
 
+    def test_attachment_fio_nopars(self):
+        """ test nxsfileinfo attachment
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        ofname = '%s/attachment-metadata-12345678.json' % (os.getcwd())
+
+        args = [
+            [
+                "mys0_13_1_00190.fio",
+                "123/423/543",
+                "My_tests",
+                "12312312",
+                "p00",
+                "0o666",
+                "0666",
+                "exp_c03",
+                "ex_mo1,br1_mono",
+                "exp_c03.(counts)",
+                "lat.(mm)",
+                '{"xlabel": "br1_mono", "ylabel": "exp_t01", '
+                '"suptitle": "My_tests",'
+                '"title": "ascan br1_mono 0.0 10.0 10 0.1"}',
+                '{"xlabel": "lat.(mm)", "ylabel": "exp_c03.(counts)", '
+                '"suptitle": "My_tests", '
+                '"title": "ascan br1_mono 0.0 10.0 10 0.1"}',
+            ],
+            [
+                "mys0_13_1_00190.fio",
+                "petra3/1223/543",
+                "Water_tests",
+                "54352312",
+                "p99",
+                "0o662",
+                "0662",
+                "exp_c99,exp_c02",
+                "timestamp",
+                "exp_p02.(counts)",
+                "time.(s)",
+                '{"xlabel": "timestamp", "ylabel": "exp_t01", '
+                '"suptitle": "Water_tests",'
+                '"title": "ascan br1_mono 0.0 10.0 10 0.1"}',
+                '{"xlabel": "time.(s)", "ylabel": "exp_p02.(counts)", '
+                '"suptitle": "Water_tests",'
+                '"title": "ascan br1_mono 0.0 10.0 10 0.1"}',
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            atid = arg[1]
+            caption = arg[2]
+            bid = arg[3]
+            bl = arg[4]
+            chmod = arg[5]
+            chmod2 = arg[6]
+            signals = arg[7]
+            axes = arg[8]
+            slabel = arg[9]
+            xlabel = arg[10]
+
+            shutil.copy("test/files/%s" % filename, filename)
+            commands = [
+                ('nxsfileinfo attachment %s '
+                 ' -a %s '
+                 ' -t %s '
+                 ' -i %s '
+                 ' -b %s '
+                 ' -o %s '
+                 ' -x %s '
+                 ' -s %s '
+                 ' -e %s '
+                 ' --parameters-in-caption '
+                 % (filename, atid, caption, bid, bl,
+                    ofname, chmod, signals, axes)).split(),
+                ('nxsfileinfo attachment %s '
+                 ' --id %s '
+                 ' --caption %s '
+                 ' --beamtimeid %s '
+                 ' --beamline %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 ' --signals %s '
+                 ' --axes %s '
+                 ' --signal-label %s '
+                 ' --parameters-in-caption '
+                 ' --xlabel %s '
+                 % (filename, atid, caption, bid, bl,
+                    ofname, chmod, signals, axes, slabel, xlabel)).split(),
+            ]
+            try:
+                for ci, cmd in enumerate(commands):
+                    # print(cmd)
+
+                    pars = arg[11 + ci]
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual('', er)
+                    self.assertEqual('', vl.strip())
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
+                        status = os.stat(ofname)
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
+                    res = {
+                        'id': atid,
+                        'caption': "%s %s" % (caption, pars),
+                        'thumbnail': "",
+                        "ownerGroup": "%s-dmgt" % bid,
+                        "accessGroups": [
+                            '%s-clbt' % bid,
+                            '%s-part' % bid,
+                            '%s-dmgt' % bid,
+                            '%sdmgt' % bl, '%sstaff' % bl],
+                    }
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
+
+                    tn = dct["thumbnail"]
+                    self.assertTrue(tn.startswith("data:image/png;base64,"))
+                    ctn = tn[len("data:image/png;base64,"):]
+
+                    ipng = base64.b64decode(ctn.encode("utf-8"))
+
+                    img = PIL.Image.open(BytesIO(ipng))
+                    shape = np.array(img).shape
+                    self.assertEqual(len(shape), 3)
+                    self.assertTrue(shape[0] > 100)
+                    self.assertTrue(shape[1] > 100)
+
+            finally:
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
+
     def test_attachment_fio_scanaxes(self):
         """ test nxsfileinfo attachment
         """
