@@ -27,6 +27,7 @@ import numpy as np
 import pytz
 import time
 import dateutil.parser
+import re
 from lxml.etree import XMLParser
 
 from nxstools.nxsparser import ParserTools
@@ -55,6 +56,45 @@ class numpyEncoder(json.JSONEncoder):
             except Exception:
                 return obj.decode()
         return json.JSONEncoder.default(self, obj)
+
+
+_regex = r'^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-' \
+    r'(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])' \
+    r'(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$'
+
+_match_iso8601 = re.compile(_regex).match
+
+
+def isoDate(text):
+    """ convert date to iso format
+
+    :param text: date text to convert
+    :type text: :obj:`str`
+    :returns: date in iso format
+    :rtype: :obj:`str`
+    """
+    result = ""
+    try:
+        try:
+            if _match_iso8601(text) is not None:
+                result = text
+        except Exception:
+            pass
+        if not result:
+            date = dateutil.parser.parse(text)
+            if date.tzinfo is None:
+                tzone = time.tzname[0]
+                try:
+                    tz = pytz.timezone(tzone)
+                except Exception:
+                    import tzlocal
+                    tz = tzlocal.get_localzone()
+                date = tz.localize(date)
+            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
+            result = str(date.strftime(fmt))
+    except Exception:
+        result = text
+    return result
 
 
 def getdsname(xmlstring):
@@ -592,43 +632,18 @@ class FIOFileParser(object):
                 sline = line.split("Acquisition started at ")
                 if sline and sline[-1].strip():
                     meta["start_time"] = {
-                        "value": self._isoDate(sline[-1].strip()),
+                        "value": isoDate(sline[-1].strip()),
                         "unit": ""
                     }
             elif "Acquisition ended at " in line:
                 sline = line.split("Acquisition ended at ")
                 if sline and sline[-1].strip():
                     meta["end_time"] = {
-                        "value": self._isoDate(sline[-1].strip()),
+                        "value": isoDate(sline[-1].strip()),
                         "unit": ""
                     }
         if comments:
             meta["comments"] = comments
-
-    @classmethod
-    def _isoDate(cls, text):
-        """ convert date to iso format
-
-        :param text: date text to convert
-        :type text: :obj:`str`
-        :returns: date in iso format
-        :rtype: :obj:`str`
-        """
-        try:
-            date = dateutil.parser.parse(text)
-            if date.tzinfo is None:
-                tzone = time.tzname[0]
-                try:
-                    tz = pytz.timezone(tzone)
-                except Exception:
-                    import tzlocal
-                    tz = tzlocal.get_localzone()
-                date = tz.localize(date)
-            fmt = '%Y-%m-%dT%H:%M:%S.%f%z'
-            result = str(date.strftime(fmt))
-        except Exception:
-            result = text
-        return result
 
     def _appendParameters(self, lines, meta):
         """append comments
