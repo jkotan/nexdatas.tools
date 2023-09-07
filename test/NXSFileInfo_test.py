@@ -2730,10 +2730,11 @@ For more help:
                 "PETRA III",
                 "P3",
                 "2014-02-12T15:19:21+00:00",
-                "2014-02-15T15:17:21+00:00",
+                "2014-02-15 15:17:21+00:00",
                 "water",
                 "H20",
                 "saxs",
+                "2014-02-15T15:17:21.000000+0000",
             ],
             [
                 "mmyfileinfo.nxs",
@@ -2742,10 +2743,11 @@ For more help:
                 "Petra III",
                 "PIII",
                 "2019-02-14T15:19:21+00:00",
-                "2019-02-15T15:27:21+00:00",
+                "2019-02-15 15:27:21+00:00",
                 "test sample",
                 "LaB6",
-                "waxs,saxs,PaNET01098"
+                "waxs,saxs,PaNET01098",
+                "2019-02-15T15:27:21.000000+0000",
             ],
         ]
         ltechs = [
@@ -2893,8 +2895,8 @@ For more help:
                                 'value': '%s' % arg[5]},
                             'title': {'value': '%s' % arg[1]}
                             },
-                           'creationTime': '%s' % arg[6],
-                           'endTime': '%s' % arg[6],
+                           'creationTime': '%s' % arg[10],
+                           'endTime': '%s' % arg[10],
                            'description': '%s' % arg[1],
                            }
                     if kk % 2:

@@ -36,7 +36,8 @@ import base64
 from io import BytesIO
 
 from .nxsparser import TableTools
-from .nxsfileparser import (NXSFileParser, FIOFileParser, numpyEncoder)
+from .nxsfileparser import (NXSFileParser, FIOFileParser,
+                            numpyEncoder, isoDate)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 from .ontology import id_techniques, nexus_panet
@@ -1296,7 +1297,12 @@ class Metadata(Runner):
     @classmethod
     def _cure(cls, result):
         if 'creationTime' not in result:
-            result['creationTime'] = filewriter.FTFile.currenttime()
+            result['creationTime'] = isoDate(filewriter.FTFile.currenttime())
+        else:
+            result['creationTime'] = isoDate(result['creationTime'])
+        if 'endTime' in result:
+            result['endTime'] = isoDate(result['endTime'])
+
         if 'type' not in result:
             result['type'] = 'raw'
         if 'creationLocation' not in result:
