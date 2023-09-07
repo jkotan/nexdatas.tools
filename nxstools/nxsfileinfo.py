@@ -2267,6 +2267,7 @@ class Attachment(Runner):
             if ext and len(ext) > 1 and ext.startswith("."):
                 options.fileformat = ext[1:]
 
+        print("ww")
         if root is not None:
             if options.fileformat in ['png']:
                 result["thumbnail"] = root
@@ -2312,7 +2313,7 @@ class Attachment(Runner):
                     sdata = None
                     adata = None
                     signal = None
-                    params = None
+                    params = {}
                     scancmd = None
                     if nxsparser.description and nxsparser.columns:
                         desc = nxsparser.description[0]
