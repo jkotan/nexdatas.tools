@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.47.2 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.49.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.47</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.49</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -214,7 +214,8 @@
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 
 <span class="kn">from</span> <span class="nn">.nxsparser</span> <span class="kn">import</span> <span class="n">TableTools</span>
-<span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">NXSFileParser</span><span class="p">,</span> <span class="n">FIOFileParser</span><span class="p">,</span> <span class="n">numpyEncoder</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.nxsfileparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">NXSFileParser</span><span class="p">,</span> <span class="n">FIOFileParser</span><span class="p">,</span>
+                            <span class="n">numpyEncoder</span><span class="p">,</span> <span class="n">isoDate</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.nxsargparser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Runner</span><span class="p">,</span> <span class="n">NXSArgParser</span><span class="p">,</span> <span class="n">ErrorException</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">filewriter</span>
 <span class="kn">from</span> <span class="nn">.ontology</span> <span class="kn">import</span> <span class="n">id_techniques</span><span class="p">,</span> <span class="n">nexus_panet</span>
@@ -546,7 +547,9 @@
         <span class="s2">&quot;PETRA IV&quot;</span><span class="p">:</span> <span class="s2">&quot;petra4&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">btmdmap</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">btmdmap</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">newbtmdmap</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;principalInvestigator&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;applicant.email&quot;</span><span class="p">],</span>
         <span class="c1"># &quot;pid&quot;: &quot;beamtimeId&quot;,   # ?? is not unique for dataset</span>
         <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;leader.lastname&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.lastname&quot;</span><span class="p">],</span>
@@ -556,10 +559,15 @@
         <span class="s2">&quot;endTime&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;eventEnd&quot;</span><span class="p">],</span>    <span class="c1"># ?? should be endTime for dataset</span>
         <span class="s2">&quot;ownerEmail&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;leader.email&quot;</span><span class="p">,</span> <span class="s2">&quot;applicant.email&quot;</span><span class="p">],</span>
         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>   <span class="c1"># ?? should be from dataset</span>
-        <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
-        <span class="s2">&quot;updatedAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
+        <span class="c1"># &quot;createdAt&quot;: [&quot;generated&quot;],  # ?? should be automatic</span>
+        <span class="c1"># &quot;updatedAt&quot;: [&quot;generated&quot;],  # ?? should be automatic</span>
         <span class="c1"># &quot;proposalId&quot;: &quot;proposalId&quot;,</span>
         <span class="s2">&quot;proposalId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;beamtimeId&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="n">oldbtmdmap</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;createdAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
+        <span class="s2">&quot;updatedAt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;generated&quot;</span><span class="p">],</span>  <span class="c1"># ?? should be automatic</span>
     <span class="p">}</span>
 
     <span class="n">strcre</span> <span class="o">=</span> <span class="p">{</span>
@@ -637,6 +645,10 @@
 <span class="sd">        :param options: parser options</span>
 <span class="sd">        :type options: :class:`argparse.Namespace`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newbtmdmap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;scicatversion&quot;</span><span class="p">)</span> <span class="ow">or</span> \
+           <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">scicatversion</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">btmdmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oldbtmdmap</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__pid</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__pap</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">pap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__relpath</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">relpath</span>
@@ -1346,6 +1358,10 @@
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;pap&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Store the DESY proposal as the SciCat proposal&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="s2">&quot;--scicat-version&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;scicatversion&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;major scicat version metadata&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;--h5py&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;h5py&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use h5py module as a nexus reader&quot;</span><span class="p">)</span>
@@ -1459,7 +1475,12 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_cure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
         <span class="k">if</span> <span class="s1">&#39;creationTime&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filewriter</span><span class="o">.</span><span class="n">FTFile</span><span class="o">.</span><span class="n">currenttime</span><span class="p">()</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isoDate</span><span class="p">(</span><span class="n">filewriter</span><span class="o">.</span><span class="n">FTFile</span><span class="o">.</span><span class="n">currenttime</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isoDate</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;endTime&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isoDate</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;endTime&#39;</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="s1">&#39;type&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
             <span class="n">result</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;raw&#39;</span>
         <span class="k">if</span> <span class="s1">&#39;creationLocation&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -1983,7 +2004,16 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">beamtimeid</span> <span class="ow">and</span> <span class="s2">&quot;datasetId&quot;</span> <span class="ow">in</span> <span class="n">result</span> \
            <span class="ow">and</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span> <span class="ow">and</span> \
            <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">beamtimeid</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">bts</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;datasetId&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">bts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">beamtimeid</span> <span class="o">=</span> <span class="n">bts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">bts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">beamtimeid</span> <span class="o">=</span> <span class="n">bts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">beamtimeid</span> <span class="o">=</span> <span class="n">bts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="s2">&quot;ownerGroup&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">beamtimeid</span><span class="p">:</span>
             <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ownerGroup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-dmgt&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">beamtimeid</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&quot;accessGroups&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -2452,9 +2482,9 @@
                         <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">override</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">tn</span><span class="p">:</span>
                         <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tn</span>
+                        <span class="k">if</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                         <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">ppflag</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">pars</span> <span class="ow">and</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                             <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">pars</span>
 
                 <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;fio&#39;</span><span class="p">]:</span>
@@ -2466,7 +2496,7 @@
                     <span class="n">sdata</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">adata</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="n">signal</span> <span class="o">=</span> <span class="kc">None</span>
-                    <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
                     <span class="n">scancmd</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">if</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span> <span class="ow">and</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                         <span class="n">desc</span> <span class="o">=</span> <span class="n">nxsparser</span><span class="o">.</span><span class="n">description</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -2537,12 +2567,14 @@
                             <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">],</span> <span class="n">pars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot1d</span><span class="p">(</span>
                                 <span class="n">sdata</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span>
                                 <span class="n">scancmd</span><span class="o">=</span><span class="n">scancmd</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                         <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">ppflag</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">pars</span> <span class="ow">and</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                             <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">pars</span>
 
         <span class="k">if</span> <span class="s2">&quot;thumbnail&quot;</span> <span class="ow">in</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
                 <span class="n">result</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                 <span class="bp">cls</span><span class="o">=</span><span class="n">numpyEncoder</span><span class="p">)</span></div>

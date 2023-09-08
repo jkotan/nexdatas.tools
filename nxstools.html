@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools package &#8212; NXSTools 3.47.2 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.49.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.47</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.49</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -3959,7 +3959,7 @@ and stores it in DB or filesytem</p>
 
 <dl class="py attribute">
 <dt id="nxstools.nxsfileinfo.BeamtimeLoader.btmdmap">
-<code class="sig-name descname">btmdmap</code><em class="property"> = {'contactEmail': ['pi.email', 'applicant.email'], 'createdAt': ['generated'], 'description': ['title'], 'endTime': ['eventEnd'], 'owner': ['leader.lastname', 'applicant.lastname'], 'ownerEmail': ['leader.email', 'applicant.email'], 'principalInvestigator': ['applicant.email'], 'proposalId': ['beamtimeId'], 'sourceFolder': ['corePath'], 'updatedAt': ['generated']}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.btmdmap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">btmdmap</code><em class="property"> = {}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.btmdmap" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -4057,6 +4057,16 @@ and stores it in DB or filesytem</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.BeamtimeLoader.newbtmdmap">
+<code class="sig-name descname">newbtmdmap</code><em class="property"> = {'contactEmail': ['pi.email', 'applicant.email'], 'description': ['title'], 'endTime': ['eventEnd'], 'owner': ['leader.lastname', 'applicant.lastname'], 'ownerEmail': ['leader.email', 'applicant.email'], 'principalInvestigator': ['applicant.email'], 'proposalId': ['beamtimeId'], 'sourceFolder': ['corePath']}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.newbtmdmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.BeamtimeLoader.oldbtmdmap">
+<code class="sig-name descname">oldbtmdmap</code><em class="property"> = {'createdAt': ['generated'], 'updatedAt': ['generated']}</em><a class="headerlink" href="#nxstools.nxsfileinfo.BeamtimeLoader.oldbtmdmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="nxstools.nxsfileinfo.BeamtimeLoader.overwrite">
@@ -4896,6 +4906,23 @@ and stores it in DB or filesytem</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>xmlstring</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – datasource xml string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxstools.nxsfileparser.isoDate">
+<code class="sig-prename descclassname">nxstools.nxsfileparser.</code><code class="sig-name descname">isoDate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileparser.html#isoDate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileparser.isoDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert date to iso format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – date text to convert</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>date in iso format</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
