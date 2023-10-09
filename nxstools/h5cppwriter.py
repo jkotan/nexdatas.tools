@@ -801,6 +801,11 @@ class H5CppGroup(filewriter.FTGroup):
                     if dfl.filterid == 1:
                         h5object = dfl.h5object
                         h5object.level = dfl.rate
+                        if dfl.options:
+                            try:
+                                h5object.level = int(dfl.options[0])
+                            except Exception:
+                                pass
                     else:
                         h5object = h5cpp.filter.ExternalFilter(
                             dfl.filterid, list(dfl.options), dfl.name)
