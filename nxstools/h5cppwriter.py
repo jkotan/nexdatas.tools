@@ -810,7 +810,7 @@ class H5CppGroup(filewriter.FTGroup):
                         h5object(dcpl, h5cpp.filter.Availability.OPTIONALY)
                     else:
                         h5object(dcpl, h5cpp.filter.Availability.MANDATORY)
-                        
+
                     if dfl.shuffle:
                         sfilter = h5cpp.filter.Shuffle()
                         sfilter(dcpl)
