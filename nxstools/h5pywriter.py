@@ -728,6 +728,12 @@ class H5PYGroup(filewriter.FTGroup):
         shape = shape or [1]
         mshape = [None for _ in shape] or (None,)
         if dfilter:
+            if isinstance(dfilter, list):
+                if len(dfilter) == 1:
+                    dfilter = dfilter[0]
+                else:
+                    raise Exception("Filter pipes not supported by h5py. "
+                                    "Please change to h5cpp")
             if dfilter.filterid == 1:
                 f = H5PYField(
                     self._h5object.create_dataset(

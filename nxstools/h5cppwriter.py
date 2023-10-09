@@ -795,16 +795,25 @@ class H5CppGroup(filewriter.FTGroup):
             dataspace = h5cpp.dataspace.Simple(
                 tuple(shape), tuple([h5cpp.dataspace.UNLIMITED] * len(shape)))
             if dfilter:
-                if dfilter.filterid == 1:
-                    h5object = dfilter.h5object
-                    h5object.level = dfilter.rate
-                else:
-                    h5object = h5cpp.filter.ExternalFilter(
-                        dfilter.filterid, list(dfilter.options))
-                h5object(dcpl)
-                if dfilter.shuffle:
-                    sfilter = h5cpp.filter.Shuffle()
-                    sfilter(dcpl)
+                if not isinstance(dfilter, list):
+                    dfilter = [dfilter]
+                for dfl in dfilter:
+                    if dfl.filterid == 1:
+                        h5object = dfl.h5object
+                        h5object.level = dfl.rate
+                    else:
+                        h5object = h5cpp.filter.ExternalFilter(
+                            dfl.filterid, list(dfl.options), dfl.name)
+                    if dfl.availability:
+                        h5object(dcpl)
+                    elif dfl.availability == "optional":
+                        h5object(dcpl, h5cpp.filter.Availability.OPTIONALY)
+                    else:
+                        h5object(dcpl, h5cpp.filter.Availability.MANDATORY)
+                        
+                    if dfl.shuffle:
+                        sfilter = h5cpp.filter.Shuffle()
+                        sfilter(dcpl)
             if chunk is None and shape is not None:
                 chunk = [(dm if dm != 0 else 1) for dm in shape]
             dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED
