@@ -473,16 +473,60 @@ def get_links(parent):
     return links
 
 
-def data_filter():
-    """ create deflate filter
+def data_filter(filterid=None, name=None, options=None, availability=None,
+                shuffle=None, rate=None):
+    """ create data filter
 
+    :param filterid: hdf5 filter id
+    :type filterid: :obj:`int`
+    :param name: filter name
+    :type name: :obj:`str`
+    :param options: filter cd values
+    :type options: :obj:`tuple` <:obj:`int`>
+    :param availability: filter availability i.e. 'optional' or 'mandatory'
+    :type availability: :obj:`str`
+    :param shuffle: filter shuffle
+    :type shuffle: :obj:`bool`
+    :param rate: filter shuffle
+    :type rate: :obj:`bool`
+    :returns: data filter object
+    :rtype: :class:`H5CppDataFilter`
+    """
+    dtf = H5CppDataFilter()
+    if filterid:
+        dtf.filterid = filterid
+    if name:
+        dtf.name = name
+    if shuffle:
+        dtf.shuffle = shuffle
+    if rate:
+        dtf.rate = rate
+    if options:
+        dtf.options = options
+    if availability:
+        dtf.availability = availability
+    return dtf
+
+
+def deflate_filter(rate=None, shuffle=None, availability=None):
+    """ create data filter
+
+    :param rate: filter shuffle
+    :type rate: :obj:`bool`
+    :param shuffle: filter shuffle
+    :type shuffle: :obj:`bool`
     :returns: deflate filter object
     :rtype: :class:`H5CppDataFilter`
     """
-    return H5CppDataFilter(h5cpp.filter.Deflate())
-
-
-deflate_filter = data_filter
+    dtf = H5CppDataFilter()
+    dtf.filterid = 1
+    dtf.name = "deflate"
+    if shuffle:
+        dtf.shuffle = shuffle
+    dtf.rate = rate or 2
+    if availability:
+        dtf.availability = availability
+    return dtf
 
 
 def target_field_view(filename, fieldpath, shape,
@@ -798,27 +842,45 @@ class H5CppGroup(filewriter.FTGroup):
                 if not isinstance(dfilter, list):
                     dfilter = [dfilter]
                 for dfl in dfilter:
-                    if dfl.filterid == 1:
-                        h5object = dfl.h5object
-                        h5object.level = dfl.rate
-                        if dfl.options:
-                            try:
-                                h5object.level = int(dfl.options[0])
-                            except Exception:
-                                pass
-                    else:
-                        h5object = h5cpp.filter.ExternalFilter(
-                            dfl.filterid, list(dfl.options), dfl.name)
-                    if dfl.availability:
-                        h5object(dcpl)
-                    elif dfl.availability == "optional":
-                        h5object(dcpl, h5cpp.filter.Availability.OPTIONALY)
-                    else:
-                        h5object(dcpl, h5cpp.filter.Availability.MANDATORY)
-
                     if dfl.shuffle:
                         sfilter = h5cpp.filter.Shuffle()
                         sfilter(dcpl)
+                    h5object = None
+                    if dfl.rate:
+                        h5object = h5cpp.filter.Deflate(dfl.rate)
+                    elif dfl.filterid > 0:
+                        h5object = h5cpp.filter.ExternalFilter(
+                            dfl.filterid, list(dfl.options), dfl.name)
+                    elif dfl.name == "shuffle":
+                        h5object = h5cpp.filter.Shuffle()
+                    elif dfl.name == "deflate":
+                        if dfl.options:
+                            dfl.rate = dfl.options[0]
+                        h5object = h5cpp.filter.Deflate(dfl.rate)
+                    elif dfl.name == "nbit":
+                        h5object = h5cpp.filter.NBit()
+                    elif dfl.name == "fletcher32":
+                        h5object = h5cpp.filter.Fletcher32()
+                    elif dfl.name == "szip":
+                        h5object = h5cpp.filter.SZip()
+                        if dfl.options:
+                            h5object.option_mask = dfl.options[0]
+                        if len(dfl.options) > 1:
+                            h5object.pixel_per_block = dfl.options[1]
+                    elif dfl.name == "scaleoffset":
+                        h5object = h5cpp.filter.ScaleOffset()
+                        if dfl.options:
+                            h5object.scale_type = dfl.options[0]
+                        if len(dfl.options) > 1:
+                            h5object.scale_factor = dfl.options[1]
+
+                    if h5object:
+                        if dfl.availability:
+                            h5object(dcpl)
+                        elif dfl.availability == "optional":
+                            h5object(dcpl, h5cpp.filter.Availability.OPTIONALY)
+                        else:
+                            h5object(dcpl, h5cpp.filter.Availability.MANDATORY)
             if chunk is None and shape is not None:
                 chunk = [(dm if dm != 0 else 1) for dm in shape]
             dcpl.layout = h5cpp.property.DatasetLayout.CHUNKED

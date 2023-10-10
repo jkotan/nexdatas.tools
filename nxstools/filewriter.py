@@ -936,7 +936,7 @@ class FTDataFilter(FTObject):
         #: (:obj:`int`) compression rate
         self._rate = 0
         #: (:obj:`int`) compression filter id
-        self._filterid = 1
+        self._filterid = 0
         #: (:obj:`tuple` <:obj:`int`>) compression options
         self._options = tuple()
         #: (:obj:`str`) filter name
