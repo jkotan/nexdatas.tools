@@ -428,7 +428,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -1057,7 +1057,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -1352,7 +1352,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -1644,12 +1644,12 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.data_filter(name="deflate")
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
             df2.rate = 4
-            df2.shuffle = 6
+            df2.shuffle = True
 
             entry.create_field("strscalar", "string")
             entry.create_field("floatscalar", "float64")
@@ -1946,7 +1946,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -2282,7 +2282,7 @@ class H5CppWriterTest(unittest.TestCase):
 
     # default createfile test
     # \brief It tests default settings
-    def test_h5cppdeflate(self):
+    def test_h5cppdeflate_list(self):
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
         self._fname = '%s/%s%s.h5' % (
@@ -2299,12 +2299,16 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
-            df2 = H5CppWriter.data_filter()
-            df2.rate = 4
-            df2.shuffle = True
+            df2 = None
+            dfa = H5CppWriter.data_filter()
+            dfa.name = 'deflate'
+            dfa.options = (3,)
+            dfb = H5CppWriter.data_filter()
+            dfb.name = 'shuffle'
+            df2 = [dfa, dfb]
 
             entry.create_field("strscalar", "string")
             entry.create_field("floatscalar", "float64")
@@ -2319,22 +2323,34 @@ class H5CppWriterTest(unittest.TestCase):
             det.create_field("strvec", "string", [0, 2, 2], [1, 2, 2])
             det.create_field(
                 "floatvec", "float64", [1, 20, 10], [1, 10, 10], dfilter=df1)
-            det.create_field(
+            dt = det.create_field(
                 "intvec", "uint32", [0, 2, 30], dfilter=df2)
 
-            self.assertEqual(df0.rate, 0)
+            self.assertEqual(df0.rate, 2)
             self.assertEqual(df0.shuffle, False)
             self.assertEqual(df0.parent, None)
             print(type(df0.h5object))
-            self.assertTrue(isinstance(df0.h5object, h5cpp._filter.Deflate))
             self.assertEqual(df1.rate, 2)
             self.assertEqual(df1.shuffle, False)
             self.assertEqual(df1.parent, None)
-            self.assertTrue(isinstance(df1.h5object, h5cpp._filter.Deflate))
-            self.assertEqual(df2.rate, 4)
-            self.assertEqual(df2.shuffle, True)
-            self.assertEqual(df2.parent, None)
-            self.assertTrue(isinstance(df2.h5object, h5cpp._filter.Deflate))
+            print(type(df2[1].h5object))
+            filters = h5cpp.filter.ExternalFilters()
+            dcpl = dt.h5object.creation_list
+            flags = filters.fill(dcpl)
+            print(flags)
+            self.assertEqual(len(filters), 2)
+            self.assertEqual(len(flags), 2)
+            self.assertEqual(flags[0], h5cpp.filter.Availability.OPTIONAL)
+            self.assertEqual(filters[0].cd_values, [3])
+            self.assertEqual(filters[0].id, 1)
+            self.assertEqual(filters[0].name, "deflate")
+            self.assertEqual(len(filters), 2)
+            self.assertEqual(len(flags), 2)
+            self.assertEqual(flags[1], h5cpp.filter.Availability.OPTIONAL)
+            self.assertEqual(filters[1].cd_values, [4])
+            self.assertEqual(filters[1].id, 2)
+            self.assertEqual(filters[1].name, "shuffle")
+
         finally:
             os.remove(self._fname)
 
@@ -2359,7 +2375,7 @@ class H5CppWriterTest(unittest.TestCase):
                 det = ins.create_group("detector", "NXdetector")
                 entry.create_group("data", "NXdata")
 
-                df0 = H5CppWriter.data_filter()
+                df0 = H5CppWriter.deflate_filter()
                 df1 = H5CppWriter.data_filter()
                 df1.filterid = 32008
                 df1.options = (0, 2)
@@ -2385,21 +2401,21 @@ class H5CppWriterTest(unittest.TestCase):
                 det.create_field(
                     "intvec", "uint32", [0, 2, 30], dfilter=df2)
 
-                self.assertEqual(df0.rate, 0)
+                self.assertEqual(df0.rate, 2)
                 self.assertEqual(df0.shuffle, False)
                 self.assertEqual(df0.parent, None)
-                self.assertTrue(isinstance(df0.h5object,
-                                           h5cpp._filter.Deflate))
+                # self.assertTrue(isinstance(df0.h5object,
+                #                            h5cpp._filter.Deflate))
                 self.assertEqual(df1.rate, 0)
                 self.assertEqual(df1.shuffle, False)
                 self.assertEqual(df1.parent, None)
-                self.assertTrue(isinstance(df1.h5object,
-                                           h5cpp._filter.Deflate))
+                # self.assertTrue(isinstance(df1.h5object,
+                #                            h5cpp._filter.Deflate))
                 self.assertEqual(df2.rate, 0)
                 self.assertEqual(df2.shuffle, True)
                 self.assertEqual(df2.parent, None)
-                self.assertTrue(isinstance(df2.h5object,
-                                           h5cpp._filter.Deflate))
+                # self.assertTrue(isinstance(df2.h5object,
+                #                            h5cpp._filter.Deflate))
             finally:
                 os.remove(self._fname)
         else:
@@ -2481,7 +2497,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -2708,7 +2724,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -3349,7 +3365,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -3716,7 +3732,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()
@@ -4121,7 +4137,7 @@ class H5CppWriterTest(unittest.TestCase):
             det = ins.create_group("detector", "NXdetector")
             dt = entry.create_group("data", "NXdata")
 
-            df0 = H5CppWriter.data_filter()
+            df0 = H5CppWriter.deflate_filter()
             df1 = H5CppWriter.data_filter()
             df1.rate = 2
             df2 = H5CppWriter.data_filter()

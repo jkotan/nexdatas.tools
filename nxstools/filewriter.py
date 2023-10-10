@@ -936,9 +936,49 @@ class FTDataFilter(FTObject):
         #: (:obj:`int`) compression rate
         self._rate = 0
         #: (:obj:`int`) compression filter id
-        self._filterid = 1
+        self._filterid = 0
         #: (:obj:`tuple` <:obj:`int`>) compression options
         self._options = tuple()
+        #: (:obj:`str`) filter name
+        self._name = ""
+        #: (:obj:`str`) filter availability
+        self._availability = ""
+
+    @property
+    def name(self):
+        """ getter for filter name
+
+        :returns: filter name
+        :rtype: :obj:`tuple` <:obj:`str`>
+        """
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        """ setter for filter name
+
+        :param value: filter name
+        :type value: :obj:`tuple` <:obj:`str`>
+        """
+        self._name = value
+
+    @property
+    def availability(self):
+        """ getter for filter availability
+
+        :returns: filter availability
+        :rtype: :obj:`tuple` <:obj:`str`>
+        """
+        return self._availability
+
+    @availability.setter
+    def availability(self, value):
+        """ setter for filter availability
+
+        :param value: filter availability
+        :type value: :obj:`tuple` <:obj:`str`>
+        """
+        self._availability = value
 
     @property
     def options(self):

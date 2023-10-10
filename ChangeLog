@@ -1,3 +1,7 @@
+2023-10-09 Jan Kotanski <jankotan@gmail.com>
+	* add support for data filter list (#516)
+	* tagged as v3.50.0
+
 2023-09-08 Jan Kotanski <jankotan@gmail.com>
 	* cure endTime and creationTime in nxsfileinfo metadata (#511)
 	* fix nxsfileinfo attachment from fio with empty parameters (#513)
