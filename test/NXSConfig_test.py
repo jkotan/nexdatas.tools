@@ -247,9 +247,12 @@ For more help:
 
     def parseRST(self, text):
         parser = docutils.parsers.rst.Parser()
-        components = (docutils.parsers.rst.Parser,)
-        settings = docutils.frontend.OptionParser(
-            components=components).get_default_values()
+        component = docutils.parsers.rst.Parser
+        if hasattr(docutils.frontend, 'get_default_settings'):
+            settings = docutils.frontend.get_default_settings(component)
+        else:
+            settings = docutils.frontend.OptionParser(
+                components=(component,)).get_default_values()
         document = docutils.utils.new_document(
             '<rst-doc>', settings=settings)
         parser.parse(text, document)
