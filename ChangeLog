@@ -1,3 +1,7 @@
+2023-10-25 Jan Kotanski <jankotan@gmail.com>
+	* fix order of secop meaning by highest importance (#519)
+	* tagged as v3.50.1
+
 2023-10-09 Jan Kotanski <jankotan@gmail.com>
 	* add support for data filter list (#516)
 	* tagged as v3.50.0

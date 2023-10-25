@@ -1932,7 +1932,7 @@ class SECoPCPCreator(CPCreator):
                 created.append(mn)
 
         llinks = sorted([(tg, mns[0], mns[1]) for tg, mns in links.items()],
-                        key=itemgetter(2))
+                        key=itemgetter(2), reverse=True)
 
         for target, mn, semn in llinks:
             starget = target.split("/")
