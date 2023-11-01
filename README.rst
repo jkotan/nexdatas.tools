@@ -36,7 +36,7 @@ Configuration tools for NeXDaTaS Tango Servers consists of the following command
 - `nxsconfig <https://nexdatas.github.io/nxstools/nxsconfig.html>`__ reads NeXus Configuration Server settings
 - `nxscreate <https://nexdatas.github.io/nxstools/nxscreate.html>`__ creates NeXus Configuration components
 - `nxsdata <https://nexdatas.github.io/nxstools/nxsdata.html>`__ runs NeXus Data Writer
-- `nxsfileinfo <https://nexdatas.github.io/nxstools/nxsfileinfo.html>`__ shows nedadata of the NeXus/HDF5 file
+- `nxsfileinfo <https://nexdatas.github.io/nxstools/nxsfileinfo.html>`__ shows metadata of the NeXus/HDF5 file
 - `nxsetup <https://nexdatas.github.io/nxstools/nxsetup.html>`__ setups NeXDaTaS Tango Server environment
 
 as well as the `nxstools <https://nexdatas.github.io/nxstools/nxstools.html>`__ package which allows perform these operations
