@@ -1,3 +1,7 @@
+2023-11-09 Jan Kotanski <jankotan@gmail.com>
+	* update tests by changing tango.Device_4Impl to tango.LatestDeviceImpl (#524)
+	* tagged as v3.50.2
+
 2023-10-25 Jan Kotanski <jankotan@gmail.com>
 	* fix order of secop meaning by highest importance (#519)
 	* tagged as v3.50.1
