@@ -1661,7 +1661,7 @@ class OrigDatablock(Runner):
             dest="skip", default="")
         self._parser.add_argument(
             "-a", "--add",
-            help="list of filtes to be added (separated by commas "
+            help="list of files to be added (separated by commas "
             "without spaces). Default: ''. E.g. 'scan1.nxs,scan2.nxs'",
             dest="add", default="")
         self._parser.add_argument(

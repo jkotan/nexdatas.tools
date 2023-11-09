@@ -193,7 +193,7 @@ Options:
   -s SKIP, --skip SKIP  filters for files to be skipped (separated by commas
                         without spaces). Default: ''. E.g.
 			'*.pyc,*\~'
-  -a ADD, --add ADD     list of filtes to be added (separated by commas
+  -a ADD, --add ADD     list of files to be added (separated by commas
                         without spaces). Default: ''. E.g.
                         'scan1.nxs,scan2.nxs'
   -r RELPATH, --relative-path RELPATH
