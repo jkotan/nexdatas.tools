@@ -33,6 +33,7 @@ import grp
 import fnmatch
 import yaml
 import base64
+import math
 from io import BytesIO
 
 from .nxsparser import TableTools
@@ -689,7 +690,8 @@ class BeamtimeLoader(object):
                             if tg in td:
                                 td = td[tg]
                             else:
-                                td = td[tg] = {}
+                                td[tg] = {}
+                                td = td[tg]
                         parent[tg] = md
             for line in cplist:
                 if line and len(line) > 1 and line[0] and line[1] and \
@@ -713,7 +715,8 @@ class BeamtimeLoader(object):
                             if tg in td:
                                 td = td[tg]
                             else:
-                                td = td[tg] = {}
+                                td[tg] = {}
+                                td = td[tg]
                         parent[tg] = md
         return metadata
 
@@ -1611,6 +1614,629 @@ class Metadata(Runner):
                             fl.write(metadata)
                 else:
                     print(metadata)
+        except Exception as e:
+            sys.stderr.write("nxsfileinfo: '%s'\n"
+                             % str(e))
+            sys.stderr.flush()
+            self._parser.print_help()
+            sys.exit(255)
+
+
+class GroupMetadata(Runner):
+
+    """ Group Metadata runner"""
+
+    #: (:obj:`str`) command description
+    description = "group metadata information for the nexus file"
+    #: (:obj:`str`) command epilog
+    epilog = "" \
+        + " examples:\n" \
+        + "       nxsfileinfo groupmetadata" \
+        + " -o /user/data/myscan.scan.json " \
+        + " -t /user/data/myscan.attachment.json " \
+        + " -l /user/data/myscan.origdatablock.json " \
+        + " -c /home/user/group_config.txt " \
+        + " -m /user/data/myscan_00023.scan.json " \
+        + " -d /user/data/myscan_00023.origdatablock.json " \
+        + " -a /user/data/myscan_00023.attachment.json \n" \
+        + " \n" \
+        + "       nxsfileinfo groupmetadata myscan_m001 " \
+        " -m /user/data/myscan_00021.scan.json\n" \
+        + "  -c /home/user/group_config.txt " \
+        + " \n" \
+        + " \n" \
+        + "       nxsfileinfo groupmetadata  myscan_m001 " \
+        + " -c /home/user/group_config.txt " \
+        + " -m /user/data/myscan_00023.scan.json " \
+        + " -d /user/data/myscan_00023.origdatablock.json " \
+        + " -a /user/data/myscan_00023.attachment.json  \n" \
+        + " \n" \
+        + "       nxsfileinfo groupmetadata " \
+        + " -m /user/data/myscan_00023.scan.json " \
+        + " -d /user/data/myscan_00023.origdatablock.json " \
+        + " -c /home/user/group_config.txt " \
+        + " \n" \
+        + "\n"
+
+    def create(self):
+        """ creates parser
+
+        """
+        # self._parser.add_argument(
+        #     "-w", "--owner-group",
+        #     default="", dest="ownergroup",
+        #     help="owner group name. Default is {beamtimeid}-dmgt")
+        # self._parser.add_argument(
+        #     "-c", "--access-groups",
+        #     default=None, dest="accessgroups",
+        #     help="access group names separated by commas. "
+        #     "Default is {beamtimeId}-dmgt,
+        #       {beamtimeid}-clbt,{beamtimeId}-part,"
+        #     "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-p", "--pid", dest="pid",
+            help=("dataset pid"))
+        # self._parser.add_argument(
+        #     "-i", "--beamtimeid", dest="beamtimeid",
+        #     help=("beamtime id"))
+        # self._parser.add_argument(
+        #     "-u", "--pid-with-uuid", action="store_true",
+        #     default=False, dest="puuid",
+        #     help=("generate pid with uuid"))
+        # self._parser.add_argument(
+        #     "-d", "--pid-without-filename", action="store_true",
+        #     default=False, dest="pfname",
+        #     help=("generate pid without file name"))
+        self._parser.add_argument(
+            "-f", "--write-files", action="store_true",
+            default=False, dest="writefiles",
+            help=("write output to files"))
+        self._parser.add_argument(
+            "-k", "--scicat-version",
+            default=3, dest="scicatversion",
+            help="major scicat version metadata")
+        self._parser.add_argument(
+            "-x", "--chmod", dest="chmod",
+            help=("json metadata file mod bits, e.g. 0o662"))
+        self._parser.add_argument(
+            "-g --group-map", dest="groupmap",
+            help=("json or yaml map of {output: input} "
+                  "or [[output, input],]  or a text file list "
+                  " to re-arrange metadata"))
+        self._parser.add_argument(
+            'group', metavar='group', type=str, nargs="*",
+            help='group name')
+
+    def postauto(self):
+        """ parser creator after autocomplete run """
+        # self._parser.add_argument(
+        #     "-b", "--beamtime-meta", dest="beamtimemeta",
+        #     help=("beamtime metadata file"))
+        # self._parser.add_argument(
+        #     "-s", "--scientific-meta", dest="scientificmeta",
+        #     help=("scientific metadata file"))
+        self._parser.add_argument(
+            "-r", "--group-map-file", dest="groupmapfile",
+            help=("json or yaml file containing the copy map, "
+                  "see also --group-map"))
+        self._parser.add_argument(
+            "-m", "--metadata", dest="metadatafile",
+            help=("json metadata file"))
+        self._parser.add_argument(
+            "-d", "--origdatablock", dest="origdatablockfile",
+            help=("json origmetadata file"))
+        self._parser.add_argument(
+            "-a", "--attachment", dest="attachmentfile",
+            help=("json attachment file"))
+        self._parser.add_argument(
+            "-o", "--output", dest="output",
+            help=("output scicat group metadata file"))
+        self._parser.add_argument(
+            "-l", "--datablock-output", dest="dboutput",
+            help=("output scicat group datablocks list file"))
+        self._parser.add_argument(
+            "-t", "--attachament-output", dest="atoutput",
+            help=("output scicat group attachements list file"))
+        # self._parser.add_argument(
+        #     "-r", "--relative-path", dest="relpath",
+        #     help=("relative path to the scan files"))
+
+    def run(self, options):
+        """ the main program function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: output information
+        :rtype: :obj:`str`
+        """
+        self.show(options)
+
+    @classmethod
+    def _cure(cls, result):
+        if 'creationTime' not in result:
+            result['creationTime'] = isoDate(filewriter.FTFile.currenttime())
+        else:
+            result['creationTime'] = isoDate(result['creationTime'])
+        if 'endTime' in result:
+            result['endTime'] = isoDate(result['endTime'])
+
+        if 'type' not in result:
+            result['type'] = 'raw'
+        if 'creationLocation' not in result:
+            result['creationLocation'] = "/DESY/PETRA III"
+        if 'ownerGroup' not in result:
+            result['ownerGroup'] = "ingestor"
+        return result
+
+    @classmethod
+    def _group_metadata(cls, grfile, scfile, clist, options):
+        """ group scan metadata
+
+        :param grfile: grouped metadata file
+        :type grfile: :obj:`str`
+        :param scfile: scan metadata file
+        :type scfile: :obj:`str`
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: grouped metadata
+        :rtype: :obj:`dct` <:obj:`str`, `any`>
+        """
+        # print("GROUP", grfile, scfile)
+        try:
+            with open(scfile, "r") as fl:
+                sfl = fl.read()
+            ds = json.loads(sfl)
+            if not isinstance(ds, dict):
+                ds = {}
+        except Exception as e:
+            print("WARNING: %s" % str(e))
+            ds = {}
+        try:
+            with open(grfile, "r") as fl:
+                sfl = fl.read()
+            metadata = json.loads(sfl)
+            if not isinstance(ds, dict):
+                metadata = {}
+        except Exception as e:
+            print("WARNING: %s" % str(e))
+            metadata = {}
+
+        metadata = cls._update_metadata(metadata, ds, clist)
+        return metadata
+
+    @classmethod
+    def _update_metadata(cls, gr, ds, cplist):
+        """ update and group scan metadata
+
+        :param gr: group metadata
+        :type gr: :obj:`dict`
+        :param ds: scan metadata
+        :type ds: :obj:`dict`
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
+        :returns: grouped metadata
+        :rtype: :obj:`dct` <:obj:`str`, `any`>
+        """
+
+        for line in cplist:
+            if line and len(line) > 1 and line[0] and line[1] and \
+               isinstance(line[0], str) and isinstance(line[1], str) and \
+               not line[0].startswith(line[1] + "."):
+                ts = line[0]
+                vs = line[1]
+                vls = vs.split(".")
+                md = ds
+                for vl in vls:
+                    if vl in md:
+                        md = md[vl]
+                    else:
+                        break
+                else:
+                    tgs = ts.split(".")
+                    td = gr
+                    parent = None
+                    for tg in tgs:
+                        parent = td
+                        if tg in td:
+                            td = td[tg]
+                        else:
+                            td[tg] = {}
+                            td = td[tg]
+                    cls._merge_meta(parent, tg, md)
+        return gr
+
+    @classmethod
+    def _merge_meta(cls, parent, key, md):
+        """ update and group scan metadata
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        """
+        if isinstance(md, str):
+            tg = None
+            if key in parent.keys():
+                tg = parent[key]
+            if tg and isinstance(tg, dict):
+                if "value" not in tg:
+                    tg["value"] = None
+                tg = tg["value"]
+            if not tg:
+                parent[key] = md
+            elif isinstance(tg, list):
+                if md not in tg:
+                    tg.append(md)
+            elif tg != md:
+                parent[key] = [tg, md]
+
+        unit = ""
+        if isinstance(md, dict):
+            if "unit" in md:
+                unit = md["unit"]
+            if "value" in md:
+                md = md["value"]
+            else:
+                md = None
+        if isinstance(md, float) or isinstance(md, int):
+            value = md
+            tg = None
+            if key in parent.keys():
+                tg = parent[key]
+
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
+            if "value" not in tg:
+                tg["value"] = 0
+            if "unit" not in tg:
+                tg["unit"] = unit
+            if "min" not in tg:
+                tg["min"] = value
+            if "max" not in tg:
+                tg["max"] = value
+            if "std" not in tg:
+                tg["std"] = 0.0
+            if "counts" not in tg:
+                tg["counts"] = 0
+            ov = tg["value"]
+            ocnts = tg["counts"]
+            ostd = tg["std"]
+            os2 = ostd * ostd
+
+            ncnts = ocnts + 1
+            if tg["unit"] == unit:
+                tg["value"] = float((ov * ocnts) + value)/(ncnts)
+                if tg["min"] > value:
+                    tg["min"] = value
+                if tg["max"] < value:
+                    tg["max"] = value
+                tg["counts"] += 1
+                if ncnts == 2:
+                    ns2 = float(
+                        (value - tg["value"]) * (value - tg["value"])
+                        + (ov - tg["value"]) * (ov - tg["value"])
+                    ) / (ncnts - 1)
+                    tg["std"] = math.sqrt(ns2)
+                elif ncnts > 2:
+                    # ns2 = float(
+                    #     (ncnts - 2) * os2
+                    #     +x (value - tg["value"]) * (value - ov)
+                    # ) \ (ncnts - 1)
+                    ns2 = float(
+                        (ncnts - 2) * os2
+                        + (value - tg["value"]) * (value - ov)
+                    ) / (ncnts - 1)
+                    tg["std"] = math.sqrt(ns2)
+
+    @classmethod
+    def _create_metadata(cls, scfile, clist, options):
+        """ group scan metadata
+
+        :param scfile: scan metadata file
+        :type scfile: :obj:`str`
+        :param clist: copy list to overwrite metadata
+        :type clist: :obj:`list` < [:obj:`str`, :obj:`str`] >
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: [grouped metadata,
+                   grouped origdatablocks,
+                   grouped attachements]
+        :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
+        """
+        # print("CREATE from ", scfile)
+
+        cpmap = {
+            "accessGroups": "accessGroups",
+            "creationTime": "creationTime",
+            "contactEmail": "contactEmail",
+            "sourceFolderHost": "sourceFolderHost",
+            "description": "description",
+            "isPublished": "isPublished",
+            "owner": "owner",
+            "ownerEmail": "ownerEmail",
+            "ownerGroup": "ownerGroup",
+            "investigator": "principleInvestigator",
+            "sourceFolder": "sourceFolder",
+            "techniques": "techniques",
+            "scientificMetadata.instrumentId": "instrumentId",
+            "scientificMetadata.creationLocation": "creationLocation",
+            "scientificMetadata.proposalId": "proposalId",
+            "scientificMetadata.DOOR_proposalId":
+            "scientificMetadata.DOOR_proposalId",
+            "scientificMetadata.beamtimeId":
+            "scientificMetadata.beamtimeId",
+        }
+
+        metadata = {
+            "type": "derived",
+            "inputDatasets": [],
+            "usedSoftware": "https://github.com/nexdatas/nxstools",
+            "jobParameters": "nxsfileinfo groupmetadata ...",
+        }
+        try:
+            with open(scfile, "r") as fl:
+                sfl = fl.read()
+            ds = json.loads(sfl)
+            if not isinstance(ds, dict):
+                ds = {}
+        except Exception as e:
+            print("WARNING: %s" % str(e))
+            ds = {}
+
+        for ts, vs in cpmap.items():
+            if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+               and not ts.startswith(vs + "."):
+                vls = vs.split(".")
+                md = ds
+                for vl in vls:
+                    if vl in md:
+                        md = md[vl]
+                    else:
+                        break
+                else:
+                    tgs = ts.split(".")
+                    td = metadata
+                    parent = None
+                    for tg in tgs:
+                        parent = td
+                        if tg in td:
+                            td = td[tg]
+                        else:
+                            td[tg] = {}
+                            td = td[tg]
+                    parent[tg] = md
+
+        metadata = cls._update_metadata(metadata, ds, clist)
+        return metadata
+
+    @classmethod
+    def groupmetadata(cls, options):
+        """ group scan metadata
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        :returns: [grouped metadata,
+                   grouped origdatablocks,
+                   grouped attachements]
+        :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
+        """
+        result = None
+        dresult = []
+        aresult = []
+
+        imfile = options.metadatafile
+        omfile = None
+        if imfile and os.path.isfile(imfile):
+            if options.output:
+                omfile = options.output
+            elif options.group and options.group[0]:
+                metadir, _ = os.path.split(imfile)
+                omfile = os.path.join(
+                    metadir, "%s.scan.json" % options.group[0])
+                if options.writefiles:
+                    options.output = omfile
+
+        idfile = options.origdatablockfile
+        odfile = None
+        if options.dboutput:
+            odfile = options.dboutput
+        elif options.group and options.group[0]:
+            if imfile and os.path.isfile(imfile):
+                metadir, _ = os.path.split(imfile)
+            elif idfile:
+                metadir, _ = os.path.split(idfile)
+            if metadir:
+                odfile = os.path.join(
+                    metadir, "%s.origdatablock.json" % options.group[0])
+                if options.writefiles:
+                    options.dboutput = odfile
+
+        iafile = options.attachmentfile
+        oafile = None
+        if options.atoutput:
+            oafile = options.atoutput
+        elif options.group and options.group[0]:
+            if imfile and os.path.isfile(imfile):
+                metadir, _ = os.path.split(imfile)
+            elif iafile:
+                metadir, _ = os.path.split(iafile)
+            if metadir:
+                oafile = os.path.join(
+                    metadir, "%s.attachement.json" % options.group[0])
+                if options.writefiles:
+                    options.atoutput = oafile
+
+        usergroupmap = {}
+        usergrouplist = []
+
+        if hasattr(options, "groupmap") and options.groupmap:
+            dct = yaml.safe_load(options.groupmap.strip())
+            if dct and isinstance(dct, dict):
+                usergroupmap.update(dct)
+            elif dct:
+                if isinstance(dct, str):
+                    dct = getlist(options.groupmap.strip())
+                if isinstance(dct, list):
+                    for line in dct:
+                        if isinstance(line, list):
+                            usergrouplist.append(line[:2])
+
+        if hasattr(options, "groupmapfile") and options.groupmapfile:
+            with open(options.groupmapfile, "r") as fl:
+                jstr = fl.read()
+                # print(jstr)
+                try:
+                    dct = yaml.safe_load(jstr.strip())
+                except Exception:
+                    if jstr:
+                        nan = float('nan')    # noqa: F841
+                        dct = eval(jstr.strip())
+                        # mdflatten(dstr, [], dct)
+                if dct and isinstance(dct, dict):
+                    usergroupmap.update(dct)
+                elif dct:
+                    if isinstance(dct, str):
+                        dct = getlist(jstr.strip())
+                    if isinstance(dct, list):
+                        for line in dct:
+                            if isinstance(line, list):
+                                usergrouplist.append(line[:2])
+
+        for ky, vl in usergroupmap.items():
+            if vl:
+                usergrouplist.append([ky, vl])
+
+        if omfile:
+            if os.path.isfile(omfile):
+                result = cls._group_metadata(
+                    omfile, imfile, usergrouplist, options)
+            else:
+                result = cls._create_metadata(
+                    imfile, usergrouplist, options)
+
+        if odfile and os.path.isfile(odfile):
+            with open(odfile, "r") as fl:
+                jstr = fl.read()
+                try:
+                    dresult = json.loads(jstr)
+                    if not isinstance(dresult, list):
+                        dresult = [dresult]
+                except Exception:
+                    dresult = []
+        if idfile and os.path.isfile(idfile):
+            dresult.append(idfile)
+
+        if oafile and os.path.isfile(oafile):
+            with open(oafile, "r") as fl:
+                jstr = fl.read()
+                try:
+                    aresult = json.loads(jstr)
+                    if not isinstance(dresult, list):
+                        aresult = [dresult]
+                except Exception:
+                    aresult = []
+        if iafile and os.path.isfile(iafile):
+            aresult.append(iafile)
+
+        jsnresult = None
+        if result is not None:
+            jsnresult = json.dumps(
+                result, sort_keys=True, indent=4, cls=numpyEncoder)
+        return [jsnresult, json.dumps(dresult), json.dumps(aresult)]
+
+    def show(self, options):
+        """ the main function
+
+        :param options: parser options
+        :type options: :class:`argparse.Namespace`
+        """
+        try:
+            metadata, datablocks, attachments = self.groupmetadata(options)
+            if metadata:
+                if options.output:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+
+                        try:
+                            with open(options.output,
+                                      "w", opener=opener) as fl:
+                                fl.write(metadata)
+                        except Exception:
+                            with open(options.output, "w") as fl:
+                                fl.write(metadata)
+                            os.chmod(options.output, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.output, "w") as fl:
+                            fl.write(metadata)
+                if options.dboutput:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+
+                        try:
+                            with open(options.dboutput,
+                                      "w", opener=opener) as fl:
+                                fl.write(datablocks)
+                        except Exception:
+                            with open(options.dboutput, "w") as fl:
+                                fl.write(datablocks)
+                            os.chmod(options.dboutput, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.dboutput, "w") as fl:
+                            fl.write(datablocks)
+                if options.atoutput:
+                    chmod = None
+                    try:
+                        chmod = int(options.chmod, 8)
+                    except Exception:
+                        options.chmod = None
+
+                    if options.chmod:
+                        oldmask = os.umask(0)
+
+                        def opener(path, flags):
+                            return os.open(path, flags, chmod)
+
+                        try:
+                            with open(options.atoutput,
+                                      "w", opener=opener) as fl:
+                                fl.write(attachments)
+                        except Exception:
+                            with open(options.atoutput, "w") as fl:
+                                fl.write(attachments)
+                            os.chmod(options.atoutput, chmod)
+                        os.umask(oldmask)
+                    else:
+                        with open(options.atoutput, "w") as fl:
+                            fl.write(attachments)
+                else:
+                    print(metadata)
+                    print(datablocks)
+                    print(attachments)
         except Exception as e:
             sys.stderr.write("nxsfileinfo: '%s'\n"
                              % str(e))
@@ -3266,6 +3892,7 @@ def main():
     parser.cmdrunners = [('field', Field),
                          ('general', General),
                          ('metadata', Metadata),
+                         ('groupmetadata', GroupMetadata),
                          ('origdatablock', OrigDatablock),
                          ('sample', Sample),
                          ('instrument', Instrument),
