@@ -105,17 +105,20 @@ class NXSFileInfoTest(unittest.TestCase):
         self.helperror = "Error: too few arguments\n"
 
         self.helpinfo = """usage: nxsfileinfo [-h] """ \
-            """{field,general,metadata,origdatablock,sample,""" \
+            """{field,general,metadata,groupmetadata,""" \
+            """origdatablock,sample,""" \
             """instrument,attachment} ...
 
 Command-line tool for showing meta data from Nexus Files
 
 positional arguments:
-  {field,general,metadata,origdatablock,sample,instrument,attachment}
+  {field,general,metadata,groupmetadata,origdatablock,sample,""" \
+      """instrument,attachment}
                         sub-command help
     field               show field information for the nexus file
     general             show general information for the nexus file
     metadata            show metadata information for the nexus file
+    groupmetadata       group scan metadata information
     origdatablock       generate description of all scan files
     sample              generate description of sample
     instrument          generate description of instrument
@@ -5089,8 +5092,8 @@ For more help:
         "scientificMetadata.sample": null,
         "scientificMetadata.instrument_name":
             "scientificMetadata.instrument.name.value",
-        "scientificMetadata.chemical_formula.value":
-            "scientificMetadata.sample.chemical_formula",
+        "scientificMetadata.chemical_formula":
+            "scientificMetadata.sample.chemical_formula.value",
         "scientificMetadata.sample_name":
             "scientificMetadata.sample.name.value"
         }
@@ -5262,6 +5265,7 @@ For more help:
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
                             "user_comments": "Awesome comment",
+                            "chemical_formula": arg[8],
                             "data": {
                                 "NX_class": "NXdata"
                             },
@@ -6843,8 +6847,8 @@ For more help:
             "scientificMetadata.instrument.name.value"],
           ["scientificMetadata.sample_name",
             "scientificMetadata.sample.name.value"],
-          ["scientificMetadata.chemical_formula.value",
-            "scientificMetadata.sample.chemical_formula"]
+          ["scientificMetadata.chemical_formula",
+            "scientificMetadata.sample.chemical_formula.value"]
            ]
         '''
 
@@ -7011,6 +7015,7 @@ For more help:
                         "principalInvestigator": "cute.cute@cute.com",
                         "proposalId": "16171271",
                         "scientificMetadata": {
+                            'chemical_formula': formula,
                             "beamtimeId": "16171271",
                             "DOOR_proposalId": "65300407",
                             "user_comments": "Awesome comment",

@@ -1627,7 +1627,7 @@ class GroupMetadata(Runner):
     """ Group Metadata runner"""
 
     #: (:obj:`str`) command description
-    description = "group metadata information for the nexus file"
+    description = "group scan metadata information"
     #: (:obj:`str`) command epilog
     epilog = "" \
         + " examples:\n" \
