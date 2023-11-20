@@ -1676,9 +1676,9 @@ class GroupMetadata(Runner):
         self._parser.add_argument(
             "-p", "--pid", dest="pid",
             help=("dataset pid"))
-        # self._parser.add_argument(
-        #     "-i", "--beamtimeid", dest="beamtimeid",
-        #     help=("beamtime id"))
+        self._parser.add_argument(
+            "-i", "--beamtimeid", dest="beamtimeid",
+            help=("beamtime id"))
         # self._parser.add_argument(
         #     "-u", "--pid-with-uuid", action="store_true",
         #     default=False, dest="puuid",
@@ -1866,7 +1866,9 @@ class GroupMetadata(Runner):
                 if "value" not in tg:
                     tg["value"] = None
                 tg = tg["value"]
-            if not tg:
+            if isinstance(tg, list):
+                parent[key].append(md)
+            elif not tg:
                 parent[key] = md
             elif isinstance(tg, list):
                 if md not in tg:
@@ -1988,6 +1990,30 @@ class GroupMetadata(Runner):
             print("WARNING: %s" % str(e))
             ds = {}
 
+        group = ""
+        if options.pid:
+            metadata["pid"] = str(options.pid)
+        else:
+            if "pid" in ds and ds["pid"]:
+                spid = ds["pid"].split("/")
+            else:
+                spid = []
+            if options.group and options.group[0]:
+                group = options.group[0]
+            if options.beamtimeid:
+                beamtimeid = options.beamtimeid
+            else:
+                if len(spid) > 1:
+                    beamtimeid = spid[-2]
+                else:
+                    beamtimeid = spid[0]
+            if len(spid) > 1:
+                spid[-1] = beamtimeid
+                spid[-2] = group
+                metadata["pid"] = "/".join(spid)
+            else:
+                metadata["pid"] = "%s/%s" % (group, beamtimeid)
+
         for ts, vs in cpmap.items():
             if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
                and not ts.startswith(vs + "."):
@@ -2073,6 +2099,7 @@ class GroupMetadata(Runner):
 
         usergroupmap = {}
         usergrouplist = []
+        grouplist = [["inputDatasets", "pid"]]
 
         if hasattr(options, "groupmap") and options.groupmap:
             dct = yaml.safe_load(options.groupmap.strip())
@@ -2107,17 +2134,18 @@ class GroupMetadata(Runner):
                             if isinstance(line, list):
                                 usergrouplist.append(line[:2])
 
+        grouplist.extend(usergrouplist)
         for ky, vl in usergroupmap.items():
             if vl:
-                usergrouplist.append([ky, vl])
+                grouplist.append([ky, vl])
 
         if omfile:
             if os.path.isfile(omfile):
                 result = cls._group_metadata(
-                    omfile, imfile, usergrouplist, options)
+                    omfile, imfile, grouplist, options)
             else:
                 result = cls._create_metadata(
-                    imfile, usergrouplist, options)
+                    imfile, grouplist, options)
 
         if odfile and os.path.isfile(odfile):
             with open(odfile, "r") as fl:
