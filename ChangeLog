@@ -1,5 +1,6 @@
 2023-11-21 Jan Kotanski <jankotan@gmail.com>
-	* add nxsfileinfo groupmetadata subcommand (#530)
+	* add nxsfileinfo groupmetadata subcommand (#526)
+	* fix applying copymap (#526)
 	* tagged as v3.51.0
 
 2023-11-09 Jan Kotanski <jankotan@gmail.com>
