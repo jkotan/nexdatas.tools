@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsfileinfo &#8212; NXSTools 3.50.0 documentation</title>
+    <title>nxsfileinfo &#8212; NXSTools 3.51.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.50</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.51</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -100,6 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-sample">nxsfileinfo sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id14">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -182,6 +183,11 @@
 <li><a class="reference internal" href="#nxsfileinfo-attachment">nxsfileinfo attachment</a><ul>
 <li><a class="reference internal" href="#id12">Synopsis</a></li>
 <li><a class="reference internal" href="#id13">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id14">nxsfileinfo metadata</a><ul>
+<li><a class="reference internal" href="#id15">Synopsis</a></li>
+<li><a class="reference internal" href="#id16">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -481,7 +487,7 @@ without spaces). Default: ‘’. E.g.
 ‘<em>.pyc,</em>~’</p>
 </dd>
 <dt><kbd><span class="option">-a <var>ADD</var></span>, <span class="option">--add <var>ADD</var></span></kbd></dt>
-<dd><p>list of filtes to be added (separated by commas
+<dd><p>list of files to be added (separated by commas
 without spaces). Default: ‘’. E.g.
 ‘scan1.nxs,scan2.nxs’</p>
 </dd>
@@ -705,6 +711,76 @@ detectors and by semicolon for more plots. Default:
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="s1">&#39;HH water&#39;</span> -o ~/at1.json thumbnail.png
 nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="s1">&#39;HH water&#39;</span> -o ~/at2.json -s pilatus myscan_00123.nxs
 nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="s1">&#39;HH water&#39;</span> -o ~/at2.json  myscan_00124.fio
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id14">
+<h2>nxsfileinfo metadata<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<p>It groups scan metadata to one dataset</p>
+<div class="section" id="id15">
+<h3>Synopsis<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Usage: nxsfileinfo groupmetadata <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>groupname<span class="o">]</span>
+</pre></div>
+</div>
+<dl>
+<dt>Options:</dt><dd><dl class="option-list">
+<dt><kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></dt>
+<dd><p>show this help message and exit</p>
+</dd>
+<dt><kbd><span class="option">-p <var>PID</var></span>, <span class="option">--pid <var>PID</var></span></kbd></dt>
+<dd><p>dataset pid</p>
+</dd>
+<dt><kbd><span class="option">-i <var>BEAMTIMEID</var></span>, <span class="option">--beamtimeid</span></kbd></dt>
+<dd><p>BEAMTIMEID beamtime id</p>
+</dd>
+<dt><kbd><span class="option">-f</span>, <span class="option">--write-files</span></kbd></dt>
+<dd><p>write output to files</p>
+</dd>
+<dt><kbd><span class="option">-k <var>SCICATVERSION</var></span>, <span class="option">--scicat-version <var>SCICATVERSION</var></span></kbd></dt>
+<dd><p>major scicat version metadata</p>
+</dd>
+<dt><kbd><span class="option">-x <var>CHMOD</var></span>, <span class="option">--chmod <var>CHMOD</var></span></kbd></dt>
+<dd><p>json metadata file mod bits, e.g. 0o662</p>
+</dd>
+<dt><kbd><span class="option">-g <var>GROUPMAP</var></span>, <span class="option">--group-map <var>GROUPMAP</var></span></kbd></dt>
+<dd><p>json or yaml map of {output: input} or [[output,
+input],] or a text file list to re-arrange metadata</p>
+</dd>
+<dt><kbd><span class="option">-r <var>GROUPMAPFILE</var></span>, <span class="option">--group-map-file <var>GROUPMAPFILE</var></span></kbd></dt>
+<dd><p>json or yaml file containing the copy map, see also</p>
+</dd>
+<dt><kbd><span class="option">-m <var>METADATAFILE</var></span>, <span class="option">--metadata <var>METADATAFILE</var></span></kbd></dt>
+<dd><p>json metadata file</p>
+</dd>
+<dt><kbd><span class="option">-d <var>ORIGDATABLOCKFILE</var></span>, <span class="option">--origdatablock <var>ORIGDATABLOCKFILE</var></span></kbd></dt>
+<dd><p>json origmetadata file</p>
+</dd>
+<dt><kbd><span class="option">-a <var>ATTACHMENTFILE</var></span>, <span class="option">--attachment <var>ATTACHMENTFILE</var></span></kbd></dt>
+<dd><p>json attachment file</p>
+</dd>
+<dt><kbd><span class="option">-o <var>OUTPUT</var></span>, <span class="option">--output <var>OUTPUT</var></span></kbd></dt>
+<dd><p>output scicat group metadata file</p>
+</dd>
+<dt><kbd><span class="option">-l <var>DBOUTPUT</var></span>, <span class="option">--datablock-output <var>DBOUTPUT</var></span></kbd></dt>
+<dd><p>output scicat group datablocks list file</p>
+</dd>
+<dt><kbd><span class="option">-t <var>ATOUTPUT</var></span>, <span class="option">--attachament-output <var>ATOUTPUT</var></span></kbd></dt>
+<dd><p>output scicat group attachements list file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="id16">
+<h3>Example<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsfileinfo groupmetadata -o /user/data/myscan.scan.json  -t /user/data/myscan.attachment.json  -l /user/data/myscan.origdatablock.json  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json
+
+nxsfileinfo groupmetadata myscan_m001  -m /user/data/myscan_00021.scan.json -c /home/user/group_config.txt
+
+nxsfileinfo groupmetadata  myscan_m001  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json
+
+nxsfileinfo groupmetadata  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -c /home/user/group_config.txt
 </pre></div>
 </div>
 </div>

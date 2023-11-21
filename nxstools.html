@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools package &#8212; NXSTools 3.50.0 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.51.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.50</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.51</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-sample">nxsfileinfo sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxsfileinfo.html#id14">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -2982,7 +2983,7 @@ by the new line character</p></li>
 <dl class="py attribute">
 <dt id="nxstools.nxsetup.SetUp.db">
 <code class="sig-name descname">db</code><a class="headerlink" href="#nxstools.nxsetup.SetUp.db" title="Permalink to this definition">¶</a></dt>
-<dd><p>(<a class="reference external" href="https://pytango.readthedocs.io/en/latest/database.html#tango.Database" title="(in PyTango v9.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.Database</span></code></a>) tango database server</p>
+<dd><p>(<a class="reference external" href="https://pytango.readthedocs.io/en/latest/database.html#tango.Database" title="(in PyTango v9.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.Database</span></code></a>) tango database server</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3046,7 +3047,7 @@ by the new line character</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>server</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</p></li>
 <li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</p></li>
-<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
+<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
 <li><p><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</p></li>
 <li><p><strong>waitforproc</strong> – wait for process list update</p></li>
@@ -3070,7 +3071,7 @@ by the new line character</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>server</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – server name, check if running when not None</p></li>
 <li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – device name, check if exported when not None</p></li>
-<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
+<li><p><strong>adminproxy</strong> (<a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a>) – Starter device proxy</p></li>
 <li><p><strong>maxcnt</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – maximal waiting time in 10ms</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – verbose mode</p></li>
 <li><p><strong>waitforproc</strong> – wait for process list update</p></li>
@@ -4366,6 +4367,90 @@ and stores it in DB or filesytem</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>root</strong> (class:<cite>filewriter.FTGroup</cite>) – nexus file root</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxstools.nxsfileinfo.GroupMetadata">
+<em class="property">class </em><code class="sig-prename descclassname">nxstools.nxsfileinfo.</code><code class="sig-name descname">GroupMetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parser</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxstools.nxsargparser.Runner" title="nxstools.nxsargparser.Runner"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxstools.nxsargparser.Runner</span></code></a></p>
+<p>Group Metadata runner</p>
+<p>parser creator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parser</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">NXSFileInfoArgParser</span></code>) – option parser</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.create">
+<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates parser</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.description">
+<code class="sig-name descname">description</code><em class="property"> = 'group scan metadata information'</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) command description</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.epilog">
+<code class="sig-name descname">epilog</code><em class="property"> = ' examples:\n       nxsfileinfo groupmetadata -o /user/data/myscan.scan.json  -t /user/data/myscan.attachment.json  -l /user/data/myscan.origdatablock.json  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json \n \n       nxsfileinfo groupmetadata myscan_m001  -m /user/data/myscan_00021.scan.json\n  -c /home/user/group_config.txt  \n \n       nxsfileinfo groupmetadata  myscan_m001  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json  \n \n       nxsfileinfo groupmetadata  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -c /home/user/group_config.txt  \n\n'</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.epilog" title="Permalink to this definition">¶</a></dt>
+<dd><p>(<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) command epilog</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.groupmetadata">
+<em class="property">classmethod </em><code class="sig-name descname">groupmetadata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata.groupmetadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.groupmetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>group scan metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parser options</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[grouped metadata,
+grouped origdatablocks,
+grouped attachements]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>,:obj:<cite>str</cite>, <a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.postauto">
+<code class="sig-name descname">postauto</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata.postauto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.postauto" title="Permalink to this definition">¶</a></dt>
+<dd><p>parser creator after autocomplete run</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main program function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parser options</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>output information</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">options</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nxstools/nxsfileinfo.html#GroupMetadata.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>the main function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>options</strong> (<a class="reference external" href="https://docs.python.org/2.7/library/argparse.html#argparse.Namespace" title="(in Python v2.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.Namespace</span></code></a>) – parser options</p>
 </dd>
 </dl>
 </dd></dl>
@@ -6061,7 +6146,7 @@ xml template files of modules</p>
 <dd class="field-even"><p>configuration server proxy</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytango.readthedocs.io/en/latest/client_api/device_proxy.html#tango.DeviceProxy" title="(in PyTango v9.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tango.DeviceProxy</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>

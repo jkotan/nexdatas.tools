@@ -193,7 +193,7 @@ Options:
   -s SKIP, --skip SKIP  filters for files to be skipped (separated by commas
                         without spaces). Default: ''. E.g.
 			'*.pyc,*\~'
-  -a ADD, --add ADD     list of filtes to be added (separated by commas
+  -a ADD, --add ADD     list of files to be added (separated by commas
                         without spaces). Default: ''. E.g.
                         'scan1.nxs,scan2.nxs'
   -r RELPATH, --relative-path RELPATH
@@ -358,3 +358,56 @@ Example
 	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at1.json thumbnail.png
 	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json -s pilatus myscan_00123.nxs
 	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json  myscan_00124.fio
+
+
+nxsfileinfo metadata
+--------------------
+
+It groups scan metadata to one dataset
+
+Synopsis
+""""""""
+
+.. code:: bash
+
+	  Usage: nxsfileinfo groupmetadata [options] [groupname]
+
+Options:
+  -h, --help            show this help message and exit
+  -p PID, --pid PID     dataset pid
+  -i BEAMTIMEID, --beamtimeid  BEAMTIMEID beamtime id
+  -f, --write-files     write output to files
+  -k SCICATVERSION, --scicat-version SCICATVERSION
+                        major scicat version metadata
+  -x CHMOD, --chmod CHMOD
+                        json metadata file mod bits, e.g. 0o662
+  -g GROUPMAP, --group-map GROUPMAP
+                        json or yaml map of {output: input} or [[output,
+                        input],] or a text file list to re-arrange metadata
+  -r GROUPMAPFILE, --group-map-file GROUPMAPFILE
+                        json or yaml file containing the copy map, see also
+  -m METADATAFILE, --metadata METADATAFILE
+                        json metadata file
+  -d ORIGDATABLOCKFILE, --origdatablock ORIGDATABLOCKFILE
+                        json origmetadata file
+  -a ATTACHMENTFILE, --attachment ATTACHMENTFILE
+                        json attachment file
+  -o OUTPUT, --output OUTPUT
+                        output scicat group metadata file
+  -l DBOUTPUT, --datablock-output DBOUTPUT
+                        output scicat group datablocks list file
+  -t ATOUTPUT, --attachament-output ATOUTPUT
+                        output scicat group attachements list file
+
+Example
+"""""""
+
+.. code:: bash
+
+	  nxsfileinfo groupmetadata -o /user/data/myscan.scan.json  -t /user/data/myscan.attachment.json  -l /user/data/myscan.origdatablock.json  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json
+
+	  nxsfileinfo groupmetadata myscan_m001  -m /user/data/myscan_00021.scan.json -c /home/user/group_config.txt
+
+	  nxsfileinfo groupmetadata  myscan_m001  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json
+
+	  nxsfileinfo groupmetadata  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -c /home/user/group_config.txt

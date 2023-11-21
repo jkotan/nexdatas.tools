@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.50.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.51.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.50</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.51</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -98,6 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-sample">nxsfileinfo sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#id14">nxsfileinfo metadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -2110,7 +2111,7 @@
                 <span class="n">created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
 
         <span class="n">llinks</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([(</span><span class="n">tg</span><span class="p">,</span> <span class="n">mns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">tg</span><span class="p">,</span> <span class="n">mns</span> <span class="ow">in</span> <span class="n">links</span><span class="o">.</span><span class="n">items</span><span class="p">()],</span>
-                        <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                        <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">semn</span> <span class="ow">in</span> <span class="n">llinks</span><span class="p">:</span>
             <span class="n">starget</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
