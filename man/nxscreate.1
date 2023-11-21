@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSCREATE" "1" "Apr 05, 2023" "3.46" "NXSTools"
+.TH "NXSCREATE" "1" "Nov 21, 2023" "3.51" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .SH DESCRIPTION
@@ -671,7 +671,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
+default <nexuspath> is \(dq/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/\(dq
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -739,8 +739,8 @@ device name without first \(aq0\(aq
 nxscreate comp counter
 nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
-nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
-nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+nxscreate comp \-n \(dq/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n \(dq/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(dq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
 .ft P
 .fi
 .UNINDENT
@@ -815,8 +815,8 @@ by comman. Default: \(aqtemperature,magnetic_field\(aq
 first linked targets separated by comman
 .TP
 .BI \-z \ TRANSATTRS\fR,\fB \ \-\-transformation\-attributes \ TRANSATTRS
-a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
-{"rotation_z":{"transformation_type":"rotation","vector":[0,\-1,0]}}
+a JSON dictionary with transformation parameters i.e, \(dqtransformation_type\(dq, \(dqvector\(dq, \(dqdepends_on\(dq. Default:
+{\(dqrotation_z\(dq:{\(dqtransformation_type\(dq:\(dqrotation\(dq,\(dqvector\(dq:[0,\-1,0]}}
 .TP
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
