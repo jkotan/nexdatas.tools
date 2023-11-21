@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSFILEINFO" "1" "Apr 05, 2023" "3.46" "NXSTools"
+.TH "NXSFILEINFO" "1" "Nov 21, 2023" "3.51" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
@@ -112,7 +112,7 @@ show this help message and exit
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
+full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
@@ -169,7 +169,7 @@ show this help message and exit
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
 .BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
+names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
@@ -182,13 +182,13 @@ access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: ‘Parameters’
+postfix to be added to NeXus group name. The default: \(aqParameters\(aq
 .TP
 .BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
+names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
 .TP
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
+names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
 .TP
 .B  \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
@@ -200,7 +200,7 @@ add empty units for fields without units
 add 1d values to scientificMetadata
 .TP
 .BI \-\-max\-oned\-size \ MAXONEDSIZE
-add first and last values of 1d records to scientificMetadata if its size excides –max\-oned\-size value
+add first and last values of 1d records to scientificMetadata if its size excides \-\-max\-oned\-size value
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
@@ -216,7 +216,7 @@ generate pid with file name
 .TP
 .BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
-spaces).The default: ‘’
+spaces).The default: \(aq\(aq
 .TP
 .BI \-j \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sampleId
@@ -252,13 +252,13 @@ or a text file list to re\-arrange metadata
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
 field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re\-arrange metadata. The default:
-‘scientificMetadata.nxsfileinfo_parameters.copymap.value’
+\(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE
-json or yaml file containing the copy map, see also –copy\-map
+json or yaml file containing the copy map, see also \-\-copy\-map
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by the file extension
+input file format, e.g. \(aqnxs\(aq. Default is defined by the file extension
 .TP
 .B  \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
@@ -322,13 +322,13 @@ access group names separated by commas. Default is
 .TP
 .BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: ‘’. E.g.
-‘\fI\&.pyc,\fP~’
+without spaces). Default: \(aq\(aq. E.g.
+\(aq\fI\&.pyc,\fP~\(aq
 .TP
 .BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of files to be added (separated by commas
-without spaces). Default: ‘’. E.g.
-‘scan1.nxs,scan2.nxs’
+without spaces). Default: \(aq\(aq. E.g.
+\(aqscan1.nxs,scan2.nxs\(aq
 .TP
 .BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
@@ -526,7 +526,7 @@ amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. ‘nxs’. Default is defined by
+input file format, e.g. \(aqnxs\(aq. Default is defined by
 the file extension
 .TP
 .B  \-\-h5py
@@ -548,7 +548,7 @@ axis/axes data name(s) separated by comma
 a JSON dictionary with scan\-command axes to override,
 axis/axes data name(s) separated by comma for
 detectors and by semicolon for more plots. Default:
-{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
+{\(dqhklscan\(dq:\(dqh;k;l\(dq,\(dqqscan\(dq:\(dqqz;qpar\(dq}
 .TP
 .BI \-m \ FRAME\fR,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
@@ -581,6 +581,86 @@ output scicat metadata file
 nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at1.json thumbnail.png
 nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at2.json \-s pilatus myscan_00123.nxs
 nxsfileinfo attachment \-b p00 \-i 2342342 \-t \(aqHH water\(aq \-o ~/at2.json  myscan_00124.fio
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SH NXSFILEINFO METADATA
+.sp
+It groups scan metadata to one dataset
+.SS Synopsis
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+Usage: nxsfileinfo groupmetadata [options] [groupname]
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B Options:
+.INDENT 7.0
+.TP
+.B  \-h\fP,\fB  \-\-help
+show this help message and exit
+.TP
+.BI \-p \ PID\fR,\fB \ \-\-pid \ PID
+dataset pid
+.TP
+.BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid
+BEAMTIMEID beamtime id
+.TP
+.B  \-f\fP,\fB  \-\-write\-files
+write output to files
+.TP
+.BI \-k \ SCICATVERSION\fR,\fB \ \-\-scicat\-version \ SCICATVERSION
+major scicat version metadata
+.TP
+.BI \-x \ CHMOD\fR,\fB \ \-\-chmod \ CHMOD
+json metadata file mod bits, e.g. 0o662
+.TP
+.BI \-g \ GROUPMAP\fR,\fB \ \-\-group\-map \ GROUPMAP
+json or yaml map of {output: input} or [[output,
+input],] or a text file list to re\-arrange metadata
+.TP
+.BI \-r \ GROUPMAPFILE\fR,\fB \ \-\-group\-map\-file \ GROUPMAPFILE
+json or yaml file containing the copy map, see also
+.TP
+.BI \-m \ METADATAFILE\fR,\fB \ \-\-metadata \ METADATAFILE
+json metadata file
+.TP
+.BI \-d \ ORIGDATABLOCKFILE\fR,\fB \ \-\-origdatablock \ ORIGDATABLOCKFILE
+json origmetadata file
+.TP
+.BI \-a \ ATTACHMENTFILE\fR,\fB \ \-\-attachment \ ATTACHMENTFILE
+json attachment file
+.TP
+.BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
+output scicat group metadata file
+.TP
+.BI \-l \ DBOUTPUT\fR,\fB \ \-\-datablock\-output \ DBOUTPUT
+output scicat group datablocks list file
+.TP
+.BI \-t \ ATOUTPUT\fR,\fB \ \-\-attachament\-output \ ATOUTPUT
+output scicat group attachements list file
+.UNINDENT
+.UNINDENT
+.SS Example
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+nxsfileinfo groupmetadata \-o /user/data/myscan.scan.json  \-t /user/data/myscan.attachment.json  \-l /user/data/myscan.origdatablock.json  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json
+
+nxsfileinfo groupmetadata myscan_m001  \-m /user/data/myscan_00021.scan.json \-c /home/user/group_config.txt
+
+nxsfileinfo groupmetadata  myscan_m001  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json
+
+nxsfileinfo groupmetadata  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-c /home/user/group_config.txt
 .ft P
 .fi
 .UNINDENT
