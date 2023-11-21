@@ -1184,7 +1184,7 @@ class Metadata(Runner):
             help=("Store the DESY proposal as the SciCat proposal"))
         self._parser.add_argument(
             "-k", "--scicat-version",
-            default=3, dest="scicatversion",
+            default=4, dest="scicatversion",
             help="major scicat version metadata")
         self._parser.add_argument(
             "--h5py", action="store_true",
@@ -1693,7 +1693,7 @@ class GroupMetadata(Runner):
             help=("write output to files"))
         self._parser.add_argument(
             "-k", "--scicat-version",
-            default=3, dest="scicatversion",
+            default=4, dest="scicatversion",
             help="major scicat version metadata")
         self._parser.add_argument(
             "-x", "--chmod", dest="chmod",
@@ -1901,13 +1901,13 @@ class GroupMetadata(Runner):
                 tg["min"] = value
             if "max" not in tg:
                 tg["max"] = value
-            if "std" not in tg:
-                tg["std"] = 0.0
+            if "SD" not in tg:
+                tg["SD"] = 0.0
             if "counts" not in tg:
                 tg["counts"] = 0
             ov = tg["value"]
             ocnts = tg["counts"]
-            ostd = tg["std"]
+            ostd = tg["SD"]
             os2 = ostd * ostd
 
             ncnts = ocnts + 1
@@ -1923,7 +1923,7 @@ class GroupMetadata(Runner):
                         (value - tg["value"]) * (value - tg["value"])
                         + (ov - tg["value"]) * (ov - tg["value"])
                     ) / (ncnts - 1)
-                    tg["std"] = math.sqrt(ns2)
+                    tg["SD"] = math.sqrt(ns2)
                 elif ncnts > 2:
                     # ns2 = float(
                     #     (ncnts - 2) * os2
@@ -1933,7 +1933,7 @@ class GroupMetadata(Runner):
                         (ncnts - 2) * os2
                         + (value - tg["value"]) * (value - ov)
                     ) / (ncnts - 1)
-                    tg["std"] = math.sqrt(ns2)
+                    tg["SD"] = math.sqrt(ns2)
 
     @classmethod
     def _create_metadata(cls, scfile, clist, options):
