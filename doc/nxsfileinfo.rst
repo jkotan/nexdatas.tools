@@ -399,8 +399,8 @@ Options:
                         output scicat group metadata file
   -l DBOUTPUT, --datablock-output DBOUTPUT
                         output scicat group datablocks list file
-  -t ATOUTPUT, --attachament-output ATOUTPUT
-                        output scicat group attachements list file
+  -t ATOUTPUT, --attachment-output ATOUTPUT
+                        output scicat group attachments list file
 
 Example
 """""""
