@@ -40,7 +40,6 @@ def append_scicat_dataset(macro, status_info=True):
         return sname
 
     sfl = macro.getEnv('ScanFile')
-    fdir = macro.getEnv('ScanDir')
     sid = macro.getEnv('ScanID')
     nxsappend = get_env_var(macro, "NXSAppendSciCatDataset", None)
 
@@ -70,36 +69,51 @@ def append_scicat_dataset(macro, status_info=True):
                     break
     if scanname and not nxsappend:
         sname = "%s_%05i" % (scanname, sid)
-
-        # get beamtime id
-        bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
-        bmtfprefix = get_env_var(
-            macro, "BeamtimeFilePrefix", "beamtime-metadata-")
-        bmtfext = get_env_var(macro, "BeamtimeFileExt", ".json")
-        beamtimeid = beamtime_id(fdir, bmtfpath, bmtfprefix, bmtfext)
-        beamtimeid = beamtimeid or "00000000"
-
-        # get scicat dataset list file name
-        defprefix = "scicat-datasets-"
-        defaulthost = get_env_var(macro, "SciCatDatasetListFileLocal", None)
-        hostname = None
-        if defaulthost:
-            hostname = socket.gethostname()
-        if hostname and hostname is not True and hostname.lower() != "true":
-            defprefix = "%s%s-" % (defprefix, str(hostname))
-        dslprefix = get_env_var(
-            macro, "SciCatDatasetListFilePrefix", defprefix)
-        dslext = get_env_var(macro, "SciCatDatasetListFileExt", ".lst")
-        dslfile = "%s%s%s" % (dslprefix, beamtimeid, dslext)
-        if fdir:
-            dslfile = os.path.join(fdir, dslfile)
-
-        # append the scan name to the list file
-        with open(dslfile, "a+") as fl:
-            fl.write("\n%s" % sname)
-        if status_info:
-            macro.output("Appending '" + sname + "' to " + dslfile)
+        append_scicat_record(macro, sname, status_info=True)
     return sname
+
+
+def append_scicat_record(macro, sname, status_info=True):
+    """ append scan name to the dataset scan list file
+
+    :param macro: hook macro
+    :type macro: :class:`sardana.macroserver.macro.Macro`
+    :param sname: scingestor record
+    :type sname: :obj:`bool`
+    :param macro: status info flag
+    :type macro: :obj:`bool`
+    :return: scan name if appended
+    :rtype: :obj:`str`
+    """
+    # get beamtime id
+    fdir = macro.getEnv('ScanDir')
+    bmtfpath = get_env_var(macro, "BeamtimeFilePath", "/gpfs/current")
+    bmtfprefix = get_env_var(
+        macro, "BeamtimeFilePrefix", "beamtime-metadata-")
+    bmtfext = get_env_var(macro, "BeamtimeFileExt", ".json")
+    beamtimeid = beamtime_id(fdir, bmtfpath, bmtfprefix, bmtfext)
+    beamtimeid = beamtimeid or "00000000"
+
+    # get scicat dataset list file name
+    defprefix = "scicat-datasets-"
+    defaulthost = get_env_var(macro, "SciCatDatasetListFileLocal", None)
+    hostname = None
+    if defaulthost:
+        hostname = socket.gethostname()
+    if hostname and hostname is not True and hostname.lower() != "true":
+        defprefix = "%s%s-" % (defprefix, str(hostname))
+    dslprefix = get_env_var(
+        macro, "SciCatDatasetListFilePrefix", defprefix)
+    dslext = get_env_var(macro, "SciCatDatasetListFileExt", ".lst")
+    dslfile = "%s%s%s" % (dslprefix, beamtimeid, dslext)
+    if fdir:
+        dslfile = os.path.join(fdir, dslfile)
+
+    # append the scan name to the list file
+    with open(dslfile, "a+") as fl:
+        fl.write("\n%s" % sname)
+    if status_info:
+        macro.output("Appending '" + sname + "' to " + dslfile)
 
 
 def beamtime_id(fpath, bmtfpath, bmtfprefix, bmtfext):

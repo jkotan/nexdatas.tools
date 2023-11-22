@@ -397,6 +397,7 @@ class BeamtimeLoader(object):
         "creationLocation": "/DESY/{facility}/{beamlineAlias}",
         "instrumentId": "/{facility}/{beamline}",
         "type": "raw",
+        "keywords": ["scan"],
         "isPublished": False,
         "ownerGroup": "{beamtimeId}-dmgt",
         "accessGroups": ["{beamtimeId}-dmgt",
@@ -479,6 +480,13 @@ class BeamtimeLoader(object):
         self.__accessgroups = None
         if options.accessgroups is not None:
             self.__accessgroups = options.accessgroups.split(",")
+
+        self.__keywords = []
+        if hasattr(options, "keywords") \
+           and options.keywords is not None:
+            self.__keywords = [
+                kw for kw in options.keywords.split(",") if kw]
+
         dct = {}
         if options.beamtimemeta:
             with open(options.beamtimemeta, "r") as fl:
@@ -566,6 +574,10 @@ class BeamtimeLoader(object):
             self.__metadata["ownerGroup"] = self.__ownergroup
         if self.__accessgroups is not None:
             self.__metadata["accessGroups"] = self.__accessgroups
+        if self.__keywords:
+            if "keywords" not in self.__metadata:
+                self.__metadata["keywords"] = []
+            self.__metadata["keywords"].extend(self.__keywords)
         # print(self.__metadata)
         return self.__metadata
 
@@ -1101,6 +1113,10 @@ class Metadata(Runner):
             help="access group names separated by commas. "
             "Default is {beamtimeId}-dmgt,{beamtimeid}-clbt,{beamtimeId}-part,"
             "{beamline}dmgt,{beamline}staff")
+        self._parser.add_argument(
+            "-z", "--keywords",
+            default=None, dest="keywords",
+            help="dataset keywords separated by commas.")
         self._parser.add_argument(
             "-g", "--group-postfix",
             help="postfix to be added to NeXus group name. "
@@ -1688,6 +1704,10 @@ class GroupMetadata(Runner):
         #     default=False, dest="pfname",
         #     help=("generate pid without file name"))
         self._parser.add_argument(
+            "--raw", action="store_true",
+            default=False, dest="raw",
+            help="raw dataset type")
+        self._parser.add_argument(
             "-f", "--write-files", action="store_true",
             default=False, dest="writefiles",
             help=("write output to files"))
@@ -1735,8 +1755,8 @@ class GroupMetadata(Runner):
             "-l", "--datablock-output", dest="dboutput",
             help=("output scicat group datablocks list file"))
         self._parser.add_argument(
-            "-t", "--attachament-output", dest="atoutput",
-            help=("output scicat group attachements list file"))
+            "-t", "--attachment-output", dest="atoutput",
+            help=("output scicat group attachments list file"))
         # self._parser.add_argument(
         #     "-r", "--relative-path", dest="relpath",
         #     help=("relative path to the scan files"))
@@ -1947,7 +1967,7 @@ class GroupMetadata(Runner):
         :type options: :class:`argparse.Namespace`
         :returns: [grouped metadata,
                    grouped origdatablocks,
-                   grouped attachements]
+                   grouped attachments]
         :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
         """
         # print("CREATE from ", scfile)
@@ -1962,7 +1982,7 @@ class GroupMetadata(Runner):
             "owner": "owner",
             "ownerEmail": "ownerEmail",
             "ownerGroup": "ownerGroup",
-            "investigator": "principleInvestigator",
+            "investigator": "principalInvestigator",
             "sourceFolder": "sourceFolder",
             "techniques": "techniques",
             "scientificMetadata.instrumentId": "instrumentId",
@@ -1977,9 +1997,21 @@ class GroupMetadata(Runner):
         metadata = {
             "type": "derived",
             "inputDatasets": [],
+            "keywords": ["measurement"],
             "usedSoftware": "https://github.com/nexdatas/nxstools",
-            "jobParameters": "nxsfileinfo groupmetadata ...",
+            "jobParameters": {"command": "nxsfileinfo groupmetadata"},
         }
+        rawmetadata = {
+            "type": "raw",
+            "scientificMetadata": {
+                "inputDatasets": [],
+                "usedSoftware": "https://github.com/nexdatas/nxstools",
+                "jobParameters": {"command": "nxsfileinfo groupmetadata"}
+            },
+            "keywords": ["measurement"],
+        }
+        if options.raw:
+            metadata = rawmetadata
         try:
             with open(scfile, "r") as fl:
                 sfl = fl.read()
@@ -1991,30 +2023,34 @@ class GroupMetadata(Runner):
             ds = {}
 
         group = ""
+        if "pid" in ds and ds["pid"]:
+            spid = ds["pid"].split("/")
+        else:
+            spid = []
+        if options.group and options.group[0]:
+            group = options.group[0]
+        if options.beamtimeid:
+            beamtimeid = options.beamtimeid
+        else:
+            if len(spid) > 1:
+                beamtimeid = spid[-2]
+            else:
+                beamtimeid = spid[0]
         if options.pid:
             metadata["pid"] = str(options.pid)
         else:
-            if "pid" in ds and ds["pid"]:
-                spid = ds["pid"].split("/")
-            else:
-                spid = []
-            if options.group and options.group[0]:
-                group = options.group[0]
-            if options.beamtimeid:
-                beamtimeid = options.beamtimeid
-            else:
-                if len(spid) > 1:
-                    beamtimeid = spid[-2]
-                else:
-                    beamtimeid = spid[0]
             if len(spid) > 1:
                 spid[-1] = beamtimeid
                 spid[-2] = group
                 metadata["pid"] = "/".join(spid)
             else:
                 metadata["pid"] = "%s/%s" % (group, beamtimeid)
+        if group:
+            metadata["keywords"].append(group)
 
         for ts, vs in cpmap.items():
+            if options.raw:
+                ts = vs
             if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
                and not ts.startswith(vs + "."):
                 vls = vs.split(".")
@@ -2048,7 +2084,7 @@ class GroupMetadata(Runner):
         :type options: :class:`argparse.Namespace`
         :returns: [grouped metadata,
                    grouped origdatablocks,
-                   grouped attachements]
+                   grouped attachments]
         :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
         """
         result = None
@@ -2093,13 +2129,16 @@ class GroupMetadata(Runner):
                 metadir, _ = os.path.split(iafile)
             if metadir:
                 oafile = os.path.join(
-                    metadir, "%s.attachement.json" % options.group[0])
+                    metadir, "%s.attachment.json" % options.group[0])
                 if options.writefiles:
                     options.atoutput = oafile
 
         usergroupmap = {}
         usergrouplist = []
-        grouplist = [["inputDatasets", "pid"]]
+        if options.raw:
+            grouplist = [["scientificMetadata.inputDatasets", "pid"]]
+        else:
+            grouplist = [["inputDatasets", "pid"]]
 
         if hasattr(options, "groupmap") and options.groupmap:
             dct = yaml.safe_load(options.groupmap.strip())

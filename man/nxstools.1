@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSTOOLS" "1" "Nov 21, 2023" "3.51" "NXSTools"
+.TH "NXSTOOLS" "1" "Nov 22, 2023" "3.52" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .sp
@@ -1760,6 +1760,9 @@ names of field or group attributes to be hidden (separated by commas without spa
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
 .TP
+.BI \-z \ KEYWORDS\fR,\fB \ \-\-keywords \ KEYWORDS
+dataset keywords separated by commas.
+.TP
 .BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
 .TP
@@ -2195,6 +2198,9 @@ show this help message and exit
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
+.TP
+.B  \-\-raw
+raw dataset type
 .TP
 .BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid
 BEAMTIMEID beamtime id
@@ -6309,7 +6315,7 @@ metadata dictionary
 .UNINDENT
 .INDENT 7.0
 .TP
-.B strcre  =  {\(aqaccessGroups\(aq: [\(aq{beamtimeId}\-dmgt\(aq, \(aq{beamtimeId}\-clbt\(aq, \(aq{beamtimeId}\-part\(aq, \(aq{beamline}dmgt\(aq, \(aq{beamline}staff\(aq], \(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamlineAlias}\(aq, \(aqinstrumentId\(aq: \(aq/{facility}/{beamline}\(aq, \(aqisPublished\(aq: False, \(aqownerGroup\(aq: \(aq{beamtimeId}\-dmgt\(aq, \(aqtype\(aq: \(aqraw\(aq}
+.B strcre  =  {\(aqaccessGroups\(aq: [\(aq{beamtimeId}\-dmgt\(aq, \(aq{beamtimeId}\-clbt\(aq, \(aq{beamtimeId}\-part\(aq, \(aq{beamline}dmgt\(aq, \(aq{beamline}staff\(aq], \(aqcreationLocation\(aq: \(aq/DESY/{facility}/{beamlineAlias}\(aq, \(aqinstrumentId\(aq: \(aq/{facility}/{beamline}\(aq, \(aqisPublished\(aq: False, \(aqkeywords\(aq: [\(aqscan\(aq], \(aqownerGroup\(aq: \(aq{beamtimeId}\-dmgt\(aq, \(aqtype\(aq: \(aqraw\(aq}
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6583,7 +6589,7 @@ group scan metadata
 .B Returns
 [grouped metadata,
 grouped origdatablocks,
-grouped attachements]
+grouped attachments]
 .TP
 .B Return type
 [\fI\%str\fP,:obj:\fIstr\fP, \fI\%str\fP]
