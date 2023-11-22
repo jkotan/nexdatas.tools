@@ -3839,6 +3839,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -4145,6 +4146,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -4392,6 +4394,7 @@ For more help:
                             chmod2, str(oct(status.st_mode & 0o777)))
                     # print(dct)
                     res = {
+                        "keywords": ["scan"],
                         'accessGroups': [
                             '16171271-dmgt',
                             '16171271-clbt',
@@ -4667,6 +4670,7 @@ For more help:
                             chmod2, str(oct(status.st_mode & 0o777)))
                     # print(dct)
                     res = {
+                        "keywords": ["scan"],
                         'accessGroups': [
                             '16171271-dmgt',
                             '16171271-clbt',
@@ -4934,6 +4938,7 @@ For more help:
                             chmod2, str(oct(status.st_mode & 0o777)))
                     # print(dct)
                     res = {
+                        "keywords": ["scan"],
                         'accessGroups': [
                             '16171271-dmgt',
                             '16171271-clbt',
@@ -5248,6 +5253,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -5542,6 +5548,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -5832,6 +5839,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -6121,6 +6129,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -6410,6 +6419,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -6703,6 +6713,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -7001,6 +7012,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -7295,6 +7307,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -7585,6 +7598,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -7874,6 +7888,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -8163,6 +8178,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p01dmgt', 'p01staff'],
@@ -8452,6 +8468,7 @@ For more help:
                         "contactEmail": "robust.robust@robust.com",
                         "pid": "13243546",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'scdd01dmgt', 'scdd01staff'],
@@ -8648,6 +8665,7 @@ For more help:
                     # "endTime": "2020-01-21T12:37:00Z",
                     "owner": "glossy",
                     "ownerGroup": "16171271-dmgt",
+                    "keywords": ["scan"],
                     "accessGroups": [
                         '16171271-dmgt', '16171271-clbt', '16171271-part',
                         'p01dmgt', 'p01staff'],
@@ -8812,6 +8830,7 @@ For more help:
                     # "endTime": "2020-01-21T12:37:00Z",
                     "owner": "famous",
                     "ownerGroup": "16171271-dmgt",
+                    "keywords": ["scan"],
                     "accessGroups": [
                         '16171271-dmgt', '16171271-clbt', '16171271-part',
                         'p01dmgt', 'p01staff'],
@@ -9044,6 +9063,7 @@ For more help:
                         # "endTime": "2020-01-21T12:37:00Z",
                         "owner": "glossy",
                         "ownerGroup": "16171271-dmgt",
+                        "keywords": ["scan"],
                         "accessGroups": [
                             '16171271-dmgt', '16171271-clbt', '16171271-part',
                             'p02dmgt', 'p02staff'],

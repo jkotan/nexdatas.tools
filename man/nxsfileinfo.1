@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSFILEINFO" "1" "Nov 21, 2023" "3.51" "NXSTools"
+.TH "NXSFILEINFO" "1" "Nov 22, 2023" "3.52" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
@@ -173,6 +173,9 @@ names of field or group attributes to be hidden (separated by commas without spa
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
+.TP
+.BI \-z \ KEYWORDS\fR,\fB \ \-\-keywords \ KEYWORDS
+dataset keywords separated by commas.
 .TP
 .BI \-w \ OWNERGROUP\fR,\fB \ \-\-owner\-group \ OWNERGROUP
 owner group name. Default is {beamtimeid}\-part
@@ -610,6 +613,9 @@ show this help message and exit
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
 .TP
+.B  \-\-raw
+raw dataset type
+.TP
 .BI \-i \ BEAMTIMEID\fR,\fB \ \-\-beamtimeid
 BEAMTIMEID beamtime id
 .TP
@@ -644,8 +650,8 @@ output scicat group metadata file
 .BI \-l \ DBOUTPUT\fR,\fB \ \-\-datablock\-output \ DBOUTPUT
 output scicat group datablocks list file
 .TP
-.BI \-t \ ATOUTPUT\fR,\fB \ \-\-attachament\-output \ ATOUTPUT
-output scicat group attachements list file
+.BI \-t \ ATOUTPUT\fR,\fB \ \-\-attachment\-output \ ATOUTPUT
+output scicat group attachments list file
 .UNINDENT
 .UNINDENT
 .SS Example
