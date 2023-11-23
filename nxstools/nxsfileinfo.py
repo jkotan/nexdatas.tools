@@ -44,6 +44,11 @@ from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 from .ontology import id_techniques, nexus_panet
 
+
+if sys.version_info > (3,):
+    basestring = str
+
+
 WRITERS = {}
 try:
     from . import h5pywriter
@@ -655,7 +660,7 @@ class BeamtimeLoader(object):
                         if dct and isinstance(dct, dict):
                             cmap.update(dct)
                         elif dct:
-                            if isinstance(dct, str):
+                            if isinstance(dct, basestring):
                                 dct = getlist(str(md).strip())
                             if isinstance(dct, list):
                                 for line in dct:
@@ -685,7 +690,8 @@ class BeamtimeLoader(object):
         self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
-                if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+                if ts and vs and isinstance(ts, basestring) \
+                   and isinstance(vs, basestring) \
                    and not ts.startswith(vs + "."):
                     vls = vs.split(".")
                     md = metadata
@@ -708,7 +714,8 @@ class BeamtimeLoader(object):
                         parent[tg] = md
             for line in cplist:
                 if line and len(line) > 1 and line[0] and line[1] and \
-                   isinstance(line[0], str) and isinstance(line[1], str) and \
+                   isinstance(line[0], basestring) and \
+                   isinstance(line[1], basestring) and \
                    not line[0].startswith(line[1] + "."):
                     ts = line[0]
                     vs = line[1]
@@ -758,7 +765,7 @@ class BeamtimeLoader(object):
                     vv = vs
                 if not vs:
                     vv = ts
-                if vv and isinstance(vv, str):
+                if vv and isinstance(vv, basestring):
                     vls = vv.split(".")
                     md = metadata
                     parent = None
@@ -780,7 +787,7 @@ class BeamtimeLoader(object):
                             vv = line[0]
                         if line[1] and not line[0]:
                             vv = line[1]
-                    if vv and isinstance(vv, str):
+                    if vv and isinstance(vv, basestring):
                         vls = vv.split(".")
                         md = metadata
                         parent = None
@@ -1377,7 +1384,7 @@ class Metadata(Runner):
             if dct and isinstance(dct, dict):
                 usercopymap.update(dct)
             elif dct:
-                if isinstance(dct, str):
+                if isinstance(dct, basestring):
                     dct = getlist(options.copymap.strip())
                 if isinstance(dct, list):
                     for line in dct:
@@ -1398,7 +1405,7 @@ class Metadata(Runner):
                 if dct and isinstance(dct, dict):
                     usercopymap.update(dct)
                 elif dct:
-                    if isinstance(dct, str):
+                    if isinstance(dct, basestring):
                         dct = getlist(jstr.strip())
                     if isinstance(dct, list):
                         for line in dct:
@@ -1843,7 +1850,8 @@ class GroupMetadata(Runner):
 
         for line in cplist:
             if line and len(line) > 1 and line[0] and line[1] and \
-               isinstance(line[0], str) and isinstance(line[1], str) and \
+               isinstance(line[0], basestring) and \
+               isinstance(line[1], basestring) and \
                not line[0].startswith(line[1] + "."):
                 ts = line[0]
                 vs = line[1]
@@ -1880,7 +1888,7 @@ class GroupMetadata(Runner):
         :type md: :obj:`str` or :obj:`dict`
         """
         tg = None
-        if isinstance(md, str):
+        if isinstance(md, basestring):
             if key in parent.keys():
                 tg = parent[key]
             if tg and isinstance(tg, dict):
@@ -1909,7 +1917,7 @@ class GroupMetadata(Runner):
             if key in parent.keys():
                 tg = parent[key]
             if md:
-                if isinstance(md[0], str):
+                if isinstance(md[0], basestring):
                     if isinstance(tg, list):
                         parent[key].extend(
                             [mi for mi in md if mi not in tg])
@@ -2042,7 +2050,6 @@ class GroupMetadata(Runner):
                    grouped attachments]
         :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
         """
-        # print("CREATE from ", scfile)
 
         cpmap = {
             "accessGroups": "accessGroups",
@@ -2115,16 +2122,18 @@ class GroupMetadata(Runner):
             if len(spid) > 1:
                 spid[-1] = beamtimeid
                 spid[-2] = group
-                metadata["pid"] = "/".join(spid)
+                metadata["pid"] = str("/".join(spid))
             else:
-                metadata["pid"] = "%s/%s" % (group, beamtimeid)
+                metadata["pid"] = str(
+                    "%s/%s" % (group, beamtimeid))
         if group:
             metadata["keywords"].append(group)
 
         for ts, vs in cpmap.items():
             if options.raw:
                 ts = vs
-            if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+            if ts and vs and isinstance(ts, basestring) \
+               and isinstance(vs, basestring) \
                and not ts.startswith(vs + "."):
                 vls = vs.split(".")
                 md = ds
@@ -2224,7 +2233,7 @@ class GroupMetadata(Runner):
             if dct and isinstance(dct, dict):
                 usergroupmap.update(dct)
             elif dct:
-                if isinstance(dct, str):
+                if isinstance(dct, basestring):
                     dct = getlist(options.groupmap.strip())
                 if isinstance(dct, list):
                     for line in dct:
@@ -2245,7 +2254,7 @@ class GroupMetadata(Runner):
                 if dct and isinstance(dct, dict):
                     usergroupmap.update(dct)
                 elif dct:
-                    if isinstance(dct, str):
+                    if isinstance(dct, basestring):
                         dct = getlist(jstr.strip())
                     if isinstance(dct, list):
                         for line in dct:
@@ -2256,7 +2265,6 @@ class GroupMetadata(Runner):
         for ky, vl in usergroupmap.items():
             if vl:
                 grouplist.append([ky, vl])
-
         if omfile:
             if os.path.isfile(omfile):
                 result = cls._group_metadata(
