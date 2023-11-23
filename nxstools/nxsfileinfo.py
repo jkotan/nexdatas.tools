@@ -34,6 +34,7 @@ import fnmatch
 import yaml
 import base64
 import math
+import numpy as np
 from io import BytesIO
 
 from .nxsparser import TableTools
@@ -1878,8 +1879,8 @@ class GroupMetadata(Runner):
         :param md: new metadata
         :type md: :obj:`str` or :obj:`dict`
         """
+        tg = None
         if isinstance(md, str):
-            tg = None
             if key in parent.keys():
                 tg = parent[key]
             if tg and isinstance(tg, dict):
@@ -1904,7 +1905,79 @@ class GroupMetadata(Runner):
                 md = md["value"]
             else:
                 md = None
-        if isinstance(md, float) or isinstance(md, int):
+        if isinstance(md, list):
+            if key in parent.keys():
+                tg = parent[key]
+            if md:
+                if isinstance(md[0], str):
+                    if isinstance(tg, list):
+                        parent[key].extend(
+                            [mi for mi in md if mi not in tg])
+                    elif not tg:
+                        parent[key] = md
+                elif (isinstance(md[0], float) or isinstance(md[0], int)) \
+                        and len(md) < 4:
+                    if isinstance(tg, list):
+                        if md not in parent[key]:
+                            parent[key].append(md)
+                    elif not tg:
+                        parent[key] = [md]
+                else:
+                    for mi in md:
+                        if not isinstance(mi, float) and \
+                           not isinstance(mi, int):
+                            break
+                    else:
+                        value = md
+                        tg = None
+                        if key in parent.keys():
+                            tg = parent[key]
+                        if not isinstance(tg, dict):
+                            parent[key] = {}
+                        if "value" not in tg:
+                            tg["value"] = 0
+                        if "unit" not in tg:
+                            tg["unit"] = unit
+                        if "min" not in tg:
+                            tg["min"] = min(value)
+                        if "max" not in tg:
+                            tg["max"] = max(value)
+                        if "std" not in tg:
+                            tg["std"] = 0.0
+                        if "counts" not in tg:
+                            tg["counts"] = 0
+                        ov = tg["value"]
+                        ocnts = tg["counts"]
+                        ostd = tg["std"]
+                        os2 = ostd * ostd
+                        nn = len(md)
+                        ncnts = ocnts + nn
+                        tg["counts"] = ncnts
+                        if tg["unit"] == unit:
+                            tg["value"] = \
+                                float((ov * ocnts) + sum(value)) / ncnts
+                            minv = min(value)
+                            if tg["min"] > minv:
+                                tg["min"] = minv
+                            maxv = max(value)
+                            if tg["max"] < maxv:
+                                tg["max"] = maxv
+                        if ncnts > 1:
+                            if (ocnts == 1 or nn == 1):
+                                tg["std"] = float(
+                                    np.std([ov] + value, ddof=1))
+                            elif ostd == 0.0:
+                                tg["std"] = float(
+                                    np.std(value, ddof=1))
+                            elif ocnts > 1 and nn > 1:
+                                nvar = float(
+                                    np.var(value, ddof=1))
+                                tg["std"] = \
+                                    math.sqrt(
+                                        ((ocnts - 1) * os2 + (nn - 1) * nvar)
+                                        / (ncnts - 2))
+
+        elif isinstance(md, float) or isinstance(md, int):
             value = md
             tg = None
             if key in parent.keys():
@@ -1921,13 +1994,13 @@ class GroupMetadata(Runner):
                 tg["min"] = value
             if "max" not in tg:
                 tg["max"] = value
-            if "SD" not in tg:
-                tg["SD"] = 0.0
+            if "std" not in tg:
+                tg["std"] = 0.0
             if "counts" not in tg:
                 tg["counts"] = 0
             ov = tg["value"]
             ocnts = tg["counts"]
-            ostd = tg["SD"]
+            ostd = tg["std"]
             os2 = ostd * ostd
 
             ncnts = ocnts + 1
@@ -1941,9 +2014,8 @@ class GroupMetadata(Runner):
                 if ncnts == 2:
                     ns2 = float(
                         (value - tg["value"]) * (value - tg["value"])
-                        + (ov - tg["value"]) * (ov - tg["value"])
-                    ) / (ncnts - 1)
-                    tg["SD"] = math.sqrt(ns2)
+                        + (ov - tg["value"]) * (ov - tg["value"]))
+                    tg["std"] = math.sqrt(ns2)
                 elif ncnts > 2:
                     # ns2 = float(
                     #     (ncnts - 2) * os2
@@ -1953,7 +2025,7 @@ class GroupMetadata(Runner):
                         (ncnts - 2) * os2
                         + (value - tg["value"]) * (value - ov)
                     ) / (ncnts - 1)
-                    tg["SD"] = math.sqrt(ns2)
+                    tg["std"] = math.sqrt(ns2)
 
     @classmethod
     def _create_metadata(cls, scfile, clist, options):
@@ -2022,6 +2094,7 @@ class GroupMetadata(Runner):
             print("WARNING: %s" % str(e))
             ds = {}
 
+        beamtimeid = "00000000"
         group = ""
         if "pid" in ds and ds["pid"]:
             spid = ds["pid"].split("/")
@@ -2034,7 +2107,7 @@ class GroupMetadata(Runner):
         else:
             if len(spid) > 1:
                 beamtimeid = spid[-2]
-            else:
+            elif len(spid):
                 beamtimeid = spid[0]
         if options.pid:
             metadata["pid"] = str(options.pid)
@@ -2093,11 +2166,13 @@ class GroupMetadata(Runner):
 
         imfile = options.metadatafile
         omfile = None
+        metadir = os.getcwd()
         if imfile and os.path.isfile(imfile):
             if options.output:
                 omfile = options.output
             elif options.group and options.group[0]:
-                metadir, _ = os.path.split(imfile)
+                if imfile:
+                    metadir, _ = os.path.split(imfile)
                 omfile = os.path.join(
                     metadir, "%s.scan.json" % options.group[0])
                 if options.writefiles:
