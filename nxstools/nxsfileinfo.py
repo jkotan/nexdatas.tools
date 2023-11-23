@@ -34,6 +34,7 @@ import fnmatch
 import yaml
 import base64
 import math
+import numpy as np
 from io import BytesIO
 
 from .nxsparser import TableTools
@@ -42,6 +43,11 @@ from .nxsfileparser import (NXSFileParser, FIOFileParser,
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 from .ontology import id_techniques, nexus_panet
+
+
+if sys.version_info > (3,):
+    basestring = str
+
 
 WRITERS = {}
 try:
@@ -654,7 +660,7 @@ class BeamtimeLoader(object):
                         if dct and isinstance(dct, dict):
                             cmap.update(dct)
                         elif dct:
-                            if isinstance(dct, str):
+                            if isinstance(dct, basestring):
                                 dct = getlist(str(md).strip())
                             if isinstance(dct, list):
                                 for line in dct:
@@ -684,7 +690,8 @@ class BeamtimeLoader(object):
         self.append_copymap_field(metadata, cpmap, cplist, cmapfield)
         if metadata:
             for ts, vs in cpmap.items():
-                if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+                if ts and vs and isinstance(ts, basestring) \
+                   and isinstance(vs, basestring) \
                    and not ts.startswith(vs + "."):
                     vls = vs.split(".")
                     md = metadata
@@ -707,7 +714,8 @@ class BeamtimeLoader(object):
                         parent[tg] = md
             for line in cplist:
                 if line and len(line) > 1 and line[0] and line[1] and \
-                   isinstance(line[0], str) and isinstance(line[1], str) and \
+                   isinstance(line[0], basestring) and \
+                   isinstance(line[1], basestring) and \
                    not line[0].startswith(line[1] + "."):
                     ts = line[0]
                     vs = line[1]
@@ -757,7 +765,7 @@ class BeamtimeLoader(object):
                     vv = vs
                 if not vs:
                     vv = ts
-                if vv and isinstance(vv, str):
+                if vv and isinstance(vv, basestring):
                     vls = vv.split(".")
                     md = metadata
                     parent = None
@@ -779,7 +787,7 @@ class BeamtimeLoader(object):
                             vv = line[0]
                         if line[1] and not line[0]:
                             vv = line[1]
-                    if vv and isinstance(vv, str):
+                    if vv and isinstance(vv, basestring):
                         vls = vv.split(".")
                         md = metadata
                         parent = None
@@ -1376,7 +1384,7 @@ class Metadata(Runner):
             if dct and isinstance(dct, dict):
                 usercopymap.update(dct)
             elif dct:
-                if isinstance(dct, str):
+                if isinstance(dct, basestring):
                     dct = getlist(options.copymap.strip())
                 if isinstance(dct, list):
                     for line in dct:
@@ -1397,7 +1405,7 @@ class Metadata(Runner):
                 if dct and isinstance(dct, dict):
                     usercopymap.update(dct)
                 elif dct:
-                    if isinstance(dct, str):
+                    if isinstance(dct, basestring):
                         dct = getlist(jstr.strip())
                     if isinstance(dct, list):
                         for line in dct:
@@ -1842,7 +1850,8 @@ class GroupMetadata(Runner):
 
         for line in cplist:
             if line and len(line) > 1 and line[0] and line[1] and \
-               isinstance(line[0], str) and isinstance(line[1], str) and \
+               isinstance(line[0], basestring) and \
+               isinstance(line[1], basestring) and \
                not line[0].startswith(line[1] + "."):
                 ts = line[0]
                 vs = line[1]
@@ -1878,8 +1887,8 @@ class GroupMetadata(Runner):
         :param md: new metadata
         :type md: :obj:`str` or :obj:`dict`
         """
-        if isinstance(md, str):
-            tg = None
+        tg = None
+        if isinstance(md, basestring):
             if key in parent.keys():
                 tg = parent[key]
             if tg and isinstance(tg, dict):
@@ -1904,7 +1913,79 @@ class GroupMetadata(Runner):
                 md = md["value"]
             else:
                 md = None
-        if isinstance(md, float) or isinstance(md, int):
+        if isinstance(md, list):
+            if key in parent.keys():
+                tg = parent[key]
+            if md:
+                if isinstance(md[0], basestring):
+                    if isinstance(tg, list):
+                        parent[key].extend(
+                            [mi for mi in md if mi not in tg])
+                    elif not tg:
+                        parent[key] = md
+                elif (isinstance(md[0], float) or isinstance(md[0], int)) \
+                        and len(md) < 4:
+                    if isinstance(tg, list):
+                        if md not in parent[key]:
+                            parent[key].append(md)
+                    elif not tg:
+                        parent[key] = [md]
+                else:
+                    for mi in md:
+                        if not isinstance(mi, float) and \
+                           not isinstance(mi, int):
+                            break
+                    else:
+                        value = md
+                        tg = None
+                        if key in parent.keys():
+                            tg = parent[key]
+                        if not isinstance(tg, dict):
+                            parent[key] = {}
+                        if "value" not in tg:
+                            tg["value"] = 0
+                        if "unit" not in tg:
+                            tg["unit"] = unit
+                        if "min" not in tg:
+                            tg["min"] = min(value)
+                        if "max" not in tg:
+                            tg["max"] = max(value)
+                        if "std" not in tg:
+                            tg["std"] = 0.0
+                        if "counts" not in tg:
+                            tg["counts"] = 0
+                        ov = tg["value"]
+                        ocnts = tg["counts"]
+                        ostd = tg["std"]
+                        os2 = ostd * ostd
+                        nn = len(md)
+                        ncnts = ocnts + nn
+                        tg["counts"] = ncnts
+                        if tg["unit"] == unit:
+                            tg["value"] = \
+                                float((ov * ocnts) + sum(value)) / ncnts
+                            minv = min(value)
+                            if tg["min"] > minv:
+                                tg["min"] = minv
+                            maxv = max(value)
+                            if tg["max"] < maxv:
+                                tg["max"] = maxv
+                        if ncnts > 1:
+                            if (ocnts == 1 or nn == 1):
+                                tg["std"] = float(
+                                    np.std([ov] + value, ddof=1))
+                            elif ostd == 0.0:
+                                tg["std"] = float(
+                                    np.std(value, ddof=1))
+                            elif ocnts > 1 and nn > 1:
+                                nvar = float(
+                                    np.var(value, ddof=1))
+                                tg["std"] = \
+                                    math.sqrt(
+                                        ((ocnts - 1) * os2 + (nn - 1) * nvar)
+                                        / (ncnts - 2))
+
+        elif isinstance(md, float) or isinstance(md, int):
             value = md
             tg = None
             if key in parent.keys():
@@ -1921,13 +2002,13 @@ class GroupMetadata(Runner):
                 tg["min"] = value
             if "max" not in tg:
                 tg["max"] = value
-            if "SD" not in tg:
-                tg["SD"] = 0.0
+            if "std" not in tg:
+                tg["std"] = 0.0
             if "counts" not in tg:
                 tg["counts"] = 0
             ov = tg["value"]
             ocnts = tg["counts"]
-            ostd = tg["SD"]
+            ostd = tg["std"]
             os2 = ostd * ostd
 
             ncnts = ocnts + 1
@@ -1941,9 +2022,8 @@ class GroupMetadata(Runner):
                 if ncnts == 2:
                     ns2 = float(
                         (value - tg["value"]) * (value - tg["value"])
-                        + (ov - tg["value"]) * (ov - tg["value"])
-                    ) / (ncnts - 1)
-                    tg["SD"] = math.sqrt(ns2)
+                        + (ov - tg["value"]) * (ov - tg["value"]))
+                    tg["std"] = math.sqrt(ns2)
                 elif ncnts > 2:
                     # ns2 = float(
                     #     (ncnts - 2) * os2
@@ -1953,7 +2033,7 @@ class GroupMetadata(Runner):
                         (ncnts - 2) * os2
                         + (value - tg["value"]) * (value - ov)
                     ) / (ncnts - 1)
-                    tg["SD"] = math.sqrt(ns2)
+                    tg["std"] = math.sqrt(ns2)
 
     @classmethod
     def _create_metadata(cls, scfile, clist, options):
@@ -1970,7 +2050,6 @@ class GroupMetadata(Runner):
                    grouped attachments]
         :rtype: [:obj:`str`,:obj:`str`, :obj:`str`]
         """
-        # print("CREATE from ", scfile)
 
         cpmap = {
             "accessGroups": "accessGroups",
@@ -2022,6 +2101,7 @@ class GroupMetadata(Runner):
             print("WARNING: %s" % str(e))
             ds = {}
 
+        beamtimeid = "00000000"
         group = ""
         if "pid" in ds and ds["pid"]:
             spid = ds["pid"].split("/")
@@ -2034,7 +2114,7 @@ class GroupMetadata(Runner):
         else:
             if len(spid) > 1:
                 beamtimeid = spid[-2]
-            else:
+            elif len(spid):
                 beamtimeid = spid[0]
         if options.pid:
             metadata["pid"] = str(options.pid)
@@ -2042,16 +2122,18 @@ class GroupMetadata(Runner):
             if len(spid) > 1:
                 spid[-1] = beamtimeid
                 spid[-2] = group
-                metadata["pid"] = "/".join(spid)
+                metadata["pid"] = str("/".join(spid))
             else:
-                metadata["pid"] = "%s/%s" % (group, beamtimeid)
+                metadata["pid"] = str(
+                    "%s/%s" % (group, beamtimeid))
         if group:
             metadata["keywords"].append(group)
 
         for ts, vs in cpmap.items():
             if options.raw:
                 ts = vs
-            if ts and vs and isinstance(ts, str) and isinstance(vs, str) \
+            if ts and vs and isinstance(ts, basestring) \
+               and isinstance(vs, basestring) \
                and not ts.startswith(vs + "."):
                 vls = vs.split(".")
                 md = ds
@@ -2093,11 +2175,13 @@ class GroupMetadata(Runner):
 
         imfile = options.metadatafile
         omfile = None
+        metadir = os.getcwd()
         if imfile and os.path.isfile(imfile):
             if options.output:
                 omfile = options.output
             elif options.group and options.group[0]:
-                metadir, _ = os.path.split(imfile)
+                if imfile:
+                    metadir, _ = os.path.split(os.path.abspath(imfile))
                 omfile = os.path.join(
                     metadir, "%s.scan.json" % options.group[0])
                 if options.writefiles:
@@ -2109,9 +2193,11 @@ class GroupMetadata(Runner):
             odfile = options.dboutput
         elif options.group and options.group[0]:
             if imfile and os.path.isfile(imfile):
-                metadir, _ = os.path.split(imfile)
+                metadir, _ = os.path.split(os.path.abspath(imfile))
             elif idfile:
-                metadir, _ = os.path.split(idfile)
+                metadir, _ = os.path.split(os.path.abspath(idfile))
+            elif omfile:
+                metadir, _ = os.path.split(os.path.abspath(omfile))
             if metadir:
                 odfile = os.path.join(
                     metadir, "%s.origdatablock.json" % options.group[0])
@@ -2124,9 +2210,11 @@ class GroupMetadata(Runner):
             oafile = options.atoutput
         elif options.group and options.group[0]:
             if imfile and os.path.isfile(imfile):
-                metadir, _ = os.path.split(imfile)
+                metadir, _ = os.path.split(os.path.abspath(imfile))
             elif iafile:
-                metadir, _ = os.path.split(iafile)
+                metadir, _ = os.path.split(os.path.abspath(iafile))
+            elif omfile:
+                metadir, _ = os.path.split(os.path.abspath(omfile))
             if metadir:
                 oafile = os.path.join(
                     metadir, "%s.attachment.json" % options.group[0])
@@ -2145,7 +2233,7 @@ class GroupMetadata(Runner):
             if dct and isinstance(dct, dict):
                 usergroupmap.update(dct)
             elif dct:
-                if isinstance(dct, str):
+                if isinstance(dct, basestring):
                     dct = getlist(options.groupmap.strip())
                 if isinstance(dct, list):
                     for line in dct:
@@ -2166,7 +2254,7 @@ class GroupMetadata(Runner):
                 if dct and isinstance(dct, dict):
                     usergroupmap.update(dct)
                 elif dct:
-                    if isinstance(dct, str):
+                    if isinstance(dct, basestring):
                         dct = getlist(jstr.strip())
                     if isinstance(dct, list):
                         for line in dct:
@@ -2177,7 +2265,6 @@ class GroupMetadata(Runner):
         for ky, vl in usergroupmap.items():
             if vl:
                 grouplist.append([ky, vl])
-
         if omfile:
             if os.path.isfile(omfile):
                 result = cls._group_metadata(
@@ -2195,7 +2282,7 @@ class GroupMetadata(Runner):
                         dresult = [dresult]
                 except Exception:
                     dresult = []
-        if idfile and os.path.isfile(idfile):
+        if idfile and os.path.isfile(idfile) and idfile not in dresult:
             dresult.append(idfile)
 
         if oafile and os.path.isfile(oafile):
@@ -2207,7 +2294,7 @@ class GroupMetadata(Runner):
                         aresult = [dresult]
                 except Exception:
                     aresult = []
-        if iafile and os.path.isfile(iafile):
+        if iafile and os.path.isfile(iafile) and iafile not in aresult:
             aresult.append(iafile)
 
         jsnresult = None
@@ -2250,6 +2337,8 @@ class GroupMetadata(Runner):
                     else:
                         with open(options.output, "w") as fl:
                             fl.write(metadata)
+                else:
+                    print(metadata)
                 if options.dboutput:
                     chmod = None
                     try:
@@ -2275,6 +2364,8 @@ class GroupMetadata(Runner):
                     else:
                         with open(options.dboutput, "w") as fl:
                             fl.write(datablocks)
+                else:
+                    print(datablocks)
                 if options.atoutput:
                     chmod = None
                     try:
@@ -2301,8 +2392,6 @@ class GroupMetadata(Runner):
                         with open(options.atoutput, "w") as fl:
                             fl.write(attachments)
                 else:
-                    print(metadata)
-                    print(datablocks)
                     print(attachments)
         except Exception as e:
             sys.stderr.write("nxsfileinfo: '%s'\n"

@@ -11571,6 +11571,1008 @@ For more help:
                 # if os.path.isfile(ofname):
                 #     os.remove(ofname)
 
+    def test_groupmetadata_nofile(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 '
+             'mcalib01').split(),
+            ('nxsfileinfo groupmetadata -k4').split(),
+        ]
+
+        for cmd in commands:
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            sys.stdout = mystdout = StringIO()
+            sys.stderr = mystderr = StringIO()
+            old_argv = sys.argv
+            sys.argv = cmd
+            nxsfileinfo.main()
+
+            sys.argv = old_argv
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
+            vl = mystdout.getvalue()
+            er = mystderr.getvalue()
+
+            self.assertEqual('', er)
+            self.assertEqual('', vl)
+
+    def test_groupmetadata_emptyfile(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "empty.json"
+        shutil.copy("test/files/%s" % filename, filename)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 '
+             'mcalib01 -m %s' % filename).split(),
+            ('nxsfileinfo groupmetadata -k4 '
+             'mcalib01 --metadata %s' % filename).split(),
+        ]
+
+        try:
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                mvl = "\n".join(vl.split("\n")[:-3])
+                dvl = vl.split("\n")[-3]
+                avl = vl.split("\n")[-2]
+                dct = json.loads(mvl)
+                ddct = json.loads(dvl)
+                adct = json.loads(avl)
+                res = {
+                    "inputDatasets": [],
+                    "jobParameters": {
+                        "command": "nxsfileinfo groupmetadata"
+                    },
+                    "keywords": [
+                        "measurement",
+                        "mcalib01"
+                    ],
+                    "pid": "mcalib01/00000000",
+                    "type": "derived",
+                    "usedSoftware": "https://github.com/nexdatas/nxstools"
+                }
+                self.myAssertDict(dct, res)
+                self.assertEqual(ddct, [])
+                self.assertEqual(adct, [])
+        finally:
+            os.remove(filename)
+
+    def test_groupmetadata_onefile(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "myscan_00034.scan.json"
+        dfilename = "empty.json"
+        afilename = "empty1.json"
+        shutil.copy("test/files/%s" % filename, filename)
+        shutil.copy("test/files/%s" % dfilename, dfilename)
+        shutil.copy("test/files/%s" % afilename, afilename)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 '
+             'mcalib01 -m %s --origdatablock %s -a %s '
+             % (filename, dfilename, afilename)).split(),
+            ('nxsfileinfo groupmetadata -k4 '
+             'mcalib01 --metadata %s -d %s --attachment %s '
+             % (filename, dfilename, afilename)).split(),
+        ]
+
+        try:
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                mvl = "\n".join(vl.split("\n")[:-3])
+                dvl = vl.split("\n")[-3]
+                avl = vl.split("\n")[-2]
+                dct = json.loads(mvl)
+                ddct = json.loads(dvl)
+                adct = json.loads(avl)
+                # print(json.dumps(dct, indent=4))
+                res = {
+                    "accessGroups": [
+                        "testjk01-dmgt",
+                        "testjk01-clbt",
+                        "testjk01-part",
+                        "p00dmgt",
+                        "p00staff"
+                    ],
+                    "contactEmail": "appuser@fake.com",
+                    "creationTime": "2023-11-22T19:25:55.939389+0100",
+                    "description": "Water test",
+                    "inputDatasets": [
+                        "testjk01/superscan_00034"
+                    ],
+                    "investigator": "appuser@fake.com",
+                    "isPublished": False,
+                    "jobParameters": {
+                        "command": "nxsfileinfo groupmetadata"
+                    },
+                    "keywords": [
+                        "measurement",
+                        "mcalib01"
+                    ],
+                    "owner": "Smithson",
+                    "ownerEmail": "peter.smithson@fake.de",
+                    "ownerGroup": "testjk01-dmgt",
+                    "pid": "mcalib01/testjk01",
+                    "scientificMetadata": {
+                        "DOOR_proposalId": "99991173",
+                        "beamtimeId": "testjk01",
+                        "creationLocation": "/DESY/PETRA III/P00",
+                        "instrumentId": "/petra3/p00",
+                        "proposalId": "testjk01"
+                    },
+                    "sourceFolder":
+                    "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                    "techniques": [],
+                    "type": "derived",
+                    "usedSoftware":
+                    "https://github.com/nexdatas/nxstools"
+                }
+                self.myAssertDict(dct, res)
+                self.assertEqual(ddct, ['empty.json'])
+                self.assertEqual(adct, ['empty1.json'])
+        finally:
+            os.remove(filename)
+            os.remove(dfilename)
+
+    def test_groupmetadata_groupone(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "myscan_00034.scan.json"
+        dfilename = "empty.json"
+        afilename = "empty1.json"
+        groupfile = "metadata-group-map.lst"
+        shutil.copy("test/files/%s" % filename, filename)
+        shutil.copy("test/files/%s" % dfilename, dfilename)
+        shutil.copy("test/files/%s" % afilename, afilename)
+        shutil.copy("test/files/%s" % groupfile, groupfile)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 -r %s '
+             'mcalib01 -m %s --origdatablock %s -a %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s '
+             'mcalib01 --metadata %s -d %s --attachment %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+        ]
+
+        try:
+            for cmd in commands:
+                old_stdout = sys.stdout
+                old_stderr = sys.stderr
+                sys.stdout = mystdout = StringIO()
+                sys.stderr = mystderr = StringIO()
+                old_argv = sys.argv
+                sys.argv = cmd
+                nxsfileinfo.main()
+
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                vl = mystdout.getvalue()
+                er = mystderr.getvalue()
+
+                self.assertEqual('', er)
+                # print(vl)
+                mvl = "\n".join(vl.split("\n")[:-3])
+                dvl = vl.split("\n")[-3]
+                avl = vl.split("\n")[-2]
+                dct = json.loads(mvl)
+                ddct = json.loads(dvl)
+                adct = json.loads(avl)
+                # print(json.dumps(dct, indent=4))
+                res = {
+                    "accessGroups": [
+                        "testjk01-dmgt",
+                        "testjk01-clbt",
+                        "testjk01-part",
+                        "p00dmgt",
+                        "p00staff"
+                    ],
+                    "contactEmail": "appuser@fake.com",
+                    "creationTime": "2023-11-22T19:25:55.939389+0100",
+                    "description": "Water test",
+                    "inputDatasets": [
+                        "testjk01/superscan_00034"
+                    ],
+                    "investigator": "appuser@fake.com",
+                    "isPublished": False,
+                    "jobParameters": {
+                        "command": "nxsfileinfo groupmetadata"
+                    },
+                    "keywords": [
+                        "measurement",
+                        "mcalib01"
+                    ],
+                    "owner": "Smithson",
+                    "ownerEmail": "peter.smithson@fake.de",
+                    "ownerGroup": "testjk01-dmgt",
+                    "pid": "mcalib01/testjk01",
+                    "scientificMetadata": {
+                        "DOOR_proposalId": "99991173",
+                        "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "beamtimeId": "testjk01",
+                        "creationLocation": "/DESY/PETRA III/P00",
+                        "instrumentId": "/petra3/p00",
+                        "point_nb": {
+                            "counts": 1,
+                            "max": 5,
+                            "min": 5,
+                            "std": 0.0,
+                            "unit": "",
+                            "value": 5.0
+                        },
+                        "user_comments": [
+                            "my comment 1",
+                            "my comment 2"
+                        ],
+                        "static_vector": [
+                            [
+                                0,
+                                1,
+                                0
+                            ]
+                        ],
+                        "dynamic_vector": [
+                            [
+                                1.1,
+                                3.4
+                            ]
+                        ],
+                        "pressure": {
+                            "counts": 5,
+                            "max": 999.2,
+                            "min": 998.9,
+                            "std": 0.11401754250993971,
+                            "unit": "mbar",
+                            "value": 999.04
+                        },
+                        "pressure_shape": [
+                            [
+                                5
+                            ]
+                        ],
+                        "proposalId": "testjk01",
+                        "temperature": {
+                            "counts": 1,
+                            "max": 0.82,
+                            "min": 0.82,
+                            "std": 0.0,
+                            "unit": "W",
+                            "value": 0.82
+                        }
+                    },
+                    "sourceFolder":
+                    "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                    "techniques": [],
+                    "type": "derived",
+                    "usedSoftware": "https://github.com/nexdatas/nxstools"
+                }
+                self.myAssertDict(dct, res)
+                self.assertEqual(ddct, ['empty.json'])
+                self.assertEqual(adct, ['empty1.json'])
+        finally:
+            os.remove(filename)
+            os.remove(dfilename)
+            os.remove(afilename)
+            os.remove(groupfile)
+
+    def test_groupmetadata_groupone_twice(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "myscan_00034.scan.json"
+        dfilename = "empty.json"
+        afilename = "empty1.json"
+        groupfile = "metadata-group-map.lst"
+        outputfile = "mcalib01.scan.json"
+        doutputfile = "mcalib01.origdatablock.json"
+        aoutputfile = "mcalib01.attachment.json"
+        shutil.copy("test/files/%s" % filename, filename)
+        shutil.copy("test/files/%s" % dfilename, dfilename)
+        shutil.copy("test/files/%s" % afilename, afilename)
+        shutil.copy("test/files/%s" % groupfile, groupfile)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
+             'mcalib01 -m %s --origdatablock %s -a %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
+             'mcalib01 --metadata %s -d %s --attachment %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+        ]
+
+        try:
+            for cmd in commands:
+                try:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+                    self.assertEqual(''.strip(), vl)
+
+                    self.assertEqual('', er)
+                    # print(vl)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    with open(doutputfile) as of:
+                        ddct = json.load(of)
+                    with open(aoutputfile) as of:
+                        adct = json.load(of)
+                    # print(json.dumps(dct, indent=4))
+                    res = {
+                        "accessGroups": [
+                            "testjk01-dmgt",
+                            "testjk01-clbt",
+                            "testjk01-part",
+                            "p00dmgt",
+                            "p00staff"
+                        ],
+                        "contactEmail": "appuser@fake.com",
+                        "creationTime": "2023-11-22T19:25:55.939389+0100",
+                        "description": "Water test",
+                        "inputDatasets": [
+                            "testjk01/superscan_00034"
+                        ],
+                        "investigator": "appuser@fake.com",
+                        "isPublished": False,
+                        "jobParameters": {
+                            "command": "nxsfileinfo groupmetadata"
+                        },
+                        "keywords": [
+                            "measurement",
+                            "mcalib01"
+                        ],
+                        "owner": "Smithson",
+                        "ownerEmail": "peter.smithson@fake.de",
+                        "ownerGroup": "testjk01-dmgt",
+                        "pid": "mcalib01/testjk01",
+                        "scientificMetadata": {
+                            "DOOR_proposalId": "99991173",
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "beamtimeId": "testjk01",
+                            "creationLocation": "/DESY/PETRA III/P00",
+                            "instrumentId": "/petra3/p00",
+                            "point_nb": {
+                                "counts": 1,
+                                "max": 5,
+                                "min": 5,
+                                "std": 0.0,
+                                "unit": "",
+                                "value": 5.0
+                            },
+                            "user_comments": [
+                                "my comment 1",
+                                "my comment 2"
+                            ],
+                            "static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0
+                                ]
+                            ],
+                            "dynamic_vector": [
+                                [
+                                    1.1,
+                                    3.4
+                                ]
+                            ],
+                            "pressure": {
+                                "counts": 5,
+                                "max": 999.2,
+                                "min": 998.9,
+                                "std": 0.11401754250993971,
+                                "unit": "mbar",
+                                "value": 999.04
+                            },
+                            "pressure_shape": [
+                                [
+                                    5
+                                ]
+                            ],
+                            "proposalId": "testjk01",
+                            "temperature": {
+                                "counts": 1,
+                                "max": 0.82,
+                                "min": 0.82,
+                                "std": 0.0,
+                                "unit": "W",
+                                "value": 0.82
+                            }
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                        "techniques": [],
+                        "type": "derived",
+                        "usedSoftware": "https://github.com/nexdatas/nxstools"
+                    }
+                    self.myAssertDict(dct, res)
+                    self.assertEqual(ddct, ['empty.json'])
+                    self.assertEqual(adct, ['empty1.json'])
+
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    # vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    # print(vl)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    with open(doutputfile) as of:
+                        ddct = json.load(of)
+                    with open(aoutputfile) as of:
+                        adct = json.load(of)
+                    print(json.dumps(dct, indent=4))
+                    res = {
+                        "accessGroups": [
+                            "testjk01-dmgt",
+                            "testjk01-clbt",
+                            "testjk01-part",
+                            "p00dmgt",
+                            "p00staff"
+                        ],
+                        "contactEmail": "appuser@fake.com",
+                        "creationTime": "2023-11-22T19:25:55.939389+0100",
+                        "description": "Water test",
+                        "inputDatasets": [
+                            "testjk01/superscan_00034",
+                            "testjk01/superscan_00034"
+                        ],
+                        "investigator": "appuser@fake.com",
+                        "isPublished": False,
+                        "jobParameters": {
+                            "command": "nxsfileinfo groupmetadata"
+                        },
+                        "keywords": [
+                            "measurement",
+                            "mcalib01"
+                        ],
+                        "owner": "Smithson",
+                        "ownerEmail": "peter.smithson@fake.de",
+                        "ownerGroup": "testjk01-dmgt",
+                        "pid": "mcalib01/testjk01",
+                        "scientificMetadata": {
+                            "DOOR_proposalId": "99991173",
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "beamtimeId": "testjk01",
+                            "creationLocation": "/DESY/PETRA III/P00",
+                            "instrumentId": "/petra3/p00",
+                            "point_nb": {
+                                "counts": 2,
+                                "max": 5,
+                                "min": 5,
+                                "std": 0.0,
+                                "unit": "",
+                                "value": 5.0
+                            },
+                            "user_comments": [
+                                "my comment 1",
+                                "my comment 2"
+                            ],
+                            "static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0
+                                ]
+                            ],
+                            "dynamic_vector": [
+                                [
+                                    1.1,
+                                    3.4
+                                ]
+                            ],
+                            "pressure": {
+                                "counts": 10,
+                                "max": 999.2,
+                                "min": 998.9,
+                                "std": 0.11401754250993971,
+                                "unit": "mbar",
+                                "value": 999.04
+                            },
+                            "pressure_shape": [
+                                [
+                                    5
+                                ]
+                            ],
+                            "proposalId": "testjk01",
+                            "temperature": {
+                                "counts": 2,
+                                "max": 0.82,
+                                "min": 0.82,
+                                "std": 0.0,
+                                "unit": "W",
+                                "value": 0.82
+                            }
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                        "techniques": [],
+                        "type": "derived",
+                        "usedSoftware": "https://github.com/nexdatas/nxstools"
+                    }
+                    self.myAssertDict(dct, res)
+                    self.assertEqual(ddct, ['empty.json'])
+                    self.assertEqual(adct, ['empty1.json'])
+
+                finally:
+                    if os.path.isfile(outputfile):
+                        os.remove(outputfile)
+                    if os.path.isfile(doutputfile):
+                        os.remove(doutputfile)
+                    if os.path.isfile(aoutputfile):
+                        os.remove(aoutputfile)
+        finally:
+            os.remove(filename)
+            os.remove(dfilename)
+            os.remove(afilename)
+            os.remove(groupfile)
+
+    def test_groupmetadata_grouptwo(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "myscan_00034.scan.json"
+        filename2 = "myscan_00035.scan.json"
+        dfilename = "empty.json"
+        afilename = "empty1.json"
+        dfilename2 = "empty1.json"
+        afilename2 = "empty.json"
+        groupfile = "metadata-group-map.lst"
+        outputfile = "mcalib01.scan.json"
+        doutputfile = "mcalib01.origdatablock.json"
+        aoutputfile = "mcalib01.attachment.json"
+        shutil.copy("test/files/%s" % filename, filename)
+        shutil.copy("test/files/%s" % dfilename, dfilename)
+        shutil.copy("test/files/%s" % afilename, afilename)
+        shutil.copy("test/files/%s" % filename2, filename2)
+        shutil.copy("test/files/%s" % dfilename2, dfilename2)
+        shutil.copy("test/files/%s" % afilename2, afilename2)
+        shutil.copy("test/files/%s" % groupfile, groupfile)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
+             'mcalib01 -m %s --origdatablock %s -a %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
+             'mcalib01 --metadata %s -d %s --attachment %s '
+             % (groupfile, filename, dfilename, afilename)).split(),
+        ]
+
+        commands2 = [
+            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
+             'mcalib01 -m %s --origdatablock %s -a %s '
+             % (groupfile, filename2, dfilename2, afilename2)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
+             'mcalib01 --metadata %s -d %s --attachment %s '
+             % (groupfile, filename2, dfilename2, afilename2)).split(),
+        ]
+
+        try:
+            for kk, cmd in enumerate(commands):
+                try:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = commands2[kk]
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual(''.strip(), vl)
+                    # print(vl)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    with open(doutputfile) as of:
+                        ddct = json.load(of)
+                    with open(aoutputfile) as of:
+                        adct = json.load(of)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    # print(json.dumps(dct, indent=4))
+                    res = {
+                        "accessGroups": [
+                            "testjk01-dmgt",
+                            "testjk01-clbt",
+                            "testjk01-part",
+                            "p00dmgt",
+                            "p00staff"
+                        ],
+                        "contactEmail": "appuser@fake.com",
+                        "creationTime": "2023-11-22T19:25:55.939389+0100",
+                        "description": "Water test",
+                        "inputDatasets": [
+                            "testjk01/superscan_00034",
+                            "testjk01/superscan_00035"
+                        ],
+                        "investigator": "appuser@fake.com",
+                        "isPublished": False,
+                        "jobParameters": {
+                            "command": "nxsfileinfo groupmetadata"
+                        },
+                        "keywords": [
+                            "measurement",
+                            "mcalib01"
+                        ],
+                        "owner": "Smithson",
+                        "ownerEmail": "peter.smithson@fake.de",
+                        "ownerGroup": "testjk01-dmgt",
+                        "pid": "mcalib01/testjk01",
+                        "scientificMetadata": {
+                            "DOOR_proposalId": "99991173",
+                            "ScanCommand": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                'ascan exp_dmy01 1.0 6.0 6 0.2'],
+                            "beamtimeId": "testjk01",
+                            "creationLocation": "/DESY/PETRA III/P00",
+                            "instrumentId": "/petra3/p00",
+                            "point_nb": {
+                                "counts": 2,
+                                "max": 6,
+                                "min": 5,
+                                "std": 0.7071067811865476,
+                                "unit": "",
+                                "value": 5.5
+                            },
+                            "user_comments": [
+                                "my comment 1",
+                                "my comment 2",
+                                "my comment 3"
+                            ],
+                            "static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0
+                                ]
+                            ],
+                            "dynamic_vector": [[1.1, 3.4], [1.2, 4.4]],
+                            "pressure": {
+                                "counts": 11,
+                                "max": 999.4,
+                                "min": 998.6,
+                                "std": 0.23221956404645228,
+                                "unit": "mbar",
+                                "value": 999.0545454545453
+                            },
+                            "pressure_shape": [
+                                [
+                                    5
+                                ]
+                            ],
+                            "proposalId": "testjk01",
+                            "temperature": {
+                                "counts": 2,
+                                "max": 0.82,
+                                "min": 0.8,
+                                "std": 0.014142135623730885,
+                                "unit": "W",
+                                "value": 0.81
+                            }
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                        "techniques": [],
+                        "type": "derived",
+                        "usedSoftware": "https://github.com/nexdatas/nxstools"
+                    }
+                    self.myAssertDict(dct, res)
+                    self.assertEqual(ddct, ['empty.json', 'empty1.json'])
+                    self.assertEqual(adct, ['empty1.json', 'empty.json'])
+
+                finally:
+                    if os.path.isfile(outputfile):
+                        os.remove(outputfile)
+                    if os.path.isfile(doutputfile):
+                        os.remove(doutputfile)
+                    if os.path.isfile(aoutputfile):
+                        os.remove(aoutputfile)
+        finally:
+            os.remove(filename)
+            os.remove(filename2)
+            # os.remove(dfilename2)
+            # os.remove(afilename2)
+            os.remove(dfilename)
+            os.remove(afilename)
+            os.remove(groupfile)
+
+    def test_groupmetadata_raw(self):
+        """ test nxsconfig execute empty file
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+        filename = "myscan_00034.scan.json"
+        filename2 = "myscan_00035.scan.json"
+        dfilename = "empty.json"
+        afilename = "empty1.json"
+        dfilename2 = "empty1.json"
+        afilename2 = "empty.json"
+        groupfile = "metadata-group-map.lst"
+        outputfile = "mcalib01.scan.json"
+        doutputfile = "mcalib01.origdatablock.json"
+        aoutputfile = "mcalib01.attachment.json"
+        shutil.copy("test/files/%s" % filename, filename)
+        shutil.copy("test/files/%s" % dfilename, dfilename)
+        shutil.copy("test/files/%s" % afilename, afilename)
+        shutil.copy("test/files/%s" % filename2, filename2)
+        shutil.copy("test/files/%s" % dfilename2, dfilename2)
+        shutil.copy("test/files/%s" % afilename2, afilename2)
+        shutil.copy("test/files/%s" % groupfile, groupfile)
+
+        commands = [
+            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
+             'mcalib01 -m %s --origdatablock %s -a %s --raw '
+             % (groupfile, filename, dfilename, afilename)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
+             'mcalib01 --metadata %s -d %s --attachment %s --raw  '
+             % (groupfile, filename, dfilename, afilename)).split(),
+        ]
+
+        commands2 = [
+            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
+             'mcalib01 -m %s --origdatablock %s -a %s  --raw  '
+             % (groupfile, filename2, dfilename2, afilename2)).split(),
+            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
+             'mcalib01 --metadata %s -d %s --attachment %s  --raw  '
+             % (groupfile, filename2, dfilename2, afilename2)).split(),
+        ]
+
+        try:
+            for kk, cmd in enumerate(commands):
+                try:
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = commands2[kk]
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual(''.strip(), vl)
+                    # print(vl)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    with open(doutputfile) as of:
+                        ddct = json.load(of)
+                    with open(aoutputfile) as of:
+                        adct = json.load(of)
+                    with open(outputfile) as of:
+                        dct = json.load(of)
+                    # print(json.dumps(dct, indent=4))
+                    res = {
+                        "accessGroups": [
+                            "testjk01-dmgt",
+                            "testjk01-clbt",
+                            "testjk01-part",
+                            "p00dmgt",
+                            "p00staff"
+                        ],
+                        "contactEmail": "appuser@fake.com",
+                        "creationLocation": "/DESY/PETRA III/P00",
+                        "creationTime": "2023-11-22T19:25:55.939389+0100",
+                        "description": "Water test",
+                        "instrumentId": "/petra3/p00",
+                        "isPublished": False,
+                        "keywords": [
+                            "measurement",
+                            "mcalib01"
+                        ],
+                        "owner": "Smithson",
+                        "ownerEmail": "peter.smithson@fake.de",
+                        "ownerGroup": "testjk01-dmgt",
+                        "pid": "mcalib01/testjk01",
+                        "principalInvestigator": "appuser@fake.com",
+                        "proposalId": "testjk01",
+                        "scientificMetadata": {
+                            "DOOR_proposalId": "99991173",
+                            "ScanCommand": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 1.0 6.0 6 0.2",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"
+                            ],
+                            "beamtimeId": "testjk01",
+                            "dynamic_vector": [
+                                [
+                                    1.1,
+                                    3.4
+                                ],
+                                [
+                                    1.2,
+                                    4.4
+                                ]
+                            ],
+                            "inputDatasets": [
+                                "testjk01/superscan_00034",
+                                "testjk01/superscan_00035",
+                                "testjk01/superscan_00034"
+                            ],
+                            "jobParameters": {
+                                "command": "nxsfileinfo groupmetadata"
+                            },
+                            "point_nb": {
+                                "counts": 3,
+                                "max": 6,
+                                "min": 5,
+                                "std": 0.5773502691896257,
+                                "unit": "",
+                                "value": 5.333333333333333
+                            },
+                            "pressure": {
+                                "counts": 16,
+                                "max": 999.4,
+                                "min": 998.6,
+                                "std": 0.20550621458438864,
+                                "unit": "mbar",
+                                "value": 999.05
+                            },
+                            "pressure_shape": [
+                                [
+                                    5
+                                ]
+                            ],
+                            "static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0
+                                ]
+                            ],
+                            "temperature": {
+                                "counts": 3,
+                                "max": 0.82,
+                                "min": 0.8,
+                                "std": 0.011547005383792445,
+                                "unit": "W",
+                                "value": 0.8133333333333334
+                            },
+                            "usedSoftware":
+                            "https://github.com/nexdatas/nxstools",
+                            "user_comments": [
+                                "my comment 1",
+                                "my comment 2",
+                                "my comment 3"
+                            ]
+                        },
+                        "sourceFolder":
+                        "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
+                        "techniques": [],
+                        "type": "raw"
+                    }
+                    self.myAssertDict(dct, res)
+                    self.assertEqual(ddct, ['empty.json', 'empty1.json'])
+                    self.assertEqual(adct, ['empty1.json', 'empty.json'])
+
+                finally:
+                    if os.path.isfile(outputfile):
+                        os.remove(outputfile)
+                    if os.path.isfile(doutputfile):
+                        os.remove(doutputfile)
+                    if os.path.isfile(aoutputfile):
+                        os.remove(aoutputfile)
+        finally:
+            os.remove(filename)
+            os.remove(filename2)
+            # os.remove(dfilename2)
+            # os.remove(afilename2)
+            os.remove(dfilename)
+            os.remove(afilename)
+            os.remove(groupfile)
+
 
 if __name__ == '__main__':
     unittest.main()
