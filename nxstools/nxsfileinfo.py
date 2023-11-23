@@ -2172,7 +2172,7 @@ class GroupMetadata(Runner):
                 omfile = options.output
             elif options.group and options.group[0]:
                 if imfile:
-                    metadir, _ = os.path.split(imfile)
+                    metadir, _ = os.path.split(os.path.abspath(imfile))
                 omfile = os.path.join(
                     metadir, "%s.scan.json" % options.group[0])
                 if options.writefiles:
@@ -2184,9 +2184,11 @@ class GroupMetadata(Runner):
             odfile = options.dboutput
         elif options.group and options.group[0]:
             if imfile and os.path.isfile(imfile):
-                metadir, _ = os.path.split(imfile)
+                metadir, _ = os.path.split(os.path.abspath(imfile))
             elif idfile:
-                metadir, _ = os.path.split(idfile)
+                metadir, _ = os.path.split(os.path.abspath(idfile))
+            elif omfile:
+                metadir, _ = os.path.split(os.path.abspath(omfile))
             if metadir:
                 odfile = os.path.join(
                     metadir, "%s.origdatablock.json" % options.group[0])
@@ -2199,9 +2201,11 @@ class GroupMetadata(Runner):
             oafile = options.atoutput
         elif options.group and options.group[0]:
             if imfile and os.path.isfile(imfile):
-                metadir, _ = os.path.split(imfile)
+                metadir, _ = os.path.split(os.path.abspath(imfile))
             elif iafile:
-                metadir, _ = os.path.split(iafile)
+                metadir, _ = os.path.split(os.path.abspath(iafile))
+            elif omfile:
+                metadir, _ = os.path.split(os.path.abspath(omfile))
             if metadir:
                 oafile = os.path.join(
                     metadir, "%s.attachment.json" % options.group[0])
@@ -2270,7 +2274,7 @@ class GroupMetadata(Runner):
                         dresult = [dresult]
                 except Exception:
                     dresult = []
-        if idfile and os.path.isfile(idfile):
+        if idfile and os.path.isfile(idfile) and idfile not in dresult:
             dresult.append(idfile)
 
         if oafile and os.path.isfile(oafile):
@@ -2282,7 +2286,7 @@ class GroupMetadata(Runner):
                         aresult = [dresult]
                 except Exception:
                     aresult = []
-        if iafile and os.path.isfile(iafile):
+        if iafile and os.path.isfile(iafile) and iafile not in aresult:
             aresult.append(iafile)
 
         jsnresult = None
@@ -2325,6 +2329,8 @@ class GroupMetadata(Runner):
                     else:
                         with open(options.output, "w") as fl:
                             fl.write(metadata)
+                else:
+                    print(metadata)
                 if options.dboutput:
                     chmod = None
                     try:
@@ -2350,6 +2356,8 @@ class GroupMetadata(Runner):
                     else:
                         with open(options.dboutput, "w") as fl:
                             fl.write(datablocks)
+                else:
+                    print(datablocks)
                 if options.atoutput:
                     chmod = None
                     try:
@@ -2376,8 +2384,6 @@ class GroupMetadata(Runner):
                         with open(options.atoutput, "w") as fl:
                             fl.write(attachments)
                 else:
-                    print(metadata)
-                    print(datablocks)
                     print(attachments)
         except Exception as e:
             sys.stderr.write("nxsfileinfo: '%s'\n"
