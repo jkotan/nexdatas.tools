@@ -12061,7 +12061,7 @@ For more help:
                         ddct = json.load(of)
                     with open(aoutputfile) as of:
                         adct = json.load(of)
-                    print(json.dumps(dct, indent=4))
+                    # print(json.dumps(dct, indent=4))
                     res = {
                         "accessGroups": [
                             "testjk01-dmgt",
