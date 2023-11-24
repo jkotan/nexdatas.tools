@@ -97,6 +97,8 @@ Options:
                         names of field or group attributes to be hidden (separated by commas without spaces). The default: 'nexdatas_source,nexdatas_strategy'
    -v VALUES, --values VALUES
                         field names of more dimensional datasets which value should be shown (separated by commas without spaces)
+   -z KEYWORDS, --keywords KEYWORDS
+                        dataset keywords separated by commas.
    -w OWNERGROUP, --owner-group OWNERGROUP
                         owner group name. Default is {beamtimeid}-part
    -c ACCESSGROUPS, --access-groups ACCESSGROUPS
@@ -375,6 +377,7 @@ Synopsis
 Options:
   -h, --help            show this help message and exit
   -p PID, --pid PID     dataset pid
+  --raw                 raw dataset type
   -i BEAMTIMEID, --beamtimeid  BEAMTIMEID beamtime id
   -f, --write-files     write output to files
   -k SCICATVERSION, --scicat-version SCICATVERSION
@@ -396,8 +399,8 @@ Options:
                         output scicat group metadata file
   -l DBOUTPUT, --datablock-output DBOUTPUT
                         output scicat group datablocks list file
-  -t ATOUTPUT, --attachament-output ATOUTPUT
-                        output scicat group attachements list file
+  -t ATOUTPUT, --attachment-output ATOUTPUT
+                        output scicat group attachments list file
 
 Example
 """""""

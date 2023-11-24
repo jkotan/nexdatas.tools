@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsfileinfo &#8212; NXSTools 3.51.0 documentation</title>
+    <title>nxsfileinfo &#8212; NXSTools 3.52.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.51</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.52</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -344,6 +344,9 @@ nxsfileinfo field /user/data/myfile.nxs -s
 </dd>
 <dt><kbd><span class="option">-v <var>VALUES</var></span>, <span class="option">--values <var>VALUES</var></span></kbd></dt>
 <dd><p>field names of more dimensional datasets which value should be shown (separated by commas without spaces)</p>
+</dd>
+<dt><kbd><span class="option">-z <var>KEYWORDS</var></span>, <span class="option">--keywords <var>KEYWORDS</var></span></kbd></dt>
+<dd><p>dataset keywords separated by commas.</p>
 </dd>
 <dt><kbd><span class="option">-w <var>OWNERGROUP</var></span>, <span class="option">--owner-group <var>OWNERGROUP</var></span></kbd></dt>
 <dd><p>owner group name. Default is {beamtimeid}-part</p>
@@ -731,6 +734,9 @@ nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="
 <dt><kbd><span class="option">-p <var>PID</var></span>, <span class="option">--pid <var>PID</var></span></kbd></dt>
 <dd><p>dataset pid</p>
 </dd>
+<dt><kbd><span class="option">--raw</span></kbd></dt>
+<dd><p>raw dataset type</p>
+</dd>
 <dt><kbd><span class="option">-i <var>BEAMTIMEID</var></span>, <span class="option">--beamtimeid</span></kbd></dt>
 <dd><p>BEAMTIMEID beamtime id</p>
 </dd>
@@ -765,8 +771,8 @@ input],] or a text file list to re-arrange metadata</p>
 <dt><kbd><span class="option">-l <var>DBOUTPUT</var></span>, <span class="option">--datablock-output <var>DBOUTPUT</var></span></kbd></dt>
 <dd><p>output scicat group datablocks list file</p>
 </dd>
-<dt><kbd><span class="option">-t <var>ATOUTPUT</var></span>, <span class="option">--attachament-output <var>ATOUTPUT</var></span></kbd></dt>
-<dd><p>output scicat group attachements list file</p>
+<dt><kbd><span class="option">-t <var>ATOUTPUT</var></span>, <span class="option">--attachment-output <var>ATOUTPUT</var></span></kbd></dt>
+<dd><p>output scicat group attachments list file</p>
 </dd>
 </dl>
 </dd>
