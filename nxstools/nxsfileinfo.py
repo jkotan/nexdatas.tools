@@ -1419,7 +1419,7 @@ class Metadata(Runner):
             elif hasattr(options, "copymaperror") and options.copymaperror:
                 raise Exception("Copy-map file '%s' does not exist"
                                 % options.copymapfile)
-                
+
         result = None
         nxsparser = None
         if not hasattr(options, "fileformat"):
@@ -1747,7 +1747,7 @@ class GroupMetadata(Runner):
             "-e", "--group-map-error", action="store_true",
             default=False, dest="groupmaperror",
             help=("Raise an error when the group map file does not exist"))
-        
+
     def postauto(self):
         """ parser creator after autocomplete run """
         # self._parser.add_argument(
