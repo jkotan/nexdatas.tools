@@ -1,3 +1,8 @@
+2023-11-28 Jan Kotanski <jankotan@gmail.com>
+	* add --copy-map-error to nxsfileinfo metadata (#534)
+	* add --group-map-error to nxsfileinfo metadata (#534)
+	* tagged as v3.53.0
+
 2023-11-23 Jan Kotanski <jankotan@gmail.com>
 	* add --keywords to nxsfileinfo metadata (#529)
 	* add --raw to nxsfileinfo groupmetadata (#529)

@@ -1,5 +1,8 @@
 .\" Man page generated from reStructuredText.
 .
+.TH "NXSCREATE" "1" "Nov 28, 2023" "3.53" "NXSTools"
+.SH NAME
+nxscreate \- create NeXus Configuration component
 .
 .nr rst2man-indent-level 0
 .
@@ -27,9 +30,6 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSCREATE" "1" "Nov 22, 2023" "3.52" "NXSTools"
-.SH NAME
-nxscreate \- create NeXus Configuration component
 .SH DESCRIPTION
 .sp
 The nxscreate program allows one to create simple datasources and components.
@@ -75,7 +75,7 @@ default <server> is taken from Tango DB
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
@@ -87,7 +87,7 @@ first index (mandatory w/o <name1>)
 .BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
 last index (mandatory w/o <name1>)
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
@@ -99,10 +99,10 @@ file prefix, i.e. counter
 .BI \-s \ DSOURCE\fR,\fB \ \-\-datasource\-prefix\fB= DSOURCE
 datasource prefix, i.e. counter (useful for avoiding duplicated datasource names)
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.B  \-m\fP,\fB  \-\-minimal_device
+.B \-m\fP,\fB  \-\-minimal_device
 device name without first \(aq0\(aq
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -156,7 +156,7 @@ default <host>, <port> are taken from <server>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
@@ -175,7 +175,7 @@ tango attribute name
 datasource\-prefix (useful for avoiding duplicated
 datasource names)
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing datasources
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
@@ -190,7 +190,7 @@ tango host name
 .BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
 .BI \-g \ GROUP\fR,\fB \ \-\-group\fB= GROUP
@@ -254,7 +254,7 @@ default <host>, <port> are taken from <server>
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-v \ DEVICE\fR,\fB \ \-\-device\fB= DEVICE
@@ -275,10 +275,10 @@ tango host name
 .BI \-t \ PORT\fR,\fB \ \-\-port\fB= PORT
 tango host port
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
-.B  \-n\fP,\fB  \-\-no\-group
+.B \-n\fP,\fB  \-\-no\-group
 don\(aqt create common group with a name of datasource
 prefix
 .TP
@@ -332,19 +332,19 @@ default <server> is taken from Tango DB
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.B  \-t\fP,\fB  \-\-noclientlike
+.B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -359,7 +359,7 @@ external configuration server
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
-.B  \-\-verbose
+.B \-\-verbose
 printout verbose mode
 .UNINDENT
 .UNINDENT
@@ -412,19 +412,19 @@ default <pool> is taken from Tango DB
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
-.B  \-t\fP,\fB  \-\-noclientlike
+.B \-t\fP,\fB  \-\-noclientlike
 set motor tango datasources to be non __CLIENT__ like
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
 output directory where datasources will be saved
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -487,7 +487,7 @@ default <server> is taken from Tango DB
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
@@ -509,13 +509,13 @@ tango host name
 .BI \-w \ PORT\fR,\fB \ \-\-port \ PORT
 tango host port
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing component
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
@@ -587,7 +587,7 @@ default <directory> is \(aq.\(aq
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-c \ COMPONENT\fR,\fB \ \-\-component\fB= COMPONENT
@@ -602,16 +602,16 @@ configuration server device name
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package\fB= XMLPACKAGE
 xml template package
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing component
 .TP
-.B  \-m\fP,\fB  \-\-mandatory
+.B \-m\fP,\fB  \-\-mandatory
 set the component as mandatory
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store datasources in Configuration Server database
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
@@ -671,14 +671,14 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is \(dq/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/\(dq
+default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
 .UNINDENT
 .INDENT 0.0
 .TP
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
 .BI \-v \ DEVICE\fR,\fB \ \-\-device\-prefix\fB= DEVICE
@@ -690,7 +690,7 @@ first index
 .BI \-l \ LAST\fR,\fB \ \-\-last\fB= LAST
 last index
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing components
 .TP
 .BI \-d \ DIRECTORY\fR,\fB \ \-\-directory\fB= DIRECTORY
@@ -714,10 +714,10 @@ nexus type of the field
 .BI \-u \ UNITS\fR,\fB \ \-\-units\fB= UNITS
 nexus units of the field
 .TP
-.B  \-k\fP,\fB  \-\-links
+.B \-k\fP,\fB  \-\-links
 create datasource links
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -726,7 +726,7 @@ configuration server device name
 .BI \-c \ CHUNK\fR,\fB \ \-\-chunk\fB= CHUNK
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
-.B  \-m\fP,\fB  \-\-minimal_device
+.B \-m\fP,\fB  \-\-minimal_device
 device name without first \(aq0\(aq
 .UNINDENT
 .UNINDENT
@@ -739,8 +739,8 @@ device name without first \(aq0\(aq
 nxscreate comp counter
 nxscreate comp \-f1 \-l3 \-v exp_c \-b
 nxscreate comp lambda \-d /home/user/xmldir/
-nxscreate comp \-n \(dq/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
-nxscreate comp \-n \(dq/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data\(dq eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
+nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/sis3302:NXdetector/collection:NXcollection/\(aq \-v sis3302_1_roi \-f1 \-l4  \-g STEP \-t NX_FLOAT64 \-k \-b \-m
+nxscreate comp \-n "/\e$var.entryname#\(aqscan\(aq\e$var.serialno:NXentry/instrument/eh1_mca01:NXdetector/data" eh1_mca01 \-g STEP \-t NX_FLOAT64 \-i \-b \-c SPECTRUM
 .ft P
 .fi
 .UNINDENT
@@ -772,19 +772,19 @@ default <port> is 5000
 .B Options:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B  \-l\fP,\fB  \-\-list
+.B \-l\fP,\fB  \-\-list
 list modules of the given node
 .TP
-.B  \-o\fP,\fB  \-\-overwrite
+.B \-o\fP,\fB  \-\-overwrite
 overwrite existing components
 .TP
-.B  \-a\fP,\fB  \-\-can\-fail
+.B \-a\fP,\fB  \-\-can\-fail
 can fail strategy flag
 .TP
-.B  \-q\fP,\fB  \-\-strict
+.B \-q\fP,\fB  \-\-strict
 NeXus strict group types i.e. use NXcollection if not defined
 .TP
 .BI \-c \ COMPONENT\fR,\fB \ \-\-component \ COMPONENT
@@ -815,8 +815,8 @@ by comman. Default: \(aqtemperature,magnetic_field\(aq
 first linked targets separated by comman
 .TP
 .BI \-z \ TRANSATTRS\fR,\fB \ \-\-transformation\-attributes \ TRANSATTRS
-a JSON dictionary with transformation parameters i.e, \(dqtransformation_type\(dq, \(dqvector\(dq, \(dqdepends_on\(dq. Default:
-{\(dqrotation_z\(dq:{\(dqtransformation_type\(dq:\(dqrotation\(dq,\(dqvector\(dq:[0,\-1,0]}}
+a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
+{"rotation_z":{"transformation_type":"rotation","vector":[0,\-1,0]}}
 .TP
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
@@ -836,10 +836,10 @@ json configuration file
 .BI \-x \ FILE\fR,\fB \ \-\-file\-prefix \ FILE
 file prefix, i.e. counter
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .TP
-.B  \-b\fP,\fB  \-\-database
+.B \-b\fP,\fB  \-\-database
 store components in Configuration Server database
 .TP
 .BI \-u \ HOST\fR,\fB \ \-\-host \ HOST
@@ -904,10 +904,10 @@ online_file    online.xml files
 .B optional arguments:
 .INDENT 7.0
 .TP
-.B  \-h\fP,\fB  \-\-help
+.B \-h\fP,\fB  \-\-help
 show this help message and exit
 .TP
-.B  \-n\fP,\fB  \-\-nolower
+.B \-n\fP,\fB  \-\-nolower
 do not change aliases into lower case
 .UNINDENT
 .UNINDENT
