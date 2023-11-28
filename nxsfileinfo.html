@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsfileinfo &#8212; NXSTools 3.52.0 documentation</title>
+    <title>nxsfileinfo &#8212; NXSTools 3.53.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.52</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.53</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -100,7 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-sample">nxsfileinfo sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id14">nxsfileinfo metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nxsfileinfo-groupmetadata">nxsfileinfo groupmetadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nxsetup.html">nxsetup</a><ul>
@@ -185,9 +185,9 @@
 <li><a class="reference internal" href="#id13">Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id14">nxsfileinfo metadata</a><ul>
-<li><a class="reference internal" href="#id15">Synopsis</a></li>
-<li><a class="reference internal" href="#id16">Example</a></li>
+<li><a class="reference internal" href="#nxsfileinfo-groupmetadata">nxsfileinfo groupmetadata</a><ul>
+<li><a class="reference internal" href="#id14">Synopsis</a></li>
+<li><a class="reference internal" href="#id15">Example</a></li>
 </ul>
 </li>
 </ul>
@@ -427,6 +427,9 @@ or a text file list to re-arrange metadata</p>
 <dd><p>field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re-arrange metadata. The default:
 ‘scientificMetadata.nxsfileinfo_parameters.copymap.value’</p>
+</dd>
+<dt><kbd><span class="option">--copy-map-error</span></kbd></dt>
+<dd><p>Raise an error when the copy map file does not exist</p>
 </dd>
 <dt><kbd><span class="option">--copy-map-file <var>COPYMAPFILE</var></span></kbd></dt>
 <dd><p>json or yaml file containing the copy map, see also –copy-map</p>
@@ -718,11 +721,11 @@ nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="
 </div>
 </div>
 </div>
-<div class="section" id="id14">
-<h2>nxsfileinfo metadata<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nxsfileinfo-groupmetadata">
+<h2>nxsfileinfo groupmetadata<a class="headerlink" href="#nxsfileinfo-groupmetadata" title="Permalink to this headline">¶</a></h2>
 <p>It groups scan metadata to one dataset</p>
-<div class="section" id="id15">
-<h3>Synopsis<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>Synopsis<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Usage: nxsfileinfo groupmetadata <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>groupname<span class="o">]</span>
 </pre></div>
 </div>
@@ -753,6 +756,9 @@ nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="
 <dd><p>json or yaml map of {output: input} or [[output,
 input],] or a text file list to re-arrange metadata</p>
 </dd>
+<dt><kbd><span class="option">-e</span>, <span class="option">--group-map-error</span></kbd></dt>
+<dd><p>Raise an error when the group map file does not exist</p>
+</dd>
 <dt><kbd><span class="option">-r <var>GROUPMAPFILE</var></span>, <span class="option">--group-map-file <var>GROUPMAPFILE</var></span></kbd></dt>
 <dd><p>json or yaml file containing the copy map, see also</p>
 </dd>
@@ -778,8 +784,8 @@ input],] or a text file list to re-arrange metadata</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id16">
-<h3>Example<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h3>Example<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxsfileinfo groupmetadata -o /user/data/myscan.scan.json  -t /user/data/myscan.attachment.json  -l /user/data/myscan.origdatablock.json  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json
 
 nxsfileinfo groupmetadata myscan_m001  -m /user/data/myscan_00021.scan.json -c /home/user/group_config.txt

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.52.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.53.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.52</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.53</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -98,7 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-sample">nxsfileinfo sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-instrument">nxsfileinfo instrument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-attachment">nxsfileinfo attachment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#id14">nxsfileinfo metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nxsfileinfo.html#nxsfileinfo-groupmetadata">nxsfileinfo groupmetadata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../nxsetup.html">nxsetup</a><ul>
@@ -1413,7 +1413,11 @@
                 <span class="s2">&quot;to re-arrange metadata.&quot;</span>
                 <span class="s2">&quot; The default: &quot;</span>
                 <span class="s2">&quot;&#39;scientificMetadata.nxsfileinfo_parameters.copymap.value&#39;&quot;</span><span class="p">),</span>
-            <span class="n">default</span><span class="o">=</span><span class="s1">&#39;scientificMetadata.nxsfileinfo_parameters.copymap.value&#39;</span><span class="p">)</span></div>
+            <span class="n">default</span><span class="o">=</span><span class="s1">&#39;scientificMetadata.nxsfileinfo_parameters.copymap.value&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;--copy-map-error&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;copymaperror&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Raise an error when the copy map file does not exist&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Metadata.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.Metadata.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
@@ -1424,7 +1428,7 @@
             <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--scientific-meta&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;scientificmeta&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;scientific metadata file&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">&quot;--copy-map-file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;copymapfile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-l&quot;</span><span class="p">,</span> <span class="s2">&quot;--copy-map-file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;copymapfile&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;json or yaml file containing the copy map, &quot;</span>
                   <span class="s2">&quot;see also --copy-map&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -1571,25 +1575,30 @@
                             <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;copymapfile&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
-                <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="c1"># print(jstr)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">dct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
-                        <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
-                        <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                        <span class="c1"># mdflatten(dstr, [], dct)</span>
-                <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="n">usercopymap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">dct</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-                        <span class="n">dct</span> <span class="o">=</span> <span class="n">getlist</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
+                    <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="c1"># print(jstr)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">dct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
+                            <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
+                            <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="c1"># mdflatten(dstr, [], dct)</span>
+                    <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">usercopymap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">dct</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                            <span class="n">dct</span> <span class="o">=</span> <span class="n">getlist</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">usercopylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;copymaperror&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">copymaperror</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Copy-map file &#39;</span><span class="si">%s</span><span class="s2">&#39; does not exist&quot;</span>
+                                <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">copymapfile</span><span class="p">)</span>
+
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">nxsparser</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;fileformat&quot;</span><span class="p">):</span>
@@ -1912,7 +1921,11 @@
                   <span class="s2">&quot; to re-arrange metadata&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;group name&#39;</span><span class="p">)</span></div>
+            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;group name&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--group-map-error&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;groupmaperror&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Raise an error when the group map file does not exist&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="GroupMetadata.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.GroupMetadata.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
@@ -2420,25 +2433,29 @@
                             <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;groupmapfile&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
-                <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-                <span class="c1"># print(jstr)</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">dct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
-                        <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
-                        <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                        <span class="c1"># mdflatten(dstr, [], dct)</span>
-                <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="n">usergroupmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">dct</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-                        <span class="n">dct</span> <span class="o">=</span> <span class="n">getlist</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
+                    <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="c1"># print(jstr)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">dct</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
+                            <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
+                            <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="c1"># mdflatten(dstr, [], dct)</span>
+                    <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">usergroupmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">dct</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                            <span class="n">dct</span> <span class="o">=</span> <span class="n">getlist</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                                    <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;groupmaperror&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmaperror</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Group-map file &#39;</span><span class="si">%s</span><span class="s2">&#39; does not exist&quot;</span>
+                                <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">)</span>
 
         <span class="n">grouplist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">usergrouplist</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ky</span><span class="p">,</span> <span class="n">vl</span> <span class="ow">in</span> <span class="n">usergroupmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
