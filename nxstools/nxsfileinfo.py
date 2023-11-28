@@ -1235,6 +1235,10 @@ class Metadata(Runner):
                 " The default: "
                 "'scientificMetadata.nxsfileinfo_parameters.copymap.value'"),
             default='scientificMetadata.nxsfileinfo_parameters.copymap.value')
+        self._parser.add_argument(
+            "--copy-map-error", action="store_true",
+            default=False, dest="copymaperror",
+            help=("Raise an error when the copy map file does not exist"))
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -1245,7 +1249,7 @@ class Metadata(Runner):
             "-s", "--scientific-meta", dest="scientificmeta",
             help=("scientific metadata file"))
         self._parser.add_argument(
-            "--copy-map-file", dest="copymapfile",
+            "-l", "--copy-map-file", dest="copymapfile",
             help=("json or yaml file containing the copy map, "
                   "see also --copy-map"))
         self._parser.add_argument(
@@ -1392,25 +1396,30 @@ class Metadata(Runner):
                             usercopylist.append(line[:2])
 
         if hasattr(options, "copymapfile") and options.copymapfile:
-            with open(options.copymapfile, "r") as fl:
-                jstr = fl.read()
-                # print(jstr)
-                try:
-                    dct = yaml.safe_load(jstr.strip())
-                except Exception:
-                    if jstr:
-                        nan = float('nan')    # noqa: F841
-                        dct = eval(jstr.strip())
-                        # mdflatten(dstr, [], dct)
-                if dct and isinstance(dct, dict):
-                    usercopymap.update(dct)
-                elif dct:
-                    if isinstance(dct, basestring):
-                        dct = getlist(jstr.strip())
-                    if isinstance(dct, list):
-                        for line in dct:
-                            if isinstance(line, list):
-                                usercopylist.append(line[:2])
+            if os.path.isfile(options.copymapfile):
+                with open(options.copymapfile, "r") as fl:
+                    jstr = fl.read()
+                    # print(jstr)
+                    try:
+                        dct = yaml.safe_load(jstr.strip())
+                    except Exception:
+                        if jstr:
+                            nan = float('nan')    # noqa: F841
+                            dct = eval(jstr.strip())
+                            # mdflatten(dstr, [], dct)
+                    if dct and isinstance(dct, dict):
+                        usercopymap.update(dct)
+                    elif dct:
+                        if isinstance(dct, basestring):
+                            dct = getlist(jstr.strip())
+                        if isinstance(dct, list):
+                            for line in dct:
+                                if isinstance(line, list):
+                                    usercopylist.append(line[:2])
+            elif hasattr(options, "copymaperror") and options.copymaperror:
+                raise Exception("Copy-map file '%s' does not exist"
+                                % options.copymapfile)
+                
         result = None
         nxsparser = None
         if not hasattr(options, "fileformat"):
@@ -1734,7 +1743,11 @@ class GroupMetadata(Runner):
         self._parser.add_argument(
             'group', metavar='group', type=str, nargs="*",
             help='group name')
-
+        self._parser.add_argument(
+            "-e", "--group-map-error", action="store_true",
+            default=False, dest="groupmaperror",
+            help=("Raise an error when the group map file does not exist"))
+        
     def postauto(self):
         """ parser creator after autocomplete run """
         # self._parser.add_argument(
@@ -2241,25 +2254,29 @@ class GroupMetadata(Runner):
                             usergrouplist.append(line[:2])
 
         if hasattr(options, "groupmapfile") and options.groupmapfile:
-            with open(options.groupmapfile, "r") as fl:
-                jstr = fl.read()
-                # print(jstr)
-                try:
-                    dct = yaml.safe_load(jstr.strip())
-                except Exception:
-                    if jstr:
-                        nan = float('nan')    # noqa: F841
-                        dct = eval(jstr.strip())
-                        # mdflatten(dstr, [], dct)
-                if dct and isinstance(dct, dict):
-                    usergroupmap.update(dct)
-                elif dct:
-                    if isinstance(dct, basestring):
-                        dct = getlist(jstr.strip())
-                    if isinstance(dct, list):
-                        for line in dct:
-                            if isinstance(line, list):
-                                usergrouplist.append(line[:2])
+            if os.path.isfile(options.groupmapfile):
+                with open(options.groupmapfile, "r") as fl:
+                    jstr = fl.read()
+                    # print(jstr)
+                    try:
+                        dct = yaml.safe_load(jstr.strip())
+                    except Exception:
+                        if jstr:
+                            nan = float('nan')    # noqa: F841
+                            dct = eval(jstr.strip())
+                            # mdflatten(dstr, [], dct)
+                    if dct and isinstance(dct, dict):
+                        usergroupmap.update(dct)
+                    elif dct:
+                        if isinstance(dct, basestring):
+                            dct = getlist(jstr.strip())
+                        if isinstance(dct, list):
+                            for line in dct:
+                                if isinstance(line, list):
+                                    usergrouplist.append(line[:2])
+            elif hasattr(options, "groupmaperror") and options.groupmaperror:
+                raise Exception("Group-map file '%s' does not exist"
+                                % options.groupmapfile)
 
         grouplist.extend(usergrouplist)
         for ky, vl in usergroupmap.items():

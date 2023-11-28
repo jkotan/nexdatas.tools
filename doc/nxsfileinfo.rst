@@ -149,6 +149,7 @@ Options:
                         field json or yaml with map {output: input} or [[output, input],]
 			or a text file list to re-arrange metadata. The default:
 			'scientificMetadata.nxsfileinfo_parameters.copymap.value'
+   --copy-map-error      Raise an error when the copy map file does not exist
    --copy-map-file COPYMAPFILE
                         json or yaml file containing the copy map, see also --copy-map
    -f FILEFORMAT, --file-format FILEFORMAT
@@ -362,8 +363,8 @@ Example
 	  nxsfileinfo attachment -b p00 -i 2342342 -t 'HH water' -o ~/at2.json  myscan_00124.fio
 
 
-nxsfileinfo metadata
---------------------
+nxsfileinfo groupmetadata
+-------------------------
 
 It groups scan metadata to one dataset
 
@@ -387,6 +388,8 @@ Options:
   -g GROUPMAP, --group-map GROUPMAP
                         json or yaml map of {output: input} or [[output,
                         input],] or a text file list to re-arrange metadata
+  -e, --group-map-error
+                        Raise an error when the group map file does not exist
   -r GROUPMAPFILE, --group-map-file GROUPMAPFILE
                         json or yaml file containing the copy map, see also
   -m METADATAFILE, --metadata METADATAFILE
