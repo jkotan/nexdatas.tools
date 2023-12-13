@@ -659,12 +659,33 @@ class FIOFileParser(object):
                 sline = line.split("=")
                 if len(sline) > 1 and sline[0].strip() and \
                    sline[1].strip():
-                    try:
-                        params[sline[0].strip().replace(" ", "_")] = \
-                            eval(sline[1].strip())
-                    except Exception:
-                        params[sline[0].strip().replace(" ", "_")] = \
-                            str(sline[1].strip())
+                    if '@' not in sline[0]:
+                        try:
+                            params[sline[0].strip().replace(" ", "_")] = \
+                                eval(sline[1].strip())
+                        except Exception:
+                            params[sline[0].strip().replace(" ", "_")] = \
+                                str(sline[1].strip())
+        for line in lines:
+            if not line.startswith("!") and "=" in line:
+                sline = line.split("=")
+                if len(sline) > 1 and sline[0].strip() and \
+                   sline[1].strip():
+                    if '@' in sline[0]:
+                        field, attr = sline[0].strip().replace(" ", "_"). \
+                            split("@")[:2]
+                        try:
+                            avl = eval(sline[1].strip())
+                        except Exception:
+                            avl = str(sline[1].strip())
+
+                        if field in params:
+                            if not isinstance(params[field], dict):
+                                params[field] = {"value": params[field]}
+                            if attr in ["unit", "units"]:
+                                params[field]["unit"] = avl
+                            else:
+                                params[field][attr] = avl
 
         if params:
             meta["parameters"] = params

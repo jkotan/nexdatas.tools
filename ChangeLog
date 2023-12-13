@@ -1,3 +1,7 @@
+2023-12-13 Jan Kotanski <jankotan@gmail.com>
+	* add support for unit and other attributes in FIOFileParser (#534)
+	* tagged as v3.54.0
+
 2023-11-28 Jan Kotanski <jankotan@gmail.com>
 	* add --copy-map-error to nxsfileinfo metadata (#534)
 	* add --group-map-error to nxsfileinfo metadata (#534)
