@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.53.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.54.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.53</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.54</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -689,8 +689,7 @@
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
                         <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
-                        <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="p">)</span>
-                        <span class="c1"># mdflatten(dstr, [], dct)</span>
+                        <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
         <span class="k">if</span> <span class="s1">&#39;scientificMetadata&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__scmeta</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s1">&#39;scientificMetadata&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1584,8 +1583,13 @@
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
                             <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
-                            <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                <span class="n">dct</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
                             <span class="c1"># mdflatten(dstr, [], dct)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">dct</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                     <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                         <span class="n">usercopymap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">dct</span><span class="p">:</span>
@@ -2069,7 +2073,7 @@
         <span class="k">return</span> <span class="n">gr</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_merge_meta</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param parent: node metadata</span>
@@ -2080,152 +2084,207 @@
 <span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">tg</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">tg</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                    <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">tg</span> <span class="o">!=</span> <span class="n">md</span><span class="p">:</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tg</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">tg</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tg</span> <span class="o">!=</span> <span class="n">md</span><span class="p">:</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">]</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
+
+<span class="sd">        :param parent: node metadata</span>
+<span class="sd">        :type parent: :obj:`dict`</span>
+<span class="sd">        :param key: metadata key</span>
+<span class="sd">        :type key: :obj:`str`</span>
+<span class="sd">        :param md: new metadata</span>
+<span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
+<span class="sd">        :param unit: physical unit</span>
+<span class="sd">        :type unit: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">md</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">basestring</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">mi</span> <span class="k">for</span> <span class="n">mi</span> <span class="ow">in</span> <span class="n">md</span> <span class="k">if</span> <span class="n">mi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">))</span> \
+                    <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">md</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">md</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">mi</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> \
+                       <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                        <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">md</span>
+                    <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
+                    <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;std&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">ov</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                    <span class="n">ocnts</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span>
+                    <span class="n">ostd</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span>
+                    <span class="n">os2</span> <span class="o">=</span> <span class="n">ostd</span> <span class="o">*</span> <span class="n">ostd</span>
+                    <span class="n">nn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+                    <span class="n">ncnts</span> <span class="o">=</span> <span class="n">ocnts</span> <span class="o">+</span> <span class="n">nn</span>
+                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ncnts</span>
+                    <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> \
+                            <span class="nb">float</span><span class="p">((</span><span class="n">ov</span> <span class="o">*</span> <span class="n">ocnts</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="n">ncnts</span>
+                        <span class="n">minv</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">minv</span><span class="p">:</span>
+                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minv</span>
+                        <span class="n">maxv</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">maxv</span><span class="p">:</span>
+                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxv</span>
+                    <span class="k">if</span> <span class="n">ncnts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">ocnts</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">nn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                                <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">([</span><span class="n">ov</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                        <span class="k">elif</span> <span class="n">ostd</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                                <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                        <span class="k">elif</span> <span class="n">ocnts</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">nn</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">nvar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                                <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> \
+                                <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                                    <span class="p">((</span><span class="n">ocnts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">os2</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">nvar</span><span class="p">)</span>
+                                    <span class="o">/</span> <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_number</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
+
+<span class="sd">        :param parent: node metadata</span>
+<span class="sd">        :type parent: :obj:`dict`</span>
+<span class="sd">        :param key: metadata key</span>
+<span class="sd">        :type key: :obj:`str`</span>
+<span class="sd">        :param md: new metadata</span>
+<span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
+<span class="sd">        :param unit: physical unit</span>
+<span class="sd">        :type unit: :obj:`str`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">md</span>
+        <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="s2">&quot;std&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">ov</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="n">ocnts</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span>
+        <span class="n">ostd</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span>
+        <span class="n">os2</span> <span class="o">=</span> <span class="n">ostd</span> <span class="o">*</span> <span class="n">ostd</span>
+
+        <span class="n">ncnts</span> <span class="o">=</span> <span class="n">ocnts</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">ov</span> <span class="o">*</span> <span class="n">ocnts</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">ncnts</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">ncnts</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ns2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">ov</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">ov</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]))</span>
+                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ns2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ncnts</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># ns2 = float(</span>
+                <span class="c1">#     (ncnts - 2) * os2</span>
+                <span class="c1">#     +x (value - tg[&quot;value&quot;]) * (value - ov)</span>
+                <span class="c1"># ) \ (ncnts - 1)</span>
+                <span class="n">ns2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">os2</span>
+                    <span class="o">+</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">ov</span><span class="p">)</span>
+                <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ns2</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_merge_meta</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
+
+<span class="sd">        :param parent: node metadata</span>
+<span class="sd">        :type parent: :obj:`dict`</span>
+<span class="sd">        :param key: metadata key</span>
+<span class="sd">        :type key: :obj:`str`</span>
+<span class="sd">        :param md: new metadata</span>
+<span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_string</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">)</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
                 <span class="n">unit</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">in</span> <span class="n">md</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">md</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">ky</span> <span class="ow">in</span> <span class="n">md</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">vl</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">vl</span><span class="p">}</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                        <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="n">md</span><span class="p">[</span><span class="n">ky</span><span class="p">])</span>
                 <span class="n">md</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">md</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">basestring</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                            <span class="p">[</span><span class="n">mi</span> <span class="k">for</span> <span class="n">mi</span> <span class="ow">in</span> <span class="n">md</span> <span class="k">if</span> <span class="n">mi</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">])</span>
-                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
-                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">))</span> \
-                        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">md</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
-                            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
-                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">md</span><span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">mi</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> \
-                           <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mi</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                            <span class="k">break</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">value</span> <span class="o">=</span> <span class="n">md</span>
-                        <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
-                        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                            <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                            <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                        <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                        <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
-                        <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="s2">&quot;std&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-                        <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                        <span class="n">ov</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-                        <span class="n">ocnts</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span>
-                        <span class="n">ostd</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span>
-                        <span class="n">os2</span> <span class="o">=</span> <span class="n">ostd</span> <span class="o">*</span> <span class="n">ostd</span>
-                        <span class="n">nn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
-                        <span class="n">ncnts</span> <span class="o">=</span> <span class="n">ocnts</span> <span class="o">+</span> <span class="n">nn</span>
-                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ncnts</span>
-                        <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
-                            <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> \
-                                <span class="nb">float</span><span class="p">((</span><span class="n">ov</span> <span class="o">*</span> <span class="n">ocnts</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="n">ncnts</span>
-                            <span class="n">minv</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">minv</span><span class="p">:</span>
-                                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">minv</span>
-                            <span class="n">maxv</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">maxv</span><span class="p">:</span>
-                                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxv</span>
-                        <span class="k">if</span> <span class="n">ncnts</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="p">(</span><span class="n">ocnts</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">nn</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-                                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                                    <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">([</span><span class="n">ov</span><span class="p">]</span> <span class="o">+</span> <span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-                            <span class="k">elif</span> <span class="n">ostd</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
-                                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                                    <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-                            <span class="k">elif</span> <span class="n">ocnts</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">nn</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                                <span class="n">nvar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                                    <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-                                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> \
-                                    <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-                                        <span class="p">((</span><span class="n">ocnts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">os2</span> <span class="o">+</span> <span class="p">(</span><span class="n">nn</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">nvar</span><span class="p">)</span>
-                                        <span class="o">/</span> <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
-
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">md</span>
-            <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
-            <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-            <span class="k">if</span> <span class="s2">&quot;std&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">if</span> <span class="s2">&quot;counts&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">ov</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-            <span class="n">ocnts</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span>
-            <span class="n">ostd</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span>
-            <span class="n">os2</span> <span class="o">=</span> <span class="n">ostd</span> <span class="o">*</span> <span class="n">ostd</span>
-
-            <span class="n">ncnts</span> <span class="o">=</span> <span class="n">ocnts</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">unit</span><span class="p">:</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">ov</span> <span class="o">*</span> <span class="n">ocnts</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">ncnts</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">:</span>
-                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-                <span class="k">if</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
-                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">if</span> <span class="n">ncnts</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">ns2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                        <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
-                        <span class="o">+</span> <span class="p">(</span><span class="n">ov</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">ov</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]))</span>
-                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ns2</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">ncnts</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="c1"># ns2 = float(</span>
-                    <span class="c1">#     (ncnts - 2) * os2</span>
-                    <span class="c1">#     +x (value - tg[&quot;value&quot;]) * (value - ov)</span>
-                    <span class="c1"># ) \ (ncnts - 1)</span>
-                    <span class="n">ns2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
-                        <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">os2</span>
-                        <span class="o">+</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="n">ov</span><span class="p">)</span>
-                    <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ns2</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_number</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_create_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scfile</span><span class="p">,</span> <span class="n">clist</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
@@ -2442,7 +2501,10 @@
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">jstr</span><span class="p">:</span>
                             <span class="n">nan</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>    <span class="c1"># noqa: F841</span>
-                            <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">dct</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">jstr</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                                <span class="n">dct</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
                             <span class="c1"># mdflatten(dstr, [], dct)</span>
                     <span class="k">if</span> <span class="n">dct</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                         <span class="n">usergroupmap</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span>
