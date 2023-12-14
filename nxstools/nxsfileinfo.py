@@ -510,8 +510,7 @@ class BeamtimeLoader(object):
                 except Exception:
                     if jstr:
                         nan = float('nan')    # noqa: F841
-                        dct = eval(jstr)
-                        # mdflatten(dstr, [], dct)
+                        dct = eval(jstr.strip())
         if 'scientificMetadata' in dct.keys():
             self.__scmeta = dct['scientificMetadata']
         else:
@@ -1405,8 +1404,13 @@ class Metadata(Runner):
                     except Exception:
                         if jstr:
                             nan = float('nan')    # noqa: F841
-                            dct = eval(jstr.strip())
+                            try:
+                                dct = eval(jstr.strip())
+                            except Exception:
+                                dct = " "
                             # mdflatten(dstr, [], dct)
+                        else:
+                            dct = ""
                     if dct and isinstance(dct, dict):
                         usercopymap.update(dct)
                     elif dct:
@@ -1890,7 +1894,7 @@ class GroupMetadata(Runner):
         return gr
 
     @classmethod
-    def _merge_meta(cls, parent, key, md):
+    def _merge_string(cls, parent, key, md):
         """ update and group scan metadata
 
         :param parent: node metadata
@@ -1901,152 +1905,207 @@ class GroupMetadata(Runner):
         :type md: :obj:`str` or :obj:`dict`
         """
         tg = None
-        if isinstance(md, basestring):
-            if key in parent.keys():
-                tg = parent[key]
-            if tg and isinstance(tg, dict):
-                if "value" not in tg:
-                    tg["value"] = None
-                tg = tg["value"]
-            if isinstance(tg, list):
-                parent[key].append(md)
-            elif not tg:
-                parent[key] = md
-            elif isinstance(tg, list):
-                if md not in tg:
-                    tg.append(md)
-            elif tg != md:
-                parent[key] = [tg, md]
+        if key in parent.keys():
+            tg = parent[key]
+        if tg and isinstance(tg, dict):
+            if "value" not in tg:
+                tg["value"] = None
+            tg = tg["value"]
+        if isinstance(tg, list):
+            parent[key].append(md)
+        elif not tg:
+            parent[key] = md
+        elif isinstance(tg, list):
+            if md not in tg:
+                tg.append(md)
+        elif tg != md:
+            parent[key] = [tg, md]
 
+    @classmethod
+    def _merge_list(cls, parent, key, md, unit):
+        """ update and group scan metadata
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if md:
+            if isinstance(md[0], basestring):
+                if isinstance(tg, list):
+                    parent[key].extend(
+                        [mi for mi in md if mi not in tg])
+                elif not tg:
+                    parent[key] = md
+            elif (isinstance(md[0], float) or isinstance(md[0], int)) \
+                    and len(md) < 4:
+                if isinstance(tg, list):
+                    if md not in parent[key]:
+                        parent[key].append(md)
+                elif not tg:
+                    parent[key] = [md]
+            else:
+                for mi in md:
+                    if not isinstance(mi, float) and \
+                       not isinstance(mi, int):
+                        break
+                else:
+                    value = md
+                    tg = None
+                    if key in parent.keys():
+                        tg = parent[key]
+                    if not isinstance(tg, dict):
+                        parent[key] = {}
+                        tg = parent[key]
+                    if "value" not in tg:
+                        tg["value"] = 0
+                    if "unit" not in tg:
+                        tg["unit"] = unit
+                    if "min" not in tg:
+                        tg["min"] = min(value)
+                    if "max" not in tg:
+                        tg["max"] = max(value)
+                    if "std" not in tg:
+                        tg["std"] = 0.0
+                    if "counts" not in tg:
+                        tg["counts"] = 0
+                    ov = tg["value"]
+                    ocnts = tg["counts"]
+                    ostd = tg["std"]
+                    os2 = ostd * ostd
+                    nn = len(md)
+                    ncnts = ocnts + nn
+                    tg["counts"] = ncnts
+                    if tg["unit"] == unit:
+                        tg["value"] = \
+                            float((ov * ocnts) + sum(value)) / ncnts
+                        minv = min(value)
+                        if tg["min"] > minv:
+                            tg["min"] = minv
+                        maxv = max(value)
+                        if tg["max"] < maxv:
+                            tg["max"] = maxv
+                    if ncnts > 1:
+                        if (ocnts == 1 or nn == 1):
+                            tg["std"] = float(
+                                np.std([ov] + value, ddof=1))
+                        elif ostd == 0.0:
+                            tg["std"] = float(
+                                np.std(value, ddof=1))
+                        elif ocnts > 1 and nn > 1:
+                            nvar = float(
+                                np.var(value, ddof=1))
+                            tg["std"] = \
+                                math.sqrt(
+                                    ((ocnts - 1) * os2 + (nn - 1) * nvar)
+                                    / (ncnts - 2))
+
+    @classmethod
+    def _merge_number(cls, parent, key, md, unit):
+        """ update and group scan metadata
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        value = md
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        if "value" not in tg:
+            tg["value"] = 0
+        if "unit" not in tg:
+            tg["unit"] = unit
+        if "min" not in tg:
+            tg["min"] = value
+        if "max" not in tg:
+            tg["max"] = value
+        if "std" not in tg:
+            tg["std"] = 0.0
+        if "counts" not in tg:
+            tg["counts"] = 0
+        ov = tg["value"]
+        ocnts = tg["counts"]
+        ostd = tg["std"]
+        os2 = ostd * ostd
+
+        ncnts = ocnts + 1
+        if tg["unit"] == unit:
+            tg["value"] = float((ov * ocnts) + value)/(ncnts)
+            if tg["min"] > value:
+                tg["min"] = value
+            if tg["max"] < value:
+                tg["max"] = value
+            tg["counts"] += 1
+            if ncnts == 2:
+                ns2 = float(
+                    (value - tg["value"]) * (value - tg["value"])
+                    + (ov - tg["value"]) * (ov - tg["value"]))
+                tg["std"] = math.sqrt(ns2)
+            elif ncnts > 2:
+                # ns2 = float(
+                #     (ncnts - 2) * os2
+                #     +x (value - tg["value"]) * (value - ov)
+                # ) \ (ncnts - 1)
+                ns2 = float(
+                    (ncnts - 2) * os2
+                    + (value - tg["value"]) * (value - ov)
+                ) / (ncnts - 1)
+                tg["std"] = math.sqrt(ns2)
+
+    @classmethod
+    def _merge_meta(cls, parent, key, md):
+        """ update and group scan metadata
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        """
+        if isinstance(md, basestring):
+            cls._merge_string(parent, key, md)
         unit = ""
         if isinstance(md, dict):
             if "unit" in md:
                 unit = md["unit"]
-            if "value" in md:
+            if "value" in md and not isinstance(md["value"], dict):
                 md = md["value"]
             else:
+                if isinstance(md, dict):
+                    for ky in md.keys():
+                        parent[key]
+                        if not isinstance(parent[key], dict):
+                            if parent[key] is not None:
+                                vl = parent[key]
+                                parent[key] = {key: vl}
+                            else:
+                                parent[key] = {}
+                        tg = parent[key]
+                        cls._merge_meta(tg, ky, md[ky])
                 md = None
+
         if isinstance(md, list):
-            if key in parent.keys():
-                tg = parent[key]
-            if md:
-                if isinstance(md[0], basestring):
-                    if isinstance(tg, list):
-                        parent[key].extend(
-                            [mi for mi in md if mi not in tg])
-                    elif not tg:
-                        parent[key] = md
-                elif (isinstance(md[0], float) or isinstance(md[0], int)) \
-                        and len(md) < 4:
-                    if isinstance(tg, list):
-                        if md not in parent[key]:
-                            parent[key].append(md)
-                    elif not tg:
-                        parent[key] = [md]
-                else:
-                    for mi in md:
-                        if not isinstance(mi, float) and \
-                           not isinstance(mi, int):
-                            break
-                    else:
-                        value = md
-                        tg = None
-                        if key in parent.keys():
-                            tg = parent[key]
-                        if not isinstance(tg, dict):
-                            parent[key] = {}
-                        if "value" not in tg:
-                            tg["value"] = 0
-                        if "unit" not in tg:
-                            tg["unit"] = unit
-                        if "min" not in tg:
-                            tg["min"] = min(value)
-                        if "max" not in tg:
-                            tg["max"] = max(value)
-                        if "std" not in tg:
-                            tg["std"] = 0.0
-                        if "counts" not in tg:
-                            tg["counts"] = 0
-                        ov = tg["value"]
-                        ocnts = tg["counts"]
-                        ostd = tg["std"]
-                        os2 = ostd * ostd
-                        nn = len(md)
-                        ncnts = ocnts + nn
-                        tg["counts"] = ncnts
-                        if tg["unit"] == unit:
-                            tg["value"] = \
-                                float((ov * ocnts) + sum(value)) / ncnts
-                            minv = min(value)
-                            if tg["min"] > minv:
-                                tg["min"] = minv
-                            maxv = max(value)
-                            if tg["max"] < maxv:
-                                tg["max"] = maxv
-                        if ncnts > 1:
-                            if (ocnts == 1 or nn == 1):
-                                tg["std"] = float(
-                                    np.std([ov] + value, ddof=1))
-                            elif ostd == 0.0:
-                                tg["std"] = float(
-                                    np.std(value, ddof=1))
-                            elif ocnts > 1 and nn > 1:
-                                nvar = float(
-                                    np.var(value, ddof=1))
-                                tg["std"] = \
-                                    math.sqrt(
-                                        ((ocnts - 1) * os2 + (nn - 1) * nvar)
-                                        / (ncnts - 2))
-
+            cls._merge_list(parent, key, md, unit)
         elif isinstance(md, float) or isinstance(md, int):
-            value = md
-            tg = None
-            if key in parent.keys():
-                tg = parent[key]
-
-            if not isinstance(tg, dict):
-                parent[key] = {}
-            tg = parent[key]
-            if "value" not in tg:
-                tg["value"] = 0
-            if "unit" not in tg:
-                tg["unit"] = unit
-            if "min" not in tg:
-                tg["min"] = value
-            if "max" not in tg:
-                tg["max"] = value
-            if "std" not in tg:
-                tg["std"] = 0.0
-            if "counts" not in tg:
-                tg["counts"] = 0
-            ov = tg["value"]
-            ocnts = tg["counts"]
-            ostd = tg["std"]
-            os2 = ostd * ostd
-
-            ncnts = ocnts + 1
-            if tg["unit"] == unit:
-                tg["value"] = float((ov * ocnts) + value)/(ncnts)
-                if tg["min"] > value:
-                    tg["min"] = value
-                if tg["max"] < value:
-                    tg["max"] = value
-                tg["counts"] += 1
-                if ncnts == 2:
-                    ns2 = float(
-                        (value - tg["value"]) * (value - tg["value"])
-                        + (ov - tg["value"]) * (ov - tg["value"]))
-                    tg["std"] = math.sqrt(ns2)
-                elif ncnts > 2:
-                    # ns2 = float(
-                    #     (ncnts - 2) * os2
-                    #     +x (value - tg["value"]) * (value - ov)
-                    # ) \ (ncnts - 1)
-                    ns2 = float(
-                        (ncnts - 2) * os2
-                        + (value - tg["value"]) * (value - ov)
-                    ) / (ncnts - 1)
-                    tg["std"] = math.sqrt(ns2)
+            cls._merge_number(parent, key, md, unit)
 
     @classmethod
     def _create_metadata(cls, scfile, clist, options):
@@ -2263,7 +2322,10 @@ class GroupMetadata(Runner):
                     except Exception:
                         if jstr:
                             nan = float('nan')    # noqa: F841
-                            dct = eval(jstr.strip())
+                            try:
+                                dct = eval(jstr.strip())
+                            except Exception:
+                                dct = " "
                             # mdflatten(dstr, [], dct)
                     if dct and isinstance(dct, dict):
                         usergroupmap.update(dct)

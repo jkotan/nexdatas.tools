@@ -1,5 +1,6 @@
 2023-12-13 Jan Kotanski <jankotan@gmail.com>
-	* add support for unit and other attributes in FIOFileParser (#534)
+	* add support for unit and other attributes in FIOFileParser (#536)
+	* add support for grouping subdirectories (#538)
 	* tagged as v3.54.0
 
 2023-11-28 Jan Kotanski <jankotan@gmail.com>

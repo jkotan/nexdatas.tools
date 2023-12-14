@@ -12368,7 +12368,7 @@ For more help:
         afilename = "empty1.json"
         dfilename2 = "empty1.json"
         afilename2 = "empty.json"
-        groupfile = "metadata-group-map.lst"
+        groupfile = "metadata-group-map2.lst"
         outputfile = "mcalib01.scan.json"
         doutputfile = "mcalib01.origdatablock.json"
         aoutputfile = "mcalib01.attachment.json"
@@ -12479,6 +12479,18 @@ For more help:
                         "principalInvestigator": "appuser@fake.com",
                         "proposalId": "testjk01",
                         "scientificMetadata": {
+                            "data": {
+                                "axes": "exp_dmy01",
+                                "signal": "ct01",
+                                "sample_pressure": {
+                                    "counts": 16,
+                                    "max": 999.4,
+                                    "min": 998.6,
+                                    "std": 0.20550621458438864,
+                                    "unit": "mbar",
+                                    "value": 999.05
+                                }
+                            },
                             "DOOR_proposalId": "99991173",
                             "ScanCommand": [
                                 "ascan exp_dmy01 0.0 4.0 4 0.1",
@@ -12512,19 +12524,6 @@ For more help:
                                 "unit": "",
                                 "value": 5.333333333333333
                             },
-                            "pressure": {
-                                "counts": 16,
-                                "max": 999.4,
-                                "min": 998.6,
-                                "std": 0.20550621458438864,
-                                "unit": "mbar",
-                                "value": 999.05
-                            },
-                            "pressure_shape": [
-                                [
-                                    5
-                                ]
-                            ],
                             "static_vector": [
                                 [
                                     0,
@@ -12533,12 +12532,14 @@ For more help:
                                 ]
                             ],
                             "temperature": {
-                                "counts": 3,
-                                "max": 0.82,
-                                "min": 0.8,
-                                "std": 0.011547005383792445,
-                                "unit": "W",
-                                "value": 0.8133333333333334
+                                "value": {
+                                    "counts": 3,
+                                    "max": 0.82,
+                                    "min": 0.8,
+                                    "std": 0.011547005383792445,
+                                    "unit": "W",
+                                    "value": 0.8133333333333334
+                                }
                             },
                             "usedSoftware":
                             "https://github.com/nexdatas/nxstools",
