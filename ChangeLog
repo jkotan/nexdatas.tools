@@ -1,5 +1,9 @@
+2023-12-15 Jan Kotanski <jankotan@gmail.com>
+	* add support for fetching metadata from multi-scan Nexus files (#542)
+	* tagged as v3.55.0
+
 2023-12-13 Jan Kotanski <jankotan@gmail.com>
-	* add support for unit and other attributes in FIOFileParser (#534)
+	* add support for unit and other attributes in FIOFileParser (#537), (#539)
 	* tagged as v3.54.0
 
 2023-11-28 Jan Kotanski <jankotan@gmail.com>

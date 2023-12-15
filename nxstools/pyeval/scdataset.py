@@ -21,6 +21,8 @@
 
 import os
 import socket
+import tango
+import json
 # from sardana.macroserver.macro import Macro
 
 
@@ -47,11 +49,13 @@ def append_scicat_dataset(macro, status_info=True):
     if isinstance(sfl, str):
         sfl = [sfl]
     scanname = ""
+    nexus = False
     if sfl and isinstance(sfl, list) or isinstance(sfl, tuple):
         for sf in sfl:
             scname, ext = os.path.splitext(str(sf))
             if ext in [".nxs", ".nx", ".h5", ".ndf"] and scname:
                 scanname = str(scname)
+                nexus = True
                 break
         if not scanname:
             for sf in sfl:
@@ -68,7 +72,24 @@ def append_scicat_dataset(macro, status_info=True):
                     nxsappend = None
                     break
     if scanname and not nxsappend:
-        sname = "%s_%05i" % (scanname, sid)
+        appendentry = False
+        entryname = "scan"
+        try:
+            nsd = get_env_var(macro, "NeXusSelectorDevice", None)
+            if nsd:
+                tnsd = tango.DeviceProxy(nsd)
+                appendentry = bool(tnsd.appendentry)
+                variables = json.loads(tnsd.configvariables)
+                if isinstance(variables, dict) and "entryname" in variables:
+                    entryname = variables["entryname"]
+        except Exception:
+            macro.warning("NeXusSelectorDevice is not available")
+        if not nexus or appendentry is False:
+            sname = "%s_%05i" % (scanname, sid)
+        else:
+            sname = "%s::/%s%05i;%s_%05i" % (
+                scanname, entryname, sid, scanname, sid)
+
         append_scicat_record(macro, sname, status_info=True)
     return sname
 
