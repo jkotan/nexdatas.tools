@@ -12358,7 +12358,6 @@ For more help:
         fun = sys._getframe().f_code.co_name
         print("Run: %s.%s() " % (self.__class__.__name__, fun))
         filename = "myscan_00034.scan.json"
-        filename2 = "myscan_00034b.scan.json"
         dfilename = "empty.json"
         afilename = "empty1.json"
         groupfile = "metadata-group-map.lst"
@@ -12366,30 +12365,22 @@ For more help:
         doutputfile = "mcalib01.origdatablock.json"
         aoutputfile = "mcalib01.attachment.json"
         shutil.copy("test/files/%s" % filename, filename)
-        shutil.copy("test/files/%s" % filename2, filename2)
         shutil.copy("test/files/%s" % dfilename, dfilename)
         shutil.copy("test/files/%s" % afilename, afilename)
         shutil.copy("test/files/%s" % groupfile, groupfile)
 
         commands = [
             ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
-             'mcalib01 -m %s --origdatablock %s -a %s '
+             'mcalib01 -m %s --origdatablock %s -a %s -w '
              % (groupfile, filename, dfilename, afilename)).split(),
             ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
-             'mcalib01 --metadata %s -d %s --attachment %s '
+             'mcalib01 --metadata %s -d %s --attachment %s  '
+             '--allow-duplication '
              % (groupfile, filename, dfilename, afilename)).split(),
-        ]
-        commands2 = [
-            ('nxsfileinfo groupmetadata -k4 -r %s --write-files '
-             'mcalib01 -m %s --origdatablock %s -a %s '
-             % (groupfile, filename2, dfilename, afilename)).split(),
-            ('nxsfileinfo groupmetadata -k4 --group-map-file %s  -f '
-             'mcalib01 --metadata %s -d %s --attachment %s '
-             % (groupfile, filename2, dfilename, afilename)).split(),
         ]
 
         try:
-            for ci, cmd in enumerate(commands):
+            for cmd in commands:
                 try:
                     old_stdout = sys.stdout
                     old_stderr = sys.stderr
@@ -12511,7 +12502,7 @@ For more help:
                     sys.stdout = mystdout = StringIO()
                     sys.stderr = mystderr = StringIO()
                     old_argv = sys.argv
-                    sys.argv = commands2[ci]
+                    sys.argv = cmd
                     nxsfileinfo.main()
 
                     sys.argv = old_argv
@@ -12542,7 +12533,7 @@ For more help:
                         "description": "Water test",
                         "inputDatasets": [
                             "testjk01/superscan_00034",
-                            "testjk01/superscan_00034b"
+                            "testjk01/superscan_00034"
                         ],
                         "investigator": "appuser@fake.com",
                         "isPublished": False,
@@ -12630,7 +12621,6 @@ For more help:
                         os.remove(aoutputfile)
         finally:
             os.remove(filename)
-            os.remove(filename2)
             os.remove(dfilename)
             os.remove(afilename)
             os.remove(groupfile)

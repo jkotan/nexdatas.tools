@@ -1725,6 +1725,10 @@ class GroupMetadata(Runner):
         #     default=False, dest="pfname",
         #     help=("generate pid without file name"))
         self._parser.add_argument(
+            "-w", "--allow-duplication", action="store_true",
+            default=False, dest="nounique",
+            help=("allow to merge metadata with duplicated pid"))
+        self._parser.add_argument(
             "--raw", action="store_true",
             default=False, dest="raw",
             help="raw dataset type")
@@ -1848,11 +1852,12 @@ class GroupMetadata(Runner):
             print("WARNING: %s" % str(e))
             metadata = {}
 
-        metadata = cls._update_metadata(metadata, ds, clist)
+        metadata = cls._update_metadata(metadata, ds, clist,
+                                        options.nounique)
         return metadata
 
     @classmethod
-    def _update_metadata(cls, gr, ds, cplist):
+    def _update_metadata(cls, gr, ds, cplist, nounique=False):
         """ update and group scan metadata
 
         :param gr: group metadata
@@ -1890,7 +1895,8 @@ class GroupMetadata(Runner):
                         else:
                             td[tg] = {}
                             td = td[tg]
-                    if first and tg == 'inputDatasets' and \
+                    if not nounique and first and \
+                       tg == 'inputDatasets' and \
                        isinstance(td, list) and md in td:
                         return gr
                     cls._merge_meta(parent, tg, md)

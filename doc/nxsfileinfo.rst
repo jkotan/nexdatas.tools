@@ -384,6 +384,8 @@ Options:
   -p PID, --pid PID     dataset pid
   --raw                 raw dataset type
   -i BEAMTIMEID, --beamtimeid  BEAMTIMEID beamtime id
+  -w, --allow-duplication
+                        allow to merge metadata with duplicated pid
   -f, --write-files     write output to files
   -k SCICATVERSION, --scicat-version SCICATVERSION
                         major scicat version metadata
