@@ -1864,7 +1864,7 @@ class GroupMetadata(Runner):
         :returns: grouped metadata
         :rtype: :obj:`dct` <:obj:`str`, `any`>
         """
-
+        first = True
         for line in cplist:
             if line and len(line) > 1 and line[0] and line[1] and \
                isinstance(line[0], basestring) and \
@@ -1890,7 +1890,11 @@ class GroupMetadata(Runner):
                         else:
                             td[tg] = {}
                             td = td[tg]
+                    if first and tg == 'inputDatasets' and \
+                       isinstance(td, list) and md in td:
+                        return gr
                     cls._merge_meta(parent, tg, md)
+            first = False
         return gr
 
     @classmethod
