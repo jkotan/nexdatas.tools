@@ -112,7 +112,7 @@ def append_scicat_dataset(macro, status_info=True):
             commands.append("__command__ stop")
             commands.append(scanname)
             commands.append("__command__ start %s" % scanname)
-            sname = "\n" + "\n".join(commands)
+            sname = "\n".join(commands)
 
             sm[fdir] = scanname
             macro.setEnv('SciCatMeasurements', sm)
