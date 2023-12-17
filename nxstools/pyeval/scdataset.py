@@ -97,7 +97,7 @@ def append_scicat_dataset(macro, status_info=True):
             fdir = macro.getEnv('ScanDir')
             try:
                 sm = dict(macro.getEnv('SciCatMeasurements', {}))
-            except Exceptions:
+            except Exception:
                 sm = {}
 
             if fdir in sm.keys():
