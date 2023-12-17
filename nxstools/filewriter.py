@@ -653,34 +653,61 @@ class FTGroup(FTObject):
         """
         FTObject._reopen(self)
 
-    def default_field(self, signals=None):
+    def default_field(self, signals=None, nexuspath=None):
         """ field pointed by default attributes
 
+        :type signals: :obj:`list`<:obj:`str`>
+        :param axes: axes names
+        :param entryname: base nexus path to be opened
+        :type entryname: :obj:`str`
         :returns: field pointed by default attributes
         :rtype: :class:`FTField`
         """
+
         node = self
         searching = True
+        nexuspath = nexuspath or ""
+        groups = [n for n in nexuspath.split("/") if n]
         while searching:
-            attrs = node.attributes
-            if hasattr(node, "names") and "default" in attrs.names():
-                nname = attrs["default"].read()
-                if isinstance(nname, numpy.ndarray) and len(nname):
-                    nname = nname[0]
-                if nname in node.names():
-                    node = node.open(nname)
+            nname = None
+            if hasattr(node, "names"):
+                gname = ""
+                if groups:
+                    gname = groups.pop(0)
+                if gname in node.names():
+                    node = node.open(gname)
                     continue
+                else:
+                    groups = []
+                attrs = node.attributes
+                if "default" in attrs.names():
+                    nname = attrs["default"].read()
+                    if isinstance(nname, numpy.ndarray) and len(nname):
+                        nname = nname[0]
+                    if nname in node.names():
+                        node = node.open(nname)
+                        continue
             searching = False
-        if hasattr(node, "names"):
-            attrs = node.attributes
-            if "signal" in attrs.names():
-                nname = attrs["signal"].read()
-                if isinstance(nname, numpy.ndarray) and len(nname):
-                    nname = nname[0]
-                if nname in node.names():
-                    node = node.open(nname)
         if not hasattr(node, "names"):
             return node
+        if hasattr(node, "names"):
+            if groups:
+                gname = groups.pop(0)
+            if gname in node.names():
+                node = node.open(gname)
+                if not hasattr(node, "names"):
+                    return node
+            else:
+                groups = []
+                attrs = node.attributes
+                if "signal" in attrs.names():
+                    nname = attrs["signal"].read()
+                    if isinstance(nname, numpy.ndarray) and len(nname):
+                        nname = nname[0]
+                    if nname in node.names():
+                        node = node.open(nname)
+                    if not hasattr(node, "names"):
+                        return node
 
         for cnm in ["NXentry", "NXdata", "NXmonitor", "NXlog"]:
             names = node.names()

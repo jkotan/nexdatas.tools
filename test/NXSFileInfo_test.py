@@ -11006,6 +11006,192 @@ For more help:
                 if os.path.isfile(ofname):
                     os.remove(ofname)
 
+    def test_attachment_nxs_counter_nexuspath(self):
+        """ test nxsfileinfo attachment
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        ofname = '%s/attachment-metadata-12345678.json' % (os.getcwd())
+
+        args = [
+            [
+                'testfileinfo.nxs',
+                "123/423/543",
+                "My_tests",
+                "12312312",
+                "p00",
+                "0o666",
+                "0666",
+                "exp_c99",
+                "exp_mot04",
+                "exp_c02.(counts)",
+                "lat.(mm)",
+                '{"xlabel": "exp_mot04", "ylabel": "exp_c02", '
+                '"suptitle": "My_tests"}',
+                '{"xlabel": "lat.(mm)", "ylabel": "exp_c02.(counts)", '
+                '"suptitle": "My_tests"}',
+                'entry1234/data/exp_c02',
+            ],
+            [
+                'testfileinfo.nxs',
+                "petra3/1223/543",
+                "Water_tests",
+                "54352312",
+                "p99",
+                # "0o666",
+                # "0666",
+                "0o662",
+                "0662",
+                "exp_c99",
+                "erd,timestamp",
+                "exp_p03.(counts)",
+                "time.(s)",
+                '{"xlabel": "timestamp", "ylabel": "exp_c03", '
+                '"suptitle": "Water_tests"}',
+                '{"xlabel": "time.(s)", "ylabel": "exp_p03.(counts)", '
+                '"suptitle": "Water_tests"}',
+                'entry1234/data/exp_c03',
+            ],
+        ]
+
+        for arg in args:
+            filename = arg[0]
+            atid = arg[1]
+            caption = arg[2]
+            bid = arg[3]
+            bl = arg[4]
+            chmod = arg[5]
+            chmod2 = arg[6]
+            signals = arg[7]
+            axes = arg[8]
+            slabel = arg[9]
+            xlabel = arg[10]
+            npath = arg[13]
+
+            commands = [
+                ('nxsfileinfo attachment %s '
+                 ' -a %s '
+                 ' -t %s '
+                 ' -i %s '
+                 ' -b %s '
+                 ' -o %s '
+                 ' -x %s '
+                 ' -s %s '
+                 ' -e %s '
+                 ' -n %s '
+                 ' -u '
+                 ' --parameters-in-caption '
+                 % (filename, atid, caption, bid, bl,
+                    ofname, chmod, signals, axes, npath)).split(),
+                ('nxsfileinfo attachment %s '
+                 ' --id %s '
+                 ' --caption %s '
+                 ' --beamtimeid %s '
+                 ' --beamline %s '
+                 ' --output %s '
+                 ' --chmod %s '
+                 ' --signals %s '
+                 ' --axes %s '
+                 ' --signal-label %s '
+                 ' --xlabel %s '
+                 ' --nexus-path %s '
+                 ' --override '
+                 ' --parameters-in-caption '
+                 % (filename, atid, caption, bid, bl,
+                    ofname, chmod, signals, axes, slabel, xlabel,
+                    npath)).split(),
+            ]
+
+            c2d = [1, 432, 3456, 654, 6546, 56, 56, 77, 24, 2]
+            c3d = [2, 32, 356, 654, 646, 156, 56, 7, 4, 2]
+            m4d = [2., 2.2, 2.3, 2.5, 2.6, 2.8, 3.0, 3.4, 4.1, 5.2]
+            tsd = [0., 0.2, 0.3, 0.5, 0.6, 0.8, 1.0, 1.4, 2.1, 3.2]
+
+            wrmodule = WRITERS[self.writer]
+            filewriter.writer = wrmodule
+            nxsfile = filewriter.create_file(filename, overwrite=True)
+            rt = nxsfile.root()
+            entry = rt.create_group("entry1234", "NXentry")
+            entry.create_group("instrument", "NXinstrument")
+            da = entry.create_group("data", "NXdata")
+            c2 = da.create_field("exp_c02", "uint32", [10], [10])
+            c2.write(c2d)
+            c3 = da.create_field("exp_c03", "uint32", [10], [10])
+            c3.write(c3d)
+            m4 = da.create_field("exp_mot04", "float32", [10], [10])
+            m4.write(m4d)
+            ts = da.create_field("timestamp", "float64", [10], [10])
+            ts.write(tsd)
+            nxsfile.close()
+
+            try:
+                for ci, cmd in enumerate(commands):
+
+                    pars = arg[11 + ci]
+                    # print(cmd)
+                    old_stdout = sys.stdout
+                    old_stderr = sys.stderr
+                    sys.stdout = mystdout = StringIO()
+                    sys.stderr = mystderr = StringIO()
+                    old_argv = sys.argv
+                    sys.argv = cmd
+                    nxsfileinfo.main()
+
+                    sys.argv = old_argv
+                    sys.stdout = old_stdout
+                    sys.stderr = old_stderr
+                    vl = mystdout.getvalue()
+                    er = mystderr.getvalue()
+
+                    self.assertEqual('', er)
+                    self.assertEqual('', er)
+                    self.assertEqual('', vl.strip())
+                    # print(vl)
+
+                    with open(ofname) as of:
+                        dct = json.load(of)
+                        status = os.stat(ofname)
+                    try:
+                        self.assertEqual(
+                            chmod, str(oct(status.st_mode & 0o777)))
+                    except Exception:
+                        self.assertEqual(
+                            chmod2, str(oct(status.st_mode & 0o777)))
+                    res = {
+                        'id': atid,
+                        'caption': "%s %s" % (caption, pars),
+                        'thumbnail': "",
+                        "ownerGroup": "%s-dmgt" % bid,
+                        "accessGroups": [
+                            '%s-clbt' % bid,
+                            '%s-part' % bid,
+                            '%s-dmgt' % bid,
+                            '%sdmgt' % bl, '%sstaff' % bl],
+                    }
+                    self.myAssertDict(dct, res, ["thumbnail", "caption"])
+
+                    cps = dct["caption"].split(" ", 1)
+                    self.assertEqual(len(cps), 2)
+                    self.assertEqual(cps[0], caption)
+                    self.myAssertDict(json.loads(cps[1]), json.loads(pars))
+
+                    tn = dct["thumbnail"]
+                    self.assertTrue(tn.startswith("data:image/png;base64,"))
+                    ctn = tn[len("data:image/png;base64,"):]
+
+                    ipng = base64.b64decode(ctn.encode("utf-8"))
+                    img = PIL.Image.open(BytesIO(ipng))
+                    shape = np.array(img).shape
+                    self.assertEqual(len(shape), 3)
+                    self.assertTrue(shape[0] > 100)
+                    self.assertTrue(shape[1] > 100)
+            finally:
+                if os.path.isfile(filename):
+                    os.remove(filename)
+                if os.path.isfile(ofname):
+                    os.remove(ofname)
+
     def test_attachment_nxs_counter_scan_command(self):
         """ test nxsfileinfo attachment
         """

@@ -3021,6 +3021,12 @@ class Attachment(Runner):
             "--parameters-in-caption", action="store_true",
             default=False, dest="ppflag",
             help="add plot paramters to the caption")
+        self._parser.add_argument(
+            "-n", "--nexus-path",
+            help="base nexus path to element to be shown"
+            " If the path is '' the default group is shown. "
+            "The default: ''",
+            dest="nexuspath", default="")
 
     def postauto(self):
         """ parser creator after autocomplete run """
@@ -3162,7 +3168,8 @@ class Attachment(Runner):
                 if options.fileformat in ['nxs', 'h5', 'nx', 'ndf']:
                     tn, pars = self._nxsplot(
                         root, signals, axes, slabel, xlabel, ylabel, frame,
-                        options.caption, options.override, options.scancmdaxes)
+                        options.caption, options.override, options.scancmdaxes,
+                        options.nexuspath)
                     if tn:
                         result["thumbnail"] = tn
                         if "caption" not in result:
@@ -3322,7 +3329,7 @@ class Attachment(Runner):
         return axes
 
     def _nxsplot(self, root, signals, axes, slabel, xlabel, ylabel, frame,
-                 title, override=False, scmdaxes=None):
+                 title, override=False, scmdaxes=None, nexuspath=None):
         """ create plot from nexus file
 
 
@@ -3342,11 +3349,13 @@ class Attachment(Runner):
         :type title: :obj:`str`
         :param scmdaxes: JSON dictionry with scan command axes
         :type scmdaxes: :obj:`str`
+        :param nexuspath: attachment nexuspath
+        :type nexuspath: :obj:`str`
         :returns: thumbnail string
         :rtype: :obj:`str`
         """
         # print(signals)
-        sgnode = root.default_field(signals)
+        sgnode = root.default_field(signals, nexuspath)
         nxdata = None
         entry = None
         signal = None
@@ -3698,6 +3707,8 @@ class Attachment(Runner):
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
+        # with open("/tmp/myttt.png", "wb") as fl:
+        #     fl.write(png_image)
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
         return thumbnail, json.dumps(pars)
