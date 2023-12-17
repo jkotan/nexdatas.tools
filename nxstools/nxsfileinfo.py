@@ -3024,7 +3024,7 @@ class Attachment(Runner):
         self._parser.add_argument(
             "-n", "--nexus-path",
             help="base nexus path to element to be shown"
-            " If name is '' the default group is shown. "
+            " If the path is '' the default group is shown. "
             "The default: ''",
             dest="nexuspath", default="")
 

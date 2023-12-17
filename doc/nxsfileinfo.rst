@@ -349,6 +349,10 @@ Options:
   -u, --override        override NeXus entries by script parameters
   --parameters-in-caption
                         add plot paramters to the caption
+  -n NEXUSPATH, --nexus-path NEXUSPATH
+                        base nexus path to element to be shown.
+			If th path is '' the default group is shown. The default: ''
+
   -o OUTPUT, --output OUTPUT
                         output scicat metadata file
 
