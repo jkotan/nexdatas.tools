@@ -3114,13 +3114,12 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         beamtime = "2342342"
 
         bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
-
         try:
             open(bfn, 'a').close()
 
+            lfname = "%s/scicat-datasets-%s-%s.lst" % (cwd, hostname, beamtime)
             result = scdataset.append_scicat_dataset(macro)
             self.assertEqual("mytest_00012", result)
-            lfname = "%s/scicat-datasets-%s-%s.lst" % (cwd, hostname, beamtime)
             self.assertEqual(macro.log,
                              ["Appending 'mytest_00012' to %s" % (lfname)])
         finally:
