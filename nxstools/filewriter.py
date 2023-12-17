@@ -666,6 +666,7 @@ class FTGroup(FTObject):
 
         node = self
         searching = True
+        nexuspath = nexuspath or ""
         groups = [n for n in nexuspath.split("/") if n]
         while searching:
             nname = None

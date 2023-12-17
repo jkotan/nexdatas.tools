@@ -3707,8 +3707,8 @@ class Attachment(Runner):
         buffer.seek(0)
         png_image = buffer.getvalue()
         buffer.close()
-        # with open("/tmp/myttt.png", "wb") as fl:
-        #     fl.write(png_image)
+        with open("/tmp/myttt.png", "wb") as fl:
+            fl.write(png_image)
         thumbnail = base64.b64encode(png_image)
         thumbnail = "data:image/png;base64," + thumbnail.decode('utf-8')
         return thumbnail, json.dumps(pars)
