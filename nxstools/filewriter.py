@@ -687,6 +687,8 @@ class FTGroup(FTObject):
                         node = node.open(nname)
                         continue
             searching = False
+        if not hasattr(node, "names"):
+            return node
         if hasattr(node, "names"):
             if groups:
                 gname = groups.pop(0)
