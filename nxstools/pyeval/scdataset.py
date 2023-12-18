@@ -23,6 +23,8 @@ import os
 import socket
 import tango
 import json
+import time
+
 # from sardana.macroserver.macro import Macro
 
 
@@ -104,13 +106,13 @@ def append_scicat_dataset(macro, status_info=True):
                 cgrp = sm[fdir]
                 if cgrp != scanname:
                     commands.append("__command__ stop")
-                    commands.append(cgrp)
+                    commands.append("%s:%s" % (cgrp, time.time()))
                     commands.append("__command__ start %s" % scanname)
             else:
                 commands.append("__command__ start %s" % scanname)
             commands.append(sname)
             commands.append("__command__ stop")
-            commands.append(scanname)
+            commands.append("%s:%s" % (scanname, time.time()))
             commands.append("__command__ start %s" % scanname)
             sname = "\n".join(commands)
 
