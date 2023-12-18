@@ -106,7 +106,7 @@ def append_scicat_dataset(macro, status_info=True):
                 cgrp = sm[fdir]
                 if cgrp != scanname:
                     commands.append("__command__ stop")
-                    commands.append(cgrp)
+                    commands.append("%s:%s" % (cgrp, time.time()))
                     commands.append("__command__ start %s" % scanname)
             else:
                 commands.append("__command__ start %s" % scanname)
