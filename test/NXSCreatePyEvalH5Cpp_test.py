@@ -86,6 +86,13 @@ class TstMacro(object):
         """
         return self.env[name]
 
+    def setEnv(self, name, value):
+        """ mocked get variable
+
+        :param name: variable name
+        :type name: :obj:`str`
+        """
+
     def output(self, text):
         """ mocked output function
 
@@ -3032,6 +3039,106 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
             if os.path.isfile("%s/scicat-datasets-00000000.lst" % (cwd)):
                 os.remove("%s/scicat-datasets-00000000.lst" % (cwd))
 
+    def test_scingestor_append_scicat_dataset_agroup_new(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["SciCatAutoGrouping"] = True
+
+        try:
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("__command__ start mytest\n"
+                             "mytest_00123\n"
+                             "__command__ stop\n"
+                             "mytest\n"
+                             "__command__ start mytest", result)
+            self.assertEqual(macro.log,
+                             ["Appending '__command__ start mytest\n"
+                              'mytest_00123\n'
+                              '__command__ stop\n'
+                              'mytest\n'
+                              "__command__ start mytest' to "
+                              "%s/scicat-datasets-00000000.lst" % cwd])
+        finally:
+            if os.path.isfile("%s/scicat-datasets-00000000.lst" % (cwd)):
+                os.remove("%s/scicat-datasets-00000000.lst" % (cwd))
+
+    def test_scingestor_append_scicat_dataset_agroup_old(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["SciCatAutoGrouping"] = True
+        macro.env["SciCatMeasurements"] = {cwd: "oldtest"}
+
+        try:
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("__command__ stop\n"
+                             "oldtest\n"
+                             "__command__ start mytest\n"
+                             "mytest_00123\n"
+                             "__command__ stop\n"
+                             "mytest\n"
+                             "__command__ start mytest", result)
+            self.assertEqual(macro.log,
+                             ["Appending '__command__ stop\n"
+                              "oldtest\n"
+                              "__command__ start mytest\n"
+                              'mytest_00123\n'
+                              '__command__ stop\n'
+                              'mytest\n'
+                              "__command__ start mytest' to "
+                              "%s/scicat-datasets-00000000.lst" % cwd])
+        finally:
+            if os.path.isfile("%s/scicat-datasets-00000000.lst" % (cwd)):
+                os.remove("%s/scicat-datasets-00000000.lst" % (cwd))
+
+    def test_scingestor_append_scicat_dataset_agroup_update(self):
+        """
+        """
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        macro = TstMacro()
+        cwd = os.getcwd()
+        macro.env["ScanFile"] = "mytest.nxs"
+        macro.env["ScanDir"] = cwd
+        macro.env["ScanID"] = 123
+        macro.env["AppendSciCatDataset"] = True
+        macro.env["SciCatAutoGrouping"] = True
+        macro.env["SciCatMeasurements"] = {cwd: "mytest"}
+
+        try:
+            result = scdataset.append_scicat_dataset(macro)
+            self.assertEqual("mytest_00123\n"
+                             "__command__ stop\n"
+                             "mytest\n"
+                             "__command__ start mytest", result)
+            self.assertEqual(macro.log,
+                             ["Appending 'mytest_00123\n"
+                              '__command__ stop\n'
+                              'mytest\n'
+                              "__command__ start mytest' to "
+                              "%s/scicat-datasets-00000000.lst" % cwd])
+        finally:
+            if os.path.isfile("%s/scicat-datasets-00000000.lst" % (cwd)):
+                os.remove("%s/scicat-datasets-00000000.lst" % (cwd))
+
     def test_scingestor_append_scicat_dataset_nxsappend(self):
         """
         """
@@ -3114,13 +3221,12 @@ class NXSCreatePyEvalH5CppTest(unittest.TestCase):
         beamtime = "2342342"
 
         bfn = "%s/%s%s%s" % (cwd, currentprefix, beamtime, currentpostfix)
-
         try:
             open(bfn, 'a').close()
 
+            lfname = "%s/scicat-datasets-%s-%s.lst" % (cwd, hostname, beamtime)
             result = scdataset.append_scicat_dataset(macro)
             self.assertEqual("mytest_00012", result)
-            lfname = "%s/scicat-datasets-%s-%s.lst" % (cwd, hostname, beamtime)
             self.assertEqual(macro.log,
                              ["Appending 'mytest_00012' to %s" % (lfname)])
         finally:

@@ -90,6 +90,33 @@ def append_scicat_dataset(macro, status_info=True):
             sname = "%s::/%s%05i;%s_%05i" % (
                 scanname, entryname, sid, scanname, sid)
 
+        # auto grouping
+        grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
+        if grouping:
+            commands = []
+            fdir = macro.getEnv('ScanDir')
+            try:
+                sm = dict(get_env_var(macro, 'SciCatMeasurements', {}))
+            except Exception:
+                sm = {}
+
+            if fdir in sm.keys():
+                cgrp = sm[fdir]
+                if cgrp != scanname:
+                    commands.append("__command__ stop")
+                    commands.append(cgrp)
+                    commands.append("__command__ start %s" % scanname)
+            else:
+                commands.append("__command__ start %s" % scanname)
+            commands.append(sname)
+            commands.append("__command__ stop")
+            commands.append(scanname)
+            commands.append("__command__ start %s" % scanname)
+            sname = "\n".join(commands)
+
+            sm[fdir] = scanname
+            macro.setEnv('SciCatMeasurements', sm)
+
         append_scicat_record(macro, sname, status_info=True)
     return sname
 
