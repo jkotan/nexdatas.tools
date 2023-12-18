@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.54.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.55.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.54</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.55</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1904,6 +1904,10 @@
         <span class="c1">#     default=False, dest=&quot;pfname&quot;,</span>
         <span class="c1">#     help=(&quot;generate pid without file name&quot;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--allow-duplication&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;nounique&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;allow to merge metadata with duplicated pid&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;--raw&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;raw dataset type&quot;</span><span class="p">)</span>
@@ -2027,11 +2031,12 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;WARNING: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_update_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">clist</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_update_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">clist</span><span class="p">,</span>
+                                        <span class="n">options</span><span class="o">.</span><span class="n">nounique</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">metadata</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_update_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gr</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">cplist</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_update_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">gr</span><span class="p">,</span> <span class="n">ds</span><span class="p">,</span> <span class="n">cplist</span><span class="p">,</span> <span class="n">nounique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param gr: group metadata</span>
@@ -2043,7 +2048,7 @@
 <span class="sd">        :returns: grouped metadata</span>
 <span class="sd">        :rtype: :obj:`dct` &lt;:obj:`str`, `any`&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cplist</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">line</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> \
                <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">basestring</span><span class="p">)</span> <span class="ow">and</span> \
@@ -2069,7 +2074,12 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">td</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                             <span class="n">td</span> <span class="o">=</span> <span class="n">td</span><span class="p">[</span><span class="n">tg</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">nounique</span> <span class="ow">and</span> <span class="n">first</span> <span class="ow">and</span> \
+                       <span class="n">tg</span> <span class="o">==</span> <span class="s1">&#39;inputDatasets&#39;</span> <span class="ow">and</span> \
+                       <span class="nb">isinstance</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">md</span> <span class="ow">in</span> <span class="n">td</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">gr</span>
                     <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">)</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">gr</span>
 
     <span class="nd">@classmethod</span>
@@ -3199,7 +3209,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;--parameters-in-caption&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;ppflag&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add plot paramters to the caption&quot;</span><span class="p">)</span></div>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add plot paramters to the caption&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-n&quot;</span><span class="p">,</span> <span class="s2">&quot;--nexus-path&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;base nexus path to element to be shown&quot;</span>
+            <span class="s2">&quot; If the path is &#39;&#39; the default group is shown. &quot;</span>
+            <span class="s2">&quot;The default: &#39;&#39;&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;nexuspath&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Attachment.postauto"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.Attachment.postauto">[docs]</a>    <span class="k">def</span> <span class="nf">postauto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; parser creator after autocomplete run &quot;&quot;&quot;</span>
@@ -3341,7 +3357,8 @@
                 <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">fileformat</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nxs&#39;</span><span class="p">,</span> <span class="s1">&#39;h5&#39;</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ndf&#39;</span><span class="p">]:</span>
                     <span class="n">tn</span><span class="p">,</span> <span class="n">pars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nxsplot</span><span class="p">(</span>
                         <span class="n">root</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span>
-                        <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">override</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">)</span>
+                        <span class="n">options</span><span class="o">.</span><span class="n">caption</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">override</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">scancmdaxes</span><span class="p">,</span>
+                        <span class="n">options</span><span class="o">.</span><span class="n">nexuspath</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">tn</span><span class="p">:</span>
                         <span class="n">result</span><span class="p">[</span><span class="s2">&quot;thumbnail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tn</span>
                         <span class="k">if</span> <span class="s2">&quot;caption&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -3501,7 +3518,7 @@
         <span class="k">return</span> <span class="n">axes</span>
 
     <span class="k">def</span> <span class="nf">_nxsplot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">signals</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">slabel</span><span class="p">,</span> <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span>
-                 <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scmdaxes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">title</span><span class="p">,</span> <span class="n">override</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scmdaxes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nexuspath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create plot from nexus file</span>
 
 
@@ -3521,11 +3538,13 @@
 <span class="sd">        :type title: :obj:`str`</span>
 <span class="sd">        :param scmdaxes: JSON dictionry with scan command axes</span>
 <span class="sd">        :type scmdaxes: :obj:`str`</span>
+<span class="sd">        :param nexuspath: attachment nexuspath</span>
+<span class="sd">        :type nexuspath: :obj:`str`</span>
 <span class="sd">        :returns: thumbnail string</span>
 <span class="sd">        :rtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># print(signals)</span>
-        <span class="n">sgnode</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">default_field</span><span class="p">(</span><span class="n">signals</span><span class="p">)</span>
+        <span class="n">sgnode</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">default_field</span><span class="p">(</span><span class="n">signals</span><span class="p">,</span> <span class="n">nexuspath</span><span class="p">)</span>
         <span class="n">nxdata</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">entry</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">signal</span> <span class="o">=</span> <span class="kc">None</span>
@@ -3877,6 +3896,8 @@
         <span class="n">buffer</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">png_image</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
         <span class="n">buffer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># with open(&quot;/tmp/myttt.png&quot;, &quot;wb&quot;) as fl:</span>
+        <span class="c1">#     fl.write(png_image)</span>
         <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">png_image</span><span class="p">)</span>
         <span class="n">thumbnail</span> <span class="o">=</span> <span class="s2">&quot;data:image/png;base64,&quot;</span> <span class="o">+</span> <span class="n">thumbnail</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">thumbnail</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pars</span><span class="p">)</span>

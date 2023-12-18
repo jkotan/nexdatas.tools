@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxsfileinfo &#8212; NXSTools 3.54.0 documentation</title>
+    <title>nxsfileinfo &#8212; NXSTools 3.55.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.54</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.55</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -705,6 +705,10 @@ detectors and by semicolon for more plots. Default:
 <dt><kbd><span class="option">--parameters-in-caption</span></kbd></dt>
 <dd><p>add plot paramters to the caption</p>
 </dd>
+<dt><kbd><span class="option">-n <var>NEXUSPATH</var></span>, <span class="option">--nexus-path <var>NEXUSPATH</var></span></kbd></dt>
+<dd><p>base nexus path to element to be shown.
+If th path is ‘’ the default group is shown. The default: ‘’</p>
+</dd>
 <dt><kbd><span class="option">-o <var>OUTPUT</var></span>, <span class="option">--output <var>OUTPUT</var></span></kbd></dt>
 <dd><p>output scicat metadata file</p>
 </dd>
@@ -742,6 +746,9 @@ nxsfileinfo attachment -b p00 -i <span class="m">2342342</span> -t <span class="
 </dd>
 <dt><kbd><span class="option">-i <var>BEAMTIMEID</var></span>, <span class="option">--beamtimeid</span></kbd></dt>
 <dd><p>BEAMTIMEID beamtime id</p>
+</dd>
+<dt><kbd><span class="option">-w</span>, <span class="option">--allow-duplication</span></kbd></dt>
+<dd><p>allow to merge metadata with duplicated pid</p>
 </dd>
 <dt><kbd><span class="option">-f</span>, <span class="option">--write-files</span></kbd></dt>
 <dd><p>write output to files</p>
