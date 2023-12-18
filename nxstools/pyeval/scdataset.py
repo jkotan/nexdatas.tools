@@ -91,12 +91,12 @@ def append_scicat_dataset(macro, status_info=True):
                 scanname, entryname, sid, scanname, sid)
 
         # auto grouping
-        grouping = bool(get_env_var('SciCatAutoGrouping', False))
+        grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
         if grouping:
             commands = []
             fdir = macro.getEnv('ScanDir')
             try:
-                sm = dict(get_env_var('SciCatMeasurements', {}))
+                sm = dict(get_env_var(macro, 'SciCatMeasurements', {}))
             except Exception:
                 sm = {}
 
