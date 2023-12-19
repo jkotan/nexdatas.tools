@@ -89,7 +89,7 @@ def append_scicat_dataset(macro, status_info=True):
         if not nexus or appendentry is False:
             sname = "%s_%05i" % (scanname, sid)
         else:
-            sname = "%s::/%s%05i;%s_%05i" % (
+            sname = "%s::/%s%i;%s_%05i" % (
                 scanname, entryname, sid, scanname, sid)
 
         # auto grouping
