@@ -2367,8 +2367,10 @@ class GroupMetadata(Runner):
                 result = cls._create_metadata(
                     imfile, grouplist, options)
 
-        odir, ofile = os.path.split(odfile)
-        ogroupfilename = os.path.join(odir, "_" + ofile)
+        ogroupfilename = ""
+        if odfile:        
+            odir, ofile = os.path.split(odfile)
+            ogroupfilename = os.path.join(odir, "_" + ofile)
         if odfile and os.path.isfile(odfile):
             with open(odfile, "r") as fl:
                 jstr = fl.read()
@@ -2385,8 +2387,10 @@ class GroupMetadata(Runner):
            and ogroupfilename not in dresult:
             dresult.insert(0, ogroupfilename)
 
-        adir, afile = os.path.split(oafile)
-        agroupfilename = os.path.join(adir, "_" + afile)
+        agroupfilename = ""
+        if oafile:
+            adir, afile = os.path.split(oafile)
+            agroupfilename = os.path.join(adir, "_" + afile)
         if oafile and os.path.isfile(oafile):
             with open(oafile, "r") as fl:
                 jstr = fl.read()
