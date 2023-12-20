@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.55.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.56.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.55</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.56</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -213,6 +213,7 @@
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 
@@ -1904,11 +1905,15 @@
         <span class="c1">#     default=False, dest=&quot;pfname&quot;,</span>
         <span class="c1">#     help=(&quot;generate pid without file name&quot;))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+            <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--skip-group-datablock&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;skipgroupdatablock&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;skip group datablock&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="s2">&quot;--allow-duplication&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;nounique&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;allow to merge metadata with duplicated pid&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">&quot;--raw&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--raw&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="s2">&quot;raw dataset type&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -2541,29 +2546,45 @@
                 <span class="n">result</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_create_metadata</span><span class="p">(</span>
                     <span class="n">imfile</span><span class="p">,</span> <span class="n">grouplist</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 
+        <span class="n">ogroupfilename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">odfile</span><span class="p">:</span>
+            <span class="n">odir</span><span class="p">,</span> <span class="n">ofile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">odfile</span><span class="p">)</span>
+            <span class="n">ogroupfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">odir</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">ofile</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">odfile</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">odfile</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">odfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
                 <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">dresult</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">jstr</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dresult</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="n">dresult</span> <span class="o">=</span> <span class="p">[</span><span class="n">dresult</span><span class="p">]</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">odfile</span><span class="p">,</span> <span class="n">ogroupfilename</span><span class="p">)</span>
+                        <span class="n">dresult</span> <span class="o">=</span> <span class="p">[</span><span class="n">ogroupfilename</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">dresult</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">idfile</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">idfile</span><span class="p">)</span> <span class="ow">and</span> <span class="n">idfile</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dresult</span><span class="p">:</span>
             <span class="n">dresult</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idfile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">skipgroupdatablock</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ogroupfilename</span><span class="p">)</span> \
+           <span class="ow">and</span> <span class="n">ogroupfilename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dresult</span><span class="p">:</span>
+            <span class="n">dresult</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ogroupfilename</span><span class="p">)</span>
 
+        <span class="n">agroupfilename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">oafile</span><span class="p">:</span>
+            <span class="n">adir</span><span class="p">,</span> <span class="n">afile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">oafile</span><span class="p">)</span>
+            <span class="n">agroupfilename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">adir</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">afile</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">oafile</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">oafile</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">oafile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fl</span><span class="p">:</span>
                 <span class="n">jstr</span> <span class="o">=</span> <span class="n">fl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">aresult</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">jstr</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dresult</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                        <span class="n">aresult</span> <span class="o">=</span> <span class="p">[</span><span class="n">dresult</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">aresult</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">oafile</span><span class="p">,</span> <span class="n">agroupfilename</span><span class="p">)</span>
+                        <span class="n">aresult</span> <span class="o">=</span> <span class="p">[</span><span class="n">agroupfilename</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="n">aresult</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">iafile</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">iafile</span><span class="p">)</span> <span class="ow">and</span> <span class="n">iafile</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aresult</span><span class="p">:</span>
             <span class="n">aresult</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iafile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">skipgroupdatablock</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">agroupfilename</span><span class="p">)</span> \
+           <span class="ow">and</span> <span class="n">agroupfilename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aresult</span><span class="p">:</span>
+            <span class="n">aresult</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">agroupfilename</span><span class="p">)</span>
 
         <span class="n">jsnresult</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
