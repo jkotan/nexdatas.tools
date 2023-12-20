@@ -34,6 +34,7 @@ import fnmatch
 import yaml
 import base64
 import math
+import shutil
 import numpy as np
 from io import BytesIO
 
@@ -1725,11 +1726,15 @@ class GroupMetadata(Runner):
         #     default=False, dest="pfname",
         #     help=("generate pid without file name"))
         self._parser.add_argument(
+            "-s", "--skip-group-datablock", action="store_true",
+            default=False, dest="skipgroupdatablock",
+            help=("skip group datablock"))
+        self._parser.add_argument(
             "-w", "--allow-duplication", action="store_true",
             default=False, dest="nounique",
             help=("allow to merge metadata with duplicated pid"))
         self._parser.add_argument(
-            "--raw", action="store_true",
+            "-q", "--raw", action="store_true",
             default=False, dest="raw",
             help="raw dataset type")
         self._parser.add_argument(
@@ -2362,29 +2367,45 @@ class GroupMetadata(Runner):
                 result = cls._create_metadata(
                     imfile, grouplist, options)
 
+        ogroupfilename = ""
+        if odfile:
+            odir, ofile = os.path.split(odfile)
+            ogroupfilename = os.path.join(odir, "_" + ofile)
         if odfile and os.path.isfile(odfile):
             with open(odfile, "r") as fl:
                 jstr = fl.read()
                 try:
                     dresult = json.loads(jstr)
                     if not isinstance(dresult, list):
-                        dresult = [dresult]
+                        shutil.copy(odfile, ogroupfilename)
+                        dresult = [ogroupfilename]
                 except Exception:
                     dresult = []
         if idfile and os.path.isfile(idfile) and idfile not in dresult:
             dresult.append(idfile)
+        if not options.skipgroupdatablock and os.path.isfile(ogroupfilename) \
+           and ogroupfilename not in dresult:
+            dresult.insert(0, ogroupfilename)
 
+        agroupfilename = ""
+        if oafile:
+            adir, afile = os.path.split(oafile)
+            agroupfilename = os.path.join(adir, "_" + afile)
         if oafile and os.path.isfile(oafile):
             with open(oafile, "r") as fl:
                 jstr = fl.read()
                 try:
                     aresult = json.loads(jstr)
-                    if not isinstance(dresult, list):
-                        aresult = [dresult]
+                    if not isinstance(aresult, list):
+                        shutil.copy(oafile, agroupfilename)
+                        aresult = [agroupfilename]
                 except Exception:
                     aresult = []
         if iafile and os.path.isfile(iafile) and iafile not in aresult:
             aresult.append(iafile)
+        if not options.skipgroupdatablock and os.path.isfile(agroupfilename) \
+           and agroupfilename not in aresult:
+            aresult.insert(0, agroupfilename)
 
         jsnresult = None
         if result is not None:
