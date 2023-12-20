@@ -2368,7 +2368,7 @@ class GroupMetadata(Runner):
                     imfile, grouplist, options)
 
         ogroupfilename = ""
-        if odfile:        
+        if odfile:
             odir, ofile = os.path.split(odfile)
             ogroupfilename = os.path.join(odir, "_" + ofile)
         if odfile and os.path.isfile(odfile):
