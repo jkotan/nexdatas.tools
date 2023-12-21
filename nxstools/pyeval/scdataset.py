@@ -28,13 +28,15 @@ import time
 # from sardana.macroserver.macro import Macro
 
 
-def append_scicat_dataset(macro, status_info=True):
+def append_scicat_dataset(macro, status_info=True, reingest=False):
     """ append scan name to the dataset scan list file
 
     :param macro: hook macro
     :type macro: :class:`sardana.macroserver.macro.Macro`
-    :param macro: status info flag
-    :type macro: :obj:`bool`
+    :param status_info: status info flag
+    :type status_info: :obj:`bool`
+    :param reingest: reingest flag
+    :type reingest: :obj:`bool`
     :return: scan name if appended
     :rtype: :obj:`str`
     """
@@ -91,6 +93,8 @@ def append_scicat_dataset(macro, status_info=True):
         else:
             sname = "%s::/%s%i;%s_%05i" % (
                 scanname, entryname, sid, scanname, sid)
+        if reingest:
+            sname = "%s:%s" % (sname, time.time())
 
         # auto grouping
         grouping = bool(get_env_var(macro, 'SciCatAutoGrouping', False))
