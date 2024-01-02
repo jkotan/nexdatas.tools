@@ -42,12 +42,12 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
     """
     sname = ""
     append = get_env_var(macro, "AppendSciCatDataset", None)
-    if not append:
+    nxsappend = get_env_var(macro, "NXSAppendSciCatDataset", None)
+    if not append and not (nxsappend and reingest):
         return sname
 
     sfl = macro.getEnv('ScanFile')
     sid = macro.getEnv('ScanID')
-    nxsappend = get_env_var(macro, "NXSAppendSciCatDataset", None)
 
     # find scan name for the master file
     if isinstance(sfl, str):
@@ -75,7 +75,7 @@ def append_scicat_dataset(macro, status_info=True, reingest=False):
                     scanname = str(scname)
                     nxsappend = None
                     break
-    if scanname and not nxsappend:
+    if scanname and (not nxsappend or reingest):
         appendentry = False
         entryname = "scan"
         try:
