@@ -2631,7 +2631,7 @@ For more help:
                 [0, 0, 1])
 
             det.create_field("intimage", "uint32", [10], [10]).write(
-                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+                [1, 2, 3, 4, 5, 6, 7, 8, 10, 9])
             filewriter.link(
                 "/entry12345/instrument/detector/intimage",
                 dt, "lkintimage")
