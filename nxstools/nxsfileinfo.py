@@ -1181,7 +1181,8 @@ class Metadata(Runner):
         self._parser.add_argument(
             "--max-oned-size",
             default=1024, dest="maxonedsize",
-            help="add first and last values of 1d records "
+            help="add max and min (or first and last)"
+            " values of 1d records "
             "to scientificMetadata "
             "if its size excides --max-oned-size value")
         self._parser.add_argument(

@@ -1,4 +1,8 @@
 2024-01-04 Jan Kotanski <jankotan@gmail.com>
+	* fix maxonedsize help
+	* tagged as v3.57.3
+
+2024-01-04 Jan Kotanski <jankotan@gmail.com>
 	* calculate min and max if maxonedsize exceeded (#562)
 	* tagged as v3.57.2
 

@@ -115,7 +115,7 @@ Options:
    --add-empty-units     add empty units for fields without units
    --oned                add 1d values to scientificMetadata
    --max-oned-size MAXONEDSIZE
-                         add first and last values of 1d records to scientificMetadata if its size excides --max-oned-size value
+                         add min and max (or first and last) values of 1d records to scientificMetadata if its size excides --max-oned-size value
    -p PID, --pid PID
                         dataset pid
    -i BEAMTIMEID, --beamtimeid BEAMTIMEID
