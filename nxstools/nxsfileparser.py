@@ -525,7 +525,10 @@ class NXSFileParser(object):
                         if self.maxonedsize >= 0 and len(desc["shape"]) == 1 \
                            and hasattr(vl, "__len__") and \
                            len(vl) > self.maxonedsize:
-                            nd["value"] = [vl[0], vl[-1]]
+                            try:
+                                nd["value"] = [min(vl), max(vl)]
+                            except Exception:
+                                nd["value"] = [vl[0], vl[-1]]
                         else:
                             nd["value"] = vl
                         if self.emptyunits and "unit" not in nd.keys():
