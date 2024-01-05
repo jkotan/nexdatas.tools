@@ -2216,6 +2216,8 @@ class GroupMetadata(Runner):
                     "%s/%s" % (group, beamtimeid))
         if group:
             metadata["keywords"].append(group)
+            if "datasetName" not in metadata:
+                metadata["datasetName"] = group
 
         for ts, vs in cpmap.items():
             if options.raw:
