@@ -11834,6 +11834,7 @@ For more help:
                         "measurement",
                         "mcalib01"
                     ],
+                    "datasetName": "mcalib01",
                     "pid": "mcalib01/00000000",
                     "type": "derived",
                     "usedSoftware": "https://github.com/nexdatas/nxstools"
@@ -11913,6 +11914,7 @@ For more help:
                         "mcalib01"
                     ],
                     "owner": "Smithson",
+                    "datasetName": "mcalib01",
                     "ownerEmail": "peter.smithson@fake.de",
                     "ownerGroup": "testjk01-dmgt",
                     "pid": "mcalib01/testjk01",
@@ -11996,6 +11998,7 @@ For more help:
                     "contactEmail": "appuser@fake.com",
                     "creationTime": "2023-11-22T19:25:55.939389+0100",
                     "description": "Water test",
+                    "datasetName": "mcalib01",
                     "inputDatasets": [
                         "testjk01/superscan_00034"
                     ],
@@ -12150,6 +12153,7 @@ For more help:
                         ],
                         "investigator": "appuser@fake.com",
                         "isPublished": False,
+                        "datasetName": "mcalib01",
                         "jobParameters": {
                             "command": "nxsfileinfo groupmetadata"
                         },
@@ -12272,6 +12276,7 @@ For more help:
                             "mcalib01"
                         ],
                         "owner": "Smithson",
+                        "datasetName": "mcalib01",
                         "ownerEmail": "peter.smithson@fake.de",
                         "ownerGroup": "testjk01-dmgt",
                         "pid": "mcalib01/testjk01",
@@ -12421,6 +12426,7 @@ For more help:
                             "testjk01/superscan_00034"
                         ],
                         "investigator": "appuser@fake.com",
+                        "datasetName": "mcalib01",
                         "isPublished": False,
                         "jobParameters": {
                             "command": "nxsfileinfo groupmetadata"
@@ -12546,6 +12552,7 @@ For more help:
                         ],
                         "owner": "Smithson",
                         "ownerEmail": "peter.smithson@fake.de",
+                        "datasetName": "mcalib01",
                         "ownerGroup": "testjk01-dmgt",
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
@@ -12720,6 +12727,7 @@ For more help:
                         "contactEmail": "appuser@fake.com",
                         "creationTime": "2023-11-22T19:25:55.939389+0100",
                         "description": "Water test",
+                        "datasetName": "mcalib01",
                         "inputDatasets": [
                             "testjk01/superscan_00034",
                             "testjk01/superscan_00035"
@@ -12936,6 +12944,7 @@ For more help:
                         "creationTime": "2023-11-22T19:25:55.939389+0100",
                         "description": "Water test",
                         "instrumentId": "/petra3/p00",
+                        "datasetName": "mcalib01",
                         "isPublished": False,
                         "keywords": [
                             "measurement",
