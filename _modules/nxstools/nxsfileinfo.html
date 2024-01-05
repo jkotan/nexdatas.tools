@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.56.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.57.4 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.56</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.57</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1360,7 +1360,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;--max-oned-size&quot;</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;maxonedsize&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add first and last values of 1d records &quot;</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add max and min (or first and last)&quot;</span>
+            <span class="s2">&quot; values of 1d records &quot;</span>
             <span class="s2">&quot;to scientificMetadata &quot;</span>
             <span class="s2">&quot;if its size excides --max-oned-size value&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -2394,6 +2395,8 @@
                     <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">beamtimeid</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;datasetName&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;datasetName&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
 
         <span class="k">for</span> <span class="n">ts</span><span class="p">,</span> <span class="n">vs</span> <span class="ow">in</span> <span class="n">cpmap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">raw</span><span class="p">:</span>
