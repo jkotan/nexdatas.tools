@@ -1,3 +1,7 @@
+2024-01-09 Jan Kotanski <jankotan@gmail.com>
+	* move NXevironment to NXinstument of secop components (#569)
+	* tagged as v3.58.0
+
 2024-01-05 Jan Kotanski <jankotan@gmail.com>
 	* set datasetName in groupmetadata if not set
 	* tagged as v3.57.4

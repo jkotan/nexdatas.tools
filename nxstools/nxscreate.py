@@ -1250,6 +1250,9 @@ class SECoPCP(Runner):
                             default=False, dest="strict",
                             help="NeXus strict group types i.e. "
                             "use NXcollection if not defined")
+        parser.add_argument("--node-in-sample", action="store_true",
+                            default=False, dest="nodeinsample",
+                            help="Store node groups in the sample group")
         parser.add_argument("-c", "--component",
                             help="component name" +
                             "secop component name",
@@ -1272,6 +1275,9 @@ class SECoPCP(Runner):
                             help="sample name",
                             dest="samplename", default="")
 
+        parser.add_argument("-i", "--insname", dest="insname",
+                            help="instrument group name",
+                            default="instrument")
         parser.add_argument("-k", "--links",
                             help="NXlog links of physical "
                             "quantities to sensors "
