@@ -1697,6 +1697,10 @@ class GroupMetadata(Runner):
         + " \n" \
         + "\n"
 
+    listtype = ["List", "L", "l", "list"]
+    # avaragetype = ["Average", "A", "a", "average"]
+    # rangetype = ["Range", "R", "r", "rangle"]
+
     def create(self):
         """ creates parser
 
@@ -1905,12 +1909,13 @@ class GroupMetadata(Runner):
                        tg == 'inputDatasets' and \
                        isinstance(td, list) and md in td:
                         return gr
-                    cls._merge_meta(parent, tg, md)
+                    tgtype = line[2] if len(line) > 2 else None
+                    cls._merge_meta(parent, tg, md, tgtype)
             first = False
         return gr
 
     @classmethod
-    def _merge_string(cls, parent, key, md):
+    def _merge_string(cls, parent, key, md, tgtype=None):
         """ update and group scan metadata
 
         :param parent: node metadata
@@ -1919,6 +1924,8 @@ class GroupMetadata(Runner):
         :type key: :obj:`str`
         :param md: new metadata
         :type md: :obj:`str` or :obj:`dict`
+        :param tgtype: target type
+        :type tgtype: :obj:`str`
         """
         tg = None
         if key in parent.keys():
@@ -1927,18 +1934,21 @@ class GroupMetadata(Runner):
             if "value" not in tg:
                 tg["value"] = None
             tg = tg["value"]
+        if tgtype in cls.listtype:
+            if not isinstance(tg, list):
+                if tg:
+                    parent[key] = [tg]
+                else:
+                    parent[key] = []
         if isinstance(tg, list):
             parent[key].append(md)
         elif not tg:
             parent[key] = md
-        elif isinstance(tg, list):
-            if md not in tg:
-                tg.append(md)
         elif tg != md:
             parent[key] = [tg, md]
 
     @classmethod
-    def _merge_list(cls, parent, key, md, unit):
+    def _merge_list(cls, parent, key, md, unit, tgtype=None):
         """ update and group scan metadata
 
         :param parent: node metadata
@@ -1949,6 +1959,8 @@ class GroupMetadata(Runner):
         :type md: :obj:`str` or :obj:`dict`
         :param unit: physical unit
         :type unit: :obj:`str`
+        :param tgtype: target type
+        :type tgtype: :obj:`str`
         """
         tg = None
         if key in parent.keys():
@@ -2024,7 +2036,7 @@ class GroupMetadata(Runner):
                                     / (ncnts - 2))
 
     @classmethod
-    def _merge_number(cls, parent, key, md, unit):
+    def _merge_number(cls, parent, key, md, unit, tgtype=None):
         """ update and group scan metadata
 
         :param parent: node metadata
@@ -2035,12 +2047,13 @@ class GroupMetadata(Runner):
         :type md: :obj:`str` or :obj:`dict`
         :param unit: physical unit
         :type unit: :obj:`str`
+        :param tgtype: target type
+        :type tgtype: :obj:`str`
         """
         value = md
         tg = None
         if key in parent.keys():
             tg = parent[key]
-
         if not isinstance(tg, dict):
             parent[key] = {}
         tg = parent[key]
@@ -2086,7 +2099,7 @@ class GroupMetadata(Runner):
                 tg["std"] = math.sqrt(ns2)
 
     @classmethod
-    def _merge_meta(cls, parent, key, md):
+    def _merge_meta(cls, parent, key, md, tgtype=None):
         """ update and group scan metadata
 
         :param parent: node metadata
@@ -2095,9 +2108,11 @@ class GroupMetadata(Runner):
         :type key: :obj:`str`
         :param md: new metadata
         :type md: :obj:`str` or :obj:`dict`
+        :param tgtype: target type
+        :type tgtype: :obj:`str`
         """
         if isinstance(md, basestring):
-            cls._merge_string(parent, key, md)
+            cls._merge_string(parent, key, md, tgtype)
         unit = ""
         if isinstance(md, dict):
             if "unit" in md:
@@ -2115,13 +2130,13 @@ class GroupMetadata(Runner):
                             else:
                                 parent[key] = {}
                         tg = parent[key]
-                        cls._merge_meta(tg, ky, md[ky])
+                        cls._merge_meta(tg, ky, md[ky], tgtype)
                 md = None
 
         if isinstance(md, list):
-            cls._merge_list(parent, key, md, unit)
+            cls._merge_list(parent, key, md, unit, tgtype)
         elif isinstance(md, float) or isinstance(md, int):
-            cls._merge_number(parent, key, md, unit)
+            cls._merge_number(parent, key, md, unit, tgtype)
 
     @classmethod
     def _create_metadata(cls, scfile, clist, options):
@@ -2328,7 +2343,10 @@ class GroupMetadata(Runner):
                 if isinstance(dct, list):
                     for line in dct:
                         if isinstance(line, list):
-                            usergrouplist.append(line[:2])
+                            if len(line) > 2:
+                                usergrouplist.append(line[:3])
+                            else:
+                                usergrouplist.append(line[:2])
 
         if hasattr(options, "groupmapfile") and options.groupmapfile:
             if os.path.isfile(options.groupmapfile):
@@ -2353,7 +2371,10 @@ class GroupMetadata(Runner):
                         if isinstance(dct, list):
                             for line in dct:
                                 if isinstance(line, list):
-                                    usergrouplist.append(line[:2])
+                                    if len(line) > 2:
+                                        usergrouplist.append(line[:3])
+                                    else:
+                                        usergrouplist.append(line[:2])
             elif hasattr(options, "groupmaperror") and options.groupmaperror:
                 raise Exception("Group-map file '%s' does not exist"
                                 % options.groupmapfile)
