@@ -1865,8 +1865,9 @@ class SECoPCPCreator(CPCreator):
         entry = NGroup(df, samplename or ename, "NXentry")
         samplename = samplename or "sample"
         sample = NGroup(entry, samplename, "NXsample")
-        instrument = NGroup(entry, insname, "NXinstrument")
+        instrument = None
         if not self.options.nodeinsample:
+            instrument = NGroup(entry, insname, "NXinstrument")
             env = NGroup(instrument, name or "environment", "NXenvironment")
             basename = insname
         elif self.options.strict:
