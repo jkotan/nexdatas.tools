@@ -1275,9 +1275,6 @@ class SECoPCP(Runner):
                             help="sample name",
                             dest="samplename", default="")
 
-        parser.add_argument("-i", "--insname", dest="insname",
-                            help="instrument group name",
-                            default="instrument")
         parser.add_argument("-k", "--links",
                             help="NXlog links of physical "
                             "quantities to sensors "
