@@ -1861,13 +1861,21 @@ class SECoPCPCreator(CPCreator):
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
+        insname = self.options.insname or "instrument"
         entry = NGroup(df, samplename or ename, "NXentry")
         samplename = samplename or "sample"
         sample = NGroup(entry, samplename, "NXsample")
-        if self.options.strict:
+        instrument = None
+        if not self.options.nodeinsample:
+            instrument = NGroup(entry, insname, "NXinstrument")
+            env = NGroup(instrument, name or "environment", "NXenvironment")
+            basename = insname
+        elif self.options.strict:
             env = NGroup(sample, name or "node", "NXcollection")
+            basename = samplename
         else:
             env = NGroup(sample, name or "environment", "NXenvironment")
+            basename = samplename
         modules = conf.get("modules", {})
         if 'equipment_id' in conf.keys():
             field = NField(env, 'name', 'NX_CHAR')
@@ -1909,7 +1917,7 @@ class SECoPCPCreator(CPCreator):
             if mname:
                 if not modulenames or mname in modulenames:
                     lk = self.__createSECoPSensor(
-                        env, mname, mconf, name, canfail, samplename,
+                        env, mname, mconf, name, canfail, basename,
                         trattrs)
                     if lk and isinstance(lk, dict):
                         links.update(lk)
@@ -1962,7 +1970,7 @@ class SECoPCPCreator(CPCreator):
                     created_trans.append(nm)
 
     def __createSECoPSensor(self, env, name, conf, nodename, canfail=None,
-                            samplename="sample", trattrs=None):
+                            basename="instrument", trattrs=None):
         """ create nexus node tree
 
         :param env: definition parent node
@@ -1975,8 +1983,8 @@ class SECoPCPCreator(CPCreator):
         :type nodename: :obj:`str`
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
-        :param samplename: sample name
-        :type samplename: :obj:`str`
+        :param basename: base group name i.e. instrument or sample
+        :type basename: :obj:`str`
         :param trattrs: dictionary with transformation attributes
         :type trattrs: :obj:`dict` <:obj:`str`,:obj:`dict` <:obj:`str`,`and`>>
         :returns: links targets and meaning names
@@ -2029,7 +2037,7 @@ class SECoPCPCreator(CPCreator):
                                     "$(__entryname__)",
                                     (self.options.entryname or "scan"))
                             target = "/%s/%s/%s/%s/value_log" % \
-                                (ename, samplename, nodename, name)
+                                (ename, basename, nodename, name)
                             links[target] = (meaning, semeaning)
                         dsname = "%s_%s" % (nodename, name)
                         timedsname = "%s_%s_time" % (nodename, name)
@@ -2099,7 +2107,7 @@ class SECoPCPCreator(CPCreator):
                                     (self.options.entryname or "scan"))
                             NLink(mgr, "value",
                                   "/%s/%s/%s/%s/parameters/target/value" %
-                                  (ename, samplename, nodename, name))
+                                  (ename, basename, nodename, name))
         return links
 
     def __createSECoPParam(self, par, name, conf, nodename, modname,
