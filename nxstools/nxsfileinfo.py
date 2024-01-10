@@ -1940,7 +1940,7 @@ class GroupMetadata(Runner):
                     parent[key] = [tg]
                 else:
                     parent[key] = []
-        if isinstance(tg, list):
+        if key in parent and isinstance(parent[key], list):
             parent[key].append(md)
         elif not tg:
             parent[key] = md

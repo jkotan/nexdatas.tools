@@ -12017,7 +12017,7 @@ For more help:
                     "pid": "mcalib01/testjk01",
                     "scientificMetadata": {
                         "DOOR_proposalId": "99991173",
-                        "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
                         "beamtimeId": "testjk01",
                         "creationLocation": "/DESY/PETRA III/P00",
                         "instrumentId": "/petra3/p00",
@@ -12167,7 +12167,7 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12282,7 +12282,9 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommand": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"
+                            ],
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12441,7 +12443,7 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12557,7 +12559,9 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommand": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"],
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
