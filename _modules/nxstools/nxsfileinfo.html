@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.57.4 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.58.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.57</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.58</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1876,6 +1876,10 @@
         <span class="o">+</span> <span class="s2">&quot; </span><span class="se">\n</span><span class="s2">&quot;</span> \
         <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 
+    <span class="n">listtype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;List&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">]</span>
+    <span class="c1"># avaragetype = [&quot;Average&quot;, &quot;A&quot;, &quot;a&quot;, &quot;average&quot;]</span>
+    <span class="c1"># rangetype = [&quot;Range&quot;, &quot;R&quot;, &quot;r&quot;, &quot;rangle&quot;]</span>
+
 <div class="viewcode-block" id="GroupMetadata.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.GroupMetadata.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; creates parser</span>
 
@@ -2084,12 +2088,13 @@
                        <span class="n">tg</span> <span class="o">==</span> <span class="s1">&#39;inputDatasets&#39;</span> <span class="ow">and</span> \
                        <span class="nb">isinstance</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">md</span> <span class="ow">in</span> <span class="n">td</span><span class="p">:</span>
                         <span class="k">return</span> <span class="n">gr</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">)</span>
+                    <span class="n">tgtype</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">tgtype</span><span class="p">)</span>
             <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">gr</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_merge_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">tgtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param parent: node metadata</span>
@@ -2098,6 +2103,8 @@
 <span class="sd">        :type key: :obj:`str`</span>
 <span class="sd">        :param md: new metadata</span>
 <span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
+<span class="sd">        :param tgtype: target type</span>
+<span class="sd">        :type tgtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -2106,18 +2113,21 @@
             <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
                 <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">tg</span> <span class="o">=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tg</span><span class="p">:</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">tg</span><span class="p">:</span>
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">:</span>
-                <span class="n">tg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">tg</span> <span class="o">!=</span> <span class="n">md</span><span class="p">:</span>
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_merge_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param parent: node metadata</span>
@@ -2128,6 +2138,8 @@
 <span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
 <span class="sd">        :param unit: physical unit</span>
 <span class="sd">        :type unit: :obj:`str`</span>
+<span class="sd">        :param tgtype: target type</span>
+<span class="sd">        :type tgtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -2203,7 +2215,7 @@
                                     <span class="o">/</span> <span class="p">(</span><span class="n">ncnts</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_merge_number</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_number</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param parent: node metadata</span>
@@ -2214,12 +2226,13 @@
 <span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
 <span class="sd">        :param unit: physical unit</span>
 <span class="sd">        :type unit: :obj:`str`</span>
+<span class="sd">        :param tgtype: target type</span>
+<span class="sd">        :type tgtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">md</span>
         <span class="n">tg</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
@@ -2265,7 +2278,7 @@
                 <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;std&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ns2</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_merge_meta</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_merge_meta</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">tgtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
 <span class="sd">        :param parent: node metadata</span>
@@ -2274,9 +2287,11 @@
 <span class="sd">        :type key: :obj:`str`</span>
 <span class="sd">        :param md: new metadata</span>
 <span class="sd">        :type md: :obj:`str` or :obj:`dict`</span>
+<span class="sd">        :param tgtype: target type</span>
+<span class="sd">        :type tgtype: :obj:`str`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_string</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_string</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">tgtype</span><span class="p">)</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">if</span> <span class="s2">&quot;unit&quot;</span> <span class="ow">in</span> <span class="n">md</span><span class="p">:</span>
@@ -2294,13 +2309,13 @@
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                         <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                        <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="n">md</span><span class="p">[</span><span class="n">ky</span><span class="p">])</span>
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_meta</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="n">md</span><span class="p">[</span><span class="n">ky</span><span class="p">],</span> <span class="n">tgtype</span><span class="p">)</span>
                 <span class="n">md</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_list</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">md</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_number</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_merge_number</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_create_metadata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">scfile</span><span class="p">,</span> <span class="n">clist</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
@@ -2507,7 +2522,10 @@
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                            <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                                <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;groupmapfile&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">):</span>
@@ -2532,7 +2550,10 @@
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
                                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                                    <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+                                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                                        <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">usergrouplist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s2">&quot;groupmaperror&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmaperror</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Group-map file &#39;</span><span class="si">%s</span><span class="s2">&#39; does not exist&quot;</span>
                                 <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">groupmapfile</span><span class="p">)</span>

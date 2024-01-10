@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxscreate &#8212; NXSTools 3.57.4 documentation</title>
+    <title>nxscreate &#8212; NXSTools 3.58.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -37,7 +37,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.57</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.58</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -830,7 +830,7 @@ nxscreate comp -n <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.se
 <p>It creates a  component or components describing modules of the secop node.</p>
 <div class="section" id="id16">
 <h3>Synopsis<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate secopcp <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>-o<span class="o">]</span> <span class="o">[</span>-a<span class="o">]</span> <span class="o">[</span>-q<span class="o">]</span> <span class="o">[</span>-c COMPONENT<span class="o">]</span> <span class="o">[</span>-e PARAMSTRATEGY<span class="o">]</span> <span class="o">[</span>-g STRATEGY<span class="o">]</span> <span class="o">[</span>-m TIMEOUT<span class="o">]</span> <span class="o">[</span>-s SAMPLENAME<span class="o">]</span> <span class="o">[</span>-k MEANINGS<span class="o">]</span> <span class="o">[</span>-v ENVIRONMENTS<span class="o">]</span> <span class="o">[</span>-f FIRST<span class="o">]</span> <span class="o">[</span>-z TRANSATTRS<span class="o">]</span> <span class="o">[</span>-p XMLPACKAGE<span class="o">]</span> <span class="o">[</span>-y ENTRYNAME<span class="o">]</span> <span class="o">[</span>-i INSNAME<span class="o">]</span> <span class="o">[</span>-d DIRECTORY<span class="o">]</span> <span class="o">[</span>-j JSON<span class="o">]</span> <span class="o">[</span>-x FILE<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-u HOST<span class="o">]</span> <span class="o">[</span>-t PORT<span class="o">]</span> <span class="o">[</span>-r SERVER<span class="o">]</span> <span class="o">[</span>component_name ...<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nxscreate secopcp <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>-o<span class="o">]</span> <span class="o">[</span>-a<span class="o">]</span> <span class="o">[</span>-q<span class="o">]</span> <span class="o">[</span>-w<span class="o">]</span> <span class="o">[</span>-c COMPONENT<span class="o">]</span> <span class="o">[</span>-e PARAMSTRATEGY<span class="o">]</span> <span class="o">[</span>-g STRATEGY<span class="o">]</span> <span class="o">[</span>-m TIMEOUT<span class="o">]</span> <span class="o">[</span>-s SAMPLENAME<span class="o">]</span> <span class="o">[</span>-k MEANINGS<span class="o">]</span> <span class="o">[</span>-v ENVIRONMENTS<span class="o">]</span> <span class="o">[</span>-f FIRST<span class="o">]</span> <span class="o">[</span>-z TRANSATTRS<span class="o">]</span> <span class="o">[</span>-p XMLPACKAGE<span class="o">]</span> <span class="o">[</span>-y ENTRYNAME<span class="o">]</span> <span class="o">[</span>-i INSNAME<span class="o">]</span> <span class="o">[</span>-d DIRECTORY<span class="o">]</span> <span class="o">[</span>-j JSON<span class="o">]</span> <span class="o">[</span>-x FILE<span class="o">]</span> <span class="o">[</span>-n<span class="o">]</span> <span class="o">[</span>-b<span class="o">]</span> <span class="o">[</span>-u HOST<span class="o">]</span> <span class="o">[</span>-t PORT<span class="o">]</span> <span class="o">[</span>-r SERVER<span class="o">]</span> <span class="o">[</span>component_name ...<span class="o">]</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -854,6 +854,9 @@ nxscreate comp -n <span class="s2">&quot;/\$var.entryname#&#39;scan&#39;\$var.se
 </dd>
 <dt><kbd><span class="option">-q</span>, <span class="option">--strict</span></kbd></dt>
 <dd><p>NeXus strict group types i.e. use NXcollection if not defined</p>
+</dd>
+<dt><kbd><span class="option">-w</span>, <span class="option">--node-in-sample</span></kbd></dt>
+<dd><p>Store node groups in the sample group</p>
 </dd>
 <dt><kbd><span class="option">-c <var>COMPONENT</var></span>, <span class="option">--component <var>COMPONENT</var></span></kbd></dt>
 <dd><p>component namesecop component name</p>
