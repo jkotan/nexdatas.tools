@@ -1,4 +1,4 @@
-scientificMetadata.ScanCommand scientificMetadata.ScanCommand
+scientificMetadata.ScanCommand scientificMetadata.ScanCommand List
 scientificMetadata.pressure_shape scientificMetadata.data.sample_pressure.shape
 scientificMetadata.pressure scientificMetadata.data.sample_pressure
 scientificMetadata.temperature scientificMetadata.sample.temperature.value
