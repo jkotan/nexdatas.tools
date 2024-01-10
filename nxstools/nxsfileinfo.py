@@ -1999,7 +1999,7 @@ class GroupMetadata(Runner):
             except Exception:
                 parent[key] = [mmin, mmax]
             return
-        if tgtype in cls.minmax and md and \
+        if tgtype in cls.minmaxtype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
             try:
                 mmin = min(md)
@@ -2144,7 +2144,7 @@ class GroupMetadata(Runner):
             except Exception:
                 parent[key] = [md, md]
             return
-        if tgtype in cls.minmax:
+        if tgtype in cls.minmaxtype:
             if not isinstance(tg, dict):
                 if tg is not None:
                     parent[key] = {"min": tg, "max": tg}
