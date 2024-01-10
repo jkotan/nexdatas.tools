@@ -1698,8 +1698,10 @@ class GroupMetadata(Runner):
         + "\n"
 
     listtype = ["List", "L", "l", "list"]
+    dicttype = ["Dict", "D", "d", "dict"]
+    rangetype = ["Range", "R", "r", "rangle"]
+    minmaxtype = ["MinMax", "M", "m", "minmax"]
     # avaragetype = ["Average", "A", "a", "average"]
-    # rangetype = ["Range", "R", "r", "rangle"]
 
     def create(self):
         """ creates parser
@@ -1940,8 +1942,17 @@ class GroupMetadata(Runner):
                     parent[key] = [tg]
                 else:
                     parent[key] = []
+        if tgtype in cls.dicttype:
+            if not isinstance(tg, dict):
+                if tg:
+                    parent[key] = {"0": tg}
+                else:
+                    parent[key] = {}
         if key in parent and isinstance(parent[key], list):
             parent[key].append(md)
+        elif tgtype in cls.dicttype:
+            sz = str(len(parent[key]))
+            parent[key][sz] = md
         elif not tg:
             parent[key] = md
         elif tg != md:
@@ -1965,6 +1976,70 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
+        if tgtype in cls.rangetype and md and \
+           (isinstance(md[0], float) or isinstance(md[0], int)):
+            try:
+                mmin = min(md)
+            except Exception:
+                mmin = md
+            try:
+                mmax = max(md)
+            except Exception:
+                mmax = md
+            if not isinstance(tg, list) or len(tg) != 2:
+                try:
+                    parent[key] = [min(tg), max(tg)]
+                except Exception:
+                    parent[key] = [mmin, mmax]
+            try:
+                if parent[key][0] > mmin:
+                    parent[key][0] = mmin
+                if parent[key][1] < mmax:
+                    parent[key][1] = mmax
+            except Exception:
+                parent[key] = [mmin, mmax]
+            return
+        if tgtype in cls.minmax and md and \
+           (isinstance(md[0], float) or isinstance(md[0], int)):
+            try:
+                mmin = min(md)
+            except Exception:
+                mmin = md
+            try:
+                mmax = max(md)
+            except Exception:
+                mmax = md
+            if not isinstance(tg, dict):
+                try:
+                    parent[key] = {"min": min(tg), "max": max(tg)}
+                except Exception:
+                    parent[key] = {"min": mmin, "max": mmax}
+            elif "min" not in parent[key]:
+                parent[key]
+
+            try:
+                if parent[key]["min"] > mmin:
+                    parent[key]["min"] = mmin
+                if parent[key]["max"] < mmax:
+                    parent[key]["max"] = mmax
+            except Exception:
+                parent[key] = {"min": mmin, "max": mmax}
+            return
+        if tgtype in cls.listtype:
+            if not isinstance(tg, list):
+                if tg is not None:
+                    parent[key] = [tg]
+                else:
+                    parent[key] = []
+            parent[key].append(md)
+        elif tgtype in cls.dicttype:
+            if not isinstance(tg, dict):
+                if tg is not None:
+                    parent[key] = {"0": tg}
+                else:
+                    parent[key] = {}
+            sz = str(len(parent[key]))
+            parent[key][sz] = md
         if md:
             if isinstance(md[0], basestring):
                 if isinstance(tg, list):
@@ -2054,6 +2129,55 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
+
+        if tgtype in cls.rangetype:
+            if not isinstance(tg, list) or len(tg) != 2:
+                if tg is not None:
+                    parent[key] = [tg, tg]
+                else:
+                    parent[key] = [md, md]
+            try:
+                if parent[key][0] > md:
+                    parent[key][0] = md
+                if parent[key][1] < md:
+                    parent[key][1] = md
+            except Exception:
+                parent[key] = [md, md]
+            return
+        if tgtype in cls.minmax:
+            if not isinstance(tg, dict):
+                if tg is not None:
+                    parent[key] = {"min": tg, "max": tg}
+                else:
+                    parent[key] = {"min": md, "max": md}
+            elif "min" not in parent[key]:
+                parent[key]
+
+            try:
+                if parent[key]["min"] > md:
+                    parent[key]["min"] = md
+                if parent[key]["max"] < md:
+                    parent[key]["max"] = md
+            except Exception:
+                parent[key] = {"min": md, "max": md}
+            return
+        if tgtype in cls.listtype:
+            if not isinstance(tg, list):
+                if tg is not None:
+                    parent[key] = [tg]
+                else:
+                    parent[key] = []
+            parent[key].append(md)
+            return
+        if tgtype in cls.dicttype:
+            if not isinstance(tg, dict):
+                if tg is not None:
+                    parent[key] = {"0": tg}
+                else:
+                    parent[key] = {}
+            sz = str(len(parent[key]))
+            parent[key][sz] = md
+            return
         if not isinstance(tg, dict):
             parent[key] = {}
         tg = parent[key]
