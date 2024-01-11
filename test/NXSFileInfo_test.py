@@ -13091,7 +13091,7 @@ For more help:
                         adct = json.load(of)
                     with open(outputfile) as of:
                         dct = json.load(of)
-                    #  print(json.dumps(dct, indent=4))
+                    # print(json.dumps(dct, indent=4))
                     res = {
                         "accessGroups": [
                             "testjk01-dmgt",

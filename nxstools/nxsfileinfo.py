@@ -1974,7 +1974,7 @@ class GroupMetadata(Runner):
                 parent[key] = {}
             tg = parent[key]
             if "value" not in tg:
-                tg["value"] = 0
+                tg["value"] = []
             if "unit" not in tg:
                 tg["unit"] = unit
             try:
@@ -1986,10 +1986,7 @@ class GroupMetadata(Runner):
             except Exception:
                 mmax = md
             if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
-                try:
-                    tg["value"] = [min(tg), max(tg)]
-                except Exception:
-                    tg["value"] = [mmin, mmax]
+                tg["value"] = [mmin, mmax]
             try:
                 if tg["value"][0] > mmin:
                     tg["value"][0] = mmin
