@@ -1,8 +1,5 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSETUP" "1" "Jan 11, 2024" "3.59" "NXSTools"
-.SH NAME
-nxsetup \- set NeXDaTaS Tango Server environment up
 .
 .nr rst2man-indent-level 0
 .
@@ -30,6 +27,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
+.TH "NXSETUP" "1" "Jan 11, 2024" "3.60" "NXSTools"
+.SH NAME
+nxsetup \- set NeXDaTaS Tango Server environment up
 .SH DESCRIPTION
 .sp
 The nxsetup is is a command\-line setup tool for NeXus servers.  It allows to set NXSDataWriter, NXSConfigServer and NXSRecSelector in Tango environment, restart them or change property names.
@@ -72,10 +72,10 @@ optional arguments:
                         the database name ( default: \(aqnxsconfig\(aq)
   \-j CSJSON, \-\-csjson CSJSON
                         JSONSettings for the configuration server. ( default:
-                        \(aq{"host": "localhost","db": <DBNAME>, "use_unicode":
-                        true\(aq, "read_default_file": <MY_CNF_FILE>}\(aq where
-                        <MY_CNF_FILE> stays for "/home/<USER>/.my.cnf" or
-                        "/var/lib/nxsconfigserver/.my.cnf" )
+                        \(aq{\(dqhost\(dq: \(dqlocalhost\(dq,\(dqdb\(dq: <DBNAME>, \(dquse_unicode\(dq:
+                        true\(aq, \(dqread_default_file\(dq: <MY_CNF_FILE>}\(aq where
+                        <MY_CNF_FILE> stays for \(dq/home/<USER>/.my.cnf\(dq or
+                        \(dq/var/lib/nxsconfigserver/.my.cnf\(dq )
 
  examples:
        nxsetup set
@@ -207,9 +207,9 @@ optional arguments:
 
 
  examples:
-       nxsetup change\-prop \-n ClientRecordKeys \-t \-w "[\e"phoibos_scan_command\e",\e"phoibos_scan_comment\e"]" NXSRecSelector/r228
-       nxsetup change\-prop \-n DefaultPreselectedComponents \-w "[\e"pinhole1\e",\e"slit2\e"]" NXSRecSelector/r228
-       nxsetup change\-prop \-n StartDsPath \-w "[\e"/usr/bin\e",\e"/usr/lib/tango\e"]" Starter
+       nxsetup change\-prop \-n ClientRecordKeys \-t \-w \(dq[\e\(dqphoibos_scan_command\e\(dq,\e\(dqphoibos_scan_comment\e\(dq]\(dq NXSRecSelector/r228
+       nxsetup change\-prop \-n DefaultPreselectedComponents \-w \(dq[\e\(dqpinhole1\e\(dq,\e\(dqslit2\e\(dq]\(dq NXSRecSelector/r228
+       nxsetup change\-prop \-n StartDsPath \-w \(dq[\e\(dq/usr/bin\e\(dq,\e\(dq/usr/lib/tango\e\(dq]\(dq Starter
 .ft P
 .fi
 .UNINDENT
