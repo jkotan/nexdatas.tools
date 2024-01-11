@@ -1952,6 +1952,22 @@ class GroupMetadata(Runner):
             parent[key] = [tg, md]
 
     @classmethod
+    def _list_depth(cls, lst):
+        """calculate list depth
+
+        :param lst: target type
+        :type lst: :obj:`list`
+        :returns: list depth
+        :rtype: :obj:`int`
+        """
+        if not isinstance(lst, list):
+            return 0
+        elif not len(lst):
+            return 1
+        else:
+            return cls._list_depth(lst[0]) + 1
+
+    @classmethod
     def _merge_list(cls, parent, key, md, unit, tgtype=None):
         """ update and group scan metadata
 
@@ -2034,7 +2050,8 @@ class GroupMetadata(Runner):
                     else:
                         parent[key] = []
                 elif tgtype in cls.uniquelisttype and \
-                        len(tg) > 0 and not isinstance(tg[0], list):
+                        len(tg) > 0 and \
+                        cls._list_depth(tg) <= cls._list_depth(md):
                     parent[key] = [tg]
 
                 if tgtype not in cls.uniquelisttype or \
@@ -2055,7 +2072,7 @@ class GroupMetadata(Runner):
                     tg["value"] = []
                 elif tgtype in cls.uniquelisttype and \
                         len(tg["value"]) > 0 and \
-                        not isinstance(tg["value"][0], list):
+                        cls._list_depth(tg["value"]) <= cls._list_depth(md):
                     parent[key]["value"] = [tg["value"]]
                     tg = parent[key]
 
