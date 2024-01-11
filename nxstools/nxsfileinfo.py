@@ -2033,9 +2033,16 @@ class GroupMetadata(Runner):
                         parent[key] = [tg]
                     else:
                         parent[key] = []
+                elif tgtype in cls.uniquelisttype and \
+                        len(tg) > 0 and not isinstance(tg[0], list):
+                    parent[key] = [tg]
+
                 if tgtype not in cls.uniquelisttype or \
-                   md not in parent[key]:
-                    parent[key].append(md)
+                   (md not in parent[key] and md != parent[key]):
+                    if tgtype in cls.uniquelisttype and not parent[key]:
+                        parent[key] = md
+                    else:
+                        parent[key].append(md)
             else:
                 if not isinstance(tg, dict):
                     parent[key] = {}
@@ -2046,9 +2053,19 @@ class GroupMetadata(Runner):
                     tg["unit"] = unit
                 if not isinstance(tg["value"], list):
                     tg["value"] = []
+                elif tgtype in cls.uniquelisttype and \
+                        len(tg["value"]) > 0 and \
+                        not isinstance(tg["value"][0], list):
+                    parent[key]["value"] = [tg["value"]]
+                    tg = parent[key]
+
                 if tgtype not in cls.uniquelisttype or \
-                   md not in tg["value"]:
-                    tg["value"].append(md)
+                   (md not in tg["value"] and md != tg["value"]):
+                    if tgtype in cls.uniquelisttype \
+                       and not parent[key]["value"]:
+                        tg["value"] = md
+                    else:
+                        tg["value"].append(md)
 
         elif tgtype in cls.dicttype:
             if not unit:

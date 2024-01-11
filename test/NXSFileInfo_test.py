@@ -12045,13 +12045,11 @@ For more help:
                             ]
                         ],
                         "long_static_vector": [
-                            [
-                                0,
-                                1,
-                                0,
-                                2,
-                                3
-                            ]
+                            0,
+                            1,
+                            0,
+                            2,
+                            3
                         ],
                         "dynamic_vector": [
                             [
@@ -12095,13 +12093,11 @@ For more help:
                         "pressure_uniquelist": {
                             "unit": "mbar",
                             "value": [
-                                [
                                     999.0,
                                     999.1,
                                     999.2,
                                     999.0,
                                     998.9
-                                ]
                             ]
                         },
                         "pressure_dict": {
@@ -12286,13 +12282,11 @@ For more help:
                                 ]
                             ],
                             "long_static_vector": [
-                                [
-                                    0,
-                                    1,
-                                    0,
-                                    2,
-                                    3
-                                ]
+                                0,
+                                1,
+                                0,
+                                2,
+                                3
                             ],
                             "dynamic_vector": [
                                 [
@@ -12336,13 +12330,11 @@ For more help:
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
-                                    [
-                                        999.0,
-                                        999.1,
-                                        999.2,
-                                        999.0,
-                                        998.9
-                                    ]
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
                                 ]
                             },
                             "pressure_dict": {
@@ -12492,13 +12484,11 @@ For more help:
                                 ]
                             ],
                             "long_static_vector": [
-                                [
-                                    0,
-                                    1,
-                                    0,
-                                    2,
-                                    3
-                                ]
+                                0,
+                                1,
+                                0,
+                                2,
+                                3
                             ],
                             "dynamic_vector": [
                                 [
@@ -12517,13 +12507,11 @@ For more help:
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
-                                    [
-                                        999.0,
-                                        999.1,
-                                        999.2,
-                                        999.0,
-                                        998.9
-                                    ]
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
                                 ]
                             },
                             "pressure_minmax": {
@@ -12742,13 +12730,11 @@ For more help:
                                 ]
                             ],
                             "long_static_vector": [
-                                [
-                                    0,
-                                    1,
-                                    0,
-                                    2,
-                                    3
-                                ]
+                                0,
+                                1,
+                                0,
+                                2,
+                                3
                             ],
                             "dynamic_vector": [
                                 [
@@ -12780,13 +12766,11 @@ For more help:
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
-                                    [
-                                        999.0,
-                                        999.1,
-                                        999.2,
-                                        999.0,
-                                        998.9
-                                    ]
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
                                 ]
                             },
                             "pressure_list": {
@@ -12889,7 +12873,7 @@ For more help:
                         ddct = json.load(of)
                     with open(aoutputfile) as of:
                         adct = json.load(of)
-                    print(json.dumps(dct, indent=4))
+                    # print(json.dumps(dct, indent=4))
                     res = {
                         "accessGroups": [
                             "testjk01-dmgt",
