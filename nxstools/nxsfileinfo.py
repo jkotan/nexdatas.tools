@@ -1701,6 +1701,7 @@ class GroupMetadata(Runner):
     dicttype = ["Dict", "D", "d", "dict"]
     rangetype = ["Range", "R", "r", "rangle"]
     minmaxtype = ["MinMax", "M", "m", "minmax"]
+    uniquelisttype = ["UniqueList", "U", "u", "uniquelist"]
     # avaragetype = ["Average", "A", "a", "average"]
 
     def create(self):
@@ -2025,14 +2026,16 @@ class GroupMetadata(Runner):
                 parent[key] = {"min": {"value": mmin, "unit": unit},
                                "max": {"value": mmax, "unit": unit}}
             return
-        if tgtype in cls.listtype:
+        if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
             if not unit:
                 if not isinstance(tg, list):
                     if tg is not None and tg != {} and tg != []:
                         parent[key] = [tg]
                     else:
                         parent[key] = []
-                parent[key].append(md)
+                if tgtype not in cls.uniquelisttype or \
+                   md not in parent[key]:
+                    parent[key].append(md)
             else:
                 if not isinstance(tg, dict):
                     parent[key] = {}
@@ -2043,7 +2046,9 @@ class GroupMetadata(Runner):
                     tg["unit"] = unit
                 if not isinstance(tg["value"], list):
                     tg["value"] = []
-                tg["value"].append(md)
+                if tgtype not in cls.uniquelisttype or \
+                   md not in tg["value"]:
+                    tg["value"].append(md)
 
         elif tgtype in cls.dicttype:
             if not unit:

@@ -7,6 +7,7 @@ scientificMetadata.pressure_range scientificMetadata.data.sample_pressure Range
 scientificMetadata.pressure_minmax scientificMetadata.data.sample_pressure MinMax
 scientificMetadata.pressure_list scientificMetadata.data.sample_pressure List
 scientificMetadata.pressure_dict scientificMetadata.data.sample_pressure Dict
+scientificMetadata.pressure_uniquelist scientificMetadata.data.sample_pressure UniqueList
 scientificMetadata.temperature scientificMetadata.sample.temperature.value
 scientificMetadata.temperature_range scientificMetadata.sample.temperature.value Range
 scientificMetadata.temperature_minmax scientificMetadata.sample.temperature.value MinMax
@@ -14,5 +15,6 @@ scientificMetadata.temperature_list scientificMetadata.sample.temperature.value 
 scientificMetadata.temperature_dict scientificMetadata.sample.temperature.value Dict
 scientificMetadata.point_nb scientificMetadata.point_nb
 scientificMetadata.static_vector scientificMetadata.static_vector
+scientificMetadata.long_static_vector scientificMetadata.long_static_vector UniqueList
 scientificMetadata.dynamic_vector scientificMetadata.dynamic_vector
 scientificMetadata.user_comments scientificMetadata.user_comments

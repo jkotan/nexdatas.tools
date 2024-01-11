@@ -12044,6 +12044,15 @@ For more help:
                                 0
                             ]
                         ],
+                        "long_static_vector": [
+                            [
+                                0,
+                                1,
+                                0,
+                                2,
+                                3
+                            ]
+                        ],
                         "dynamic_vector": [
                             [
                                 1.1,
@@ -12072,6 +12081,18 @@ For more help:
                         "pressure_range": {"value": [998.9, 999.2],
                                            "unit": "mbar"},
                         "pressure_list": {
+                            "unit": "mbar",
+                            "value": [
+                                [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            ]
+                        },
+                        "pressure_uniquelist": {
                             "unit": "mbar",
                             "value": [
                                 [
@@ -12264,6 +12285,15 @@ For more help:
                                     0
                                 ]
                             ],
+                            "long_static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0,
+                                    2,
+                                    3
+                                ]
+                            ],
                             "dynamic_vector": [
                                 [
                                     1.1,
@@ -12292,6 +12322,18 @@ For more help:
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
                             "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
                                     [
@@ -12449,6 +12491,15 @@ For more help:
                                     0
                                 ]
                             ],
+                            "long_static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0,
+                                    2,
+                                    3
+                                ]
+                            ],
                             "dynamic_vector": [
                                 [
                                     1.1,
@@ -12462,6 +12513,18 @@ For more help:
                                 "std": 0.11401754250993971,
                                 "unit": "mbar",
                                 "value": 999.04
+                            },
+                            "pressure_uniquelist": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
                             },
                             "pressure_minmax": {
                                 "max": {
@@ -12678,6 +12741,15 @@ For more help:
                                     0
                                 ]
                             ],
+                            "long_static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0,
+                                    2,
+                                    3
+                                ]
+                            ],
                             "dynamic_vector": [
                                 [
                                     1.1,
@@ -12705,6 +12777,18 @@ For more help:
 
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
+                            "pressure_uniquelist": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
                             "pressure_list": {
                                 "unit": "mbar",
                                 "value": [
@@ -12867,6 +12951,15 @@ For more help:
                                     0
                                 ]
                             ],
+                            "long_static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0,
+                                    2,
+                                    3
+                                ]
+                            ],
                             "dynamic_vector": [
                                 [
                                     1.1,
@@ -12894,6 +12987,18 @@ For more help:
 
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
+                            "pressure_uniquelist": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
                             "pressure_list": {
                                 "unit": "mbar",
                                 "value": [
@@ -13156,6 +13261,15 @@ For more help:
                                     0
                                 ]
                             ],
+                            "long_static_vector": [
+                                [
+                                    0,
+                                    1,
+                                    0,
+                                    2,
+                                    3
+                                ]
+                            ],
                             "dynamic_vector": [[1.1, 3.4], [1.2, 4.4]],
                             "pressure": {
                                 "counts": 11,
@@ -13179,6 +13293,26 @@ For more help:
                             "pressure_range": {"value": [998.6, 999.4],
                                                "unit": "mbar"},
                             "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        998.6,
+                                        999.4,
+                                        999.2,
+                                        999.3,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
                                     [

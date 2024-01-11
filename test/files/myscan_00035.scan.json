@@ -30,6 +30,7 @@
         "beamtimeId": "testjk01",
 	"point_nb": 6,
 	"static_vector": [0, 1, 0],
+	"long_static_vector": [0, 1, 0, 2, 3],
 	"dynamic_vector": [1.2, 4.4],
 	"user_comments": ["my comment 3", "my comment 2"],
         "data": {
