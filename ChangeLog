@@ -1,4 +1,8 @@
 2024-01-11 Jan Kotanski <jankotan@gmail.com>
+	* add uniquelist type in group-map (#574)
+	* tagged as v3.60.0
+
+2024-01-11 Jan Kotanski <jankotan@gmail.com>
 	* add list, dict, range, minax target types in group-map (#574)
 	* tagged as v3.59.0
 
