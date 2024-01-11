@@ -11983,6 +11983,7 @@ For more help:
                 mvl = "\n".join(vl.split("\n")[:-3])
                 dvl = vl.split("\n")[-3]
                 avl = vl.split("\n")[-2]
+                # print(mvl)
                 dct = json.loads(mvl)
                 ddct = json.loads(dvl)
                 adct = json.loads(avl)
@@ -12017,7 +12018,10 @@ For more help:
                     "pid": "mcalib01/testjk01",
                     "scientificMetadata": {
                         "DOOR_proposalId": "99991173",
-                        "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                        "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "ScanCommandList": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                        "ScanCommandDict": {
+                            "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                         "beamtimeId": "testjk01",
                         "creationLocation": "/DESY/PETRA III/P00",
                         "instrumentId": "/petra3/p00",
@@ -12054,6 +12058,43 @@ For more help:
                             "unit": "mbar",
                             "value": 999.04
                         },
+                        "pressure_minmax": {
+                            "max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                            },
+                            "min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                            }
+                        },
+
+                        "pressure_range": {"value": [998.9, 999.2],
+                                           "unit": "mbar"},
+                        "pressure_list": {
+                            "unit": "mbar",
+                            "value": [
+                                [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            ]
+                        },
+                        "pressure_dict": {
+                            "0": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            }
+                        },
                         "pressure_shape": [
                             [
                                 5
@@ -12067,7 +12108,36 @@ For more help:
                             "std": 0.0,
                             "unit": "W",
                             "value": 0.82
-                        }
+                        },
+                        "temperature_minmax": {
+                            "max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "min": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                        },
+                        "temperature_range": {
+                            "unit": "W",
+                            "value": [
+                                0.82,
+                                0.82
+                            ]
+                        },
+                        "temperature_list": {
+                            "unit": "W",
+                            "value": [
+                                0.82
+                            ]
+                        },
+                        "temperature_dict": {
+                            "0": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                        },
                     },
                     "sourceFolder":
                     "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
@@ -12167,7 +12237,11 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandList":
+                            ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandDict": {
+                                "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12204,6 +12278,43 @@ For more help:
                                 "unit": "mbar",
                                 "value": 999.04
                             },
+                            "pressure_minmax": {
+                                "max": {
+                                    "unit": "mbar",
+                                    "value": 999.2
+                                },
+                                "min": {
+                                    "unit": "mbar",
+                                    "value": 998.9
+                                }
+                            },
+
+                            "pressure_range": {"value": [998.9, 999.2],
+                                               "unit": "mbar"},
+                            "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_dict": {
+                                "0": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
                             "pressure_shape": [
                                 [
                                     5
@@ -12217,7 +12328,36 @@ For more help:
                                 "std": 0.0,
                                 "unit": "W",
                                 "value": 0.82
-                            }
+                            },
+                            "temperature_minmax": {
+                                "max": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "min": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
+                            "temperature_range": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.82
+                                ]
+                            },
+                            "temperature_list": {
+                                "unit": "W",
+                                "value": [
+                                    0.82
+                                ]
+                            },
+                            "temperature_dict": {
+                                "0": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
                         },
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
@@ -12282,9 +12422,11 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": [
-                                "ascan exp_dmy01 0.0 4.0 4 0.1"
-                            ],
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandList":
+                            ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandDict": {
+                                "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12321,6 +12463,43 @@ For more help:
                                 "unit": "mbar",
                                 "value": 999.04
                             },
+                            "pressure_minmax": {
+                                "max": {
+                                    "unit": "mbar",
+                                    "value": 999.2
+                                },
+                                "min": {
+                                    "unit": "mbar",
+                                    "value": 998.9
+                                }
+                            },
+
+                            "pressure_range": {"value": [998.9, 999.2],
+                                               "unit": "mbar"},
+                            "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_dict": {
+                                "0": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
                             "pressure_shape": [
                                 [
                                     5
@@ -12334,7 +12513,36 @@ For more help:
                                 "std": 0.0,
                                 "unit": "W",
                                 "value": 0.82
-                            }
+                            },
+                            "temperature_minmax": {
+                                "max": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "min": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
+                            "temperature_range": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.82
+                                ]
+                            },
+                            "temperature_list": {
+                                "unit": "W",
+                                "value": [
+                                    0.82
+                                ]
+                            },
+                            "temperature_dict": {
+                                "0": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
                         },
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
@@ -12443,7 +12651,11 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandList":
+                            ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandDict": {
+                                "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12480,6 +12692,43 @@ For more help:
                                 "unit": "mbar",
                                 "value": 999.04
                             },
+                            "pressure_minmax": {
+                                "max": {
+                                    "unit": "mbar",
+                                    "value": 999.2
+                                },
+                                "min": {
+                                    "unit": "mbar",
+                                    "value": 998.9
+                                }
+                            },
+
+                            "pressure_range": {"value": [998.9, 999.2],
+                                               "unit": "mbar"},
+                            "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_dict": {
+                                "0": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
                             "pressure_shape": [
                                 [
                                     5
@@ -12493,7 +12742,36 @@ For more help:
                                 "std": 0.0,
                                 "unit": "W",
                                 "value": 0.82
-                            }
+                            },
+                            "temperature_minmax": {
+                                "max": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "min": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
+                            "temperature_range": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.82
+                                ]
+                            },
+                            "temperature_list": {
+                                "unit": "W",
+                                "value": [
+                                    0.82
+                                ]
+                            },
+                            "temperature_dict": {
+                                "0": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
                         },
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
@@ -12527,7 +12805,7 @@ For more help:
                         ddct = json.load(of)
                     with open(aoutputfile) as of:
                         adct = json.load(of)
-                    # print(json.dumps(dct, indent=4))
+                    print(json.dumps(dct, indent=4))
                     res = {
                         "accessGroups": [
                             "testjk01-dmgt",
@@ -12559,9 +12837,14 @@ For more help:
                         "pid": "mcalib01/testjk01",
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
-                            "ScanCommand": [
+                            "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandList": [
                                 "ascan exp_dmy01 0.0 4.0 4 0.1",
                                 "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandDict": {
+                                "0": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "1": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            },
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12598,6 +12881,60 @@ For more help:
                                 "unit": "mbar",
                                 "value": 999.04
                             },
+                            "pressure_minmax": {
+                                "max": {
+                                    "unit": "mbar",
+                                    "value": 999.2
+                                },
+                                "min": {
+                                    "unit": "mbar",
+                                    "value": 998.9
+                                }
+                            },
+
+                            "pressure_range": {"value": [998.9, 999.2],
+                                               "unit": "mbar"},
+                            "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_dict": {
+                                "0": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "1": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
                             "pressure_shape": [
                                 [
                                     5
@@ -12611,7 +12948,42 @@ For more help:
                                 "std": 0.0,
                                 "unit": "W",
                                 "value": 0.82
-                            }
+                            },
+                            "temperature_minmax": {
+                                "max": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "min": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
+                            "temperature_range": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.82
+                                ]
+                            },
+                            "temperature_list": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.82
+                                ]
+                            },
+                            "temperature_dict": {
+                                "0": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "1": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                            },
+
                         },
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",
@@ -12719,7 +13091,7 @@ For more help:
                         adct = json.load(of)
                     with open(outputfile) as of:
                         dct = json.load(of)
-                    # print(json.dumps(dct, indent=4))
+                    #  print(json.dumps(dct, indent=4))
                     res = {
                         "accessGroups": [
                             "testjk01-dmgt",
@@ -12753,7 +13125,14 @@ For more help:
                             "DOOR_proposalId": "99991173",
                             "ScanCommand": [
                                 "ascan exp_dmy01 0.0 4.0 4 0.1",
-                                'ascan exp_dmy01 1.0 6.0 6 0.2'],
+                                "ascan exp_dmy01 1.0 6.0 6 0.2"],
+                            "ScanCommandList": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 1.0 6.0 6 0.2"],
+                            "ScanCommandDict": {
+                                "0": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "1": "ascan exp_dmy01 1.0 6.0 6 0.2",
+                            },
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12786,6 +13165,62 @@ For more help:
                                 "unit": "mbar",
                                 "value": 999.0545454545453
                             },
+                            "pressure_minmax": {
+                                "max": {
+                                    "unit": "mbar",
+                                    "value": 999.4
+                                },
+                                "min": {
+                                    "unit": "mbar",
+                                    "value": 998.6
+                                }
+                            },
+
+                            "pressure_range": {"value": [998.6, 999.4],
+                                               "unit": "mbar"},
+                            "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        998.6,
+                                        999.4,
+                                        999.2,
+                                        999.3,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_dict": {
+                                "0": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "1": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        998.6,
+                                        999.4,
+                                        999.2,
+                                        999.3,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
                             "pressure_shape": [
                                 [
                                     5
@@ -12799,7 +13234,41 @@ For more help:
                                 "std": 0.014142135623730885,
                                 "unit": "W",
                                 "value": 0.81
-                            }
+                            },
+                            "temperature_minmax": {
+                                "max": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "min": {
+                                    "unit": "W",
+                                    "value": 0.8
+                                },
+                            },
+                            "temperature_range": {
+                                "unit": "W",
+                                "value": [
+                                    0.8,
+                                    0.82
+                                ]
+                            },
+                            "temperature_list": {
+                                "unit": "W",
+                                "value": [
+                                    0.82,
+                                    0.8
+                                ]
+                            },
+                            "temperature_dict": {
+                                "0": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "1": {
+                                    "unit": "W",
+                                    "value": 0.8
+                                },
+                            },
                         },
                         "sourceFolder":
                         "/asap3/petra3/gpfs/p00/2022/data/testjk01/raw",

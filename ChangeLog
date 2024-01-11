@@ -1,3 +1,7 @@
+2024-01-11 Jan Kotanski <jankotan@gmail.com>
+	* add list, dict, range, minax target types in group-map (#574)
+	* tagged as v3.59.0
+
 2024-01-09 Jan Kotanski <jankotan@gmail.com>
 	* move NXevironment to NXinstument of secop components (#569)
 	* add list target type in group-map for string (#571)

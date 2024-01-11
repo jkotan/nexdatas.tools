@@ -1932,10 +1932,6 @@ class GroupMetadata(Runner):
         tg = None
         if key in parent.keys():
             tg = parent[key]
-        if tg and isinstance(tg, dict):
-            if "value" not in tg:
-                tg["value"] = None
-            tg = tg["value"]
         if tgtype in cls.listtype:
             if not isinstance(tg, list):
                 if tg:
@@ -1944,15 +1940,11 @@ class GroupMetadata(Runner):
                     parent[key] = []
         if tgtype in cls.dicttype:
             if not isinstance(tg, dict):
-                if tg:
-                    parent[key] = {"0": tg}
-                else:
-                    parent[key] = {}
-        if key in parent and isinstance(parent[key], list):
-            parent[key].append(md)
-        elif tgtype in cls.dicttype:
+                parent[key] = {}
             sz = str(len(parent[key]))
             parent[key][sz] = md
+        elif key in parent and isinstance(parent[key], list):
+            parent[key].append(md)
         elif not tg:
             parent[key] = md
         elif tg != md:
@@ -1978,6 +1970,13 @@ class GroupMetadata(Runner):
             tg = parent[key]
         if tgtype in cls.rangetype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
+            if "value" not in tg:
+                tg["value"] = 0
+            if "unit" not in tg:
+                tg["unit"] = unit
             try:
                 mmin = min(md)
             except Exception:
@@ -1986,21 +1985,24 @@ class GroupMetadata(Runner):
                 mmax = max(md)
             except Exception:
                 mmax = md
-            if not isinstance(tg, list) or len(tg) != 2:
+            if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
                 try:
-                    parent[key] = [min(tg), max(tg)]
+                    tg["value"] = [min(tg), max(tg)]
                 except Exception:
-                    parent[key] = [mmin, mmax]
+                    tg["value"] = [mmin, mmax]
             try:
-                if parent[key][0] > mmin:
-                    parent[key][0] = mmin
-                if parent[key][1] < mmax:
-                    parent[key][1] = mmax
+                if tg["value"][0] > mmin:
+                    tg["value"][0] = mmin
+                if tg["value"][1] < mmax:
+                    tg["value"][1] = mmax
             except Exception:
-                parent[key] = [mmin, mmax]
+                tg["value"] = [mmin, mmax]
             return
         if tgtype in cls.minmaxtype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
             try:
                 mmin = min(md)
             except Exception:
@@ -2010,37 +2012,58 @@ class GroupMetadata(Runner):
             except Exception:
                 mmax = md
             if not isinstance(tg, dict):
-                try:
-                    parent[key] = {"min": min(tg), "max": max(tg)}
-                except Exception:
-                    parent[key] = {"min": mmin, "max": mmax}
-            elif "min" not in parent[key]:
-                parent[key]
+                parent[key] = {"min": {"value": mmin, "unit": unit},
+                               "max": {"value": mmax, "unit": unit}}
+            if "min" not in parent[key]:
+                parent[key]["min"] = {"value": mmin, "unit": unit}
+            if "max" not in parent[key]:
+                parent[key]["max"] = {"value": mmax, "unit": unit}
 
             try:
-                if parent[key]["min"] > mmin:
-                    parent[key]["min"] = mmin
-                if parent[key]["max"] < mmax:
-                    parent[key]["max"] = mmax
+                if parent[key]["min"]["value"] > mmin:
+                    parent[key]["min"]["value"] = mmin
+                if parent[key]["max"]["value"] < mmax:
+                    parent[key]["max"]["value"] = mmax
             except Exception:
-                parent[key] = {"min": mmin, "max": mmax}
+                parent[key] = {"min": {"value": mmin, "unit": unit},
+                               "max": {"value": mmax, "unit": unit}}
             return
         if tgtype in cls.listtype:
-            if not isinstance(tg, list):
-                if tg is not None:
-                    parent[key] = [tg]
-                else:
-                    parent[key] = []
-            parent[key].append(md)
-        elif tgtype in cls.dicttype:
-            if not isinstance(tg, dict):
-                if tg is not None:
-                    parent[key] = {"0": tg}
-                else:
+            if not unit:
+                if not isinstance(tg, list):
+                    if tg is not None and tg != {} and tg != []:
+                        parent[key] = [tg]
+                    else:
+                        parent[key] = []
+                parent[key].append(md)
+            else:
+                if not isinstance(tg, dict):
                     parent[key] = {}
-            sz = str(len(parent[key]))
-            parent[key][sz] = md
-        if md:
+                tg = parent[key]
+                if "value" not in tg:
+                    tg["value"] = 0
+                if "unit" not in tg:
+                    tg["unit"] = unit
+                if not isinstance(tg["value"], list):
+                    tg["value"] = []
+                tg["value"].append(md)
+
+        elif tgtype in cls.dicttype:
+            if not unit:
+                if not isinstance(tg, dict):
+                    if tg is not None and tg != {} and tg != []:
+                        parent[key] = {"0": tg}
+                    else:
+                        parent[key] = {}
+                sz = str(len(parent[key]))
+                parent[key][sz] = md
+            else:
+                if not isinstance(tg, dict):
+                    parent[key] = {}
+                sz = str(len(parent[key]))
+                parent[key][sz] = {"value": md, "unit": unit}
+
+        elif md:
             if isinstance(md[0], basestring):
                 if isinstance(tg, list):
                     parent[key].extend(
@@ -2130,57 +2153,57 @@ class GroupMetadata(Runner):
         if key in parent.keys():
             tg = parent[key]
 
-        if tgtype in cls.rangetype:
-            if not isinstance(tg, list) or len(tg) != 2:
-                if tg is not None:
-                    parent[key] = [tg, tg]
-                else:
-                    parent[key] = [md, md]
-            try:
-                if parent[key][0] > md:
-                    parent[key][0] = md
-                if parent[key][1] < md:
-                    parent[key][1] = md
-            except Exception:
-                parent[key] = [md, md]
-            return
-        if tgtype in cls.minmaxtype:
-            if not isinstance(tg, dict):
-                if tg is not None:
-                    parent[key] = {"min": tg, "max": tg}
-                else:
-                    parent[key] = {"min": md, "max": md}
-            elif "min" not in parent[key]:
-                parent[key]
-
-            try:
-                if parent[key]["min"] > md:
-                    parent[key]["min"] = md
-                if parent[key]["max"] < md:
-                    parent[key]["max"] = md
-            except Exception:
-                parent[key] = {"min": md, "max": md}
-            return
-        if tgtype in cls.listtype:
-            if not isinstance(tg, list):
-                if tg is not None:
-                    parent[key] = [tg]
-                else:
-                    parent[key] = []
-            parent[key].append(md)
-            return
-        if tgtype in cls.dicttype:
-            if not isinstance(tg, dict):
-                if tg is not None:
-                    parent[key] = {"0": tg}
-                else:
-                    parent[key] = {}
-            sz = str(len(parent[key]))
-            parent[key][sz] = md
-            return
         if not isinstance(tg, dict):
             parent[key] = {}
         tg = parent[key]
+
+        if tgtype in cls.rangetype:
+            if "value" not in tg:
+                tg["value"] = 0
+            if "unit" not in tg:
+                tg["unit"] = unit
+            if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
+                tg["value"] = [md, md]
+            try:
+                if tg["value"][0] > md:
+                    tg["value"][0] = md
+                if tg["value"][1] < md:
+                    tg["value"][1] = md
+            except Exception:
+                tg["value"] = [md, md]
+            return
+        if tgtype in cls.minmaxtype:
+            if not isinstance(parent[key], dict):
+                parent[key] = {"min": {"value": md, "unit": unit},
+                               "max": {"value": md, "unit": unit}}
+            if "min" not in parent[key]:
+                parent[key]["min"] = {"value": md, "unit": unit}
+            if "max" not in parent[key]:
+                parent[key]["max"] = {"value": md, "unit": unit}
+            try:
+                if parent[key]["min"]["value"] > md:
+                    parent[key]["min"]["value"] = md
+                if parent[key]["max"]["value"] < md:
+                    parent[key]["max"]["value"] = md
+            except Exception:
+                parent[key] = {"min": {"value": md, "unit": unit},
+                               "max": {"value": md, "unit": unit}}
+            return
+        if tgtype in cls.listtype:
+            if "value" not in tg:
+                tg["value"] = 0
+            if "unit" not in tg:
+                tg["unit"] = unit
+            if not isinstance(tg["value"], list):
+                tg["value"] = []
+            tg["value"].append(md)
+            return
+        if tgtype in cls.dicttype:
+            if not isinstance(parent[key], dict):
+                parent[key] = {}
+            sz = str(len(parent[key]))
+            parent[key][sz] = {"value": md, "unit": unit}
+            return
         if "value" not in tg:
             tg["value"] = 0
         if "unit" not in tg:
