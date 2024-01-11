@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Jan 09, 2024" "3.58" "NXSTools"
+.TH "NXSTOOLS" "1" "Jan 11, 2024" "3.59" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -6588,6 +6588,10 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
+.B dicttype = [\(aqDict\(aq, \(aqD\(aq, \(aqd\(aq, \(aqdict\(aq]
+.UNINDENT
+.INDENT 7.0
+.TP
 .B epilog = \(aq examples:\en       nxsfileinfo groupmetadata \-o /user/data/myscan.scan.json  \-t /user/data/myscan.attachment.json  \-l /user/data/myscan.origdatablock.json  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json \en \en       nxsfileinfo groupmetadata myscan_m001  \-m /user/data/myscan_00021.scan.json\en  \-c /home/user/group_config.txt  \en \en       nxsfileinfo groupmetadata  myscan_m001  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json  \en \en       nxsfileinfo groupmetadata  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-c /home/user/group_config.txt  \en\en\(aq
 (\fI\%str\fP) command epilog
 .UNINDENT
@@ -6611,8 +6615,20 @@ grouped attachments]
 .UNINDENT
 .INDENT 7.0
 .TP
+.B listtype = [\(aqList\(aq, \(aqL\(aq, \(aql\(aq, \(aqlist\(aq]
+.UNINDENT
+.INDENT 7.0
+.TP
+.B minmaxtype = [\(aqMinMax\(aq, \(aqM\(aq, \(aqm\(aq, \(aqminmax\(aq]
+.UNINDENT
+.INDENT 7.0
+.TP
 .B postauto()
 parser creator after autocomplete run
+.UNINDENT
+.INDENT 7.0
+.TP
+.B rangetype = [\(aqRange\(aq, \(aqR\(aq, \(aqr\(aq, \(aqrangle\(aq]
 .UNINDENT
 .INDENT 7.0
 .TP
