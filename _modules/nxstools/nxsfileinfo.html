@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.59.0 documentation</title>
+    <title>nxstools.nxsfileinfo &#8212; NXSTools 3.60.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.59</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.60</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -1880,6 +1880,7 @@
     <span class="n">dicttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Dict&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;dict&quot;</span><span class="p">]</span>
     <span class="n">rangetype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Range&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;rangle&quot;</span><span class="p">]</span>
     <span class="n">minmaxtype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MinMax&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;minmax&quot;</span><span class="p">]</span>
+    <span class="n">uniquelisttype</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;UniqueList&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="s2">&quot;uniquelist&quot;</span><span class="p">]</span>
     <span class="c1"># avaragetype = [&quot;Average&quot;, &quot;A&quot;, &quot;a&quot;, &quot;average&quot;]</span>
 
 <div class="viewcode-block" id="GroupMetadata.create"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileinfo.GroupMetadata.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -2130,6 +2131,22 @@
             <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">,</span> <span class="n">md</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_list_depth</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;calculate list depth</span>
+
+<span class="sd">        :param lst: target type</span>
+<span class="sd">        :type lst: :obj:`list`</span>
+<span class="sd">        :returns: list depth</span>
+<span class="sd">        :rtype: :obj:`int`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_list_depth</span><span class="p">(</span><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_merge_list</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">tgtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; update and group scan metadata</span>
 
@@ -2204,14 +2221,24 @@
                 <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">mmin</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">unit</span><span class="p">},</span>
                                <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">mmax</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">unit</span><span class="p">}}</span>
             <span class="k">return</span>
-        <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">listtype</span> <span class="ow">or</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">unit</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">tg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tg</span> <span class="o">!=</span> <span class="p">{}</span> <span class="ow">and</span> <span class="n">tg</span> <span class="o">!=</span> <span class="p">[]:</span>
                         <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">and</span> \
+                        <span class="nb">len</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">_list_depth</span><span class="p">(</span><span class="n">tg</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_list_depth</span><span class="p">(</span><span class="n">md</span><span class="p">):</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">or</span> \
+                   <span class="p">(</span><span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="ow">and</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2222,7 +2249,19 @@
                     <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
                     <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">and</span> \
+                        <span class="nb">len</span><span class="p">(</span><span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> \
+                        <span class="bp">cls</span><span class="o">.</span><span class="n">_list_depth</span><span class="p">(</span><span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_list_depth</span><span class="p">(</span><span class="n">md</span><span class="p">):</span>
+                    <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]]</span>
+                    <span class="n">tg</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> <span class="ow">or</span> \
+                   <span class="p">(</span><span class="n">md</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">md</span> <span class="o">!=</span> <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">uniquelisttype</span> \
+                       <span class="ow">and</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">md</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tg</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="n">tgtype</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">dicttype</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">unit</span><span class="p">:</span>
