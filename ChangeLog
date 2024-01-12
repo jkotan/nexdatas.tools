@@ -1,3 +1,7 @@
+2024-01-12 Jan Kotanski <jankotan@gmail.com>
+	* fix condition for uniquelist type in group-map (#582)
+	* tagged as v3.60.1
+
 2024-01-11 Jan Kotanski <jankotan@gmail.com>
 	* add uniquelist type in group-map (#574)
 	* tagged as v3.60.0
