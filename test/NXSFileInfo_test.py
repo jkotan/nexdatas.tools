@@ -12936,13 +12936,11 @@ For more help:
                                 ]
                             ],
                             "long_static_vector": [
-                                [
                                     0,
                                     1,
                                     0,
                                     2,
                                     3
-                                ]
                             ],
                             "dynamic_vector": [
                                 [
@@ -12974,13 +12972,11 @@ For more help:
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
-                                    [
                                         999.0,
                                         999.1,
                                         999.2,
                                         999.0,
                                         998.9
-                                    ]
                                 ]
                             },
                             "pressure_list": {
@@ -13246,13 +13242,11 @@ For more help:
                                 ]
                             ],
                             "long_static_vector": [
-                                [
                                     0,
                                     1,
                                     0,
                                     2,
                                     3
-                                ]
                             ],
                             "dynamic_vector": [[1.1, 3.4], [1.2, 4.4]],
                             "pressure": {

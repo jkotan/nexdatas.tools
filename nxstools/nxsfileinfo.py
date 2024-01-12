@@ -2051,7 +2051,8 @@ class GroupMetadata(Runner):
                         parent[key] = []
                 elif tgtype in cls.uniquelisttype and \
                         len(tg) > 0 and \
-                        cls._list_depth(tg) <= cls._list_depth(md):
+                        cls._list_depth(tg) <= cls._list_depth(md) \
+                        and md != parent[key]:
                     parent[key] = [tg]
 
                 if tgtype not in cls.uniquelisttype or \
@@ -2072,7 +2073,8 @@ class GroupMetadata(Runner):
                     tg["value"] = []
                 elif tgtype in cls.uniquelisttype and \
                         len(tg["value"]) > 0 and \
-                        cls._list_depth(tg["value"]) <= cls._list_depth(md):
+                        cls._list_depth(tg["value"]) <= cls._list_depth(md) \
+                        and md != tg["value"]:
                     parent[key]["value"] = [tg["value"]]
                     tg = parent[key]
 
