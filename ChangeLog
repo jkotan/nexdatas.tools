@@ -1,6 +1,7 @@
 2024-01-15 Jan Kotanski <jankotan@gmail.com>
 	* fix  secop rotation_z coordiantes to [0,1,0] (#585)
-	* tagged as v3.60.2
+	* add NXsensor description to secop components (#587)
+	* tagged as v3.61.0
 
 2024-01-12 Jan Kotanski <jankotan@gmail.com>
 	* fix condition for uniquelist type in group-map (#582)

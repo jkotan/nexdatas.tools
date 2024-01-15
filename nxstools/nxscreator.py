@@ -1995,7 +1995,7 @@ class SECoPCPCreator(CPCreator):
         mgr = NGroup(env, name, "NXsensor")
         if 'description' in conf.keys():
             field = NField(mgr, 'name', 'NX_CHAR')
-            field.setText("%s" % str(conf['description']).replace(",", "_"))
+            field.setText("%s" % str(name))
             field.setStrategy('INIT')
         meaning = None
         semeaning = None
@@ -2014,6 +2014,10 @@ class SECoPCPCreator(CPCreator):
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
             field.setText("%s" % str(conf['implementation']))
+            field.setStrategy('INIT')
+        if 'description' in conf.keys():
+            field = NField(mgr, 'description', 'NX_CHAR')
+            field.setText("%s" % str(conf['description']))
             field.setStrategy('INIT')
         params = conf.get("accessibles", {})
         if params:
