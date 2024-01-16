@@ -1701,6 +1701,8 @@ class GroupMetadata(Runner):
     dicttype = ["Dict", "D", "d", "dict"]
     rangetype = ["Range", "R", "r", "rangle"]
     minmaxtype = ["MinMax", "M", "m", "minmax"]
+    mintype = ["Min", "min"]
+    maxtype = ["Max", "max"]
     uniquelisttype = ["UniqueList", "U", "u", "uniquelist"]
     # avaragetype = ["Average", "A", "a", "average"]
 
@@ -2041,6 +2043,46 @@ class GroupMetadata(Runner):
             except Exception:
                 parent[key] = {"min": {"value": mmin, "unit": unit},
                                "max": {"value": mmax, "unit": unit}}
+            return
+        if tgtype in cls.maxtype and md and \
+           (isinstance(md[0], float) or isinstance(md[0], int)):
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
+            try:
+                mmax = max(md)
+            except Exception:
+                mmax = md
+            if not isinstance(tg, dict):
+                parent[key] = {"value": mmax, "unit": unit}
+            if "value" not in parent[key]:
+                parent[key]["value"] = mmax
+
+            try:
+                if parent[key]["value"] < mmax:
+                    parent[key]["value"] = mmax
+            except Exception:
+                parent[key] = {"value": mmax, "unit": unit}
+            return
+        if tgtype in cls.mintype and md and \
+           (isinstance(md[0], float) or isinstance(md[0], int)):
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
+            try:
+                mmin = min(md)
+            except Exception:
+                mmin = md
+            if not isinstance(tg, dict):
+                parent[key] = {"value": mmin, "unit": unit}
+            if "value" not in parent[key]:
+                parent[key]["value"] = mmin
+
+            try:
+                if parent[key]["value"] > mmin:
+                    parent[key]["value"] = mmin
+            except Exception:
+                parent[key] = {"value": mmin, "unit": unit}
             return
         if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
             if not unit:
