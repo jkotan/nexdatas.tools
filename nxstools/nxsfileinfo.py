@@ -2185,11 +2185,12 @@ class GroupMetadata(Runner):
                     ov = tg["value"]
                     ocnts = tg["counts"]
                     ostd = tg["std"]
-                    os2 = ostd * ostd
+                    if ostd is not None:
+                        os2 = ostd * ostd
                     nn = len(md)
                     ncnts = ocnts + nn
                     tg["counts"] = ncnts
-                    if tg["unit"] == unit:
+                    if tg["unit"] == unit and tg["value"] is not None:
                         tg["value"] = \
                             float((ov * ocnts) + sum(value)) / ncnts
                         minv = min(value)
@@ -2198,7 +2199,7 @@ class GroupMetadata(Runner):
                         maxv = max(value)
                         if tg["max"] < maxv:
                             tg["max"] = maxv
-                    if ncnts > 1:
+                    if ncnts > 1 and tg["std"] is not None:
                         if (ocnts == 1 or nn == 1):
                             tg["std"] = float(
                                 np.std([ov] + value, ddof=1))
@@ -2212,6 +2213,12 @@ class GroupMetadata(Runner):
                                 math.sqrt(
                                     ((ocnts - 1) * os2 + (nn - 1) * nvar)
                                     / (ncnts - 2))
+                    if isinstance(tg["std"], float) and \
+                       (math.isinf(tg["std"]) or math.isnan(tg["std"])):
+                        tg["std"] = None
+                    if isinstance(tg["value"], float) and \
+                       (math.isinf(tg["value"]) or math.isnan(tg["value"])):
+                        tg["value"] = None
 
     @classmethod
     def _merge_number(cls, parent, key, md, unit, tgtype=None):
@@ -2251,6 +2258,28 @@ class GroupMetadata(Runner):
                     tg["value"][1] = md
             except Exception:
                 tg["value"] = [md, md]
+            return
+        if tgtype in cls.mintype:
+            if not isinstance(parent[key], dict):
+                parent[key] = {"value": md, "unit": unit}
+            if "value" not in parent[key]:
+                parent[key] = {"value": md, "unit": unit}
+            try:
+                if parent[key]["value"] > md:
+                    parent[key]["value"] = md
+            except Exception:
+                parent[key] = {"value": md, "unit": unit}
+            return
+        if tgtype in cls.maxtype:
+            if not isinstance(parent[key], dict):
+                parent[key] = {"value": md, "unit": unit}
+            if "value" not in parent[key]:
+                parent[key] = {"value": md, "unit": unit}
+            try:
+                if parent[key]["value"] < md:
+                    parent[key]["value"] = md
+            except Exception:
+                parent[key] = {"value": md, "unit": unit}
             return
         if tgtype in cls.minmaxtype:
             if not isinstance(parent[key], dict):
@@ -2299,22 +2328,23 @@ class GroupMetadata(Runner):
         ov = tg["value"]
         ocnts = tg["counts"]
         ostd = tg["std"]
-        os2 = ostd * ostd
+        if ostd is not None:
+            os2 = ostd * ostd
 
         ncnts = ocnts + 1
-        if tg["unit"] == unit:
+        if tg["unit"] == unit and tg["value"] is not None:
             tg["value"] = float((ov * ocnts) + value)/(ncnts)
             if tg["min"] > value:
                 tg["min"] = value
             if tg["max"] < value:
                 tg["max"] = value
             tg["counts"] += 1
-            if ncnts == 2:
+            if ncnts == 2 and tg["value"] is not None:
                 ns2 = float(
                     (value - tg["value"]) * (value - tg["value"])
                     + (ov - tg["value"]) * (ov - tg["value"]))
                 tg["std"] = math.sqrt(ns2)
-            elif ncnts > 2:
+            elif ncnts > 2 and tg["value"] is not None and ostd is not None:
                 # ns2 = float(
                 #     (ncnts - 2) * os2
                 #     +x (value - tg["value"]) * (value - ov)
@@ -2324,6 +2354,12 @@ class GroupMetadata(Runner):
                     + (value - tg["value"]) * (value - ov)
                 ) / (ncnts - 1)
                 tg["std"] = math.sqrt(ns2)
+            if isinstance(tg["std"], float) and \
+               (math.isinf(tg["std"]) or math.isnan(tg["std"])):
+                tg["std"] = None
+            if isinstance(tg["value"], float) and \
+               (math.isinf(tg["value"]) or math.isnan(tg["value"])):
+                tg["value"] = None
 
     @classmethod
     def _merge_meta(cls, parent, key, md, tgtype=None):
