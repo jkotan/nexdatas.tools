@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.60.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.61.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.60</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.61</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2174,7 +2174,7 @@
         <span class="n">mgr</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;NXsensor&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
         <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">semeaning</span> <span class="o">=</span> <span class="kc">None</span>
@@ -2193,6 +2193,10 @@
         <span class="k">if</span> <span class="s1">&#39;implementation&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;implementation&#39;</span><span class="p">]))</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]))</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;accessibles&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
