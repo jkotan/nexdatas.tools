@@ -24,6 +24,7 @@ import json
 import sys
 import xml.etree.ElementTree as et
 import numpy as np
+import math
 import pytz
 import time
 import dateutil.parser
@@ -36,6 +37,7 @@ from nxstools.nxsparser import ParserTools
 class numpyEncoder(json.JSONEncoder):
     """ numpy json encoder with list
     """
+
     def default(self, obj):
         """ default encoder
 
@@ -56,6 +58,27 @@ class numpyEncoder(json.JSONEncoder):
             except Exception:
                 return obj.decode()
         return json.JSONEncoder.default(self, obj)
+
+
+class numpyEncoderNull(numpyEncoder):
+    """ numpy json encoder with list with nan/inf to null
+    """
+    def encode(self, obj, *args, **kwargs):
+        return numpyEncoder.encode(self, infNaN2None(obj), *args, **kwargs)
+
+
+def infNaN2None(obj):
+    """ replace inf and NaN to None
+    """
+    if isinstance(obj, dict):
+        return {ky: infNaN2None(vl) for ky, vl in obj.items()}
+    elif isinstance(obj, list):
+        return [infNaN2None(it) for it in obj]
+    elif isinstance(obj, float) and math.isinf(obj):
+        return None
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None
+    return obj
 
 
 _regex = r'^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-' \

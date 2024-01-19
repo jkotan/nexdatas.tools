@@ -40,7 +40,7 @@ from io import BytesIO
 
 from .nxsparser import TableTools
 from .nxsfileparser import (NXSFileParser, FIOFileParser,
-                            numpyEncoder, isoDate)
+                            numpyEncoder, numpyEncoderNull, isoDate)
 from .nxsargparser import (Runner, NXSArgParser, ErrorException)
 from . import filewriter
 from .ontology import id_techniques, nexus_panet
@@ -1613,7 +1613,7 @@ class Metadata(Runner):
         if result is not None:
             return json.dumps(
                 result, sort_keys=True, indent=4,
-                cls=numpyEncoder)
+                cls=numpyEncoderNull)
 
     def show(self, root, options):
         """ the main function
@@ -2697,7 +2697,7 @@ class GroupMetadata(Runner):
         jsnresult = None
         if result is not None:
             jsnresult = json.dumps(
-                result, sort_keys=True, indent=4, cls=numpyEncoder)
+                result, sort_keys=True, indent=4, cls=numpyEncoderNull)
         return [jsnresult, json.dumps(dresult), json.dumps(aresult)]
 
     def show(self, options):

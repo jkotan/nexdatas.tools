@@ -1,3 +1,7 @@
+2024-01-19 Jan Kotanski <jankotan@gmail.com>
+	* convert nan and inf to null in (group)metadata (#594)
+	* tagged as v3.61.1
+
 2024-01-15 Jan Kotanski <jankotan@gmail.com>
 	* fix  secop rotation_z coordiantes to [0,1,0] (#585)
 	* add NXsensor description to secop components (#587)

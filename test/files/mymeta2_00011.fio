@@ -17,6 +17,9 @@ abs = 1423
 anav = 5.14532
 atten = 9.97774e+07
 bpm1 = 7
+bpm2 = float("nan")
+bpm3 = float("-inf")
+bpm4 = float("+inf")
 !
 ! Data
 !
