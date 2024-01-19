@@ -64,7 +64,7 @@ class numpyEncoderNull(numpyEncoder):
     """ numpy json encoder with list with nan/inf to null
     """
     def encode(self, obj, *args, **kwargs):
-        return super().encode(infNaN2None(obj), *args, **kwargs)
+        return numpyEncoder.encode(self, infNaN2None(obj), *args, **kwargs)
 
 
 def infNaN2None(obj):
