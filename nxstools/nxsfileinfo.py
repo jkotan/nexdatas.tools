@@ -1970,6 +1970,344 @@ class GroupMetadata(Runner):
             return cls._list_depth(lst[0]) + 1
 
     @classmethod
+    def _merge_range_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        if "value" not in tg:
+            tg["value"] = []
+        if "unit" not in tg:
+            tg["unit"] = unit
+        try:
+            mmin = min(md)
+        except Exception:
+            mmin = md
+        try:
+            mmax = max(md)
+        except Exception:
+            mmax = md
+        if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
+            tg["value"] = [mmin, mmax]
+        try:
+            if tg["value"][0] > mmin:
+                tg["value"][0] = mmin
+            if tg["value"][1] < mmax:
+                tg["value"][1] = mmax
+        except Exception:
+            tg["value"] = [mmin, mmax]
+        return
+
+    @classmethod
+    def _merge_minmax_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        try:
+            mmin = min(md)
+        except Exception:
+            mmin = md
+        try:
+            mmax = max(md)
+        except Exception:
+            mmax = md
+        if not isinstance(tg, dict):
+            parent[key] = {"min": {"value": mmin, "unit": unit},
+                           "max": {"value": mmax, "unit": unit}}
+        if "min" not in parent[key]:
+            parent[key]["min"] = {"value": mmin, "unit": unit}
+        if "max" not in parent[key]:
+            parent[key]["max"] = {"value": mmax, "unit": unit}
+
+        try:
+            if parent[key]["min"]["value"] > mmin:
+                parent[key]["min"]["value"] = mmin
+            if parent[key]["max"]["value"] < mmax:
+                parent[key]["max"]["value"] = mmax
+        except Exception:
+            parent[key] = {"min": {"value": mmin, "unit": unit},
+                           "max": {"value": mmax, "unit": unit}}
+        return
+
+    @classmethod
+    def _merge_max_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        try:
+            mmax = max(md)
+        except Exception:
+            mmax = md
+        if not isinstance(tg, dict):
+            parent[key] = {"value": mmax, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key]["value"] = mmax
+
+        try:
+            if parent[key]["value"] < mmax:
+                parent[key]["value"] = mmax
+        except Exception:
+            parent[key] = {"value": mmax, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_min_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        try:
+            mmin = min(md)
+        except Exception:
+            mmin = md
+        if not isinstance(tg, dict):
+            parent[key] = {"value": mmin, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key]["value"] = mmin
+
+        try:
+            if parent[key]["value"] > mmin:
+                parent[key]["value"] = mmin
+        except Exception:
+            parent[key] = {"value": mmin, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_list_list(cls, parent, key, md, unit, tgtype):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not unit:
+            if not isinstance(tg, list):
+                if tg is not None and tg != {} and tg != []:
+                    parent[key] = [tg]
+                else:
+                    parent[key] = []
+            elif tgtype in cls.uniquelisttype and \
+                    len(tg) > 0 and \
+                    cls._list_depth(tg) <= cls._list_depth(md) \
+                    and md != parent[key]:
+                parent[key] = [tg]
+
+            if tgtype not in cls.uniquelisttype or \
+               (md not in parent[key] and md != parent[key]):
+                if tgtype in cls.uniquelisttype and not parent[key]:
+                    parent[key] = md
+                else:
+                    parent[key].append(md)
+        else:
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            tg = parent[key]
+            if "value" not in tg:
+                tg["value"] = 0
+            if "unit" not in tg:
+                tg["unit"] = unit
+            if not isinstance(tg["value"], list):
+                tg["value"] = []
+            elif tgtype in cls.uniquelisttype and \
+                    len(tg["value"]) > 0 and \
+                    cls._list_depth(tg["value"]) <= cls._list_depth(md) \
+                    and md != tg["value"]:
+                parent[key]["value"] = [tg["value"]]
+                tg = parent[key]
+
+            if tgtype not in cls.uniquelisttype or \
+               (md not in tg["value"] and md != tg["value"]):
+                if tgtype in cls.uniquelisttype \
+                   and not parent[key]["value"]:
+                    tg["value"] = md
+                else:
+                    tg["value"].append(md)
+
+    @classmethod
+    def _merge_dict_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not unit:
+            if not isinstance(tg, dict):
+                if tg is not None and tg != {} and tg != []:
+                    parent[key] = {"0": tg}
+                else:
+                    parent[key] = {}
+            sz = str(len(parent[key]))
+            parent[key][sz] = md
+        else:
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            sz = str(len(parent[key]))
+            parent[key][sz] = {"value": md, "unit": unit}
+
+    @classmethod
+    def _merge_average_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if isinstance(md[0], basestring):
+            if isinstance(tg, list):
+                parent[key].extend(
+                    [mi for mi in md if mi not in tg])
+            elif not tg:
+                parent[key] = md
+        elif (isinstance(md[0], float) or isinstance(md[0], int)) \
+                and len(md) < 4:
+            if isinstance(tg, list):
+                if md not in parent[key]:
+                    parent[key].append(md)
+            elif not tg:
+                parent[key] = [md]
+        else:
+            for mi in md:
+                if not isinstance(mi, float) and \
+                   not isinstance(mi, int):
+                    break
+            else:
+                value = md
+                tg = None
+                if key in parent.keys():
+                    tg = parent[key]
+                if not isinstance(tg, dict):
+                    parent[key] = {}
+                    tg = parent[key]
+                if "value" not in tg:
+                    tg["value"] = 0
+                if "unit" not in tg:
+                    tg["unit"] = unit
+                if "min" not in tg:
+                    tg["min"] = min(value)
+                if "max" not in tg:
+                    tg["max"] = max(value)
+                if "std" not in tg:
+                    tg["std"] = 0.0
+                if "counts" not in tg:
+                    tg["counts"] = 0
+                ov = tg["value"]
+                ocnts = tg["counts"]
+                ostd = tg["std"]
+                if ostd is not None:
+                    os2 = ostd * ostd
+                nn = len(md)
+                ncnts = ocnts + nn
+                tg["counts"] = ncnts
+                if tg["unit"] == unit and tg["value"] is not None:
+                    tg["value"] = \
+                        float((ov * ocnts) + sum(value)) / ncnts
+                    minv = min(value)
+                    if tg["min"] > minv:
+                        tg["min"] = minv
+                    maxv = max(value)
+                    if tg["max"] < maxv:
+                        tg["max"] = maxv
+                if ncnts > 1 and tg["std"] is not None:
+                    if (ocnts == 1 or nn == 1):
+                        tg["std"] = float(
+                            np.std([ov] + value, ddof=1))
+                    elif ostd == 0.0:
+                        tg["std"] = float(
+                            np.std(value, ddof=1))
+                    elif ocnts > 1 and nn > 1:
+                        nvar = float(
+                            np.var(value, ddof=1))
+                        tg["std"] = \
+                            math.sqrt(
+                                ((ocnts - 1) * os2 + (nn - 1) * nvar)
+                                / (ncnts - 2))
+                if isinstance(tg["std"], float) and \
+                   (math.isinf(tg["std"]) or math.isnan(tg["std"])):
+                    tg["std"] = None
+                if isinstance(tg["value"], float) and \
+                   (math.isinf(tg["value"]) or math.isnan(tg["value"])):
+                    tg["value"] = None
+
+    @classmethod
     def _merge_list(cls, parent, key, md, unit, tgtype=None):
         """ update and group scan metadata
 
@@ -1984,245 +2322,29 @@ class GroupMetadata(Runner):
         :param tgtype: target type
         :type tgtype: :obj:`str`
         """
-        tg = None
-        if key in parent.keys():
-            tg = parent[key]
         if tgtype in cls.rangetype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
-            if not isinstance(tg, dict):
-                parent[key] = {}
-            tg = parent[key]
-            if "value" not in tg:
-                tg["value"] = []
-            if "unit" not in tg:
-                tg["unit"] = unit
-            try:
-                mmin = min(md)
-            except Exception:
-                mmin = md
-            try:
-                mmax = max(md)
-            except Exception:
-                mmax = md
-            if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
-                tg["value"] = [mmin, mmax]
-            try:
-                if tg["value"][0] > mmin:
-                    tg["value"][0] = mmin
-                if tg["value"][1] < mmax:
-                    tg["value"][1] = mmax
-            except Exception:
-                tg["value"] = [mmin, mmax]
-            return
+            return cls._merge_range_list(parent, key, md, unit)
         if tgtype in cls.minmaxtype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
-            if not isinstance(tg, dict):
-                parent[key] = {}
-            tg = parent[key]
-            try:
-                mmin = min(md)
-            except Exception:
-                mmin = md
-            try:
-                mmax = max(md)
-            except Exception:
-                mmax = md
-            if not isinstance(tg, dict):
-                parent[key] = {"min": {"value": mmin, "unit": unit},
-                               "max": {"value": mmax, "unit": unit}}
-            if "min" not in parent[key]:
-                parent[key]["min"] = {"value": mmin, "unit": unit}
-            if "max" not in parent[key]:
-                parent[key]["max"] = {"value": mmax, "unit": unit}
-
-            try:
-                if parent[key]["min"]["value"] > mmin:
-                    parent[key]["min"]["value"] = mmin
-                if parent[key]["max"]["value"] < mmax:
-                    parent[key]["max"]["value"] = mmax
-            except Exception:
-                parent[key] = {"min": {"value": mmin, "unit": unit},
-                               "max": {"value": mmax, "unit": unit}}
-            return
+            return cls._merge_minmax_list(parent, key, md, unit)
         if tgtype in cls.maxtype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
-            if not isinstance(tg, dict):
-                parent[key] = {}
-            tg = parent[key]
-            try:
-                mmax = max(md)
-            except Exception:
-                mmax = md
-            if not isinstance(tg, dict):
-                parent[key] = {"value": mmax, "unit": unit}
-            if "value" not in parent[key]:
-                parent[key]["value"] = mmax
-
-            try:
-                if parent[key]["value"] < mmax:
-                    parent[key]["value"] = mmax
-            except Exception:
-                parent[key] = {"value": mmax, "unit": unit}
-            return
+            return cls._merge_max_list(parent, key, md, unit)
         if tgtype in cls.mintype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
-            if not isinstance(tg, dict):
-                parent[key] = {}
-            tg = parent[key]
-            try:
-                mmin = min(md)
-            except Exception:
-                mmin = md
-            if not isinstance(tg, dict):
-                parent[key] = {"value": mmin, "unit": unit}
-            if "value" not in parent[key]:
-                parent[key]["value"] = mmin
-
-            try:
-                if parent[key]["value"] > mmin:
-                    parent[key]["value"] = mmin
-            except Exception:
-                parent[key] = {"value": mmin, "unit": unit}
-            return
+            return cls._merge_min_list(parent, key, md, unit)
         if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
-            if not unit:
-                if not isinstance(tg, list):
-                    if tg is not None and tg != {} and tg != []:
-                        parent[key] = [tg]
-                    else:
-                        parent[key] = []
-                elif tgtype in cls.uniquelisttype and \
-                        len(tg) > 0 and \
-                        cls._list_depth(tg) <= cls._list_depth(md) \
-                        and md != parent[key]:
-                    parent[key] = [tg]
-
-                if tgtype not in cls.uniquelisttype or \
-                   (md not in parent[key] and md != parent[key]):
-                    if tgtype in cls.uniquelisttype and not parent[key]:
-                        parent[key] = md
-                    else:
-                        parent[key].append(md)
-            else:
-                if not isinstance(tg, dict):
-                    parent[key] = {}
-                tg = parent[key]
-                if "value" not in tg:
-                    tg["value"] = 0
-                if "unit" not in tg:
-                    tg["unit"] = unit
-                if not isinstance(tg["value"], list):
-                    tg["value"] = []
-                elif tgtype in cls.uniquelisttype and \
-                        len(tg["value"]) > 0 and \
-                        cls._list_depth(tg["value"]) <= cls._list_depth(md) \
-                        and md != tg["value"]:
-                    parent[key]["value"] = [tg["value"]]
-                    tg = parent[key]
-
-                if tgtype not in cls.uniquelisttype or \
-                   (md not in tg["value"] and md != tg["value"]):
-                    if tgtype in cls.uniquelisttype \
-                       and not parent[key]["value"]:
-                        tg["value"] = md
-                    else:
-                        tg["value"].append(md)
+            return cls._merge_list_list(parent, key, md, unit, tgtype)
 
         elif tgtype in cls.dicttype:
-            if not unit:
-                if not isinstance(tg, dict):
-                    if tg is not None and tg != {} and tg != []:
-                        parent[key] = {"0": tg}
-                    else:
-                        parent[key] = {}
-                sz = str(len(parent[key]))
-                parent[key][sz] = md
-            else:
-                if not isinstance(tg, dict):
-                    parent[key] = {}
-                sz = str(len(parent[key]))
-                parent[key][sz] = {"value": md, "unit": unit}
-
+            return cls._merge_dict_list(parent, key, md, unit)
         elif md:
-            if isinstance(md[0], basestring):
-                if isinstance(tg, list):
-                    parent[key].extend(
-                        [mi for mi in md if mi not in tg])
-                elif not tg:
-                    parent[key] = md
-            elif (isinstance(md[0], float) or isinstance(md[0], int)) \
-                    and len(md) < 4:
-                if isinstance(tg, list):
-                    if md not in parent[key]:
-                        parent[key].append(md)
-                elif not tg:
-                    parent[key] = [md]
-            else:
-                for mi in md:
-                    if not isinstance(mi, float) and \
-                       not isinstance(mi, int):
-                        break
-                else:
-                    value = md
-                    tg = None
-                    if key in parent.keys():
-                        tg = parent[key]
-                    if not isinstance(tg, dict):
-                        parent[key] = {}
-                        tg = parent[key]
-                    if "value" not in tg:
-                        tg["value"] = 0
-                    if "unit" not in tg:
-                        tg["unit"] = unit
-                    if "min" not in tg:
-                        tg["min"] = min(value)
-                    if "max" not in tg:
-                        tg["max"] = max(value)
-                    if "std" not in tg:
-                        tg["std"] = 0.0
-                    if "counts" not in tg:
-                        tg["counts"] = 0
-                    ov = tg["value"]
-                    ocnts = tg["counts"]
-                    ostd = tg["std"]
-                    if ostd is not None:
-                        os2 = ostd * ostd
-                    nn = len(md)
-                    ncnts = ocnts + nn
-                    tg["counts"] = ncnts
-                    if tg["unit"] == unit and tg["value"] is not None:
-                        tg["value"] = \
-                            float((ov * ocnts) + sum(value)) / ncnts
-                        minv = min(value)
-                        if tg["min"] > minv:
-                            tg["min"] = minv
-                        maxv = max(value)
-                        if tg["max"] < maxv:
-                            tg["max"] = maxv
-                    if ncnts > 1 and tg["std"] is not None:
-                        if (ocnts == 1 or nn == 1):
-                            tg["std"] = float(
-                                np.std([ov] + value, ddof=1))
-                        elif ostd == 0.0:
-                            tg["std"] = float(
-                                np.std(value, ddof=1))
-                        elif ocnts > 1 and nn > 1:
-                            nvar = float(
-                                np.var(value, ddof=1))
-                            tg["std"] = \
-                                math.sqrt(
-                                    ((ocnts - 1) * os2 + (nn - 1) * nvar)
-                                    / (ncnts - 2))
-                    if isinstance(tg["std"], float) and \
-                       (math.isinf(tg["std"]) or math.isnan(tg["std"])):
-                        tg["std"] = None
-                    if isinstance(tg["value"], float) and \
-                       (math.isinf(tg["value"]) or math.isnan(tg["value"])):
-                        tg["value"] = None
+            return cls._merge_average_list(parent, key, md, unit)
 
     @classmethod
-    def _merge_number(cls, parent, key, md, unit, tgtype=None):
-        """ update and group scan metadata
+    def _merge_range_number(cls, parent, key, md, unit):
+        """ merge metadata number to range type
 
         :param parent: node metadata
         :type parent: :obj:`dict`
@@ -2232,87 +2354,164 @@ class GroupMetadata(Runner):
         :type md: :obj:`str` or :obj:`dict`
         :param unit: physical unit
         :type unit: :obj:`str`
-        :param tgtype: target type
-        :type tgtype: :obj:`str`
+        """
+
+        tg = parent[key]
+        if "value" not in tg:
+            tg["value"] = 0
+        if "unit" not in tg:
+            tg["unit"] = unit
+        if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
+            tg["value"] = [md, md]
+        try:
+            if tg["value"][0] > md:
+                tg["value"][0] = md
+            if tg["value"][1] < md:
+                tg["value"][1] = md
+        except Exception:
+            tg["value"] = [md, md]
+        return
+
+    @classmethod
+    def _merge_min_number(cls, parent, key, md, unit):
+        """ merge metadata number to min type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        if not isinstance(parent[key], dict):
+            parent[key] = {"value": md, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key] = {"value": md, "unit": unit}
+        try:
+            if parent[key]["value"] > md:
+                parent[key]["value"] = md
+        except Exception:
+            parent[key] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_max_number(cls, parent, key, md, unit):
+        """ merge metadata number to min type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+
+        if not isinstance(parent[key], dict):
+            parent[key] = {"value": md, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key] = {"value": md, "unit": unit}
+        try:
+            if parent[key]["value"] < md:
+                parent[key]["value"] = md
+        except Exception:
+            parent[key] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_minmax_number(cls, parent, key, md, unit):
+        """ merge metadata number to minmax type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        if not isinstance(parent[key], dict):
+            parent[key] = {"min": {"value": md, "unit": unit},
+                           "max": {"value": md, "unit": unit}}
+        if "min" not in parent[key]:
+            parent[key]["min"] = {"value": md, "unit": unit}
+        if "max" not in parent[key]:
+            parent[key]["max"] = {"value": md, "unit": unit}
+        try:
+            if parent[key]["min"]["value"] > md:
+                parent[key]["min"]["value"] = md
+            if parent[key]["max"]["value"] < md:
+                parent[key]["max"]["value"] = md
+        except Exception:
+            parent[key] = {"min": {"value": md, "unit": unit},
+                           "max": {"value": md, "unit": unit}}
+        return
+
+    @classmethod
+    def _merge_list_number(cls, parent, key, md, unit):
+        """ merge metadata number to minmax type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = parent[key]
+
+        if "value" not in tg:
+            tg["value"] = 0
+        if "unit" not in tg:
+            tg["unit"] = unit
+        if not isinstance(tg["value"], list):
+            tg["value"] = []
+        tg["value"].append(md)
+        return
+
+    @classmethod
+    def _merge_dict_number(cls, parent, key, md, unit):
+        """ merge metadata number to dict type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        if not isinstance(parent[key], dict):
+            parent[key] = {}
+        sz = str(len(parent[key]))
+        parent[key][sz] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_average_number(cls, parent, key, md, unit):
+        """ merge metadata number to dict type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
         """
         value = md
-        tg = None
-        if key in parent.keys():
-            tg = parent[key]
+        tg = parent[key]
 
         if not isinstance(tg, dict):
             parent[key] = {}
-        tg = parent[key]
-
-        if tgtype in cls.rangetype:
-            if "value" not in tg:
-                tg["value"] = 0
-            if "unit" not in tg:
-                tg["unit"] = unit
-            if not isinstance(tg["value"], list) or len(tg["value"]) != 2:
-                tg["value"] = [md, md]
-            try:
-                if tg["value"][0] > md:
-                    tg["value"][0] = md
-                if tg["value"][1] < md:
-                    tg["value"][1] = md
-            except Exception:
-                tg["value"] = [md, md]
-            return
-        if tgtype in cls.mintype:
-            if not isinstance(parent[key], dict):
-                parent[key] = {"value": md, "unit": unit}
-            if "value" not in parent[key]:
-                parent[key] = {"value": md, "unit": unit}
-            try:
-                if parent[key]["value"] > md:
-                    parent[key]["value"] = md
-            except Exception:
-                parent[key] = {"value": md, "unit": unit}
-            return
-        if tgtype in cls.maxtype:
-            if not isinstance(parent[key], dict):
-                parent[key] = {"value": md, "unit": unit}
-            if "value" not in parent[key]:
-                parent[key] = {"value": md, "unit": unit}
-            try:
-                if parent[key]["value"] < md:
-                    parent[key]["value"] = md
-            except Exception:
-                parent[key] = {"value": md, "unit": unit}
-            return
-        if tgtype in cls.minmaxtype:
-            if not isinstance(parent[key], dict):
-                parent[key] = {"min": {"value": md, "unit": unit},
-                               "max": {"value": md, "unit": unit}}
-            if "min" not in parent[key]:
-                parent[key]["min"] = {"value": md, "unit": unit}
-            if "max" not in parent[key]:
-                parent[key]["max"] = {"value": md, "unit": unit}
-            try:
-                if parent[key]["min"]["value"] > md:
-                    parent[key]["min"]["value"] = md
-                if parent[key]["max"]["value"] < md:
-                    parent[key]["max"]["value"] = md
-            except Exception:
-                parent[key] = {"min": {"value": md, "unit": unit},
-                               "max": {"value": md, "unit": unit}}
-            return
-        if tgtype in cls.listtype:
-            if "value" not in tg:
-                tg["value"] = 0
-            if "unit" not in tg:
-                tg["unit"] = unit
-            if not isinstance(tg["value"], list):
-                tg["value"] = []
-            tg["value"].append(md)
-            return
-        if tgtype in cls.dicttype:
-            if not isinstance(parent[key], dict):
-                parent[key] = {}
-            sz = str(len(parent[key]))
-            parent[key][sz] = {"value": md, "unit": unit}
-            return
         if "value" not in tg:
             tg["value"] = 0
         if "unit" not in tg:
@@ -2360,6 +2559,41 @@ class GroupMetadata(Runner):
             if isinstance(tg["value"], float) and \
                (math.isinf(tg["value"]) or math.isnan(tg["value"])):
                 tg["value"] = None
+
+    @classmethod
+    def _merge_number(cls, parent, key, md, unit, tgtype=None):
+        """ update and group scan metadata
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        :param tgtype: target type
+        :type tgtype: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+
+        if tgtype in cls.rangetype:
+            return cls._merge_range_number(parent, key, md, unit)
+        if tgtype in cls.mintype:
+            return cls._merge_min_number(parent, key, md, unit)
+        if tgtype in cls.maxtype:
+            return cls._merge_max_number(parent, key, md, unit)
+        if tgtype in cls.minmaxtype:
+            return cls._merge_minmax_number(parent, key, md, unit)
+        if tgtype in cls.listtype:
+            return cls._merge_list_number(parent, key, md, unit)
+        if tgtype in cls.dicttype:
+            return cls._merge_dict_number(parent, key, md, unit)
+        return cls._merge_average_number(parent, key, md, unit)
 
     @classmethod
     def _merge_meta(cls, parent, key, md, tgtype=None):
