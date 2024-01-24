@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxsfileparser &#8212; NXSTools 3.61.0 documentation</title>
+    <title>nxstools.nxsfileparser &#8212; NXSTools 3.62.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.61</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.62</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -203,6 +203,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">et</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">dateutil.parser</span>
@@ -215,6 +216,7 @@
 <div class="viewcode-block" id="numpyEncoder"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.numpyEncoder">[docs]</a><span class="k">class</span> <span class="nc">numpyEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; numpy json encoder with list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="numpyEncoder.default"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.numpyEncoder.default">[docs]</a>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; default encoder</span>
 
@@ -235,6 +237,27 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="numpyEncoderNull"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.numpyEncoderNull">[docs]</a><span class="k">class</span> <span class="nc">numpyEncoderNull</span><span class="p">(</span><span class="n">numpyEncoder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; numpy json encoder with list with nan/inf to null</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="numpyEncoderNull.encode"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.numpyEncoderNull.encode">[docs]</a>    <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">numpyEncoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infNaN2None</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="infNaN2None"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxsfileparser.infNaN2None">[docs]</a><span class="k">def</span> <span class="nf">infNaN2None</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; replace inf and NaN to None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">ky</span><span class="p">:</span> <span class="n">infNaN2None</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span> <span class="k">for</span> <span class="n">ky</span><span class="p">,</span> <span class="n">vl</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">infNaN2None</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">obj</span></div>
 
 
 <span class="n">_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^(-?(?:[1-9][0-9]*)?[0-9]</span><span class="si">{4}</span><span class="s1">)-(1[0-2]|0[1-9])-&#39;</span> \
