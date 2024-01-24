@@ -2895,45 +2895,6 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
                 # else:
                 #     os.remove("%s.xml" % scn)
 
-    def test_secopcp_create_nis(self):
-        """ test nxsccreate stdcomp file system
-        """
-
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        fname = '%s/%s%s.json' % (
-            os.getcwd(), self.__class__.__name__, fun)
-
-        cname = "myuni"
-
-        shutil.copy("test/files/secop.conf", fname)
-
-        dsl = ["client_start_time"]
-        dsl.extend(self.secoplist[1:])
-        args = [
-            [
-                [
-                    ('nxscreate secopcp  --node-in-sample -c %s -j %s %s'
-                     % (cname, fname, self.flags)).split(),
-                    ('nxscreate secopcp -w --component %s --json-file %s %s'
-                     % (cname, fname, self.flags)).split(),
-                ],
-                [
-                    [self.secoplist[0].format(cpname=cname)],
-                    [ds.format(cpname=cname) for ds in dsl]
-                ],
-                [
-                    [
-                        self.myuni.format(nodegroup="NXenvironment",
-                                          cpname=cname)
-                    ],
-                    [ds.format(cpname=cname) for ds in self.myunids]
-                ],
-            ],
-        ]
-        self.checkxmls(args, fname)
-
     def test_secopcp_create(self):
         """ test nxsccreate stdcomp file system
         """
@@ -2953,9 +2914,48 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         args = [
             [
                 [
-                    ('nxscreate secopcp   -c %s -j %s %s'
+                    ('nxscreate secopcp -c %s -j %s %s'
                      % (cname, fname, self.flags)).split(),
                     ('nxscreate secopcp --component %s --json-file %s %s'
+                     % (cname, fname, self.flags)).split(),
+                ],
+                [
+                    [self.secoplist[0].format(cpname=cname)],
+                    [ds.format(cpname=cname) for ds in dsl]
+                ],
+                [
+                    [
+                        self.myuni.format(nodegroup="NXenvironment",
+                                          cpname=cname)
+                    ],
+                    [ds.format(cpname=cname) for ds in self.myunids]
+                ],
+            ],
+        ]
+        self.checkxmls(args, fname)
+
+    def test_secopcp_create_nii(self):
+        """ test nxsccreate stdcomp file system
+        """
+
+        fun = sys._getframe().f_code.co_name
+        print("Run: %s.%s() " % (self.__class__.__name__, fun))
+
+        fname = '%s/%s%s.json' % (
+            os.getcwd(), self.__class__.__name__, fun)
+
+        cname = "myuni"
+
+        shutil.copy("test/files/secop.conf", fname)
+
+        dsl = ["client_start_time"]
+        dsl.extend(self.secoplist[1:])
+        args = [
+            [
+                [
+                    ('nxscreate secopcp --node-in-instrument -c %s -j %s %s'
+                     % (cname, fname, self.flags)).split(),
+                    ('nxscreate secopcp -w --component %s --json-file %s %s'
                      % (cname, fname, self.flags)).split(),
                 ],
                 [
@@ -2992,9 +2992,9 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         args = [
             [
                 [
-                    ('nxscreate secopcp --node-in-sample -q -c %s -j %s %s'
+                    ('nxscreate secopcp  -q -c %s -j %s %s'
                      % (cname, fname, self.flags)).split(),
-                    ('nxscreate secopcp -w --strict --component %s '
+                    ('nxscreate secopcp --strict --component %s '
                      '--json-file %s %s'
                      % (cname, fname, self.flags)).split(),
                 ],
@@ -3032,9 +3032,9 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         args = [
             [
                 [
-                    ('nxscreate secopcp  -j %s %s'
+                    ('nxscreate secopcp --node-in-instrument -j %s %s'
                      % (fname, self.flags)).split(),
-                    ('nxscreate secopcp --json-file %s %s'
+                    ('nxscreate secopcp -w --json-file %s %s'
                      % (fname, self.flags)).split(),
                 ],
                 [

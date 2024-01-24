@@ -1866,7 +1866,7 @@ class SECoPCPCreator(CPCreator):
         samplename = samplename or "sample"
         sample = NGroup(entry, samplename, "NXsample")
         instrument = None
-        if not self.options.nodeinsample:
+        if self.options.nodeininstrument:
             instrument = NGroup(entry, insname, "NXinstrument")
             env = NGroup(instrument, name or "environment", "NXenvironment")
             basename = insname
