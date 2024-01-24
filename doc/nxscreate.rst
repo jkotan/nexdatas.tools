@@ -469,7 +469,8 @@ Options:
   -o, --overwrite       overwrite existing components
   -a, --can-fail        can fail strategy flag
   -q, --strict          NeXus strict group types i.e. use NXcollection if not defined
-  -w, --node-in-sample  Store node groups in the sample group
+  -w, --node-in-instrument
+                        Store node groups in the instrument group
   -c COMPONENT, --component COMPONENT
                         component namesecop component name
   -e PARAMSTRATEGY, --param-strategy PARAMSTRATEGY

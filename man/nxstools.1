@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Jan 16, 2024" "3.61" "NXSTools"
+.TH "NXSTOOLS" "1" "Jan 24, 2024" "3.62" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -240,7 +240,7 @@ show this help message and exit
 .TP
 .BI \-c \ COMPRESSION\fR,\fB \ \-\-compression \ COMPRESSION
 deflate compression rate from 0 to 9 (default: 2) or
-<filterid>:opt1,opt2,... e.g. \-c 32008:0,2 for
+<filterid>:opt1,opt2,… e.g. \-c 32008:0,2 for
 bitshuffle with lz4
 .TP
 .BI \-p \ PATH\fR,\fB \ \-\-path \ PATH
@@ -249,18 +249,18 @@ nexus path for the output field, e.g.
 .TP
 .BI \-i \ INPUTFILES\fR,\fB \ \-\-input_files \ INPUTFILES
 input data files defined with a pattern or separated
-by \(aq,\(aq e.g.\(aqscan_%05d.tif:0:100\(aq
+by ‘,’ e.g.’scan_%05d.tif:0:100’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-\-dtype \ DATATYPE
 datatype of input data \- only for raw data, e.g.
-\(aquint8\(aq
+‘uint8’
 .TP
 .BI \-\-shape \ SHAPE
 shape of input data \- only for raw data, e.g.
-\(aq[4096,2048]\(aq
+‘[4096,2048]’
 .TP
 .B \-s\fP,\fB  \-\-skip_missing
 skip missing files
@@ -383,99 +383,99 @@ Options:
 show this help message and exit
 .TP
 .BI \-t \ DTYPE\fR,\fB \ \-\-dtype \ DTYPE
-datatype of the VDS field, e.g. \(aquint8\(aq
+datatype of the VDS field, e.g. ‘uint8’
 .TP
 .BI \-s \ SHAPE\fR,\fB \ \-\-shape \ SHAPE
-shape of the VDS field, e.g. \(aq[U,4096,2048]\(aq or
-U,4096,2048 where U means span along the field\(aq
+shape of the VDS field, e.g. ‘[U,4096,2048]’ or
+U,4096,2048 where U means span along the field’
 .TP
 .BI \-f \ FILLVALUE\fR,\fB \ \-\-fill\-value \ FILLVALUE
 fill value for the gaps, default is 0
 .TP
 .BI \-e \ TARGETFIELDS\fR,\fB \ \-\-target\-fields \ TARGETFIELDS
 external fields with their NeXus file paths defined
-with a pattern or separated by \(aq,\(aq
-e.g.\(aqscan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP\(aq
+with a pattern or separated by ‘,’
+e.g.’scan_123/lambda_%05d.nxs://entry/data/\fI\%data:0:3\fP’
 .TP
 .BI \-\-separator \ SEPARATOR
-input data files separator (default: \(aq,\(aq)
+input data files separator (default: ‘,’)
 .TP
 .BI \-p \ SHAPES\fR,\fB \ \-\-shapes \ SHAPES
 shapes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-o \ OFFSETS\fR,\fB \ \-\-offsets \ OFFSETS
 offsets in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g.\(aq,,;,300,;,600,0\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g.’,,;,300,;,600,0’ where an empty coordinate
 means 0
 .TP
 .BI \-b \ BLOCKS\fR,\fB \ \-\-blocks \ BLOCKS
 block sizes in the VDS layout hyperslab for the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,256,512;,256,512;,256,512\(aq where an
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,256,512;,256,512;,256,512’ where an
 empty coordinate means 1
 .TP
 .BI \-c \ COUNTS\fR,\fB \ \-\-counts \ COUNTS
 count numbers in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,1,1;,1,1;,1,1\(aq where an empty coordinate
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,1,1;,1,1;,1,1’ where an empty coordinate
 means span along the layout
 .TP
 .BI \-d \ STRIDES\fR,\fB \ \-\-strides \ STRIDES
 stride sizes in the VDS layout hyperslabfor the
 corresponding target fields with coordinates sepatated
-by \(aq,\(aq and different fields separated by \(aq;\(aq, \(aq:\(aq or
-spaces e.g. \(aq,,;,,;,,\(aq where an empty coordinate means
+by ‘,’ and different fields separated by ‘;’, ‘:’ or
+spaces e.g. ‘,,;,,;,,’ where an empty coordinate means
 1
 .TP
 .BI \-l \ SLICES\fR,\fB \ \-\-slices \ SLICES
 mapping slices in the VDS layoutfor the corresponding
-target fields with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq or spaces e.g.
-\(aq:,0:50,: :,50:100,:\(aq where U means span along the
+target fields with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’ or spaces e.g.
+‘:,0:50,: :,50:100,:’ where U means span along the
 layout
 .TP
 .BI \-P \ TARGETSHAPES\fR,\fB \ \-\-target\-shapes \ TARGETSHAPES
-field shapes with coordinates sepatated by \(aq,\(aq and
-different fields separated by \(aq;\(aq, \(aq:\(aq or spaces
-e.g.\(aq,,;,300,;,600,0\(aq
+field shapes with coordinates sepatated by ‘,’ and
+different fields separated by ‘;’, ‘:’ or spaces
+e.g.’,,;,300,;,600,0’
 .TP
 .BI \-O \ TARGETOFFSETS\fR,\fB \ \-\-target\-offsets \ TARGETOFFSETS
 offsets in the view hyperslab of target fieldswith
-coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.\(aq,,;,300,;,600,0\(aq
+coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.’,,;,300,;,600,0’
 where an empty coordinate means 0
 .TP
 .BI \-B \ TARGETBLOCKS\fR,\fB \ \-\-target\-blocks \ TARGETBLOCKS
 block sizes in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g.
-\(aq,256,512;,256,512;,256,512\(aq where an empty coordinate
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g.
+‘,256,512;,256,512;,256,512’ where an empty coordinate
 means 1
 .TP
 .BI \-C \ TARGETCOUNTS\fR,\fB \ \-\-target\-counts \ TARGETCOUNTS
 count numbers in the view hyperslab of target fields
-with coordinates sepatated by \(aq,\(aq and different fields
-separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,1,1;,1,1;,1,1\(aq
+with coordinates sepatated by ‘,’ and different fields
+separated by ‘;’, ‘:’ or spaces e.g. ‘,1,1;,1,1;,1,1’
 where an empty coordinate means span along the layout
 .TP
 .BI \-D \ TARGETSTRIDES\fR,\fB \ \-\-target\-strides \ TARGETSTRIDES
 stride sizes numbers in the view hyperslab of target
-fields with coordinates sepatated by \(aq,\(aq and different
-fields separated by \(aq;\(aq, \(aq:\(aq or spaces e.g. \(aq,,;,,;,,\(aq
+fields with coordinates sepatated by ‘,’ and different
+fields separated by ‘;’, ‘:’ or spaces e.g. ‘,,;,,;,,’
 where an empty coordinate means 1
 .TP
 .BI \-L \ TARGETSLICES\fR,\fB \ \-\-target\-slices \ TARGETSLICES
 view slices of target fields with coordinates
-sepatated by \(aq,\(aq and different fields separated by \(aq;\(aq
-or spaces e.g. \(aq:,0:50,: :,0:50,:\(aq where U means span
+sepatated by ‘,’ and different fields separated by ‘;’
+or spaces e.g. ‘:,0:50,: :,0:50,:’ where U means span
 along the layout
 .TP
 .B \-r\fP,\fB  \-\-replace\-nexus\-file
@@ -550,43 +550,43 @@ list names of available datasources
 .B list \-r [\-s <config_server>] [\-n]
 list names of available profiles
 .TP
-.B show [\-s <config_server>] [\-m] [\-o <dir>] component_name1 component_name2 ...
+.B show [\-s <config_server>] [\-m] [\-o <dir>] component_name1 component_name2 …
 show components with given names
 .TP
-.B show \-d [\-s <config_server>]  [\-o <dir>] dsource_name1 dsource_name2 ...
+.B show \-d [\-s <config_server>]  [\-o <dir>] dsource_name1 dsource_name2 …
 show datasources with given names
 .TP
-.B show \-r [\-s <config_server>]  [\-o <dir>] profile_name1 profile_name2 ...
+.B show \-r [\-s <config_server>]  [\-o <dir>] profile_name1 profile_name2 …
 show profiles with given names
 .TP
-.B upload [\-s <config_server>] [\-m] [\-i <dir>] [\-f] component_name1 component_name2 ...
+.B upload [\-s <config_server>] [\-m] [\-i <dir>] [\-f] component_name1 component_name2 …
 load components from given files
 .TP
-.B upload \-d [\-s <config_server>]  [\-i <dir>] [\-f] dsource_name1 dsource_name2 ...
+.B upload \-d [\-s <config_server>]  [\-i <dir>] [\-f] dsource_name1 dsource_name2 …
 load datasources from given files
 .TP
-.B upload \-r [\-s <config_server>]  [\-i <dir>] [\-f] profile_name1 profile_name2 ...
+.B upload \-r [\-s <config_server>]  [\-i <dir>] [\-f] profile_name1 profile_name2 …
 load profiles from given files
 .TP
-.B get [\-s <config_server>]  [\-n] component_name1 component_name2 ...
+.B get [\-s <config_server>]  [\-n] component_name1 component_name2 …
 get merged configuration of components
 .TP
-.B delete [\-s <config_server>] [\-f] component_name1 component_name2 ...
+.B delete [\-s <config_server>] [\-f] component_name1 component_name2 …
 delete components with given names
 .TP
-.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 ...
+.B delete \-d [\-s <config_server>] [\-f] dsource_name1 dsource_name2 …
 delete datasources with given names
 .TP
-.B delete \-r [\-s <config_server>] [\-f] profile_name1 profile_name2 ...
+.B delete \-r [\-s <config_server>] [\-f] profile_name1 profile_name2 …
 delete profiles with given names
 .TP
-.B sources [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 ...
+.B sources [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 …
 get a list of component datasources
 .TP
-.B components [\-s <config_server>] [\-n] component_name1 component_name2 ...
+.B components [\-s <config_server>] [\-n] component_name1 component_name2 …
 get a list of dependent components
 .TP
-.B variables [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 ...
+.B variables [\-s <config_server>] [\-m] [\-n] component_name1 component_name2 …
 get a list of component variables
 .TP
 .B data [\-s <config_server>] json_data
@@ -601,19 +601,19 @@ get a list of datasource record names
 .B servers [\-s <config_server/host>] [\-n]
 get lists of configuration servers from the current tango host
 .TP
-.B describe [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B describe [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show all parameters of given components
 .TP
-.B describe|info \-d [\-s <config_server>] [\-n] dsource_name1 dsource_name2 ...
+.B describe|info \-d [\-s <config_server>] [\-n] dsource_name1 dsource_name2 …
 show all parameters of given datasources
 .TP
-.B info [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B info [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show source parameters of given components
 .TP
-.B info \-r [\-s <config_server>]  [\-n] profile_name1 profile_name2 ...
+.B info \-r [\-s <config_server>]  [\-n] profile_name1 profile_name2 …
 show general parameters of given profiles
 .TP
-.B geometry [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 ...
+.B geometry [\-s <config_server>] [\-m | \-p] [\-n] component_name1 component_name2 …
 show transformation parameters of given components
 .UNINDENT
 .TP
@@ -633,7 +633,7 @@ perform operation on datasources
 make use mandatory components as well
 .TP
 .B \-p\fP,\fB  \-\-private
-make use private components, i.e. starting with \(aq__\(aq
+make use private components, i.e. starting with ‘__’
 .TP
 .B \-n\fP,\fB  \-\-no\-newlines
 split result with space characters
@@ -692,7 +692,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -729,7 +729,7 @@ datasource prefix, i.e. counter (useful for avoiding duplicated datasource names
 store datasources in Configuration Server database
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
@@ -769,11 +769,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -867,11 +867,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is \(aqexp_mot\(aq
+default <datasource> is ‘exp_mot’
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -905,7 +905,7 @@ tango host port
 store datasources in Configuration Server database
 .TP
 .B \-n\fP,\fB  \-\-no\-group
-don\(aqt create common group with a name of datasource
+don’t create common group with a name of datasource
 prefix
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -947,7 +947,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -1025,7 +1025,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <channel> is \(aqALL\(aq
+default <channel> is ‘ALL’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -1096,15 +1096,15 @@ nxscreate onlinecp [options] inputFile
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-c <component>\(aq: show a list of possible components
+without ‘\-c <component>’: show a list of possible components
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-default <inputFile> is \(aq/online_dir/online.xml\(aq
+default <inputFile> is ‘/online_dir/online.xml’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -1196,17 +1196,17 @@ nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without \(aq\-t <type>\(aq: show a list of possible component types
+without ‘\-t <type>’: show a list of possible component types
 .IP \(bu 2
-with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
+with ‘\-t <type>  and without \-c <component>: show a list of component variables for the given component type
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
-[name1 value1 [name2 value2] ...] sequence  defines component variable values
+[name1 value1 [name2 value2] …] sequence  defines component variable values
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1287,7 +1287,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is \(aq.\(aq
+default <directory> is ‘.’
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -1297,7 +1297,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
+default <nexuspath> is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1353,7 +1353,7 @@ configuration server device name
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first \(aq0\(aq
+device name without first ‘0’
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -1413,8 +1413,8 @@ can fail strategy flag
 .B \-q\fP,\fB  \-\-strict
 NeXus strict group types i.e. use NXcollection if not defined
 .TP
-.B \-w\fP,\fB  \-\-node\-in\-sample
-Store node groups in the sample group
+.B \-w\fP,\fB  \-\-node\-in\-instrument
+Store node groups in the instrument group
 .TP
 .BI \-c \ COMPONENT\fR,\fB \ \-\-component \ COMPONENT
 component namesecop component name
@@ -1434,18 +1434,18 @@ sample name
 .BI \-k \ MEANINGS\fR,\fB \ \-\-links \ MEANINGS
 NXlog links of physical quantities to sensors
 separated by comman. Default:
-\(aqtemperature,magnetic_field,electric_field,stress_field,pressure\(aq
+‘temperature,magnetic_field,electric_field,stress_field,pressure’
 .TP
 .BI \-v \ ENVIRONMENTS\fR,\fB \ \-\-environments \ ENVIRONMENTS
 NXenvironment links of physical quantities separated
-by comman. Default: \(aqtemperature,magnetic_field\(aq
+by comman. Default: ‘temperature,magnetic_field’
 .TP
 .BI \-f \ FIRST\fR,\fB \ \-\-first \ FIRST
 first linked targets separated by comman
 .TP
 .BI \-z \ TRANSATTRS\fR,\fB \ \-\-transformation\-attributes \ TRANSATTRS
-a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
-{"rotation_z":{"transformation_type":"rotation","vector":[0,\-1,0]}}
+a JSON dictionary with transformation parameters i.e, “transformation_type”, “vector”, “depends_on”. Default:
+{“rotation_z”:{“transformation_type”:”rotation”,”vector”:[0,\-1,0]}}
 .TP
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
@@ -1523,7 +1523,7 @@ nxscreate compare [\-h] [\-n] online_file [online_file]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
+default: second <online_file> is ‘/online_dir/online.xml’ if only file is given
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -1701,7 +1701,7 @@ show this help message and exit
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
+full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
@@ -1758,7 +1758,7 @@ show this help message and exit
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
 .BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
+names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
@@ -1774,13 +1774,13 @@ access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: \(aqParameters\(aq
+postfix to be added to NeXus group name. The default: ‘Parameters’
 .TP
 .BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
 .TP
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
+names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
 .TP
 .B \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
@@ -1792,7 +1792,7 @@ add empty units for fields without units
 add 1d values to scientificMetadata
 .TP
 .BI \-\-max\-oned\-size \ MAXONEDSIZE
-add min and max (or first and last) values of 1d records to scientificMetadata if its size excides \-\-max\-oned\-size value
+add min and max (or first and last) values of 1d records to scientificMetadata if its size excides –max\-oned\-size value
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
@@ -1808,7 +1808,7 @@ generate pid with file name
 .TP
 .BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
-spaces).The default: \(aq\(aq
+spaces).The default: ‘’
 .TP
 .BI \-j \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sampleId
@@ -1844,16 +1844,16 @@ or a text file list to re\-arrange metadata
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
 field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re\-arrange metadata. The default:
-\(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
+‘scientificMetadata.nxsfileinfo_parameters.copymap.value’
 .TP
 .B \-\-copy\-map\-error
 Raise an error when the copy map file does not exist
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE
-json or yaml file containing the copy map, see also \-\-copy\-map
+json or yaml file containing the copy map, see also –copy\-map
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. \(aqnxs\(aq. Default is defined by the file extension
+input file format, e.g. ‘nxs’. Default is defined by the file extension
 .TP
 .B \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
@@ -1917,13 +1917,13 @@ access group names separated by commas. Default is
 .TP
 .BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aq\fI\&.pyc,\fP~\(aq
+without spaces). Default: ‘’. E.g.
+‘\fI\&.pyc,\fP~’
 .TP
 .BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of files to be added (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aqscan1.nxs,scan2.nxs\(aq
+without spaces). Default: ‘’. E.g.
+‘scan1.nxs,scan2.nxs’
 .TP
 .BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
@@ -2121,7 +2121,7 @@ amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. \(aqnxs\(aq. Default is defined by
+input file format, e.g. ‘nxs’. Default is defined by
 the file extension
 .TP
 .B \-\-h5py
@@ -2143,7 +2143,7 @@ axis/axes data name(s) separated by comma
 a JSON dictionary with scan\-command axes to override,
 axis/axes data name(s) separated by comma for
 detectors and by semicolon for more plots. Default:
-{"hklscan":"h;k;l","qscan":"qz;qpar"}
+{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
 .TP
 .BI \-m \ FRAME\fR,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
@@ -2165,7 +2165,7 @@ add plot paramters to the caption
 .TP
 .BI \-n \ NEXUSPATH\fR,\fB \ \-\-nexus\-path \ NEXUSPATH
 base nexus path to element to be shown.
-If th path is \(aq\(aq the default group is shown. The default: \(aq\(aq
+If th path is ‘’ the default group is shown. The default: ‘’
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
@@ -7173,6 +7173,11 @@ provides datasource type from datasource xml string
 .UNINDENT
 .INDENT 0.0
 .TP
+.B nxstools.nxsfileparser.infNaN2None(obj)
+replace inf and NaN to None
+.UNINDENT
+.INDENT 0.0
+.TP
 .B nxstools.nxsfileparser.isoDate(text)
 convert date to iso format
 .INDENT 7.0
@@ -7240,6 +7245,64 @@ default encoder
 .B Parameters
 \fBobj\fP (\fI\%object\fP or \fIany\fP) – numpy array object
 .UNINDENT
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.TP
+.B class nxstools.nxsfileparser.numpyEncoderNull(*, skipkeys=False, ensure_ascii=True, check_circular=True, allow_nan=True, sort_keys=False, indent=None, separators=None, default=None)
+Bases: \fI\%nxstools.nxsfileparser.numpyEncoder\fP
+.sp
+numpy json encoder with list with nan/inf to null
+.sp
+Constructor for JSONEncoder, with sensible defaults.
+.sp
+If skipkeys is false, then it is a TypeError to attempt
+encoding of keys that are not str, int, float or None.  If
+skipkeys is True, such items are simply skipped.
+.sp
+If ensure_ascii is true, the output is guaranteed to be str
+objects with all incoming non\-ASCII characters escaped.  If
+ensure_ascii is false, the output can contain non\-ASCII characters.
+.sp
+If check_circular is true, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an OverflowError).
+Otherwise, no such check takes place.
+.sp
+If allow_nan is true, then NaN, Infinity, and \-Infinity will be
+encoded as such.  This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.
+.sp
+If sort_keys is true, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day\-to\-day basis.
+.sp
+If indent is a non\-negative integer, then JSON array
+elements and object members will be pretty\-printed with that
+indent level.  An indent level of 0 will only insert newlines.
+None is the most compact representation.
+.sp
+If specified, separators should be an (item_separator, key_separator)
+tuple.  The default is (‘, ‘, ‘: ‘) if \fIindent\fP is \fBNone\fP and
+(‘,’, ‘: ‘) otherwise.  To get the most compact JSON representation,
+you should specify (‘,’, ‘:’) to eliminate whitespace.
+.sp
+If specified, default is a function that gets called for objects
+that can’t otherwise be serialized.  It should return a JSON encodable
+version of the object or raise a \fBTypeError\fP\&.
+.INDENT 7.0
+.TP
+.B encode(obj, *args, **kwargs)
+Return a JSON string representation of a Python data structure.
+.sp
+.nf
+.ft C
+>>> from json.encoder import JSONEncoder
+>>> JSONEncoder().encode({"foo": ["bar", "baz"]})
+\(aq{"foo": ["bar", "baz"]}\(aq
+.ft P
+.fi
 .UNINDENT
 .UNINDENT
 .SS nxstools.nxsargparser module
