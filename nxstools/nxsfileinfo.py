@@ -1704,6 +1704,10 @@ class GroupMetadata(Runner):
     mintype = ["Min", "min"]
     maxtype = ["Max", "max"]
     uniquelisttype = ["UniqueList", "U", "u", "uniquelist"]
+    endpointstype = ["Endpoints",  "endpoints", "E", "e"]
+    firstlasttype = ["FirstLast",  "firstlast"]
+    lasttype = ["Last", "last", "l", "L"]
+    firsttype = ["First", "first", "f", "F"]
     # avaragetype = ["Average", "A", "a", "average"]
 
     def create(self):
@@ -1946,6 +1950,22 @@ class GroupMetadata(Runner):
                 parent[key] = {}
             sz = str(len(parent[key]))
             parent[key][sz] = md
+        elif tgtype in cls.lasttype:
+            parent[key] = md
+        elif tgtype in cls.firsttype:
+            if tg in [None, [], {}]:
+                parent[key] = md
+        elif tgtype in cls.firstlasttype:
+            if not isinstance(tg, dict):
+                parent[key] = {}
+            parent[key]["last"] = md
+            if "first" not in parent[key].keys():
+                parent[key]["first"] = md
+        elif tgtype in cls.endpointstype:
+            if not isinstance(tg, list) or len(parent[key]) != 2:
+                parent[key] = [md, md]
+            else:
+                parent[key][1] = md
         elif key in parent and isinstance(parent[key], list):
             parent[key].append(md)
         elif not tg:
@@ -2083,6 +2103,7 @@ class GroupMetadata(Runner):
             parent[key] = {"value": mmax, "unit": unit}
         if "value" not in parent[key]:
             parent[key]["value"] = mmax
+            parent[key]["unit"] = unit
 
         try:
             if parent[key]["value"] < mmax:
@@ -2118,6 +2139,7 @@ class GroupMetadata(Runner):
             parent[key] = {"value": mmin, "unit": unit}
         if "value" not in parent[key]:
             parent[key]["value"] = mmin
+            parent[key]["unit"] = unit
 
         try:
             if parent[key]["value"] > mmin:
@@ -2308,6 +2330,107 @@ class GroupMetadata(Runner):
                     tg["value"] = None
 
     @classmethod
+    def _merge_first_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {"value": md, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key]["value"] = md
+            parent[key]["unit"] = unit
+        return
+
+    @classmethod
+    def _merge_last_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+        tg = parent[key]
+        parent[key] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_firstlast_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+
+        if not isinstance(parent[key], dict):
+            parent[key] = {"first": {"value": md, "unit": unit},
+                           "last": {"value": md, "unit": unit}}
+        if "first" not in parent[key]:
+            parent[key]["first"] = {"value": md, "unit": unit}
+        parent[key]["last"] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_endpoints_list(cls, parent, key, md, unit):
+        """ merge list
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        tg = None
+        if key in parent.keys():
+            tg = parent[key]
+        if not isinstance(tg, dict):
+            parent[key] = {}
+
+        if not isinstance(parent[key], dict):
+            parent[key] = {"value": [md, md], "unit": unit}
+        if "value" not in parent[key] or len(parent[key]["value"]) != 2:
+            parent[key] = {"value": [md, md], "unit": unit}
+        parent[key]["value"][1] = md
+        return
+
+    @classmethod
     def _merge_list(cls, parent, key, md, unit, tgtype=None):
         """ update and group scan metadata
 
@@ -2334,6 +2457,14 @@ class GroupMetadata(Runner):
         if tgtype in cls.mintype and md and \
            (isinstance(md[0], float) or isinstance(md[0], int)):
             return cls._merge_min_list(parent, key, md, unit)
+        if tgtype in cls.firsttype:
+            return cls._merge_first_list(parent, key, md, unit)
+        if tgtype in cls.lasttype:
+            return cls._merge_last_list(parent, key, md, unit)
+        if tgtype in cls.firstlasttype:
+            return cls._merge_firstlast_list(parent, key, md, unit)
+        if tgtype in cls.endpointstype:
+            return cls._merge_endpoints_list(parent, key, md, unit)
         if (tgtype in cls.listtype or tgtype in cls.uniquelisttype):
             return cls._merge_list_list(parent, key, md, unit, tgtype)
 
@@ -2495,6 +2626,84 @@ class GroupMetadata(Runner):
         return
 
     @classmethod
+    def _merge_first_number(cls, parent, key, md, unit):
+        """ merge metadata number to first type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        if not isinstance(parent[key], dict):
+            parent[key] = {"value": md, "unit": unit}
+        if "value" not in parent[key]:
+            parent[key] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_last_number(cls, parent, key, md, unit):
+        """ merge metadata number to last type
+
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+        parent[key] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_firstlast_number(cls, parent, key, md, unit):
+        """ merge metadata number to firstlast type
+i
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+
+        if not isinstance(parent[key], dict):
+            parent[key] = {"first": {"value": md, "unit": unit},
+                           "last": {"value": md, "unit": unit}}
+        if "first" not in parent[key]:
+            parent[key]["first"] = {"value": md, "unit": unit}
+        parent[key]["last"] = {"value": md, "unit": unit}
+        return
+
+    @classmethod
+    def _merge_endpoints_number(cls, parent, key, md, unit):
+        """ merge metadata number to endpoints type
+i
+        :param parent: node metadata
+        :type parent: :obj:`dict`
+        :param key: metadata key
+        :type key: :obj:`str`
+        :param md: new metadata
+        :type md: :obj:`str` or :obj:`dict`
+        :param unit: physical unit
+        :type unit: :obj:`str`
+        """
+
+        if not isinstance(parent[key], dict):
+            parent[key] = {"value": [md, md], "unit": unit}
+        if "value" not in parent[key] or len(parent[key]["value"]) != 2:
+            parent[key] = {"value": [md, md], "unit": unit}
+        parent[key]["value"][1] = md
+        return
+
+    @classmethod
     def _merge_average_number(cls, parent, key, md, unit):
         """ merge metadata number to dict type
 
@@ -2593,6 +2802,14 @@ class GroupMetadata(Runner):
             return cls._merge_list_number(parent, key, md, unit)
         if tgtype in cls.dicttype:
             return cls._merge_dict_number(parent, key, md, unit)
+        if tgtype in cls.firsttype:
+            return cls._merge_first_number(parent, key, md, unit)
+        if tgtype in cls.lasttype:
+            return cls._merge_last_number(parent, key, md, unit)
+        if tgtype in cls.firstlasttype:
+            return cls._merge_firstlast_number(parent, key, md, unit)
+        if tgtype in cls.endpointstype:
+            return cls._merge_endpoints_number(parent, key, md, unit)
         return cls._merge_average_number(parent, key, md, unit)
 
     @classmethod

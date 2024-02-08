@@ -12022,6 +12022,14 @@ For more help:
                     "scientificMetadata": {
                         "DOOR_proposalId": "99991173",
                         "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "ScanCommandEndpoints": [
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                        "ScanCommandFirst": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "ScanCommandLast": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                        "ScanCommandFirstLast": {
+                            "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "last": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                         "ScanCommandList": ["ascan exp_dmy01 0.0 4.0 4 0.1"],
                         "ScanCommandDict": {
                             "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
@@ -12078,12 +12086,80 @@ For more help:
                                 "value": 998.9
                             }
                         },
-
+                        "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                        },
+                        "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                        },
                         "pressure_range": {"value": [998.9, 999.2],
                                            "unit": "mbar"},
                         "pressure_list": {
                             "unit": "mbar",
                             "value": [
+                                [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            ]
+                        },
+                        "pressure_first": {
+                            "unit": "mbar",
+                            "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                            ]
+                        },
+                        "pressure_last": {
+                            "unit": "mbar",
+                            "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                            ]
+                        },
+                        "pressure_firstlast": {
+                            "first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "last": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            }
+                        },
+                        "pressure_endpoints": {
+                            "unit": "mbar",
+                            "value": [
+                                [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ],
                                 [
                                     999.0,
                                     999.1,
@@ -12138,6 +12214,36 @@ For more help:
                                 "unit": "W",
                                 "value": 0.82
                             },
+                        },
+                        "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                        },
+                        "temperature_min": {
+                                "unit": "W",
+                                "value": 0.82
+                        },
+                        "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                        },
+                        "temperature_last": {
+                                "unit": "W",
+                                "value": 0.82
+                        },
+                        "temperature_firstlast": {
+                            "first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "last": {
+                                "unit": "W",
+                                "value": 0.82
+                            }
+                        },
+                        "temperature_endpoints": {
+                            "unit": "W",
+                            "value": [0.82, 0.82],
                         },
                         "temperature_range": {
                             "unit": "W",
@@ -12260,6 +12366,15 @@ For more help:
                             "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
                             "ScanCommandList":
                             ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandEndpoints": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandFirst":
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandLast": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandFirstLast": {
+                                "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "last": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "ScanCommandDict": {
                                 "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
@@ -12315,12 +12430,80 @@ For more help:
                                     "value": 998.9
                                 }
                             },
-
+                            "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                            },
+                            "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                            },
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
                             "pressure_list": {
                                 "unit": "mbar",
                                 "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_last": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_firstlast": {
+                                "first": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "last": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
+                            "pressure_endpoints": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
                                     [
                                         999.0,
                                         999.1,
@@ -12375,6 +12558,36 @@ For more help:
                                     "unit": "W",
                                     "value": 0.82
                                 },
+                            },
+                            "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_min": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_last": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_firstlast": {
+                                "first": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "last": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                }
+                            },
+                            "temperature_endpoints": {
+                                "unit": "W",
+                                "value": [0.82, 0.82],
                             },
                             "temperature_range": {
                                 "unit": "W",
@@ -12460,6 +12673,15 @@ For more help:
                         "scientificMetadata": {
                             "DOOR_proposalId": "99991173",
                             "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandEndpoints": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandFirst":
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandLast": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandFirstLast": {
+                                "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "last": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "ScanCommandList":
                             ["ascan exp_dmy01 0.0 4.0 4 0.1"],
                             "ScanCommandDict": {
@@ -12527,12 +12749,81 @@ For more help:
                                     "value": 998.9
                                 }
                             },
+                            "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                            },
+                            "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                            },
 
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
                             "pressure_list": {
                                 "unit": "mbar",
                                 "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_last": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_firstlast": {
+                                "first": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "last": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
+                            "pressure_endpoints": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
                                     [
                                         999.0,
                                         999.1,
@@ -12577,6 +12868,36 @@ For more help:
                                     "unit": "W",
                                     "value": 0.82
                                 },
+                            },
+                            "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_min": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_last": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_firstlast": {
+                                "first": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "last": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                }
+                            },
+                            "temperature_endpoints": {
+                                "unit": "W",
+                                "value": [0.82, 0.82],
                             },
                             "temperature_range": {
                                 "unit": "W",
@@ -12708,6 +13029,15 @@ For more help:
                             "ScanCommand": "ascan exp_dmy01 0.0 4.0 4 0.1",
                             "ScanCommandList":
                             ["ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandEndpoints": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandFirst":
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandLast": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandFirstLast": {
+                                "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "last": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "ScanCommandDict": {
                                 "0": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
@@ -12763,9 +13093,78 @@ For more help:
                                     "value": 998.9
                                 }
                             },
+                            "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                            },
+                            "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                            },
 
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
+                            "pressure_first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_last": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_firstlast": {
+                                "first": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "last": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
+                            "pressure_endpoints": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
@@ -12830,6 +13229,36 @@ For more help:
                                     0.82,
                                     0.82
                                 ]
+                            },
+                            "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_min": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_last": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_firstlast": {
+                                "first": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "last": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                }
+                            },
+                            "temperature_endpoints": {
+                                "unit": "W",
+                                "value": [0.82, 0.82],
                             },
                             "temperature_list": {
                                 "unit": "W",
@@ -12916,6 +13345,15 @@ For more help:
                                 "0": "ascan exp_dmy01 0.0 4.0 4 0.1",
                                 "1": "ascan exp_dmy01 0.0 4.0 4 0.1",
                             },
+                            "ScanCommandEndpoints": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 0.0 4.0 4 0.1"],
+                            "ScanCommandFirst":
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandLast": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandFirstLast": {
+                                "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "last": "ascan exp_dmy01 0.0 4.0 4 0.1"},
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -12969,9 +13407,77 @@ For more help:
                                     "value": 998.9
                                 }
                             },
-
+                            "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.2
+                            },
+                            "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.9
+                            },
                             "pressure_range": {"value": [998.9, 999.2],
                                                "unit": "mbar"},
+                            "pressure_first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_last": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_firstlast": {
+                                "first": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "last": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
+                            "pressure_endpoints": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
                             "pressure_uniquelist": {
                                 "unit": "mbar",
                                 "value": [
@@ -13046,6 +13552,36 @@ For more help:
                                     "unit": "W",
                                     "value": 0.82
                                 },
+                            },
+                            "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_min": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_last": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_firstlast": {
+                                "first": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "last": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                }
+                            },
+                            "temperature_endpoints": {
+                                "unit": "W",
+                                "value": [0.82, 0.82],
                             },
                             "temperature_range": {
                                 "unit": "W",
@@ -13221,6 +13757,15 @@ For more help:
                                 "0": "ascan exp_dmy01 0.0 4.0 4 0.1",
                                 "1": "ascan exp_dmy01 1.0 6.0 6 0.2",
                             },
+                            "ScanCommandEndpoints": [
+                                "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "ascan exp_dmy01 1.0 6.0 6 0.2"],
+                            "ScanCommandFirst":
+                            "ascan exp_dmy01 0.0 4.0 4 0.1",
+                            "ScanCommandLast": "ascan exp_dmy01 1.0 6.0 6 0.2",
+                            "ScanCommandFirstLast": {
+                                "first": "ascan exp_dmy01 0.0 4.0 4 0.1",
+                                "last": "ascan exp_dmy01 1.0 6.0 6 0.2"},
                             "beamtimeId": "testjk01",
                             "creationLocation": "/DESY/PETRA III/P00",
                             "instrumentId": "/petra3/p00",
@@ -13270,10 +13815,82 @@ For more help:
                                     "value": 998.6
                                 }
                             },
+                            "pressure_max": {
+                                "unit": "mbar",
+                                "value": 999.4
+                            },
+                            "pressure_min": {
+                                "unit": "mbar",
+                                "value": 998.6
+                            },
 
                             "pressure_range": {"value": [998.6, 999.4],
                                                "unit": "mbar"},
                             "pressure_list": {
+                                "unit": "mbar",
+                                "value": [
+                                    [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ],
+                                    [
+                                        998.6,
+                                        999.4,
+                                        999.2,
+                                        999.3,
+                                        999.0,
+                                        998.9
+                                    ]
+                                ]
+                            },
+                            "pressure_first": {
+                                "unit": "mbar",
+                                "value": [
+                                    999.0,
+                                    999.1,
+                                    999.2,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_last": {
+                                "unit": "mbar",
+                                "value": [
+                                    998.6,
+                                    999.4,
+                                    999.2,
+                                    999.3,
+                                    999.0,
+                                    998.9
+                                ]
+                            },
+                            "pressure_firstlast": {
+                                "first": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        999.0,
+                                        999.1,
+                                        999.2,
+                                        999.0,
+                                        998.9
+                                    ]
+                                },
+                                "last": {
+                                    "unit": "mbar",
+                                    "value": [
+                                        998.6,
+                                        999.4,
+                                        999.2,
+                                        999.3,
+                                        999.0,
+                                        998.9
+                                    ]
+                                }
+                            },
+                            "pressure_endpoints": {
                                 "unit": "mbar",
                                 "value": [
                                     [
@@ -13359,6 +13976,36 @@ For more help:
                                     "unit": "W",
                                     "value": 0.8
                                 },
+                            },
+                            "temperature_max": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_min": {
+                                "unit": "W",
+                                "value": 0.8
+                            },
+                            "temperature_first": {
+                                "unit": "W",
+                                "value": 0.82
+                            },
+                            "temperature_last": {
+                                "unit": "W",
+                                "value": 0.8
+                            },
+                            "temperature_firstlast": {
+                                "first": {
+                                    "unit": "W",
+                                    "value": 0.82
+                                },
+                                "last": {
+                                    "unit": "W",
+                                    "value": 0.8
+                                }
+                            },
+                            "temperature_endpoints": {
+                                "unit": "W",
+                                "value": [0.82, 0.8],
                             },
                             "temperature_range": {
                                 "unit": "W",
