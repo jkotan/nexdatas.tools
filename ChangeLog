@@ -1,3 +1,7 @@
+2024-02-08 Jan Kotanski <jankotan@gmail.com>
+	* add first, last, firstlast, endpoints type in group-map (#602)
+	* tagged as v3.63.0
+
 2024-01-24 Jan Kotanski <jankotan@gmail.com>
 	* change --node-in-sample to  NOT --node-in-instrument (#599)
 	* tagged as v3.62.0
