@@ -2626,7 +2626,6 @@ class GroupMetadata(Runner):
         return
 
     @classmethod
-    @classmethod
     def _merge_first_number(cls, parent, key, md, unit):
         """ merge metadata number to first type
 
