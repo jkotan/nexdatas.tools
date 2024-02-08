@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSTOOLS" "1" "Jan 24, 2024" "3.62" "NXSTools"
+.TH "NXSTOOLS" "1" "Feb 08, 2024" "3.63" "NXSTools"
 .SH NAME
 nxstools \- nxstools Documentation
 .
@@ -6592,8 +6592,20 @@ creates parser
 .UNINDENT
 .INDENT 7.0
 .TP
+.B endpointstype = [\(aqEndpoints\(aq, \(aqendpoints\(aq, \(aqE\(aq, \(aqe\(aq]
+.UNINDENT
+.INDENT 7.0
+.TP
 .B epilog = \(aq examples:\en       nxsfileinfo groupmetadata \-o /user/data/myscan.scan.json  \-t /user/data/myscan.attachment.json  \-l /user/data/myscan.origdatablock.json  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json \en \en       nxsfileinfo groupmetadata myscan_m001  \-m /user/data/myscan_00021.scan.json\en  \-c /home/user/group_config.txt  \en \en       nxsfileinfo groupmetadata  myscan_m001  \-c /home/user/group_config.txt  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-a /user/data/myscan_00023.attachment.json  \en \en       nxsfileinfo groupmetadata  \-m /user/data/myscan_00023.scan.json  \-d /user/data/myscan_00023.origdatablock.json  \-c /home/user/group_config.txt  \en\en\(aq
 (\fI\%str\fP) command epilog
+.UNINDENT
+.INDENT 7.0
+.TP
+.B firstlasttype = [\(aqFirstLast\(aq, \(aqfirstlast\(aq]
+.UNINDENT
+.INDENT 7.0
+.TP
+.B firsttype = [\(aqFirst\(aq, \(aqfirst\(aq, \(aqf\(aq, \(aqF\(aq]
 .UNINDENT
 .INDENT 7.0
 .TP
@@ -6612,6 +6624,10 @@ grouped attachments]
 .B Return type
 [\fI\%str\fP,:obj:\fIstr\fP, \fI\%str\fP]
 .UNINDENT
+.UNINDENT
+.INDENT 7.0
+.TP
+.B lasttype = [\(aqLast\(aq, \(aqlast\(aq, \(aql\(aq, \(aqL\(aq]
 .UNINDENT
 .INDENT 7.0
 .TP
