@@ -1,3 +1,7 @@
+2024-02-09 Jan Kotanski <jankotan@gmail.com>
+	* add techniques only with the pid (#605)
+	* tagged as v3.63.1
+
 2024-02-08 Jan Kotanski <jankotan@gmail.com>
 	* add first, last, firstlast, endpoints type in group-map (#602)
 	* tagged as v3.63.0

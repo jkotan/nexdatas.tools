@@ -1066,8 +1066,8 @@ class BeamtimeLoader(object):
                     name = id_techniques[pid]
             if pid:
                 result.append({"pid": pid, "name": name})
-            else:
-                result.append({"name": name})
+            elif name:
+                result.append({"pid": name, "name": name})
         # print(result)
         return result
 
