@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools package &#8212; NXSTools 3.62.0 documentation</title>
+    <title>nxstools package &#8212; NXSTools 3.63.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.62</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.63</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -4402,10 +4402,25 @@ and stores it in DB or filesytem</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.endpointstype">
+<code class="sig-name descname">endpointstype</code><em class="property"> = ['Endpoints', 'endpoints', 'E', 'e']</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.endpointstype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt id="nxstools.nxsfileinfo.GroupMetadata.epilog">
 <code class="sig-name descname">epilog</code><em class="property"> = ' examples:\n       nxsfileinfo groupmetadata -o /user/data/myscan.scan.json  -t /user/data/myscan.attachment.json  -l /user/data/myscan.origdatablock.json  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json \n \n       nxsfileinfo groupmetadata myscan_m001  -m /user/data/myscan_00021.scan.json\n  -c /home/user/group_config.txt  \n \n       nxsfileinfo groupmetadata  myscan_m001  -c /home/user/group_config.txt  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -a /user/data/myscan_00023.attachment.json  \n \n       nxsfileinfo groupmetadata  -m /user/data/myscan_00023.scan.json  -d /user/data/myscan_00023.origdatablock.json  -c /home/user/group_config.txt  \n\n'</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.epilog" title="Permalink to this definition">¶</a></dt>
 <dd><p>(<a class="reference external" href="https://docs.python.org/2.7/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) command epilog</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.firstlasttype">
+<code class="sig-name descname">firstlasttype</code><em class="property"> = ['FirstLast', 'firstlast']</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.firstlasttype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.firsttype">
+<code class="sig-name descname">firsttype</code><em class="property"> = ['First', 'first', 'f', 'F']</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.firsttype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="nxstools.nxsfileinfo.GroupMetadata.groupmetadata">
@@ -4425,6 +4440,11 @@ grouped attachments]</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="nxstools.nxsfileinfo.GroupMetadata.lasttype">
+<code class="sig-name descname">lasttype</code><em class="property"> = ['Last', 'last', 'l', 'L']</em><a class="headerlink" href="#nxstools.nxsfileinfo.GroupMetadata.lasttype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="nxstools.nxsfileinfo.GroupMetadata.listtype">
