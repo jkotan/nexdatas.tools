@@ -3,7 +3,7 @@
   <datasource type="PYEVAL" name="$(name)">
     <result name="result">
 from nxstools.pyeval import secop
-ds.result = secop.create_env_links(commonblock, "$(environments)", "$(entryname)", "$(samplename)")
+ds.result = secop.create_env_links(commonblock, "$(environments)", "$var.entryname#'$(__entryname__)'$var.serialno", "$(samplename)")
     </result>
   </datasource>
 </definition>

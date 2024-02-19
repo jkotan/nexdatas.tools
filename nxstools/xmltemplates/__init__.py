@@ -144,6 +144,10 @@ standardComponentVariables = {
             'default': "temperature,magnetic_field",
             'doc': "secop environment link lists MANDATORY (string)"
         },
+        'samplename': {
+            'default': 'sample',
+            'doc': "sample group name (string)"
+        },
     },
     'groupsecop': {
         'host': {
