@@ -313,6 +313,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                      "parametercopymap", "pinhole",
                      "pointdet", "qbpm", "sampledescription",
                      "sampledescriptiontext", "samplehkl", "secop",
+                     "secoplinks",
                      "singlesecop", "slit", "source", "starttime",
                      "tango", "undulator"])
                 self.assertEqual(lines[-1], "")
@@ -338,7 +339,7 @@ class NXSCreateStdCompFSTest(unittest.TestCase):
                  "parametercopymap", "pinhole",
                  "pointdet", "qbpm", "sampledescription",
                  "sampledescriptiontext", "samplehkl",
-                 "secop", "singlesecop", "slit",
+                 "secop", "secoplinks", "singlesecop", "slit",
                  "source", "starttime", "tango", "undulator"]
         args = [
                 ('nxscreate stdcomp %s -t ' % self.flags).split(),
