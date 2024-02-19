@@ -2010,6 +2010,15 @@ class SECoPCPCreator(CPCreator):
                 field = NField(mgr, 'measurement', 'NX_CHAR')
                 field.setText(meaning)
                 field.setStrategy('INIT')
+                importance = None
+                if len(meaning) > 1:
+                    try:
+                        importance = int(meaning[1])
+                    except Exception:
+                        importance = None
+                    if importance is not None:
+                        mimp = NAttr(field, "importance", "NX_CHAR")
+                        mimp.setText(str(importance))
 
         if 'implementation' in conf.keys():
             field = NField(mgr, 'model', 'NX_CHAR')
