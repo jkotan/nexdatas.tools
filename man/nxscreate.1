@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "NXSCREATE" "1" "Feb 08, 2024" "3.63" "NXSTools"
+.TH "NXSCREATE" "1" "Feb 19, 2024" "3.64" "NXSTools"
 .SH NAME
 nxscreate \- create NeXus Configuration component
 .
@@ -66,7 +66,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -103,7 +103,7 @@ datasource prefix, i.e. counter (useful for avoiding duplicated datasource names
 store datasources in Configuration Server database
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first ‘0’
+device name without first \(aq0\(aq
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
 configuration server device name
@@ -143,11 +143,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is ‘exp_mot’
+default <datasource> is \(aqexp_mot\(aq
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -241,11 +241,11 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
-default <datasource> is ‘exp_mot’
+default <datasource> is \(aqexp_mot\(aq
 .IP \(bu 2
 default <host>, <port> are taken from <server>
 .UNINDENT
@@ -279,7 +279,7 @@ tango host port
 store datasources in Configuration Server database
 .TP
 .B \-n\fP,\fB  \-\-no\-group
-don’t create common group with a name of datasource
+don\(aqt create common group with a name of datasource
 prefix
 .TP
 .BI \-r \ SERVER\fR,\fB \ \-\-server\fB= SERVER
@@ -321,7 +321,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <inputFile> is ‘/online_dir/online.xml’
+default <inputFile> is \(aq/online_dir/online.xml\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -399,7 +399,7 @@ with \-d <directory>: datasources are created on the local filesystem
 .IP \(bu 2
 without \-b or \-d <directory>: run in the test mode
 .IP \(bu 2
-default <channel> is ‘ALL’
+default <channel> is \(aqALL\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -470,15 +470,15 @@ nxscreate onlinecp [options] inputFile
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without ‘\-c <component>’: show a list of possible components
+without \(aq\-c <component>\(aq: show a list of possible components
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
-default <inputFile> is ‘/online_dir/online.xml’
+default <inputFile> is \(aq/online_dir/online.xml\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .UNINDENT
@@ -570,17 +570,17 @@ nxscreate stdcomp [options] [name1 value1 [name2 value2] ...]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-without ‘\-t <type>’: show a list of possible component types
+without \(aq\-t <type>\(aq: show a list of possible component types
 .IP \(bu 2
-with ‘\-t <type>  and without \-c <component>: show a list of component variables for the given component type
+with \(aq\-t <type>  and without \-c <component>: show a list of component variables for the given component type
 .IP \(bu 2
 with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
-[name1 value1 [name2 value2] …] sequence  defines component variable values
+[name1 value1 [name2 value2] ...] sequence  defines component variable values
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -661,7 +661,7 @@ with \-b: datasources are created in Configuration Server database
 .IP \(bu 2
 without \-b: datasources are created on the local filesystem in \-d <directory>
 .IP \(bu 2
-default <directory> is ‘.’
+default <directory> is \(aq.\(aq
 .IP \(bu 2
 default <server> is taken from Tango DB
 .IP \(bu 2
@@ -671,7 +671,7 @@ default <type> is NX_FLOAT
 .IP \(bu 2
 default <chunk> is SCALAR
 .IP \(bu 2
-default <nexuspath> is “/$var.entryname#’scan’$var.serialno:NXentry/instrument/collection/”
+default <nexuspath> is "/$var.entryname#\(aqscan\(aq$var.serialno:NXentry/instrument/collection/"
 .UNINDENT
 .INDENT 0.0
 .TP
@@ -727,7 +727,7 @@ configuration server device name
 chunk format, i.e. SCALAR, SPECTRUM, IMAGE
 .TP
 .B \-m\fP,\fB  \-\-minimal_device
-device name without first ‘0’
+device name without first \(aq0\(aq
 .UNINDENT
 .UNINDENT
 .SS Example
@@ -808,18 +808,18 @@ sample name
 .BI \-k \ MEANINGS\fR,\fB \ \-\-links \ MEANINGS
 NXlog links of physical quantities to sensors
 separated by comman. Default:
-‘temperature,magnetic_field,electric_field,stress_field,pressure’
+\(aqtemperature,magnetic_field,electric_field,stress_field,pressure\(aq
 .TP
 .BI \-v \ ENVIRONMENTS\fR,\fB \ \-\-environments \ ENVIRONMENTS
 NXenvironment links of physical quantities separated
-by comman. Default: ‘temperature,magnetic_field’
+by comman. Default: \(aqtemperature,magnetic_field\(aq
 .TP
 .BI \-f \ FIRST\fR,\fB \ \-\-first \ FIRST
 first linked targets separated by comman
 .TP
 .BI \-z \ TRANSATTRS\fR,\fB \ \-\-transformation\-attributes \ TRANSATTRS
-a JSON dictionary with transformation parameters i.e, “transformation_type”, “vector”, “depends_on”. Default:
-{“rotation_z”:{“transformation_type”:”rotation”,”vector”:[0,\-1,0]}}
+a JSON dictionary with transformation parameters i.e, "transformation_type", "vector", "depends_on". Default:
+{"rotation_z":{"transformation_type":"rotation","vector":[0,\-1,0]}}
 .TP
 .BI \-p \ XMLPACKAGE\fR,\fB \ \-\-xml\-package \ XMLPACKAGE
 xml template package
@@ -897,7 +897,7 @@ nxscreate compare [\-h] [\-n] online_file [online_file]
 .UNINDENT
 .INDENT 0.0
 .IP \(bu 2
-default: second <online_file> is ‘/online_dir/online.xml’ if only file is given
+default: second <online_file> is \(aq/online_dir/online.xml\(aq if only file is given
 .UNINDENT
 .INDENT 0.0
 .TP

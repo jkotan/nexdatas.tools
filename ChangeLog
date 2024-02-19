@@ -1,3 +1,7 @@
+2024-02-19 Jan Kotanski <jankotan@gmail.com>
+	* store importance as a measurement attribute (#608)
+	* tagged as v3.64.0
+
 2024-02-09 Jan Kotanski <jankotan@gmail.com>
 	* add techniques only with the pid (#605)
 	* tagged as v3.63.1
