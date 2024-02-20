@@ -1947,12 +1947,14 @@ class SECoPCPCreator(CPCreator):
         if dynamiclinks:
             self.createSECoPLinkDS(
                 ename, samplename, meanings or "", environments or "")
-            sample.addAttr(
+            ae = sample.addAttr(
                 'secop_env_links', "NX_CHAR",
                 "$datasources.sample_env_links")
-            sample.addAttr(
+            ae.setStrategy("FINAL")
+            al = sample.addAttr(
                 'secop_log_links', "NX_CHAR",
                 "$datasources.sample_log_links")
+            al.setStrategy("FINAL")
 
         for target, mn, semn in llinks:
             starget = target.split("/")
@@ -2410,7 +2412,12 @@ class SECoPCPCreator(CPCreator):
                         self.xmltemplatepath, xmlfile), "r"
             ) as content_file:
                 xmlcontent = content_file.read()
-                xml = xmlcontent.replace("$(name)", dsname)
+                xml = xmlcontent.replace("$(name)", dsname).replace(
+                    "$(__entryname__)",
+                    (self.options.entryname or "scan")).replace(
+                        "$(__insname__)",
+                        (self.options.insname
+                         or "instrument"))
                 missing = []
                 for var, desc in self.xmlpackage.standardComponentVariables[
                         module].items():

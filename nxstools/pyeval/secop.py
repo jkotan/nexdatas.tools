@@ -280,7 +280,7 @@ def create_helper_links(commonblock, meanings, entryname, samplename):
         raise Exception("Writer cannot be found")
     en = root.open(entryname)
     smp = en.open(samplename)
-    for meaning in meanings.spit(","):
+    for meaning in meanings.split(","):
         target, importance = get_helper_target(smp, meaning)
         if target:
             target = "/%s/%s/%s" % (entryname, samplename, target)
@@ -314,7 +314,7 @@ def create_env_links(commonblock, meanings,
         raise Exception("Writer cannot be found")
     en = root.open(entryname)
     smp = en.open(samplename)
-    for meaning in meanings.spit(","):
+    for meaning in meanings.split(","):
         target, importance = get_helper_target(smp, meaning)
         if target:
             target = "/%s/%s/%s" % (entryname, samplename, target)
@@ -329,7 +329,7 @@ def create_env_links(commonblock, meanings,
             nxw.link("/".join(starget[:-2]) + "/name", env, "name")
             nxw.link("/".join(starget[:-2]) + "/short_name", env, "short_name")
             nxw.link("/".join(starget[:-2]) + "/type", env, "type")
-    return importance
+    return meanings
 
 
 def get_helper_target(samplegroup, meaning):
