@@ -256,7 +256,7 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
 
 
 def create_helper_links(commonblock, meanings, entryname, samplename):
-    """ code for triggermode_cb  datasource
+    """ create helper links
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
@@ -278,19 +278,21 @@ def create_helper_links(commonblock, meanings, entryname, samplename):
             import nxstools.h5cppwriter as nxw
     else:
         raise Exception("Writer cannot be found")
-    en = root.open(entryname)
-    smp = en.open(samplename)
-    for meaning in meanings.split(","):
-        target, importance = get_helper_target(smp, meaning)
-        if target:
-            target = "/%s/%s/%s" % (entryname, samplename, target)
-            nxw.link(target, smp, "%s_log" % meaning)
+    if entryname in root.names():
+        en = root.open(entryname)
+        if samplename in en.names():
+            smp = en.open(samplename)
+            for meaning in meanings.split(","):
+                target, importance = get_helper_target(smp, meaning)
+                if target:
+                    target = "/%s/%s/%s" % (entryname, samplename, target)
+                    nxw.link(target, smp, "%s_log" % meaning)
     return meanings
 
 
 def create_env_links(commonblock, meanings,
                      entryname, samplename):
-    """ code for triggermode_cb  datasource
+    """ create environment links
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
@@ -337,7 +339,7 @@ def create_env_links(commonblock, meanings,
 
 
 def get_helper_target(samplegroup, meaning):
-    """ code for triggermode_cb  datasource
+    """ get helper target
 
     :param samplegroup: sample group
     :type samplegroup: :obj:`str`
@@ -375,3 +377,48 @@ def get_helper_target(samplegroup, meaning):
                             target = "%s/%s/value_log" % (nenv, nmod)
                             importance = imp
     return target, importance
+
+
+def create_sample_nxdata(commonblock, entryname, samplename,
+                         dataname="data", sampledataname="data"):
+    """ create sample nxsdata
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param entryname: nxentry name
+    :type entryname: :obj:`str`
+    :param samplename: nxsample name
+    :type samplename: :obj:`str`
+    :param dataname: nxdata name
+    :type dataname: :obj:`str`
+    :param sampledataname: sample nxdata name
+    :type sampledataname: :obj:`str`
+    :returns: physical quantity name list separated by commas
+    :rtype: :obj:`str`
+    """
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise Exception("Writer cannot be found")
+    sresult = []
+    if entryname in root.names():
+        en = root.open(entryname)
+        if dataname in en.names():
+            dt = en.open(dataname)
+            if samplename in en.names():
+                smp = en.open(samplename)
+                smppath = "/%s/%s" % (entryname, samplename)
+                smppath2 = "%s/%s" % (entryname, samplename)
+                for dl in nxw.get_links(dt):
+                    tpath = str(dl.target_path).split(":/")[-1]
+                    if tpath.startswith(smppath) \
+                       or tpath.startswith(smppath2):
+                        nxw.link(tpath, smp, dl.name)
+                        sresult.append(tpath)
+
+    return ",".join(sresult)

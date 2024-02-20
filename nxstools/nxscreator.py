@@ -1836,7 +1836,7 @@ class SECoPCPCreator(CPCreator):
                           modulenames=None, canfail=None,
                           environments=None,
                           meanings=None, first=None, transattrs=None,
-                          dynamiclinks=False):
+                          dynamiclinks=False, samplenxdata=False):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -1861,6 +1861,8 @@ class SECoPCPCreator(CPCreator):
         :type transattrs: :obj:`str`
         :param dynamiclinks: dynamic links flag
         :type dynamiclinks: :obj:`bool`
+        :param samplenxdata: sample nxdata
+        :type samplenxdata: :obj:`bool`
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
@@ -1944,9 +1946,10 @@ class SECoPCPCreator(CPCreator):
 
         llinks = sorted([(tg, mns[0], mns[1]) for tg, mns in links.items()],
                         key=itemgetter(2), reverse=True)
-        if dynamiclinks:
+        if dynamiclinks or samplenxdata:
             self.createSECoPLinkDS(
                 ename, samplename, meanings or "", environments or "")
+        if dynamiclinks:
             ae = sample.addAttr(
                 'secop_env_links', "NX_CHAR",
                 "$datasources.sample_env_links")
@@ -1954,6 +1957,11 @@ class SECoPCPCreator(CPCreator):
             al = sample.addAttr(
                 'secop_log_links', "NX_CHAR",
                 "$datasources.sample_log_links")
+            al.setStrategy("FINAL")
+        if samplenxdata:
+            al = sample.addAttr(
+                'sample_nxdata', "NX_CHAR",
+                "$datasources.sample_nxdata")
             al.setStrategy("FINAL")
 
         for target, mn, semn in llinks:
@@ -2247,7 +2255,8 @@ class SECoPCPCreator(CPCreator):
                                    self.options.meanings,
                                    self.options.first,
                                    self.options.transattrs,
-                                   self.options.dynamiclinks)
+                                   self.options.dynamiclinks,
+                                   self.options.samplenxdata)
             self._printAction(cpname)
             self.components[cpname] = df.prettyPrint()
 

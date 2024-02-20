@@ -1548,6 +1548,7 @@ standardComponentTemplateFiles = {
     'secoplinks': [
         'sample_env_links.ds.xml',
         'sample_log_links.ds.xml',
+        'sample_nxdata.ds.xml',
     ],
     'singlesecop': [
         'singlesecop.ds.xml',

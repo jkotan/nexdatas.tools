@@ -1253,6 +1253,9 @@ class SECoPCP(Runner):
         parser.add_argument("--dynamic", action="store_true",
                             default=False, dest="dynamiclinks",
                             help="create dynamic links")
+        parser.add_argument("--sample-nxdata", action="store_true",
+                            default=False, dest="samplenxdata",
+                            help="create NXdata in NXsample")
         parser.add_argument("-w", "--node-in-instrument",
                             action="store_true",
                             default=False, dest="nodeininstrument",

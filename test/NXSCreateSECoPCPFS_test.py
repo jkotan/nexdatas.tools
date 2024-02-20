@@ -1917,6 +1917,9 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
             '      <attribute name="secop_log_links" type="NX_CHAR">'
             '$datasources.sample_log_links<strategy mode="FINAL"/>'
             '</attribute>\n'
+            '      <attribute name="sample_nxdata" type="NX_CHAR">'
+            '$datasources.sample_nxdata<strategy mode="FINAL"/>'
+            '</attribute>\n'
             '      <group name="transformations" '
             'type="NXtransformations">\n'
             '        <link name="{cpname}_drv" '
@@ -3563,7 +3566,7 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         ]
         self.checkxmls(args, fname)
 
-    def test_secopcp_create_dynamic(self):
+    def test_secopcp_create_dynamic_nxdata(self):
         """ test nxsccreate stdcomp file system
         """
 
@@ -3583,9 +3586,10 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
             [
                 [
                     ('nxscreate secopcp -c %s -j %s %s --dynamic'
+                     ' --sample-nxdata '
                      % (cname, fname, self.flags)).split(),
                     ('nxscreate secopcp --dynamic --component %s '
-                     '--json-file %s %s'
+                     '--sample-nxdata --json-file %s %s'
                      % (cname, fname, self.flags)).split(),
                 ],
                 [
