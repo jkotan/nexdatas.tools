@@ -447,7 +447,13 @@ def first(array):
         if isinstance(array, numpy.ndarray) and len(array) == 1:
             return array[0]
     except Exception:
-        pass
+        try:
+            if hasattr(array, "all"):
+                array = array.all()
+                if hasattr(array, "decode"):
+                    return array.decode()
+        except Exception:
+            pass
     return array
 
 

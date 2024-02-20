@@ -134,6 +134,21 @@ standardComponentVariables = {
             'doc': "secop timeout (string)"
         },
     },
+    'secoplinks': {
+        'meanings': {
+            'default': "temperature,magnetic_field,electric_field,"
+            "stress_field,pressure",
+            'doc': "secop meanings link lists MANDATORY (string)"
+        },
+        'environments': {
+            'default': "temperature,magnetic_field",
+            'doc': "secop environment link lists MANDATORY (string)"
+        },
+        'samplename': {
+            'default': 'sample',
+            'doc': "sample group name (string)"
+        },
+    },
     'groupsecop': {
         'host': {
             'default': None,
@@ -1527,16 +1542,26 @@ standardComponentTemplateFiles = {
         'secop.ds.xml',
         'secop_time.ds.xml',
         'client_start_time.ds.xml',
+        'sample_env_links.ds.xml',
+        'sample_log_links.ds.xml',
+    ],
+    'secoplinks': [
+        'sample_env_links.ds.xml',
+        'sample_log_links.ds.xml',
     ],
     'singlesecop': [
         'singlesecop.ds.xml',
         'singlesecop_time.ds.xml',
         'client_start_time.ds.xml',
+        'sample_env_links.ds.xml',
+        'sample_log_links.ds.xml',
     ],
     'groupsecop': [
         'groupsecop.ds.xml',
         'groupsecop_time.ds.xml',
         'client_start_time.ds.xml',
+        'sample_env_links.ds.xml',
+        'sample_log_links.ds.xml',
     ],
     'slit': ['slit.xml'],
     'source': ['source.xml'],

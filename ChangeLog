@@ -1,5 +1,6 @@
 2024-02-19 Jan Kotanski <jankotan@gmail.com>
 	* store importance as a measurement attribute (#608)
+	* add dynamic secop helper links (#610)
 	* tagged as v3.64.0
 
 2024-02-09 Jan Kotanski <jankotan@gmail.com>

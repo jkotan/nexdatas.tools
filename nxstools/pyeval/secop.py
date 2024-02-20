@@ -23,6 +23,7 @@ import json
 import socket
 import select
 import threading
+from nxstools import filewriter
 
 
 socketlock = threading.Lock()
@@ -252,3 +253,124 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
     except Exception as e:
         res = str(e)
     return res
+
+
+def create_helper_links(commonblock, meanings, entryname, samplename):
+    """ code for triggermode_cb  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param meanings: physical quantity name list separated by commas
+    :type  meanings: :obj:`str`
+    :param entryname: entry name
+    :type entryname: :obj:`str`
+    :param samplename: sample name
+    :type samplename: :obj:`str`
+    :returns: physical quantity name list separated by commas
+    :rtype: :obj:`str`
+    """
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise Exception("Writer cannot be found")
+    en = root.open(entryname)
+    smp = en.open(samplename)
+    for meaning in meanings.split(","):
+        target, importance = get_helper_target(smp, meaning)
+        if target:
+            target = "/%s/%s/%s" % (entryname, samplename, target)
+            nxw.link(target, smp, "%s_log" % meaning)
+    return meanings
+
+
+def create_env_links(commonblock, meanings,
+                     entryname, samplename):
+    """ code for triggermode_cb  datasource
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param meanings: physical quantity name list separated by commas
+    :type  meanings: :obj:`str`
+    :param entryname: entry name
+    :type entryname: :obj:`str`
+    :param samplename: sample name
+    :type samplename: :obj:`str`
+    :returns: physical quantity name list separated by commas
+    :rtype: :obj:`str`
+    """
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise Exception("Writer cannot be found")
+    if entryname in root.names():
+        en = root.open(entryname)
+        if samplename in en.names():
+            smp = en.open(samplename)
+            for meaning in meanings.split(","):
+                target, importance = get_helper_target(smp, meaning)
+                if target:
+                    target = "/%s/%s/%s" % (entryname, samplename, target)
+                    starget = target.split("/")
+                    if "%s_env" % meaning not in smp.names():
+                        env = smp.create_group(
+                            "%s_env" % meaning, "NXenvironment")
+                    else:
+                        env = smp.open("%s_env" % meaning)
+                    nxw.link("/".join(starget[:-1]), env, starget[-2])
+                    nxw.link("/".join(starget[:-2]) + "/description",
+                             env, "description")
+                    nxw.link("/".join(starget[:-2]) + "/name", env, "name")
+                    nxw.link("/".join(starget[:-2]) + "/short_name",
+                             env, "short_name")
+                    nxw.link("/".join(starget[:-2]) + "/type", env, "type")
+    return meanings
+
+
+def get_helper_target(samplegroup, meaning):
+    """ code for triggermode_cb  datasource
+
+    :param samplegroup: sample group
+    :type samplegroup: :obj:`str`
+    :param meaning: physical quantity name
+    :type  meaning: :obj:`str`
+    :returns: importance
+    :rtype: :obj:`int`
+    """
+    target = ""
+    importance = -1
+    for nenv in samplegroup.names():
+        env = samplegroup.open(nenv)
+        if "NX_class" in env.attributes.names() and  \
+           "NXenvironment" == filewriter.first(
+               env.attributes["NX_class"].read()):
+            for nmod in env.names():
+                mod = env.open(nmod)
+                if "NX_class" in mod.attributes.names() and \
+                   "NXsensor" == filewriter.first(
+                       mod.attributes["NX_class"].read()):
+                    if "measurement" in mod.names():
+                        meas = mod.open("measurement")
+                        imp = -1
+                        if meaning == filewriter.first(meas.read()):
+                            if "importance" in meas.attributes.names():
+                                try:
+                                    imp = int(filewriter.first(
+                                        meas.attributes["importance"].read()))
+                                except Exception:
+                                    pass
+                            else:
+                                imp = 0
+                        if imp > importance and 'value_log' in mod.names():
+                            target = "%s/%s/value_log" % (nenv, nmod)
+                            importance = imp
+    return target, importance

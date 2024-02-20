@@ -1835,7 +1835,8 @@ class SECoPCPCreator(CPCreator):
     def __createSECoPTree(self, df, name, conf, samplename=None,
                           modulenames=None, canfail=None,
                           environments=None,
-                          meanings=None, first=None, transattrs=None):
+                          meanings=None, first=None, transattrs=None,
+                          dynamiclinks=False):
         """ create nexus node tree
 
         :param df: definition parent node
@@ -1858,6 +1859,8 @@ class SECoPCPCreator(CPCreator):
         :type first: :obj:`str`
         :param transattrs: JSON dictionary with transformation attributes
         :type transattrs: :obj:`str`
+        :param dynamiclinks: dynamic links flag
+        :type dynamiclinks: :obj:`bool`
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
@@ -1941,25 +1944,38 @@ class SECoPCPCreator(CPCreator):
 
         llinks = sorted([(tg, mns[0], mns[1]) for tg, mns in links.items()],
                         key=itemgetter(2), reverse=True)
+        if dynamiclinks:
+            self.createSECoPLinkDS(
+                ename, samplename, meanings or "", environments or "")
+            ae = sample.addAttr(
+                'secop_env_links', "NX_CHAR",
+                "$datasources.sample_env_links")
+            ae.setStrategy("FINAL")
+            al = sample.addAttr(
+                'secop_log_links', "NX_CHAR",
+                "$datasources.sample_log_links")
+            al.setStrategy("FINAL")
 
         for target, mn, semn in llinks:
             starget = target.split("/")
-            if mn in lenvironments and "%s_env" % mn not in created:
-                env = NGroup(
-                    sample, "%s_env" % mn, "NXenvironment")
+            if not dynamiclinks:
+                if mn in lenvironments and "%s_env" % mn not in created:
+                    env = NGroup(
+                        sample, "%s_env" % mn, "NXenvironment")
 
-                NLink(env, starget[-2], "/".join(starget[:-1]))
-                NLink(env, "description",
-                      "/".join(starget[:-2]) + "/description")
-                NLink(env, "name",
-                      "/".join(starget[:-2]) + "/name")
-                NLink(env, "short_name",
-                      "/".join(starget[:-2]) + "/short_name")
-                NLink(env, "type", "/".join(starget[:-2]) + "/type")
-                created.append("%s_env" % mn)
-            if mn in lmeanings and mn not in created:
-                NLink(sample, mn, target)
-                created.append(mn)
+                    NLink(env, starget[-2], "/".join(starget[:-1]))
+                    NLink(env, "description",
+                          "/".join(starget[:-2]) + "/description")
+                    NLink(env, "name",
+                          "/".join(starget[:-2]) + "/name")
+                    NLink(env, "short_name",
+                          "/".join(starget[:-2]) + "/short_name")
+                    NLink(env, "type", "/".join(starget[:-2]) + "/type")
+                    created.append("%s_env" % mn)
+                if mn in lmeanings and mn not in created:
+                    NLink(sample, mn, target)
+                    created.append(mn)
+
             if mn in trattrs.keys():
                 nm = "%s_%s" % (starget[-3], starget[-2])
                 if nm not in created_trans:
@@ -2230,7 +2246,8 @@ class SECoPCPCreator(CPCreator):
                                    self.options.environments,
                                    self.options.meanings,
                                    self.options.first,
-                                   self.options.transattrs)
+                                   self.options.transattrs,
+                                   self.options.dynamiclinks)
             self._printAction(cpname)
             self.components[cpname] = df.prettyPrint()
 
@@ -2295,6 +2312,112 @@ class SECoPCPCreator(CPCreator):
             ) as content_file:
                 xmlcontent = content_file.read()
                 xml = xmlcontent.replace("$(name)", dsname)
+                missing = []
+                for var, desc in self.xmlpackage.standardComponentVariables[
+                        module].items():
+                    if var in params.keys():
+                        xml = xml.replace("$(%s)" % var, params[var])
+                    elif desc["default"] is not None:
+                        xml = xml.replace("$(%s)" % var, desc["default"])
+                    else:
+                        missing.append(var)
+                if missing:
+                    if sys.version_info > (3,):
+                        root = et.fromstring(
+                            bytes(xml, "UTF-8"),
+                            parser=XMLParser(collect_ids=False))
+                    else:
+                        root = et.fromstring(
+                            xml,
+                            parser=XMLParser(collect_ids=False))
+                    nodes = root.findall(".//attribute")
+                    nodes.extend(root.findall(".//field"))
+                    nodes.extend(root.findall(".//link"))
+                    grnodes = root.findall(".//group")
+                    for node in nodes:
+                        text = self.__getText(node)
+                        for ms in missing:
+                            label = "$(%s)" % ms
+                            if label in text:
+                                parent = node.getparent()
+                                parent.remove(node)
+                                break
+                    for node in grnodes:
+                        text = node.attrib["name"]
+                        if text and "$(" in text:
+                            for ms in missing:
+                                label = "$(%s)" % ms
+                                if label in text:
+                                    parent = node.getparent()
+                                    parent.remove(node)
+                                    break
+                    xml = _simpletoxml(root)
+                    if self._printouts:
+                        print("MISSING %s" % missing)
+                    errors = []
+                    for var in missing:
+                        if "s.$(%s)" % var in xml:
+                            errors.append(var)
+                    if errors:
+                        print(
+                            "WARNING: %s cannot be created without %s"
+                            % (var, errors))
+                        continue
+
+                    for var in missing:
+                        xml = xml.replace("$(%s)" % var, "")
+                    lines = xml.split('\n')
+                    xml = '\n'.join([x for x in lines if len(x.strip())])
+                if xmlfile.endswith(".ds.xml"):
+                    self._printAction(newname, True)
+                    self.datasources[newname] = xml
+                else:
+                    self._printAction(newname)
+                    self.components[newname] = xml
+
+    def createSECoPLinkDS(self, entryname, samplename, meanings, environments):
+        """ create SECoP datasource
+
+        :param entryname: secop entry name
+        :type entryname: :obj:`str`
+        :param samplename: secop sample name
+        :type samplename: :obj:`str`
+        :param meanings: secop meanings list
+        :type meanings: :obj:`str`
+        :param environments: secop environments list
+        :type environments: :obj:`str`
+        """
+        module = 'secoplinks'
+        dsname = "secop"
+
+        if module in self.xmlpackage.standardComponentTemplateFiles:
+            xmlfiles = self.xmlpackage.standardComponentTemplateFiles[module]
+        else:
+            if os.path.isfile("%s/%s.xml" % (self.xmltemplatepath, module)):
+                xmlfiles = ["%s.xml" % module]
+        params = {}
+
+        params["entryname"] = entryname
+        params["samplename"] = samplename
+        params["meanings"] = meanings
+        params["environments"] = environments
+        if self.options.lower:
+            dsname = dsname.lower()
+
+        for xmlfile in xmlfiles:
+            # print(xmlfile)
+            newname = self._replaceName(xmlfile, dsname, module)
+            with open(
+                    '%s/%s' % (
+                        self.xmltemplatepath, xmlfile), "r"
+            ) as content_file:
+                xmlcontent = content_file.read()
+                xml = xmlcontent.replace("$(name)", dsname).replace(
+                    "$(__entryname__)",
+                    (self.options.entryname or "scan")).replace(
+                        "$(__insname__)",
+                        (self.options.insname
+                         or "instrument"))
                 missing = []
                 for var, desc in self.xmlpackage.standardComponentVariables[
                         module].items():
