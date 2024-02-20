@@ -312,23 +312,27 @@ def create_env_links(commonblock, meanings,
             import nxstools.h5cppwriter as nxw
     else:
         raise Exception("Writer cannot be found")
-    en = root.open(entryname)
-    smp = en.open(samplename)
-    for meaning in meanings.split(","):
-        target, importance = get_helper_target(smp, meaning)
-        if target:
-            target = "/%s/%s/%s" % (entryname, samplename, target)
-            starget = target.split("/")
-            if "%s_env" % meaning not in smp.names():
-                env = smp.create_group("%s_env" % meaning, "NXenvironment")
-            else:
-                env = smp.open("%s_env" % meaning)
-            nxw.link("/".join(starget[:-1]), env, starget[-2])
-            nxw.link("/".join(starget[:-2]) + "/description",
-                     env, "description")
-            nxw.link("/".join(starget[:-2]) + "/name", env, "name")
-            nxw.link("/".join(starget[:-2]) + "/short_name", env, "short_name")
-            nxw.link("/".join(starget[:-2]) + "/type", env, "type")
+    if entryname in root.names():
+        en = root.open(entryname)
+        if samplename in en.names():
+            smp = en.open(samplename)
+            for meaning in meanings.split(","):
+                target, importance = get_helper_target(smp, meaning)
+                if target:
+                    target = "/%s/%s/%s" % (entryname, samplename, target)
+                    starget = target.split("/")
+                    if "%s_env" % meaning not in smp.names():
+                        env = smp.create_group(
+                            "%s_env" % meaning, "NXenvironment")
+                    else:
+                        env = smp.open("%s_env" % meaning)
+                    nxw.link("/".join(starget[:-1]), env, starget[-2])
+                    nxw.link("/".join(starget[:-2]) + "/description",
+                             env, "description")
+                    nxw.link("/".join(starget[:-2]) + "/name", env, "name")
+                    nxw.link("/".join(starget[:-2]) + "/short_name",
+                             env, "short_name")
+                    nxw.link("/".join(starget[:-2]) + "/type", env, "type")
     return meanings
 
 
