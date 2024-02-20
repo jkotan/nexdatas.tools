@@ -362,10 +362,11 @@ def get_helper_target(samplegroup, meaning):
                         meas = mod.open("measurement")
                         imp = -1
                         if meaning == filewriter.first(meas.read()):
-                            if "importance" in meas.attributes.names():
+                            if "secop_importance" in meas.attributes.names():
                                 try:
                                     imp = int(filewriter.first(
-                                        meas.attributes["importance"].read()))
+                                        meas.attributes["secop_importance"]
+                                        .read()))
                                 except Exception:
                                     pass
                             else:

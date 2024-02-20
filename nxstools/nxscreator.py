@@ -2033,7 +2033,7 @@ class SECoPCPCreator(CPCreator):
                 field.setText(meaning)
                 field.setStrategy('INIT')
                 if importance is not None:
-                    mimp = NAttr(field, "importance", "NX_INT32")
+                    mimp = NAttr(field, "secop_importance", "NX_INT32")
                     mimp.setText(str(importance))
 
         if 'implementation' in conf.keys():
