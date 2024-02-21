@@ -3607,45 +3607,6 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         ]
         self.checkxmls(args, fname)
 
-    def test_secopcp_create_nii(self):
-        """ test nxsccreate stdcomp file system
-        """
-
-        fun = sys._getframe().f_code.co_name
-        print("Run: %s.%s() " % (self.__class__.__name__, fun))
-
-        fname = '%s/%s%s.json' % (
-            os.getcwd(), self.__class__.__name__, fun)
-
-        cname = "myuni"
-
-        shutil.copy("test/files/secop.conf", fname)
-
-        dsl = ["client_start_time"]
-        dsl.extend(self.secoplist[1:])
-        args = [
-            [
-                [
-                    ('nxscreate secopcp --node-in-instrument -c %s -j %s %s'
-                     % (cname, fname, self.flags)).split(),
-                    ('nxscreate secopcp -w --component %s --json-file %s %s'
-                     % (cname, fname, self.flags)).split(),
-                ],
-                [
-                    [self.secoplist[0].format(cpname=cname)],
-                    [ds.format(cpname=cname) for ds in dsl]
-                ],
-                [
-                    [
-                        self.myuni2.format(nodegroup="NXenvironment",
-                                           cpname=cname)
-                    ],
-                    [ds.format(cpname=cname) for ds in self.myunids]
-                ],
-            ],
-        ]
-        self.checkxmls(args, fname)
-
     def test_secopcp_create_strict(self):
         """ test nxsccreate stdcomp file system
         """
@@ -3705,9 +3666,9 @@ class NXSCreateSECoPCPFSTest(unittest.TestCase):
         args = [
             [
                 [
-                    ('nxscreate secopcp --node-in-instrument -j %s %s'
+                    ('nxscreate secopcp  -j %s %s'
                      % (fname, self.flags)).split(),
-                    ('nxscreate secopcp -w --json-file %s %s'
+                    ('nxscreate secopcp  --json-file %s %s'
                      % (fname, self.flags)).split(),
                 ],
                 [

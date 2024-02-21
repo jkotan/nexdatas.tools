@@ -1,3 +1,7 @@
+2024-02-22 Jan Kotanski <jankotan@gmail.com>
+	* splt NXsample to sample and sample_environment like for SECoP components (#612)
+	* tagged as v3.65.0
+
 2024-02-19 Jan Kotanski <jankotan@gmail.com>
 	* store importance as a measurement attribute (#608)
 	* add dynamic secop helper links (#610)
