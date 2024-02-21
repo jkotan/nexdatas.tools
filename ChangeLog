@@ -1,5 +1,5 @@
 2024-02-22 Jan Kotanski <jankotan@gmail.com>
-	* splt NXsample to sample and sample_environment like for SECoP components (#615)
+	* spilt NXsample to sample and sample_environment like for SECoP components (#615)
 	* remove --strict and  --node-in-instrument (#615)
 	* add --sample-environment (#615)
 	* tagged as v3.65.0
