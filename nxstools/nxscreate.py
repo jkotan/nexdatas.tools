@@ -1246,20 +1246,12 @@ class SECoPCP(Runner):
         parser.add_argument("-a", "--can-fail", action="store_true",
                             default=False, dest="canfail",
                             help="can fail strategy flag")
-        parser.add_argument("-q", "--strict", action="store_true",
-                            default=False, dest="strict",
-                            help="NeXus strict group types i.e. "
-                            "use NXcollection if not defined")
-        parser.add_argument("--dynamic", action="store_true",
+        parser.add_argument("-q", "--dynamic", action="store_true",
                             default=False, dest="dynamiclinks",
                             help="create dynamic links")
         parser.add_argument("--sample-nxdata", action="store_true",
                             default=False, dest="samplenxdata",
                             help="create NXdata in NXsample")
-        parser.add_argument("-w", "--node-in-instrument",
-                            action="store_true",
-                            default=False, dest="nodeininstrument",
-                            help="Store node groups in the instrument group")
         parser.add_argument("-c", "--component",
                             help="component name" +
                             "secop component name",
@@ -1280,8 +1272,11 @@ class SECoPCP(Runner):
                             dest="timeout", default=0.001)
         parser.add_argument("-s", "--sample",
                             help="sample name",
-                            dest="samplename", default="")
-
+                            dest="samplename", default="sample")
+        parser.add_argument("-w", "--sample-environment",
+                            help="sample environment name",
+                            dest="sampleenvname",
+                            default="sample_environment")
         parser.add_argument("-k", "--links",
                             help="NXlog links of physical "
                             "quantities to sensors "

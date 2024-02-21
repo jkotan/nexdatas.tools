@@ -1833,6 +1833,7 @@ class SECoPCPCreator(CPCreator):
         return names
 
     def __createSECoPTree(self, df, name, conf, samplename=None,
+                          sampleenvname=None,
                           modulenames=None, canfail=None,
                           environments=None,
                           meanings=None, first=None, transattrs=None,
@@ -1847,6 +1848,8 @@ class SECoPCPCreator(CPCreator):
         :type conf: :obj:`dict`
         :param samplename: sample name
         :type samplename: :obj:`str`
+        :param sampleenvname: sample environment name
+        :type sampleenvname: :obj:`str`
         :param modulenames: module names
         :typae modulenames: :obj:`list` <:obj:`str`>
         :param canfail: can fail strategy flag
@@ -1866,49 +1869,62 @@ class SECoPCPCreator(CPCreator):
         """
         ename = "$var.entryname#'$(__entryname__)'$var.serialno".replace(
                     "$(__entryname__)", (self.options.entryname or "scan"))
-        insname = self.options.insname or "instrument"
-        entry = NGroup(df, samplename or ename, "NXentry")
+        entry = NGroup(df, ename, "NXentry")
         samplename = samplename or "sample"
+        sampleenvname = sampleenvname or "sample_environment"
         sample = NGroup(entry, samplename, "NXsample")
-        instrument = None
-        if self.options.nodeininstrument:
-            instrument = NGroup(entry, insname, "NXinstrument")
-            env = NGroup(instrument, name or "environment", "NXenvironment")
-            basename = insname
-        elif self.options.strict:
-            env = NGroup(sample, name or "node", "NXcollection")
-            basename = samplename
-        else:
-            env = NGroup(sample, name or "environment", "NXenvironment")
-            basename = samplename
+        field = NField(sample, 'type', 'NX_CHAR')
+        field.setText("sample")
+        field.setStrategy('INIT')
+
+        sampleenv = NGroup(entry, sampleenvname, "NXsample")
+        field = NField(sampleenv, 'type', 'NX_CHAR')
+        field.setText("sample environment")
+        field.setStrategy('INIT')
+
         modules = conf.get("modules", {})
-        if 'equipment_id' in conf.keys():
-            field = NField(env, 'name', 'NX_CHAR')
-            field.setText("%s" % str(conf['equipment_id']))
-            field.setStrategy('INIT')
-        if name or 'equipment_id' in conf.keys():
-            field = NField(env, 'short_name', 'NX_CHAR')
-            if name:
-                field.setText("%s" % str(name))
-            elif 'equipment_id' in conf.keys():
-                field.setText("%s" % str(conf['equipment_id']))
-            field.setStrategy('INIT')
-        if 'firmware' in conf.keys() or 'version' in conf.keys():
-            field = NField(env, 'type', 'NX_CHAR')
-            txt = ""
-            if 'firmware' in conf.keys():
-                txt = str(conf['firmware'])
-            if 'version' in conf.keys():
-                if txt:
-                    txt = "%s (%s)" % (txt, str(conf['version']))
-                else:
-                    txt = "(%s)" % (str(conf['version']))
-            field.setText(txt)
-            field.setStrategy('INIT')
-        if 'description' in conf.keys():
-            field = NField(env, 'description', 'NX_CHAR')
-            field.setText("%s" % str(conf['description']))
-            field.setStrategy('INIT')
+        senv = None
+        seenv = None
+
+        for mname, mconf in modules.items():
+            if mname and (not senv or not seenv):
+                if not modulenames or mname in modulenames:
+                    if not senv and "meaning" in mconf.keys():
+                        senv = NGroup(sample, name or "environment",
+                                      "NXenvironment")
+                    if not seenv and "meaning" not in mconf.keys():
+                        seenv = NGroup(sampleenv, name or "environment",
+                                       "NXenvironment")
+        envs = [senv, seenv]
+        for env in envs:
+            if env:
+                if 'equipment_id' in conf.keys():
+                    field = NField(env, 'name', 'NX_CHAR')
+                    field.setText("%s" % str(conf['equipment_id']))
+                    field.setStrategy('INIT')
+                if name or 'equipment_id' in conf.keys():
+                    field = NField(env, 'short_name', 'NX_CHAR')
+                    if name:
+                        field.setText("%s" % str(name))
+                    elif 'equipment_id' in conf.keys():
+                        field.setText("%s" % str(conf['equipment_id']))
+                    field.setStrategy('INIT')
+                if 'firmware' in conf.keys() or 'version' in conf.keys():
+                    field = NField(env, 'type', 'NX_CHAR')
+                    txt = ""
+                    if 'firmware' in conf.keys():
+                        txt = str(conf['firmware'])
+                    if 'version' in conf.keys():
+                        if txt:
+                            txt = "%s (%s)" % (txt, str(conf['version']))
+                        else:
+                            txt = "(%s)" % (str(conf['version']))
+                    field.setText(txt)
+                    field.setStrategy('INIT')
+                if 'description' in conf.keys():
+                    field = NField(env, 'description', 'NX_CHAR')
+                    field.setText("%s" % str(conf['description']))
+                    field.setStrategy('INIT')
 
         targets = (first or "").split(",")
         lmeanings = (meanings or "").split(",")
@@ -1922,8 +1938,8 @@ class SECoPCPCreator(CPCreator):
             if mname:
                 if not modulenames or mname in modulenames:
                     lk = self.__createSECoPSensor(
-                        env, mname, mconf, name, canfail, basename,
-                        trattrs)
+                        senv, seenv, mname, mconf, name, canfail, samplename,
+                        sampleenvname, trattrs)
                     if lk and isinstance(lk, dict):
                         links.update(lk)
         ename = \
@@ -1948,7 +1964,8 @@ class SECoPCPCreator(CPCreator):
                         key=itemgetter(2), reverse=True)
         if dynamiclinks or samplenxdata:
             self.createSECoPLinkDS(
-                ename, samplename, meanings or "", environments or "")
+                ename, samplename, sampleenvname,
+                meanings or "", environments or "")
         if dynamiclinks:
             ae = sample.addAttr(
                 'secop_env_links', "NX_CHAR",
@@ -1962,6 +1979,10 @@ class SECoPCPCreator(CPCreator):
             al = sample.addAttr(
                 'sample_nxdata', "NX_CHAR",
                 "$datasources.sample_nxdata")
+            al.setStrategy("FINAL")
+            al = sampleenv.addAttr(
+                'sampleenv_nxdata', "NX_CHAR",
+                "$datasources.sampleenv_nxdata")
             al.setStrategy("FINAL")
 
         for target, mn, semn in llinks:
@@ -1993,12 +2014,16 @@ class SECoPCPCreator(CPCreator):
                     NLink(trans, nm, target + "/value")
                     created_trans.append(nm)
 
-    def __createSECoPSensor(self, env, name, conf, nodename, canfail=None,
-                            basename="instrument", trattrs=None):
+    def __createSECoPSensor(self, senv, seenv, name, conf, nodename,
+                            canfail=None, samplename="sample",
+                            sampleenvname="sample_environment",
+                            trattrs=None):
         """ create nexus node tree
 
-        :param env: definition parent node
-        :type env: :class:'nxstools.nxsxml.XMLFile'
+        :param senv: definition parent node
+        :type senv: :class:'nxstools.nxsxml.XMLFile'
+        :param seenv: definition parent node
+        :type seenv: :class:'nxstools.nxsxml.XMLFile'
         :param name: sensor name
         :type name: :obj:`str`
         :param conf: secop configuration
@@ -2007,13 +2032,24 @@ class SECoPCPCreator(CPCreator):
         :type nodename: :obj:`str`
         :param canfail: can fail strategy flag
         :type canfail: :obj:`bool`
-        :param basename: base group name i.e. instrument or sample
-        :type basename: :obj:`str`
+        :param samplename: sample group name i.e. sample
+        :type samplename: :obj:`str`
+        :param sampleenvname: sample environment group name
+        :type sampleenvname: :obj:`str`
         :param trattrs: dictionary with transformation attributes
         :type trattrs: :obj:`dict` <:obj:`str`,:obj:`dict` <:obj:`str`,`and`>>
         :returns: links targets and meaning names
         :rtype: :obj:`dict`< :obj:`str`, (:obj:`str`, :obj:`str`) >
         """
+        if 'meaning' in conf.keys():
+            meaning = conf['meaning']
+            env = senv
+            basename = samplename
+        else:
+            meaning = None
+            env = seenv
+            basename = sampleenvname
+
         links = {}
         trattrs = trattrs or {}
         mgr = NGroup(env, name, "NXsensor")
@@ -2021,7 +2057,6 @@ class SECoPCPCreator(CPCreator):
             field = NField(mgr, 'name', 'NX_CHAR')
             field.setText("%s" % str(name))
             field.setStrategy('INIT')
-        meaning = None
         semeaning = None
         if 'meaning' in conf.keys():
             meaning = conf['meaning']
@@ -2250,6 +2285,7 @@ class SECoPCPCreator(CPCreator):
                 cpname = cpname.lower()
             df = XMLFile("%s/%s" % (self.options.directory, fname))
             self.__createSECoPTree(df, cpname, conf, self.options.samplename,
+                                   self.options.sampleenvname,
                                    cpnames, self.options.canfail,
                                    self.options.environments,
                                    self.options.meanings,
@@ -2384,13 +2420,16 @@ class SECoPCPCreator(CPCreator):
                     self._printAction(newname)
                     self.components[newname] = xml
 
-    def createSECoPLinkDS(self, entryname, samplename, meanings, environments):
+    def createSECoPLinkDS(self, entryname, samplename, sampleenvname,
+                          meanings, environments):
         """ create SECoP datasource
 
         :param entryname: secop entry name
         :type entryname: :obj:`str`
         :param samplename: secop sample name
         :type samplename: :obj:`str`
+        :param sampleenvname: secop sample name
+        :type sampleenvname: :obj:`str`
         :param meanings: secop meanings list
         :type meanings: :obj:`str`
         :param environments: secop environments list
@@ -2408,6 +2447,7 @@ class SECoPCPCreator(CPCreator):
 
         params["entryname"] = entryname
         params["samplename"] = samplename
+        params["sampleenvname"] = sampleenvname
         params["meanings"] = meanings
         params["environments"] = environments
         if self.options.lower:

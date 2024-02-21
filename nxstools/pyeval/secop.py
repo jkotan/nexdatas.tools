@@ -418,8 +418,8 @@ def create_sample_nxdata(commonblock, entryname, samplename,
             dt = en.open(dataname)
             if samplename in en.names():
                 smp = en.open(samplename)
-                smppath = "/%s/%s" % (entryname, samplename)
-                smppath2 = "%s/%s" % (entryname, samplename)
+                smppath = "/%s/%s/" % (entryname, samplename)
+                smppath2 = "%s/%s/" % (entryname, samplename)
 
                 if sampledataname in smp.names():
                     sdt = smp.open(sampledataname)

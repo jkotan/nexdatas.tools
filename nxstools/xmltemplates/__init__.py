@@ -148,6 +148,10 @@ standardComponentVariables = {
             'default': 'sample',
             'doc': "sample group name (string)"
         },
+        'sampleenvname': {
+            'default': 'sample_environment',
+            'doc': "sample environment group name (string)"
+        },
     },
     'groupsecop': {
         'host': {
@@ -1549,6 +1553,7 @@ standardComponentTemplateFiles = {
         'sample_env_links.ds.xml',
         'sample_log_links.ds.xml',
         'sample_nxdata.ds.xml',
+        'sampleenv_nxdata.ds.xml',
     ],
     'singlesecop': [
         'singlesecop.ds.xml',
