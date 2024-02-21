@@ -27,7 +27,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-.TH "NXSFILEINFO" "1" "Feb 20, 2024" "3.64" "NXSTools"
+.TH "NXSFILEINFO" "1" "Feb 21, 2024" "3.65" "NXSTools"
 .SH NAME
 nxsfileinfo \- show metadata of the NeXus file
 .SH DESCRIPTION
@@ -112,7 +112,7 @@ show this help message and exit
 names of column to be shown (separated by commas without spaces). The possible names are: depends_on, dtype, full_path, nexus_path, nexus_type, shape, source, source_name, source_type, strategy, trans_type, trans_offset, trans_vector, units, value
 .TP
 .BI \-f \ FILTERS\fR,\fB \ \-\-filters\fB= FILTERS
-full_path filters (separated by commas without spaces). Default: \(aq*\(aq. E.g. \(aq\fI:NXsample/\fP\(aq
+full_path filters (separated by commas without spaces). Default: ‘*’. E.g. ‘\fI:NXsample/\fP’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values\fB= VALUES
 field names which value should be stored (separated by commas without spaces). Default: depends_on
@@ -169,7 +169,7 @@ show this help message and exit
 names of field or group attributes to be show (separated by commas without spaces). The default takes all attributes
 .TP
 .BI \-n \ NATTRS\fR,\fB \ \-\-hidden\-attributes \ NATTRS
-names of field or group attributes to be hidden (separated by commas without spaces). The default: \(aqnexdatas_source,nexdatas_strategy\(aq
+names of field or group attributes to be hidden (separated by commas without spaces). The default: ‘nexdatas_source,nexdatas_strategy’
 .TP
 .BI \-v \ VALUES\fR,\fB \ \-\-values \ VALUES
 field names of more dimensional datasets which value should be shown (separated by commas without spaces)
@@ -185,13 +185,13 @@ access group names separated by commas. Default is
 {beamtimeid}\-clbt,{beamtimeId}\-dmgt,{beamline}dmgt
 .TP
 .BI \-g \ GROUP_POSTFIX\fR,\fB \ \-\-group\-postfix \ GROUP_POSTFIX
-postfix to be added to NeXus group name. The default: \(aqParameters\(aq
+postfix to be added to NeXus group name. The default: ‘Parameters’
 .TP
 .BI \-t \ ENTRYCLASSES\fR,\fB \ \-\-entry\-classes \ ENTRYCLASSES
-names of entry NX_class to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aqNXentry\(aq
+names of entry NX_class to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘NXentry’
 .TP
 .BI \-e \ ENTRYNAMES\fR,\fB \ \-\-entry\-names \ ENTRYNAMES
-names of entry groups to be shown (separated by commas without spaces). If name is \(aq\(aq all groups are shown. The default: \(aq\(aq
+names of entry groups to be shown (separated by commas without spaces). If name is ‘’ all groups are shown. The default: ‘’
 .TP
 .B  \-m\fP,\fB  \-\-raw\-metadata
 do not store NXentry as scientificMetadata
@@ -203,7 +203,7 @@ add empty units for fields without units
 add 1d values to scientificMetadata
 .TP
 .BI \-\-max\-oned\-size \ MAXONEDSIZE
-add min and max (or first and last) values of 1d records to scientificMetadata if its size excides \-\-max\-oned\-size value
+add min and max (or first and last) values of 1d records to scientificMetadata if its size excides –max\-oned\-size value
 .TP
 .BI \-p \ PID\fR,\fB \ \-\-pid \ PID
 dataset pid
@@ -219,7 +219,7 @@ generate pid with file name
 .TP
 .BI \-q \ TECHNIQUES\fR,\fB \ \-\-techniques \ TECHNIQUES
 names of techniques (separated by commas without
-spaces).The default: \(aq\(aq
+spaces).The default: ‘’
 .TP
 .BI \-j \ SAMPLEID\fR,\fB \ \-\-sample\-id \ SAMPLEID
 sampleId
@@ -255,16 +255,16 @@ or a text file list to re\-arrange metadata
 .BI \-\-copy\-map\-field \ COPYMAPFIELD
 field json or yaml with map {output: input} or [[output, input],]
 or a text file list to re\-arrange metadata. The default:
-\(aqscientificMetadata.nxsfileinfo_parameters.copymap.value\(aq
+‘scientificMetadata.nxsfileinfo_parameters.copymap.value’
 .TP
 .B  \-\-copy\-map\-error
 Raise an error when the copy map file does not exist
 .TP
 .BI \-\-copy\-map\-file \ COPYMAPFILE
-json or yaml file containing the copy map, see also \-\-copy\-map
+json or yaml file containing the copy map, see also –copy\-map
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. \(aqnxs\(aq. Default is defined by the file extension
+input file format, e.g. ‘nxs’. Default is defined by the file extension
 .TP
 .B  \-\-proposal\-as\-proposal
 Store the DESY proposal as the SciCat proposal
@@ -328,13 +328,13 @@ access group names separated by commas. Default is
 .TP
 .BI \-s \ SKIP\fR,\fB \ \-\-skip \ SKIP
 filters for files to be skipped (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aq\fI\&.pyc,\fP~\(aq
+without spaces). Default: ‘’. E.g.
+‘\fI\&.pyc,\fP~’
 .TP
 .BI \-a \ ADD\fR,\fB \ \-\-add \ ADD
 list of files to be added (separated by commas
-without spaces). Default: \(aq\(aq. E.g.
-\(aqscan1.nxs,scan2.nxs\(aq
+without spaces). Default: ‘’. E.g.
+‘scan1.nxs,scan2.nxs’
 .TP
 .BI \-r \ RELPATH\fR,\fB \ \-\-relative\-path \ RELPATH
 relative path to the scan files
@@ -532,7 +532,7 @@ amtimeId}\-dmgt,{beamtimeid}\-clbt,{beamtimeId}\-part,{be
 amline}dmgt,{beamline}staff
 .TP
 .BI \-f \ FILEFORMAT\fR,\fB \ \-\-file\-format \ FILEFORMAT
-input file format, e.g. \(aqnxs\(aq. Default is defined by
+input file format, e.g. ‘nxs’. Default is defined by
 the file extension
 .TP
 .B  \-\-h5py
@@ -554,7 +554,7 @@ axis/axes data name(s) separated by comma
 a JSON dictionary with scan\-command axes to override,
 axis/axes data name(s) separated by comma for
 detectors and by semicolon for more plots. Default:
-{\(dqhklscan\(dq:\(dqh;k;l\(dq,\(dqqscan\(dq:\(dqqz;qpar\(dq}
+{“hklscan”:”h;k;l”,”qscan”:”qz;qpar”}
 .TP
 .BI \-m \ FRAME\fR,\fB \ \-\-frame \ FRAME
 a frame number for if more 2D images in the data
@@ -576,7 +576,7 @@ add plot paramters to the caption
 .TP
 .BI \-n \ NEXUSPATH\fR,\fB \ \-\-nexus\-path \ NEXUSPATH
 base nexus path to element to be shown.
-If th path is \(aq\(aq the default group is shown. The default: \(aq\(aq
+If th path is ‘’ the default group is shown. The default: ‘’
 .TP
 .BI \-o \ OUTPUT\fR,\fB \ \-\-output \ OUTPUT
 output scicat metadata file
