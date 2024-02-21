@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nxstools.nxscreator &#8212; NXSTools 3.64.0 documentation</title>
+    <title>nxstools.nxscreator &#8212; NXSTools 3.65.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -35,7 +35,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           NXSTools</a>
-        <span class="navbar-text navbar-version pull-left"><b>3.64</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>3.65</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -2012,6 +2012,7 @@
         <span class="k">return</span> <span class="n">names</span></div>
 
     <span class="k">def</span> <span class="nf">__createSECoPTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">samplename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="n">sampleenvname</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">modulenames</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">environments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                           <span class="n">meanings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">first</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -2026,6 +2027,8 @@
 <span class="sd">        :type conf: :obj:`dict`</span>
 <span class="sd">        :param samplename: sample name</span>
 <span class="sd">        :type samplename: :obj:`str`</span>
+<span class="sd">        :param sampleenvname: sample environment name</span>
+<span class="sd">        :type sampleenvname: :obj:`str`</span>
 <span class="sd">        :param modulenames: module names</span>
 <span class="sd">        :typae modulenames: :obj:`list` &lt;:obj:`str`&gt;</span>
 <span class="sd">        :param canfail: can fail strategy flag</span>
@@ -2045,49 +2048,62 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ename</span> <span class="o">=</span> <span class="s2">&quot;$var.entryname#&#39;$(__entryname__)&#39;$var.serialno&quot;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
                     <span class="s2">&quot;$(__entryname__)&quot;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">entryname</span> <span class="ow">or</span> <span class="s2">&quot;scan&quot;</span><span class="p">))</span>
-        <span class="n">insname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">insname</span> <span class="ow">or</span> <span class="s2">&quot;instrument&quot;</span>
-        <span class="n">entry</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">samplename</span> <span class="ow">or</span> <span class="n">ename</span><span class="p">,</span> <span class="s2">&quot;NXentry&quot;</span><span class="p">)</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ename</span><span class="p">,</span> <span class="s2">&quot;NXentry&quot;</span><span class="p">)</span>
         <span class="n">samplename</span> <span class="o">=</span> <span class="n">samplename</span> <span class="ow">or</span> <span class="s2">&quot;sample&quot;</span>
+        <span class="n">sampleenvname</span> <span class="o">=</span> <span class="n">sampleenvname</span> <span class="ow">or</span> <span class="s2">&quot;sample_environment&quot;</span>
         <span class="n">sample</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="s2">&quot;NXsample&quot;</span><span class="p">)</span>
-        <span class="n">instrument</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">nodeininstrument</span><span class="p">:</span>
-            <span class="n">instrument</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">insname</span><span class="p">,</span> <span class="s2">&quot;NXinstrument&quot;</span><span class="p">)</span>
-            <span class="n">env</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">instrument</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span> <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">insname</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">strict</span><span class="p">:</span>
-            <span class="n">env</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;NXcollection&quot;</span><span class="p">)</span>
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">env</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span> <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;sample&quot;</span><span class="p">)</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+
+        <span class="n">sampleenv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">sampleenvname</span><span class="p">,</span> <span class="s2">&quot;NXsample&quot;</span><span class="p">)</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">sampleenv</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;sample environment&quot;</span><span class="p">)</span>
+        <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+
         <span class="n">modules</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;modules&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">if</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;equipment_id&#39;</span><span class="p">]))</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-                <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;equipment_id&#39;</span><span class="p">]))</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;firmware&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;version&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-            <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="k">if</span> <span class="s1">&#39;firmware&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">txt</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;firmware&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="s1">&#39;version&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">txt</span><span class="p">:</span>
-                    <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]))</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]))</span>
-            <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+        <span class="n">senv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">seenv</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">mname</span><span class="p">,</span> <span class="n">mconf</span> <span class="ow">in</span> <span class="n">modules</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">mname</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">senv</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">seenv</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">modulenames</span> <span class="ow">or</span> <span class="n">mname</span> <span class="ow">in</span> <span class="n">modulenames</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">senv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">senv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                      <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">seenv</span> <span class="ow">and</span> <span class="s2">&quot;meaning&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mconf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">seenv</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">sampleenv</span><span class="p">,</span> <span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;NXenvironment&quot;</span><span class="p">)</span>
+        <span class="n">envs</span> <span class="o">=</span> <span class="p">[</span><span class="n">senv</span><span class="p">,</span> <span class="n">seenv</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">envs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;equipment_id&#39;</span><span class="p">]))</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;short_name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="s1">&#39;equipment_id&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;equipment_id&#39;</span><span class="p">]))</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;firmware&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;version&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+                    <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                    <span class="k">if</span> <span class="s1">&#39;firmware&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="n">txt</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;firmware&#39;</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="s1">&#39;version&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">txt</span><span class="p">:</span>
+                            <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">txt</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]))</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]))</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
 
         <span class="n">targets</span> <span class="o">=</span> <span class="p">(</span><span class="n">first</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
         <span class="n">lmeanings</span> <span class="o">=</span> <span class="p">(</span><span class="n">meanings</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
@@ -2101,8 +2117,8 @@
             <span class="k">if</span> <span class="n">mname</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">modulenames</span> <span class="ow">or</span> <span class="n">mname</span> <span class="ow">in</span> <span class="n">modulenames</span><span class="p">:</span>
                     <span class="n">lk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__createSECoPSensor</span><span class="p">(</span>
-                        <span class="n">env</span><span class="p">,</span> <span class="n">mname</span><span class="p">,</span> <span class="n">mconf</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">canfail</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span>
-                        <span class="n">trattrs</span><span class="p">)</span>
+                        <span class="n">senv</span><span class="p">,</span> <span class="n">seenv</span><span class="p">,</span> <span class="n">mname</span><span class="p">,</span> <span class="n">mconf</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">canfail</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span>
+                        <span class="n">sampleenvname</span><span class="p">,</span> <span class="n">trattrs</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">lk</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                         <span class="n">links</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">lk</span><span class="p">)</span>
         <span class="n">ename</span> <span class="o">=</span> \
@@ -2127,7 +2143,8 @@
                         <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dynamiclinks</span> <span class="ow">or</span> <span class="n">samplenxdata</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">createSECoPLinkDS</span><span class="p">(</span>
-                <span class="n">ename</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">meanings</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">environments</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">ename</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">sampleenvname</span><span class="p">,</span>
+                <span class="n">meanings</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">environments</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dynamiclinks</span><span class="p">:</span>
             <span class="n">ae</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
                 <span class="s1">&#39;secop_env_links&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
@@ -2141,6 +2158,10 @@
             <span class="n">al</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
                 <span class="s1">&#39;sample_nxdata&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;$datasources.sample_nxdata&quot;</span><span class="p">)</span>
+            <span class="n">al</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;FINAL&quot;</span><span class="p">)</span>
+            <span class="n">al</span> <span class="o">=</span> <span class="n">sampleenv</span><span class="o">.</span><span class="n">addAttr</span><span class="p">(</span>
+                <span class="s1">&#39;sampleenv_nxdata&#39;</span><span class="p">,</span> <span class="s2">&quot;NX_CHAR&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$datasources.sampleenv_nxdata&quot;</span><span class="p">)</span>
             <span class="n">al</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s2">&quot;FINAL&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">semn</span> <span class="ow">in</span> <span class="n">llinks</span><span class="p">:</span>
@@ -2172,12 +2193,16 @@
                     <span class="n">NLink</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">nm</span><span class="p">,</span> <span class="n">target</span> <span class="o">+</span> <span class="s2">&quot;/value&quot;</span><span class="p">)</span>
                     <span class="n">created_trans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__createSECoPSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">nodename</span><span class="p">,</span> <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">basename</span><span class="o">=</span><span class="s2">&quot;instrument&quot;</span><span class="p">,</span> <span class="n">trattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__createSECoPSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">senv</span><span class="p">,</span> <span class="n">seenv</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">nodename</span><span class="p">,</span>
+                            <span class="n">canfail</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">samplename</span><span class="o">=</span><span class="s2">&quot;sample&quot;</span><span class="p">,</span>
+                            <span class="n">sampleenvname</span><span class="o">=</span><span class="s2">&quot;sample_environment&quot;</span><span class="p">,</span>
+                            <span class="n">trattrs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create nexus node tree</span>
 
-<span class="sd">        :param env: definition parent node</span>
-<span class="sd">        :type env: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
+<span class="sd">        :param senv: definition parent node</span>
+<span class="sd">        :type senv: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
+<span class="sd">        :param seenv: definition parent node</span>
+<span class="sd">        :type seenv: :class:&#39;nxstools.nxsxml.XMLFile&#39;</span>
 <span class="sd">        :param name: sensor name</span>
 <span class="sd">        :type name: :obj:`str`</span>
 <span class="sd">        :param conf: secop configuration</span>
@@ -2186,13 +2211,24 @@
 <span class="sd">        :type nodename: :obj:`str`</span>
 <span class="sd">        :param canfail: can fail strategy flag</span>
 <span class="sd">        :type canfail: :obj:`bool`</span>
-<span class="sd">        :param basename: base group name i.e. instrument or sample</span>
-<span class="sd">        :type basename: :obj:`str`</span>
+<span class="sd">        :param samplename: sample group name i.e. sample</span>
+<span class="sd">        :type samplename: :obj:`str`</span>
+<span class="sd">        :param sampleenvname: sample environment group name</span>
+<span class="sd">        :type sampleenvname: :obj:`str`</span>
 <span class="sd">        :param trattrs: dictionary with transformation attributes</span>
 <span class="sd">        :type trattrs: :obj:`dict` &lt;:obj:`str`,:obj:`dict` &lt;:obj:`str`,`and`&gt;&gt;</span>
 <span class="sd">        :returns: links targets and meaning names</span>
 <span class="sd">        :rtype: :obj:`dict`&lt; :obj:`str`, (:obj:`str`, :obj:`str`) &gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s1">&#39;meaning&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;meaning&#39;</span><span class="p">]</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="n">senv</span>
+            <span class="n">basename</span> <span class="o">=</span> <span class="n">samplename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">env</span> <span class="o">=</span> <span class="n">seenv</span>
+            <span class="n">basename</span> <span class="o">=</span> <span class="n">sampleenvname</span>
+
         <span class="n">links</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">trattrs</span> <span class="o">=</span> <span class="n">trattrs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">mgr</span> <span class="o">=</span> <span class="n">NGroup</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;NXsensor&quot;</span><span class="p">)</span>
@@ -2200,7 +2236,6 @@
             <span class="n">field</span> <span class="o">=</span> <span class="n">NField</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;NX_CHAR&#39;</span><span class="p">)</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
             <span class="n">field</span><span class="o">.</span><span class="n">setStrategy</span><span class="p">(</span><span class="s1">&#39;INIT&#39;</span><span class="p">)</span>
-        <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">semeaning</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;meaning&#39;</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">meaning</span> <span class="o">=</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;meaning&#39;</span><span class="p">]</span>
@@ -2429,6 +2464,7 @@
                 <span class="n">cpname</span> <span class="o">=</span> <span class="n">cpname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">XMLFile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__createSECoPTree</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cpname</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">samplename</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">sampleenvname</span><span class="p">,</span>
                                    <span class="n">cpnames</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">canfail</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">environments</span><span class="p">,</span>
                                    <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">meanings</span><span class="p">,</span>
@@ -2563,13 +2599,16 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_printAction</span><span class="p">(</span><span class="n">newname</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">newname</span><span class="p">]</span> <span class="o">=</span> <span class="n">xml</span></div>
 
-<div class="viewcode-block" id="SECoPCPCreator.createSECoPLinkDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createSECoPLinkDS">[docs]</a>    <span class="k">def</span> <span class="nf">createSECoPLinkDS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entryname</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">meanings</span><span class="p">,</span> <span class="n">environments</span><span class="p">):</span>
+<div class="viewcode-block" id="SECoPCPCreator.createSECoPLinkDS"><a class="viewcode-back" href="../../nxstools.html#nxstools.nxscreator.SECoPCPCreator.createSECoPLinkDS">[docs]</a>    <span class="k">def</span> <span class="nf">createSECoPLinkDS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entryname</span><span class="p">,</span> <span class="n">samplename</span><span class="p">,</span> <span class="n">sampleenvname</span><span class="p">,</span>
+                          <span class="n">meanings</span><span class="p">,</span> <span class="n">environments</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; create SECoP datasource</span>
 
 <span class="sd">        :param entryname: secop entry name</span>
 <span class="sd">        :type entryname: :obj:`str`</span>
 <span class="sd">        :param samplename: secop sample name</span>
 <span class="sd">        :type samplename: :obj:`str`</span>
+<span class="sd">        :param sampleenvname: secop sample name</span>
+<span class="sd">        :type sampleenvname: :obj:`str`</span>
 <span class="sd">        :param meanings: secop meanings list</span>
 <span class="sd">        :type meanings: :obj:`str`</span>
 <span class="sd">        :param environments: secop environments list</span>
@@ -2587,6 +2626,7 @@
 
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;entryname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entryname</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;samplename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">samplename</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;sampleenvname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampleenvname</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;meanings&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meanings</span>
         <span class="n">params</span><span class="p">[</span><span class="s2">&quot;environments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">environments</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">lower</span><span class="p">:</span>
