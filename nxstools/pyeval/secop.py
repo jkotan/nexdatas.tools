@@ -414,11 +414,18 @@ def create_sample_nxdata(commonblock, entryname, samplename,
                 smp = en.open(samplename)
                 smppath = "/%s/%s" % (entryname, samplename)
                 smppath2 = "%s/%s" % (entryname, samplename)
+
+                if sampledataname in smp.names():
+                    sdt = smp.open(sampledataname)
+                else:
+                    sdt = smp.create_group(sampledataname, "NXdata")
+
                 for dl in nxw.get_links(dt):
                     tpath = str(dl.target_path).split(":/")[-1]
                     if tpath.startswith(smppath) \
                        or tpath.startswith(smppath2):
-                        nxw.link(tpath, smp, dl.name)
-                        sresult.append(tpath)
+                        if dl.name not in sdt.names():
+                            nxw.link(tpath, sdt, dl.name)
+                            sresult.append(tpath)
 
     return ",".join(sresult)
