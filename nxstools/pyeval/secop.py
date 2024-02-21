@@ -256,7 +256,7 @@ def secop_group_cmd(cmd, host=None, port=None, timeout=None,
 
 
 def create_helper_links(commonblock, meanings, entryname, samplename):
-    """ code for triggermode_cb  datasource
+    """ create helper links
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
@@ -278,19 +278,22 @@ def create_helper_links(commonblock, meanings, entryname, samplename):
             import nxstools.h5cppwriter as nxw
     else:
         raise Exception("Writer cannot be found")
-    en = root.open(entryname)
-    smp = en.open(samplename)
-    for meaning in meanings.split(","):
-        target, importance = get_helper_target(smp, meaning)
-        if target:
-            target = "/%s/%s/%s" % (entryname, samplename, target)
-            nxw.link(target, smp, "%s_log" % meaning)
+    if entryname in root.names():
+        en = root.open(entryname)
+        if samplename in en.names():
+            smp = en.open(samplename)
+            for meaning in meanings.split(","):
+                target, importance = get_helper_target(smp, meaning)
+                if target:
+                    target = "/%s/%s/%s" % (entryname, samplename, target)
+                    if meaning not in smp.names():
+                        nxw.link(target, smp, meaning)
     return meanings
 
 
 def create_env_links(commonblock, meanings,
                      entryname, samplename):
-    """ code for triggermode_cb  datasource
+    """ create environment links
 
     :param commonblock: commonblock of nxswriter
     :type commonblock: :obj:`dict`<:obj:`str`, `any`>
@@ -326,18 +329,23 @@ def create_env_links(commonblock, meanings,
                             "%s_env" % meaning, "NXenvironment")
                     else:
                         env = smp.open("%s_env" % meaning)
-                    nxw.link("/".join(starget[:-1]), env, starget[-2])
-                    nxw.link("/".join(starget[:-2]) + "/description",
-                             env, "description")
-                    nxw.link("/".join(starget[:-2]) + "/name", env, "name")
-                    nxw.link("/".join(starget[:-2]) + "/short_name",
-                             env, "short_name")
-                    nxw.link("/".join(starget[:-2]) + "/type", env, "type")
+                    if starget[-2] not in env.names():
+                        nxw.link("/".join(starget[:-1]), env, starget[-2])
+                    if "description" not in env.names():
+                        nxw.link("/".join(starget[:-2]) + "/description",
+                                 env, "description")
+                    if "name" not in env.names():
+                        nxw.link("/".join(starget[:-2]) + "/name", env, "name")
+                    if "short_name" not in env.names():
+                        nxw.link("/".join(starget[:-2]) + "/short_name",
+                                 env, "short_name")
+                    if "type" not in env.names():
+                        nxw.link("/".join(starget[:-2]) + "/type", env, "type")
     return meanings
 
 
 def get_helper_target(samplegroup, meaning):
-    """ code for triggermode_cb  datasource
+    """ get helper target
 
     :param samplegroup: sample group
     :type samplegroup: :obj:`str`
@@ -362,10 +370,11 @@ def get_helper_target(samplegroup, meaning):
                         meas = mod.open("measurement")
                         imp = -1
                         if meaning == filewriter.first(meas.read()):
-                            if "importance" in meas.attributes.names():
+                            if "secop_importance" in meas.attributes.names():
                                 try:
                                     imp = int(filewriter.first(
-                                        meas.attributes["importance"].read()))
+                                        meas.attributes["secop_importance"]
+                                        .read()))
                                 except Exception:
                                     pass
                             else:
@@ -374,3 +383,55 @@ def get_helper_target(samplegroup, meaning):
                             target = "%s/%s/value_log" % (nenv, nmod)
                             importance = imp
     return target, importance
+
+
+def create_sample_nxdata(commonblock, entryname, samplename,
+                         dataname="data", sampledataname="data"):
+    """ create sample nxsdata
+
+    :param commonblock: commonblock of nxswriter
+    :type commonblock: :obj:`dict`<:obj:`str`, `any`>
+    :param entryname: nxentry name
+    :type entryname: :obj:`str`
+    :param samplename: nxsample name
+    :type samplename: :obj:`str`
+    :param dataname: nxdata name
+    :type dataname: :obj:`str`
+    :param sampledataname: sample nxdata name
+    :type sampledataname: :obj:`str`
+    :returns: physical quantity name list separated by commas
+    :rtype: :obj:`str`
+    """
+
+    if "__root__" in commonblock.keys():
+        root = commonblock["__root__"]
+        if root.h5object.__class__.__name__ == "File":
+            import nxstools.h5pywriter as nxw
+        else:
+            import nxstools.h5cppwriter as nxw
+    else:
+        raise Exception("Writer cannot be found")
+    sresult = []
+    if entryname in root.names():
+        en = root.open(entryname)
+        if dataname in en.names():
+            dt = en.open(dataname)
+            if samplename in en.names():
+                smp = en.open(samplename)
+                smppath = "/%s/%s" % (entryname, samplename)
+                smppath2 = "%s/%s" % (entryname, samplename)
+
+                if sampledataname in smp.names():
+                    sdt = smp.open(sampledataname)
+                else:
+                    sdt = smp.create_group(sampledataname, "NXdata")
+
+                for dl in nxw.get_links(dt):
+                    tpath = str(dl.target_path).split(":/")[-1]
+                    if tpath.startswith(smppath) \
+                       or tpath.startswith(smppath2):
+                        if dl.name not in sdt.names():
+                            nxw.link(tpath, sdt, dl.name)
+                            sresult.append(tpath)
+
+    return ",".join(sresult)
